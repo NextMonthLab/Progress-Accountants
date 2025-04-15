@@ -1,0 +1,133 @@
+import { useState } from "react";
+import { Link } from "wouter";
+import { Menu, X } from "lucide-react";
+import { Button } from "@/components/ui/button";
+
+export default function Navbar() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
+  const closeMenu = () => {
+    setIsMenuOpen(false);
+  };
+
+  return (
+    <header className="bg-white sticky top-0 z-50 shadow-sm">
+      <nav className="container mx-auto px-4 py-4 flex justify-between items-center">
+        <div className="flex items-center">
+          <Link href="/">
+            <a className="font-poppins font-bold text-2xl" style={{ color: 'var(--navy)' }}>
+              Progress <span style={{ color: 'var(--orange)' }}>Accountants</span>
+            </a>
+          </Link>
+        </div>
+        
+        {/* Desktop Menu */}
+        <div className="hidden md:flex items-center space-x-8">
+          <a 
+            href="#services" 
+            className="font-medium hover:text-[var(--orange)] transition duration-300"
+          >
+            Services
+          </a>
+          <a 
+            href="#industries" 
+            className="font-medium hover:text-[var(--orange)] transition duration-300"
+          >
+            Industries
+          </a>
+          <a 
+            href="#why-us" 
+            className="font-medium hover:text-[var(--orange)] transition duration-300"
+          >
+            Why Us
+          </a>
+          <a 
+            href="#contact" 
+            className="font-medium hover:text-[var(--orange)] transition duration-300"
+          >
+            Contact
+          </a>
+          <a href="#book-call">
+            <Button 
+              style={{ 
+                backgroundColor: 'var(--orange)',
+                color: 'white' 
+              }}
+              className="hover:shadow-md hover:-translate-y-[2px] transition duration-300"
+            >
+              Book a Call
+            </Button>
+          </a>
+        </div>
+        
+        {/* Mobile menu button */}
+        <button 
+          className="md:hidden flex items-center" 
+          onClick={toggleMenu}
+          aria-label="Toggle mobile menu"
+        >
+          {isMenuOpen ? (
+            <X style={{ color: 'var(--navy)' }} className="h-6 w-6" />
+          ) : (
+            <Menu style={{ color: 'var(--navy)' }} className="h-6 w-6" />
+          )}
+        </button>
+      </nav>
+      
+      {/* Mobile Menu */}
+      <div 
+        className={`md:hidden bg-white w-full absolute z-20 shadow-md ${isMenuOpen ? '' : 'hidden'}`}
+      >
+        <div className="container mx-auto px-4 py-3 flex flex-col space-y-3">
+          <a 
+            href="#services" 
+            className="py-2 font-medium hover:text-[var(--orange)] transition duration-300"
+            onClick={closeMenu}
+          >
+            Services
+          </a>
+          <a 
+            href="#industries" 
+            className="py-2 font-medium hover:text-[var(--orange)] transition duration-300"
+            onClick={closeMenu}
+          >
+            Industries
+          </a>
+          <a 
+            href="#why-us" 
+            className="py-2 font-medium hover:text-[var(--orange)] transition duration-300"
+            onClick={closeMenu}
+          >
+            Why Us
+          </a>
+          <a 
+            href="#contact" 
+            className="py-2 font-medium hover:text-[var(--orange)] transition duration-300"
+            onClick={closeMenu}
+          >
+            Contact
+          </a>
+          <a 
+            href="#book-call"
+            onClick={closeMenu}
+            className="inline-block text-center"
+          >
+            <Button 
+              className="w-full hover:shadow-md hover:-translate-y-[2px] transition duration-300"
+              style={{ 
+                backgroundColor: 'var(--orange)',
+                color: 'white' 
+              }}
+            >
+              Book a Call
+            </Button>
+          </a>
+        </div>
+      </div>
+    </header>
+  );
+}
