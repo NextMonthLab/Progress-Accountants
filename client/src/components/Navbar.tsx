@@ -37,6 +37,12 @@ export default function Navbar() {
           >
             Studio
           </Link>
+          <Link 
+            href="/client-dashboard" 
+            className="font-medium hover:text-[var(--orange)] transition duration-300 no-underline"
+          >
+            Dashboard
+          </Link>
           <a 
             href="#industries" 
             className="font-medium hover:text-[var(--orange)] transition duration-300"
@@ -100,6 +106,13 @@ export default function Navbar() {
             onClick={closeMenu}
           >
             Studio
+          </Link>
+          <Link 
+            href="/client-dashboard" 
+            className="py-2 font-medium hover:text-[var(--orange)] transition duration-300 no-underline"
+            onClick={closeMenu}
+          >
+            Dashboard
           </Link>
           <a 
             href="#industries" 

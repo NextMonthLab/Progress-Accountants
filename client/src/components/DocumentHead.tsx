@@ -14,6 +14,10 @@ const routes: Record<string, RouteMetadata> = {
   '/studio-banbury': {
     title: 'Podcast & Video Studio Hire in Banbury, Oxfordshire | Progress Accountants',
     description: 'Hire a professional podcast and video studio in Banbury. Two-camera setup, pro audio, 4K TV, and tech support. Free for Progress clients. Book now.'
+  },
+  '/client-dashboard': {
+    title: 'Your Financial Dashboard – Powered by Progress Accountants',
+    description: 'Access your real-time financial insights, key dates, and HMRC updates through our secure client dashboard. Designed for business owners, not accountants.'
   }
 };
 

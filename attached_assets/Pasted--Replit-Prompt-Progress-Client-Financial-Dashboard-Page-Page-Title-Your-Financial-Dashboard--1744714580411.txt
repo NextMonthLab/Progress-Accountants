@@ -1,0 +1,149 @@
+🧾 Replit Prompt: Progress Client Financial Dashboard Page
+🏷️ Page Title
+Your Financial Dashboard – Powered by Progress
+
+🎯 Objective
+Develop a secure, client-centric dashboard that offers:​
+
+Real-time financial insights
+
+Integration with accounting software (e.g., Xero, QuickBooks)
+
+Latest updates from HMRC and Companies House
+
+Key financial dates and deadlines
+
+Access to additional services like studio booking​
+Ember
+
+📐 Page Structure & Content
+1. Hero Section
+Headline (H1):
+Your Business Finances, Simplified​
+
+Subheading (H2):
+A dashboard designed for you – not your accountant.​
+
+Intro Text:
+Tired of navigating complex accounting software? Our Financial Dashboard presents your key financial metrics in a clear, concise manner.​
+
+CTA Button:
+Access Your Dashboard​
+Ember
++2
+Ember
++2
+Ember
++2
+
+2. Dashboard Features
+Headline (H3):
+Key Features​
+Ember
++10
+Ember
++10
+Ember
++10
+
+Feature List:
+
+Real-Time Financial Overview: View your cash flow, profit & loss, and other essential metrics at a glance.
+
+Integration with Accounting Software: Seamlessly connect with Xero, QuickBooks, and more.
+
+Customized Alerts: Receive notifications for upcoming tax deadlines and financial obligations.
+
+Latest News Feed: Stay informed with real-time updates from HMRC and Companies House.
+
+Studio Booking: Easily schedule sessions in our podcast and video studio.​
+Ember
++1
+Ember
++1
+
+3. Latest News & Updates
+Headline (H3):
+Stay Informed​
+
+Content:
+An integrated RSS feed displaying the latest news from:​
+
+HMRC
+
+Companies House​
+
+Note: Implement filters for categories such as tax updates, compliance changes, and filing deadlines.
+
+4. Key Financial Dates
+Headline (H3):
+Important Dates​
+
+Content:
+A calendar highlighting:​
+
+Tax filing deadlines
+
+VAT return dates
+
+Payroll submission dates​
+Ember
++1
+Ember
++1
+
+Note: Allow users to sync these dates with their personal calendars.
+
+5. Studio Booking
+Headline (H3):
+Book Our Studio​
+Ember
++6
+Ember
++6
+Ember Learn
++6
+
+Content:
+Clients can schedule sessions in our state-of-the-art podcast and video studio directly from the dashboard.​
+
+CTA Button:
+Schedule a Session​
+
+6. Support & Assistance
+Headline (H3):
+Need Help?​
+
+Content:
+Access our support resources or contact your dedicated accountant for assistance.​
+Ember
+
+CTA Button:
+Contact Support​
+Ember
++2
+Ember
++2
+Ember
++2
+
+🖼️ Image & Asset Placeholders
+
+Section	Image Placeholder
+Hero Section	dashboard_hero.jpg
+Dashboard Features	dashboard_features.jpg
+Latest News & Updates	news_feed.jpg
+Key Financial Dates	financial_calendar.jpg
+Studio Booking	studio_booking.jpg
+Support & Assistance	support_contact.jpg
+🔧 Technical Notes
+Ensure secure login functionality for clients.
+
+Integrate APIs for accounting software connections.
+
+Implement RSS feed integration for news updates.
+
+Develop a dynamic calendar with syncing capabilities.
+
+Create a booking system for studio sessions.​
+

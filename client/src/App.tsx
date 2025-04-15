@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import NotFound from "@/pages/not-found";
 import HomePage from "@/pages/HomePage";
 import StudioPage from "@/pages/StudioPage";
+import DashboardPage from "@/pages/DashboardPage";
 import DocumentHead from "@/components/DocumentHead";
 import MainLayout from "@/layouts/MainLayout";
 
@@ -13,6 +14,7 @@ function Router() {
     <Switch>
       <Route path="/" component={HomePage} />
       <Route path="/studio-banbury" component={StudioPage} />
+      <Route path="/client-dashboard" component={DashboardPage} />
       <Route component={NotFound} />
     </Switch>
   );
