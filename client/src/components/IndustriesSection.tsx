@@ -1,24 +1,54 @@
+import { industryFilm, industryMusic, industryConstruction } from "../assets/imagePlaceholders";
+import { useEffect, useRef } from "react";
+
 export default function IndustriesSection() {
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => {
+      if (sectionRef.current) {
+        observer.unobserve(sectionRef.current);
+      }
+    };
+  }, []);
+
   const industries = [
     {
-      icon: "🎬",
+      imageComponent: industryFilm,
       title: "Film Industry",
       description: "From freelance tax setups to R&D tax credits — we've worked with independent producers, directors, and studios."
     },
     {
-      icon: "🎵",
+      imageComponent: industryMusic,
       title: "Music Industry",
       description: "Touring, royalties, self-employment, label accounting — we handle the numbers so you can stay creative."
     },
     {
-      icon: "🏗️",
+      imageComponent: industryConstruction,
       title: "Construction",
       description: "We understand CIS, contractor management, and project-based finance. We've got the site and the spreadsheet covered."
     }
   ];
 
   return (
-    <section id="industries" className="py-16 md:py-24 bg-white">
+    <section 
+      ref={sectionRef}
+      id="industries" 
+      className="py-16 md:py-24 bg-white fade-in-section"
+    >
       <div className="container mx-auto px-4">
         <div className="text-center max-w-3xl mx-auto mb-16">
           <h2 
@@ -36,22 +66,22 @@ export default function IndustriesSection() {
           {industries.map((industry, index) => (
             <div 
               key={index} 
-              className="rounded-xl p-8 border hover:-translate-y-[5px] transition duration-300"
-              style={{ 
-                backgroundColor: 'var(--light-grey)',
-                borderColor: 'var(--divider)'
-              }}
+              className="rounded-xl overflow-hidden shadow-md hover-scale transition duration-300"
             >
-              <div className="text-4xl mb-4">{industry.icon}</div>
-              <h3 
-                className="font-poppins font-semibold text-xl mb-3"
-                style={{ color: 'var(--navy)' }}
-              >
-                {industry.title}
-              </h3>
-              <p style={{ color: 'var(--dark-grey)' }}>
-                {industry.description}
-              </p>
+              <div className="h-40 overflow-hidden">
+                {industry.imageComponent()}
+              </div>
+              <div className="p-6" style={{ backgroundColor: 'var(--light-grey)' }}>
+                <h3 
+                  className="font-poppins font-semibold text-xl mb-3"
+                  style={{ color: 'var(--navy)' }}
+                >
+                  {industry.title}
+                </h3>
+                <p style={{ color: 'var(--dark-grey)' }}>
+                  {industry.description}
+                </p>
+              </div>
             </div>
           ))}
         </div>
