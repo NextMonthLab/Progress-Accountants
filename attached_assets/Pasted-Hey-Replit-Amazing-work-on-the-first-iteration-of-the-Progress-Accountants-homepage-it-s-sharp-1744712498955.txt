@@ -1,0 +1,96 @@
+Hey Replit 👋
+
+Amazing work on the first iteration of the Progress Accountants homepage — it’s sharp, professional, and already communicates our value brilliantly.
+
+Now that we’ve seen it live, we’re ready to take it to Phase 2, adding some strategic images and polish to bring it fully to life visually.
+
+🧠 Key Focus This Round:
+We want to strengthen:
+
+Emotional connection (showing the real people behind Progress)
+
+Visual reinforcement of our USPs (like the podcast studio + dashboard)
+
+Professional but warm energy, avoiding anything too corporate or generic
+
+✅ Please include these design upgrades and image slots:
+🔥 Hero Section
+Add image slot: hero_team_photo.jpg
+
+Suggested: Horizontal team photo (smiling, relaxed, modern)
+
+Use as right-aligned static image next to headline and subhead
+
+🧰 Growth Tools Section (3 Cards)
+For each card, add a real image to reinforce the feature:
+
+🎙️ tools_podcast_studio.jpg
+→ Someone using the podcast/video studio (mic, headphones, camera)
+
+📊 tools_dashboard_mockup.jpg
+→ UI of a custom dashboard (stylised if needed)
+
+🧠 tools_strategy_session.jpg
+→ Visual of a business strategy session, ideally human-centred
+
+These images can appear above or beside the text inside each card.
+
+🌍 Specialist Industries Section
+Swap the emoji icons for custom images:
+
+🎬 industry_film.jpg
+
+🎵 industry_music.jpg
+
+🏗️ industry_construction.jpg
+
+Format: Clean 3-column layout, each with image + title + supporting text.
+
+🤝 Testimonial / Dashboard Section
+Add a real photo for client trust:
+
+📸 testimonial_client.jpg
+→ Portrait or candid of the client featured in the quote
+
+Also great to subtly animate the dashboard metrics or add a tooltip like:
+
+“Updated in real-time” (with a pulse icon or shimmer)
+
+📍 Footer (Localisation)
+Add a visual to ground our Banbury roots:
+
+🏙️ footer_banbury_town.jpg
+→ A recognisable Banbury street, landmark, or aerial shot
+
+🚪 footer_office_front.jpg (optional)
+→ Office signage or welcoming doorway photo
+
+🎨 Design Polish (Optional Phase 2+ Touches)
+Add scroll fade-ins for major sections
+
+Add subtle hover scale on cards or icons
+
+Allow CTA buttons to glow or pulse on hover
+
+Use Lucide or minimal SVGs in place of emojis for a modern look
+
+🗂️ Image File Names for Uploads
+Please expect the following image names and match them to their sections:
+
+
+File Name	Section
+hero_team_photo.jpg	Hero Section
+tools_podcast_studio.jpg	Growth Tools – Podcast
+tools_dashboard_mockup.jpg	Growth Tools – Dashboard
+tools_strategy_session.jpg	Growth Tools – Finance Director
+industry_film.jpg	Specialist Industries – Film
+industry_music.jpg	Specialist Industries – Music
+industry_construction.jpg	Specialist Industries – Construction
+testimonial_client.jpg	Client Testimonial
+footer_banbury_town.jpg	Footer / Local SEO
+footer_office_front.jpg	(Optional) Office Shot
+🙌 Final Words
+You’ve already made Progress look smart, capable, and modern — now let’s show the people, places, and powerful tools behind it.
+
+Can’t wait to see this come to life visually 👏
+

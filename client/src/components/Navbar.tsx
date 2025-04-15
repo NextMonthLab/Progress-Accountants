@@ -18,10 +18,8 @@ export default function Navbar() {
     <header className="bg-white sticky top-0 z-50 shadow-sm">
       <nav className="container mx-auto px-4 py-4 flex justify-between items-center">
         <div className="flex items-center">
-          <Link href="/">
-            <a className="font-poppins font-bold text-2xl" style={{ color: 'var(--navy)' }}>
+          <Link href="/" className="font-poppins font-bold text-2xl no-underline" style={{ color: 'var(--navy)' }}>
               Progress <span style={{ color: 'var(--orange)' }}>Accountants</span>
-            </a>
           </Link>
         </div>
         

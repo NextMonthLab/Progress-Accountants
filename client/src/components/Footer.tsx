@@ -131,11 +131,11 @@ export default function Footer() {
         <div className="mt-12 pt-6 border-t border-gray-700 text-center text-gray-400 text-sm">
           <p>&copy; {new Date().getFullYear()} Progress Accountants. All rights reserved.</p>
           <p className="mt-2">
-            <Link href="/privacy-policy">
-              <a className="hover:text-[var(--orange)] transition">Privacy Policy</a>
+            <Link href="/privacy-policy" className="hover:text-[var(--orange)] transition">
+              Privacy Policy
             </Link> | 
-            <Link href="/terms-of-service">
-              <a className="hover:text-[var(--orange)] transition"> Terms of Service</a>
+            <Link href="/terms-of-service" className="hover:text-[var(--orange)] transition ml-1">
+              Terms of Service
             </Link>
           </p>
         </div>
