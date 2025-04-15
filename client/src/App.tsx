@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import NotFound from "@/pages/not-found";
 import HomePage from "@/pages/HomePage";
 import StudioPage from "@/pages/StudioPage";
+import DocumentHead from "@/components/DocumentHead";
 
 function Router() {
   return (
@@ -19,6 +20,7 @@ function Router() {
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
+      <DocumentHead />
       <Router />
       <Toaster />
     </QueryClientProvider>
