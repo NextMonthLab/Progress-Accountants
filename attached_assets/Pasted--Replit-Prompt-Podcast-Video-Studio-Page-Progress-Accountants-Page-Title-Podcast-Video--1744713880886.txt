@@ -1,0 +1,148 @@
+🎬 Replit Prompt: Podcast & Video Studio Page (Progress Accountants)
+🏷️ Page Title
+Podcast & Video Studio Hire in Banbury, Oxfordshire
+
+🔧 Objective
+Create a modern, SEO-friendly page showcasing the Progress Accountants professional broadcast studio, open to the public for hire and free to clients. The tone should be friendly, smart, and subtly upsell Progress services.
+
+📐 Page Structure & Content
+1. Hero Section
+Headline (H1):
+🎙️ Podcast & Video Studio Hire in Banbury
+
+Subheading (H2):
+Broadcast-quality. Acoustically treated. Fully supported.
+
+Intro Text:
+Looking for a professional video or podcast studio near Banbury? The Progress Studio is a fully equipped broadcast-quality space — purpose-built for small business owners, creators, and content-first brands who want to sound and look incredible without travelling miles or renting a London setup.
+
+Progress clients? You get free studio access every month.
+Other businesses? You're more than welcome to book too.
+
+Image Placeholder:
+studio_main.jpg — wide shot of the studio setup
+
+2. Studio Features Section
+Headline (H3):
+What’s included in every session
+
+Feature Grid (Icon or image + text):
+
+
+Feature	Image Placeholder
+Two-camera setup	feature_camera_setup.jpg
+Two pro podcast mics	feature_podcast_mics.jpg
+Live camera preview on TV	feature_tv_preview.jpg
+4K TV for slides/playback	feature_presentation_tv.jpg
+Two-person podcast setup	feature_interview_setup.jpg
+Professional lighting rig	feature_lighting.jpg
+Acoustically treated space	feature_acoustic_panels.jpg
+On-site studio tech support	feature_technician.jpg
+Editing desk + workspace	feature_edit_desk.jpg
+Layout: Responsive 3x3 grid with icons or photos
+
+3. Location Section
+Copy:
+We’re based just off Banbury town centre in Oxfordshire — ideal for businesses from Oxford, Bicester, Leamington Spa, Brackley, and beyond. Free parking available.
+
+Image Placeholder:
+studio_location_map.jpg or studio_banbury_exterior.jpg
+
+4. Pricing Table Section
+Headline (H3):
+Studio Hire Rates
+
+Copy:
+🎁 Progress Accountants clients get 1 hour of free studio use every month (included in all plans).
+
+Table Format:
+
+
+Package	Price
+One-hour session	£60
+Half-day bundle (4 hours)	£200
+Full-day bundle (8 hours)	£350
+Monthly Creator Pass (4x 1hr)	£199/month
+Add note: All bookings include tech support, lighting, and edit-ready output.
+
+5. Why Book With Us Section
+Headline:
+Why choose the Progress Studio?
+
+Bullet Points (2-column layout):
+
+No DIY setups or echoey home audio
+
+No commute to Oxford or London
+
+Instant content credibility
+
+Walk in with an idea, walk out with content
+
+Friendly tech setup included
+
+6. Subtle Upsell Block
+Headline:
+Want it for free?
+
+Copy:
+Our clients don’t just get great financial advice — they also get tools to grow their brand.
+All Progress clients receive 1 hour of free studio time per month, perfect for recording podcasts, sales videos, or expert content.
+
+👉 Explore our client plans »
+
+7. Booking Form Section
+Headline (H3):
+Book your studio session
+
+Use a styled form mockup (non-functional):
+
+Form Fields:
+
+Name (text)
+
+Email (email)
+
+Phone (tel)
+
+Preferred Date & Time (datetime picker)
+
+Session Type: [Podcast / Video / Both] (radio)
+
+Add-ons: [Editing support / Slides / Not sure] (checkboxes)
+
+Message (textarea)
+
+CTA Button:
+Submit Booking Request
+
+Form Placeholder Name: studio_booking_form
+
+📈 SEO Focus
+Please ensure semantic structure for:
+
+H1: Podcast & Video Studio Hire in Banbury
+
+H2/H3s: Include keywords like “podcast studio Banbury”, “video studio hire Oxfordshire”
+
+Meta Description:
+
+Hire a professional podcast and video studio in Banbury. Two-camera setup, pro audio, 4K TV, and tech support. Free for Progress clients. Book now.
+
+Suggested Page Slug: /studio-banbury
+
+📂 Final Image Upload Guide
+
+File Name	Used In
+studio_main.jpg	Hero section
+feature_camera_setup.jpg	Studio feature grid
+feature_podcast_mics.jpg	Studio feature grid
+feature_tv_preview.jpg	Studio feature grid
+feature_presentation_tv.jpg	Studio feature grid
+feature_interview_setup.jpg	Studio feature grid
+feature_lighting.jpg	Studio feature grid
+feature_acoustic_panels.jpg	Studio feature grid
+feature_technician.jpg	Studio feature grid
+feature_edit_desk.jpg	Studio feature grid
+studio_location_map.jpg	Location section (optional map)
+studio_banbury_exterior.jpg	Location section (optional ext)

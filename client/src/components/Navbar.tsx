@@ -31,6 +31,12 @@ export default function Navbar() {
           >
             Services
           </a>
+          <Link 
+            href="/studio-banbury" 
+            className="font-medium hover:text-[var(--orange)] transition duration-300 no-underline"
+          >
+            Studio
+          </Link>
           <a 
             href="#industries" 
             className="font-medium hover:text-[var(--orange)] transition duration-300"
@@ -88,6 +94,13 @@ export default function Navbar() {
           >
             Services
           </a>
+          <Link 
+            href="/studio-banbury" 
+            className="py-2 font-medium hover:text-[var(--orange)] transition duration-300 no-underline"
+            onClick={closeMenu}
+          >
+            Studio
+          </Link>
           <a 
             href="#industries" 
             className="py-2 font-medium hover:text-[var(--orange)] transition duration-300"

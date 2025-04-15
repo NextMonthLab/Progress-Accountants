@@ -1,6 +1,8 @@
 import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { toolsPodcastStudio, toolsDashboardMockup, toolsStrategySession } from "../assets/imagePlaceholders";
 import { useEffect, useRef } from "react";
+import { Link } from "wouter";
 
 export default function ServicesSection() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -80,9 +82,19 @@ export default function ServicesSection() {
                 >
                   {service.title}
                 </h3>
-                <p style={{ color: 'var(--dark-grey)' }}>
+                <p style={{ color: 'var(--dark-grey)' }} className="mb-4">
                   {service.description}
                 </p>
+                {index === 0 && (
+                  <Link href="/studio-banbury" className="inline-block mt-2">
+                    <Button 
+                      variant="outline" 
+                      className="hover:text-[var(--orange)] hover:border-[var(--orange)]"
+                    >
+                      Learn More →
+                    </Button>
+                  </Link>
+                )}
               </CardContent>
             </Card>
           ))}
