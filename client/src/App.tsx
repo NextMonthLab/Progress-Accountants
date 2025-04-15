@@ -6,6 +6,7 @@ import NotFound from "@/pages/not-found";
 import HomePage from "@/pages/HomePage";
 import StudioPage from "@/pages/StudioPage";
 import DocumentHead from "@/components/DocumentHead";
+import MainLayout from "@/layouts/MainLayout";
 
 function Router() {
   return (
@@ -21,7 +22,9 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <DocumentHead />
-      <Router />
+      <MainLayout>
+        <Router />
+      </MainLayout>
       <Toaster />
     </QueryClientProvider>
   );

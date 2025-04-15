@@ -35,7 +35,6 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
-import MainLayout from '../layouts/MainLayout';
 
 // Form schema for the booking form
 const formSchema = z.object({
@@ -172,7 +171,7 @@ export default function StudioPage() {
   }
 
   return (
-    <MainLayout>
+    <>
       {/* Hero Section */}
       <section 
         ref={sectionRefs.hero}
@@ -648,6 +647,6 @@ export default function StudioPage() {
           </div>
         </div>
       </section>
-    </MainLayout>
+    </>
   );
 }
