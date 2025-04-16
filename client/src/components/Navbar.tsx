@@ -55,6 +55,12 @@ export default function Navbar() {
           >
             Why Us
           </a>
+          <Link 
+            href="/team" 
+            className="font-medium hover:text-[var(--orange)] transition duration-300 no-underline"
+          >
+            Our Team
+          </Link>
           <a 
             href="#contact" 
             className="font-medium hover:text-[var(--orange)] transition duration-300"
@@ -128,6 +134,13 @@ export default function Navbar() {
           >
             Why Us
           </a>
+          <Link 
+            href="/team" 
+            className="py-2 font-medium hover:text-[var(--orange)] transition duration-300 no-underline"
+            onClick={closeMenu}
+          >
+            Our Team
+          </Link>
           <a 
             href="#contact" 
             className="py-2 font-medium hover:text-[var(--orange)] transition duration-300"

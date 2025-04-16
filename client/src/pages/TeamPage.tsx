@@ -1,97 +1,82 @@
 import React from 'react';
-import TeamMemberCard from '@/components/TeamMemberCard';
+import { Helmet } from 'react-helmet';
 import { teamMembers } from '@/lib/teamMembers';
-import { Users, ChevronDown } from 'lucide-react';
+import { TeamMemberCard } from '@/components/TeamMemberCard';
+import { Link } from 'wouter';
+import { Button } from '@/components/ui/button';
+import { ArrowRight } from 'lucide-react';
 
 export default function TeamPage() {
-  // Scroll to the team section when the "Meet Our Team" button is clicked
-  const scrollToTeam = () => {
-    const teamSection = document.getElementById('team-members');
-    if (teamSection) {
-      teamSection.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
-
   return (
-    <div className="flex flex-col min-h-screen">
-      {/* Hero Section */}
-      <section 
-        className="py-20 px-4 md:py-32 bg-cover bg-center relative"
-        style={{ 
-          backgroundColor: 'var(--navy, #0F172A)',
-          backgroundImage: 'linear-gradient(rgba(15, 23, 42, 0.85), rgba(15, 23, 42, 0.95))'
-        }}
-      >
-        <div className="absolute inset-0 bg-gradient-to-br from-transparent to-black/30 pointer-events-none"></div>
-        <div className="container mx-auto relative z-10 text-center">
-          <div className="inline-block p-3 rounded-full bg-orange-100 mb-6">
-            <Users size={28} className="text-orange-600" style={{ color: 'var(--orange, #F59E0B)' }} />
-          </div>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
-            Meet Our Team
-          </h1>
-          <p className="text-lg md:text-xl text-gray-200 max-w-3xl mx-auto mb-10">
-            Get to know the dedicated professionals at Progress Accountants who work tirelessly to help your business thrive.
-          </p>
-          <button 
-            onClick={scrollToTeam}
-            className="flex items-center mx-auto text-white hover:text-orange-200 transition-colors"
-          >
-            <span className="mr-2">Meet the team</span>
-            <ChevronDown className="animate-bounce" />
-          </button>
-        </div>
-      </section>
+    <div className="bg-gray-50 min-h-screen">
+      <Helmet>
+        <title>Meet Our Team | Progress Accountants</title>
+        <meta name="description" content="Meet the experienced team at Progress Accountants who provide personalized accounting services tailored to your business needs." />
+      </Helmet>
 
-      {/* Team Introduction */}
-      <section className="py-16 px-4 bg-gray-50">
-        <div className="container mx-auto">
-          <div className="max-w-3xl mx-auto text-center">
-            <h2 className="text-3xl font-bold mb-6" style={{ color: 'var(--navy, #0F172A)' }}>
-              Expertise Meets Dedication
-            </h2>
-            <p className="text-lg text-gray-700 mb-8">
-              At Progress Accountants, our team combines extensive industry experience with a passion for personalized service. 
-              We leverage the latest technology to provide efficient accounting solutions while maintaining the personal touch 
-              that makes us different.
+      {/* Hero Section */}
+      <section className="bg-[var(--navy)] text-white py-16 md:py-24 relative overflow-hidden">
+        <div className="absolute inset-0 opacity-20">
+          <img 
+            src="../attached_assets/Team Photo.jpg" 
+            alt="Progress Accountants Team" 
+            className="w-full h-full object-cover"
+          />
+        </div>
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="max-w-4xl mx-auto text-center">
+            <h1 className="text-3xl md:text-5xl font-bold mb-6">Meet Our Team</h1>
+            <p className="text-lg md:text-xl text-gray-200 mb-8">
+              We're a team of dedicated professionals committed to providing exceptional accounting solutions for growing businesses.
             </p>
-            <div className="h-1 w-20 bg-orange-500 mx-auto" style={{ backgroundColor: 'var(--orange, #F59E0B)' }}></div>
+            <p className="text-gray-300 mb-8">
+              With diverse expertise in accounting, tax planning, and business advisory, we help our clients navigate their financial journey with confidence.
+            </p>
           </div>
         </div>
       </section>
 
       {/* Team Members Grid */}
-      <section id="team-members" className="py-16 px-4">
-        <div className="container mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-12" style={{ color: 'var(--navy, #0F172A)' }}>
-            Our Professional Team
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {teamMembers.map((member) => (
-              <TeamMemberCard key={member.id} member={member} />
-            ))}
+      <section className="py-16 md:py-24">
+        <div className="container mx-auto px-4">
+          <div className="max-w-7xl mx-auto">
+            <h2 className="text-2xl md:text-3xl font-bold mb-12 text-center" style={{ color: 'var(--navy)' }}>
+              The People Behind Progress Accountants
+            </h2>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {teamMembers.map((member) => (
+                <TeamMemberCard key={member.id} member={member} />
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Join Our Team CTA */}
-      <section className="py-16 px-4 bg-orange-50">
-        <div className="container mx-auto">
+      {/* Join Our Team Section */}
+      <section className="py-16 bg-gray-100">
+        <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center">
-            <h2 className="text-3xl font-bold mb-6" style={{ color: 'var(--navy, #0F172A)' }}>
-              Join Our Growing Team
+            <h2 className="text-2xl md:text-3xl font-bold mb-6" style={{ color: 'var(--navy)' }}>
+              Interested in Joining Our Team?
             </h2>
-            <p className="text-lg text-gray-700 mb-8">
-              We're always looking for talented individuals who share our passion for excellence in accounting and client service. 
-              If you're interested in becoming part of the Progress Accountants family, we'd love to hear from you.
+            <p className="text-gray-700 mb-8">
+              We're always looking for talented professionals to join Progress Accountants. 
+              If you're passionate about helping businesses succeed and want to be part of a forward-thinking team, we'd love to hear from you.
             </p>
-            <a 
-              href="/contact" 
-              className="inline-block px-6 py-3 rounded-md text-white font-medium"
-              style={{ backgroundColor: 'var(--navy, #0F172A)' }}
-            >
-              Get in Touch
-            </a>
+            <Link href="#contact">
+              <Button 
+                size="lg"
+                className="hover:shadow-md hover:-translate-y-[2px] transition duration-300 flex items-center gap-2"
+                style={{ 
+                  backgroundColor: 'var(--orange)',
+                  color: 'white' 
+                }}
+              >
+                <span>Contact Us</span>
+                <ArrowRight size={16} />
+              </Button>
+            </Link>
           </div>
         </div>
       </section>

@@ -1,23 +1,9 @@
 import React, { useState } from 'react';
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
-import { 
-  Dialog, 
-  DialogContent, 
-  DialogDescription, 
-  DialogHeader,
-  DialogTitle, 
-  DialogTrigger,
-  DialogFooter
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { 
-  Linkedin, 
-  Twitter, 
-  Mail, 
-  ExternalLink 
-} from "lucide-react";
+import { Card, CardContent, CardFooter } from '@/components/ui/card';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
+import { Linkedin, Twitter, Mail, ExternalLink } from 'lucide-react';
 import { TeamMember } from '@/lib/teamMembers';
 
 interface TeamMemberCardProps {
@@ -27,9 +13,11 @@ interface TeamMemberCardProps {
 export function TeamMemberCard({ member }: TeamMemberCardProps) {
   const [isOpen, setIsOpen] = useState(false);
   
-  // Get initials for the avatar fallback
   const getInitials = (name: string) => {
-    return name.split(' ').map(n => n[0]).join('');
+    return name
+      .split(' ')
+      .map(n => n[0])
+      .join('');
   };
   
   return (
@@ -150,6 +138,10 @@ export function TeamMemberCard({ member }: TeamMemberCardProps) {
                     alt={`${member.name} - ${member.role}`}
                     className="w-full h-auto object-cover"
                   />
+                </div>
+              ) : member.placeholderComponent ? (
+                <div className="rounded-lg overflow-hidden aspect-square">
+                  {React.createElement(member.placeholderComponent)}
                 </div>
               ) : (
                 <div className="bg-gray-200 rounded-lg aspect-square flex items-center justify-center">
