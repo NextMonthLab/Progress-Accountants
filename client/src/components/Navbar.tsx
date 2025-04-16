@@ -67,12 +67,12 @@ export default function Navbar() {
           >
             Our Team
           </Link>
-          <a 
-            href="#contact" 
-            className="font-medium hover:text-[var(--orange)] transition duration-300"
+          <Link 
+            href="/contact" 
+            className="font-medium hover:text-[var(--orange)] transition duration-300 no-underline"
           >
             Contact
-          </a>
+          </Link>
           <a href="#book-call">
             <Button 
               style={{ 
@@ -154,13 +154,13 @@ export default function Navbar() {
           >
             Our Team
           </Link>
-          <a 
-            href="#contact" 
-            className="py-2 font-medium hover:text-[var(--orange)] transition duration-300"
+          <Link 
+            href="/contact" 
+            className="py-2 font-medium hover:text-[var(--orange)] transition duration-300 no-underline"
             onClick={closeMenu}
           >
             Contact
-          </a>
+          </Link>
           <a 
             href="#book-call"
             onClick={closeMenu}
