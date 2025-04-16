@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { heroTeamPhoto } from "../assets/imagePlaceholders";
 import { useEffect, useRef } from "react";
+import teamPhotoImage from "../assets/images/team_photo.jpg";
 
 export default function HeroSection() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -52,8 +53,13 @@ export default function HeroSection() {
             </a>
           </div>
           <div className="md:w-1/2 mt-10 md:mt-0 image-container">
-            {/* Replace with actual image when available */}
-            {heroTeamPhoto()}
+            <div className="rounded-lg overflow-hidden shadow-2xl border border-gray-700">
+              <img 
+                src={teamPhotoImage} 
+                alt="Progress Accountants Team"
+                className="w-full h-auto object-cover"
+              />
+            </div>
           </div>
         </div>
       </div>
