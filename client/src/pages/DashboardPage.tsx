@@ -16,6 +16,10 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 
+// Import real images
+import teamPhotoImage from "../assets/images/team_photo.jpg";
+import strategySessionImage from "../assets/images/strategy_session.jpg";
+
 // Placeholder data for financial dates
 const financialDates = [
   { date: "2025-04-30", title: "VAT Return Deadline", category: "tax" },
@@ -160,10 +164,10 @@ export default function DashboardPage() {
             </div>
             <div className="md:w-1/2 mt-10 md:mt-0">
               <div className="rounded-lg overflow-hidden shadow-2xl border border-gray-700">
-                <ImagePlaceholder 
-                  height="400px" 
-                  text="Financial Dashboard Interface" 
-                  bgColor="#1a365d"
+                <img 
+                  src={teamPhotoImage} 
+                  alt="Progress Accountants Team"
+                  className="w-full h-auto object-cover"
                 />
               </div>
             </div>
@@ -413,10 +417,10 @@ export default function DashboardPage() {
           <div className="flex flex-col md:flex-row items-center gap-8">
             <div className="md:w-1/2">
               <div className="rounded-lg overflow-hidden shadow-lg">
-                <ImagePlaceholder 
-                  height="350px" 
-                  text="Podcast & Video Studio" 
-                  bgColor="#f27030"
+                <img 
+                  src={strategySessionImage} 
+                  alt="Strategy Session with Financial Advisors"
+                  className="w-full h-auto object-cover"
                 />
               </div>
             </div>

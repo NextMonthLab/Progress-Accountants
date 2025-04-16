@@ -36,6 +36,9 @@ import {
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 
+// Import images
+import podcastStudioImage from "../assets/images/podcast_studio.jpg";
+
 // Form schema for the booking form
 const formSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters." }),
@@ -209,12 +212,12 @@ export default function StudioPage() {
               </a>
             </div>
             <div className="md:w-1/2 mt-10 md:mt-0 image-container">
-              {/* Placeholder for studio main image */}
+              {/* Real studio image */}
               <div className="rounded-lg overflow-hidden shadow-lg">
-                <ImagePlaceholder 
-                  height="400px" 
-                  text="Professional Podcast & Video Studio" 
-                  bgColor="#1a365d"
+                <img 
+                  src={podcastStudioImage} 
+                  alt="Professional Podcast & Video Studio"
+                  className="w-full h-auto object-cover"
                 />
               </div>
             </div>
