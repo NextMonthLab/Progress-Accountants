@@ -2,6 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --navy: #1a365d;
+  --orange: #f27030;
+  --light-grey: #f5f7fa;
+  --dark-grey: #4a5568;
+}
+
 @layer base {
   * {
     @apply border-border;
