@@ -213,7 +213,7 @@ export function MessageThread({
                       )}
                       {isOwn && (
                         <Avatar className="h-6 w-6 ml-2">
-                          <AvatarImage src={message.sender.avatar} alt={message.sender.name} />
+                          <AvatarImage src={getSenderAvatar(message.sender)} alt={message.sender.name} />
                           <AvatarFallback 
                             className={message.sender.isStaff ? 
                               "bg-navy text-white" : 
