@@ -540,12 +540,27 @@ export default function CRMViewPage() {
     return matchesSearch && matchesIndustry && matchesService && matchesStage;
   });
 
+  // Create refs to access select components
+  const industrySelectRef = useRef<HTMLSelectElement>(null);
+  const serviceSelectRef = useRef<HTMLSelectElement>(null);
+  const stageSelectRef = useRef<HTMLSelectElement>(null);
+
   // Clear all filters
   const clearFilters = () => {
     setSearchTerm('');
     setIndustryFilter(null);
     setServiceFilter(null);
     setStageFilter(null);
+    
+    // Reset selects to default values
+    const industrySelect = document.querySelector('[name="industry-select"]') as HTMLSelectElement;
+    const serviceSelect = document.querySelector('[name="service-select"]') as HTMLSelectElement;
+    const stageSelect = document.querySelector('[name="stage-select"]') as HTMLSelectElement;
+    
+    // Force rerender of select components
+    if (industrySelect) industrySelect.value = "all-industries";
+    if (serviceSelect) serviceSelect.value = "all-services";
+    if (stageSelect) stageSelect.value = "all-stages";
   };
 
   // Format date for display
@@ -676,6 +691,7 @@ export default function CRMViewPage() {
               <div className="flex flex-wrap gap-2">
                 <Select 
                   defaultValue="all-industries"
+                  name="industry-select"
                   onValueChange={(value) => setIndustryFilter(value === "all-industries" ? null : value)}
                 >
                   <SelectTrigger className="w-[130px]">
@@ -691,6 +707,7 @@ export default function CRMViewPage() {
                 
                 <Select 
                   defaultValue="all-services"
+                  name="service-select"
                   onValueChange={(value) => {
                     if (value === "all-services") {
                       setServiceFilter(null);
@@ -715,6 +732,7 @@ export default function CRMViewPage() {
                 
                 <Select 
                   defaultValue="all-stages"
+                  name="stage-select"
                   onValueChange={(value) => {
                     if (value === "all-stages") {
                       setStageFilter(null);
