@@ -1,4 +1,7 @@
 import React from 'react';
+import strategySessionImage from './images/strategy_session.jpg';
+import podcastStudioImage from './images/podcast_studio.jpg';
+import teamPhotoImage from './images/team_photo.jpg';
 
 // SVG Placeholder Template
 interface PlaceholderProps {
@@ -40,11 +43,29 @@ export const ImagePlaceholder: React.FC<PlaceholderProps> = ({
 
 // Create specific image placeholders
 export const heroTeamPhoto = () => (
-  <ImagePlaceholder height="300px" text="Team Photo" />
+  <img 
+    src={teamPhotoImage} 
+    alt="Progress Accountants Team"
+    style={{ 
+      height: "300px",
+      width: "100%",
+      objectFit: "cover",
+      borderRadius: "4px"
+    }}
+  />
 );
 
 export const toolsPodcastStudio = () => (
-  <ImagePlaceholder height="200px" text="Podcast Studio" />
+  <img 
+    src={podcastStudioImage} 
+    alt="Podcast and Video Studio"
+    style={{ 
+      height: "200px",
+      width: "100%",
+      objectFit: "cover",
+      borderRadius: "4px"
+    }}
+  />
 );
 
 export const toolsDashboardMockup = () => (
@@ -52,7 +73,16 @@ export const toolsDashboardMockup = () => (
 );
 
 export const toolsStrategySession = () => (
-  <ImagePlaceholder height="200px" text="Strategy Session" />
+  <img 
+    src={strategySessionImage} 
+    alt="Strategy Session with Financial Advisors"
+    style={{ 
+      height: "200px",
+      width: "100%",
+      objectFit: "cover",
+      borderRadius: "4px"
+    }}
+  />
 );
 
 export const industryFilm = () => (
