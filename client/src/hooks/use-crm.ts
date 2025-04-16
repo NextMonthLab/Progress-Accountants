@@ -92,7 +92,7 @@ export function useCrm(staffId: number = DEFAULT_STAFF_ID, staffName: string = D
       if (!response.success) {
         throw new Error(response.error || 'Failed to add note');
       }
-      return response.data;
+      return response.data!;
     },
     onSuccess: (data) => {
       // Invalidate and refetch client data after adding a note
@@ -129,7 +129,7 @@ export function useCrm(staffId: number = DEFAULT_STAFF_ID, staffName: string = D
       if (!response.success) {
         throw new Error(response.error || 'Failed to update task status');
       }
-      return response.data;
+      return response.data!;
     },
     onSuccess: (data) => {
       // Invalidate and refetch client data after updating task
@@ -169,7 +169,7 @@ export function useCrm(staffId: number = DEFAULT_STAFF_ID, staffName: string = D
       if (!response.success) {
         throw new Error(response.error || 'Failed to send message');
       }
-      return response.data;
+      return response.data!;
     },
     onSuccess: (data, variables) => {
       // Optimistically update the UI
@@ -212,7 +212,7 @@ export function useCrm(staffId: number = DEFAULT_STAFF_ID, staffName: string = D
       if (!response.success) {
         throw new Error(response.error || 'Failed to upload document');
       }
-      return response.data;
+      return response.data!;
     },
     onSuccess: (data, variables) => {
       // Invalidate related queries
@@ -247,7 +247,7 @@ export function useCrm(staffId: number = DEFAULT_STAFF_ID, staffName: string = D
       if (!response.success) {
         throw new Error(response.error || 'Failed to create task');
       }
-      return response.data;
+      return response.data!;
     },
     onSuccess: (data, variables) => {
       // Invalidate related queries

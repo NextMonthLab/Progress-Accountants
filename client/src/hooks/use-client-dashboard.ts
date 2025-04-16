@@ -116,7 +116,7 @@ export function useClientDashboard(clientId: number = DEFAULT_CLIENT_ID) {
       if (!response.success) {
         throw new Error(response.error || 'Failed to upload document');
       }
-      return response.data;
+      return response.data!;
     },
     onSuccess: (document: ClientDocument) => {
       // Invalidate related queries
