@@ -7,6 +7,7 @@ import HomePage from "@/pages/HomePage";
 import StudioPage from "@/pages/StudioPage";
 import DashboardPage from "@/pages/DashboardPage";
 import ClientDashboardPage from "@/pages/ClientDashboardPage";
+import CRMViewPage from "@/pages/CRMViewPage";
 import DocumentHead from "@/components/DocumentHead";
 import MainLayout from "@/layouts/MainLayout";
 
@@ -17,6 +18,7 @@ function Router() {
       <Route path="/studio-banbury" component={StudioPage} />
       <Route path="/client-dashboard" component={DashboardPage} />
       <Route path="/client-portal" component={ClientDashboardPage} />
+      <Route path="/admin/crm" component={CRMViewPage} />
       <Route component={NotFound} />
     </Switch>
   );
