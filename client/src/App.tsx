@@ -6,6 +6,7 @@ import StudioPage from "@/pages/StudioPage";
 import DashboardPage from "@/pages/DashboardPage";
 import ClientDashboardPage from "@/pages/ClientDashboardPage";
 import CRMViewPage from "@/pages/CRMViewPage";
+import ComponentDemo from "@/pages/ComponentDemo";
 import DocumentHead from "@/components/DocumentHead";
 import MainLayout from "@/layouts/MainLayout";
 import { ClientDataProvider, withAuth } from "@/components/ClientDataProvider";
@@ -23,6 +24,7 @@ function Router() {
       <Route path="/client-dashboard" component={ProtectedDashboard} />
       <Route path="/client-portal" component={ProtectedClientDashboard} />
       <Route path="/admin/crm" component={ProtectedCRMView} />
+      <Route path="/components" component={ComponentDemo} />
       <Route component={NotFound} />
     </Switch>
   );
