@@ -104,17 +104,16 @@ export function TeamMemberCard({ member }: TeamMemberCardProps) {
             )}
           </div>
           
-          <DialogTrigger asChild onClick={() => setIsOpen(true)}>
-            <Button 
+          <Button 
               variant="outline" 
               size="sm"
               className="text-xs"
+              onClick={() => setIsOpen(true)}
               style={{ borderColor: 'var(--navy, #0F172A)', color: 'var(--navy, #0F172A)' }}
             >
               <span className="mr-1">Read More</span>
               <ExternalLink size={12} />
             </Button>
-          </DialogTrigger>
         </CardFooter>
       </Card>
       

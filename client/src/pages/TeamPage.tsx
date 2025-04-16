@@ -5,6 +5,7 @@ import { TeamMemberCard } from '@/components/TeamMemberCard';
 import { Link } from 'wouter';
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
+import teamPhotoPath from '@assets/Team Photo.jpg';
 
 export default function TeamPage() {
   return (
@@ -18,7 +19,7 @@ export default function TeamPage() {
       <section className="bg-[var(--navy)] text-white py-16 md:py-24 relative overflow-hidden">
         <div className="absolute inset-0 opacity-20">
           <img 
-            src="../attached_assets/Team Photo.jpg" 
+            src={teamPhotoPath} 
             alt="Progress Accountants Team" 
             className="w-full h-full object-cover"
           />
