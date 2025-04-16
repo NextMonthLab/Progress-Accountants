@@ -8,6 +8,7 @@ import ClientDashboardPage from "@/pages/ClientDashboardPage";
 import CRMViewPage from "@/pages/CRMViewPage";
 import CRMViewPageEnhanced from "@/pages/CRMViewPageEnhanced";
 import ComponentDemo from "@/pages/ComponentDemo";
+import TeamPage from "@/pages/TeamPage";
 import DocumentHead from "@/components/DocumentHead";
 import MainLayout from "@/layouts/MainLayout";
 import { ClientDataProvider, withAuth } from "@/components/ClientDataProvider";
@@ -28,6 +29,7 @@ function Router() {
       <Route path="/admin/crm" component={ProtectedCRMView} />
       <Route path="/admin/crm-enhanced" component={ProtectedCRMViewEnhanced} />
       <Route path="/components" component={ComponentDemo} />
+      <Route path="/team" component={TeamPage} />
       <Route component={NotFound} />
     </Switch>
   );

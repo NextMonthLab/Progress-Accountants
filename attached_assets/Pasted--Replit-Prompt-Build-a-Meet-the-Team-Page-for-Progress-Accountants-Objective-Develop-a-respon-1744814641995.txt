@@ -1,0 +1,82 @@
+🛠️ Replit Prompt: Build a “Meet the Team” Page for Progress Accountants
+Objective: Develop a responsive “Meet the Team” page showcasing the current Progress Accountants staff, excluding Gareth Burton. Each team member should have a profile card featuring their photo, name, role, biography, and any relevant social links.​
+
+Requirements:
+
+Team Members to Include:
+
+Lee Rogers FMAAT – Lead Accountant
+
+Over a decade in accounting; leads the firm with a focus on leveraging technology for optimal client service.
+
+Enjoys swimming with his children, running, and staying updated with the latest tech.
+
+Henry Simons MAAT – Manager
+
+Joined in October 2024 with nearly ten years of experience; passionate about contributing to business growth.
+
+An underground music DJ, hosts a radio show on Sigil Radio, and supports Birmingham City FC.
+
+Jackie Bosch – Assistant Accountant
+
+Brings over 30 years of experience; known for her attention to detail and client-first approach.
+
+Loves family time, long walks in Oxfordshire, and planning travel adventures.
+
+Joy Holloway – Business Administrator
+
+Supports accounting and bookkeeping teams; ensures excellent customer service.
+
+Enjoys time with her family and her dog, Fred; fan of Italian food and the movie Dirty Dancing.
+
+Manny Abayomi – Digital Marketing Executive
+
+Manages social media, website, email marketing, and branding efforts.
+
+Enjoys gym workouts and plays as a defender for his local football team.
+
+Design Specifications:
+
+Layout: Responsive grid (e.g., 2-3 columns on desktop, single column on mobile).
+
+Profile Cards: Each card should include:
+
+Profile photo
+
+Full name and role
+
+Brief biography
+
+Optional social media links (e.g., LinkedIn)
+
+Styling:
+
+Maintain consistency with the existing Progress Accountants branding (colors, fonts, etc.).
+
+Ensure accessibility standards are met (e.g., sufficient color contrast, alt text for images).​
+Progress Accountants
++7
+Progress Accountants
++7
+Progress Accountants
++7
+
+Functionality:
+
+Hover effects on profile cards (e.g., slight zoom or shadow).
+
+Optional: Modal or expandable section for more detailed biographies.​
+
+Data Handling:
+
+Use a JSON file or object to store team member data, facilitating easy updates and scalability.
+
+Ensure Gareth Burton is excluded from this data set.​
+
+Deliverables:
+
+A fully functional “Meet the Team” page integrated into the existing Progress Accountants web app.
+
+Clean, maintainable code with comments for future developers.
+
+Responsive design ensuring optimal viewing on all devices.
