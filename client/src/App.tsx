@@ -10,6 +10,9 @@ import CRMViewPageEnhanced from "@/pages/CRMViewPageEnhanced";
 import ComponentDemo from "@/pages/ComponentDemo";
 import TeamPage from "@/pages/TeamPage";
 import AboutPage from "@/pages/AboutPage";
+import ServicesPage from "@/pages/ServicesPage";
+import ServiceDetailPage from "@/pages/ServiceDetailPage";
+import ContactPage from "@/pages/ContactPage";
 import DocumentHead from "@/components/DocumentHead";
 import MainLayout from "@/layouts/MainLayout";
 import { ClientDataProvider, withAuth } from "@/components/ClientDataProvider";
@@ -32,6 +35,8 @@ function Router() {
       <Route path="/components" component={ComponentDemo} />
       <Route path="/team" component={TeamPage} />
       <Route path="/about" component={AboutPage} />
+      <Route path="/services" component={ServicesPage} />
+      <Route path="/services/:slug" component={ServiceDetailPage} />
       <Route component={NotFound} />
     </Switch>
   );

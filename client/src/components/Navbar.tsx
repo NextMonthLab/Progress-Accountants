@@ -25,12 +25,12 @@ export default function Navbar() {
         
         {/* Desktop Menu */}
         <div className="hidden md:flex items-center space-x-8">
-          <a 
-            href="#services" 
-            className="font-medium hover:text-[var(--orange)] transition duration-300"
+          <Link 
+            href="/services" 
+            className="font-medium hover:text-[var(--orange)] transition duration-300 no-underline"
           >
             Services
-          </a>
+          </Link>
           <Link 
             href="/studio-banbury" 
             className="font-medium hover:text-[var(--orange)] transition duration-300 no-underline"
@@ -105,13 +105,13 @@ export default function Navbar() {
         className={`md:hidden bg-white w-full absolute z-20 shadow-md ${isMenuOpen ? '' : 'hidden'}`}
       >
         <div className="container mx-auto px-4 py-3 flex flex-col space-y-3">
-          <a 
-            href="#services" 
-            className="py-2 font-medium hover:text-[var(--orange)] transition duration-300"
+          <Link 
+            href="/services" 
+            className="py-2 font-medium hover:text-[var(--orange)] transition duration-300 no-underline"
             onClick={closeMenu}
           >
             Services
-          </a>
+          </Link>
           <Link 
             href="/studio-banbury" 
             className="py-2 font-medium hover:text-[var(--orange)] transition duration-300 no-underline"
