@@ -6,6 +6,7 @@ import StudioPage from "@/pages/StudioPage";
 import DashboardPage from "@/pages/DashboardPage";
 import ClientDashboardPage from "@/pages/ClientDashboardPage";
 import CRMViewPage from "@/pages/CRMViewPage";
+import CRMViewPageEnhanced from "@/pages/CRMViewPageEnhanced";
 import ComponentDemo from "@/pages/ComponentDemo";
 import DocumentHead from "@/components/DocumentHead";
 import MainLayout from "@/layouts/MainLayout";
@@ -14,6 +15,7 @@ import { ClientDataProvider, withAuth } from "@/components/ClientDataProvider";
 // Protected routes with auth requirements
 const ProtectedClientDashboard = withAuth(ClientDashboardPage, 'client');
 const ProtectedCRMView = withAuth(CRMViewPage, 'staff');
+const ProtectedCRMViewEnhanced = withAuth(CRMViewPageEnhanced, 'staff');
 const ProtectedDashboard = withAuth(DashboardPage);
 
 function Router() {
@@ -24,6 +26,7 @@ function Router() {
       <Route path="/client-dashboard" component={ProtectedDashboard} />
       <Route path="/client-portal" component={ProtectedClientDashboard} />
       <Route path="/admin/crm" component={ProtectedCRMView} />
+      <Route path="/admin/crm-enhanced" component={ProtectedCRMViewEnhanced} />
       <Route path="/components" component={ComponentDemo} />
       <Route component={NotFound} />
     </Switch>
