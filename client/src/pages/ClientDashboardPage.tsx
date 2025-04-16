@@ -5,9 +5,12 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Bell, CheckCircle, Clock, FileUp, MoreHorizontal, Phone } from "lucide-react";
+import { Bell, CheckCircle, Clock, FileUp, MoreHorizontal, Phone, Loader2 } from "lucide-react";
+import { useClientDashboard } from '@/hooks/use-client-dashboard';
+import { useAuth } from '@/components/ClientDataProvider';
+import ActivityLogSection from '@/components/ActivityLogSection';
 
-// Sample data - would be replaced with real data fetched from an API
+// Import shared types and extend as needed
 interface ClientData {
   firstName: string;
   lastName: string;
@@ -179,6 +182,43 @@ const announcements: Announcement[] = [
 ];
 
 export default function ClientDashboardPage() {
+  // Get the current user
+  const auth = useAuth();
+  
+  // Get client data
+  const {
+    clientData: apiClientData,
+    isClientDataLoading,
+    clientDataError,
+    
+    tasks: apiTasks,
+    isTasksLoading,
+    
+    messages: apiMessages,
+    isMessagesLoading,
+    
+    serviceProgress: apiServiceProgress,
+    isServiceProgressLoading,
+    
+    announcements: apiAnnouncements,
+    isAnnouncementsLoading,
+    
+    activityLog,
+    isActivityLogLoading,
+    
+    // Mutations
+    sendMessage,
+    isSendingMessage,
+    
+    markTaskAsComplete,
+    isCompletingTask
+  } = useClientDashboard(auth.userId);
+  
+  // We'll use the API data if it's available, otherwise fall back to the mock data
+  // In a real app, we'd only use API data and handle loading/error states
+  const isLoading = isClientDataLoading || isTasksLoading || isMessagesLoading || 
+                    isServiceProgressLoading || isAnnouncementsLoading;
+                    
   // Animation setup for fade-in sections
   const sectionRefs = {
     welcome: useRef<HTMLElement>(null),
