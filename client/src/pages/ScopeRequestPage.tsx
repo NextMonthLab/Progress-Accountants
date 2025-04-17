@@ -29,6 +29,7 @@ export default function ScopeRequestPage() {
   const [structuredData, setStructuredData] = useState<any | null>(null);
   const [isSending, setIsSending] = useState(false);
   const [isSent, setIsSent] = useState(false);
+  const [activeTab, setActiveTab] = useState('chat');
   
   const messagesEndRef = useRef<HTMLDivElement>(null);
   
@@ -171,7 +172,11 @@ export default function ScopeRequestPage() {
             </CardDescription>
           </CardHeader>
           
-          <Tabs defaultValue="chat" className="w-full">
+          <Tabs 
+            value={activeTab} 
+            onValueChange={setActiveTab} 
+            className="w-full"
+          >
             <TabsList className="grid grid-cols-2 w-full">
               <TabsTrigger value="chat">Chat</TabsTrigger>
               <TabsTrigger 
@@ -243,7 +248,7 @@ export default function ScopeRequestPage() {
                 
                 {structuredData && (
                   <Button
-                    onClick={() => document.querySelector('[data-value="preview"]')?.click()}
+                    onClick={() => setActiveTab('preview')}
                     style={{ 
                       backgroundColor: 'var(--navy)',
                       color: 'white' 
@@ -319,7 +324,7 @@ export default function ScopeRequestPage() {
               <CardFooter className="border-t flex justify-between p-4">
                 <Button 
                   variant="outline"
-                  onClick={() => document.querySelector('[data-value="chat"]')?.click()}
+                  onClick={() => setActiveTab('chat')}
                 >
                   Back to Chat
                 </Button>
