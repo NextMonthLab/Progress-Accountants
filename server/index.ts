@@ -1,6 +1,8 @@
 import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
+import cron from 'node-cron';
+import { triggerBackup } from './backup';
 
 const app = express();
 app.use(express.json());
@@ -66,5 +68,13 @@ app.use((req, res, next) => {
     reusePort: true,
   }, () => {
     log(`serving on port ${port}`);
+    
+    // Schedule daily backup at 6pm UTC (18:00)
+    cron.schedule('0 18 * * *', async () => {
+      log('Running scheduled backup...');
+      await triggerBackup();
+    });
+    
+    log('Backup scheduler initialized');
   });
 })();

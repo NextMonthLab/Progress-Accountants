@@ -539,12 +539,64 @@ export async function registerRoutes(app: Express): Promise<Server> {
         storage.featureRequests = [];
       }
       
-      storage.featureRequests.push({
+      const featureRequest: FeatureRequest = {
         id: Date.now(),
         requestData,
         sentAt: new Date().toISOString(),
-        status: "sent"
-      });
+        status: "sent" as 'sent'
+      };
+      
+      storage.featureRequests.push(featureRequest);
+      
+      // Log the feature request to our logs directory
+      try {
+        const fs = require('fs');
+        const path = require('path');
+        
+        // Format date as YYYY-MM-DD
+        const today = new Date();
+        const dateString = today.toISOString().split('T')[0];
+        const logDir = path.join(process.cwd(), 'logs', 'feature-requests');
+        
+        // Ensure directory exists
+        if (!fs.existsSync(logDir)) {
+          fs.mkdirSync(logDir, { recursive: true });
+        }
+        
+        const logPath = path.join(logDir, `${dateString}.json`);
+        
+        // Initialize or read existing log file
+        let logData = [];
+        if (fs.existsSync(logPath)) {
+          try {
+            const fileContent = fs.readFileSync(logPath, 'utf8');
+            logData = JSON.parse(fileContent);
+            if (!Array.isArray(logData)) {
+              logData = [];
+            }
+          } catch (readError) {
+            console.error("Error reading existing log file:", readError);
+            logData = [];
+          }
+        }
+        
+        // Add new request to log
+        const logEntry = {
+          timestamp: new Date().toISOString(),
+          request_id: featureRequest.id,
+          final_payload: requestData,
+          status: featureRequest.status
+        };
+        
+        logData.push(logEntry);
+        
+        // Write updated logs
+        fs.writeFileSync(logPath, JSON.stringify(logData, null, 2), 'utf8');
+        console.log(`Feature request logged to ${logPath}`);
+      } catch (logError) {
+        console.error("Error logging feature request:", logError);
+        // Don't fail the request if logging fails
+      }
       
       res.status(200).json({
         success: true,
