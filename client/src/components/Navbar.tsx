@@ -6,6 +6,7 @@ import { useAuth } from "@/components/ClientDataProvider";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { isStaff } = useAuth();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -74,6 +75,15 @@ export default function Navbar() {
           >
             Contact
           </Link>
+          {isStaff && (
+            <Link 
+              href="/admin/settings" 
+              className="font-medium hover:text-[var(--orange)] transition duration-300 no-underline flex items-center"
+            >
+              <Settings className="h-4 w-4 mr-1" />
+              Admin
+            </Link>
+          )}
           <a href="#book-call">
             <Button 
               style={{ 
@@ -162,6 +172,16 @@ export default function Navbar() {
           >
             Contact
           </Link>
+          {isStaff && (
+            <Link 
+              href="/admin/settings" 
+              className="py-2 font-medium hover:text-[var(--orange)] transition duration-300 no-underline flex items-center"
+              onClick={closeMenu}
+            >
+              <Settings className="h-4 w-4 mr-1" />
+              Admin Settings
+            </Link>
+          )}
           <a 
             href="#book-call"
             onClick={closeMenu}
