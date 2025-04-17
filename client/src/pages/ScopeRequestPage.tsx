@@ -200,6 +200,15 @@ export default function ScopeRequestPage() {
           if (data.wishlistSubmitted) {
             // Show success animation for wishlist
             setTimeout(() => {
+              // Play success sound for wishlist submission
+              try {
+                const audio = new Audio('/assets/wishlist-sound.mp3');
+                audio.volume = 0.3;
+                audio.play().catch(e => console.log('Audio play prevented:', e));
+              } catch (e) {
+                console.log('Audio error:', e);
+              }
+              
               setAssistantState('wishlist_submitted');
               
               // After showing the animation, go back to chatting
@@ -493,6 +502,61 @@ export default function ScopeRequestPage() {
     </>
   );
   
+  // Render wishlist submission animation
+  const renderWishlistSubmitted = () => (
+    <div className="flex flex-col items-center justify-center py-12">
+      <motion.div
+        initial={{ scale: 0 }}
+        animate={{ scale: 1 }}
+        transition={{ 
+          duration: 0.5,
+          type: "spring",
+          stiffness: 260,
+          damping: 20 
+        }}
+        className="mb-6 bg-purple-100 p-4 rounded-full"
+      >
+        <ListPlus size={48} className="text-purple-600" />
+      </motion.div>
+      
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3, duration: 0.5 }}
+      >
+        <h3 className="text-xl font-medium mb-2 text-center">Added to Wishlist</h3>
+        <p className="text-gray-700 text-center mb-4 max-w-md">
+          Your feature idea has been added to our development wishlist for future consideration.
+        </p>
+      </motion.div>
+      
+      <motion.div 
+        className="flex justify-center"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.6, duration: 0.5 }}
+      >
+        {Array(3).fill(0).map((_, i) => (
+          <motion.div
+            key={i}
+            animate={{
+              scale: [1, 1.2, 1],
+              rotate: [0, 5, -5, 0]
+            }}
+            transition={{
+              delay: 0.8 + (i * 0.2),
+              duration: 0.5,
+              ease: "easeInOut"
+            }}
+            className="mx-1"
+          >
+            <Star className="h-6 w-6 text-yellow-500 fill-yellow-500" />
+          </motion.div>
+        ))}
+      </motion.div>
+    </div>
+  );
+
   // Render the main content based on state
   const renderMainContent = () => {
     switch (assistantState) {
@@ -502,6 +566,8 @@ export default function ScopeRequestPage() {
         return renderSuccessState();
       case 'error':
         return renderErrorState();
+      case 'wishlist_submitted':
+        return renderWishlistSubmitted();
       case 'chatting':
       case 'confirm':
       default:
