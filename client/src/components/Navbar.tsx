@@ -178,6 +178,13 @@ export default function Navbar() {
           >
             Contact
           </Link>
+          <Link 
+            href="/module-gallery" 
+            className="py-2 font-medium hover:text-[var(--orange)] transition duration-300 no-underline"
+            onClick={closeMenu}
+          >
+            Module Gallery
+          </Link>
           {isStaff && (
             <Link 
               href="/admin/settings" 

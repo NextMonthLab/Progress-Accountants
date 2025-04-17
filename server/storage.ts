@@ -4,16 +4,26 @@ import { users, type User, type InsertUser } from "@shared/schema";
 // you might need
 
 // Feature request type
+// Define the payload types
+type StandardPayload = {
+  screen_name: string;
+  description: string;
+  features: string[];
+};
+
+type ModulePayload = {
+  screen_name: string;
+  description: string;
+  status: 'complete' | 'CPT_ready' | 'designed' | 'dev_in_progress';
+  business_id: string;
+};
+
 export interface FeatureRequest {
   id: number;
   requestData: {
     project: string;
     type: string;
-    payload: {
-      screen_name: string;
-      description: string;
-      features: string[];
-    }
+    payload: StandardPayload | ModulePayload;
   };
   sentAt: string;
   status: 'sent' | 'delivered' | 'in-progress' | 'completed';
