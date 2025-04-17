@@ -1,7 +1,54 @@
-import type { Express } from "express";
+import type { Express, Request, Response } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { z } from "zod";
+import OpenAI from "openai";
+
+// Initialize OpenAI
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
+});
+
+// System prompt for the scoping assistant
+const SYSTEM_PROMPT = `You are a scoping assistant helping internal Progress Accountants staff prepare feature requests for the NextMonth Dev team.
+
+Your goal is to turn rough ideas into a structured JSON prompt for development.
+
+Ask only simple, focused questions. Avoid technical jargon.
+
+Once the user has answered enough questions, say:  
+"Great! I've structured this request. Shall I send it to NextMonth Dev for review?"
+
+When confirmed, prepare a JSON output in the following format:
+
+{
+  "project": "progress_accountants",
+  "type": "screen_request",
+  "payload": {
+    "screen_name": "...",
+    "description": "...",
+    "features": [ "...", "...", "..." ]
+  }
+}`;
+
+// Schema for chat request
+const chatRequestSchema = z.object({
+  message: z.string().min(1),
+  conversationId: z.string().optional(),
+});
+
+// Schema for finalizing request
+const finalizeRequestSchema = z.object({
+  requestData: z.object({
+    project: z.string(),
+    type: z.string(),
+    payload: z.object({
+      screen_name: z.string(),
+      description: z.string(),
+      features: z.array(z.string())
+    })
+  })
+});
 
 // Define contact form schema
 const contactFormSchema = z.object({
