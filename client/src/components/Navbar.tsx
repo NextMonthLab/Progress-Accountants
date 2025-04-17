@@ -75,6 +75,12 @@ export default function Navbar() {
           >
             Contact
           </Link>
+          <Link 
+            href="/module-gallery" 
+            className="font-medium hover:text-[var(--orange)] transition duration-300 no-underline"
+          >
+            Module Gallery
+          </Link>
           {isStaff && (
             <Link 
               href="/admin/settings" 

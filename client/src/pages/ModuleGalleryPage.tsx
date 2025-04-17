@@ -151,7 +151,7 @@ export default function ModuleGalleryPage() {
                 initial="hidden"
                 animate="visible"
               >
-                {modules.map(module => (
+                {modules.map((module) => (
                   <motion.div key={module.screen_name} variants={cardVariants}>
                     <Card className="h-full flex flex-col hover:shadow-lg transition-shadow duration-300">
                       <CardHeader>
@@ -161,10 +161,12 @@ export default function ModuleGalleryPage() {
                           </CardTitle>
                           <Badge 
                             variant="outline" 
-                            className={`${getStatusBadgeColor(module.status)} flex items-center gap-1`}
+                            className={`${getStatusBadgeColor(module.status)}`}
                           >
-                            {getStatusIcon(module.status)}
-                            {getStatusText(module.status)}
+                            <span className="flex items-center gap-1">
+                              {getStatusIcon(module.status)}
+                              {getStatusText(module.status)}
+                            </span>
                           </Badge>
                         </div>
                         <CardDescription className="text-gray-600 line-clamp-2">

@@ -51,11 +51,21 @@ const finalizeRequestSchema = z.object({
   requestData: z.object({
     project: z.string(),
     type: z.string(),
-    payload: z.object({
-      screen_name: z.string(),
-      description: z.string(),
-      features: z.array(z.string())
-    })
+    payload: z.union([
+      // Standard screen request
+      z.object({
+        screen_name: z.string(),
+        description: z.string(),
+        features: z.array(z.string())
+      }),
+      // Module request from Module Gallery
+      z.object({
+        screen_name: z.string(),
+        description: z.string(),
+        status: z.enum(['complete', 'CPT_ready', 'designed', 'dev_in_progress']),
+        business_id: z.string()
+      })
+    ])
   })
 });
 
