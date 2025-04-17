@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { Helmet } from 'react-helmet';
-import { Send, RefreshCw, CheckCircle, Loader2, XCircle, MailIcon } from 'lucide-react';
+import { Send, RefreshCw, CheckCircle, Loader2, XCircle, MailIcon, Star, ListPlus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -18,10 +18,19 @@ interface ChatResponse {
   message: string;
   conversationId: string;
   structuredData: any | null;
+  isScreened?: boolean;
+  screeningResult?: {
+    category: 'template_ready' | 'simple_custom' | 'wishlist';
+    response: string;
+    shouldSubmitToDev: boolean;
+    wishlistSubmitted?: boolean;
+    matchedModule?: string;
+  };
+  wishlistSubmitted?: boolean;
 }
 
 // Define possible states for the assistant flow
-type AssistantState = 'chatting' | 'confirm' | 'sending' | 'success' | 'error';
+type AssistantState = 'chatting' | 'confirm' | 'sending' | 'success' | 'error' | 'wishlist_submitted';
 
 export default function ScopeRequestPage() {
   const { toast } = useToast();
@@ -156,8 +165,53 @@ export default function ScopeRequestPage() {
       const data: ChatResponse = await response.json();
       console.log('Received response:', data);
       
+      // Check if this is a screened response
+      if (data.isScreened && data.screeningResult) {
+        const { category, shouldSubmitToDev, matchedModule } = data.screeningResult;
+        
+        // Add assistant message to UI
+        const assistantMessage: ChatMessage = { 
+          role: 'assistant', 
+          content: data.message 
+        };
+        
+        setMessages(prev => [...prev, assistantMessage]);
+        
+        // Handle based on category
+        if (category === 'template_ready' || category === 'simple_custom') {
+          if (shouldSubmitToDev) {
+            // Create structured data if needed
+            if (!structuredData) {
+              const newStructuredData = {
+                project: "progress_accountants",
+                type: "screen_request",
+                payload: {
+                  screen_name: matchedModule || "new_screen",
+                  description: `Auto-generated request for ${matchedModule || "new feature"}`,
+                  features: [`${category === 'template_ready' ? 'Template' : 'Custom'} screen: ${matchedModule || "general"}`]
+                }
+              };
+              setStructuredData(newStructuredData);
+            }
+            setAssistantState('confirm');
+          }
+        } else if (category === 'wishlist') {
+          // Handle wishlist item submission
+          if (data.wishlistSubmitted) {
+            // Show success animation for wishlist
+            setTimeout(() => {
+              setAssistantState('wishlist_submitted');
+              
+              // After showing the animation, go back to chatting
+              setTimeout(() => {
+                setAssistantState('chatting');
+              }, 3000);
+            }, 500);
+          }
+        }
+      }
       // Check if the response includes JSON or structured data
-      if (data.structuredData || (data.message && data.message.includes('{"project":'))) {
+      else if (data.structuredData || (data.message && data.message.includes('{"project":'))) {
         // Store structured data
         if (data.structuredData) {
           setStructuredData(data.structuredData);

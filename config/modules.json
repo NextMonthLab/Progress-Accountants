@@ -1,0 +1,20 @@
+{
+  "analytics": "template_ready",
+  "dashboard": "template_ready",
+  "reporting": "template_ready",
+  "tax_calendar": "template_ready",
+  "document_storage": "template_ready",
+  "client_portal": "template_ready",
+  "industry_news": "template_ready",
+  "simple_info_page": "simple_custom",
+  "faq": "simple_custom",
+  "contact_form": "simple_custom",
+  "team_member_profile": "simple_custom",
+  "service_detail": "simple_custom",
+  "client_upload_portal": "wishlist",
+  "submission_wizard": "wishlist",
+  "advanced_forecasting": "wishlist",
+  "multi_currency": "wishlist",
+  "tax_optimization_ai": "wishlist",
+  "automated_bookkeeping": "wishlist"
+}

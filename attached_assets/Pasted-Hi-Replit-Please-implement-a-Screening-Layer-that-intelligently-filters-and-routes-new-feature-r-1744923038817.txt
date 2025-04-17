@@ -1,0 +1,68 @@
+Hi Replit 👋
+
+Please implement a Screening Layer that intelligently filters and routes new feature requests submitted via the Progress Accountants chat interface.
+
+⸻
+
+🔧 What This Layer Does:
+
+When a user requests a new screen or feature, the AI assistant should:
+	1.	Classify the request into one of the following categories:
+	•	"template_ready" → A known, approved module (e.g. “Analytics”)
+	•	"simple_custom" → Straightforward to build but not pre-templated (e.g. “Tax Dates Info Page”)
+	•	"wishlist" → Requires dev work or hasn’t been built yet
+	2.	Respond accordingly in the chat:
+	•	✅ template_ready:
+“Great news — that module already exists. I’ll send it over now.” → Proceed with automatic prompt submission to NextMonth Dev.
+	•	✅ simple_custom:
+“We haven’t built a template for this yet, but it’s simple — I’ll draft it now.” → Proceed with screen request submission to Dev.
+	•	✅ wishlist:
+“That’s a really interesting idea! It would require some extra work from our human devs, so I’ve added it to our Wishlist. In the meantime, we could create a simpler version — would you like to explore that?”
+	3.	Log all wishlist-type requests via POST to:
+
+POST https://nextmonth.ai/wp-json/nextmonth/v1/wishlist
+
+With body:
+
+{
+  "business_id": "progress_accountants",
+  "description": "[user's request, cleaned or summarized]",
+  "category": "[screen|feature|automation|unknown]",
+  "submitted_at": "[ISO 8601 timestamp]"
+}
+
+
+
+⸻
+
+🗂 Reference Module Registry
+
+Load or maintain a local modules.json like this:
+
+{
+  "analytics": "template_ready",
+  "industry_news": "template_ready",
+  "simple_info_page": "simple_custom",
+  "faq": "simple_custom",
+  "client_upload_portal": "wishlist",
+  "submission_wizard": "wishlist"
+}
+
+If the user input matches (exactly or loosely) any of these keys, classify accordingly. If unknown, default to "wishlist".
+
+⸻
+
+🔁 Once Categorized:
+
+Type	Submit to Dev?	POST to Wishlist?	Response Example
+template_ready	✅	❌	“Great — sending it over now.”
+simple_custom	✅	❌	“No module exists, but I can build this for you.”
+wishlist	❌	✅	“That’s a big idea! Logging it for future.”
+
+
+
+⸻
+
+💡 Optional:
+
+Add visual or audio confirmation when a wishlist item is submitted successfully.

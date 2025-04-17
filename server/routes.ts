@@ -422,8 +422,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
       let conversationHistory = conversations.get(currentConversationId) || [];
       console.log("Current conversation history:", conversationHistory);
       
+      // Check if this is the first user message (to apply screening)
+      const isFirstUserMessage = conversationHistory.length === 0;
+      
       // If this is a new conversation, add the system prompt
-      if (conversationHistory.length === 0) {
+      if (isFirstUserMessage) {
         conversationHistory.push({ role: "system", content: SYSTEM_PROMPT });
         console.log("Added system prompt to new conversation");
       }
@@ -436,6 +439,54 @@ export async function registerRoutes(app: Express): Promise<Server> {
       if (!process.env.OPENAI_API_KEY) {
         console.error("OPENAI_API_KEY is not set");
         throw new Error("OpenAI API key is not configured");
+      }
+      
+      // Apply feature screening if this is the first message in the conversation
+      if (isFirstUserMessage) {
+        try {
+          const { handleFeatureRequest } = require('./feature-screening');
+          console.log("Applying feature screening to first message...");
+          
+          const screeningResult = await handleFeatureRequest(message);
+          console.log("Feature screening result:", screeningResult);
+          
+          // Add the assistant's screening response to the conversation
+          conversationHistory.push({ 
+            role: "assistant", 
+            content: screeningResult.response 
+          });
+          
+          // Save updated conversation
+          conversations.set(currentConversationId, conversationHistory);
+          
+          // If it's a template_ready or simple_custom, we can proceed directly
+          // Otherwise, we'll wait for the user to confirm if they want to proceed with a simpler version
+          if (screeningResult.shouldSubmitToDev) {
+            return res.status(200).json({
+              success: true,
+              message: screeningResult.response,
+              conversationId: currentConversationId,
+              screeningResult,
+              isScreened: true
+            });
+          }
+          
+          // For wishlist items, we'll just return the response
+          if (screeningResult.category === 'wishlist') {
+            // Return with wishlist specific data
+            return res.status(200).json({
+              success: true,
+              message: screeningResult.response,
+              conversationId: currentConversationId,
+              screeningResult,
+              isScreened: true,
+              wishlistSubmitted: screeningResult.wishlistSubmitted
+            });
+          }
+        } catch (screeningError) {
+          console.error("Feature screening error:", screeningError);
+          // Continue with normal conversation if screening fails
+        }
       }
       
       console.log("Calling OpenAI API...");
@@ -495,7 +546,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
         success: true,
         message: assistantResponse,
         conversationId: currentConversationId,
-        structuredData
+        structuredData,
+        isScreened: false
       });
     } catch (error) {
       console.error("Chat API error:", error);
