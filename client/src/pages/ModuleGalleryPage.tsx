@@ -84,9 +84,8 @@ export default function ModuleGalleryPage() {
       
       // Play success sound
       try {
-        const audio = new Audio('/assets/wishlist-sound.mp3');
-        audio.volume = 0.3;
-        audio.play().catch(e => console.log('Audio play prevented:', e));
+        const { playModuleRequestSound } = await import('@/lib/generateSound');
+        await playModuleRequestSound(0.3);
       } catch (e) {
         console.log('Audio error:', e);
       }
