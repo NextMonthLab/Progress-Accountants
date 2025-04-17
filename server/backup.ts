@@ -1,26 +1,66 @@
-import fs from 'fs';
-import path from 'path';
 import { createWriteStream } from 'fs';
-import { Readable } from 'stream';
-import { finished } from 'stream/promises';
 import archiver from 'archiver';
+import { join } from 'path';
+import fs from 'fs';
+import { log } from './vite';
 
-// Creates a zip file containing all required project data
+// Directories to include in the backup
+const BACKUP_DIRECTORIES = [
+  'client',
+  'server',
+  'shared',
+  'logs',
+  'config',
+];
+
+// Files to include in the backup
+const BACKUP_FILES = [
+  'drizzle.config.ts',
+  'package.json',
+  'theme.json',
+  'vite.config.ts',
+  'tailwind.config.ts',
+  'tsconfig.json',
+];
+
+// Patterns to exclude
+const EXCLUSION_PATTERNS = [
+  /node_modules/,
+  /\.env/,
+  /\.git/,
+  /\.DS_Store/,
+  /\/.replit/,
+  /env\.json/,
+  /\/uploads\//,
+];
+
+/**
+ * Creates a zip backup of relevant project files
+ * @returns {Promise<string>} Path to the created backup file
+ */
 export async function createBackupZip(): Promise<string> {
-  const timestamp = new Date().toISOString().replace(/:/g, '-');
-  const backupDir = path.join(process.cwd(), 'backups');
-  const backupFilename = `progress_accountants_backup_${timestamp}.zip`;
-  const backupPath = path.join(backupDir, backupFilename);
+  const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+  const backupDir = join(process.cwd(), 'backups');
+  const backupPath = join(backupDir, `backup-${timestamp}.zip`);
   
   // Ensure backup directory exists
   if (!fs.existsSync(backupDir)) {
     fs.mkdirSync(backupDir, { recursive: true });
   }
   
-  // Create zip file
+  // Create a file to stream archive data to
   const output = createWriteStream(backupPath);
   const archive = archiver('zip', {
-    zlib: { level: 9 } // Maximum compression level
+    zlib: { level: 9 } // Sets the compression level
+  });
+  
+  // Listen for warnings
+  archive.on('warning', (err) => {
+    if (err.code === 'ENOENT') {
+      log(`Backup warning: ${err.message}`, 'backup');
+    } else {
+      throw err;
+    }
   });
   
   // Listen for errors
@@ -31,107 +71,114 @@ export async function createBackupZip(): Promise<string> {
   // Pipe archive data to the file
   archive.pipe(output);
   
-  // Add directories to the archive
-  const dirsToAdd = [
-    'logs',
-    'config',
-    'uploads',
-    'assets'
-  ];
-  
-  for (const dir of dirsToAdd) {
-    const dirPath = path.join(process.cwd(), dir);
+  // Add directories
+  for (const dir of BACKUP_DIRECTORIES) {
+    const dirPath = join(process.cwd(), dir);
     if (fs.existsSync(dirPath)) {
-      archive.directory(dirPath, dir);
+      archive.directory(dirPath, dir, (data) => {
+        // Skip files matching exclusion patterns
+        const relativePath = join(data.name);
+        const shouldExclude = EXCLUSION_PATTERNS.some(pattern => 
+          pattern.test(relativePath)
+        );
+        return shouldExclude ? false : data;
+      });
+    } else {
+      log(`Directory not found during backup: ${dirPath}`, 'backup');
     }
   }
   
   // Add individual files
-  const filesToAdd = [
-    'env_template.json'
-  ];
-  
-  for (const file of filesToAdd) {
-    const filePath = path.join(process.cwd(), file);
+  for (const file of BACKUP_FILES) {
+    const filePath = join(process.cwd(), file);
     if (fs.existsSync(filePath)) {
       archive.file(filePath, { name: file });
+    } else {
+      log(`File not found during backup: ${filePath}`, 'backup');
     }
   }
   
-  // Generate and add manifest.json
-  const manifest = generateManifest(dirsToAdd, filesToAdd);
-  const manifestJson = JSON.stringify(manifest, null, 2);
-  archive.append(manifestJson, { name: 'manifest.json' });
+  // Add a manifest file with details about the backup
+  const manifest = generateManifest(BACKUP_DIRECTORIES, BACKUP_FILES);
+  archive.append(JSON.stringify(manifest, null, 2), { name: 'manifest.json' });
   
-  // Finalize archive
+  // Finalize the archive and close the write stream
   await archive.finalize();
   
-  return backupPath;
+  return new Promise((resolve, reject) => {
+    output.on('close', () => {
+      log(`Backup created successfully at ${backupPath}`, 'backup');
+      log(`Total bytes: ${archive.pointer()}`, 'backup');
+      resolve(backupPath);
+    });
+    
+    output.on('error', (err) => {
+      log(`Backup failed: ${err.message}`, 'backup');
+      reject(err);
+    });
+  });
 }
 
-// Generate manifest.json content
+/**
+ * Generates a manifest file with details about the backup
+ */
 function generateManifest(directories: string[], files: string[]): any {
   return {
-    project: "progress_accountants",
-    backup_type: "auto",
-    created_at: new Date().toISOString(),
-    files_included: [...directories, ...files, 'manifest.json'],
-    secrets_included: false,
-    notes: "Assistant logs included. No secrets exported for security."
+    timestamp: new Date().toISOString(),
+    version: '1.0',
+    application: 'Progress Accountants',
+    includedDirectories: directories,
+    includedFiles: files,
+    exclusionPatterns: EXCLUSION_PATTERNS.map(p => p.toString()),
+    environment: process.env.NODE_ENV || 'development'
   };
 }
 
-// Send backup to NextMonth Vault
+/**
+ * Sends the backup to the NextMonth Dev vault
+ * @param backupPath 
+ * @returns {Promise<boolean>} Success/failure indicator
+ */
 export async function sendBackupToVault(backupPath: string): Promise<boolean> {
   try {
-    const endpoint = process.env.NEXTMONTH_BACKUP_ENDPOINT || 'https://nextmonth.ai/wp-json/nextmonth/v1/project-backup';
+    const backupFile = fs.readFileSync(backupPath);
+    const filename = backupPath.split('/').pop();
     
-    // Create form data
-    const formData = new FormData();
-    formData.append('project', 'progress_accountants');
-    formData.append('timestamp', new Date().toISOString());
-    
-    // Add file
-    const fileBuffer = fs.readFileSync(backupPath);
-    const filename = path.basename(backupPath);
-    
-    // Create a Blob from the file buffer
-    const fileBlob = new Blob([fileBuffer]);
-    formData.append('file', fileBlob, filename);
-    
-    // Send request
-    const response = await fetch(endpoint, {
+    // Send to NextMonth Vault endpoint
+    const response = await fetch('https://nextmonth-vault.replit.app/archive', {
       method: 'POST',
-      body: formData
+      headers: {
+        'Content-Type': 'application/zip',
+        'X-Backup-Filename': filename || 'backup.zip',
+        'X-Client-Id': 'progress-accountants',
+        'X-Backup-Type': 'automated'
+      },
+      body: backupFile
     });
     
     if (!response.ok) {
-      throw new Error(`Failed to send backup: ${response.statusText}`);
+      throw new Error(`Failed to send backup to vault: ${response.statusText}`);
     }
     
-    console.log(`Backup successfully sent to NextMonth Vault: ${filename}`);
+    const result = await response.json();
+    log(`Backup sent successfully to vault: ${result.message}`, 'backup');
     return true;
-    
   } catch (error) {
-    console.error('Error sending backup to vault:', error);
+    log(`Failed to send backup to vault: ${error.message}`, 'backup');
     return false;
   }
 }
 
-// Trigger backup process (can be called manually or on schedule)
+/**
+ * Triggers a backup process (create and send)
+ */
 export async function triggerBackup(): Promise<void> {
   try {
-    console.log('Starting backup process...');
+    log('Starting backup process...', 'backup');
     const backupPath = await createBackupZip();
-    console.log(`Backup created: ${backupPath}`);
-    
-    const sent = await sendBackupToVault(backupPath);
-    if (sent) {
-      console.log('Backup process completed successfully');
-    } else {
-      console.error('Failed to send backup to NextMonth Vault');
-    }
+    await sendBackupToVault(backupPath);
+    log('Backup process completed successfully', 'backup');
   } catch (error) {
-    console.error('Backup process failed:', error);
+    log(`Backup process failed: ${error.message}`, 'backup');
   }
 }

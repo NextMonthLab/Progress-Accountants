@@ -1,6 +1,6 @@
 import type { Express, Request, Response } from "express";
 import { createServer, type Server } from "http";
-import { storage } from "./storage";
+import { storage, FeatureRequest } from "./storage";
 import { z } from "zod";
 import OpenAI from "openai";
 
@@ -620,6 +620,28 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Admin endpoint for manual backup
+  app.post("/api/admin/backup", async (req: Request, res: Response) => {
+    try {
+      console.log('Manual backup requested');
+      
+      // Start backup process
+      const { triggerBackup } = require('./backup');
+      await triggerBackup();
+      
+      res.status(200).json({
+        success: true,
+        message: "Backup process initiated successfully"
+      });
+    } catch (error) {
+      console.error('Manual backup error:', error);
+      res.status(500).json({
+        success: false,
+        message: "Failed to initiate backup process"
+      });
+    }
+  });
+  
   // Create HTTP server
   const httpServer = createServer(app);
 
