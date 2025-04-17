@@ -164,7 +164,8 @@ export async function sendBackupToVault(backupPath: string): Promise<boolean> {
     log(`Backup sent successfully to vault: ${result.message}`, 'backup');
     return true;
   } catch (error) {
-    log(`Failed to send backup to vault: ${error.message}`, 'backup');
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    log(`Failed to send backup to vault: ${errorMessage}`, 'backup');
     return false;
   }
 }
@@ -179,6 +180,7 @@ export async function triggerBackup(): Promise<void> {
     await sendBackupToVault(backupPath);
     log('Backup process completed successfully', 'backup');
   } catch (error) {
-    log(`Backup process failed: ${error.message}`, 'backup');
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    log(`Backup process failed: ${errorMessage}`, 'backup');
   }
 }

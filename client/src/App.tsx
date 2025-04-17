@@ -14,6 +14,7 @@ import ServicesPage from "@/pages/ServicesPage";
 import ServiceDetailPage from "@/pages/ServiceDetailPage";
 import ContactPage from "@/pages/ContactPage";
 import ScopeRequestPage from "@/pages/ScopeRequestPage";
+import AdminSettingsPage from "@/pages/AdminSettingsPage";
 import DocumentHead from "@/components/DocumentHead";
 import MainLayout from "@/layouts/MainLayout";
 import { ClientDataProvider, withAuth } from "@/components/ClientDataProvider";
@@ -23,6 +24,7 @@ const ProtectedClientDashboard = withAuth(ClientDashboardPage, 'client');
 const ProtectedCRMView = withAuth(CRMViewPage, 'staff');
 const ProtectedCRMViewEnhanced = withAuth(CRMViewPageEnhanced, 'staff');
 const ProtectedDashboard = withAuth(DashboardPage);
+const ProtectedAdminSettings = withAuth(AdminSettingsPage, 'staff');
 
 function Router() {
   return (
@@ -40,6 +42,7 @@ function Router() {
       <Route path="/services/:slug" component={ServiceDetailPage} />
       <Route path="/contact" component={ContactPage} />
       <Route path="/admin/new-request" component={ScopeRequestPage} />
+      <Route path="/admin/settings" component={ProtectedAdminSettings} />
       <Route path="/scope-request" component={ScopeRequestPage} />
       <Route component={NotFound} />
     </Switch>
