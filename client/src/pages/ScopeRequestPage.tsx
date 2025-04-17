@@ -83,7 +83,7 @@ export default function ScopeRequestPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           message: userMessage.content,
-          conversationId
+          conversationId: conversationId || undefined
         })
       });
       

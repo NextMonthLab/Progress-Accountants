@@ -43,7 +43,7 @@ When confirmed, prepare a JSON output in the following format:
 // Schema for chat request
 const chatRequestSchema = z.object({
   message: z.string().min(1),
-  conversationId: z.string().optional(),
+  conversationId: z.string().nullable().optional(),
 });
 
 // Schema for finalizing request
