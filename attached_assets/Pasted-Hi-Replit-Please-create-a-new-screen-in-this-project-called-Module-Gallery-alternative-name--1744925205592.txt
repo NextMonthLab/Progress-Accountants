@@ -1,0 +1,69 @@
+Hi Replit 👋
+
+Please create a new screen in this project called:
+
+Module Gallery
+(alternative name: “Available Tools” or “Feature Library” — feel free to stylize it)
+
+⸻
+
+📦 Purpose:
+
+Let users browse and request prebuilt screens/modules that have already been scoped and designed inside the main NextMonth platform.
+
+This gives users a way to explore what’s already available — without needing to submit custom requests.
+
+⸻
+
+🧩 Input Data:
+
+Use the following hardcoded list (for now — we may eventually fetch dynamically from Vault):
+
+[
+  { "screen_name": "Insights", "description": "Capture and store business ideas and personal insights with optional file attachments.", "status": "complete" },
+  { "screen_name": "Reminders", "description": "Schedule and manage time-sensitive notifications for business activities.", "status": "complete" },
+  { "screen_name": "Todo List", "description": "Track and organize daily tasks with priority levels and categories.", "status": "complete" },
+  { "screen_name": "Goals", "description": "Set, track and achieve business objectives with progress monitoring.", "status": "complete" },
+  { "screen_name": "Business Identity", "description": "Define core business details including mission, values, and brand voice.", "status": "complete" },
+  { "screen_name": "Media Library", "description": "Store and organize business media assets and branded content.", "status": "complete" },
+  { "screen_name": "CRM", "description": "Manage customer relationships, contacts, and interaction history.", "status": "CPT_ready" },
+  { "screen_name": "Campaigns", "description": "Plan and execute marketing campaigns with tracking and analytics.", "status": "designed" },
+  { "screen_name": "Sales", "description": "Track leads, deals, and sales pipeline with forecasting capabilities.", "status": "designed" },
+  { "screen_name": "Content Studio", "description": "Create and manage blog posts, articles and other marketing content.", "status": "CPT_ready" },
+  { "screen_name": "Analytics", "description": "Visualize business metrics and performance data across all modules.", "status": "designed" },
+  { "screen_name": "Financial Dashboard", "description": "Track business finances, revenue streams, and expense categories.", "status": "designed" },
+  { "screen_name": "Services", "description": "Define and manage business service offerings with pricing and details.", "status": "CPT_ready" },
+  { "screen_name": "Universal Calendar", "description": "Unified calendar view showing all business events and deadlines.", "status": "complete" },
+  { "screen_name": "Recruitment", "description": "Manage hiring process, track candidates, and schedule interviews.", "status": "designed" },
+  { "screen_name": "Innovation Lab", "description": "Brainstorm and develop new business ideas and product concepts.", "status": "designed" },
+  { "screen_name": "Knowledge Base", "description": "Create and organize internal documentation and business knowledge.", "status": "designed" },
+  { "screen_name": "Project Management", "description": "Plan and track projects with tasks, timelines, and team assignments.", "status": "dev_in_progress" },
+  { "screen_name": "Learning Plan", "description": "Create structured learning paths for business skills development.", "status": "designed" },
+  { "screen_name": "Networking Hub", "description": "Manage professional connections and networking opportunities.", "status": "designed" },
+  { "screen_name": "Success Stories", "description": "Document and showcase client success stories and case studies.", "status": "designed" },
+  { "screen_name": "Meeting Mode", "description": "Streamline client meetings with agendas, notes, and action items.", "status": "designed" },
+  { "screen_name": "API Credentials", "description": "Manage integrations with third-party services and platforms.", "status": "complete" },
+  { "screen_name": "Canvas", "description": "Visual business planning and strategy development workspace.", "status": "designed" }
+]
+
+
+
+⸻
+
+💡 Screen Behaviour:
+	•	Group by status (e.g. “Ready to Install”, “Coming Soon”)
+	•	Display:
+	•	🏷️ Name
+	•	📄 Description
+	•	🟢 Badge for status
+	•	🛒 Button: “Request This Module”
+
+When the button is clicked:
+	•	Auto-generate a structured screen request to NextMonth Dev
+	•	Include the name, business ID, and any fallback logic if the module is still “designed” or “dev_in_progress”
+
+⸻
+
+Let me know when the screen is complete — and we’ll connect it to the NextMonth Dev dispatcher for real-time module activation.
+
+Thanks!

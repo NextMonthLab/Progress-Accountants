@@ -14,6 +14,7 @@ import ServicesPage from "@/pages/ServicesPage";
 import ServiceDetailPage from "@/pages/ServiceDetailPage";
 import ContactPage from "@/pages/ContactPage";
 import ScopeRequestPage from "@/pages/ScopeRequestPage";
+import ModuleGalleryPage from "@/pages/ModuleGalleryPage";
 import AdminSettingsPage from "@/pages/AdminSettingsPage";
 import DocumentHead from "@/components/DocumentHead";
 import MainLayout from "@/layouts/MainLayout";
@@ -44,6 +45,7 @@ function Router() {
       <Route path="/admin/new-request" component={ScopeRequestPage} />
       <Route path="/admin/settings" component={ProtectedAdminSettings} />
       <Route path="/scope-request" component={ScopeRequestPage} />
+      <Route path="/module-gallery" component={ModuleGalleryPage} />
       <Route component={NotFound} />
     </Switch>
   );
