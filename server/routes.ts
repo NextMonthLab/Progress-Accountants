@@ -411,30 +411,62 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Create a new conversation or continue existing one
   app.post("/api/scope-request/chat", async (req: Request, res: Response) => {
     try {
+      console.log("Received chat request:", req.body);
       const { message, conversationId } = chatRequestSchema.parse(req.body);
       
       // Generate or use existing conversation ID
       const currentConversationId = conversationId || Date.now().toString();
+      console.log("Using conversation ID:", currentConversationId);
       
       // Get or initialize conversation history
       let conversationHistory = conversations.get(currentConversationId) || [];
+      console.log("Current conversation history:", conversationHistory);
       
       // If this is a new conversation, add the system prompt
       if (conversationHistory.length === 0) {
         conversationHistory.push({ role: "system", content: SYSTEM_PROMPT });
+        console.log("Added system prompt to new conversation");
       }
       
       // Add user message to history
       conversationHistory.push({ role: "user", content: message });
+      console.log("Added user message to history");
       
+      // Check if we have an API key
+      if (!process.env.OPENAI_API_KEY) {
+        console.error("OPENAI_API_KEY is not set");
+        throw new Error("OpenAI API key is not configured");
+      }
+      
+      console.log("Calling OpenAI API...");
       // Call OpenAI API
-      const completion = await openai.chat.completions.create({
-        model: "gpt-3.5-turbo",
-        messages: conversationHistory.map(msg => ({
-          role: msg.role as "system" | "user" | "assistant",
-          content: msg.content
-        })),
-      });
+      let completion;
+      try {
+        completion = await openai.chat.completions.create({
+          model: "gpt-4o", // the newest OpenAI model is "gpt-4o" which was released May 13, 2024. do not change this unless explicitly requested by the user
+          messages: conversationHistory.map(msg => ({
+            role: msg.role as "system" | "user" | "assistant",
+            content: msg.content
+          })),
+        });
+        console.log("Successfully used gpt-4o model");
+      } catch (openaiError) {
+        console.error("OpenAI API error:", openaiError);
+        // Fallback to older model if gpt-4o is not available
+        console.log("Falling back to gpt-3.5-turbo model...");
+        completion = await openai.chat.completions.create({
+          model: "gpt-3.5-turbo",
+          messages: conversationHistory.map(msg => ({
+            role: msg.role as "system" | "user" | "assistant",
+            content: msg.content
+          })),
+        });
+        console.log("Successfully used fallback gpt-3.5-turbo model");
+      }
+      
+      if (!completion) {
+        throw new Error("Failed to get completion from OpenAI");
+      }
       
       // Get assistant's response
       const assistantResponse = completion.choices[0].message.content || "";

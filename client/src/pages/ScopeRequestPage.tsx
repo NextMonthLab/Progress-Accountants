@@ -77,6 +77,7 @@ export default function ScopeRequestPage() {
     
     try {
       // Send message to API
+      console.log('Sending message to API:', userMessage.content);
       const response = await fetch('/api/scope-request/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -87,10 +88,12 @@ export default function ScopeRequestPage() {
       });
       
       if (!response.ok) {
-        throw new Error('Failed to send message');
+        console.error('API response not OK:', response.status, response.statusText);
+        throw new Error(`Failed to send message: ${response.status} ${response.statusText}`);
       }
       
       const data: ChatResponse = await response.json();
+      console.log('Received response:', data);
       
       // Add assistant message to UI
       const assistantMessage: ChatMessage = { 
@@ -111,9 +114,15 @@ export default function ScopeRequestPage() {
       
     } catch (error) {
       console.error('Error sending message:', error);
+      
+      let errorMessage = 'Failed to communicate with the assistant. Please try again.';
+      if (error instanceof Error) {
+        errorMessage = `Error: ${error.message}`;
+      }
+      
       toast({
         title: 'Error',
-        description: 'Failed to communicate with the assistant. Please try again.',
+        description: errorMessage,
         variant: 'destructive'
       });
     } finally {
