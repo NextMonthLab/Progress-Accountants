@@ -13,6 +13,7 @@ import AboutPage from "@/pages/AboutPage";
 import ServicesPage from "@/pages/ServicesPage";
 import ServiceDetailPage from "@/pages/ServiceDetailPage";
 import ContactPage from "@/pages/ContactPage";
+import ScopeRequestPage from "@/pages/ScopeRequestPage";
 import DocumentHead from "@/components/DocumentHead";
 import MainLayout from "@/layouts/MainLayout";
 import { ClientDataProvider, withAuth } from "@/components/ClientDataProvider";
@@ -38,6 +39,8 @@ function Router() {
       <Route path="/services" component={ServicesPage} />
       <Route path="/services/:slug" component={ServiceDetailPage} />
       <Route path="/contact" component={ContactPage} />
+      <Route path="/admin/new-request" component={ScopeRequestPage} />
+      <Route path="/scope-request" component={ScopeRequestPage} />
       <Route component={NotFound} />
     </Switch>
   );

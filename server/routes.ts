@@ -9,6 +9,15 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
+// Define the role type for the OpenAI API
+type Role = "system" | "user" | "assistant";
+
+// Define the message type for conversations
+interface ChatMessage {
+  role: Role;
+  content: string;
+}
+
 // System prompt for the scoping assistant
 const SYSTEM_PROMPT = `You are a scoping assistant helping internal Progress Accountants staff prepare feature requests for the NextMonth Dev team.
 
@@ -392,6 +401,139 @@ export async function registerRoutes(app: Express): Promise<Server> {
       message: "This endpoint is mocked in the client-side for development",
       clientId: clientId || "all"
     });
+  });
+
+  // FEATURE REQUEST SCOPING ASSISTANT ENDPOINTS
+  
+  // In-memory conversation storage
+  const conversations = new Map<string, Array<ChatMessage>>();
+  
+  // Create a new conversation or continue existing one
+  app.post("/api/scope-request/chat", async (req: Request, res: Response) => {
+    try {
+      const { message, conversationId } = chatRequestSchema.parse(req.body);
+      
+      // Generate or use existing conversation ID
+      const currentConversationId = conversationId || Date.now().toString();
+      
+      // Get or initialize conversation history
+      let conversationHistory = conversations.get(currentConversationId) || [];
+      
+      // If this is a new conversation, add the system prompt
+      if (conversationHistory.length === 0) {
+        conversationHistory.push({ role: "system", content: SYSTEM_PROMPT });
+      }
+      
+      // Add user message to history
+      conversationHistory.push({ role: "user", content: message });
+      
+      // Call OpenAI API
+      const completion = await openai.chat.completions.create({
+        model: "gpt-3.5-turbo",
+        messages: conversationHistory.map(msg => ({
+          role: msg.role as "system" | "user" | "assistant",
+          content: msg.content
+        })),
+      });
+      
+      // Get assistant's response
+      const assistantResponse = completion.choices[0].message.content || "";
+      
+      // Add assistant response to history
+      conversationHistory.push({ role: "assistant", content: assistantResponse });
+      
+      // Save updated conversation
+      conversations.set(currentConversationId, conversationHistory);
+      
+      // Check if it's a JSON response (for final step)
+      let structuredData = null;
+      if (assistantResponse && assistantResponse.includes('{"project":')) {
+        try {
+          // Extract JSON from the message if it's wrapped in text
+          const jsonMatch = assistantResponse.match(/\{[\s\S]*\}/);
+          if (jsonMatch) {
+            structuredData = JSON.parse(jsonMatch[0]);
+          }
+        } catch (err) {
+          console.error("Failed to parse JSON from response:", err);
+        }
+      }
+      
+      res.status(200).json({
+        success: true,
+        message: assistantResponse,
+        conversationId: currentConversationId,
+        structuredData
+      });
+    } catch (error) {
+      console.error("Chat API error:", error);
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({
+          success: false,
+          message: "Validation failed",
+          errors: error.errors
+        });
+      }
+      
+      res.status(500).json({
+        success: false,
+        message: "An error occurred processing your request"
+      });
+    }
+  });
+  
+  // Send the finalized request to NextMonth Dev
+  app.post("/api/scope-request/send", async (req: Request, res: Response) => {
+    try {
+      const { requestData } = finalizeRequestSchema.parse(req.body);
+      
+      // Send to NextMonth Dev listener endpoint
+      const response = await fetch("https://nextmonth-dev.replit.app/listen", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(requestData)
+      });
+      
+      if (!response.ok) {
+        throw new Error(`Failed to send request to NextMonth Dev: ${response.statusText}`);
+      }
+      
+      const responseData = await response.json();
+      
+      // Store the request in the database for future reference
+      if (!storage.featureRequests) {
+        storage.featureRequests = [];
+      }
+      
+      storage.featureRequests.push({
+        id: Date.now(),
+        requestData,
+        sentAt: new Date().toISOString(),
+        status: "sent"
+      });
+      
+      res.status(200).json({
+        success: true,
+        message: "Request successfully sent to NextMonth Dev",
+        responseFromDev: responseData
+      });
+    } catch (error) {
+      console.error("Send to NextMonth Dev error:", error);
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({
+          success: false,
+          message: "Validation failed",
+          errors: error.errors
+        });
+      }
+      
+      res.status(500).json({
+        success: false,
+        message: error instanceof Error ? error.message : "An error occurred sending your request"
+      });
+    }
   });
 
   // Create HTTP server
