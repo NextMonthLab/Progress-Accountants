@@ -64,6 +64,15 @@ const finalizeRequestSchema = z.object({
         description: z.string(),
         status: z.enum(['complete', 'CPT_ready', 'designed', 'dev_in_progress']),
         business_id: z.string()
+      }),
+      // Module request from Module Library
+      z.object({
+        screen_name: z.string(),
+        description: z.string(),
+        status: z.string(),
+        zone: z.string().optional(),
+        tags: z.array(z.string()).optional(),
+        business_id: z.string()
       })
     ])
   })

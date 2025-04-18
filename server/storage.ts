@@ -14,8 +14,10 @@ type StandardPayload = {
 type ModulePayload = {
   screen_name: string;
   description: string;
-  status: 'complete' | 'CPT_ready' | 'designed' | 'dev_in_progress';
+  status: 'complete' | 'CPT_ready' | 'designed' | 'dev_in_progress' | string;
   business_id: string;
+  zone?: string;
+  tags?: string[];
 };
 
 export interface FeatureRequest {

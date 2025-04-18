@@ -88,7 +88,7 @@ export default function ModuleLibraryPage() {
           data.forEach(module => {
             if (module.zone) zones.add(module.zone);
             if (Array.isArray(module.tags)) {
-              module.tags.forEach(tag => tags.add(tag));
+              module.tags.forEach((tag: string) => tags.add(tag));
             }
           });
           
@@ -142,7 +142,7 @@ export default function ModuleLibraryPage() {
   const toggleTagFilter = (tag: string) => {
     setTagFilters(prev => 
       prev.includes(tag)
-        ? prev.filter((t: string) => t !== tag)
+        ? prev.filter(t => t !== tag)
         : [...prev, tag]
     );
   };
