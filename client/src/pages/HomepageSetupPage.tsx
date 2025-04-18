@@ -272,9 +272,8 @@ export default function HomepageSetupPage() {
       variant: "default",
     });
     
-    // This would navigate to the next page in a real implementation
-    // In a real implementation, uncomment this to navigate to the next page
-    // setLocation('/foundation-pages-overview');
+    // Navigate to the foundation pages overview
+    setLocation('/foundation-pages');
   };
   
   return (

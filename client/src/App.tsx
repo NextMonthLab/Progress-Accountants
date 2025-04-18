@@ -20,6 +20,7 @@ import BrandGuidelinesPage from "@/pages/BrandGuidelinesPage";
 import BusinessIdentityPage from "@/pages/BusinessIdentityPage";
 import HomepageSetupPage from "@/pages/HomepageSetupPage";
 import FoundationPagesOverviewPage from "@/pages/FoundationPagesOverviewPage";
+import LaunchReadyPage from "@/pages/LaunchReadyPage";
 import AdminSettingsPage from "@/pages/AdminSettingsPage";
 import DocumentHead from "@/components/DocumentHead";
 import MainLayout from "@/layouts/MainLayout";
@@ -56,6 +57,7 @@ function Router() {
       <Route path="/business-identity" component={BusinessIdentityPage} />
       <Route path="/homepage-setup" component={HomepageSetupPage} />
       <Route path="/foundation-pages" component={FoundationPagesOverviewPage} />
+      <Route path="/launch-ready" component={LaunchReadyPage} />
       <Route component={NotFound} />
     </Switch>
   );

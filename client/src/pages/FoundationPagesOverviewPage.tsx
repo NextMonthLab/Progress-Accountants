@@ -194,8 +194,8 @@ export default function FoundationPagesOverviewPage() {
       variant: "default",
     });
     
-    // Navigate to the launch page (currently commented out for demo)
-    // setLocation('/launch-ready');
+    // Navigate to the launch page
+    setLocation('/launch-ready');
   };
   
   // Get badge component based on page status
