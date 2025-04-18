@@ -93,6 +93,12 @@ export default function Navbar() {
           >
             Brand Guidelines
           </Link>
+          <Link 
+            href="/business-identity" 
+            className="font-medium hover:text-[var(--orange)] transition duration-300 no-underline"
+          >
+            Business Identity
+          </Link>
           {isStaff && (
             <Link 
               href="/admin/settings" 
@@ -210,6 +216,13 @@ export default function Navbar() {
             onClick={closeMenu}
           >
             Brand Guidelines
+          </Link>
+          <Link 
+            href="/business-identity" 
+            className="py-2 font-medium hover:text-[var(--orange)] transition duration-300 no-underline"
+            onClick={closeMenu}
+          >
+            Business Identity
           </Link>
           {isStaff && (
             <Link 
