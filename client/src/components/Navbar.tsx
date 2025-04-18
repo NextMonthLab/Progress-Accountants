@@ -105,6 +105,12 @@ export default function Navbar() {
           >
             Homepage Setup
           </Link>
+          <Link 
+            href="/foundation-pages" 
+            className="font-medium hover:text-[var(--orange)] transition duration-300 no-underline"
+          >
+            Foundation Pages
+          </Link>
           {isStaff && (
             <Link 
               href="/admin/settings" 
@@ -236,6 +242,13 @@ export default function Navbar() {
             onClick={closeMenu}
           >
             Homepage Setup
+          </Link>
+          <Link 
+            href="/foundation-pages" 
+            className="py-2 font-medium hover:text-[var(--orange)] transition duration-300 no-underline"
+            onClick={closeMenu}
+          >
+            Foundation Pages
           </Link>
           {isStaff && (
             <Link 
