@@ -15,6 +15,7 @@ import ServiceDetailPage from "@/pages/ServiceDetailPage";
 import ContactPage from "@/pages/ContactPage";
 import ScopeRequestPage from "@/pages/ScopeRequestPage";
 import ModuleGalleryPage from "@/pages/ModuleGalleryPage";
+import ModuleLibraryPage from "@/pages/ModuleLibraryPage";
 import AdminSettingsPage from "@/pages/AdminSettingsPage";
 import DocumentHead from "@/components/DocumentHead";
 import MainLayout from "@/layouts/MainLayout";
@@ -46,6 +47,7 @@ function Router() {
       <Route path="/admin/settings" component={ProtectedAdminSettings} />
       <Route path="/scope-request" component={ScopeRequestPage} />
       <Route path="/module-gallery" component={ModuleGalleryPage} />
+      <Route path="/module-library" component={ModuleLibraryPage} />
       <Route component={NotFound} />
     </Switch>
   );
