@@ -88,6 +88,12 @@ export default function Navbar() {
             Module Library
           </Link>
           <Link 
+            href="/marketplace" 
+            className="font-medium hover:text-[var(--orange)] transition duration-300 no-underline"
+          >
+            Marketplace
+          </Link>
+          <Link 
             href="/brand-guidelines" 
             className="font-medium hover:text-[var(--orange)] transition duration-300 no-underline"
           >
@@ -227,6 +233,13 @@ export default function Navbar() {
             onClick={closeMenu}
           >
             Module Library
+          </Link>
+          <Link 
+            href="/marketplace" 
+            className="py-2 font-medium hover:text-[var(--orange)] transition duration-300 no-underline"
+            onClick={closeMenu}
+          >
+            Marketplace
           </Link>
           <Link 
             href="/brand-guidelines" 

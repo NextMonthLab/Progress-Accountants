@@ -152,7 +152,7 @@ export default function LaunchReadyPage() {
       variant: "default",
     });
     
-    setLocation('/module-gallery');
+    setLocation('/marketplace');
   };
   
   // Handler for "Start a New Project" button

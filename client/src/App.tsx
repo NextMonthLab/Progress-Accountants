@@ -16,6 +16,7 @@ import ContactPage from "@/pages/ContactPage";
 import ScopeRequestPage from "@/pages/ScopeRequestPage";
 import ModuleGalleryPage from "@/pages/ModuleGalleryPage";
 import ModuleLibraryPage from "@/pages/ModuleLibraryPage";
+import MarketplacePage from "@/pages/MarketplacePage";
 import BrandGuidelinesPage from "@/pages/BrandGuidelinesPage";
 import BusinessIdentityPage from "@/pages/BusinessIdentityPage";
 import HomepageSetupPage from "@/pages/HomepageSetupPage";
@@ -53,6 +54,7 @@ function Router() {
       <Route path="/scope-request" component={ScopeRequestPage} />
       <Route path="/module-gallery" component={ModuleGalleryPage} />
       <Route path="/module-library" component={ModuleLibraryPage} />
+      <Route path="/marketplace" component={MarketplacePage} />
       <Route path="/brand-guidelines" component={BrandGuidelinesPage} />
       <Route path="/business-identity" component={BusinessIdentityPage} />
       <Route path="/homepage-setup" component={HomepageSetupPage} />
