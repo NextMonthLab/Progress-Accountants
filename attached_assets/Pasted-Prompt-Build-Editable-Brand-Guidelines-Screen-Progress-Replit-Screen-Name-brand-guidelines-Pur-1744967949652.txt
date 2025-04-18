@@ -1,0 +1,60 @@
+Prompt: Build Editable Brand Guidelines Screen – Progress Replit
+
+Screen Name: brand-guidelines
+
+Purpose:
+Create a fully editable brand identity screen for the Progress instance. This screen:
+	•	Is preloaded with values at setup (from onboarding or AI)
+	•	Becomes the source of truth for all generated content
+	•	Can be edited anytime to reflect brand changes or rebranding
+	•	Feeds into every AI tool (page builder, content generator, campaign designer, etc.)
+
+⸻
+
+Sections & Fields
+
+1. Brand Identity
+	•	Business Name (pre-filled but editable)
+	•	Tagline / Short Description
+	•	Mission Statement
+	•	Tone of Voice (tag-based input: e.g. Friendly, Confident, Helpful)
+
+2. Visual Style
+	•	Primary Brand Color (color picker with hex)
+	•	Secondary Color
+	•	Font Preference (dropdown or text input – e.g., “Open Sans”, “Montserrat”)
+	•	Logo Upload (file upload – allow overwrite)
+
+3. Messaging Preferences
+	•	Preferred Writing Style (e.g., Punchy, Conversational, Formal)
+	•	Example Phrases / Headlines (textarea)
+	•	Words to Avoid (textarea)
+
+4. Brand Materials
+	•	Upload Brand Guidelines PDF (optional)
+	•	Upload Example Campaigns / Assets
+	•	Reference Website or Inspiration (URL)
+
+⸻
+
+Functionality
+	•	Load values automatically from initial setup
+	•	If no value exists, show placeholder guidance
+	•	Changes to this screen should update the global brand_guidelines object in system memory
+	•	All generators (pages, flyers, content) must reference this object each time they run
+	•	Add a “Last updated on…” timestamp below the Save button
+
+⸻
+
+UI Features
+	•	Save Changes button (commits updates)
+	•	Reset to Setup Defaults (optional for versioning)
+	•	Light explainer text at top:
+“NextMonth uses this information to generate all your pages, campaigns, and content. You can update your brand identity at any time—it updates everything going forward.”
+
+⸻
+
+Developer Notes
+	•	Store the data locally as a JSON object: system_context.brand_guidelines
+	•	Allow editing without needing to re-authenticate
+	•	Consider versioning or change history in future updates

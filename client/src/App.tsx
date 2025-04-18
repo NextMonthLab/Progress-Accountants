@@ -16,6 +16,7 @@ import ContactPage from "@/pages/ContactPage";
 import ScopeRequestPage from "@/pages/ScopeRequestPage";
 import ModuleGalleryPage from "@/pages/ModuleGalleryPage";
 import ModuleLibraryPage from "@/pages/ModuleLibraryPage";
+import BrandGuidelinesPage from "@/pages/BrandGuidelinesPage";
 import AdminSettingsPage from "@/pages/AdminSettingsPage";
 import DocumentHead from "@/components/DocumentHead";
 import MainLayout from "@/layouts/MainLayout";
@@ -48,6 +49,7 @@ function Router() {
       <Route path="/scope-request" component={ScopeRequestPage} />
       <Route path="/module-gallery" component={ModuleGalleryPage} />
       <Route path="/module-library" component={ModuleLibraryPage} />
+      <Route path="/brand-guidelines" component={BrandGuidelinesPage} />
       <Route component={NotFound} />
     </Switch>
   );

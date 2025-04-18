@@ -87,6 +87,12 @@ export default function Navbar() {
           >
             Module Library
           </Link>
+          <Link 
+            href="/brand-guidelines" 
+            className="font-medium hover:text-[var(--orange)] transition duration-300 no-underline"
+          >
+            Brand Guidelines
+          </Link>
           {isStaff && (
             <Link 
               href="/admin/settings" 
@@ -197,6 +203,13 @@ export default function Navbar() {
             onClick={closeMenu}
           >
             Module Library
+          </Link>
+          <Link 
+            href="/brand-guidelines" 
+            className="py-2 font-medium hover:text-[var(--orange)] transition duration-300 no-underline"
+            onClick={closeMenu}
+          >
+            Brand Guidelines
           </Link>
           {isStaff && (
             <Link 
