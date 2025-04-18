@@ -193,7 +193,7 @@ export default function BrandGuidelinesPage() {
       const newGuidelines = { ...prev };
       
       // Create a copy of the section object
-      const sectionObj = { ...prev[section] } as any;
+      const sectionObj = JSON.parse(JSON.stringify(prev[section]));
       
       // Update the field in the section
       sectionObj[field] = value;
@@ -215,14 +215,12 @@ export default function BrandGuidelinesPage() {
     
     // Update the guidelines object
     setGuidelines(prev => {
-      const newGuidelines = { ...prev };
-      const newBrandIdentity = { ...prev.brandIdentity };
+      const newGuidelines = JSON.parse(JSON.stringify(prev));
       
-      newBrandIdentity.toneOfVoice = selectedTones.includes(tone)
+      newGuidelines.brandIdentity.toneOfVoice = selectedTones.includes(tone)
         ? selectedTones.filter(t => t !== tone)
         : [...selectedTones, tone];
       
-      newGuidelines.brandIdentity = newBrandIdentity;
       return newGuidelines;
     });
   };
@@ -234,12 +232,8 @@ export default function BrandGuidelinesPage() {
       setSelectedTones(updatedTones);
       
       setGuidelines(prev => {
-        const newGuidelines = { ...prev };
-        const newBrandIdentity = { ...prev.brandIdentity };
-        
-        newBrandIdentity.toneOfVoice = updatedTones;
-        newGuidelines.brandIdentity = newBrandIdentity;
-        
+        const newGuidelines = JSON.parse(JSON.stringify(prev));
+        newGuidelines.brandIdentity.toneOfVoice = updatedTones;
         return newGuidelines;
       });
       
@@ -310,10 +304,8 @@ export default function BrandGuidelinesPage() {
     setIsLoading(true);
     
     // Format the data with the latest timestamp
-    const updatedGuidelines = {
-      ...guidelines,
-      lastUpdated: new Date().toISOString()
-    };
+    const updatedGuidelines = JSON.parse(JSON.stringify(guidelines));
+    updatedGuidelines.lastUpdated = new Date().toISOString();
     
     try {
       // In a real application, you'd send this to an API endpoint
