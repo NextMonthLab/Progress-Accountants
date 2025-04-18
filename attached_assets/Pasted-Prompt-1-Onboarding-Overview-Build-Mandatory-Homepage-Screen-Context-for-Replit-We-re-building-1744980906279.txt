@@ -1,0 +1,90 @@
+Prompt 1: Onboarding Overview + Build Mandatory Homepage Screen
+
+Context for Replit:
+
+We’re building a structured onboarding flow inside the Progress Accountants Replit instance, which will become the master template for all future client instances of the NextMonth system.
+
+The onboarding flow is split into three phases:
+	1.	Non-skippable setup (homepage first)
+	2.	Foundation pages (about, services, contact, etc.)
+	3.	Launch + free build mode (access to marketplace and custom tools)
+
+Your job is to build each screen as a modular UI component with clear structure, reusable inputs, and stored system context.
+
+⸻
+
+Your First Task (Prompt 1.1): Build the Mandatory Homepage Setup Screen
+
+⸻
+
+Screen Name: homepage-setup
+
+Screen Purpose:
+
+This is the first real onboarding screen and it cannot be skipped. It collects the essential content needed to generate the user’s homepage—either now or later through AI.
+
+Once this form is complete, it updates a system object called project_context.homepage which is referenced across the platform (preview tools, generators, builders).
+
+⸻
+
+Layout:
+
+1. Header Area
+
+Welcome to your Homepage Setup
+This is the first step in your Growth System. Let’s define the key message your website will deliver.
+
+2. Form Section (stacked cards or grouped blocks)
+	•	Headline
+“What’s the bold first thing visitors should read?”
+	•	Subheading / Supporting Line
+	•	Core Offer or Promise
+e.g. “Tax support for UK-based creatives”
+	•	Business Benefits (up to 3)
+	•	Fast turnaround
+	•	Expert advice
+	•	Local support
+	•	Primary Call to Action (CTA)
+e.g. “Book a Call”
+	•	Hero Image or Video Upload (optional)
+	•	Layout/Style Preset Selector
+e.g. “Modern”, “Classic”, “Bold” – just a dropdown for now
+
+⸻
+
+3. Buttons
+	•	[ Save Homepage ]
+	•	[ Preview Draft ] (uses stored context to simulate output)
+	•	No skip button allowed.
+
+⸻
+
+Storage Instructions:
+
+All form inputs should update this object:
+
+project_context.homepage = {
+  headline: "",
+  subheading: "",
+  offer: "",
+  benefits: [],
+  cta_text: "",
+  media_url: "",
+  layout_style: ""
+}
+
+Use this as a shared object across preview and generation tools.
+
+⸻
+
+Design Notes:
+	•	Clean and confidence-inspiring UI
+	•	Group inputs logically, with clear labels
+	•	Show light instructions or examples inline
+	•	Save button should validate required fields
+
+⸻
+
+Next Step (After Completion):
+
+Once this screen is complete, user is redirected to the Foundation Pages Overview (Prompt 2).

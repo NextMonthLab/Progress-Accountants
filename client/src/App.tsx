@@ -18,6 +18,7 @@ import ModuleGalleryPage from "@/pages/ModuleGalleryPage";
 import ModuleLibraryPage from "@/pages/ModuleLibraryPage";
 import BrandGuidelinesPage from "@/pages/BrandGuidelinesPage";
 import BusinessIdentityPage from "@/pages/BusinessIdentityPage";
+import HomepageSetupPage from "@/pages/HomepageSetupPage";
 import AdminSettingsPage from "@/pages/AdminSettingsPage";
 import DocumentHead from "@/components/DocumentHead";
 import MainLayout from "@/layouts/MainLayout";
@@ -52,6 +53,7 @@ function Router() {
       <Route path="/module-library" component={ModuleLibraryPage} />
       <Route path="/brand-guidelines" component={BrandGuidelinesPage} />
       <Route path="/business-identity" component={BusinessIdentityPage} />
+      <Route path="/homepage-setup" component={HomepageSetupPage} />
       <Route component={NotFound} />
     </Switch>
   );
