@@ -3,6 +3,7 @@ import { SEOConfigList } from '@/components/seo/SEOConfigList';
 import { SEOConfigEditor } from '@/components/seo/SEOConfigEditor';
 import { SEOPreview } from '@/components/seo/SEOPreview';
 import { DocumentHead } from '@/components/DocumentHead';
+import AdminLayout from '@/layouts/AdminLayout';
 
 type SEOConfig = {
   id: number;
@@ -53,13 +54,10 @@ export default function SEOConfigManagerPage() {
     <>
       <DocumentHead route="/admin/seo" />
       
-      <div className="container mx-auto py-8 px-4">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2">SEO Configuration Manager</h1>
-          <p className="text-muted-foreground">
-            Manage your website's SEO settings for each page
-          </p>
-        </div>
+      <AdminLayout title="SEO Configuration Manager">
+        <p className="text-muted-foreground mb-8">
+          Manage your website's SEO settings for each page
+        </p>
 
         <SEOConfigList
           onEdit={handleEdit}
@@ -85,7 +83,7 @@ export default function SEOConfigManagerPage() {
             config={selectedConfig}
           />
         )}
-      </div>
+      </AdminLayout>
     </>
   );
 }

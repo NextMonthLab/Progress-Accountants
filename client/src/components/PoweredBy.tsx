@@ -1,9 +1,9 @@
 import React from "react";
 import { useTheme } from "@/components/ThemeProvider";
 
-// Import the images directly
-import NextMonthLogoWhite from "@assets/logos/nextmonth-logo-white.png";
-import NextMonthLogo from "@assets/logos/nextmonth-logo.png";
+// Import the images
+const NextMonthLogoWhite = "/assets/logos/nextmonth-logo-white.png";
+const NextMonthLogo = "/assets/logos/nextmonth-logo.png";
 
 interface PoweredByProps {
   className?: string;
