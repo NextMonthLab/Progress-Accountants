@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import MediaUploader from '@/components/media/MediaUploader';
 import MediaUsage from '@/components/media/MediaUsage';
+import MediaFiles from '@/components/media/MediaFiles';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -13,8 +14,9 @@ export default function MediaManagementPage() {
   const queryClient = useQueryClient();
 
   const handleUploadComplete = () => {
-    // Invalidate cache to refresh media usage stats
+    // Invalidate cache to refresh media usage stats and files list
     queryClient.invalidateQueries({ queryKey: [`/api/media/usage/${businessId}`] });
+    queryClient.invalidateQueries({ queryKey: [`/api/media/files/${businessId}`] });
   };
 
   const handleBusinessIdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -50,6 +52,7 @@ export default function MediaManagementPage() {
       <Tabs defaultValue="upload" className="w-full">
         <TabsList>
           <TabsTrigger value="upload">Upload Media</TabsTrigger>
+          <TabsTrigger value="files">Media Files</TabsTrigger>
           <TabsTrigger value="usage">Media Usage</TabsTrigger>
         </TabsList>
         <TabsContent value="upload" className="pt-4">
@@ -58,6 +61,11 @@ export default function MediaManagementPage() {
               businessId={businessId} 
               onUploadComplete={handleUploadComplete}
             />
+          </div>
+        </TabsContent>
+        <TabsContent value="files" className="pt-4">
+          <div className="max-w-4xl mx-auto">
+            <MediaFiles businessId={businessId} />
           </div>
         </TabsContent>
         <TabsContent value="usage" className="pt-4">

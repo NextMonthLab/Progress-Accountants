@@ -44,7 +44,7 @@ export async function suggestImagePlacement(imageUrl: string, businessId: string
     });
 
     // Extract and return the suggested location
-    const suggestion = response.choices[0].message.content.trim();
+    const suggestion = response.choices[0].message.content?.trim() || "General asset";
     
     return suggestion;
   } catch (error) {
