@@ -582,6 +582,219 @@ export class DatabaseStorage implements IStorage {
     
     return updated;
   }
+
+  // SEO Configuration operations
+  async getSeoConfiguration(routePath: string): Promise<SeoConfiguration | undefined> {
+    const [config] = await db
+      .select()
+      .from(seoConfigurations)
+      .where(eq(seoConfigurations.routePath, routePath));
+    
+    return config;
+  }
+  
+  async getAllSeoConfigurations(): Promise<SeoConfiguration[]> {
+    return await db
+      .select()
+      .from(seoConfigurations)
+      .orderBy(asc(seoConfigurations.routePath));
+  }
+  
+  async saveSeoConfiguration(config: InsertSeoConfiguration): Promise<SeoConfiguration> {
+    // Check if a configuration for this route already exists
+    const existing = await this.getSeoConfiguration(config.routePath);
+    
+    if (existing) {
+      // Update existing record
+      const [updated] = await db
+        .update(seoConfigurations)
+        .set({
+          ...config,
+          updatedAt: new Date()
+        })
+        .where(eq(seoConfigurations.id, existing.id))
+        .returning();
+      
+      return updated;
+    } else {
+      // Create new record
+      const [created] = await db
+        .insert(seoConfigurations)
+        .values({
+          ...config,
+          vaultSynced: false,
+          guardianSynced: false
+        })
+        .returning();
+      
+      return created;
+    }
+  }
+  
+  async updateSeoConfiguration(id: number, config: Partial<InsertSeoConfiguration>): Promise<SeoConfiguration | undefined> {
+    const [updated] = await db
+      .update(seoConfigurations)
+      .set({
+        ...config,
+        updatedAt: new Date()
+      })
+      .where(eq(seoConfigurations.id, id))
+      .returning();
+    
+    return updated;
+  }
+  
+  async deleteSeoConfiguration(id: number): Promise<boolean> {
+    const result = await db
+      .delete(seoConfigurations)
+      .where(eq(seoConfigurations.id, id));
+    
+    return result.rowCount > 0;
+  }
+  
+  async getSeoConfigurationsByStatus(indexable: boolean): Promise<SeoConfiguration[]> {
+    return await db
+      .select()
+      .from(seoConfigurations)
+      .where(eq(seoConfigurations.indexable, indexable))
+      .orderBy(desc(seoConfigurations.priority));
+  }
+  
+  async updateSeoSyncStatus(id: number, vaultSynced?: boolean, guardianSynced?: boolean): Promise<SeoConfiguration | undefined> {
+    const updateData: { vaultSynced?: boolean, guardianSynced?: boolean, updatedAt: Date } = {
+      updatedAt: new Date()
+    };
+    
+    if (vaultSynced !== undefined) {
+      updateData.vaultSynced = vaultSynced;
+    }
+    
+    if (guardianSynced !== undefined) {
+      updateData.guardianSynced = guardianSynced;
+    }
+    
+    const [updated] = await db
+      .update(seoConfigurations)
+      .set(updateData)
+      .where(eq(seoConfigurations.id, id))
+      .returning();
+    
+    return updated;
+  }
+  
+  // Brand Versioning operations
+  async getBrandVersion(id: number): Promise<BrandVersion | undefined> {
+    const [version] = await db
+      .select()
+      .from(brandVersions)
+      .where(eq(brandVersions.id, id));
+    
+    return version;
+  }
+  
+  async getBrandVersionByNumber(versionNumber: string): Promise<BrandVersion | undefined> {
+    const [version] = await db
+      .select()
+      .from(brandVersions)
+      .where(eq(brandVersions.versionNumber, versionNumber));
+    
+    return version;
+  }
+  
+  async getActiveBrandVersion(): Promise<BrandVersion | undefined> {
+    const [version] = await db
+      .select()
+      .from(brandVersions)
+      .where(eq(brandVersions.isActive, true))
+      .orderBy(desc(brandVersions.appliedAt));
+    
+    return version;
+  }
+  
+  async getAllBrandVersions(): Promise<BrandVersion[]> {
+    return await db
+      .select()
+      .from(brandVersions)
+      .orderBy(desc(brandVersions.createdAt));
+  }
+  
+  async saveBrandVersion(version: InsertBrandVersion): Promise<BrandVersion> {
+    // Check if a version with this number already exists
+    const existing = await this.getBrandVersionByNumber(version.versionNumber);
+    
+    if (existing) {
+      // Update existing record
+      const [updated] = await db
+        .update(brandVersions)
+        .set({
+          ...version,
+          updatedAt: new Date()
+        })
+        .where(eq(brandVersions.id, existing.id))
+        .returning();
+      
+      return updated;
+    } else {
+      // Create new record
+      const [created] = await db
+        .insert(brandVersions)
+        .values({
+          ...version,
+          vaultSynced: false,
+          guardianSynced: false,
+          isActive: false
+        })
+        .returning();
+      
+      return created;
+    }
+  }
+  
+  async activateBrandVersion(id: number): Promise<BrandVersion | undefined> {
+    // First, deactivate all currently active versions
+    await db
+      .update(brandVersions)
+      .set({
+        isActive: false,
+        updatedAt: new Date()
+      })
+      .where(eq(brandVersions.isActive, true));
+    
+    // Then, activate the requested version
+    const [activated] = await db
+      .update(brandVersions)
+      .set({
+        isActive: true,
+        appliedAt: new Date(),
+        updatedAt: new Date()
+      })
+      .where(eq(brandVersions.id, id))
+      .returning();
+    
+    return activated;
+  }
+  
+  async updateBrandSyncStatus(id: number, vaultSynced?: boolean, guardianSynced?: boolean): Promise<BrandVersion | undefined> {
+    const updateData: { vaultSynced?: boolean, guardianSynced?: boolean, updatedAt: Date } = {
+      updatedAt: new Date()
+    };
+    
+    if (vaultSynced !== undefined) {
+      updateData.vaultSynced = vaultSynced;
+    }
+    
+    if (guardianSynced !== undefined) {
+      updateData.guardianSynced = guardianSynced;
+    }
+    
+    const [updated] = await db
+      .update(brandVersions)
+      .set(updateData)
+      .where(eq(brandVersions.id, id))
+      .returning();
+    
+    return updated;
+  }
 }
 
 // For compatibility with existing code, provide an in-memory implementation
@@ -597,6 +810,8 @@ export class MemStorage implements IStorage {
   onboardingStates: Map<number, OnboardingState[]>;
   moduleActivationLogs: ModuleActivation[];
   pageComplexityTriages: PageComplexityTriage[];
+  seoConfigurations: Map<string, SeoConfiguration>;
+  brandVersions: Map<number, BrandVersion>;
   sessionStore: session.Store = new session.MemoryStore();
 
   constructor() {
@@ -609,6 +824,8 @@ export class MemStorage implements IStorage {
     this.onboardingStates = new Map();
     this.moduleActivationLogs = [];
     this.pageComplexityTriages = [];
+    this.seoConfigurations = new Map();
+    this.brandVersions = new Map();
   }
 
   async getUser(id: number): Promise<User | undefined> {
@@ -1004,6 +1221,199 @@ export class MemStorage implements IStorage {
       };
       
       this.pageComplexityTriages[index] = updated;
+      return updated;
+    }
+    
+    return undefined;
+  }
+
+  // SEO Configuration operations
+  async getSeoConfiguration(routePath: string): Promise<SeoConfiguration | undefined> {
+    return Array.from(this.seoConfigurations.values()).find(
+      config => config.routePath === routePath
+    );
+  }
+  
+  async getAllSeoConfigurations(): Promise<SeoConfiguration[]> {
+    return Array.from(this.seoConfigurations.values()).sort(
+      (a, b) => a.routePath.localeCompare(b.routePath)
+    );
+  }
+  
+  async saveSeoConfiguration(config: InsertSeoConfiguration): Promise<SeoConfiguration> {
+    const existing = await this.getSeoConfiguration(config.routePath);
+    
+    if (existing) {
+      // Update existing configuration
+      const updated = {
+        ...existing,
+        ...config,
+        updatedAt: new Date()
+      };
+      this.seoConfigurations.set(config.routePath, updated);
+      return updated;
+    } else {
+      // Create new configuration
+      const now = new Date();
+      const newConfig = {
+        ...config,
+        id: this.currentId++,
+        vaultSynced: false,
+        guardianSynced: false,
+        createdAt: now,
+        updatedAt: now
+      };
+      this.seoConfigurations.set(config.routePath, newConfig);
+      return newConfig;
+    }
+  }
+  
+  async updateSeoConfiguration(id: number, config: Partial<InsertSeoConfiguration>): Promise<SeoConfiguration | undefined> {
+    // Find the configuration with this ID
+    const found = Array.from(this.seoConfigurations.values()).find(conf => conf.id === id);
+    
+    if (found) {
+      const updated = {
+        ...found,
+        ...config,
+        updatedAt: new Date()
+      };
+      
+      this.seoConfigurations.set(found.routePath, updated);
+      return updated;
+    }
+    
+    return undefined;
+  }
+  
+  async deleteSeoConfiguration(id: number): Promise<boolean> {
+    // Find the configuration to delete
+    const found = Array.from(this.seoConfigurations.values()).find(conf => conf.id === id);
+    
+    if (found) {
+      this.seoConfigurations.delete(found.routePath);
+      return true;
+    }
+    
+    return false;
+  }
+  
+  async getSeoConfigurationsByStatus(indexable: boolean): Promise<SeoConfiguration[]> {
+    return Array.from(this.seoConfigurations.values())
+      .filter(conf => conf.indexable === indexable)
+      .sort((a, b) => b.priority - a.priority);
+  }
+  
+  async updateSeoSyncStatus(id: number, vaultSynced?: boolean, guardianSynced?: boolean): Promise<SeoConfiguration | undefined> {
+    // Find the configuration to update
+    const found = Array.from(this.seoConfigurations.values()).find(conf => conf.id === id);
+    
+    if (found) {
+      const updated = {
+        ...found,
+        vaultSynced: vaultSynced !== undefined ? vaultSynced : found.vaultSynced,
+        guardianSynced: guardianSynced !== undefined ? guardianSynced : found.guardianSynced,
+        updatedAt: new Date()
+      };
+      
+      this.seoConfigurations.set(found.routePath, updated);
+      return updated;
+    }
+    
+    return undefined;
+  }
+  
+  // Brand Versioning operations
+  async getBrandVersion(id: number): Promise<BrandVersion | undefined> {
+    return this.brandVersions.get(id);
+  }
+  
+  async getBrandVersionByNumber(versionNumber: string): Promise<BrandVersion | undefined> {
+    return Array.from(this.brandVersions.values()).find(
+      version => version.versionNumber === versionNumber
+    );
+  }
+  
+  async getActiveBrandVersion(): Promise<BrandVersion | undefined> {
+    return Array.from(this.brandVersions.values())
+      .filter(version => version.isActive)
+      .sort((a, b) => (b.appliedAt?.getTime() || 0) - (a.appliedAt?.getTime() || 0))[0];
+  }
+  
+  async getAllBrandVersions(): Promise<BrandVersion[]> {
+    return Array.from(this.brandVersions.values())
+      .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+  }
+  
+  async saveBrandVersion(version: InsertBrandVersion): Promise<BrandVersion> {
+    const existing = await this.getBrandVersionByNumber(version.versionNumber);
+    
+    if (existing) {
+      // Update existing version
+      const updated = {
+        ...existing,
+        ...version,
+        updatedAt: new Date()
+      };
+      this.brandVersions.set(existing.id, updated);
+      return updated;
+    } else {
+      // Create new version
+      const now = new Date();
+      const newVersion = {
+        ...version,
+        id: this.currentId++,
+        isActive: false,
+        vaultSynced: false,
+        guardianSynced: false,
+        createdAt: now,
+        updatedAt: now
+      };
+      this.brandVersions.set(newVersion.id, newVersion);
+      return newVersion;
+    }
+  }
+  
+  async activateBrandVersion(id: number): Promise<BrandVersion | undefined> {
+    // Find the version to activate
+    const version = this.brandVersions.get(id);
+    
+    if (!version) {
+      return undefined;
+    }
+    
+    // Deactivate all currently active versions
+    Array.from(this.brandVersions.values())
+      .filter(v => v.isActive)
+      .forEach(v => {
+        const updated = { ...v, isActive: false, updatedAt: new Date() };
+        this.brandVersions.set(v.id, updated);
+      });
+    
+    // Activate the requested version
+    const activated = {
+      ...version,
+      isActive: true,
+      appliedAt: new Date(),
+      updatedAt: new Date()
+    };
+    
+    this.brandVersions.set(id, activated);
+    return activated;
+  }
+  
+  async updateBrandSyncStatus(id: number, vaultSynced?: boolean, guardianSynced?: boolean): Promise<BrandVersion | undefined> {
+    const version = this.brandVersions.get(id);
+    
+    if (version) {
+      const updated = {
+        ...version,
+        vaultSynced: vaultSynced !== undefined ? vaultSynced : version.vaultSynced,
+        guardianSynced: guardianSynced !== undefined ? guardianSynced : version.guardianSynced,
+        updatedAt: new Date()
+      };
+      
+      this.brandVersions.set(id, updated);
       return updated;
     }
     
