@@ -20,10 +20,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   // Mock authentication state - in real app would check tokens, etc.
   const authState: AuthContextType = {
     isAuthenticated: true, // For demo purposes
-    isStaff: true, // For demo purposes
-    userId: 1,
-    userType: 'staff',
-    userName: 'Sarah Williams'
+    isStaff: false, // For demo purposes - setting as client for first-time user experience
+    userId: 2,
+    userType: 'client',
+    userName: 'Jane Smith'
   };
 
   return (
