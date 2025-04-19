@@ -8,7 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
-import { ReloadIcon, CheckCircle2Icon, XCircleIcon, Clock10Icon, PackageIcon } from 'lucide-react';
+import { Loader2, CheckCircle2Icon, XCircleIcon, Clock10Icon, PackageIcon } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
@@ -251,7 +251,7 @@ const BlueprintManagerPage: React.FC = () => {
             <CardTitle>Loading Blueprint Status...</CardTitle>
           </CardHeader>
           <CardContent className="flex justify-center">
-            <ReloadIcon className="h-16 w-16 animate-spin text-muted-foreground" />
+            <Loader2 className="h-16 w-16 animate-spin text-muted-foreground" />
           </CardContent>
         </Card>
       );
@@ -349,7 +349,7 @@ const BlueprintManagerPage: React.FC = () => {
           >
             {packageMutation.isPending || guardianMutation.isPending ? (
               <>
-                <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 Exporting...
               </>
             ) : (
@@ -459,7 +459,7 @@ const BlueprintManagerPage: React.FC = () => {
               >
                 {tagMutation.isPending ? (
                   <>
-                    <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                     Saving...
                   </>
                 ) : (
@@ -516,7 +516,7 @@ const BlueprintManagerPage: React.FC = () => {
               >
                 {moduleMapMutation.isPending ? (
                   <>
-                    <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                     Mapping...
                   </>
                 ) : (
@@ -590,7 +590,7 @@ const BlueprintManagerPage: React.FC = () => {
                 >
                   {packageMutation.isPending ? (
                     <>
-                      <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                       Packaging...
                     </>
                   ) : (
@@ -603,7 +603,7 @@ const BlueprintManagerPage: React.FC = () => {
                 >
                   {guardianMutation.isPending ? (
                     <>
-                      <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                       Notifying...
                     </>
                   ) : (

@@ -38,6 +38,7 @@ const ProtectedDashboard = withAuth(DashboardPage);
 const ProtectedAdminSettings = withAuth(AdminSettingsPage, 'staff');
 const ProtectedSEOConfigManager = withAuth(SEOConfigManagerPage, 'staff');
 const ProtectedBrandManager = withAuth(BrandManagerPage, 'staff');
+const ProtectedBlueprintManager = withAuth(BlueprintManagerPage, 'staff');
 
 function Router() {
   return (
@@ -58,6 +59,7 @@ function Router() {
       <Route path="/admin/settings" component={ProtectedAdminSettings} />
       <Route path="/admin/seo" component={ProtectedSEOConfigManager} />
       <Route path="/admin/brand" component={ProtectedBrandManager} />
+      <Route path="/admin/blueprint" component={ProtectedBlueprintManager} />
       <Route path="/scope-request" component={ScopeRequestPage} />
       <Route path="/module-gallery" component={ModuleGalleryPage} />
       <Route path="/module-library" component={ModuleLibraryPage} />
