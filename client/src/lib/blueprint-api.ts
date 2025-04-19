@@ -1,6 +1,5 @@
-import { apiRequest } from './queryClient';
+import { apiRequest } from "./queryClient";
 
-// Define the client registry types 
 export interface ClientRegistry {
   id: number;
   clientId: string;
@@ -15,9 +14,9 @@ export interface ClientRegistry {
   lastExported: Date | null;
   createdAt: Date;
   updatedAt: Date;
+  moduleCount?: number;
 }
 
-// Define module map item
 export interface ModuleMapItem {
   moduleId: string;
   type: 'core' | 'custom' | 'automation';
@@ -27,79 +26,61 @@ export interface ModuleMapItem {
   exportPath?: string;
 }
 
-// Blueprint API service
+export interface BlueprintStatus {
+  clientId: string;
+  blueprintVersion: string;
+  exportReady: boolean;
+  handoffStatus: string;
+  moduleCount: number;
+  lastExported: Date | null;
+}
+
 export const blueprintApi = {
-  // Get blueprint status
-  async getStatus(): Promise<{
-    clientId: string;
-    blueprintVersion: string;
-    exportReady: boolean;
-    handoffStatus: string;
-    lastExported: Date | null;
-    moduleCount: number;
-  }> {
-    const response = await apiRequest('GET', '/api/blueprint/status');
-    return await response.json();
+  async getStatus(): Promise<BlueprintStatus> {
+    const res = await apiRequest("GET", "/api/blueprint/status");
+    return await res.json();
   },
-  
-  // Create or update blueprint version
+
   async tagBlueprint(data: {
     clientId: string;
     blueprintVersion: string;
-    sector?: string;
-    location?: string;
+    sector: string;
+    location: string;
     projectStartDate?: Date;
-    userRoles?: any[];
-    exportReady?: boolean;
-    handoffStatus?: string;
   }): Promise<ClientRegistry> {
-    const response = await apiRequest('POST', '/api/blueprint/tag', data);
-    return await response.json();
+    const res = await apiRequest("POST", "/api/blueprint/tag", data);
+    return await res.json();
   },
-  
-  // Generate module map and store it
+
   async generateModuleMap(clientId: string): Promise<{
-    success: boolean;
     moduleCount: number;
-    vaultSynced: boolean;
     modules: ModuleMapItem[];
   }> {
-    const response = await apiRequest('POST', '/api/blueprint/modules', { clientId });
-    return await response.json();
+    const res = await apiRequest("POST", "/api/blueprint/modules", { clientId });
+    return await res.json();
   },
-  
-  // Generate and export full blueprint package
+
   async generateBlueprintPackage(clientId: string): Promise<{
-    success: boolean;
-    blueprintVersion: string;
+    packageId: string;
     vaultSynced: boolean;
-    exportReady: boolean;
-    timestamp: string;
   }> {
-    const response = await apiRequest('POST', '/api/blueprint/package', { clientId });
-    return await response.json();
+    const res = await apiRequest("POST", "/api/blueprint/package", { clientId });
+    return await res.json();
   },
-  
-  // Notify Guardian about export
+
   async notifyGuardian(clientId: string, event: string = 'export-ready'): Promise<{
     success: boolean;
-    guardianNotified: boolean;
     handoffStatus: string;
-    timestamp: string;
   }> {
-    const response = await apiRequest('POST', '/api/blueprint/notify-guardian', { clientId, event });
-    return await response.json();
+    const res = await apiRequest("POST", "/api/blueprint/notify-guardian", { clientId, event });
+    return await res.json();
   },
-  
-  // Update handoff status
+
   async updateHandoffStatus(clientId: string, status: string): Promise<{
-    success: boolean;
     clientId: string;
-    blueprintVersion: string;
     handoffStatus: string;
-    timestamp: string;
   }> {
-    const response = await apiRequest('POST', '/api/blueprint/handoff-status', { clientId, status });
-    return await response.json();
+    const res = await apiRequest("POST", "/api/blueprint/handoff-status", { clientId, status });
+    return await res.json();
   }
 };
