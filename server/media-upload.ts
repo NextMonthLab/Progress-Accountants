@@ -8,6 +8,7 @@ import { z } from 'zod';
 import fs from 'fs';
 import path from 'path';
 import util from 'util';
+import { suggestImagePlacement } from './media-ai';
 
 // Configure cloudinary
 cloudinary.config({
@@ -116,6 +117,9 @@ export async function handleMediaUpload(req: Request, res: Response): Promise<vo
     // Calculate credits
     const credits = calculateCredits(bytes);
     
+    // Get AI suggestion for image placement
+    const suggestedLocation = await suggestImagePlacement(publicUrl, business_id);
+    
     // Save to database
     const [mediaUpload] = await db.insert(mediaUploads).values({
       businessId: business_id,
@@ -126,6 +130,7 @@ export async function handleMediaUpload(req: Request, res: Response): Promise<vo
       credits,
       cloudinaryId,
       folder,
+      suggestedLocation,
       uploadedBy
     }).returning();
     
@@ -144,6 +149,7 @@ export async function handleMediaUpload(req: Request, res: Response): Promise<vo
         contentType,
         bytes,
         credits,
+        suggestedLocation,
         uploadedAt: mediaUpload.uploadedAt
       }
     });

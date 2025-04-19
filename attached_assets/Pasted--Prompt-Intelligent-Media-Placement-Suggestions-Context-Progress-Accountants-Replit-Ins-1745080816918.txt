@@ -1,0 +1,52 @@
+// ✅ Prompt: Intelligent Media Placement Suggestions
+
+// 📍 Context: Progress Accountants Replit Instance
+// 📦 Feature: Cloudinary Media System
+// 🎯 Goal: Auto-suggest where uploaded images should be used on site
+
+/**
+ * ✅ Feature Enhancements:
+ * 1. When a user uploads media, pass the image URL and business_id to OpenAI
+ * 2. Ask OpenAI to suggest ideal image placement (e.g. hero, team section, testimonial)
+ * 3. Store suggested_location in the media_uploads table
+ * 4. Display suggestion in the Media Usage interface
+ * 5. Optionally allow user to edit/confirm suggested location
+ */
+
+// ✅ Step 1: Extend media_uploads table to include suggested_location
+ALTER TABLE media_uploads ADD COLUMN suggested_location TEXT;
+
+// ✅ Step 2: Add AI analysis function (server/media-ai.ts)
+export async function suggestImagePlacement(imageUrl: string, businessId: string): Promise<string> {
+  const prompt = `This image has been uploaded by a business website: ${imageUrl}. Based on its content and typical page structures, where would this image best be used? Reply with one of: hero section, about/team section, testimonial area, service listing, blog post, or general asset.`;
+  const response = await openai.chat.completions.create({
+    model: 'gpt-4',
+    messages: [
+      { role: 'system', content: 'You are a web strategist helping classify image usage locations.' },
+      { role: 'user', content: prompt }
+    ]
+  });
+  return response.choices[0].message.content.trim();
+}
+
+// ✅ Step 3: Call this function during upload flow in media-upload.ts
+const suggestedLocation = await suggestImagePlacement(cloudinaryUrl, businessId);
+await db.insert(media_uploads).values({
+  url: cloudinaryUrl,
+  business_id: businessId,
+  suggested_location: suggestedLocation,
+  ...otherFields
+});
+
+// ✅ Step 4: Update MediaUsage.tsx to display suggested_location
+<Table>
+  {media.map(file => (
+    <TableRow>
+      <TableCell>{file.filename}</TableCell>
+      <TableCell>{file.suggested_location || '—'}</TableCell>
+      <TableCell>{file.uploaded_at}</TableCell>
+    </TableRow>
+  ))}
+</Table>
+
+// ✅ Optional Step 5: Allow user to edit and confirm placement suggestion in UI
