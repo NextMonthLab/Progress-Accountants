@@ -34,7 +34,10 @@ import {
   type InsertSeoConfiguration,
   brandVersions,
   type BrandVersion,
-  type InsertBrandVersion
+  type InsertBrandVersion,
+  clientRegistry,
+  type ClientRegistry,
+  type InsertClientRegistry
 } from "@shared/schema";
 import { PageMetadata, PageComplexityAssessment } from "@shared/page_metadata";
 import { db } from "./db";
@@ -134,6 +137,14 @@ export interface IStorage {
   saveBrandVersion(version: InsertBrandVersion): Promise<BrandVersion>;
   activateBrandVersion(id: number): Promise<BrandVersion | undefined>;
   updateBrandSyncStatus(id: number, vaultSynced?: boolean, guardianSynced?: boolean): Promise<BrandVersion | undefined>;
+  
+  // Blueprint Export operations
+  getClientRegistry(): Promise<ClientRegistry | undefined>;
+  createClientRegistry(data: InsertClientRegistry): Promise<ClientRegistry>;
+  updateClientRegistry(clientId: string, data: Partial<InsertClientRegistry>): Promise<ClientRegistry | undefined>;
+  updateExportableModules(clientId: string, moduleList: any[]): Promise<ClientRegistry | undefined>;
+  markAsExportReady(clientId: string, exportReady: boolean): Promise<ClientRegistry | undefined>;
+  updateHandoffStatus(clientId: string, status: string): Promise<ClientRegistry | undefined>;
 }
 
 // Database-backed implementation of IStorage

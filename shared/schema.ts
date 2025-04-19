@@ -321,3 +321,29 @@ export type SeoConfiguration = typeof seoConfigurations.$inferSelect;
 
 export type InsertBrandVersion = z.infer<typeof insertBrandVersionSchema>;
 export type BrandVersion = typeof brandVersions.$inferSelect;
+
+// Client registry table for blueprint export
+export const clientRegistry = pgTable("client_registry", {
+  id: serial("id").primaryKey(),
+  clientId: varchar("client_id", { length: 100 }).notNull().unique(),
+  blueprintVersion: varchar("blueprint_version", { length: 20 }).default("1.0.0").notNull(),
+  sector: varchar("sector", { length: 100 }),
+  location: varchar("location", { length: 255 }),
+  projectStartDate: timestamp("project_start_date").defaultNow(),
+  userRoles: jsonb("user_roles"), // Roles defined for this client
+  exportReady: boolean("export_ready").default(false),
+  handoffStatus: varchar("handoff_status", { length: 50 }).default("in_progress"),
+  exportableModules: jsonb("exportable_modules"), // List of modules that can be exported
+  lastExported: timestamp("last_exported"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export const insertClientRegistrySchema = createInsertSchema(clientRegistry).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export type InsertClientRegistry = z.infer<typeof insertClientRegistrySchema>;
+export type ClientRegistry = typeof clientRegistry.$inferSelect;
