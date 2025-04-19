@@ -135,7 +135,7 @@ function generateManifest(directories: string[], files: string[]): any {
 }
 
 /**
- * Sends the backup to the NextMonth Dev vault
+ * Sends the backup to the NextMonth vault
  * @param backupPath 
  * @returns {Promise<boolean>} Success/failure indicator
  */
@@ -145,7 +145,7 @@ export async function sendBackupToVault(backupPath: string): Promise<boolean> {
     const filename = backupPath.split('/').pop();
     
     // Send to NextMonth Vault endpoint
-    const response = await fetch('https://nextmonth-vault.replit.app/archive', {
+    const response = await fetch('https://nextmonth-vault.app/archive', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/zip',
