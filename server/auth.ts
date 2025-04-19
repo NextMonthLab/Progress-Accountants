@@ -120,17 +120,6 @@ export function setupAuth(app: Express) {
       
       req.login(user, (err) => {
         if (err) return next(err);
-        
-        // Log activity
-        storage.logActivity({
-          userId: user.id,
-          userType: user.userType,
-          actionType: 'login',
-          entityType: 'user',
-          entityId: user.id.toString(),
-          details: { username: user.username }
-        }).catch(console.error);
-        
         return res.json(user);
       });
     })(req, res, next);
@@ -143,17 +132,6 @@ export function setupAuth(app: Express) {
       
       req.logout((err) => {
         if (err) return next(err);
-        
-        // Log activity
-        storage.logActivity({
-          userId: user.id,
-          userType: user.userType,
-          actionType: 'logout',
-          entityType: 'user',
-          entityId: user.id.toString(),
-          details: { username: user.username }
-        }).catch(console.error);
-        
         res.sendStatus(200);
       });
     } else {
