@@ -30,6 +30,7 @@ import AdminSettingsPage from "@/pages/AdminSettingsPage";
 import SEOConfigManagerPage from "@/pages/SEOConfigManagerPage";
 import BrandManagerPage from "@/pages/BrandManagerPage";
 import BlueprintManagerPage from "@/pages/BlueprintManagerPage";
+import MediaManagementPage from "@/pages/MediaManagementPage";
 import { DocumentHead } from "@/components/DocumentHead";
 import MainLayout from "@/layouts/MainLayout";
 import { ClientDataProvider, withAuth } from "@/components/ClientDataProvider";
@@ -74,6 +75,7 @@ function Router() {
       <Route path="/homepage-setup" component={HomepageSetupPage} />
       <Route path="/foundation-pages" component={FoundationPagesOverviewPage} />
       <Route path="/launch-ready" component={LaunchReadyPage} />
+      <Route path="/media" component={MediaManagementPage} />
       <Route component={NotFound} />
     </Switch>
   );
