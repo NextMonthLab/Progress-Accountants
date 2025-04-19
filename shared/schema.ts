@@ -1,7 +1,8 @@
-import { pgTable, text, serial, integer, boolean, timestamp, varchar, jsonb } from "drizzle-orm/pg-core";
+import { pgTable, text, serial, integer, boolean, timestamp, varchar, jsonb, real } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 import { relations } from "drizzle-orm";
+import { PageMetadata, PageComplexityAssessment, ComplexityLevel } from "./page_metadata";
 
 // User authentication tables
 export const users = pgTable("users", {
@@ -170,6 +171,68 @@ export const onboardingStateRelations = relations(onboardingState, ({ one }) => 
   }),
 }));
 
+// Module activation logging
+export const moduleActivations = pgTable("module_activations", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id").references(() => users.id).notNull(),
+  moduleId: varchar("module_id", { length: 100 }).references(() => modules.id).notNull(),
+  activatedAt: timestamp("activated_at").defaultNow().notNull(),
+  pageMetadata: jsonb("page_metadata"), // Storing the page_metadata object
+  guardianSynced: boolean("guardian_synced").default(false),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export const insertModuleActivationSchema = createInsertSchema(moduleActivations).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+// Define relationships for module activations
+export const moduleActivationsRelations = relations(moduleActivations, ({ one }) => ({
+  user: one(users, {
+    fields: [moduleActivations.userId],
+    references: [users.id],
+  }),
+  module: one(modules, {
+    fields: [moduleActivations.moduleId],
+    references: [modules.id],
+  }),
+}));
+
+// Page complexity triage
+export const pageComplexityTriage = pgTable("page_complexity_triage", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id").references(() => users.id).notNull(),
+  requestDescription: text("request_description").notNull(),
+  visualComplexity: real("visual_complexity").notNull(), // 1-10 score
+  logicComplexity: real("logic_complexity").notNull(), // 1-10 score
+  dataComplexity: real("data_complexity").notNull(), // 1-10 score
+  estimatedHours: real("estimated_hours").notNull(),
+  complexityLevel: varchar("complexity_level", { length: 20 }).notNull(), // simple, moderate, complex, wishlist
+  aiAssessment: text("ai_assessment").notNull(),
+  vaultSynced: boolean("vault_synced").default(false),
+  guardianSynced: boolean("guardian_synced").default(false),
+  triageTimestamp: timestamp("triage_timestamp").defaultNow().notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export const insertPageComplexityTriageSchema = createInsertSchema(pageComplexityTriage).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+// Define relationships for page complexity triage
+export const pageComplexityTriageRelations = relations(pageComplexityTriage, ({ one }) => ({
+  user: one(users, {
+    fields: [pageComplexityTriage.userId],
+    references: [users.id],
+  }),
+}));
+
 // Export types
 export type InsertUser = z.infer<typeof insertUserSchema>;
 export type User = typeof users.$inferSelect;
@@ -194,3 +257,9 @@ export type ActivityLog = typeof activityLogs.$inferSelect;
 
 export type InsertOnboardingState = z.infer<typeof insertOnboardingStateSchema>;
 export type OnboardingState = typeof onboardingState.$inferSelect;
+
+export type InsertModuleActivation = z.infer<typeof insertModuleActivationSchema>;
+export type ModuleActivation = typeof moduleActivations.$inferSelect;
+
+export type InsertPageComplexityTriage = z.infer<typeof insertPageComplexityTriageSchema>;
+export type PageComplexityTriage = typeof pageComplexityTriage.$inferSelect;

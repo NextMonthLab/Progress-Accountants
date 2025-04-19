@@ -1,0 +1,68 @@
+Prompt Title: Implement Page Intelligence + Complexity Scoring System
+
+Send to: Progress Accountants Replit Instance
+
+Goal: Introduce structured page classification (internal/external), add module activation awareness, and triage bespoke page requests based on AI scoring.
+
+⸻
+
+✅ Core Enhancements
+
+1. Page Classification
+	•	For each route in the system, add a page_metadata object:
+
+{
+  path: "/services",
+  title: "Services",
+  access: "internal" | "external",
+  seo: {
+    title: "Accounting Services | Progress Accountants",
+    description: "Explore our tax, bookkeeping, and advisory services.",
+    canonical: "/services"
+  },
+  page_type: "core" | "custom" | "automation"
+}
+
+	•	Use this metadata to:
+	•	Guide Guardian SEO audits
+	•	Enforce access control (withAuth)
+	•	Control visibility in navigation
+
+2. Module Activation Logging
+	•	When a new page/module is activated:
+	•	Save a log in the database with:
+	•	user_id, module_id, activated_at, page_metadata
+	•	Optionally POST summary to Guardian: /client-check-in with activated_modules array
+	•	Add user-facing “What’s New” feed from this data
+
+3. Page Complexity Triage
+	•	When a user requests a bespoke page:
+	•	Use OpenAI to analyze:
+	•	Estimated visual complexity (sections, interactivity)
+	•	Required logic (forms, automation, data feeds)
+	•	Estimated effort (simple | moderate | complex | wishlist)
+	•	Save this triage result to:
+	•	Vault (as metadata on the scope request)
+	•	Guardian (as advisory signal for human escalation)
+	•	Display triage result and fallback options to user
+
+⸻
+
+🔗 Vault & Guardian Integration
+	•	Vault: Save page_metadata and complexity_score via /api/blueprint/pages
+	•	Guardian:
+	•	POST /client-check-in for every module activation
+	•	POST /scope-request-assessments with triage result
+	•	If complexity = wishlist, notify Dev to review
+
+⸻
+
+📤 Expected Outputs
+	•	page_metadata.ts created or extended
+	•	Module activation logging persisted and optionally posted to Guardian
+	•	ScopeRequest flow upgraded to include AI-based complexity scoring
+	•	Vault/Guardian aware of all page types, activations, and triage events
+
+⸻
+
+Confirm once ready to begin this phase. I’ll prep Phase 3 (SEO + Design Versioning) next in parallel so we stay ahead.
