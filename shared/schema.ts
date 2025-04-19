@@ -8,9 +8,9 @@ export const users = pgTable("users", {
   id: serial("id").primaryKey(),
   username: text("username").notNull().unique(),
   password: text("password").notNull(),
-  name: varchar("name", { length: 100 }),
+  name: varchar("name", { length: 100 }).default(null),
   userType: varchar("user_type", { length: 20 }).default("client").notNull(), // client or staff
-  email: varchar("email", { length: 255 }),
+  email: varchar("email", { length: 255 }).default(null),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
@@ -25,16 +25,16 @@ export const insertUserSchema = createInsertSchema(users).pick({
 // Business identity and branding data
 export const businessIdentity = pgTable("business_identity", {
   id: serial("id").primaryKey(),
-  name: varchar("name", { length: 255 }),
-  mission: text("mission"),
-  vision: text("vision"),
-  values: jsonb("values"), // Array of values
-  marketFocus: jsonb("market_focus"), // Market focus details
-  targetAudience: jsonb("target_audience"), // Target audience details
-  brandVoice: jsonb("brand_voice"), // Brand voice details
-  brandPositioning: text("brand_positioning"),
-  teamValues: jsonb("team_values"), // Team values
-  cultureStatements: jsonb("culture_statements"), // Culture statements
+  name: varchar("name", { length: 255 }).default(null),
+  mission: text("mission").default(null),
+  vision: text("vision").default(null),
+  values: jsonb("values").default(null), // Array of values
+  marketFocus: jsonb("market_focus").default(null), // Market focus details
+  targetAudience: jsonb("target_audience").default(null), // Target audience details
+  brandVoice: jsonb("brand_voice").default(null), // Brand voice details
+  brandPositioning: text("brand_positioning").default(null),
+  teamValues: jsonb("team_values").default(null), // Team values
+  cultureStatements: jsonb("culture_statements").default(null), // Culture statements
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
 
@@ -46,8 +46,8 @@ export const insertBusinessIdentitySchema = createInsertSchema(businessIdentity)
 // Project context for pages and setup status
 export const projectContext = pgTable("project_context", {
   id: serial("id").primaryKey(),
-  homepageSetup: jsonb("homepage_setup"), // Homepage setup details
-  pageStatus: jsonb("page_status"), // Status of various pages
+  homepageSetup: jsonb("homepage_setup").default(null), // Homepage setup details
+  pageStatus: jsonb("page_status").default(null), // Status of various pages
   onboardingComplete: boolean("onboarding_complete").default(false),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });

@@ -257,38 +257,21 @@ export class DatabaseStorage implements IStorage {
   async saveContactSubmission(data: InsertContactSubmission): Promise<ContactSubmission> {
     const [submission] = await db
       .insert(contactSubmissions)
-      .values(data)
+      .values({
+        name: data.name,
+        business: data.business ?? null,
+        email: data.email,
+        phone: data.phone ?? null,
+        industry: data.industry ?? null,
+        message: data.message
+      })
       .returning();
     
-    // Ensure type compatibility
-    const typedSubmission: ContactSubmission = {
-      id: submission.id,
-      name: submission.name,
-      business: submission.business ?? undefined,
-      email: submission.email,
-      phone: submission.phone ?? undefined,
-      industry: submission.industry ?? undefined,
-      message: submission.message,
-      date: submission.date
-    };
-    
-    return typedSubmission;
+    return submission;
   }
   
   async getContactSubmissions(): Promise<ContactSubmission[]> {
-    const submissions = await db.select().from(contactSubmissions);
-    
-    // Ensure type compatibility
-    return submissions.map(submission => ({
-      id: submission.id,
-      name: submission.name,
-      business: submission.business ?? undefined,
-      email: submission.email,
-      phone: submission.phone ?? undefined,
-      industry: submission.industry ?? undefined,
-      message: submission.message,
-      date: submission.date
-    }));
+    return await db.select().from(contactSubmissions);
   }
   
   // Activity logging
