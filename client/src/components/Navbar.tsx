@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "wouter";
-import { Menu, X, Settings } from "lucide-react";
+import { Menu, X, Settings, FileImage } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/components/ClientDataProvider";
 
@@ -122,6 +122,13 @@ export default function Navbar() {
             className="font-medium hover:text-[var(--orange)] transition duration-300 no-underline"
           >
             Launch Ready
+          </Link>
+          <Link 
+            href="/media" 
+            className="font-medium hover:text-[var(--orange)] transition duration-300 no-underline flex items-center"
+          >
+            <FileImage className="h-4 w-4 mr-1" />
+            Media Manager
           </Link>
           {isStaff && (
             <Link 
@@ -275,6 +282,14 @@ export default function Navbar() {
             onClick={closeMenu}
           >
             Launch Ready
+          </Link>
+          <Link 
+            href="/media" 
+            className="py-2 font-medium hover:text-[var(--orange)] transition duration-300 no-underline flex items-center"
+            onClick={closeMenu}
+          >
+            <FileImage className="h-4 w-4 mr-1" />
+            Media Manager
           </Link>
           {isStaff && (
             <Link 
