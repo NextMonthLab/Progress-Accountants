@@ -713,6 +713,272 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
   
+  // ONBOARDING STATE MANAGEMENT ENDPOINTS
+  
+  // Schema for onboarding state operations
+  const onboardingStateSchema = z.object({
+    userId: z.number(),
+    stage: z.string(),
+    status: z.string().optional().default('in_progress'),
+    data: z.any().optional()
+  });
+  
+  const updateOnboardingSchema = z.object({
+    userId: z.number(),
+    stage: z.string(),
+    status: z.string(),
+    data: z.any().optional()
+  });
+  
+  const guardianSyncSchema = z.object({
+    id: z.number(),
+    synced: z.boolean().optional().default(true)
+  });
+  
+  // Get onboarding state for a user
+  app.get("/api/onboarding/:userId", async (req: Request, res: Response) => {
+    try {
+      const userId = parseInt(req.params.userId);
+      
+      if (isNaN(userId)) {
+        return res.status(400).json({
+          success: false,
+          message: "Invalid user ID"
+        });
+      }
+      
+      const onboardingState = await storage.getOnboardingState(userId);
+      
+      if (!onboardingState) {
+        return res.status(404).json({
+          success: false,
+          message: "No onboarding state found for this user"
+        });
+      }
+      
+      res.status(200).json({
+        success: true,
+        data: onboardingState
+      });
+    } catch (error) {
+      console.error("Error fetching onboarding state:", error);
+      res.status(500).json({
+        success: false,
+        message: "An error occurred fetching onboarding state"
+      });
+    }
+  });
+  
+  // Get specific stage state for a user
+  app.get("/api/onboarding/:userId/:stage", async (req: Request, res: Response) => {
+    try {
+      const userId = parseInt(req.params.userId);
+      const stage = req.params.stage;
+      
+      if (isNaN(userId)) {
+        return res.status(400).json({
+          success: false,
+          message: "Invalid user ID"
+        });
+      }
+      
+      const stageState = await storage.getOnboardingStageState(userId, stage);
+      
+      if (!stageState) {
+        return res.status(404).json({
+          success: false,
+          message: `No onboarding state found for stage '${stage}'`
+        });
+      }
+      
+      res.status(200).json({
+        success: true,
+        data: stageState
+      });
+    } catch (error) {
+      console.error("Error fetching stage state:", error);
+      res.status(500).json({
+        success: false,
+        message: "An error occurred fetching stage state"
+      });
+    }
+  });
+  
+  // Create or update onboarding state
+  app.post("/api/onboarding", async (req: Request, res: Response) => {
+    try {
+      const data = onboardingStateSchema.parse(req.body);
+      
+      const onboardingState = await storage.saveOnboardingState(data);
+      
+      res.status(200).json({
+        success: true,
+        message: "Onboarding state saved",
+        data: onboardingState
+      });
+    } catch (error) {
+      console.error("Error saving onboarding state:", error);
+      
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({
+          success: false, 
+          message: "Validation failed", 
+          errors: error.errors 
+        });
+      }
+      
+      res.status(500).json({
+        success: false,
+        message: "An error occurred saving onboarding state"
+      });
+    }
+  });
+  
+  // Update onboarding status
+  app.patch("/api/onboarding/status", async (req: Request, res: Response) => {
+    try {
+      const { userId, stage, status, data } = updateOnboardingSchema.parse(req.body);
+      
+      const updatedState = await storage.updateOnboardingStatus(userId, stage, status, data);
+      
+      if (!updatedState) {
+        return res.status(404).json({
+          success: false,
+          message: "Failed to update onboarding status"
+        });
+      }
+      
+      res.status(200).json({
+        success: true,
+        message: "Onboarding status updated",
+        data: updatedState
+      });
+    } catch (error) {
+      console.error("Error updating onboarding status:", error);
+      
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({
+          success: false, 
+          message: "Validation failed", 
+          errors: error.errors 
+        });
+      }
+      
+      res.status(500).json({
+        success: false,
+        message: "An error occurred updating onboarding status"
+      });
+    }
+  });
+  
+  // Mark stage as complete
+  app.patch("/api/onboarding/complete", async (req: Request, res: Response) => {
+    try {
+      const { userId, stage, data } = onboardingStateSchema.parse(req.body);
+      
+      const completedState = await storage.markOnboardingStageComplete(userId, stage, data);
+      
+      if (!completedState) {
+        return res.status(404).json({
+          success: false,
+          message: "Failed to mark stage as complete"
+        });
+      }
+      
+      res.status(200).json({
+        success: true,
+        message: "Stage marked as complete",
+        data: completedState
+      });
+    } catch (error) {
+      console.error("Error marking stage complete:", error);
+      
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({
+          success: false, 
+          message: "Validation failed", 
+          errors: error.errors 
+        });
+      }
+      
+      res.status(500).json({
+        success: false,
+        message: "An error occurred marking stage complete"
+      });
+    }
+  });
+  
+  // Get incomplete onboarding
+  app.get("/api/onboarding/:userId/incomplete", async (req: Request, res: Response) => {
+    try {
+      const userId = parseInt(req.params.userId);
+      
+      if (isNaN(userId)) {
+        return res.status(400).json({
+          success: false,
+          message: "Invalid user ID"
+        });
+      }
+      
+      const incompleteState = await storage.getIncompleteOnboarding(userId);
+      
+      if (!incompleteState) {
+        return res.status(404).json({
+          success: false,
+          message: "No incomplete onboarding found"
+        });
+      }
+      
+      res.status(200).json({
+        success: true,
+        data: incompleteState
+      });
+    } catch (error) {
+      console.error("Error fetching incomplete onboarding:", error);
+      res.status(500).json({
+        success: false,
+        message: "An error occurred fetching incomplete onboarding"
+      });
+    }
+  });
+  
+  // Mark as synced with Guardian
+  app.patch("/api/onboarding/guardian-sync", async (req: Request, res: Response) => {
+    try {
+      const { id, synced } = guardianSyncSchema.parse(req.body);
+      
+      const updatedState = await storage.markGuardianSynced(id, synced);
+      
+      if (!updatedState) {
+        return res.status(404).json({
+          success: false,
+          message: "Onboarding state not found"
+        });
+      }
+      
+      res.status(200).json({
+        success: true,
+        message: "Guardian sync status updated",
+        data: updatedState
+      });
+    } catch (error) {
+      console.error("Error updating guardian sync:", error);
+      
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({
+          success: false, 
+          message: "Validation failed", 
+          errors: error.errors 
+        });
+      }
+      
+      res.status(500).json({
+        success: false,
+        message: "An error occurred updating guardian sync"
+      });
+    }
+  });
+  
   // Create HTTP server
   const httpServer = createServer(app);
 
