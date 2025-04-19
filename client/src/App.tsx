@@ -34,6 +34,7 @@ import MediaManagementPage from "@/pages/MediaManagementPage";
 import { DocumentHead } from "@/components/DocumentHead";
 import MainLayout from "@/layouts/MainLayout";
 import { ClientDataProvider, withAuth } from "@/components/ClientDataProvider";
+import { ThemeProvider } from "@/components/ThemeProvider";
 
 // Protected routes with auth requirements
 const ProtectedClientDashboard = withAuth(ClientDashboardPage, 'client');
@@ -84,13 +85,15 @@ function Router() {
 function App() {
   return (
     <ClientDataProvider>
-      <DocumentHead route="/" />
-      <FirstTimeUserDetector>
-        <MainLayout>
-          <Router />
-        </MainLayout>
-      </FirstTimeUserDetector>
-      <Toaster />
+      <ThemeProvider>
+        <DocumentHead route="/" />
+        <FirstTimeUserDetector>
+          <MainLayout>
+            <Router />
+          </MainLayout>
+        </FirstTimeUserDetector>
+        <Toaster />
+      </ThemeProvider>
     </ClientDataProvider>
   );
 }
