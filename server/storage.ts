@@ -19,12 +19,16 @@ import {
   type InsertContactSubmission,
   activityLogs,
   type ActivityLog,
-  type InsertActivityLog
+  type InsertActivityLog,
+  onboardingState,
+  type OnboardingState,
+  type InsertOnboardingState
 } from "@shared/schema";
 import { db } from "./db";
-import { eq } from "drizzle-orm";
+import { eq, desc, and } from "drizzle-orm";
 import connectPg from "connect-pg-simple";
 import session from "express-session";
+import crypto from "crypto";
 
 // Define the payload types for feature requests
 type StandardPayload = {
@@ -435,6 +439,7 @@ export class MemStorage implements IStorage {
   businessIdentityData?: BusinessIdentity;
   projectContextData?: ProjectContext;
   activityLogs: ActivityLog[];
+  onboardingStates: Map<number, OnboardingState[]>;
   sessionStore: session.Store = new session.MemoryStore();
 
   constructor() {
@@ -444,6 +449,7 @@ export class MemStorage implements IStorage {
     this.contactSubmissions = new Map();
     this.modules = new Map();
     this.activityLogs = [];
+    this.onboardingStates = new Map();
   }
 
   async getUser(id: number): Promise<User | undefined> {
@@ -496,6 +502,129 @@ export class MemStorage implements IStorage {
     };
     this.projectContextData = context;
     return context;
+  }
+  
+  // Onboarding state operations
+  async getOnboardingState(userId: number): Promise<OnboardingState | undefined> {
+    const userStates = this.onboardingStates.get(userId) || [];
+    if (userStates.length === 0) return undefined;
+    
+    // Return the most recent state
+    return userStates.sort((a, b) => 
+      b.checkpointTime.getTime() - a.checkpointTime.getTime()
+    )[0];
+  }
+  
+  async getOnboardingStageState(userId: number, stage: string): Promise<OnboardingState | undefined> {
+    const userStates = this.onboardingStates.get(userId) || [];
+    
+    // Find the most recent state for the given stage
+    const stageStates = userStates
+      .filter(state => state.stage === stage)
+      .sort((a, b) => b.checkpointTime.getTime() - a.checkpointTime.getTime());
+    
+    return stageStates.length > 0 ? stageStates[0] : undefined;
+  }
+  
+  async saveOnboardingState(data: InsertOnboardingState): Promise<OnboardingState> {
+    const id = this.currentId++;
+    const now = new Date();
+    
+    // Generate a recovery token if not provided
+    const recoveryToken = data.recoveryToken || crypto.randomBytes(16).toString('hex');
+    
+    const state: OnboardingState = {
+      id,
+      userId: data.userId,
+      stage: data.stage,
+      status: data.status,
+      data: data.data || null,
+      checkpointTime: now,
+      recoveryToken,
+      blueprintVersion: data.blueprintVersion || '1.0.0',
+      guardianSynced: data.guardianSynced || false,
+      createdAt: now,
+      updatedAt: now
+    };
+    
+    // Initialize user's states array if not exists
+    if (!this.onboardingStates.has(data.userId)) {
+      this.onboardingStates.set(data.userId, []);
+    }
+    
+    // Add the new state
+    this.onboardingStates.get(data.userId)!.push(state);
+    
+    return state;
+  }
+  
+  async updateOnboardingStatus(userId: number, stage: string, status: string, data?: any): Promise<OnboardingState | undefined> {
+    // Get current state for this stage
+    const currentState = await this.getOnboardingStageState(userId, stage);
+    
+    if (currentState) {
+      // Update the existing state
+      const now = new Date();
+      const updatedState: OnboardingState = {
+        ...currentState,
+        status,
+        data: data !== undefined ? data : currentState.data,
+        checkpointTime: now,
+        updatedAt: now
+      };
+      
+      // Replace the old state with the updated one
+      const userStates = this.onboardingStates.get(userId) || [];
+      const stateIndex = userStates.findIndex(s => s.id === currentState.id);
+      
+      if (stateIndex !== -1) {
+        userStates[stateIndex] = updatedState;
+        return updatedState;
+      }
+    }
+    
+    // If no existing state or updating failed, create a new one
+    return this.saveOnboardingState({
+      userId,
+      stage,
+      status,
+      data: data || null
+    });
+  }
+  
+  async markOnboardingStageComplete(userId: number, stage: string, data?: any): Promise<OnboardingState | undefined> {
+    return this.updateOnboardingStatus(userId, stage, 'complete', data);
+  }
+  
+  async getIncompleteOnboarding(userId: number): Promise<OnboardingState | undefined> {
+    const userStates = this.onboardingStates.get(userId) || [];
+    
+    // Find the most recent in_progress state
+    const incompleteStates = userStates
+      .filter(state => state.status === 'in_progress')
+      .sort((a, b) => b.checkpointTime.getTime() - a.checkpointTime.getTime());
+    
+    return incompleteStates.length > 0 ? incompleteStates[0] : undefined;
+  }
+  
+  async markGuardianSynced(id: number, synced: boolean = true): Promise<OnboardingState | undefined> {
+    // Find the state with this ID across all users
+    for (const userStates of this.onboardingStates.values()) {
+      const stateIndex = userStates.findIndex(state => state.id === id);
+      
+      if (stateIndex !== -1) {
+        const updatedState: OnboardingState = {
+          ...userStates[stateIndex],
+          guardianSynced: synced,
+          updatedAt: new Date()
+        };
+        
+        userStates[stateIndex] = updatedState;
+        return updatedState;
+      }
+    }
+    
+    return undefined;
   }
   
   async getModule(id: string): Promise<Module | undefined> {

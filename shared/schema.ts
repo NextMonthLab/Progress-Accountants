@@ -147,9 +147,9 @@ export const onboardingState = pgTable("onboarding_state", {
   userId: integer("user_id").references(() => users.id).notNull(),
   stage: varchar("stage", { length: 50 }).notNull(), // homepage_setup, foundation_pages, launch_ready
   status: varchar("status", { length: 20 }).default("in_progress").notNull(), // not_started, in_progress, complete
-  data: jsonb("data").default(null), // Any stage-specific data
+  data: jsonb("data"), // Any stage-specific data
   checkpointTime: timestamp("checkpoint_time").defaultNow().notNull(),
-  recoveryToken: varchar("recovery_token", { length: 255 }).default(null),
+  recoveryToken: varchar("recovery_token", { length: 255 }),
   blueprintVersion: varchar("blueprint_version", { length: 50 }).default("1.0.0"),
   guardianSynced: boolean("guardian_synced").default(false),
   createdAt: timestamp("created_at").defaultNow().notNull(),
