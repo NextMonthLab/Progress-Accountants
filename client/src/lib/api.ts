@@ -211,17 +211,16 @@ export async function fetchLatestBrandVersion() {
 
 export async function saveBrandVersion(version: {
   id?: number;
-  name: string;
-  primaryColor: string;
-  secondaryColor: string;
-  textColor: string;
-  backgroundColor: string;
-  fontPrimary: string;
-  fontSecondary: string;
-  logo: string | null;
-  logoAlt: string | null;
-  logoInverted: string | null;
-  styling: any;
+  versionNumber: string;
+  versionName?: string;
+  primaryColor?: string;
+  secondaryColor?: string;
+  accentColor?: string;
+  typography?: any;
+  logoUrl?: string;
+  brandIdentityData?: any;
+  brandVoiceData?: any;
+  brandAssets?: any;
 }) {
   const method = version.id ? 'PATCH' : 'POST';
   const endpoint = version.id ? `/api/brand/versions/${version.id}` : '/api/brand/versions';
@@ -242,6 +241,32 @@ export async function activateBrandVersion(id: number) {
   // Invalidate the brand versions cache
   queryClient.invalidateQueries({ queryKey: ['/api/brand/versions'] });
   
+  return data;
+}
+
+export async function syncBrandVersionWithGuardian(id: number) {
+  const response = await apiRequest('POST', `/api/brand/versions/${id}/sync/guardian`);
+  const data = await response.json();
+  
+  // Invalidate the brand versions cache
+  queryClient.invalidateQueries({ queryKey: ['/api/brand/versions'] });
+  
+  return data;
+}
+
+export async function syncBrandVersionWithVault(id: number) {
+  const response = await apiRequest('POST', `/api/brand/versions/${id}/sync/vault`);
+  const data = await response.json();
+  
+  // Invalidate the brand versions cache
+  queryClient.invalidateQueries({ queryKey: ['/api/brand/versions'] });
+  
+  return data;
+}
+
+export async function getActiveBrandVersion() {
+  const response = await apiRequest('GET', '/api/brand/versions/active');
+  const data = await response.json();
   return data;
 }
 
