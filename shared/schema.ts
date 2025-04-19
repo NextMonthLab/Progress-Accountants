@@ -245,6 +245,7 @@ export const mediaUploads = pgTable("media_uploads", {
   cloudinaryId: varchar("cloudinary_id", { length: 255 }).notNull(),
   folder: varchar("folder", { length: 255 }).notNull(),
   suggestedLocation: text("suggested_location"),
+  manualOverride: boolean("manual_override").default(false),
   uploadedBy: integer("uploaded_by").references(() => users.id),
   uploadedAt: timestamp("uploaded_at").defaultNow().notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),

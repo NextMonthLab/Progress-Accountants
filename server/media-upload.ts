@@ -222,6 +222,50 @@ export async function getMediaUsage(req: Request, res: Response): Promise<void> 
   }
 }
 
+// Update media placement location
+export async function updateMediaPlacement(req: Request, res: Response): Promise<void> {
+  const { id } = req.params;
+  const { suggestedLocation } = req.body;
+  
+  if (!id) {
+    res.status(400).json({ success: false, message: 'Media ID is required' });
+    return;
+  }
+  
+  if (!suggestedLocation) {
+    res.status(400).json({ success: false, message: 'Suggested location is required' });
+    return;
+  }
+  
+  try {
+    // Update media placement and set manual override flag
+    const [updatedMedia] = await db.update(mediaUploads)
+      .set({
+        suggestedLocation,
+        manualOverride: true,
+        updatedAt: new Date()
+      })
+      .where(eq(mediaUploads.id, parseInt(id)))
+      .returning();
+    
+    if (!updatedMedia) {
+      res.status(404).json({ success: false, message: 'Media file not found' });
+      return;
+    }
+    
+    res.status(200).json({
+      success: true,
+      data: updatedMedia
+    });
+  } catch (error: any) {
+    console.error('Error updating media placement:', error);
+    res.status(500).json({ 
+      success: false, 
+      message: `Failed to update media placement: ${error.message}` 
+    });
+  }
+}
+
 // Register media upload routes
 export function registerMediaRoutes(app: any): void {
   // Upload media file
@@ -237,7 +281,7 @@ export function registerMediaRoutes(app: any): void {
     try {
       const files = await db.select().from(mediaUploads).where(eq(mediaUploads.businessId, businessId));
       res.status(200).json({ success: true, data: files });
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error fetching media files:', error);
       res.status(500).json({ 
         success: false, 
@@ -245,4 +289,7 @@ export function registerMediaRoutes(app: any): void {
       });
     }
   });
+  
+  // Update media placement location
+  app.put('/api/media/files/:id', updateMediaPlacement);
 }
