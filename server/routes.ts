@@ -56,14 +56,14 @@ interface ChatMessage {
 }
 
 // System prompt for the scoping assistant
-const SYSTEM_PROMPT = `You are a scoping assistant helping internal Progress Accountants staff prepare feature requests for the NextMonth team.
+const SYSTEM_PROMPT = `You are a scoping assistant helping internal Progress Accountants staff prepare feature requests for the NextMonth Dev team.
 
 Your goal is to turn rough ideas into a structured JSON prompt for development.
 
 Ask only simple, focused questions. Avoid technical jargon.
 
 Once the user has answered enough questions, say:  
-"Great! I've structured this request. Shall I send it to NextMonth for review?"
+"Great! I've structured this request. Shall I send it to NextMonth Dev for review?"
 
 When confirmed, prepare a JSON output in the following format:
 
@@ -519,7 +519,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           
           // If it's a template_ready or simple_custom, we can proceed directly
           // Otherwise, we'll wait for the user to confirm if they want to proceed with a simpler version
-          if (screeningResult.shouldSubmitToNextMonth) {
+          if (screeningResult.shouldSubmitToDev) {
             return res.status(200).json({
               success: true,
               message: screeningResult.response,
@@ -624,13 +624,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
   
-  // Send the finalized request to NextMonth
+  // Send the finalized request to NextMonth Dev
   app.post("/api/scope-request/send", async (req: Request, res: Response) => {
     try {
       const { requestData } = finalizeRequestSchema.parse(req.body);
       
-      // Send to NextMonth listener endpoint
-      const response = await fetch("https://nextmonth.app/listen", {
+      // Send to NextMonth Dev listener endpoint
+      const response = await fetch("https://nextmonth-dev.replit.app/listen", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -639,7 +639,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       });
       
       if (!response.ok) {
-        throw new Error(`Failed to send request to NextMonth: ${response.statusText}`);
+        throw new Error(`Failed to send request to NextMonth Dev: ${response.statusText}`);
       }
       
       const responseData = await response.json();
