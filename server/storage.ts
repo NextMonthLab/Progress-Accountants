@@ -60,6 +60,15 @@ export interface IStorage {
   getProjectContext(): Promise<ProjectContext | undefined>;
   saveProjectContext(data: InsertProjectContext): Promise<ProjectContext>;
   
+  // Onboarding state operations
+  getOnboardingState(userId: number): Promise<OnboardingState | undefined>;
+  getOnboardingStageState(userId: number, stage: string): Promise<OnboardingState | undefined>;
+  saveOnboardingState(data: InsertOnboardingState): Promise<OnboardingState>;
+  updateOnboardingStatus(userId: number, stage: string, status: string, data?: any): Promise<OnboardingState | undefined>;
+  markOnboardingStageComplete(userId: number, stage: string, data?: any): Promise<OnboardingState | undefined>;
+  getIncompleteOnboarding(userId: number): Promise<OnboardingState | undefined>;
+  markGuardianSynced(id: number, synced: boolean): Promise<OnboardingState | undefined>;
+  
   // Module operations
   getModule(id: string): Promise<Module | undefined>;
   getAllModules(): Promise<Module[]>;
@@ -184,6 +193,123 @@ export class DatabaseStorage implements IStorage {
         .returning();
       return created;
     }
+  }
+  
+  // Onboarding state operations
+  async getOnboardingState(userId: number): Promise<OnboardingState | undefined> {
+    const latest = await db
+      .select()
+      .from(onboardingState)
+      .where(eq(onboardingState.userId, userId))
+      .orderBy(desc(onboardingState.checkpointTime))
+      .limit(1);
+    
+    return latest[0];
+  }
+  
+  async getOnboardingStageState(userId: number, stage: string): Promise<OnboardingState | undefined> {
+    const [stageState] = await db
+      .select()
+      .from(onboardingState)
+      .where(
+        and(
+          eq(onboardingState.userId, userId),
+          eq(onboardingState.stage, stage)
+        )
+      )
+      .orderBy(desc(onboardingState.checkpointTime))
+      .limit(1);
+    
+    return stageState;
+  }
+  
+  async saveOnboardingState(data: InsertOnboardingState): Promise<OnboardingState> {
+    // Generate a recovery token if not provided
+    if (!data.recoveryToken) {
+      data.recoveryToken = crypto.randomBytes(16).toString('hex');
+    }
+    
+    // Ensure data is in the correct format
+    const preparedData = {
+      userId: data.userId,
+      stage: data.stage,
+      status: data.status,
+      data: data.data ?? null,
+      checkpointTime: new Date(),
+      recoveryToken: data.recoveryToken,
+      blueprintVersion: data.blueprintVersion ?? '1.0.0',
+      guardianSynced: data.guardianSynced ?? false
+    };
+    
+    // Insert new state
+    const [created] = await db
+      .insert(onboardingState)
+      .values(preparedData)
+      .returning();
+    
+    return created;
+  }
+  
+  async updateOnboardingStatus(userId: number, stage: string, status: string, data?: any): Promise<OnboardingState | undefined> {
+    // Get the current state for this stage
+    const currentState = await this.getOnboardingStageState(userId, stage);
+    
+    if (currentState) {
+      // Update existing record
+      const [updated] = await db
+        .update(onboardingState)
+        .set({
+          status,
+          data: data ?? currentState.data,
+          checkpointTime: new Date(),
+          updatedAt: new Date()
+        })
+        .where(eq(onboardingState.id, currentState.id))
+        .returning();
+      
+      return updated;
+    } else {
+      // Create new record
+      return await this.saveOnboardingState({
+        userId,
+        stage,
+        status,
+        data: data ?? null
+      });
+    }
+  }
+  
+  async markOnboardingStageComplete(userId: number, stage: string, data?: any): Promise<OnboardingState | undefined> {
+    return await this.updateOnboardingStatus(userId, stage, 'complete', data);
+  }
+  
+  async getIncompleteOnboarding(userId: number): Promise<OnboardingState | undefined> {
+    const [incompleteState] = await db
+      .select()
+      .from(onboardingState)
+      .where(
+        and(
+          eq(onboardingState.userId, userId),
+          eq(onboardingState.status, 'in_progress')
+        )
+      )
+      .orderBy(desc(onboardingState.checkpointTime))
+      .limit(1);
+    
+    return incompleteState;
+  }
+  
+  async markGuardianSynced(id: number, synced: boolean = true): Promise<OnboardingState | undefined> {
+    const [updated] = await db
+      .update(onboardingState)
+      .set({
+        guardianSynced: synced,
+        updatedAt: new Date()
+      })
+      .where(eq(onboardingState.id, id))
+      .returning();
+    
+    return updated;
   }
   
   // Module operations

@@ -141,6 +141,35 @@ export const activityLogsRelations = relations(activityLogs, ({ one }) => ({
   }),
 }));
 
+// Onboarding state table for tracking user progress through setup flow
+export const onboardingState = pgTable("onboarding_state", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id").references(() => users.id).notNull(),
+  stage: varchar("stage", { length: 50 }).notNull(), // homepage_setup, foundation_pages, launch_ready
+  status: varchar("status", { length: 20 }).default("in_progress").notNull(), // not_started, in_progress, complete
+  data: jsonb("data").default(null), // Any stage-specific data
+  checkpointTime: timestamp("checkpoint_time").defaultNow().notNull(),
+  recoveryToken: varchar("recovery_token", { length: 255 }).default(null),
+  blueprintVersion: varchar("blueprint_version", { length: 50 }).default("1.0.0"),
+  guardianSynced: boolean("guardian_synced").default(false),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export const insertOnboardingStateSchema = createInsertSchema(onboardingState).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+// Define relationships for onboarding state
+export const onboardingStateRelations = relations(onboardingState, ({ one }) => ({
+  user: one(users, {
+    fields: [onboardingState.userId],
+    references: [users.id],
+  }),
+}));
+
 // Export types
 export type InsertUser = z.infer<typeof insertUserSchema>;
 export type User = typeof users.$inferSelect;
@@ -162,3 +191,6 @@ export type ContactSubmission = typeof contactSubmissions.$inferSelect;
 
 export type InsertActivityLog = z.infer<typeof insertActivityLogSchema>;
 export type ActivityLog = typeof activityLogs.$inferSelect;
+
+export type InsertOnboardingState = z.infer<typeof insertOnboardingStateSchema>;
+export type OnboardingState = typeof onboardingState.$inferSelect;
