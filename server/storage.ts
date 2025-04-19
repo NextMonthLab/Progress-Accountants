@@ -110,6 +110,24 @@ export interface IStorage {
   getPageComplexityTriage(id: number): Promise<PageComplexityTriage | undefined>;
   getPageComplexityTriagesByUser(userId: number): Promise<PageComplexityTriage[]>;
   updatePageComplexitySyncStatus(id: number, vaultSynced?: boolean, guardianSynced?: boolean): Promise<PageComplexityTriage | undefined>;
+  
+  // SEO Configuration operations
+  getSeoConfiguration(routePath: string): Promise<SeoConfiguration | undefined>;
+  getAllSeoConfigurations(): Promise<SeoConfiguration[]>;
+  saveSeoConfiguration(config: InsertSeoConfiguration): Promise<SeoConfiguration>;
+  updateSeoConfiguration(id: number, config: Partial<InsertSeoConfiguration>): Promise<SeoConfiguration | undefined>;
+  deleteSeoConfiguration(id: number): Promise<boolean>;
+  getSeoConfigurationsByStatus(indexable: boolean): Promise<SeoConfiguration[]>;
+  updateSeoSyncStatus(id: number, vaultSynced?: boolean, guardianSynced?: boolean): Promise<SeoConfiguration | undefined>;
+  
+  // Brand Versioning operations
+  getBrandVersion(id: number): Promise<BrandVersion | undefined>;
+  getBrandVersionByNumber(versionNumber: string): Promise<BrandVersion | undefined>;
+  getActiveBrandVersion(): Promise<BrandVersion | undefined>;
+  getAllBrandVersions(): Promise<BrandVersion[]>;
+  saveBrandVersion(version: InsertBrandVersion): Promise<BrandVersion>;
+  activateBrandVersion(id: number): Promise<BrandVersion | undefined>;
+  updateBrandSyncStatus(id: number, vaultSynced?: boolean, guardianSynced?: boolean): Promise<BrandVersion | undefined>;
 }
 
 // Database-backed implementation of IStorage

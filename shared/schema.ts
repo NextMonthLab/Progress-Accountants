@@ -263,3 +263,61 @@ export type ModuleActivation = typeof moduleActivations.$inferSelect;
 
 export type InsertPageComplexityTriage = z.infer<typeof insertPageComplexityTriageSchema>;
 export type PageComplexityTriage = typeof pageComplexityTriage.$inferSelect;
+
+// SEO Configuration table
+export const seoConfigurations = pgTable("seo_configurations", {
+  id: serial("id").primaryKey(),
+  routePath: varchar("route_path", { length: 255 }).notNull().unique(),
+  title: varchar("title", { length: 255 }).notNull(),
+  description: text("description").notNull(),
+  canonical: varchar("canonical", { length: 255 }),
+  keywords: jsonb("keywords"),
+  ogImage: varchar("og_image", { length: 255 }),
+  structuredData: jsonb("structured_data"),
+  indexable: boolean("indexable").default(true).notNull(),
+  priority: real("priority").default(0.5).notNull(), // For sitemaps
+  changeFrequency: varchar("change_frequency", { length: 20 }).default("monthly"), // For sitemaps
+  guardianSynced: boolean("guardian_synced").default(false),
+  vaultSynced: boolean("vault_synced").default(false),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export const insertSeoConfigurationSchema = createInsertSchema(seoConfigurations).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+// Brand versioning table
+export const brandVersions = pgTable("brand_versions", {
+  id: serial("id").primaryKey(),
+  versionNumber: varchar("version_number", { length: 20 }).notNull(),
+  versionName: varchar("version_name", { length: 100 }),
+  primaryColor: varchar("primary_color", { length: 30 }),
+  secondaryColor: varchar("secondary_color", { length: 30 }),
+  accentColor: varchar("accent_color", { length: 30 }),
+  typography: jsonb("typography"), // primaryFont, secondaryFont, headingSettings, etc
+  logoUrl: varchar("logo_url", { length: 255 }),
+  brandIdentityData: jsonb("brand_identity_data"), // Contains all brand identity elements
+  brandVoiceData: jsonb("brand_voice_data"), // Tone, messaging, etc.
+  brandAssets: jsonb("brand_assets"), // URLs to additional brand assets
+  isActive: boolean("is_active").default(false),
+  appliedAt: timestamp("applied_at"),
+  guardianSynced: boolean("guardian_synced").default(false),
+  vaultSynced: boolean("vault_synced").default(false),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export const insertBrandVersionSchema = createInsertSchema(brandVersions).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export type InsertSeoConfiguration = z.infer<typeof insertSeoConfigurationSchema>;
+export type SeoConfiguration = typeof seoConfigurations.$inferSelect;
+
+export type InsertBrandVersion = z.infer<typeof insertBrandVersionSchema>;
+export type BrandVersion = typeof brandVersions.$inferSelect;
