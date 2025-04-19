@@ -119,11 +119,25 @@ export class DatabaseStorage implements IStorage {
     // Check if we already have a record
     const existing = await this.getBusinessIdentity();
     
+    // Ensure null values for optional fields
+    const preparedData = {
+      name: data.name ?? null,
+      mission: data.mission ?? null,
+      vision: data.vision ?? null,
+      values: data.values ?? null,
+      marketFocus: data.marketFocus ?? null,
+      targetAudience: data.targetAudience ?? null,
+      brandVoice: data.brandVoice ?? null,
+      brandPositioning: data.brandPositioning ?? null,
+      teamValues: data.teamValues ?? null,
+      cultureStatements: data.cultureStatements ?? null
+    };
+    
     if (existing) {
       // Update existing record
       const [updated] = await db
         .update(businessIdentity)
-        .set({ ...data, updatedAt: new Date() })
+        .set({ ...preparedData, updatedAt: new Date() })
         .where(eq(businessIdentity.id, existing.id))
         .returning();
       return updated;
@@ -131,7 +145,7 @@ export class DatabaseStorage implements IStorage {
       // Create new record
       const [created] = await db
         .insert(businessIdentity)
-        .values(data)
+        .values(preparedData)
         .returning();
       return created;
     }
@@ -147,11 +161,18 @@ export class DatabaseStorage implements IStorage {
     // Check if we already have a record
     const existing = await this.getProjectContext();
     
+    // Ensure valid data for the database
+    const preparedData = {
+      homepageSetup: data.homepageSetup ?? null,
+      pageStatus: data.pageStatus ?? null,
+      onboardingComplete: data.onboardingComplete ?? null
+    };
+    
     if (existing) {
       // Update existing record
       const [updated] = await db
         .update(projectContext)
-        .set({ ...data, updatedAt: new Date() })
+        .set({ ...preparedData, updatedAt: new Date() })
         .where(eq(projectContext.id, existing.id))
         .returning();
       return updated;
@@ -159,7 +180,7 @@ export class DatabaseStorage implements IStorage {
       // Create new record
       const [created] = await db
         .insert(projectContext)
-        .values(data)
+        .values(preparedData)
         .returning();
       return created;
     }
@@ -238,11 +259,36 @@ export class DatabaseStorage implements IStorage {
       .insert(contactSubmissions)
       .values(data)
       .returning();
-    return submission;
+    
+    // Ensure type compatibility
+    const typedSubmission: ContactSubmission = {
+      id: submission.id,
+      name: submission.name,
+      business: submission.business ?? undefined,
+      email: submission.email,
+      phone: submission.phone ?? undefined,
+      industry: submission.industry ?? undefined,
+      message: submission.message,
+      date: submission.date
+    };
+    
+    return typedSubmission;
   }
   
   async getContactSubmissions(): Promise<ContactSubmission[]> {
-    return await db.select().from(contactSubmissions);
+    const submissions = await db.select().from(contactSubmissions);
+    
+    // Ensure type compatibility
+    return submissions.map(submission => ({
+      id: submission.id,
+      name: submission.name,
+      business: submission.business ?? undefined,
+      email: submission.email,
+      phone: submission.phone ?? undefined,
+      industry: submission.industry ?? undefined,
+      message: submission.message,
+      date: submission.date
+    }));
   }
   
   // Activity logging
