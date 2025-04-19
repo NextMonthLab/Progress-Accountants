@@ -22,8 +22,15 @@ import {
   type InsertActivityLog,
   onboardingState,
   type OnboardingState,
-  type InsertOnboardingState
+  type InsertOnboardingState,
+  moduleActivations,
+  type ModuleActivation,
+  type InsertModuleActivation,
+  pageComplexityTriage,
+  type PageComplexityTriage,
+  type InsertPageComplexityTriage
 } from "@shared/schema";
+import { PageMetadata, PageComplexityAssessment } from "@shared/page_metadata";
 import { db } from "./db";
 import { eq, desc, and } from "drizzle-orm";
 import connectPg from "connect-pg-simple";
@@ -92,6 +99,17 @@ export interface IStorage {
   // Activity logging
   logActivity(activity: InsertActivityLog): Promise<ActivityLog>;
   getActivityLogs(userId?: number, limit?: number): Promise<ActivityLog[]>;
+  
+  // Module activation logging
+  logModuleActivation(activation: InsertModuleActivation): Promise<ModuleActivation>;
+  getModuleActivations(userId?: number, moduleId?: string): Promise<ModuleActivation[]>;
+  markModuleActivationSynced(id: number, synced: boolean): Promise<ModuleActivation | undefined>;
+  
+  // Page complexity triage
+  savePageComplexityTriage(triage: InsertPageComplexityTriage): Promise<PageComplexityTriage>;
+  getPageComplexityTriage(id: number): Promise<PageComplexityTriage | undefined>;
+  getPageComplexityTriagesByUser(userId: number): Promise<PageComplexityTriage[]>;
+  updatePageComplexitySyncStatus(id: number, vaultSynced?: boolean, guardianSynced?: boolean): Promise<PageComplexityTriage | undefined>;
 }
 
 // Database-backed implementation of IStorage
@@ -427,6 +445,125 @@ export class DatabaseStorage implements IStorage {
         .limit(limit);
     }
   }
+  
+  // Module activation logging
+  async logModuleActivation(activation: InsertModuleActivation): Promise<ModuleActivation> {
+    const [created] = await db
+      .insert(moduleActivations)
+      .values({
+        userId: activation.userId,
+        moduleId: activation.moduleId,
+        activatedAt: new Date(),
+        pageMetadata: activation.pageMetadata ?? null,
+        guardianSynced: activation.guardianSynced ?? false
+      })
+      .returning();
+    
+    return created;
+  }
+  
+  async getModuleActivations(userId?: number, moduleId?: string): Promise<ModuleActivation[]> {
+    // Base query
+    let query = db.select().from(moduleActivations);
+    
+    // Apply filters if provided
+    if (userId && moduleId) {
+      query = query.where(
+        and(
+          eq(moduleActivations.userId, userId),
+          eq(moduleActivations.moduleId, moduleId)
+        )
+      );
+    } else if (userId) {
+      query = query.where(eq(moduleActivations.userId, userId));
+    } else if (moduleId) {
+      query = query.where(eq(moduleActivations.moduleId, moduleId));
+    }
+    
+    // Order by most recent first
+    query = query.orderBy(desc(moduleActivations.activatedAt));
+    
+    return await query;
+  }
+  
+  async markModuleActivationSynced(id: number, synced: boolean = true): Promise<ModuleActivation | undefined> {
+    const [updated] = await db
+      .update(moduleActivations)
+      .set({
+        guardianSynced: synced,
+        updatedAt: new Date()
+      })
+      .where(eq(moduleActivations.id, id))
+      .returning();
+    
+    return updated;
+  }
+  
+  // Page complexity triage
+  async savePageComplexityTriage(triage: InsertPageComplexityTriage): Promise<PageComplexityTriage> {
+    const [created] = await db
+      .insert(pageComplexityTriage)
+      .values({
+        userId: triage.userId,
+        requestDescription: triage.requestDescription,
+        visualComplexity: triage.visualComplexity,
+        logicComplexity: triage.logicComplexity,
+        dataComplexity: triage.dataComplexity,
+        estimatedHours: triage.estimatedHours,
+        complexityLevel: triage.complexityLevel,
+        aiAssessment: triage.aiAssessment,
+        vaultSynced: triage.vaultSynced ?? false,
+        guardianSynced: triage.guardianSynced ?? false,
+        triageTimestamp: new Date()
+      })
+      .returning();
+    
+    return created;
+  }
+  
+  async getPageComplexityTriage(id: number): Promise<PageComplexityTriage | undefined> {
+    const [triage] = await db
+      .select()
+      .from(pageComplexityTriage)
+      .where(eq(pageComplexityTriage.id, id));
+    
+    return triage;
+  }
+  
+  async getPageComplexityTriagesByUser(userId: number): Promise<PageComplexityTriage[]> {
+    return await db
+      .select()
+      .from(pageComplexityTriage)
+      .where(eq(pageComplexityTriage.userId, userId))
+      .orderBy(desc(pageComplexityTriage.triageTimestamp));
+  }
+  
+  async updatePageComplexitySyncStatus(
+    id: number, 
+    vaultSynced?: boolean, 
+    guardianSynced?: boolean
+  ): Promise<PageComplexityTriage | undefined> {
+    // Build update object based on provided parameters
+    const updateData: { vaultSynced?: boolean, guardianSynced?: boolean, updatedAt: Date } = {
+      updatedAt: new Date()
+    };
+    
+    if (vaultSynced !== undefined) {
+      updateData.vaultSynced = vaultSynced;
+    }
+    
+    if (guardianSynced !== undefined) {
+      updateData.guardianSynced = guardianSynced;
+    }
+    
+    const [updated] = await db
+      .update(pageComplexityTriage)
+      .set(updateData)
+      .where(eq(pageComplexityTriage.id, id))
+      .returning();
+    
+    return updated;
+  }
 }
 
 // For compatibility with existing code, provide an in-memory implementation
@@ -440,6 +577,8 @@ export class MemStorage implements IStorage {
   projectContextData?: ProjectContext;
   activityLogs: ActivityLog[];
   onboardingStates: Map<number, OnboardingState[]>;
+  moduleActivationLogs: ModuleActivation[];
+  pageComplexityTriages: PageComplexityTriage[];
   sessionStore: session.Store = new session.MemoryStore();
 
   constructor() {
@@ -450,6 +589,8 @@ export class MemStorage implements IStorage {
     this.modules = new Map();
     this.activityLogs = [];
     this.onboardingStates = new Map();
+    this.moduleActivationLogs = [];
+    this.pageComplexityTriages = [];
   }
 
   async getUser(id: number): Promise<User | undefined> {
@@ -725,6 +866,130 @@ export class MemStorage implements IStorage {
     }
     
     return logs.slice(0, limit);
+  }
+  
+  // Module activation logging implementation
+  async logModuleActivation(activation: InsertModuleActivation): Promise<ModuleActivation> {
+    const id = this.currentId++;
+    const now = new Date();
+    
+    const moduleActivation: ModuleActivation = {
+      id,
+      userId: activation.userId,
+      moduleId: activation.moduleId,
+      activatedAt: new Date(),
+      pageMetadata: activation.pageMetadata ?? null,
+      guardianSynced: activation.guardianSynced ?? false,
+      createdAt: now,
+      updatedAt: now
+    };
+    
+    this.moduleActivationLogs.push(moduleActivation);
+    return moduleActivation;
+  }
+  
+  async getModuleActivations(userId?: number, moduleId?: string): Promise<ModuleActivation[]> {
+    let activations = this.moduleActivationLogs;
+    
+    // Apply filters if provided
+    if (userId && moduleId) {
+      activations = activations.filter(
+        activation => activation.userId === userId && activation.moduleId === moduleId
+      );
+    } else if (userId) {
+      activations = activations.filter(activation => activation.userId === userId);
+    } else if (moduleId) {
+      activations = activations.filter(activation => activation.moduleId === moduleId);
+    }
+    
+    // Sort by most recent first
+    return activations.sort(
+      (a, b) => b.activatedAt.getTime() - a.activatedAt.getTime()
+    );
+  }
+  
+  async markModuleActivationSynced(id: number, synced: boolean = true): Promise<ModuleActivation | undefined> {
+    const index = this.moduleActivationLogs.findIndex(activation => activation.id === id);
+    
+    if (index !== -1) {
+      const updated: ModuleActivation = {
+        ...this.moduleActivationLogs[index],
+        guardianSynced: synced,
+        updatedAt: new Date()
+      };
+      
+      this.moduleActivationLogs[index] = updated;
+      return updated;
+    }
+    
+    return undefined;
+  }
+  
+  // Page complexity triage implementation
+  async savePageComplexityTriage(triage: InsertPageComplexityTriage): Promise<PageComplexityTriage> {
+    const id = this.currentId++;
+    const now = new Date();
+    
+    const pageComplexityTriage: PageComplexityTriage = {
+      id,
+      userId: triage.userId,
+      requestDescription: triage.requestDescription,
+      visualComplexity: triage.visualComplexity,
+      logicComplexity: triage.logicComplexity,
+      dataComplexity: triage.dataComplexity,
+      estimatedHours: triage.estimatedHours,
+      complexityLevel: triage.complexityLevel,
+      aiAssessment: triage.aiAssessment,
+      vaultSynced: triage.vaultSynced ?? false,
+      guardianSynced: triage.guardianSynced ?? false,
+      triageTimestamp: now,
+      createdAt: now,
+      updatedAt: now
+    };
+    
+    this.pageComplexityTriages.push(pageComplexityTriage);
+    return pageComplexityTriage;
+  }
+  
+  async getPageComplexityTriage(id: number): Promise<PageComplexityTriage | undefined> {
+    return this.pageComplexityTriages.find(triage => triage.id === id);
+  }
+  
+  async getPageComplexityTriagesByUser(userId: number): Promise<PageComplexityTriage[]> {
+    return this.pageComplexityTriages
+      .filter(triage => triage.userId === userId)
+      .sort((a, b) => b.triageTimestamp.getTime() - a.triageTimestamp.getTime());
+  }
+  
+  async updatePageComplexitySyncStatus(
+    id: number, 
+    vaultSynced?: boolean, 
+    guardianSynced?: boolean
+  ): Promise<PageComplexityTriage | undefined> {
+    const index = this.pageComplexityTriages.findIndex(triage => triage.id === id);
+    
+    if (index !== -1) {
+      const updateData: { vaultSynced?: boolean, guardianSynced?: boolean } = {};
+      
+      if (vaultSynced !== undefined) {
+        updateData.vaultSynced = vaultSynced;
+      }
+      
+      if (guardianSynced !== undefined) {
+        updateData.guardianSynced = guardianSynced;
+      }
+      
+      const updated: PageComplexityTriage = {
+        ...this.pageComplexityTriages[index],
+        ...updateData,
+        updatedAt: new Date()
+      };
+      
+      this.pageComplexityTriages[index] = updated;
+      return updated;
+    }
+    
+    return undefined;
   }
 }
 

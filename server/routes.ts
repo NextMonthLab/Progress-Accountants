@@ -1,6 +1,18 @@
 import type { Express, Request, Response } from "express";
 import { createServer, type Server } from "http";
-import { storage, FeatureRequest } from "./storage";
+import { storage } from "./storage";
+import { 
+  type FeatureRequest, 
+  type ModuleActivation, 
+  type PageComplexityTriage,
+  insertPageComplexityTriageSchema,
+  insertModuleActivationSchema 
+} from "@shared/schema";
+import { 
+  PageMetadata, 
+  PageComplexityAssessment, 
+  ComplexityLevel 
+} from "@shared/page_metadata";
 import { z } from "zod";
 import OpenAI from "openai";
 
