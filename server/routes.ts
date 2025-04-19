@@ -1668,11 +1668,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         data: activeVersion
       });
     } catch (error) {
-      console.error("Error fetching active brand version:", error);
-      res.status(500).json({
-        success: false,
-        message: "An error occurred retrieving the active brand version"
-      });
+      handleApiError(res, error, "An error occurred retrieving the active brand version");
     }
   });
 

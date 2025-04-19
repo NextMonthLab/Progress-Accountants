@@ -23,7 +23,8 @@ import HomepageSetupPage from "@/pages/HomepageSetupPage";
 import FoundationPagesOverviewPage from "@/pages/FoundationPagesOverviewPage";
 import LaunchReadyPage from "@/pages/LaunchReadyPage";
 import AdminSettingsPage from "@/pages/AdminSettingsPage";
-import DocumentHead from "@/components/DocumentHead";
+import SEOConfigManagerPage from "@/pages/SEOConfigManagerPage";
+import { DocumentHead } from "@/components/DocumentHead";
 import MainLayout from "@/layouts/MainLayout";
 import { ClientDataProvider, withAuth } from "@/components/ClientDataProvider";
 
@@ -33,6 +34,7 @@ const ProtectedCRMView = withAuth(CRMViewPage, 'staff');
 const ProtectedCRMViewEnhanced = withAuth(CRMViewPageEnhanced, 'staff');
 const ProtectedDashboard = withAuth(DashboardPage);
 const ProtectedAdminSettings = withAuth(AdminSettingsPage, 'staff');
+const ProtectedSEOConfigManager = withAuth(SEOConfigManagerPage, 'staff');
 
 function Router() {
   return (
@@ -51,6 +53,7 @@ function Router() {
       <Route path="/contact" component={ContactPage} />
       <Route path="/admin/new-request" component={ScopeRequestPage} />
       <Route path="/admin/settings" component={ProtectedAdminSettings} />
+      <Route path="/admin/seo" component={ProtectedSEOConfigManager} />
       <Route path="/scope-request" component={ScopeRequestPage} />
       <Route path="/module-gallery" component={ModuleGalleryPage} />
       <Route path="/module-library" component={ModuleLibraryPage} />
@@ -68,7 +71,7 @@ function Router() {
 function App() {
   return (
     <ClientDataProvider>
-      <DocumentHead />
+      <DocumentHead route="/" />
       <MainLayout>
         <Router />
       </MainLayout>

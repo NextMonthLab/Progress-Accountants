@@ -1,47 +1,96 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { Helmet } from 'react-helmet';
 import { useLocation } from 'wouter';
+import { fetchSeoConfigByPath } from '@/lib/api';
 
-interface RouteMetadata {
+type SEOConfig = {
   title: string;
   description: string;
-}
-
-const routes: Record<string, RouteMetadata> = {
-  '/': {
-    title: 'Accountants in Banbury | Progress Accountants – Real Tools for Business Growth',
-    description: 'Looking for an accountant in Banbury? Progress Accountants offers expert bookkeeping, tax returns, and a custom dashboard to grow your business. Book your free call today.'
-  },
-  '/studio-banbury': {
-    title: 'Podcast & Video Studio Hire in Banbury, Oxfordshire | Progress Accountants',
-    description: 'Hire a professional podcast and video studio in Banbury. Two-camera setup, pro audio, 4K TV, and tech support. Free for Progress clients. Book now.'
-  },
-  '/client-dashboard': {
-    title: 'Your Financial Dashboard – Powered by Progress Accountants',
-    description: 'Access your real-time financial insights, key dates, and HMRC updates through our secure client dashboard. Designed for business owners, not accountants.'
-  }
+  canonical: string | null;
+  image: string | null;
+  indexable: boolean;
+  keywords: string[] | null;
 };
 
-export default function DocumentHead() {
+interface DocumentHeadProps {
+  route?: string;
+  title?: string;
+  description?: string;
+  canonical?: string;
+  image?: string;
+  indexable?: boolean;
+  keywords?: string[];
+}
+
+export function DocumentHead({
+  route,
+  title,
+  description,
+  canonical,
+  image,
+  indexable = true,
+  keywords,
+}: DocumentHeadProps) {
   const [location] = useLocation();
-  
+  const currentRoute = route || location;
+  const [seoConfig, setSeoConfig] = useState<SEOConfig | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+
   useEffect(() => {
-    // Get metadata for current route, or fallback to homepage metadata
-    const metadata = routes[location] || routes['/'];
-    
-    // Update document title
-    document.title = metadata.title;
-    
-    // Update meta description
-    let metaDescription = document.querySelector('meta[name="description"]');
-    if (metaDescription) {
-      metaDescription.setAttribute('content', metadata.description);
-    } else {
-      metaDescription = document.createElement('meta');
-      metaDescription.setAttribute('name', 'description');
-      metaDescription.setAttribute('content', metadata.description);
-      document.head.appendChild(metaDescription);
+    // Skip the fetch if we're providing all props manually
+    if (title && description) {
+      return;
     }
-  }, [location]);
-  
-  return null; // This component doesn't render anything visually
+
+    const fetchSEO = async () => {
+      try {
+        setIsLoading(true);
+        const data = await fetchSeoConfigByPath(currentRoute);
+        if (data) {
+          setSeoConfig(data);
+        }
+      } catch (error) {
+        console.error('Error fetching SEO config:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchSEO();
+  }, [currentRoute, title, description]);
+
+  // Use props or fallback to seoConfig, then to defaults
+  const pageTitle = title || seoConfig?.title || 'Progress Accountants';
+  const pageDescription = description || seoConfig?.description || 'Professional accounting services for modern businesses.';
+  const pageCanonical = canonical || seoConfig?.canonical || `${window.location.origin}${currentRoute}`;
+  const pageImage = image || seoConfig?.image || `${window.location.origin}/logo.png`;
+  const pageIndexable = indexable && (seoConfig?.indexable ?? true);
+  const pageKeywords = keywords || seoConfig?.keywords || ['accounting', 'business', 'finance', 'tax'];
+
+  return (
+    <Helmet>
+      <title>{pageTitle}</title>
+      <meta name="description" content={pageDescription} />
+      <meta name="keywords" content={pageKeywords.join(', ')} />
+      
+      {/* Canonical URL */}
+      <link rel="canonical" href={pageCanonical} />
+      
+      {/* Robots directives */}
+      {!pageIndexable && <meta name="robots" content="noindex, nofollow" />}
+      
+      {/* OpenGraph tags */}
+      <meta property="og:title" content={pageTitle} />
+      <meta property="og:description" content={pageDescription} />
+      <meta property="og:url" content={pageCanonical} />
+      <meta property="og:type" content="website" />
+      {pageImage && <meta property="og:image" content={pageImage} />}
+      
+      {/* Twitter Card tags */}
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:title" content={pageTitle} />
+      <meta name="twitter:description" content={pageDescription} />
+      {pageImage && <meta name="twitter:image" content={pageImage} />}
+    </Helmet>
+  );
 }
