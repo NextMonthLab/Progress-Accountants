@@ -1763,5 +1763,291 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Create HTTP server
   const httpServer = createServer(app);
 
+  // SEO Configuration API Endpoints
+  app.get("/api/seo/configs", async (req: Request, res: Response) => {
+    try {
+      const configs = await storage.getAllSeoConfigurations();
+      return res.status(200).json(configs);
+    } catch (error) {
+      handleApiError(res, error, "Failed to fetch SEO configurations");
+    }
+  });
+
+  app.get("/api/seo/configs/path", async (req: Request, res: Response) => {
+    try {
+      const routePath = req.query.routePath as string;
+      
+      if (!routePath) {
+        return res.status(400).json({ error: "Route path is required" });
+      }
+      
+      const config = await storage.getSeoConfiguration(routePath);
+      
+      // Don't return 404 if not found, just return null
+      // This is useful for the frontend to default to basic SEO
+      return res.status(200).json(config || null);
+    } catch (error) {
+      handleApiError(res, error, "Failed to fetch SEO configuration by path");
+    }
+  });
+
+  app.get("/api/seo/configs/:id", async (req: Request, res: Response) => {
+    try {
+      const id = parseInt(req.params.id);
+      
+      if (isNaN(id)) {
+        return res.status(400).json({ error: "Invalid ID format" });
+      }
+      
+      const config = await storage.getSeoConfiguration(undefined, id);
+      
+      if (!config) {
+        return res.status(404).json({ error: "SEO configuration not found" });
+      }
+      
+      return res.status(200).json(config);
+    } catch (error) {
+      handleApiError(res, error, "Failed to fetch SEO configuration");
+    }
+  });
+
+  app.post("/api/seo/configs", async (req: Request, res: Response) => {
+    try {
+      const configData = req.body;
+      const savedConfig = await storage.saveSeoConfiguration(configData);
+      return res.status(201).json(savedConfig);
+    } catch (error) {
+      handleApiError(res, error, "Failed to create SEO configuration");
+    }
+  });
+
+  app.patch("/api/seo/configs/:id", async (req: Request, res: Response) => {
+    try {
+      const id = parseInt(req.params.id);
+      
+      if (isNaN(id)) {
+        return res.status(400).json({ error: "Invalid ID format" });
+      }
+      
+      const updatedConfig = await storage.updateSeoConfiguration(id, req.body);
+      
+      if (!updatedConfig) {
+        return res.status(404).json({ error: "SEO configuration not found" });
+      }
+      
+      return res.status(200).json(updatedConfig);
+    } catch (error) {
+      handleApiError(res, error, "Failed to update SEO configuration");
+    }
+  });
+
+  app.delete("/api/seo/configs/:id", async (req: Request, res: Response) => {
+    try {
+      const id = parseInt(req.params.id);
+      
+      if (isNaN(id)) {
+        return res.status(400).json({ error: "Invalid ID format" });
+      }
+      
+      const deleted = await storage.deleteSeoConfiguration(id);
+      
+      if (!deleted) {
+        return res.status(404).json({ error: "SEO configuration not found" });
+      }
+      
+      return res.status(200).json({ success: true });
+    } catch (error) {
+      handleApiError(res, error, "Failed to delete SEO configuration");
+    }
+  });
+
+  app.post("/api/seo/configs/:id/sync/guardian", async (req: Request, res: Response) => {
+    try {
+      const id = parseInt(req.params.id);
+      
+      if (isNaN(id)) {
+        return res.status(400).json({ error: "Invalid ID format" });
+      }
+      
+      const updated = await storage.updateSeoSyncStatus(id, undefined, true);
+      
+      if (!updated) {
+        return res.status(404).json({ error: "SEO configuration not found" });
+      }
+      
+      return res.status(200).json(updated);
+    } catch (error) {
+      handleApiError(res, error, "Failed to sync SEO configuration with Guardian");
+    }
+  });
+
+  app.post("/api/seo/configs/:id/sync/vault", async (req: Request, res: Response) => {
+    try {
+      const id = parseInt(req.params.id);
+      
+      if (isNaN(id)) {
+        return res.status(400).json({ error: "Invalid ID format" });
+      }
+      
+      const updated = await storage.updateSeoSyncStatus(id, true, undefined);
+      
+      if (!updated) {
+        return res.status(404).json({ error: "SEO configuration not found" });
+      }
+      
+      return res.status(200).json(updated);
+    } catch (error) {
+      handleApiError(res, error, "Failed to sync SEO configuration with Vault");
+    }
+  });
+
+  app.post("/api/seo/sitemap/generate", async (req: Request, res: Response) => {
+    try {
+      const configs = await storage.getSeoConfigurationsByStatus(true);
+      const siteUrl = process.env.SITE_URL || "https://progressaccountants.com";
+      
+      // Generate the sitemap XML
+      let sitemap = '<?xml version="1.0" encoding="UTF-8"?>\n';
+      sitemap += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n';
+      
+      configs.forEach(config => {
+        sitemap += '  <url>\n';
+        sitemap += `    <loc>${siteUrl}${config.routePath}</loc>\n`;
+        if (config.changeFrequency) {
+          sitemap += `    <changefreq>${config.changeFrequency}</changefreq>\n`;
+        }
+        if (config.priority !== null) {
+          sitemap += `    <priority>${config.priority}</priority>\n`;
+        }
+        sitemap += `    <lastmod>${new Date(config.updatedAt).toISOString()}</lastmod>\n`;
+        sitemap += '  </url>\n';
+      });
+      
+      sitemap += '</urlset>';
+      
+      return res.status(200).json({
+        success: true,
+        sitemap,
+        configCount: configs.length
+      });
+    } catch (error) {
+      handleApiError(res, error, "Failed to generate sitemap");
+    }
+  });
+
+  // Brand Versioning API Endpoints
+  app.get("/api/brand/versions", async (req: Request, res: Response) => {
+    try {
+      const versions = await storage.getAllBrandVersions();
+      return res.status(200).json(versions);
+    } catch (error) {
+      handleApiError(res, error, "Failed to fetch brand versions");
+    }
+  });
+
+  app.get("/api/brand/versions/:id", async (req: Request, res: Response) => {
+    try {
+      const id = parseInt(req.params.id);
+      
+      if (isNaN(id)) {
+        return res.status(400).json({ error: "Invalid ID format" });
+      }
+      
+      const version = await storage.getBrandVersion(id);
+      
+      if (!version) {
+        return res.status(404).json({ error: "Brand version not found" });
+      }
+      
+      return res.status(200).json(version);
+    } catch (error) {
+      handleApiError(res, error, "Failed to fetch brand version");
+    }
+  });
+
+  app.get("/api/brand/versions/latest", async (req: Request, res: Response) => {
+    try {
+      const version = await storage.getLatestBrandVersion();
+      
+      if (!version) {
+        return res.status(404).json({ error: "No brand versions found" });
+      }
+      
+      return res.status(200).json(version);
+    } catch (error) {
+      handleApiError(res, error, "Failed to fetch latest brand version");
+    }
+  });
+
+  app.post("/api/brand/versions", async (req: Request, res: Response) => {
+    try {
+      const versionData = req.body;
+      const savedVersion = await storage.saveBrandVersion(versionData);
+      return res.status(201).json(savedVersion);
+    } catch (error) {
+      handleApiError(res, error, "Failed to create brand version");
+    }
+  });
+
+  app.patch("/api/brand/versions/:id", async (req: Request, res: Response) => {
+    try {
+      const id = parseInt(req.params.id);
+      
+      if (isNaN(id)) {
+        return res.status(400).json({ error: "Invalid ID format" });
+      }
+      
+      const updatedVersion = await storage.updateBrandVersion(id, req.body);
+      
+      if (!updatedVersion) {
+        return res.status(404).json({ error: "Brand version not found" });
+      }
+      
+      return res.status(200).json(updatedVersion);
+    } catch (error) {
+      handleApiError(res, error, "Failed to update brand version");
+    }
+  });
+
+  app.post("/api/brand/versions/:id/activate", async (req: Request, res: Response) => {
+    try {
+      const id = parseInt(req.params.id);
+      
+      if (isNaN(id)) {
+        return res.status(400).json({ error: "Invalid ID format" });
+      }
+      
+      const activatedVersion = await storage.activateBrandVersion(id);
+      
+      if (!activatedVersion) {
+        return res.status(404).json({ error: "Brand version not found" });
+      }
+      
+      return res.status(200).json(activatedVersion);
+    } catch (error) {
+      handleApiError(res, error, "Failed to activate brand version");
+    }
+  });
+
+  app.delete("/api/brand/versions/:id", async (req: Request, res: Response) => {
+    try {
+      const id = parseInt(req.params.id);
+      
+      if (isNaN(id)) {
+        return res.status(400).json({ error: "Invalid ID format" });
+      }
+      
+      const deleted = await storage.deleteBrandVersion(id);
+      
+      if (!deleted) {
+        return res.status(404).json({ error: "Brand version not found" });
+      }
+      
+      return res.status(200).json({ success: true });
+    } catch (error) {
+      handleApiError(res, error, "Failed to delete brand version");
+    }
+  });
+
   return httpServer;
 }
