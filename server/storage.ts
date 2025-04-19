@@ -28,11 +28,17 @@ import {
   type InsertModuleActivation,
   pageComplexityTriage,
   type PageComplexityTriage,
-  type InsertPageComplexityTriage
+  type InsertPageComplexityTriage,
+  seoConfigurations,
+  type SeoConfiguration,
+  type InsertSeoConfiguration,
+  brandVersions,
+  type BrandVersion,
+  type InsertBrandVersion
 } from "@shared/schema";
 import { PageMetadata, PageComplexityAssessment } from "@shared/page_metadata";
 import { db } from "./db";
-import { eq, desc, and } from "drizzle-orm";
+import { eq, desc, asc, and } from "drizzle-orm";
 import connectPg from "connect-pg-simple";
 import session from "express-session";
 import crypto from "crypto";
