@@ -1,17 +1,164 @@
-import { pgTable, text, serial, integer, boolean } from "drizzle-orm/pg-core";
+import { pgTable, text, serial, integer, boolean, timestamp, varchar, jsonb } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
+import { relations } from "drizzle-orm";
 
+// User authentication tables
 export const users = pgTable("users", {
   id: serial("id").primaryKey(),
   username: text("username").notNull().unique(),
   password: text("password").notNull(),
+  name: varchar("name", { length: 100 }),
+  userType: varchar("user_type", { length: 20 }).default("client").notNull(), // client or staff
+  email: varchar("email", { length: 255 }),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
 export const insertUserSchema = createInsertSchema(users).pick({
   username: true,
   password: true,
+  name: true,
+  userType: true,
+  email: true,
 });
 
+// Business identity and branding data
+export const businessIdentity = pgTable("business_identity", {
+  id: serial("id").primaryKey(),
+  name: varchar("name", { length: 255 }),
+  mission: text("mission"),
+  vision: text("vision"),
+  values: jsonb("values"), // Array of values
+  marketFocus: jsonb("market_focus"), // Market focus details
+  targetAudience: jsonb("target_audience"), // Target audience details
+  brandVoice: jsonb("brand_voice"), // Brand voice details
+  brandPositioning: text("brand_positioning"),
+  teamValues: jsonb("team_values"), // Team values
+  cultureStatements: jsonb("culture_statements"), // Culture statements
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export const insertBusinessIdentitySchema = createInsertSchema(businessIdentity).omit({
+  id: true,
+  updatedAt: true,
+});
+
+// Project context for pages and setup status
+export const projectContext = pgTable("project_context", {
+  id: serial("id").primaryKey(),
+  homepageSetup: jsonb("homepage_setup"), // Homepage setup details
+  pageStatus: jsonb("page_status"), // Status of various pages
+  onboardingComplete: boolean("onboarding_complete").default(false),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export const insertProjectContextSchema = createInsertSchema(projectContext).omit({
+  id: true,
+  updatedAt: true,
+});
+
+// Modules registry and activation status
+export const modules = pgTable("modules", {
+  id: varchar("id", { length: 100 }).primaryKey(),
+  name: varchar("name", { length: 255 }).notNull(),
+  description: text("description"),
+  category: varchar("category", { length: 50 }).notNull(),
+  status: varchar("status", { length: 20 }).default("inactive").notNull(),
+  iconType: varchar("icon_type", { length: 50 }),
+  iconColor: varchar("icon_color", { length: 50 }),
+  path: varchar("path", { length: 255 }),
+  previewAvailable: boolean("preview_available").default(false),
+  premium: boolean("premium").default(false),
+  credits: integer("credits"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export const insertModuleSchema = createInsertSchema(modules).omit({
+  createdAt: true,
+  updatedAt: true,
+});
+
+// Feature requests tracking
+export const featureRequests = pgTable("feature_requests", {
+  id: serial("id").primaryKey(),
+  businessId: varchar("business_id", { length: 100 }),
+  description: text("description").notNull(),
+  category: varchar("category", { length: 50 }),
+  requestData: jsonb("request_data"),
+  status: varchar("status", { length: 20 }).default("sent").notNull(),
+  sentAt: timestamp("sent_at").defaultNow().notNull(),
+});
+
+export const insertFeatureRequestSchema = createInsertSchema(featureRequests).omit({
+  id: true,
+  sentAt: true,
+});
+
+// Contact form submissions
+export const contactSubmissions = pgTable("contact_submissions", {
+  id: serial("id").primaryKey(),
+  name: varchar("name", { length: 255 }).notNull(),
+  business: varchar("business", { length: 255 }),
+  email: varchar("email", { length: 255 }).notNull(),
+  phone: varchar("phone", { length: 50 }),
+  industry: varchar("industry", { length: 100 }),
+  message: text("message").notNull(),
+  date: timestamp("date").defaultNow().notNull(),
+});
+
+export const insertContactSubmissionSchema = createInsertSchema(contactSubmissions).omit({
+  id: true,
+  date: true,
+});
+
+// Activity logs for tracking user actions
+export const activityLogs = pgTable("activity_logs", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id").references(() => users.id),
+  userType: varchar("user_type", { length: 20 }).notNull(),
+  actionType: varchar("action_type", { length: 50 }).notNull(),
+  entityType: varchar("entity_type", { length: 50 }).notNull(),
+  entityId: varchar("entity_id", { length: 100 }),
+  details: jsonb("details"),
+  timestamp: timestamp("timestamp").defaultNow().notNull(),
+});
+
+export const insertActivityLogSchema = createInsertSchema(activityLogs).omit({
+  id: true,
+  timestamp: true,
+});
+
+// Define relationships between tables
+export const usersRelations = relations(users, ({ many }) => ({
+  activityLogs: many(activityLogs),
+}));
+
+export const activityLogsRelations = relations(activityLogs, ({ one }) => ({
+  user: one(users, {
+    fields: [activityLogs.userId],
+    references: [users.id],
+  }),
+}));
+
+// Export types
 export type InsertUser = z.infer<typeof insertUserSchema>;
 export type User = typeof users.$inferSelect;
+
+export type InsertBusinessIdentity = z.infer<typeof insertBusinessIdentitySchema>;
+export type BusinessIdentity = typeof businessIdentity.$inferSelect;
+
+export type InsertProjectContext = z.infer<typeof insertProjectContextSchema>;
+export type ProjectContext = typeof projectContext.$inferSelect;
+
+export type InsertModule = z.infer<typeof insertModuleSchema>;
+export type Module = typeof modules.$inferSelect;
+
+export type InsertFeatureRequest = z.infer<typeof insertFeatureRequestSchema>;
+export type FeatureRequest = typeof featureRequests.$inferSelect;
+
+export type InsertContactSubmission = z.infer<typeof insertContactSubmissionSchema>;
+export type ContactSubmission = typeof contactSubmissions.$inferSelect;
+
+export type InsertActivityLog = z.infer<typeof insertActivityLogSchema>;
+export type ActivityLog = typeof activityLogs.$inferSelect;
