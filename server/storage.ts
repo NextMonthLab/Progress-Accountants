@@ -812,6 +812,136 @@ export class DatabaseStorage implements IStorage {
     
     return updated;
   }
+  
+  // Blueprint Export operations
+  async getClientRegistry(): Promise<ClientRegistry | undefined> {
+    const [registry] = await db
+      .select()
+      .from(clientRegistry)
+      .limit(1);
+    
+    return registry;
+  }
+  
+  async createClientRegistry(data: InsertClientRegistry): Promise<ClientRegistry> {
+    // Check if we already have a record
+    const existing = await this.getClientRegistry();
+    
+    if (existing) {
+      // Update the existing record
+      const [updated] = await db
+        .update(clientRegistry)
+        .set({
+          ...data,
+          updatedAt: new Date()
+        })
+        .where(eq(clientRegistry.id, existing.id))
+        .returning();
+      
+      return updated;
+    } else {
+      // Create a new record
+      const [created] = await db
+        .insert(clientRegistry)
+        .values({
+          ...data,
+          exportReady: data.exportReady ?? false,
+          handoffStatus: data.handoffStatus ?? "in_progress"
+        })
+        .returning();
+      
+      return created;
+    }
+  }
+  
+  async updateClientRegistry(clientId: string, data: Partial<InsertClientRegistry>): Promise<ClientRegistry | undefined> {
+    const [registry] = await db
+      .select()
+      .from(clientRegistry)
+      .where(eq(clientRegistry.clientId, clientId));
+    
+    if (!registry) {
+      return undefined;
+    }
+    
+    const [updated] = await db
+      .update(clientRegistry)
+      .set({
+        ...data,
+        updatedAt: new Date()
+      })
+      .where(eq(clientRegistry.id, registry.id))
+      .returning();
+    
+    return updated;
+  }
+  
+  async updateExportableModules(clientId: string, moduleList: any[]): Promise<ClientRegistry | undefined> {
+    const [registry] = await db
+      .select()
+      .from(clientRegistry)
+      .where(eq(clientRegistry.clientId, clientId));
+    
+    if (!registry) {
+      return undefined;
+    }
+    
+    const [updated] = await db
+      .update(clientRegistry)
+      .set({
+        exportableModules: moduleList,
+        updatedAt: new Date()
+      })
+      .where(eq(clientRegistry.id, registry.id))
+      .returning();
+    
+    return updated;
+  }
+  
+  async markAsExportReady(clientId: string, exportReady: boolean): Promise<ClientRegistry | undefined> {
+    const [registry] = await db
+      .select()
+      .from(clientRegistry)
+      .where(eq(clientRegistry.clientId, clientId));
+    
+    if (!registry) {
+      return undefined;
+    }
+    
+    const [updated] = await db
+      .update(clientRegistry)
+      .set({
+        exportReady,
+        lastExported: exportReady ? new Date() : registry.lastExported,
+        updatedAt: new Date()
+      })
+      .where(eq(clientRegistry.id, registry.id))
+      .returning();
+    
+    return updated;
+  }
+  
+  async updateHandoffStatus(clientId: string, status: string): Promise<ClientRegistry | undefined> {
+    const [registry] = await db
+      .select()
+      .from(clientRegistry)
+      .where(eq(clientRegistry.clientId, clientId));
+    
+    if (!registry) {
+      return undefined;
+    }
+    
+    const [updated] = await db
+      .update(clientRegistry)
+      .set({
+        handoffStatus: status,
+        updatedAt: new Date()
+      })
+      .where(eq(clientRegistry.id, registry.id))
+      .returning();
+    
+    return updated;
+  }
 }
 
 // For compatibility with existing code, provide an in-memory implementation
@@ -829,6 +959,7 @@ export class MemStorage implements IStorage {
   pageComplexityTriages: PageComplexityTriage[];
   seoConfigurations: Map<string, SeoConfiguration>;
   brandVersions: Map<number, BrandVersion>;
+  clientRegistryData?: ClientRegistry;
   sessionStore: session.Store = new session.MemoryStore();
 
   constructor() {
@@ -1435,6 +1566,96 @@ export class MemStorage implements IStorage {
     }
     
     return undefined;
+  }
+  
+  // Blueprint Export operations
+  async getClientRegistry(): Promise<ClientRegistry | undefined> {
+    return this.clientRegistryData;
+  }
+  
+  async createClientRegistry(data: InsertClientRegistry): Promise<ClientRegistry> {
+    const id = this.currentId++;
+    const now = new Date();
+    
+    const clientRegistry: ClientRegistry = {
+      id,
+      clientId: data.clientId,
+      blueprintVersion: data.blueprintVersion || "1.0.0",
+      sector: data.sector || null,
+      location: data.location || null,
+      projectStartDate: data.projectStartDate || now,
+      userRoles: data.userRoles || null,
+      exportReady: data.exportReady || false,
+      handoffStatus: data.handoffStatus || "in_progress",
+      exportableModules: data.exportableModules || null,
+      lastExported: data.lastExported || null,
+      createdAt: now,
+      updatedAt: now
+    };
+    
+    this.clientRegistryData = clientRegistry;
+    return clientRegistry;
+  }
+  
+  async updateClientRegistry(clientId: string, data: Partial<InsertClientRegistry>): Promise<ClientRegistry | undefined> {
+    if (!this.clientRegistryData || this.clientRegistryData.clientId !== clientId) {
+      return undefined;
+    }
+    
+    const updated: ClientRegistry = {
+      ...this.clientRegistryData,
+      ...data,
+      updatedAt: new Date()
+    };
+    
+    this.clientRegistryData = updated;
+    return updated;
+  }
+  
+  async updateExportableModules(clientId: string, moduleList: any[]): Promise<ClientRegistry | undefined> {
+    if (!this.clientRegistryData || this.clientRegistryData.clientId !== clientId) {
+      return undefined;
+    }
+    
+    const updated: ClientRegistry = {
+      ...this.clientRegistryData,
+      exportableModules: moduleList,
+      updatedAt: new Date()
+    };
+    
+    this.clientRegistryData = updated;
+    return updated;
+  }
+  
+  async markAsExportReady(clientId: string, exportReady: boolean): Promise<ClientRegistry | undefined> {
+    if (!this.clientRegistryData || this.clientRegistryData.clientId !== clientId) {
+      return undefined;
+    }
+    
+    const updated: ClientRegistry = {
+      ...this.clientRegistryData,
+      exportReady,
+      lastExported: exportReady ? new Date() : this.clientRegistryData.lastExported,
+      updatedAt: new Date()
+    };
+    
+    this.clientRegistryData = updated;
+    return updated;
+  }
+  
+  async updateHandoffStatus(clientId: string, status: string): Promise<ClientRegistry | undefined> {
+    if (!this.clientRegistryData || this.clientRegistryData.clientId !== clientId) {
+      return undefined;
+    }
+    
+    const updated: ClientRegistry = {
+      ...this.clientRegistryData,
+      handoffStatus: status,
+      updatedAt: new Date()
+    };
+    
+    this.clientRegistryData = updated;
+    return updated;
   }
 }
 

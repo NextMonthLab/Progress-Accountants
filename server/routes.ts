@@ -7,11 +7,13 @@ import {
   type PageComplexityTriage,
   type SeoConfiguration,
   type BrandVersion,
+  type ClientRegistry,
   insertPageComplexityTriageSchema,
   insertModuleActivationSchema,
   insertSeoConfigurationSchema,
   insertBrandVersionSchema
 } from "@shared/schema";
+import { registerBlueprintRoutes } from "./blueprint";
 import { 
   PageMetadata, 
   PageComplexityAssessment, 
