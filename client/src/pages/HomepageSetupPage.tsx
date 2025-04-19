@@ -300,6 +300,69 @@ export default function HomepageSetupPage() {
               </AlertDescription>
             </Alert>
             
+            {/* Complexity Scoring Demo */}
+            <Card className="border-blue-200 bg-blue-50/50">
+              <CardHeader className="pb-2">
+                <div className="flex justify-between items-center">
+                  <CardTitle className="text-lg font-medium">Page Complexity Analysis</CardTitle>
+                  <Badge variant="outline" className="bg-blue-100 text-blue-800 hover:bg-blue-100">
+                    New Feature
+                  </Badge>
+                </div>
+                <CardDescription>
+                  Our intelligence layer analyzes your content and provides insights
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm font-medium">Content Complexity</span>
+                    <div className="flex space-x-2 items-center">
+                      <span className="text-sm text-muted-foreground">
+                        {homepage.headline.length > 50 ? "Medium" : "Low"}
+                      </span>
+                      <div className="w-24 h-2 bg-gray-200 rounded-full overflow-hidden">
+                        <div 
+                          className="h-full bg-amber-500" 
+                          style={{ width: `${Math.min(100, (homepage.headline.length / 100) * 100)}%` }}
+                        ></div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm font-medium">SEO Readiness</span>
+                    <div className="flex space-x-2 items-center">
+                      <span className="text-sm text-muted-foreground">
+                        {homepage.services.length > 2 ? "High" : "Medium"}
+                      </span>
+                      <div className="w-24 h-2 bg-gray-200 rounded-full overflow-hidden">
+                        <div 
+                          className="h-full bg-green-500" 
+                          style={{ width: `${Math.min(100, (homepage.services.length / 5) * 100)}%` }}
+                        ></div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm font-medium">User Engagement Potential</span>
+                    <div className="flex space-x-2 items-center">
+                      <span className="text-sm text-muted-foreground">
+                        {homepage.testimonials.length > 1 ? "High" : "Low"}
+                      </span>
+                      <div className="w-24 h-2 bg-gray-200 rounded-full overflow-hidden">
+                        <div 
+                          className="h-full bg-blue-500" 
+                          style={{ width: `${Math.min(100, (homepage.testimonials.length / 3) * 100)}%` }}
+                        ></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+            
             {/* Headline & Subheading */}
             <Card>
               <CardHeader>

@@ -1,6 +1,9 @@
-import { Switch, Route } from "wouter";
+import { Switch, Route, useLocation } from "wouter";
 import { Toaster } from "@/components/ui/toaster";
+import { useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
 import NotFound from "@/pages/not-found";
+import { useAuth } from "@/components/ClientDataProvider";
 import HomePage from "@/pages/HomePage";
 import StudioPage from "@/pages/StudioPage";
 import DashboardPage from "@/pages/DashboardPage";
@@ -22,6 +25,7 @@ import BusinessIdentityPage from "@/pages/BusinessIdentityPage";
 import HomepageSetupPage from "@/pages/HomepageSetupPage";
 import FoundationPagesOverviewPage from "@/pages/FoundationPagesOverviewPage";
 import LaunchReadyPage from "@/pages/LaunchReadyPage";
+import OnboardingWelcomePage from "@/pages/OnboardingWelcomePage";
 import AdminSettingsPage from "@/pages/AdminSettingsPage";
 import SEOConfigManagerPage from "@/pages/SEOConfigManagerPage";
 import BrandManagerPage from "@/pages/BrandManagerPage";
@@ -44,6 +48,7 @@ function Router() {
   return (
     <Switch>
       <Route path="/" component={HomePage} />
+      <Route path="/onboarding" component={OnboardingWelcomePage} />
       <Route path="/studio-banbury" component={StudioPage} />
       <Route path="/client-dashboard" component={ProtectedDashboard} />
       <Route path="/client-portal" component={ProtectedClientDashboard} />
@@ -78,12 +83,60 @@ function App() {
   return (
     <ClientDataProvider>
       <DocumentHead route="/" />
-      <MainLayout>
-        <Router />
-      </MainLayout>
+      <FirstTimeUserDetector>
+        <MainLayout>
+          <Router />
+        </MainLayout>
+      </FirstTimeUserDetector>
       <Toaster />
     </ClientDataProvider>
   );
+}
+
+// Component to detect first-time users and redirect to onboarding
+function FirstTimeUserDetector({ children }: { children: React.ReactNode }) {
+  const [, navigate] = useLocation();
+  const { userId, userType } = useAuth();
+  
+  // Query the user's onboarding state
+  const { data: onboardingState, isLoading } = useQuery({
+    queryKey: [`/api/onboarding/${userId}`],
+    queryFn: async () => {
+      try {
+        const response = await fetch(`/api/onboarding/${userId}`);
+        if (!response.ok) return null;
+        return response.json();
+      } catch (error) {
+        console.error("Error fetching onboarding state:", error);
+        return null;
+      }
+    },
+  });
+
+  // Query current location
+  const [location] = useLocation();
+  
+  // Only redirect client users who don't have complete onboarding
+  useEffect(() => {
+    // For demo purposes, we'll redirect based on simple localStorage check
+    // In a production environment, this would use the onboardingState from the backend
+    const onboardingComplete = localStorage.getItem('project_context.status') === 'onboarded';
+    
+    // Check for client user and incomplete onboarding
+    if (userType === 'client' && 
+        !onboardingComplete &&
+        location !== '/onboarding' && 
+        !location.startsWith('/homepage-setup') && 
+        !location.startsWith('/foundation-pages') && 
+        !location.startsWith('/launch-ready') &&
+        !location.startsWith('/marketplace')) {
+      
+      // Redirect to onboarding
+      navigate('/onboarding');
+    }
+  }, [userType, location, navigate]);
+
+  return <>{children}</>;
 }
 
 export default App;

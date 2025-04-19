@@ -11,9 +11,11 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { CheckCircle, FileEdit, ExternalLink, CheckCircle2, AlertCircle, Sparkles } from 'lucide-react';
+import { CheckCircle, FileEdit, ExternalLink, CheckCircle2, AlertCircle, Sparkles, Rocket, Loader2 } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 import { Confetti } from '../components/Confetti';
+import { useAuth } from '@/components/ClientDataProvider';
+import { useQuery, useMutation } from '@tanstack/react-query';
 
 // Define page types and status types
 type PageType = 'homepage' | 'about' | 'services' | 'contact' | 'testimonials' | 'faq';
@@ -35,6 +37,46 @@ interface PageStatusData {
 export default function LaunchReadyPage() {
   const { toast } = useToast();
   const [, setLocation] = useLocation();
+  const { userId } = useAuth();
+  
+  // Create a mutation to mark onboarding as complete
+  const completionMutation = useMutation({
+    mutationFn: async () => {
+      const response = await fetch(`/api/onboarding/complete`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ userId, complete: true })
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to update onboarding status');
+      }
+      
+      return await response.json();
+    },
+    onSuccess: () => {
+      toast({
+        title: "Onboarding Complete!",
+        description: "Your site is fully set up. Redirecting to the Marketplace...",
+        variant: "default",
+      });
+      
+      // Redirect to marketplace after a short delay
+      setTimeout(() => {
+        setLocation('/marketplace');
+      }, 2500);
+    },
+    onError: (error) => {
+      console.error('Error completing onboarding:', error);
+      toast({
+        title: "Error Updating Status",
+        description: "There was a problem marking onboarding as complete.",
+        variant: "destructive",
+      });
+    }
+  });
   
   // State for page statuses
   const [pageStatuses, setPageStatuses] = useState<PageStatusData>({
@@ -301,11 +343,16 @@ export default function LaunchReadyPage() {
                       Browse a collection of pre-built screens and features designed to enhance your business system.
                     </p>
                     <Button 
-                      onClick={handleExploreMarketplace}
+                      onClick={() => completionMutation.mutate()}
                       className="w-full bg-[var(--navy)] hover:bg-[var(--navy)]/90"
+                      disabled={completionMutation.isPending}
                     >
-                      <ExternalLink className="mr-2 h-4 w-4" />
-                      Explore Marketplace
+                      {completionMutation.isPending ? (
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      ) : (
+                        <Rocket className="mr-2 h-4 w-4" />
+                      )}
+                      {completionMutation.isPending ? "Completing Setup..." : "Explore Marketplace"}
                     </Button>
                   </CardContent>
                 </Card>
