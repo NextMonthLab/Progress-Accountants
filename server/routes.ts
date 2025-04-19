@@ -5,8 +5,12 @@ import {
   type FeatureRequest, 
   type ModuleActivation, 
   type PageComplexityTriage,
+  type SeoConfiguration,
+  type BrandVersion,
   insertPageComplexityTriageSchema,
-  insertModuleActivationSchema 
+  insertModuleActivationSchema,
+  insertSeoConfigurationSchema,
+  insertBrandVersionSchema
 } from "@shared/schema";
 import { 
   PageMetadata, 
@@ -15,6 +19,24 @@ import {
 } from "@shared/page_metadata";
 import { z } from "zod";
 import OpenAI from "openai";
+
+// Helper function for handling API errors
+function handleApiError(res: Response, error: any, customMessage: string) {
+  console.error(`${customMessage}:`, error);
+  
+  if (error instanceof z.ZodError) {
+    return res.status(400).json({
+      success: false,
+      message: "Validation failed",
+      errors: error.errors
+    });
+  }
+  
+  res.status(500).json({
+    success: false,
+    message: customMessage
+  });
+}
 
 // Initialize OpenAI
 const openai = new OpenAI({
@@ -1348,6 +1370,445 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({
         success: false,
         message: "An error occurred while performing AI assessment"
+      });
+    }
+  });
+
+  // SEO Configuration Management API Endpoints
+  // Get all SEO configurations
+  app.get("/api/seo", async (req, res) => {
+    try {
+      const configs = await storage.getAllSeoConfigurations();
+      res.status(200).json({
+        success: true,
+        data: configs
+      });
+    } catch (error) {
+      console.error("Error fetching SEO configurations:", error);
+      res.status(500).json({
+        success: false,
+        message: "An error occurred retrieving SEO configurations"
+      });
+    }
+  });
+
+  // Get SEO configuration for a specific route
+  app.get("/api/seo/route/:path", async (req, res) => {
+    try {
+      // Get the route path - need to handle potential URL encoding
+      const routePath = decodeURIComponent(req.params.path);
+      
+      if (!routePath) {
+        return res.status(400).json({
+          success: false,
+          message: "Invalid route path"
+        });
+      }
+      
+      const config = await storage.getSeoConfiguration(routePath);
+      
+      if (!config) {
+        return res.status(404).json({
+          success: false,
+          message: "SEO configuration not found for this route"
+        });
+      }
+      
+      res.status(200).json({
+        success: true,
+        data: config
+      });
+    } catch (error) {
+      console.error("Error fetching SEO configuration:", error);
+      res.status(500).json({
+        success: false,
+        message: "An error occurred retrieving the SEO configuration"
+      });
+    }
+  });
+
+  // Create or update SEO configuration
+  app.post("/api/seo", async (req, res) => {
+    try {
+      // Validate the incoming data using the schema
+      const configData = insertSeoConfigurationSchema.parse(req.body);
+      
+      // Set default values for new configurations
+      const seoConfig = {
+        routePath: configData.routePath,
+        title: configData.title,
+        description: configData.description,
+        indexable: configData.indexable ?? true,
+        priority: configData.priority ?? 0.5,
+        canonical: configData.canonical,
+        ogTitle: configData.ogTitle,
+        ogDescription: configData.ogDescription,
+        ogImage: configData.ogImage,
+        structuredData: configData.structuredData,
+        changeFrequency: configData.changeFrequency
+      };
+      
+      const savedConfig = await storage.saveSeoConfiguration(seoConfig);
+      
+      res.status(200).json({
+        success: true,
+        message: "SEO configuration saved successfully",
+        data: savedConfig
+      });
+    } catch (error) {
+      handleApiError(res, error, "An error occurred saving the SEO configuration");
+    }
+  });
+
+  // Update an existing SEO configuration
+  app.patch("/api/seo/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const updateData = req.body;
+      
+      if (isNaN(id)) {
+        return res.status(400).json({
+          success: false,
+          message: "Invalid SEO configuration ID"
+        });
+      }
+      
+      const updated = await storage.updateSeoConfiguration(id, updateData);
+      
+      if (!updated) {
+        return res.status(404).json({
+          success: false,
+          message: "SEO configuration not found"
+        });
+      }
+      
+      res.status(200).json({
+        success: true,
+        message: "SEO configuration updated successfully",
+        data: updated
+      });
+    } catch (error) {
+      console.error("Error updating SEO configuration:", error);
+      res.status(500).json({
+        success: false,
+        message: "An error occurred updating the SEO configuration"
+      });
+    }
+  });
+
+  // Delete an SEO configuration
+  app.delete("/api/seo/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      
+      if (isNaN(id)) {
+        return res.status(400).json({
+          success: false,
+          message: "Invalid SEO configuration ID"
+        });
+      }
+      
+      const deleted = await storage.deleteSeoConfiguration(id);
+      
+      if (!deleted) {
+        return res.status(404).json({
+          success: false,
+          message: "SEO configuration not found"
+        });
+      }
+      
+      res.status(200).json({
+        success: true,
+        message: "SEO configuration deleted successfully"
+      });
+    } catch (error) {
+      console.error("Error deleting SEO configuration:", error);
+      res.status(500).json({
+        success: false,
+        message: "An error occurred deleting the SEO configuration"
+      });
+    }
+  });
+
+  // Get all indexable or non-indexable SEO configurations
+  app.get("/api/seo/status/:indexable", async (req, res) => {
+    try {
+      const indexable = req.params.indexable === 'true';
+      
+      const configs = await storage.getSeoConfigurationsByStatus(indexable);
+      
+      res.status(200).json({
+        success: true,
+        data: configs
+      });
+    } catch (error) {
+      console.error("Error fetching SEO configurations by status:", error);
+      res.status(500).json({
+        success: false,
+        message: "An error occurred retrieving SEO configurations"
+      });
+    }
+  });
+
+  // Update sync status for SEO configuration
+  app.patch("/api/seo/:id/sync", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const { vaultSynced, guardianSynced } = req.body;
+      
+      if (isNaN(id)) {
+        return res.status(400).json({
+          success: false,
+          message: "Invalid SEO configuration ID"
+        });
+      }
+      
+      if (vaultSynced === undefined && guardianSynced === undefined) {
+        return res.status(400).json({
+          success: false,
+          message: "At least one sync status field must be provided"
+        });
+      }
+      
+      const updated = await storage.updateSeoSyncStatus(id, vaultSynced, guardianSynced);
+      
+      if (!updated) {
+        return res.status(404).json({
+          success: false,
+          message: "SEO configuration not found"
+        });
+      }
+      
+      res.status(200).json({
+        success: true,
+        message: "Sync status updated successfully",
+        data: updated
+      });
+    } catch (error) {
+      console.error("Error updating SEO sync status:", error);
+      res.status(500).json({
+        success: false,
+        message: "An error occurred updating sync status"
+      });
+    }
+  });
+
+  // Brand Version Management API Endpoints
+  // Get all brand versions
+  app.get("/api/brand-versions", async (req, res) => {
+    try {
+      const versions = await storage.getAllBrandVersions();
+      res.status(200).json({
+        success: true,
+        data: versions
+      });
+    } catch (error) {
+      console.error("Error fetching brand versions:", error);
+      res.status(500).json({
+        success: false,
+        message: "An error occurred retrieving brand versions"
+      });
+    }
+  });
+
+  // Get a specific brand version
+  app.get("/api/brand-versions/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      
+      if (isNaN(id)) {
+        return res.status(400).json({
+          success: false,
+          message: "Invalid brand version ID"
+        });
+      }
+      
+      const version = await storage.getBrandVersion(id);
+      
+      if (!version) {
+        return res.status(404).json({
+          success: false,
+          message: "Brand version not found"
+        });
+      }
+      
+      res.status(200).json({
+        success: true,
+        data: version
+      });
+    } catch (error) {
+      console.error("Error fetching brand version:", error);
+      res.status(500).json({
+        success: false,
+        message: "An error occurred retrieving the brand version"
+      });
+    }
+  });
+
+  // Get brand version by version number
+  app.get("/api/brand-versions/number/:versionNumber", async (req, res) => {
+    try {
+      const versionNumber = req.params.versionNumber;
+      
+      if (!versionNumber) {
+        return res.status(400).json({
+          success: false,
+          message: "Invalid version number"
+        });
+      }
+      
+      const version = await storage.getBrandVersionByNumber(versionNumber);
+      
+      if (!version) {
+        return res.status(404).json({
+          success: false,
+          message: "Brand version not found"
+        });
+      }
+      
+      res.status(200).json({
+        success: true,
+        data: version
+      });
+    } catch (error) {
+      console.error("Error fetching brand version by number:", error);
+      res.status(500).json({
+        success: false,
+        message: "An error occurred retrieving the brand version"
+      });
+    }
+  });
+
+  // Get the currently active brand version
+  app.get("/api/brand-versions/active", async (req, res) => {
+    try {
+      const activeVersion = await storage.getActiveBrandVersion();
+      
+      if (!activeVersion) {
+        return res.status(404).json({
+          success: false,
+          message: "No active brand version found"
+        });
+      }
+      
+      res.status(200).json({
+        success: true,
+        data: activeVersion
+      });
+    } catch (error) {
+      console.error("Error fetching active brand version:", error);
+      res.status(500).json({
+        success: false,
+        message: "An error occurred retrieving the active brand version"
+      });
+    }
+  });
+
+  // Create or update a brand version
+  app.post("/api/brand-versions", async (req, res) => {
+    try {
+      // Validate the incoming data using the schema
+      const versionData = insertBrandVersionSchema.parse(req.body);
+      
+      const savedVersion = await storage.saveBrandVersion(versionData);
+      
+      res.status(200).json({
+        success: true,
+        message: "Brand version saved successfully",
+        data: savedVersion
+      });
+    } catch (error) {
+      console.error("Error saving brand version:", error);
+      
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({
+          success: false,
+          message: "Validation failed",
+          errors: error.errors
+        });
+      }
+      
+      res.status(500).json({
+        success: false,
+        message: "An error occurred saving the brand version"
+      });
+    }
+  });
+
+  // Activate a brand version
+  app.post("/api/brand-versions/:id/activate", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      
+      if (isNaN(id)) {
+        return res.status(400).json({
+          success: false,
+          message: "Invalid brand version ID"
+        });
+      }
+      
+      const activated = await storage.activateBrandVersion(id);
+      
+      if (!activated) {
+        return res.status(404).json({
+          success: false,
+          message: "Brand version not found"
+        });
+      }
+      
+      res.status(200).json({
+        success: true,
+        message: "Brand version activated successfully",
+        data: activated
+      });
+    } catch (error) {
+      console.error("Error activating brand version:", error);
+      res.status(500).json({
+        success: false,
+        message: "An error occurred activating the brand version"
+      });
+    }
+  });
+
+  // Update sync status for brand version
+  app.patch("/api/brand-versions/:id/sync", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const { vaultSynced, guardianSynced } = req.body;
+      
+      if (isNaN(id)) {
+        return res.status(400).json({
+          success: false,
+          message: "Invalid brand version ID"
+        });
+      }
+      
+      if (vaultSynced === undefined && guardianSynced === undefined) {
+        return res.status(400).json({
+          success: false,
+          message: "At least one sync status field must be provided"
+        });
+      }
+      
+      const updated = await storage.updateBrandSyncStatus(id, vaultSynced, guardianSynced);
+      
+      if (!updated) {
+        return res.status(404).json({
+          success: false,
+          message: "Brand version not found"
+        });
+      }
+      
+      res.status(200).json({
+        success: true,
+        message: "Sync status updated successfully",
+        data: updated
+      });
+    } catch (error) {
+      console.error("Error updating brand version sync status:", error);
+      res.status(500).json({
+        success: false,
+        message: "An error occurred updating sync status"
       });
     }
   });
