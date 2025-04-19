@@ -25,6 +25,7 @@ import LaunchReadyPage from "@/pages/LaunchReadyPage";
 import AdminSettingsPage from "@/pages/AdminSettingsPage";
 import SEOConfigManagerPage from "@/pages/SEOConfigManagerPage";
 import BrandManagerPage from "@/pages/BrandManagerPage";
+import BlueprintManagerPage from "@/pages/BlueprintManagerPage";
 import { DocumentHead } from "@/components/DocumentHead";
 import MainLayout from "@/layouts/MainLayout";
 import { ClientDataProvider, withAuth } from "@/components/ClientDataProvider";

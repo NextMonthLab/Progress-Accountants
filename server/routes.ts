@@ -1762,6 +1762,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
   
+  // Register Blueprint Export routes
+  registerBlueprintRoutes(app);
+  
   // Create HTTP server
   const httpServer = createServer(app);
 
