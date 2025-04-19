@@ -991,6 +991,367 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
   
+  // PAGE INTELLIGENCE + COMPLEXITY SYSTEM ENDPOINTS
+  
+  // Define validation schema for page complexity assessment
+  const pageComplexityAssessmentSchema = z.object({
+    userId: z.number().int().positive(),
+    requestDescription: z.string().min(10),
+    visualComplexity: z.number().min(1).max(10),
+    logicComplexity: z.number().min(1).max(10),
+    dataComplexity: z.number().min(1).max(10),
+    estimatedHours: z.number().positive(),
+    complexityLevel: z.enum(['simple', 'moderate', 'complex', 'wishlist']),
+    aiAssessment: z.string()
+  });
+
+  // API endpoint for triaging page complexity
+  app.post("/api/page-intelligence/triage", async (req, res) => {
+    try {
+      const validatedData = pageComplexityAssessmentSchema.parse(req.body);
+      
+      const result = await storage.savePageComplexityTriage(validatedData);
+      
+      res.status(200).json({
+        success: true,
+        message: "Page complexity assessment saved successfully",
+        triage: result
+      });
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({
+          success: false,
+          message: "Validation failed",
+          errors: error.errors
+        });
+      }
+      
+      console.error("Error saving page complexity triage:", error);
+      res.status(500).json({
+        success: false,
+        message: "An error occurred while processing your request"
+      });
+    }
+  });
+  
+  // API endpoint to retrieve page complexity scores by user
+  app.get("/api/page-intelligence/triage/user/:userId", async (req, res) => {
+    try {
+      const userId = parseInt(req.params.userId, 10);
+      
+      if (isNaN(userId) || userId <= 0) {
+        return res.status(400).json({
+          success: false,
+          message: "Invalid user ID"
+        });
+      }
+      
+      const triages = await storage.getPageComplexityTriagesByUser(userId);
+      
+      res.status(200).json({
+        success: true,
+        triages
+      });
+    } catch (error) {
+      console.error("Error retrieving page complexity triages:", error);
+      res.status(500).json({
+        success: false,
+        message: "An error occurred while processing your request"
+      });
+    }
+  });
+  
+  // API endpoint to retrieve specific page complexity triage
+  app.get("/api/page-intelligence/triage/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id, 10);
+      
+      if (isNaN(id) || id <= 0) {
+        return res.status(400).json({
+          success: false,
+          message: "Invalid triage ID"
+        });
+      }
+      
+      const triage = await storage.getPageComplexityTriage(id);
+      
+      if (!triage) {
+        return res.status(404).json({
+          success: false,
+          message: "Triage not found"
+        });
+      }
+      
+      res.status(200).json({
+        success: true,
+        triage
+      });
+    } catch (error) {
+      console.error("Error retrieving page complexity triage:", error);
+      res.status(500).json({
+        success: false,
+        message: "An error occurred while processing your request"
+      });
+    }
+  });
+  
+  // API endpoint to update sync status of page complexity triage
+  app.patch("/api/page-intelligence/triage/:id/sync", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id, 10);
+      
+      if (isNaN(id) || id <= 0) {
+        return res.status(400).json({
+          success: false,
+          message: "Invalid triage ID"
+        });
+      }
+      
+      const { vaultSynced, guardianSynced } = req.body;
+      
+      // Ensure at least one of the sync flags is provided
+      if (vaultSynced === undefined && guardianSynced === undefined) {
+        return res.status(400).json({
+          success: false,
+          message: "At least one sync flag (vaultSynced or guardianSynced) must be provided"
+        });
+      }
+      
+      const updatedTriage = await storage.updatePageComplexitySyncStatus(
+        id,
+        vaultSynced,
+        guardianSynced
+      );
+      
+      if (!updatedTriage) {
+        return res.status(404).json({
+          success: false,
+          message: "Triage not found"
+        });
+      }
+      
+      res.status(200).json({
+        success: true,
+        message: "Sync status updated successfully",
+        triage: updatedTriage
+      });
+    } catch (error) {
+      console.error("Error updating sync status:", error);
+      res.status(500).json({
+        success: false,
+        message: "An error occurred while processing your request"
+      });
+    }
+  });
+  
+  // MODULE ACTIVATION ENDPOINTS
+  
+  // Define validation schema for module activation
+  const moduleActivationSchema = z.object({
+    userId: z.number().int().positive(),
+    moduleId: z.string().min(1),
+    pageMetadata: z.any().optional()
+  });
+  
+  // API endpoint to log module activation
+  app.post("/api/module-activation", async (req, res) => {
+    try {
+      const validatedData = moduleActivationSchema.parse(req.body);
+      
+      const result = await storage.logModuleActivation(validatedData);
+      
+      res.status(200).json({
+        success: true,
+        message: "Module activation logged successfully",
+        activation: result
+      });
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({
+          success: false,
+          message: "Validation failed",
+          errors: error.errors
+        });
+      }
+      
+      console.error("Error logging module activation:", error);
+      res.status(500).json({
+        success: false,
+        message: "An error occurred while processing your request"
+      });
+    }
+  });
+  
+  // API endpoint to retrieve module activations by user
+  app.get("/api/module-activation/user/:userId", async (req, res) => {
+    try {
+      const userId = parseInt(req.params.userId, 10);
+      
+      if (isNaN(userId) || userId <= 0) {
+        return res.status(400).json({
+          success: false,
+          message: "Invalid user ID"
+        });
+      }
+      
+      const activations = await storage.getModuleActivations(userId);
+      
+      res.status(200).json({
+        success: true,
+        activations
+      });
+    } catch (error) {
+      console.error("Error retrieving module activations:", error);
+      res.status(500).json({
+        success: false,
+        message: "An error occurred while processing your request"
+      });
+    }
+  });
+  
+  // API endpoint to retrieve module activations by module
+  app.get("/api/module-activation/module/:moduleId", async (req, res) => {
+    try {
+      const moduleId = req.params.moduleId;
+      
+      if (!moduleId) {
+        return res.status(400).json({
+          success: false,
+          message: "Invalid module ID"
+        });
+      }
+      
+      const activations = await storage.getModuleActivations(undefined, moduleId);
+      
+      res.status(200).json({
+        success: true,
+        activations
+      });
+    } catch (error) {
+      console.error("Error retrieving module activations:", error);
+      res.status(500).json({
+        success: false,
+        message: "An error occurred while processing your request"
+      });
+    }
+  });
+  
+  // API endpoint to update sync status of module activation
+  app.patch("/api/module-activation/:id/sync", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id, 10);
+      
+      if (isNaN(id) || id <= 0) {
+        return res.status(400).json({
+          success: false,
+          message: "Invalid activation ID"
+        });
+      }
+      
+      const { synced } = req.body;
+      
+      if (synced === undefined) {
+        return res.status(400).json({
+          success: false,
+          message: "Sync status must be provided"
+        });
+      }
+      
+      const updatedActivation = await storage.markModuleActivationSynced(id, synced);
+      
+      if (!updatedActivation) {
+        return res.status(404).json({
+          success: false,
+          message: "Module activation not found"
+        });
+      }
+      
+      res.status(200).json({
+        success: true,
+        message: "Sync status updated successfully",
+        activation: updatedActivation
+      });
+    } catch (error) {
+      console.error("Error updating sync status:", error);
+      res.status(500).json({
+        success: false,
+        message: "An error occurred while processing your request"
+      });
+    }
+  });
+  
+  // API endpoint for AI-powered page complexity assessment
+  app.post("/api/page-intelligence/ai-assess", async (req, res) => {
+    try {
+      const { description, features, pageType } = req.body;
+      
+      if (!description) {
+        return res.status(400).json({
+          success: false,
+          message: "Page description is required"
+        });
+      }
+      
+      // Check if OpenAI API key is available
+      if (!process.env.OPENAI_API_KEY) {
+        return res.status(500).json({ 
+          success: false, 
+          message: "OpenAI API key is not configured" 
+        });
+      }
+      
+      // Prepare prompt for OpenAI
+      const prompt = `
+        Analyze the following page description and assess its complexity.
+        
+        Page Description: ${description}
+        
+        ${features ? `Features: ${features.join(', ')}` : ''}
+        ${pageType ? `Page Type: ${pageType}` : ''}
+        
+        Provide a detailed assessment with scores for visual complexity, logic complexity, and data complexity on a scale of 1-10.
+        Also include the estimated development hours and appropriate complexity level (simple, moderate, complex, or wishlist).
+        
+        Format your response as JSON with the following structure:
+        {
+          "visualComplexity": number,
+          "logicComplexity": number,
+          "dataComplexity": number,
+          "estimatedHours": number,
+          "complexityLevel": "simple" | "moderate" | "complex" | "wishlist",
+          "analysis": "detailed explanation"
+        }
+      `;
+      
+      // Call OpenAI API
+      const response = await openai.chat.completions.create({
+        model: "gpt-4o", // the newest OpenAI model is "gpt-4o" which was released May 13, 2024. do not change this unless explicitly requested by the user
+        messages: [
+          { role: "system", content: "You are an expert web development complexity analyst." },
+          { role: "user", content: prompt }
+        ],
+        response_format: { type: "json_object" }
+      });
+      
+      // Parse the response
+      const aiAssessment = JSON.parse(response.choices[0].message.content);
+      
+      res.status(200).json({
+        success: true,
+        assessment: {
+          ...aiAssessment,
+          aiAssessment: aiAssessment.analysis // Rename for consistency with our schema
+        }
+      });
+    } catch (error) {
+      console.error("Error performing AI assessment:", error);
+      res.status(500).json({
+        success: false,
+        message: "An error occurred while performing AI assessment"
+      });
+    }
+  });
+  
   // Create HTTP server
   const httpServer = createServer(app);
 
