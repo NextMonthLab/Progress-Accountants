@@ -233,6 +233,51 @@ export const pageComplexityTriageRelations = relations(pageComplexityTriage, ({ 
   }),
 }));
 
+// Media uploads table
+export const mediaUploads = pgTable("media_uploads", {
+  id: serial("id").primaryKey(),
+  businessId: varchar("business_id", { length: 100 }).notNull(),
+  publicUrl: varchar("public_url", { length: 500 }).notNull(),
+  fileName: varchar("file_name", { length: 255 }).notNull(),
+  contentType: varchar("content_type", { length: 100 }).notNull(),
+  bytes: integer("bytes").notNull(),
+  credits: integer("credits").notNull(),
+  cloudinaryId: varchar("cloudinary_id", { length: 255 }).notNull(),
+  folder: varchar("folder", { length: 255 }).notNull(),
+  uploadedBy: integer("uploaded_by").references(() => users.id),
+  uploadedAt: timestamp("uploaded_at").defaultNow().notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export const insertMediaUploadSchema = createInsertSchema(mediaUploads).omit({
+  id: true,
+  uploadedAt: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+// Credit usage log
+export const creditUsageLog = pgTable("credit_usage_log", {
+  id: serial("id").primaryKey(),
+  businessId: varchar("business_id", { length: 100 }).notNull(),
+  credits: integer("credits").notNull(),
+  reason: varchar("reason", { length: 100 }).notNull(),
+  description: text("description"),
+  entityType: varchar("entity_type", { length: 50 }).notNull(),
+  entityId: varchar("entity_id", { length: 100 }),
+  timestamp: timestamp("timestamp").defaultNow().notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export const insertCreditUsageLogSchema = createInsertSchema(creditUsageLog).omit({
+  id: true,
+  timestamp: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
 // Export types
 export type InsertUser = z.infer<typeof insertUserSchema>;
 export type User = typeof users.$inferSelect;
@@ -263,6 +308,12 @@ export type ModuleActivation = typeof moduleActivations.$inferSelect;
 
 export type InsertPageComplexityTriage = z.infer<typeof insertPageComplexityTriageSchema>;
 export type PageComplexityTriage = typeof pageComplexityTriage.$inferSelect;
+
+export type InsertMediaUpload = z.infer<typeof insertMediaUploadSchema>;
+export type MediaUpload = typeof mediaUploads.$inferSelect;
+
+export type InsertCreditUsageLog = z.infer<typeof insertCreditUsageLogSchema>;
+export type CreditUsageLog = typeof creditUsageLog.$inferSelect;
 
 // SEO Configuration table
 export const seoConfigurations = pgTable("seo_configurations", {
