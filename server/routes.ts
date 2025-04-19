@@ -1488,11 +1488,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         data: updated
       });
     } catch (error) {
-      console.error("Error updating SEO configuration:", error);
-      res.status(500).json({
-        success: false,
-        message: "An error occurred updating the SEO configuration"
-      });
+      handleApiError(res, error, "An error occurred updating the SEO configuration");
     }
   });
 
@@ -1522,11 +1518,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         message: "SEO configuration deleted successfully"
       });
     } catch (error) {
-      console.error("Error deleting SEO configuration:", error);
-      res.status(500).json({
-        success: false,
-        message: "An error occurred deleting the SEO configuration"
-      });
+      handleApiError(res, error, "An error occurred deleting the SEO configuration");
     }
   });
 
@@ -1542,11 +1534,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         data: configs
       });
     } catch (error) {
-      console.error("Error fetching SEO configurations by status:", error);
-      res.status(500).json({
-        success: false,
-        message: "An error occurred retrieving SEO configurations"
-      });
+      handleApiError(res, error, "An error occurred retrieving SEO configurations");
     }
   });
 
@@ -1585,11 +1573,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         data: updated
       });
     } catch (error) {
-      console.error("Error updating SEO sync status:", error);
-      res.status(500).json({
-        success: false,
-        message: "An error occurred updating sync status"
-      });
+      handleApiError(res, error, "An error occurred updating sync status");
     }
   });
 
@@ -1603,11 +1587,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         data: versions
       });
     } catch (error) {
-      console.error("Error fetching brand versions:", error);
-      res.status(500).json({
-        success: false,
-        message: "An error occurred retrieving brand versions"
-      });
+      handleApiError(res, error, "An error occurred retrieving brand versions");
     }
   });
 
@@ -1637,11 +1617,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         data: version
       });
     } catch (error) {
-      console.error("Error fetching brand version:", error);
-      res.status(500).json({
-        success: false,
-        message: "An error occurred retrieving the brand version"
-      });
+      handleApiError(res, error, "An error occurred retrieving the brand version");
     }
   });
 
@@ -1671,11 +1647,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         data: version
       });
     } catch (error) {
-      console.error("Error fetching brand version by number:", error);
-      res.status(500).json({
-        success: false,
-        message: "An error occurred retrieving the brand version"
-      });
+      handleApiError(res, error, "An error occurred retrieving the brand version");
     }
   });
 
@@ -1718,20 +1690,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         data: savedVersion
       });
     } catch (error) {
-      console.error("Error saving brand version:", error);
-      
-      if (error instanceof z.ZodError) {
-        return res.status(400).json({
-          success: false,
-          message: "Validation failed",
-          errors: error.errors
-        });
-      }
-      
-      res.status(500).json({
-        success: false,
-        message: "An error occurred saving the brand version"
-      });
+      handleApiError(res, error, "An error occurred saving the brand version");
     }
   });
 
@@ -1762,11 +1721,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         data: activated
       });
     } catch (error) {
-      console.error("Error activating brand version:", error);
-      res.status(500).json({
-        success: false,
-        message: "An error occurred activating the brand version"
-      });
+      handleApiError(res, error, "An error occurred activating the brand version");
     }
   });
 
@@ -1805,11 +1760,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         data: updated
       });
     } catch (error) {
-      console.error("Error updating brand version sync status:", error);
-      res.status(500).json({
-        success: false,
-        message: "An error occurred updating sync status"
-      });
+      handleApiError(res, error, "An error occurred updating sync status");
     }
   });
   
