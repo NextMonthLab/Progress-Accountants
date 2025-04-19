@@ -519,7 +519,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           
           // If it's a template_ready or simple_custom, we can proceed directly
           // Otherwise, we'll wait for the user to confirm if they want to proceed with a simpler version
-          if (screeningResult.shouldSubmitToDev) {
+          if (screeningResult.shouldSubmitToNextMonth) {
             return res.status(200).json({
               success: true,
               message: screeningResult.response,
@@ -624,13 +624,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
   
-  // Send the finalized request to NextMonth Dev
+  // Send the finalized request to NextMonth
   app.post("/api/scope-request/send", async (req: Request, res: Response) => {
     try {
       const { requestData } = finalizeRequestSchema.parse(req.body);
       
-      // Send to NextMonth Dev listener endpoint
-      const response = await fetch("https://nextmonth-dev.replit.app/listen", {
+      // Send to NextMonth listener endpoint
+      const response = await fetch("https://nextmonth.app/listen", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -639,7 +639,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       });
       
       if (!response.ok) {
-        throw new Error(`Failed to send request to NextMonth Dev: ${response.statusText}`);
+        throw new Error(`Failed to send request to NextMonth: ${response.statusText}`);
       }
       
       const responseData = await response.json();

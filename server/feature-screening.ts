@@ -201,7 +201,7 @@ export async function determineRequestCategory(description: string): Promise<'sc
 export async function handleFeatureRequest(description: string): Promise<{
   category: ModuleCategory;
   response: string;
-  shouldSubmitToDev: boolean;
+  shouldSubmitToNextMonth: boolean;
   wishlistSubmitted?: boolean;
   matchedModule?: string;
 }> {
@@ -211,8 +211,8 @@ export async function handleFeatureRequest(description: string): Promise<{
   // Generate appropriate response
   const response = getResponseForCategory(category, matchedModule);
   
-  // Determine if we should submit to dev
-  const shouldSubmitToDev = category === 'template_ready' || category === 'simple_custom';
+  // Determine if we should submit to NextMonth
+  const shouldSubmitToNextMonth = category === 'template_ready' || category === 'simple_custom';
   
   // Submit to wishlist if needed
   let wishlistSubmitted = false;
@@ -233,7 +233,7 @@ export async function handleFeatureRequest(description: string): Promise<{
   return {
     category,
     response,
-    shouldSubmitToDev,
+    shouldSubmitToNextMonth,
     wishlistSubmitted,
     matchedModule
   };
