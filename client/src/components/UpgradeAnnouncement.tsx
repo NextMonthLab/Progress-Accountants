@@ -5,6 +5,18 @@ import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { useLocation } from 'wouter';
 
+/**
+ * @module UpgradeAnnouncement
+ * @description Main modal announcement for Blueprint v1.1.1 upgrade
+ * @version 1.0.0
+ * @since Blueprint v1.1.1
+ * @module_type announcement
+ * @context platform upgrade
+ * @family Companion Console, Cloudinary Upload
+ * @optional true
+ * @enabled_by_default true
+ */
+
 export const UpgradeAnnouncement = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [, navigate] = useLocation();

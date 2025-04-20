@@ -12,6 +12,15 @@ import {
   syncCompanionConsoleToVault
 } from "./modules/support-console";
 
+// Import announcement module functions
+import {
+  registerUpgradeAnnouncementModule,
+  registerUpgradeBannerModule,
+  registerOnboardingUpgradeAlertModule,
+  updateClientRegistryWithAnnouncements,
+  syncAnnouncementsToVault
+} from "./modules/upgrade-announcements";
+
 // Validation schema for the blueprint version
 const blueprintVersionSchema = z.object({
   clientId: z.string().min(3),

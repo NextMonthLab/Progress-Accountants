@@ -5,6 +5,19 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { useLocation } from 'wouter';
 
+/**
+ * @module UpgradeBanner
+ * @description Persistent banner for admin pages announcing Blueprint v1.1.1 upgrade
+ * @version 1.0.0
+ * @since Blueprint v1.1.1
+ * @module_type announcement
+ * @context platform upgrade
+ * @family Companion Console, Cloudinary Upload
+ * @optional true
+ * @enabled_by_default true
+ * @persistence 14 days
+ */
+
 export const UpgradeBanner = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [, navigate] = useLocation();

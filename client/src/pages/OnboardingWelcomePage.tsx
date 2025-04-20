@@ -46,6 +46,17 @@ const OnboardingWelcomePage: React.FC = () => {
         </CardHeader>
         <CardContent className="pt-6 pb-4 px-6">
           <div className="space-y-6">
+            {/* 
+              @component OnboardingUpgradeAlert
+              @description Upgrade alert shown during onboarding for Blueprint v1.1.1
+              @version 1.0.0
+              @since Blueprint v1.1.1
+              @module_type announcement
+              @context platform upgrade
+              @family Companion Console, Cloudinary Upload
+              @optional true
+              @enabled_by_default true
+             */}
             <Alert className="border-primary/20 bg-primary/5 mb-6">
               <div className="flex items-center gap-2">
                 <BellRing className="h-5 w-5" />
