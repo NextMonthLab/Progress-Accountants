@@ -13,7 +13,8 @@ export interface ModuleRegistry {
 export interface WishlistItem {
   business_id: string;
   description: string;
-  category: 'screen' | 'feature' | 'automation' | 'unknown';
+  category: 'page' | 'feature' | 'automation' | 'tool' | 'unknown';
+  type: 'page' | 'tool'; // New field to enforce ecosystem structure
   submitted_at: string;
 }
 
@@ -115,16 +116,16 @@ export async function classifyFeatureRequest(description: string): Promise<{
 export function getResponseForCategory(category: ModuleCategory, moduleName?: string): string {
   switch (category) {
     case 'template_ready':
-      return `Great news — the ${moduleName || 'requested module'} already exists as a template in our system. I'll send it over to the development team right away for integration into your project.`;
+      return `Great news — the ${moduleName || 'requested page'} already exists as a template in our system. I'll send it over to the development team right away for integration into your project.`;
       
     case 'simple_custom':
-      return `We don't have a pre-built template for this specific request yet, but it's relatively straightforward to implement. I'll draft the specifications and submit it to our development team for creation.`;
+      return `We don't have a pre-built template for this specific page request yet, but it's relatively straightforward to implement. I'll draft the specifications and submit it to our development team for creation.`;
       
     case 'wishlist':
-      return `That's an interesting idea! It would require some additional development work from our team, so I've added it to our Wishlist for future consideration. In the meantime, would you like to explore a simpler alternative or discuss other options that might meet your needs?`;
+      return `That's an interesting page idea! It would require some additional development work from our team, so I've added it to our Wishlist for future consideration. In the meantime, would you like to explore a simpler alternative or discuss other options that might meet your needs?`;
       
     default:
-      return `Thank you for your feature request. I'll look into this and get back to you with more information on how we can proceed.`;
+      return `Thank you for your page request. I'll look into this and get back to you with more information on how we can proceed.`;
   }
 }
 
@@ -157,9 +158,9 @@ export async function submitToWishlist(request: WishlistItem): Promise<boolean> 
 }
 
 /**
- * Determines the best category (screen, feature, etc.) for a wishlist item
+ * Determines the best category (page, feature, etc.) for a wishlist item
  */
-export async function determineRequestCategory(description: string): Promise<'screen' | 'feature' | 'automation' | 'unknown'> {
+export async function determineRequestCategory(description: string): Promise<'page' | 'feature' | 'automation' | 'tool' | 'unknown'> {
   try {
     if (!process.env.OPENAI_API_KEY) {
       return 'unknown';
@@ -170,7 +171,13 @@ export async function determineRequestCategory(description: string): Promise<'sc
       messages: [
         {
           role: "system",
-          content: `Classify the following feature request into exactly one of these categories: "screen" (new UI), "feature" (new functionality), "automation" (process improvement), or "unknown". Only respond with the category name, nothing else.`
+          content: `Classify the following feature request into exactly one of these categories: 
+          "page" (new website page or UI), 
+          "feature" (new functionality), 
+          "automation" (process improvement), 
+          "tool" (advanced application-like functionality), 
+          or "unknown". 
+          Only respond with the category name, nothing else.`
         },
         {
           role: "user",
@@ -183,7 +190,7 @@ export async function determineRequestCategory(description: string): Promise<'sc
     
     const category = response.choices[0].message.content?.toLowerCase().trim();
     
-    if (category === 'screen' || category === 'feature' || category === 'automation') {
+    if (category === 'page' || category === 'feature' || category === 'automation' || category === 'tool') {
       return category;
     }
     
@@ -220,12 +227,34 @@ export async function handleFeatureRequest(description: string): Promise<{
   if (category === 'wishlist') {
     const requestCategory = await determineRequestCategory(description);
     
+    // Determine if this is a page or tool request based on category
+    // Tools cannot be requested via the wishlist - they must be installed from the marketplace
+    // Everything gets classified as a 'page' unless it's specifically a tool-related request
+    const itemType = requestCategory === 'tool' ? 'tool' : 'page';
+    
     const wishlistItem: WishlistItem = {
       business_id: 'progress_accountants',
       description,
       category: requestCategory,
+      type: itemType,
       submitted_at: new Date().toISOString()
     };
+    
+    // If it's a tool request, modify the response to inform the user
+    // that tools can only be installed from the marketplace
+    if (itemType === 'tool') {
+      // We'll still submit to wishlist for tracking purposes, but we'll return a special response
+      wishlistSubmitted = await submitToWishlist(wishlistItem);
+      
+      // Override the response for tool requests
+      return {
+        category,
+        response: "This appears to be a request for a tool, which can only be installed from the Marketplace rather than custom-built. Tools are pre-built advanced modules with complex functionality. Please visit the Marketplace to browse available tools that might meet your needs.",
+        shouldSubmitToDev: false,
+        wishlistSubmitted,
+        matchedModule
+      };
+    }
     
     wishlistSubmitted = await submitToWishlist(wishlistItem);
   }
