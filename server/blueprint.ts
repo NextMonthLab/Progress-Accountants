@@ -193,7 +193,12 @@ async function prepareExportManifest(clientId: string, version: string, moduleId
     };
     
     return exportManifest;
-    
+  } catch (error) {
+    console.error('Error preparing export manifest:', error);
+    throw error;
+  }
+}
+
 /**
  * Publishes blueprint v1.1.1 to the Vault as the default version
  * @param clientId - Client ID to publish for
@@ -270,11 +275,6 @@ async function publishBlueprintToVault(clientId: string, vaultPath: string = 'bl
   } catch (error) {
     console.error("Error publishing blueprint to Vault:", error);
     return false;
-  }
-}
-  } catch (error) {
-    console.error('Error preparing export manifest:', error);
-    throw error;
   }
 }
 
@@ -580,20 +580,11 @@ export function registerBlueprintRoutes(app: Express): void {
       return res.status(200).json({
         success: true,
         message: "Upgrade announcement modules registered and synced successfully",
-        modules: {
-          announcement: {
-            id: announcementModule.id,
-            name: announcementModule.name
-          },
-          banner: {
-            id: bannerModule.id,
-            name: bannerModule.name
-          },
-          onboardingAlert: {
-            id: onboardingAlertModule.id,
-            name: onboardingAlertModule.name
-          }
-        },
+        modules: [
+          announcementModule,
+          bannerModule,
+          onboardingAlertModule
+        ],
         blueprintVersion: updatedRegistry.blueprintVersion,
         vaultSynced,
         guardianNotified: guardianSuccess
@@ -711,6 +702,74 @@ export function registerBlueprintRoutes(app: Express): void {
     }
   });
 
+  // Auto-publish blueprint v1.1.1 to Vault
+  app.post("/api/blueprint/auto-publish-v1.1.1", async (req: Request, res: Response) => {
+    try {
+      const { clientId, vaultPath = 'blueprints/client/v1.1.1/' } = req.body;
+      
+      if (!clientId) {
+        return res.status(400).json({ 
+          success: false, 
+          message: "clientId is required" 
+        });
+      }
+      
+      // First ensure client registry is at v1.1.1
+      const registry = await storage.getClientRegistry();
+      
+      if (!registry || registry.clientId !== clientId) {
+        return res.status(404).json({ 
+          success: false, 
+          message: "Client registry not found" 
+        });
+      }
+      
+      // Update blueprint version to 1.1.1 if not already
+      if (registry.blueprintVersion !== "1.1.1") {
+        await storage.updateClientRegistry(clientId, {
+          blueprintVersion: "1.1.1",
+          exportReady: true,
+          lastExported: new Date()
+        });
+      }
+      
+      // Execute the publish operation
+      const publishSuccess = await publishBlueprintToVault(clientId, vaultPath);
+      
+      if (!publishSuccess) {
+        return res.status(500).json({
+          success: false,
+          message: "Failed to publish blueprint to Vault"
+        });
+      }
+      
+      // Notify Guardian about the default status
+      const guardianSuccess = await notifyGuardian(clientId, "blueprint-default-set", {
+        version: "1.1.1",
+        path: vaultPath,
+        forAllClients: true,
+        onboardingVersion: "1.1.1",
+        timestamp: new Date().toISOString()
+      });
+      
+      return res.status(200).json({
+        success: true,
+        message: "Blueprint v1.1.1 published to Vault as default",
+        version: "1.1.1",
+        path: vaultPath,
+        guardianNotified: guardianSuccess,
+        timestamp: new Date().toISOString()
+      });
+      
+    } catch (error) {
+      console.error("Error auto-publishing blueprint v1.1.1:", error);
+      return res.status(500).json({
+        success: false,
+        message: "Error auto-publishing blueprint v1.1.1"
+      });
+    }
+  });
+  
   // Update handoff status
   app.post("/api/blueprint/handoff-status", async (req: Request, res: Response) => {
     try {

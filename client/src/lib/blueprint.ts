@@ -125,3 +125,33 @@ export async function exportBlueprintV111(clientId: string): Promise<any> {
     throw error;
   }
 }
+
+/**
+ * Auto-publish Blueprint v1.1.1 to the Vault as the default version
+ * @param clientId The ID of the client to publish
+ * @param vaultPath The path in the vault to store the blueprint (default: 'blueprints/client/v1.1.1/')
+ * @returns Promise with the publish result
+ */
+export async function autoPublishBlueprintV111(
+  clientId: string, 
+  vaultPath = 'blueprints/client/v1.1.1/'
+): Promise<any> {
+  try {
+    const response = await fetch('/api/blueprint/auto-publish-v1.1.1', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ clientId, vaultPath }),
+    });
+    
+    if (!response.ok) {
+      throw new Error(`Error auto-publishing Blueprint v1.1.1: ${response.statusText}`);
+    }
+    
+    return await response.json();
+  } catch (error) {
+    console.error('Failed to auto-publish Blueprint v1.1.1:', error);
+    throw error;
+  }
+}
