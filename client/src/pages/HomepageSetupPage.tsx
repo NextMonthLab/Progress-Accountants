@@ -34,6 +34,8 @@ interface HomepageContext {
   cta_text: string;
   media_url: string;
   layout_style: string;
+  services?: string[]; // Optional array of services
+  testimonials?: string[]; // Optional array of testimonials
 }
 
 // Default homepage context values
@@ -44,7 +46,9 @@ const defaultHomepageContext: HomepageContext = {
   benefits: ["Fast turnaround", "Expert advice", "Local support"],
   cta_text: "Book a Call",
   media_url: "",
-  layout_style: "Modern"
+  layout_style: "Modern",
+  services: [], // Initialize with empty array
+  testimonials: [] // Initialize with empty array
 };
 
 // Layout style options
@@ -334,12 +338,12 @@ export default function HomepageSetupPage() {
                     <span className="text-sm font-medium">SEO Readiness</span>
                     <div className="flex space-x-2 items-center">
                       <span className="text-sm text-muted-foreground">
-                        {homepage.services.length > 2 ? "High" : "Medium"}
+                        {(homepage.services?.length || 0) > 2 ? "High" : "Medium"}
                       </span>
                       <div className="w-24 h-2 bg-gray-200 rounded-full overflow-hidden">
                         <div 
                           className="h-full bg-green-500" 
-                          style={{ width: `${Math.min(100, (homepage.services.length / 5) * 100)}%` }}
+                          style={{ width: `${Math.min(100, ((homepage.services?.length || 0) / 5) * 100)}%` }}
                         ></div>
                       </div>
                     </div>
@@ -349,12 +353,12 @@ export default function HomepageSetupPage() {
                     <span className="text-sm font-medium">User Engagement Potential</span>
                     <div className="flex space-x-2 items-center">
                       <span className="text-sm text-muted-foreground">
-                        {homepage.testimonials.length > 1 ? "High" : "Low"}
+                        {(homepage.testimonials?.length || 0) > 1 ? "High" : "Low"}
                       </span>
                       <div className="w-24 h-2 bg-gray-200 rounded-full overflow-hidden">
                         <div 
                           className="h-full bg-blue-500" 
-                          style={{ width: `${Math.min(100, (homepage.testimonials.length / 3) * 100)}%` }}
+                          style={{ width: `${Math.min(100, ((homepage.testimonials?.length || 0) / 3) * 100)}%` }}
                         ></div>
                       </div>
                     </div>
