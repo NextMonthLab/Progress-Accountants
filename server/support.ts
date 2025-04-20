@@ -1,7 +1,7 @@
 import OpenAI from "openai";
 import { Express, Request, Response } from "express";
 import { db } from "./db";
-import { insertActivityLogSchema } from "@shared/schema";
+import { insertActivityLogSchema, activityLogs } from "@shared/schema";
 
 // Initialize OpenAI
 const openai = new OpenAI({
@@ -24,9 +24,9 @@ async function handleSupportChat(req: Request, res: Response) {
     }
     
     // Log the support interaction to activity logs
-    await db.insert(insertActivityLogSchema).values({
+    await db.insert(activityLogs).values({
       userType: "client",
-      userId: req.user?.id || null,
+      userId: null, // We'll set null since we might not have user authentication in this context
       actionType: "support_interaction",
       entityType: "support_chat",
       entityId: null,
@@ -97,9 +97,9 @@ async function handleSupportEscalation(req: Request, res: Response) {
     const { conversation, screenName, businessId, blueprintVersion } = req.body;
     
     // Log the escalation to activity logs
-    await db.insert(insertActivityLogSchema).values({
+    await db.insert(activityLogs).values({
       userType: "client",
-      userId: req.user?.id || null,
+      userId: null, // We'll set null since we might not have user authentication in this context
       actionType: "support_escalation",
       entityType: "client_feedback",
       entityId: null,
