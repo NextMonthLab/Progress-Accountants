@@ -89,6 +89,7 @@ export interface IStorage {
   markOnboardingStageComplete(userId: number, stage: string, data?: any): Promise<OnboardingState | undefined>;
   getIncompleteOnboarding(userId: number): Promise<OnboardingState | undefined>;
   markGuardianSynced(id: number, synced: boolean): Promise<OnboardingState | undefined>;
+  saveOnboardingPreference(userId: number, preference: string): Promise<OnboardingState | undefined>;
   
   // Module operations
   getModule(id: string): Promise<Module | undefined>;
@@ -368,6 +369,46 @@ export class DatabaseStorage implements IStorage {
       .returning();
     
     return updated;
+  }
+  
+  async saveOnboardingPreference(userId: number, preference: string): Promise<OnboardingState | undefined> {
+    try {
+      // Check if the user has an existing 'website_preference' stage entry
+      const existingPreference = await this.getOnboardingStageState(userId, 'website_preference');
+      
+      // Function to validate the preference
+      const validPreference = ['full_site', 'tools_only', 'undecided'].includes(preference) 
+        ? preference 
+        : 'undecided';
+      
+      if (existingPreference) {
+        // Update the existing preference
+        const [updated] = await db
+          .update(onboardingState)
+          .set({
+            data: { preference: validPreference },
+            updatedAt: new Date(),
+            checkpointTime: new Date()
+          })
+          .where(eq(onboardingState.id, existingPreference.id))
+          .returning();
+        
+        return updated;
+      } else {
+        // Create a new preference entry
+        const newPreferenceState = await this.saveOnboardingState({
+          userId,
+          stage: 'website_preference',
+          status: 'complete',
+          data: { preference: validPreference }
+        });
+        
+        return newPreferenceState;
+      }
+    } catch (error) {
+      console.error("Error saving onboarding preference:", error);
+      return undefined;
+    }
   }
   
   // Module operations
