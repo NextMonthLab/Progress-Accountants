@@ -25,6 +25,11 @@ import BrandGuidelinesPage from "@/pages/BrandGuidelinesPage";
 import BusinessIdentityPage from "@/pages/BusinessIdentityPage";
 import HomepageSetupPage from "@/pages/HomepageSetupPage";
 import FoundationPagesOverviewPage from "@/pages/FoundationPagesOverviewPage";
+import AboutSetupPage from "@/pages/AboutSetupPage";
+import ServicesSetupPage from "@/pages/ServicesSetupPage";
+import ContactSetupPage from "@/pages/ContactSetupPage";
+import TestimonialsSetupPage from "@/pages/TestimonialsSetupPage";
+import FAQSetupPage from "@/pages/FAQSetupPage";
 import LaunchReadyPage from "@/pages/LaunchReadyPage";
 import OnboardingWelcomePage from "@/pages/OnboardingWelcomePage";
 import AdminSettingsPage from "@/pages/AdminSettingsPage";
@@ -76,6 +81,11 @@ function Router() {
       <Route path="/business-identity" component={BusinessIdentityPage} />
       <Route path="/homepage-setup" component={HomepageSetupPage} />
       <Route path="/foundation-pages" component={FoundationPagesOverviewPage} />
+      <Route path="/about-setup" component={AboutSetupPage} />
+      <Route path="/services-setup" component={ServicesSetupPage} />
+      <Route path="/contact-setup" component={ContactSetupPage} />
+      <Route path="/testimonials-setup" component={TestimonialsSetupPage} />
+      <Route path="/faq-setup" component={FAQSetupPage} />
       <Route path="/launch-ready" component={LaunchReadyPage} />
       <Route path="/media" component={MediaManagementPage} />
       <Route component={NotFound} />

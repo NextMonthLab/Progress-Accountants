@@ -14,7 +14,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ArrowLeft, ArrowRight, Save, CheckCircle2, Plus, Trash2, HelpCircle, Pound } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Save, CheckCircle2, Plus, Trash2, HelpCircle } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 import { useFieldArray, useForm } from "react-hook-form";
 
@@ -94,14 +94,11 @@ export default function FAQSetupPage() {
     name: "pricing_options"
   });
   
-  const { 
-    fields: categoryFields, 
-    append: appendCategory, 
-    remove: removeCategory 
-  } = useFieldArray({
-    control,
-    name: "faq_categories"
-  });
+  // We need a separate state for categories since it's not a normal field array in our schema
+  const [categories, setCategories] = useState<string[]>(['General', 'Services', 'Billing']);
+  
+  // Initialize categoryFields with current categories for rendering
+  const categoryFields = categories.map((category, index) => ({ id: index.toString(), value: category }));
   
   // Watch for changes in the include checkboxes
   const includeFAQ = watch('include_faq');
@@ -250,7 +247,17 @@ export default function FAQSetupPage() {
   
   // Add a new category
   const addCategory = () => {
-    appendCategory('New Category');
+    const newCategories = [...categories, 'New Category'];
+    setCategories(newCategories);
+    setValue('faq_categories', newCategories);
+  };
+  
+  // Remove a category
+  const removeCategory = (index: number) => {
+    const newCategories = [...categories];
+    newCategories.splice(index, 1);
+    setCategories(newCategories);
+    setValue('faq_categories', newCategories);
   };
   
   return (
@@ -758,13 +765,9 @@ export default function FAQSetupPage() {
                             <label className="block text-sm font-medium mb-1">
                               Price
                             </label>
-                            <div className="relative">
-                              <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                                <Pound className="h-4 w-4 text-gray-500" />
-                              </div>
+                            <div>
                               <Input 
-                                className="pl-8"
-                                placeholder="299"
+                                placeholder="£299"
                                 {...register(`pricing_options.${index}.price`, { 
                                   required: "Price is required" 
                                 })}
