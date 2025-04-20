@@ -62,7 +62,7 @@ export const UpgradeAnnouncement = () => {
         </CardHeader>
         <CardContent className="pt-6 pb-3">
           <p className="mb-4">
-            Hey there! We've just upgraded your Progress Accountants workspace to Blueprint v1.1.1.
+            Hey there! We've just upgraded your NextMonth workspace to Blueprint v1.1.1.
           </p>
           <p className="mb-4">
             This update brings two exciting new features designed to make your experience smoother, smarter, and more supported:

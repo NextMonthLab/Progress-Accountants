@@ -39,7 +39,7 @@ const OnboardingWelcomePage: React.FC = () => {
     <div className="container max-w-5xl mx-auto py-10 px-4">
       <Card className="w-full shadow-lg border-primary/20">
         <CardHeader className="bg-gradient-to-r from-primary/10 to-primary/5 rounded-t-lg">
-          <CardTitle className="text-3xl font-bold text-primary">Welcome to Progress Accountants!</CardTitle>
+          <CardTitle className="text-3xl font-bold text-primary">Welcome to NextMonth!</CardTitle>
           <CardDescription className="text-lg">
             Let's set up your business website together
           </CardDescription>
@@ -66,7 +66,7 @@ const OnboardingWelcomePage: React.FC = () => {
                 </AlertTitle>
               </div>
               <AlertDescription className="mt-2">
-                <p className="mb-2">We've just upgraded your Progress Accountants workspace with two exciting new features:</p>
+                <p className="mb-2">We've just upgraded your NextMonth workspace with two exciting new features:</p>
                 <div className="pl-2 border-l-2 border-primary/20 mt-2 space-y-3">
                   <div className="flex gap-2">
                     <MessageSquare className="h-4 w-4 mt-1 flex-shrink-0" />
@@ -87,7 +87,7 @@ const OnboardingWelcomePage: React.FC = () => {
             <div className="bg-muted/40 p-6 rounded-lg">
               <h3 className="text-xl font-semibold mb-3">Hello {userName},</h3>
               <p className="text-muted-foreground">
-                Thank you for choosing Progress Accountants for your business needs. 
+                Thank you for choosing NextMonth for your business needs. 
                 We're excited to help you set up your customized website that will showcase your 
                 services and attract new clients.
               </p>
