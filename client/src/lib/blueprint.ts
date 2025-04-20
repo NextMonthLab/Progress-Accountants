@@ -175,3 +175,59 @@ export async function autoPublishBlueprintV111(
     throw error;
   }
 }
+
+/**
+ * Auto-enable Blueprint v1.1.1 modules for new client instance
+ * @param clientId The ID of the client to enable modules for
+ * @returns Promise with the auto-enable result
+ */
+export async function autoEnableV111Modules(clientId: string): Promise<any> {
+  try {
+    const response = await fetch('/api/blueprint/auto-enable-v111', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ clientId }),
+    });
+    
+    if (!response.ok) {
+      throw new Error(`Error auto-enabling Blueprint v1.1.1 modules: ${response.statusText}`);
+    }
+    
+    return await response.json();
+  } catch (error) {
+    console.error('Failed to auto-enable Blueprint v1.1.1 modules:', error);
+    throw error;
+  }
+}
+
+/**
+ * Report a module loading failure for graceful fallback handling
+ * @param moduleId The ID of the module that failed to load
+ * @param context Additional context about the failure
+ * @returns Promise with the failure handling result
+ */
+export async function reportModuleLoadingFailure(
+  moduleId: string, 
+  context: string = "Unknown loading error"
+): Promise<any> {
+  try {
+    const response = await fetch('/api/blueprint/module-loading-failure', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ moduleId, context }),
+    });
+    
+    if (!response.ok) {
+      throw new Error(`Error reporting module loading failure: ${response.statusText}`);
+    }
+    
+    return await response.json();
+  } catch (error) {
+    console.error('Failed to report module loading failure:', error);
+    throw error;
+  }
+}

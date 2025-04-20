@@ -877,4 +877,93 @@ export function registerBlueprintRoutes(app: Express): void {
       return res.status(500).json({ message: "Error updating handoff status" });
     }
   });
+  
+  // Auto-enable v1.1.1 modules for new client instances
+  app.post("/api/blueprint/auto-enable-v111", async (req: Request, res: Response) => {
+    try {
+      const { clientId } = req.body;
+      
+      if (!clientId) {
+        return res.status(400).json({ 
+          success: false, 
+          message: "clientId is required" 
+        });
+      }
+      
+      // Auto-enable the modules
+      const enabled = await autoEnableV111Modules(clientId);
+      
+      if (!enabled) {
+        return res.status(500).json({
+          success: false,
+          message: "Failed to auto-enable Blueprint v1.1.1 modules"
+        });
+      }
+      
+      // Get updated client registry
+      const registry = await storage.getClientRegistry();
+      
+      if (!registry || registry.clientId !== clientId) {
+        return res.status(404).json({
+          success: false,
+          message: "Client registry not found after update"
+        });
+      }
+      
+      // Count v1.1.1 modules
+      const exportableModules = registry.exportableModules as any[] || [];
+      const v111Modules = exportableModules.filter(m => 
+        ['support/CompanionConsole', 'media/CloudinaryUpload', 'announcement/UpgradeAnnouncement', 
+        'announcement/UpgradeBanner', 'announcement/OnboardingUpgradeAlert'].includes(m.moduleId));
+      
+      return res.status(200).json({
+        success: true,
+        message: "Blueprint v1.1.1 modules auto-enabled for new client instance",
+        clientId,
+        blueprintVersion: registry.blueprintVersion,
+        enabledModules: v111Modules.map(m => m.moduleId),
+        totalV111Modules: v111Modules.length,
+        status: "active"
+      });
+      
+    } catch (error) {
+      console.error("Error auto-enabling Blueprint v1.1.1 modules:", error);
+      return res.status(500).json({ 
+        success: false, 
+        message: "Error auto-enabling Blueprint v1.1.1 modules" 
+      });
+    }
+  });
+  
+  // Handle module loading failures
+  app.post("/api/blueprint/module-loading-failure", async (req: Request, res: Response) => {
+    try {
+      const { moduleId, context } = req.body;
+      
+      if (!moduleId) {
+        return res.status(400).json({ 
+          success: false, 
+          message: "moduleId is required" 
+        });
+      }
+      
+      // Handle the module loading failure
+      await handleModuleLoadingFailure(moduleId, context || "Unknown error");
+      
+      return res.status(200).json({
+        success: true,
+        message: "Module loading failure handled with fallback",
+        moduleId,
+        timestamp: new Date().toISOString()
+      });
+      
+    } catch (error: any) {
+      console.error("Error handling module loading failure:", error);
+      return res.status(500).json({ 
+        success: false, 
+        message: "Error handling module loading failure",
+        error: error.message || "Unknown error"
+      });
+    }
+  });
 }

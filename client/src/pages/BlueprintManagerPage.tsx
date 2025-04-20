@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { useToast } from '@/hooks/use-toast';
-import { registerCompanionConsole, getBlueprintStatus, exportBlueprintPackage, notifyGuardian, exportBlueprintV111, autoPublishBlueprintV111, getModuleStatus } from '@/lib/blueprint';
+import { registerCompanionConsole, getBlueprintStatus, exportBlueprintPackage, notifyGuardian, exportBlueprintV111, autoPublishBlueprintV111, getModuleStatus, autoEnableV111Modules, reportModuleLoadingFailure } from '@/lib/blueprint';
 import { AlertTriangle, Check, Clock, Package, Router, Send, ShieldCheck, ThumbsUp, Zap, AlertCircle, CloudUpload, MessageSquare, Bell } from 'lucide-react';
 import AdminLayout from '@/layouts/AdminLayout';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
@@ -59,6 +59,7 @@ export default function BlueprintManagerPage() {
   const [registerLoading, setRegisterLoading] = useState(false);
   const [exportV111Loading, setExportV111Loading] = useState(false);
   const [publishV111Loading, setPublishV111Loading] = useState(false);
+  const [autoEnableLoading, setAutoEnableLoading] = useState(false);
   const { toast } = useToast();
 
   // Fetch blueprint status on mount
