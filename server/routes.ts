@@ -989,6 +989,53 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
   
   // Mark as synced with Guardian
+  // Save user's homepage preference (full_site, tools_only, or undecided)
+  app.post("/api/onboarding/preference", async (req: Request, res: Response) => {
+    try {
+      const { preference, userId } = req.body;
+      
+      if (!preference || !['full_site', 'tools_only', 'undecided'].includes(preference)) {
+        return res.status(400).json({ 
+          success: false, 
+          message: "Invalid preference value. Must be one of: full_site, tools_only, undecided" 
+        });
+      }
+      
+      if (!userId) {
+        return res.status(400).json({
+          success: false, 
+          message: "User ID is required"
+        });
+      }
+      
+      // Save preference to the database
+      const userIdInt = parseInt(userId);
+      
+      try {
+        // Update or create the onboarding state with this preference
+        await storage.saveOnboardingPreference(userIdInt, preference);
+        
+        // Return success response
+        res.status(200).json({ 
+          success: true, 
+          message: `Homepage preference set to ${preference}` 
+        });
+      } catch (dbError) {
+        console.error("Database error saving preference:", dbError);
+        res.status(500).json({
+          success: false,
+          message: "Failed to save preference to database"
+        });
+      }
+    } catch (error) {
+      console.error("Error in /api/onboarding/preference:", error);
+      res.status(500).json({
+        success: false, 
+        message: "An unexpected error occurred" 
+      });
+    }
+  });
+
   app.patch("/api/onboarding/guardian-sync", async (req: Request, res: Response) => {
     try {
       const { id, synced } = guardianSyncSchema.parse(req.body);

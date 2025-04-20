@@ -92,8 +92,27 @@ export default function HomepageSetupPage() {
   // State for preview modal
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   
-  // Load homepage context data from localStorage on component mount
+  // Check for Tools Only users and redirect if needed
   useEffect(() => {
+    // Check if user is a "tools_only" user
+    const homepagePreference = localStorage.getItem('project_context.homepage_preference');
+    
+    if (homepagePreference === 'tools_only') {
+      toast({
+        title: "Tools Only Mode Detected",
+        description: "Looks like you chose to keep your own website. Redirecting to Tools Hub instead.",
+        duration: 5000,
+      });
+      
+      // Wait a moment to show the toast before redirecting
+      setTimeout(() => {
+        setLocation('/tools-hub');
+      }, 1500);
+      
+      return;
+    }
+    
+    // Load homepage context data from localStorage on component mount
     const savedData = localStorage.getItem('project_context.homepage');
     if (savedData) {
       try {
@@ -111,7 +130,7 @@ export default function HomepageSetupPage() {
         });
       }
     }
-  }, [toast]);
+  }, [toast, setLocation]);
   
   // Handle input changes
   const handleInputChange = (field: keyof HomepageContext, value: string) => {

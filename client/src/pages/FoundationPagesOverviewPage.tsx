@@ -98,8 +98,26 @@ export default function FoundationPagesOverviewPage() {
   // State to track if all pages have been addressed (completed or skipped)
   const [allPagesAddressed, setAllPagesAddressed] = useState(false);
   
-  // Load page statuses from localStorage on component mount
+  // Load page statuses and check for Tools Only users
   useEffect(() => {
+    // Check if user is a "tools_only" user
+    const homepagePreference = localStorage.getItem('project_context.homepage_preference');
+    
+    if (homepagePreference === 'tools_only') {
+      toast({
+        title: "Tools Only Mode Detected",
+        description: "Looks like you chose to keep your own website. Redirecting to Tools Hub instead.",
+        duration: 5000,
+      });
+      
+      // Wait a moment to show the toast before redirecting
+      setTimeout(() => {
+        setLocation('/tools-hub');
+      }, 1500);
+      
+      return;
+    }
+    
     const savedStatuses = localStorage.getItem('project_context.page_status');
     if (savedStatuses) {
       try {
@@ -124,7 +142,7 @@ export default function FoundationPagesOverviewPage() {
         });
       }
     }
-  }, [toast]);
+  }, [toast, setLocation]);
   
   // Check if all pages have been addressed (completed or skipped)
   const checkAllPagesAddressed = (statuses: PageStatusData) => {
