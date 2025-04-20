@@ -1,9 +1,13 @@
 import { Express, Request, Response } from "express";
 import { storage } from "./storage";
 import { z } from "zod";
-import { ModuleActivation, Module, insertClientRegistrySchema } from "@shared/schema";
+import { ModuleActivation, Module, insertClientRegistrySchema, modules, activityLogs, blueprintVersions } from "@shared/schema";
 import { PageMetadata } from "@shared/page_metadata";
 import axios from "axios";
+import fs from "fs";
+import archiver from "archiver";
+import { eq } from "drizzle-orm";
+import { db } from "./db";
 
 // Import support module functions
 import { 
@@ -142,6 +146,56 @@ async function sendToVault(endpoint: string, data: any): Promise<boolean> {
   } catch (error) {
     console.error(`Error sending to Vault ${endpoint}:`, error);
     return false;
+  }
+}
+
+/**
+ * Prepares a blueprint export manifest 
+ * @param clientId - Client ID to package for
+ * @param version - Blueprint version
+ * @param moduleIds - List of module IDs to include
+ * @returns Export manifest data
+ */
+async function prepareExportManifest(clientId: string, version: string, moduleIds: string[]): Promise<any> {
+  try {
+    // Get module data from storage
+    const allModules = await storage.getAllModules();
+    
+    // Filter modules by IDs and create export objects
+    const moduleData = allModules
+      .filter(module => moduleIds.includes(module.id))
+      .map(module => ({
+        id: module.id,
+        name: module.name,
+        description: module.description,
+        category: module.category,
+        path: module.path,
+        optional: module.id.startsWith('announcement/') ? true : false,
+        enabled_by_default: true,
+        metadata: module.id.startsWith('announcement/') ? {
+          module_type: 'announcement',
+          context: 'platform upgrade',
+          family: 'Companion Console, Cloudinary Upload',
+          optional: true,
+          enabled_by_default: true,
+          persistence: module.id === 'announcement/UpgradeBanner' ? '14 days' : undefined
+        } : undefined
+      }));
+    
+    // Create export manifest
+    const exportManifest = {
+      clientId,
+      blueprintVersion: version,
+      exportTimestamp: new Date().toISOString(),
+      modules: moduleData,
+      deprecated: false,
+      exportId: `client-blueprint-v${version}-${Date.now()}`
+    };
+    
+    return exportManifest;
+  } catch (error) {
+    console.error('Error preparing export manifest:', error);
+    throw error;
   }
 }
 
@@ -475,6 +529,109 @@ export function registerBlueprintRoutes(app: Express): void {
     }
   });
   
+  // Export Blueprint v1.1.1 with announcement modules
+  app.post("/api/blueprint/export-v1.1.1", async (req: Request, res: Response) => {
+    try {
+      const { clientId } = req.body;
+      
+      if (!clientId) {
+        return res.status(400).json({ 
+          success: false, 
+          message: "clientId is required" 
+        });
+      }
+      
+      // Get registry
+      const registry = await storage.getClientRegistry();
+      
+      if (!registry || registry.clientId !== clientId) {
+        return res.status(404).json({ 
+          success: false, 
+          message: "Client registry not found" 
+        });
+      }
+      
+      // Update blueprint version to 1.1.1
+      const updatedRegistry = await storage.updateClientRegistry(clientId, {
+        blueprintVersion: "1.1.1",
+        exportReady: true,
+        lastExported: new Date()
+      });
+      
+      // Try to mark v1.1.0 as deprecated (if available)
+      try {
+        // Get existing blueprint versions
+        const existingVersions = await storage.getAllBlueprintVersions();
+        
+        // Find and update v1.1.0 if it exists
+        const v110 = existingVersions.find(v => v.version === "1.1.0");
+        if (v110) {
+          await storage.deprecateBlueprintVersion("1.1.0");
+        }
+      } catch (versionError) {
+        console.warn("Could not deprecate v1.1.0:", versionError);
+      }
+      
+      // List of modules to export
+      const modulesToExport = [
+        "support/CompanionConsole",
+        "media/CloudinaryUpload",
+        "announcement/UpgradeAnnouncement",
+        "announcement/UpgradeBanner",
+        "announcement/OnboardingUpgradeAlert"
+      ];
+      
+      // Prepare the export manifest
+      const exportManifest = await prepareExportManifest(clientId, "1.1.1", modulesToExport);
+      
+      // Update Blueprint status in storage
+      await storage.updateExportableModules(clientId, modulesToExport);
+      
+      // Notify Guardian
+      const guardianSuccess = await notifyGuardian(clientId, "blueprint-exported", {
+        blueprintVersion: "1.1.1",
+        moduleCount: modulesToExport.length,
+        exportId: exportManifest.exportId,
+        timestamp: new Date().toISOString()
+      });
+      
+      // Log export action (if activity logs table exists)
+      try {
+        await storage.addActivityLog({
+          userType: "system",
+          actionType: "blueprint_export",
+          entityType: "blueprint",
+          entityId: clientId,
+          details: JSON.stringify({
+            blueprintVersion: "1.1.1",
+            modules: modulesToExport,
+            exportId: exportManifest.exportId,
+            timestamp: new Date().toISOString()
+          })
+        });
+      } catch (logError) {
+        console.warn("Could not log export activity:", logError);
+      }
+      
+      return res.status(200).json({
+        success: true,
+        message: "Blueprint v1.1.1 exported successfully",
+        blueprintVersion: "1.1.1",
+        exportId: exportManifest.exportId,
+        modules: modulesToExport,
+        guardianNotified: guardianSuccess,
+        manifest: exportManifest
+      });
+      
+    } catch (error) {
+      console.error("Error exporting Blueprint v1.1.1:", error);
+      return res.status(500).json({ 
+        success: false, 
+        message: "Error exporting Blueprint v1.1.1" 
+      });
+    }
+  });
+
   // Update handoff status
   app.post("/api/blueprint/handoff-status", async (req: Request, res: Response) => {
     try {

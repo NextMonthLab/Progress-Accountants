@@ -4,6 +4,17 @@ import { z } from "zod";
 import { relations } from "drizzle-orm";
 import { PageMetadata, PageComplexityAssessment, ComplexityLevel } from "./page_metadata";
 
+// Blueprint versions table
+export const blueprintVersions = pgTable("blueprint_versions", {
+  id: serial("id").primaryKey(),
+  version: varchar("version", { length: 20 }).notNull(),
+  deprecated: boolean("deprecated").default(false),
+  releaseDate: timestamp("release_date").defaultNow(),
+  releaseNotes: text("release_notes"),
+  modules: jsonb("modules"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
 // User authentication tables
 export const users = pgTable("users", {
   id: serial("id").primaryKey(),
