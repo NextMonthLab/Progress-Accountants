@@ -64,77 +64,16 @@ export async function registerUpgradeAnnouncementModule() {
 }
 
 /**
- * Register the UpgradeAnnouncement module in the system
- */
-export async function registerUpgradeAnnouncementModule() {
-  try {
-    // Check if module already exists
-    const [existingModule] = await db
-      .select()
-      .from(modules)
-      .where(eq(modules.id, "announcement/UpgradeAnnouncement"));
-    
-    if (existingModule) {
-      console.log("UpgradeAnnouncement module already registered");
-      return existingModule;
-    }
-    
-    // Create new module entry
-    const [newModule] = await db
-      .insert(modules)
-      .values({
-        id: "announcement/UpgradeAnnouncement",
-        name: "Upgrade Announcement Modal",
-        description: "Main modal announcement for Blueprint v1.1.1 upgrade",
-        category: "core",
-        status: "active",
-        iconType: "bell-ring",
-        iconColor: "amber",
-        path: "/components/UpgradeAnnouncement",
-        previewAvailable: true,
-        premium: false
-      })
-      .returning();
-    
-    // Log the registration activity
-    await db.insert(activityLogs).values({
-      userId: 1, // System user
-      userType: "system",
-      actionType: "module_registered",
-      entityType: "module",
-      entityId: "announcement/UpgradeAnnouncement",
-      details: JSON.stringify({
-        moduleId: "announcement/UpgradeAnnouncement",
-        category: "core",
-        tag: "blueprint_upgrade_announcement",
-        metadata: {
-          module_type: "announcement",
-          context: "platform upgrade",
-          family: "Companion Console, Cloudinary Upload",
-          optional: true,
-          enabled_by_default: true
-        }
-      })
-    });
-    
-    console.log("UpgradeAnnouncement module registered successfully");
-    return newModule;
-  } catch (error) {
-    console.error("Error registering UpgradeAnnouncement module:", error);
-    throw error;
-  }
-}
-
-/**
  * Register the UpgradeBanner module in the system
  */
 export async function registerUpgradeBannerModule() {
   try {
+    const moduleId = "announcement/UpgradeBanner";
+    
     // Check if module already exists
-    const [existingModule] = await db
-      .select()
-      .from(modules)
-      .where(eq(modules.id, "announcement/UpgradeBanner"));
+    const existingModule = await db.query.modules.findFirst({
+      where: eq(modules.id, moduleId)
+    });
     
     if (existingModule) {
       console.log("UpgradeBanner module already registered");
@@ -142,21 +81,33 @@ export async function registerUpgradeBannerModule() {
     }
     
     // Create new module entry
-    const [newModule] = await db
-      .insert(modules)
-      .values({
-        id: "announcement/UpgradeBanner",
-        name: "Upgrade Banner",
-        description: "Persistent banner for admin pages announcing Blueprint v1.1.1 upgrade",
+    const moduleData = {
+      id: moduleId,
+      name: "Upgrade Banner",
+      description: "Persistent banner for admin pages announcing Blueprint v1.1.1 upgrade",
+      category: "core",
+      status: "active",
+      iconType: "bell",
+      iconColor: "amber",
+      path: "/components/UpgradeBanner",
+      previewAvailable: true,
+      premium: false
+    };
+    
+    const [newModule] = await db.insert(modules).values(moduleData).returning();
+    
+    // Log the registration activity
+    await db.insert(activityLogs).values({
+      userType: "system",
+      actionType: "module_registered",
+      entityType: "module",
+      entityId: moduleId,
+      details: JSON.stringify({
+        moduleId,
         category: "core",
-        status: "active",
-        iconType: "bell",
-        iconColor: "amber",
-        path: "/components/UpgradeBanner",
-        previewAvailable: true,
-        premium: false,
+        tag: "blueprint_upgrade_announcement",
         metadata: {
-          module_type: "announcement",
+          module_type: "announcement", 
           context: "platform upgrade",
           family: "Companion Console, Cloudinary Upload",
           optional: true,
@@ -164,18 +115,6 @@ export async function registerUpgradeBannerModule() {
           persistence: "14 days"
         }
       })
-      .returning();
-    
-    // Log the registration activity
-    await db.insert(activityLogs).values({
-      userId: 1, // System user
-      action: "module_registered",
-      details: JSON.stringify({
-        moduleId: "announcement/UpgradeBanner",
-        category: "core",
-        tag: "blueprint_upgrade_announcement"
-      }),
-      timestamp: new Date()
     });
     
     console.log("UpgradeBanner module registered successfully");
@@ -191,11 +130,12 @@ export async function registerUpgradeBannerModule() {
  */
 export async function registerOnboardingUpgradeAlertModule() {
   try {
+    const moduleId = "announcement/OnboardingUpgradeAlert";
+    
     // Check if module already exists
-    const [existingModule] = await db
-      .select()
-      .from(modules)
-      .where(eq(modules.id, "announcement/OnboardingUpgradeAlert"));
+    const existingModule = await db.query.modules.findFirst({
+      where: eq(modules.id, moduleId)
+    });
     
     if (existingModule) {
       console.log("OnboardingUpgradeAlert module already registered");
@@ -203,39 +143,39 @@ export async function registerOnboardingUpgradeAlertModule() {
     }
     
     // Create new module entry
-    const [newModule] = await db
-      .insert(modules)
-      .values({
-        id: "announcement/OnboardingUpgradeAlert",
-        name: "Onboarding Upgrade Alert",
-        description: "Upgrade alert shown during onboarding for Blueprint v1.1.1",
+    const moduleData = {
+      id: moduleId,
+      name: "Onboarding Upgrade Alert",
+      description: "Upgrade alert shown during onboarding for Blueprint v1.1.1",
+      category: "core",
+      status: "active",
+      iconType: "bell-ring",
+      iconColor: "amber",
+      path: "/pages/OnboardingWelcomePage",
+      previewAvailable: true,
+      premium: false
+    };
+    
+    const [newModule] = await db.insert(modules).values(moduleData).returning();
+    
+    // Log the registration activity
+    await db.insert(activityLogs).values({
+      userType: "system",
+      actionType: "module_registered",
+      entityType: "module",
+      entityId: moduleId,
+      details: JSON.stringify({
+        moduleId,
         category: "core",
-        status: "active",
-        iconType: "bell-ring",
-        iconColor: "amber",
-        path: "/pages/OnboardingWelcomePage",
-        previewAvailable: true,
-        premium: false,
+        tag: "blueprint_upgrade_announcement",
         metadata: {
-          module_type: "announcement",
+          module_type: "announcement", 
           context: "platform upgrade",
           family: "Companion Console, Cloudinary Upload",
           optional: true,
           enabled_by_default: true
         }
       })
-      .returning();
-    
-    // Log the registration activity
-    await db.insert(activityLogs).values({
-      userId: 1, // System user
-      action: "module_registered",
-      details: JSON.stringify({
-        moduleId: "announcement/OnboardingUpgradeAlert",
-        category: "core",
-        tag: "blueprint_upgrade_announcement"
-      }),
-      timestamp: new Date()
     });
     
     console.log("OnboardingUpgradeAlert module registered successfully");
@@ -252,10 +192,9 @@ export async function registerOnboardingUpgradeAlertModule() {
 export async function updateClientRegistryWithAnnouncements(clientId: string) {
   try {
     // Get the client registry
-    const [existingRegistry] = await db
-      .select()
-      .from(clientRegistry)
-      .where(eq(clientRegistry.clientId, clientId));
+    const existingRegistry = await db.query.clientRegistry.findFirst({
+      where: eq(clientRegistry.clientId, clientId)
+    });
     
     if (!existingRegistry) {
       console.error("Client registry not found for ID:", clientId);
@@ -316,15 +255,16 @@ export async function updateClientRegistryWithAnnouncements(clientId: string) {
     
     // Log the update activity
     await db.insert(activityLogs).values({
-      userId: 1, // System user
-      action: "blueprint_updated",
+      userType: "system",
+      actionType: "blueprint_updated",
+      entityType: "registry",
+      entityId: clientId,
       details: JSON.stringify({
         clientId,
         blueprintVersion: "1.1.1",
         tag: "blueprint_upgrade_announcement",
         modules: announcementModules.map(m => m.moduleId)
-      }),
-      timestamp: new Date()
+      })
     });
     
     console.log("Client registry updated with announcement modules");
@@ -346,8 +286,10 @@ export async function syncAnnouncementsToVault(clientId: string) {
     
     // Log the sync activity
     await db.insert(activityLogs).values({
-      userId: 1, // System user
-      action: "module_synced",
+      userType: "system",
+      actionType: "module_synced",
+      entityType: "module",
+      entityId: "announcement/collection",
       details: JSON.stringify({
         clientId,
         modules: [
@@ -356,8 +298,7 @@ export async function syncAnnouncementsToVault(clientId: string) {
           "announcement/OnboardingUpgradeAlert"
         ],
         tag: "blueprint_upgrade_announcement"
-      }),
-      timestamp: new Date()
+      })
     });
     
     return true;

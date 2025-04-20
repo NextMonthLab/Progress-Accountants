@@ -401,6 +401,80 @@ export function registerBlueprintRoutes(app: Express): void {
     }
   });
   
+  // Register and sync the Upgrade Announcement modules
+  app.post("/api/blueprint/register-upgrade-announcements", async (req: Request, res: Response) => {
+    try {
+      const { clientId } = req.body;
+      
+      if (!clientId) {
+        return res.status(400).json({ 
+          success: false, 
+          message: "clientId is required" 
+        });
+      }
+      
+      // Step 1: Register the announcement modules
+      const announcementModule = await registerUpgradeAnnouncementModule();
+      const bannerModule = await registerUpgradeBannerModule();
+      const onboardingAlertModule = await registerOnboardingUpgradeAlertModule();
+      
+      // Step 2: Update client registry with the modules and new version
+      const updatedRegistry = await updateClientRegistryWithAnnouncements(clientId);
+      
+      if (!updatedRegistry) {
+        return res.status(404).json({ 
+          success: false, 
+          message: "Client registry not found" 
+        });
+      }
+      
+      // Step 3: Sync to Vault
+      const vaultSynced = await syncAnnouncementsToVault(clientId);
+      
+      // Step 4: Notify Guardian about the upgrade
+      const guardianSuccess = await notifyGuardian(clientId, "blueprint-upgraded", {
+        fromVersion: "1.1.0",
+        toVersion: "1.1.1",
+        modules: [
+          "announcement/UpgradeAnnouncement",
+          "announcement/UpgradeBanner",
+          "announcement/OnboardingUpgradeAlert"
+        ],
+        timestamp: new Date().toISOString(),
+        tag: "blueprint_upgrade_announcement"
+      });
+      
+      return res.status(200).json({
+        success: true,
+        message: "Upgrade announcement modules registered and synced successfully",
+        modules: {
+          announcement: {
+            id: announcementModule.id,
+            name: announcementModule.name
+          },
+          banner: {
+            id: bannerModule.id,
+            name: bannerModule.name
+          },
+          onboardingAlert: {
+            id: onboardingAlertModule.id,
+            name: onboardingAlertModule.name
+          }
+        },
+        blueprintVersion: updatedRegistry.blueprintVersion,
+        vaultSynced,
+        guardianNotified: guardianSuccess
+      });
+      
+    } catch (error) {
+      console.error("Error registering upgrade announcement modules:", error);
+      return res.status(500).json({ 
+        success: false, 
+        message: "Error registering upgrade announcement modules" 
+      });
+    }
+  });
+  
   // Update handoff status
   app.post("/api/blueprint/handoff-status", async (req: Request, res: Response) => {
     try {
