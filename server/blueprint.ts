@@ -193,6 +193,85 @@ async function prepareExportManifest(clientId: string, version: string, moduleId
     };
     
     return exportManifest;
+    
+/**
+ * Publishes blueprint v1.1.1 to the Vault as the default version
+ * @param clientId - Client ID to publish for
+ * @param vaultPath - Path in vault to store at (e.g. blueprints/client/v1.1.1/)
+ * @returns Success status
+ */
+async function publishBlueprintToVault(clientId: string, vaultPath: string = 'blueprints/client/v1.1.1/'): Promise<boolean> {
+  try {
+    // Step 1: Prepare module list for the blueprint
+    const modulesToExport = [
+      "support/CompanionConsole",
+      "media/CloudinaryUpload",
+      "announcement/UpgradeAnnouncement",
+      "announcement/UpgradeBanner",
+      "announcement/OnboardingUpgradeAlert"
+    ];
+    
+    // Step 2: Create export manifest
+    const exportManifest = await prepareExportManifest(clientId, "1.1.1", modulesToExport);
+    
+    // Step 3: Send Blueprint manifest to Vault
+    const manifestSent = await sendToVault('/store-blueprint', {
+      path: `${vaultPath}manifest.json`,
+      data: exportManifest,
+      setAsDefault: true
+    });
+    
+    if (!manifestSent) {
+      console.error("Failed to send blueprint manifest to Vault");
+      return false;
+    }
+    
+    // Step 4: Create zipfile with all modules
+    const zipPath = `${vaultPath}client-blueprint-v1.1.1.zip`;
+    const zipSuccess = await sendToVault('/store-blueprint-zip', {
+      path: zipPath,
+      modules: modulesToExport,
+      manifestId: exportManifest.exportId
+    });
+    
+    if (!zipSuccess) {
+      console.error("Failed to send blueprint ZIP to Vault");
+      return false;
+    }
+    
+    // Step 5: Update vault configuration to use this as default for new clients
+    const configSuccess = await sendToVault('/set-default-blueprint', {
+      version: "1.1.1",
+      zipPath: zipPath,
+      manifestPath: `${vaultPath}manifest.json`,
+      forAllClients: true,
+      markAsActive: true,
+      onboardingVersion: "1.1.1",
+      deprecateOthers: true
+    });
+    
+    // Log activity
+    await storage.addActivityLog({
+      userType: "system",
+      actionType: "blueprint_publish",
+      entityType: "blueprint",
+      entityId: clientId,
+      details: JSON.stringify({
+        version: "1.1.1",
+        path: vaultPath,
+        manifestId: exportManifest.exportId,
+        modules: modulesToExport,
+        setAsDefault: true,
+        timestamp: new Date().toISOString()
+      })
+    });
+    
+    return configSuccess;
+  } catch (error) {
+    console.error("Error publishing blueprint to Vault:", error);
+    return false;
+  }
+}
   } catch (error) {
     console.error('Error preparing export manifest:', error);
     throw error;
