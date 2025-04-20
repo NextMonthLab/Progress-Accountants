@@ -48,16 +48,19 @@ export default function WebsiteIntentPage() {
       case 'tools_only':
         // Skip homepage setup and route to dashboard or relevant tool section
         toast({
-          title: "Skipping Website Setup",
-          description: "Taking you directly to the tools dashboard",
+          title: "Tools Only Mode Selected",
+          description: "Taking you directly to the Client Portal with all available tools and features",
         });
         
         // Mark website setup stages as completed in localStorage
         localStorage.setItem('project_context.homepage_setup_completed', 'true');
         localStorage.setItem('project_context.foundation_pages_completed', 'true');
         
-        // Route to the client dashboard or tools section instead of foundation pages
-        setLocation('/client-dashboard');
+        // Mark onboarding as complete for tools-only users
+        localStorage.setItem('project_context.status', 'onboarded');
+        
+        // Route to the client portal which has all the tools
+        setLocation('/client-portal');
         break;
       case 'undecided':
         // Route to homepage setup but mark as optional

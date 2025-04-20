@@ -146,6 +146,7 @@ function FirstTimeUserDetector({ children }: { children: React.ReactNode }) {
         !onboardingComplete &&
         location !== '/onboarding' && 
         location !== '/website-intent' && // Add the new page to excluded redirects
+        location !== '/client-portal' && // Allow client portal for 'tools only' users
         !location.startsWith('/homepage-setup') && 
         !location.startsWith('/foundation-pages') && 
         !location.startsWith('/launch-ready') &&
