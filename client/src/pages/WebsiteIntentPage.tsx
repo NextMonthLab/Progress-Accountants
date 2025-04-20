@@ -46,12 +46,18 @@ export default function WebsiteIntentPage() {
         setLocation('/homepage-setup');
         break;
       case 'tools_only':
-        // Skip homepage setup and route to dashboard or next tool
+        // Skip homepage setup and route to dashboard or relevant tool section
         toast({
-          title: "Skipping Homepage Setup",
-          description: "You can always set up your website later from the dashboard",
+          title: "Skipping Website Setup",
+          description: "Taking you directly to the tools dashboard",
         });
-        setLocation('/foundation-pages');
+        
+        // Mark website setup stages as completed in localStorage
+        localStorage.setItem('project_context.homepage_setup_completed', 'true');
+        localStorage.setItem('project_context.foundation_pages_completed', 'true');
+        
+        // Route to the client dashboard or tools section instead of foundation pages
+        setLocation('/client-dashboard');
         break;
       case 'undecided':
         // Route to homepage setup but mark as optional
@@ -124,7 +130,7 @@ export default function WebsiteIntentPage() {
                   </p>
                 </CardContent>
                 <CardFooter className="pt-0 text-xs text-gray-500">
-                  Skips website setup steps entirely
+                  Takes you directly to tools dashboard, skipping website setup
                 </CardFooter>
               </Card>
               
