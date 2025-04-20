@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import NotFound from "@/pages/not-found";
 import { useAuth } from "@/components/ClientDataProvider";
+import { UpgradeAnnouncement } from "@/components/UpgradeAnnouncement";
 import HomePage from "@/pages/HomePage";
 import StudioPage from "@/pages/StudioPage";
 import DashboardPage from "@/pages/DashboardPage";
@@ -92,6 +93,7 @@ function App() {
             <Router />
           </MainLayout>
         </FirstTimeUserDetector>
+        <UpgradeAnnouncement />
         <Toaster />
       </ThemeProvider>
     </ClientDataProvider>

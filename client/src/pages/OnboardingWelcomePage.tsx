@@ -8,9 +8,11 @@ import {
   CardHeader, 
   CardTitle 
 } from "@/components/ui/card";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { useAuth } from '@/components/ClientDataProvider';
-import { ArrowRight, CheckCircle2 } from 'lucide-react';
+import { ArrowRight, CheckCircle2, BellRing, MessageSquare, CloudUpload } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 
 const OnboardingWelcomePage: React.FC = () => {
