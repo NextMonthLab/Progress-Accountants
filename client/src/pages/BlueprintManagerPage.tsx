@@ -1,622 +1,294 @@
-import React, { useState, useEffect } from 'react';
-import { useToast } from '@/hooks/use-toast';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { blueprintApi, ModuleMapItem } from '@/lib/blueprint-api';
-import { Button } from '@/components/ui/button';
+import { useEffect, useState } from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Separator } from '@/components/ui/separator';
+import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Loader2, CheckCircle2Icon, XCircleIcon, Clock10Icon, PackageIcon } from 'lucide-react';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Progress } from '@/components/ui/progress';
+import { Separator } from '@/components/ui/separator';
+import { useToast } from '@/hooks/use-toast';
+import { registerCompanionConsole, getBlueprintStatus, exportBlueprintPackage, notifyGuardian } from '@/lib/blueprint';
+import { AlertTriangle, Check, Clock, Package, Router, Send, ShieldCheck, ThumbsUp } from 'lucide-react';
+import AdminLayout from '@/layouts/AdminLayout';
 
-// Default client ID - normally would come from context or configuration
-const DEFAULT_CLIENT_ID = 'progress-accountants';
-// Default blueprint version - normally would be determined based on current state
-const DEFAULT_BLUEPRINT_VERSION = '1.1.0';
+// Client ID for Progress Accountants
+const CLIENT_ID = 'progress-accountants';
 
-const BlueprintManagerPage: React.FC = () => {
+export default function BlueprintManagerPage() {
+  const [blueprintStatus, setBlueprintStatus] = useState<any>(null);
+  const [loading, setLoading] = useState(false);
+  const [exportLoading, setExportLoading] = useState(false);
+  const [notifyLoading, setNotifyLoading] = useState(false);
+  const [registerLoading, setRegisterLoading] = useState(false);
   const { toast } = useToast();
-  const queryClient = useQueryClient();
-  const [activeTab, setActiveTab] = useState('configuration');
-  const [clientId, setClientId] = useState(DEFAULT_CLIENT_ID);
-  const [blueprintVersion, setBlueprintVersion] = useState(DEFAULT_BLUEPRINT_VERSION);
-  const [sector, setSector] = useState('accounting');
-  const [location, setLocation] = useState('UK');
-  const [exportProgress, setExportProgress] = useState(0);
 
-  // Status query
-  const { 
-    data: blueprintStatus, 
-    isLoading: isStatusLoading,
-    error: statusError,
-    refetch: refetchStatus
-  } = useQuery({
-    queryKey: ['/api/blueprint/status'],
-    queryFn: () => blueprintApi.getStatus(),
-  });
-
-  // Tag blueprint mutation
-  const tagMutation = useMutation({
-    mutationFn: (data: {
-      clientId: string;
-      blueprintVersion: string;
-      sector: string;
-      location: string;
-    }) => blueprintApi.tagBlueprint(data),
-    onSuccess: () => {
-      toast({
-        title: 'Blueprint Tagged',
-        description: `Tagged ${clientId} with version ${blueprintVersion}`,
-      });
-      queryClient.invalidateQueries({ queryKey: ['/api/blueprint/status'] });
-    },
-    onError: (error: Error) => {
-      toast({
-        title: 'Failed to tag blueprint',
-        description: error.message,
-        variant: 'destructive',
-      });
-    },
-  });
-
-  // Module map generation mutation
-  const moduleMapMutation = useMutation({
-    mutationFn: (clientId: string) => blueprintApi.generateModuleMap(clientId),
-    onSuccess: (data) => {
-      toast({
-        title: 'Module Map Generated',
-        description: `Generated module map with ${data.moduleCount} modules`,
-      });
-      queryClient.invalidateQueries({ queryKey: ['/api/blueprint/status'] });
-      setExportProgress(20);
-    },
-    onError: (error: Error) => {
-      toast({
-        title: 'Failed to generate module map',
-        description: error.message,
-        variant: 'destructive',
-      });
-    },
-  });
-  
-  // Blueprint package generation mutation
-  const packageMutation = useMutation({
-    mutationFn: (clientId: string) => blueprintApi.generateBlueprintPackage(clientId),
-    onSuccess: (data) => {
-      toast({
-        title: 'Blueprint Package Generated',
-        description: `Generated blueprint package. Vault sync: ${data.vaultSynced ? 'Success' : 'Pending'}`,
-      });
-      queryClient.invalidateQueries({ queryKey: ['/api/blueprint/status'] });
-      setExportProgress(60);
-    },
-    onError: (error: Error) => {
-      toast({
-        title: 'Failed to generate blueprint package',
-        description: error.message,
-        variant: 'destructive',
-      });
-    },
-  });
-  
-  // Guardian notification mutation
-  const guardianMutation = useMutation({
-    mutationFn: (data: { clientId: string; event: string }) => 
-      blueprintApi.notifyGuardian(data.clientId, data.event),
-    onSuccess: (data) => {
-      toast({
-        title: 'Guardian Notified',
-        description: `Handoff status: ${data.handoffStatus}`,
-      });
-      queryClient.invalidateQueries({ queryKey: ['/api/blueprint/status'] });
-      setExportProgress(100);
-    },
-    onError: (error: Error) => {
-      toast({
-        title: 'Failed to notify Guardian',
-        description: error.message,
-        variant: 'destructive',
-      });
-    },
-  });
-  
-  // Handoff status update mutation
-  const handoffMutation = useMutation({
-    mutationFn: (data: { clientId: string; status: string }) => 
-      blueprintApi.updateHandoffStatus(data.clientId, data.status),
-    onSuccess: (data) => {
-      toast({
-        title: 'Handoff Status Updated',
-        description: `New status: ${data.handoffStatus}`,
-      });
-      queryClient.invalidateQueries({ queryKey: ['/api/blueprint/status'] });
-    },
-    onError: (error: Error) => {
-      toast({
-        title: 'Failed to update handoff status',
-        description: error.message,
-        variant: 'destructive',
-      });
-    },
-  });
-
-  // Set defaults if blueprint status is loaded
+  // Fetch blueprint status on mount
   useEffect(() => {
-    if (blueprintStatus) {
-      setClientId(blueprintStatus.clientId || DEFAULT_CLIENT_ID);
-      setBlueprintVersion(blueprintStatus.blueprintVersion || DEFAULT_BLUEPRINT_VERSION);
-      
-      // Set progress based on status
-      if (blueprintStatus.exportReady) {
-        setExportProgress(100);
-      } else if (blueprintStatus.moduleCount > 0) {
-        setExportProgress(30);
+    const fetchBlueprintStatus = async () => {
+      try {
+        const status = await getBlueprintStatus();
+        setBlueprintStatus(status);
+      } catch (error) {
+        console.error('Error fetching blueprint status:', error);
+        toast({
+          variant: 'destructive',
+          title: 'Error',
+          description: 'Failed to load blueprint status',
+        });
       }
-    }
-  }, [blueprintStatus]);
+    };
 
-  // Handle tag blueprint
-  const handleTagBlueprint = () => {
-    tagMutation.mutate({
-      clientId,
-      blueprintVersion,
-      sector,
-      location,
-    });
-  };
+    fetchBlueprintStatus();
+  }, [toast]);
 
-  // Handle generate module map
-  const handleGenerateModuleMap = () => {
-    if (!clientId) return;
-    moduleMapMutation.mutate(clientId);
-  };
-
-  // Handle generate blueprint package
-  const handleGeneratePackage = () => {
-    if (!clientId) return;
-    packageMutation.mutate(clientId);
-  };
-
-  // Handle notify Guardian
-  const handleNotifyGuardian = () => {
-    if (!clientId) return;
-    guardianMutation.mutate({ clientId, event: 'export-ready' });
-  };
-
-  // Handle full export process
-  const handleFullExport = async () => {
-    if (!clientId) return;
-    setExportProgress(10);
-    
+  // Handler for registering CompanionConsole module
+  const handleRegisterCompanionConsole = async () => {
+    setRegisterLoading(true);
     try {
-      // Step 1: Tag blueprint
-      await tagMutation.mutateAsync({
-        clientId,
-        blueprintVersion,
-        sector,
-        location,
-      });
-      setExportProgress(15);
-      
-      // Step 2: Generate module map
-      await moduleMapMutation.mutateAsync(clientId);
-      setExportProgress(40);
-      
-      // Step 3: Generate blueprint package
-      await packageMutation.mutateAsync(clientId);
-      setExportProgress(75);
-      
-      // Step 4: Notify Guardian
-      await guardianMutation.mutateAsync({ clientId, event: 'export-ready' });
-      setExportProgress(100);
-      
+      const result = await registerCompanionConsole(CLIENT_ID);
       toast({
-        title: 'Export Complete',
-        description: 'Blueprint exported successfully to Vault',
+        title: 'Success',
+        description: 'CompanionConsole module registered successfully',
       });
+      
+      // Update blueprint status
+      setBlueprintStatus(prev => ({
+        ...prev,
+        blueprintVersion: '1.1.1',
+        moduleCount: (prev?.moduleCount || 0) + 1
+      }));
     } catch (error) {
+      console.error('Error registering CompanionConsole:', error);
       toast({
-        title: 'Export Failed',
-        description: 'An error occurred during export',
         variant: 'destructive',
+        title: 'Error',
+        description: 'Failed to register CompanionConsole module',
       });
+    } finally {
+      setRegisterLoading(false);
     }
   };
 
-  // Status badge
-  const getHandoffStatusBadge = (status: string) => {
-    switch (status) {
-      case 'in_progress':
-        return <Badge variant="outline" className="bg-yellow-50 text-yellow-700">In Progress</Badge>;
-      case 'completed':
-        return <Badge variant="outline" className="bg-green-50 text-green-700">Completed</Badge>;
-      case 'exported':
-        return <Badge variant="outline" className="bg-blue-50 text-blue-700">Exported</Badge>;
-      default:
-        return <Badge variant="outline">{status}</Badge>;
+  // Handler for exporting blueprint package
+  const handleExportBlueprint = async () => {
+    setExportLoading(true);
+    try {
+      const result = await exportBlueprintPackage(CLIENT_ID);
+      toast({
+        title: 'Success',
+        description: 'Blueprint package exported successfully',
+      });
+      
+      // Update status to show export ready
+      setBlueprintStatus(prev => ({
+        ...prev,
+        exportReady: true,
+        lastExported: new Date().toISOString()
+      }));
+    } catch (error) {
+      console.error('Error exporting blueprint:', error);
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: 'Failed to export blueprint package',
+      });
+    } finally {
+      setExportLoading(false);
     }
   };
 
-  // Render blueprint status
-  const renderBlueprintStatus = () => {
-    if (isStatusLoading) {
-      return (
-        <Card>
-          <CardHeader>
-            <CardTitle>Loading Blueprint Status...</CardTitle>
-          </CardHeader>
-          <CardContent className="flex justify-center">
-            <Loader2 className="h-16 w-16 animate-spin text-muted-foreground" />
-          </CardContent>
-        </Card>
-      );
+  // Handler for notifying Guardian
+  const handleNotifyGuardian = async () => {
+    setNotifyLoading(true);
+    try {
+      const result = await notifyGuardian(CLIENT_ID);
+      toast({
+        title: 'Success',
+        description: 'Guardian notified successfully',
+      });
+      
+      // Update handoff status
+      setBlueprintStatus(prev => ({
+        ...prev,
+        handoffStatus: 'completed'
+      }));
+    } catch (error) {
+      console.error('Error notifying Guardian:', error);
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: 'Failed to notify Guardian',
+      });
+    } finally {
+      setNotifyLoading(false);
     }
+  };
 
-    if (statusError) {
-      return (
-        <Card>
-          <CardHeader>
-            <CardTitle>Error Loading Blueprint Status</CardTitle>
-            <CardDescription>
-              {statusError instanceof Error ? statusError.message : 'Unknown error'}
-            </CardDescription>
-          </CardHeader>
-          <CardFooter>
-            <Button onClick={() => refetchStatus()}>Retry</Button>
-          </CardFooter>
-        </Card>
-      );
-    }
-
-    if (!blueprintStatus) {
-      return (
-        <Card>
-          <CardHeader>
-            <CardTitle>Blueprint Not Configured</CardTitle>
-            <CardDescription>
-              No blueprint configuration found. Please configure using the form.
-            </CardDescription>
-          </CardHeader>
-        </Card>
-      );
-    }
-
-    return (
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center justify-between">
-            <span>Blueprint Status</span>
-            {blueprintStatus.exportReady && <CheckCircle2Icon className="h-5 w-5 text-green-500" />}
-          </CardTitle>
-          <CardDescription>
-            {blueprintStatus.exportReady ? 
-              'Blueprint is ready for export' : 
-              'Blueprint configuration in progress'}
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid gap-4">
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <Label className="text-xs">Client ID</Label>
-                <div className="font-medium">{blueprintStatus.clientId}</div>
-              </div>
-              <div>
-                <Label className="text-xs">Blueprint Version</Label>
-                <div className="font-medium">{blueprintStatus.blueprintVersion}</div>
-              </div>
-            </div>
-            
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <Label className="text-xs">Export Status</Label>
-                <div className="font-medium">{getHandoffStatusBadge(blueprintStatus.handoffStatus)}</div>
-              </div>
-              <div>
-                <Label className="text-xs">Module Count</Label>
-                <div className="font-medium">{blueprintStatus.moduleCount}</div>
-              </div>
-            </div>
-            
-            {blueprintStatus.lastExported && (
-              <div>
-                <Label className="text-xs">Last Exported</Label>
-                <div className="font-medium">
-                  {new Date(blueprintStatus.lastExported).toLocaleString()}
-                </div>
-              </div>
-            )}
-            
-            <div>
-              <Label className="text-xs mb-2 block">Export Progress</Label>
-              <Progress value={exportProgress} className="h-2 w-full" />
-              <div className="text-xs text-right mt-1">{exportProgress}%</div>
-            </div>
-          </div>
-        </CardContent>
-        <CardFooter className="flex justify-between">
-          <Button variant="outline" onClick={() => refetchStatus()}>
-            Refresh
-          </Button>
-          <Button 
-            onClick={handleFullExport}
-            disabled={packageMutation.isPending || guardianMutation.isPending}
-          >
-            {packageMutation.isPending || guardianMutation.isPending ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Exporting...
-              </>
-            ) : (
-              <>
-                <PackageIcon className="mr-2 h-4 w-4" />
-                Export Blueprint
-              </>
-            )}
-          </Button>
-        </CardFooter>
-      </Card>
-    );
+  // Format timestamp
+  const formatTimestamp = (timestamp: string | null) => {
+    if (!timestamp) return 'Never';
+    return new Date(timestamp).toLocaleString();
   };
 
   return (
-    <div className="container py-10">
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight">Blueprint Manager</h1>
+    <AdminLayout>
+      <div className="container mx-auto py-8">
+        <h1 className="text-3xl font-bold mb-2">Blueprint Manager</h1>
+        <p className="text-muted-foreground mb-8">
+          Manage your client blueprint for deployment across the NextMonth ecosystem.
+        </p>
+
+        {/* Blueprint Status */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+          <Card className="shadow-md">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Router className="h-5 w-5" />
+                Blueprint Status
+              </CardTitle>
+              <CardDescription>
+                Current status of your client blueprint configuration
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              {blueprintStatus ? (
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm font-medium">Client ID:</span>
+                    <Badge variant="outline">{blueprintStatus.clientId}</Badge>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm font-medium">Version:</span>
+                    <Badge variant="secondary">v{blueprintStatus.blueprintVersion}</Badge>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm font-medium">Modules:</span>
+                    <Badge variant="outline">{blueprintStatus.moduleCount || 0}</Badge>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm font-medium">Export Ready:</span>
+                    {blueprintStatus.exportReady ? (
+                      <Badge variant="success" className="bg-green-600">
+                        <Check className="h-3 w-3 mr-1" /> Ready
+                      </Badge>
+                    ) : (
+                      <Badge variant="secondary">
+                        <Clock className="h-3 w-3 mr-1" /> Pending
+                      </Badge>
+                    )}
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm font-medium">Handoff Status:</span>
+                    {blueprintStatus.handoffStatus === 'completed' ? (
+                      <Badge variant="success" className="bg-green-600">
+                        <ThumbsUp className="h-3 w-3 mr-1" /> Completed
+                      </Badge>
+                    ) : (
+                      <Badge variant="secondary">
+                        <Clock className="h-3 w-3 mr-1" /> {blueprintStatus.handoffStatus || 'In Progress'}
+                      </Badge>
+                    )}
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm font-medium">Last Exported:</span>
+                    <span className="text-sm text-muted-foreground">
+                      {formatTimestamp(blueprintStatus.lastExported)}
+                    </span>
+                  </div>
+                </div>
+              ) : (
+                <div className="flex justify-center items-center h-40">
+                  <div className="animate-spin h-8 w-8 border-4 border-primary border-t-transparent rounded-full"></div>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+
+          <Card className="shadow-md">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <ShieldCheck className="h-5 w-5" />
+                Companion Console
+              </CardTitle>
+              <CardDescription>
+                AI-powered support interface with context-aware guidance
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <p className="text-sm">
+                  The Companion Console provides an intelligent support system that offers:
+                </p>
+                <ul className="list-disc list-inside text-sm space-y-1 text-muted-foreground">
+                  <li>Context-aware assistance based on the current screen</li>
+                  <li>Integration with OpenAI for intelligent responses</li>
+                  <li>Vault logging for support interactions</li>
+                  <li>Feedback escalation to development team</li>
+                  <li>Optional toggle in client registry</li>
+                </ul>
+                <div className="flex flex-col mt-4">
+                  <span className="text-sm font-medium mb-1">Status:</span>
+                  {blueprintStatus?.blueprintVersion === '1.1.1' ? (
+                    <Badge className="self-start bg-green-600">
+                      <Check className="h-3 w-3 mr-1" /> Included in v1.1.1
+                    </Badge>
+                  ) : (
+                    <Badge variant="outline" className="self-start">
+                      <AlertTriangle className="h-3 w-3 mr-1" /> Not registered
+                    </Badge>
+                  )}
+                </div>
+              </div>
+            </CardContent>
+            <CardFooter>
+              <Button 
+                onClick={handleRegisterCompanionConsole} 
+                disabled={registerLoading || blueprintStatus?.blueprintVersion === '1.1.1'}
+                className="w-full"
+              >
+                {registerLoading ? 'Registering...' : 'Register Module'}
+              </Button>
+            </CardFooter>
+          </Card>
+        </div>
+
+        <Separator className="my-8" />
+
+        {/* Export and Handoff Controls */}
+        <div className="space-y-6">
+          <h2 className="text-xl font-bold">Export Controls</h2>
           <p className="text-muted-foreground">
-            Configure and export Blueprint v1.1.0 to NextMonth Vault
+            Export your blueprint package to the NextMonth Vault and notify Guardian when ready.
           </p>
+
+          <div className="flex flex-col md:flex-row gap-4">
+            <Button
+              onClick={handleExportBlueprint}
+              disabled={exportLoading || !blueprintStatus?.clientId}
+              variant="default"
+              className="flex-1"
+            >
+              <Package className="mr-2 h-4 w-4" />
+              {exportLoading ? 'Exporting...' : 'Export Blueprint Package'}
+            </Button>
+
+            <Button
+              onClick={handleNotifyGuardian}
+              disabled={notifyLoading || !blueprintStatus?.exportReady}
+              variant="outline"
+              className="flex-1"
+            >
+              <Send className="mr-2 h-4 w-4" />
+              {notifyLoading ? 'Notifying...' : 'Notify Guardian'}
+            </Button>
+          </div>
+
+          <div className="bg-muted rounded-md p-4 mt-4">
+            <p className="text-sm text-muted-foreground">
+              <strong>Note:</strong> Exporting the blueprint package will create a snapshot of all
+              configured modules and settings. Notifying Guardian will mark the blueprint as ready
+              for deployment.
+            </p>
+          </div>
         </div>
       </div>
-
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
-        <TabsList>
-          <TabsTrigger value="status">Status</TabsTrigger>
-          <TabsTrigger value="configuration">Configuration</TabsTrigger>
-          <TabsTrigger value="modules">Modules</TabsTrigger>
-          <TabsTrigger value="export">Export</TabsTrigger>
-        </TabsList>
-        
-        <TabsContent value="status" className="space-y-4">
-          {renderBlueprintStatus()}
-        </TabsContent>
-        
-        <TabsContent value="configuration" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>Blueprint Configuration</CardTitle>
-              <CardDescription>
-                Configure the blueprint identity and versioning
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="clientId">Client ID</Label>
-                  <Input 
-                    id="clientId" 
-                    value={clientId} 
-                    onChange={(e) => setClientId(e.target.value)}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="blueprintVersion">Blueprint Version</Label>
-                  <Input 
-                    id="blueprintVersion" 
-                    value={blueprintVersion} 
-                    onChange={(e) => setBlueprintVersion(e.target.value)}
-                  />
-                </div>
-              </div>
-              
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="sector">Sector</Label>
-                  <Select 
-                    defaultValue={sector}
-                    onValueChange={setSector}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select a sector" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="accounting">Accounting</SelectItem>
-                      <SelectItem value="consulting">Consulting</SelectItem>
-                      <SelectItem value="financial_services">Financial Services</SelectItem>
-                      <SelectItem value="professional_services">Professional Services</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="location">Location</Label>
-                  <Select 
-                    defaultValue={location}
-                    onValueChange={setLocation}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select a location" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="UK">United Kingdom</SelectItem>
-                      <SelectItem value="US">United States</SelectItem>
-                      <SelectItem value="EU">European Union</SelectItem>
-                      <SelectItem value="AU">Australia</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-            </CardContent>
-            <CardFooter className="flex justify-end">
-              <Button 
-                onClick={handleTagBlueprint}
-                disabled={tagMutation.isPending}
-              >
-                {tagMutation.isPending ? (
-                  <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Saving...
-                  </>
-                ) : (
-                  'Save Configuration'
-                )}
-              </Button>
-            </CardFooter>
-          </Card>
-        </TabsContent>
-        
-        <TabsContent value="modules" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>Module Export Configuration</CardTitle>
-              <CardDescription>
-                Prepare and package modules for the blueprint
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="flex flex-col space-y-4">
-                <p className="text-sm text-muted-foreground">
-                  Generate a module map for export to the Vault. This will discover all active modules 
-                  in the current project and prepare them for packaging.
-                </p>
-                
-                <div className="rounded-md bg-blue-50 p-4">
-                  <div className="flex">
-                    <div className="flex-shrink-0">
-                      <Clock10Icon className="h-5 w-5 text-blue-400" aria-hidden="true" />
-                    </div>
-                    <div className="ml-3">
-                      <h3 className="text-sm font-medium text-blue-800">Processing Info</h3>
-                      <div className="mt-2 text-sm text-blue-700">
-                        <p>
-                          Module mapping may take a few moments to complete as it needs to analyze 
-                          all active modules and their dependencies.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-            <CardFooter className="flex justify-end space-x-2">
-              <Button 
-                variant="outline"
-                onClick={() => refetchStatus()}
-              >
-                Refresh Status
-              </Button>
-              <Button 
-                onClick={handleGenerateModuleMap}
-                disabled={moduleMapMutation.isPending}
-              >
-                {moduleMapMutation.isPending ? (
-                  <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Mapping...
-                  </>
-                ) : (
-                  'Generate Module Map'
-                )}
-              </Button>
-            </CardFooter>
-          </Card>
-        </TabsContent>
-        
-        <TabsContent value="export" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>Blueprint Export</CardTitle>
-              <CardDescription>
-                Package and export the blueprint to the NextMonth Vault
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="flex flex-col space-y-4">
-                <p className="text-sm text-muted-foreground">
-                  This process will:
-                </p>
-                <ol className="list-decimal list-inside space-y-2 text-sm">
-                  <li>Package the entire blueprint configuration</li>
-                  <li>Export all modules, SEO configs, and brand settings</li>
-                  <li>Send the package to the NextMonth Vault</li>
-                  <li>Notify Guardian about the export</li>
-                </ol>
-                
-                <div className="rounded-md bg-amber-50 p-4 mt-4">
-                  <div className="flex">
-                    <div className="flex-shrink-0">
-                      <Clock10Icon className="h-5 w-5 text-amber-400" aria-hidden="true" />
-                    </div>
-                    <div className="ml-3">
-                      <h3 className="text-sm font-medium text-amber-800">Important Note</h3>
-                      <div className="mt-2 text-sm text-amber-700">
-                        <p>
-                          Make sure all configuration is complete before exporting. The process may take 
-                          a few minutes to complete.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-            <CardFooter className="flex justify-between">
-              <div className="flex space-x-2">
-                <Button 
-                  variant="outline"
-                  onClick={() => handoffMutation.mutate({ clientId, status: 'in_progress' })}
-                  disabled={handoffMutation.isPending}
-                >
-                  Reset Status
-                </Button>
-                <Button 
-                  variant="outline"
-                  onClick={() => handoffMutation.mutate({ clientId, status: 'completed' })}
-                  disabled={handoffMutation.isPending}
-                >
-                  Mark Complete
-                </Button>
-              </div>
-              <div className="flex space-x-2">
-                <Button 
-                  variant="secondary"
-                  onClick={handleGeneratePackage}
-                  disabled={packageMutation.isPending}
-                >
-                  {packageMutation.isPending ? (
-                    <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Packaging...
-                    </>
-                  ) : (
-                    'Generate Package'
-                  )}
-                </Button>
-                <Button 
-                  onClick={handleNotifyGuardian}
-                  disabled={guardianMutation.isPending}
-                >
-                  {guardianMutation.isPending ? (
-                    <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Notifying...
-                    </>
-                  ) : (
-                    'Notify Guardian'
-                  )}
-                </Button>
-              </div>
-            </CardFooter>
-          </Card>
-        </TabsContent>
-      </Tabs>
-    </div>
+    </AdminLayout>
   );
-};
-
-export default BlueprintManagerPage;
+}

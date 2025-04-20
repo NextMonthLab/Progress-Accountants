@@ -177,6 +177,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
   
   // Register support chat endpoints
   registerSupportRoutes(app);
+  
+  // Register blueprint API endpoints
+  registerBlueprintRoutes(app);
   // Contact form submission endpoint
   app.post("/api/contact", async (req, res) => {
     try {
