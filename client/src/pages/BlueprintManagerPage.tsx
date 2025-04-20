@@ -253,6 +253,60 @@ export default function BlueprintManagerPage() {
       setPublishV111Loading(false);
     }
   };
+  
+  // Handler for auto-enabling v1.1.1 modules
+  const handleAutoEnableV111Modules = async () => {
+    setAutoEnableLoading(true);
+    try {
+      const result = await autoEnableV111Modules(CLIENT_ID);
+      toast({
+        title: 'Success',
+        description: `${result.totalV111Modules} Blueprint v1.1.1 modules auto-enabled successfully`,
+      });
+      
+      // Update blueprint status and refresh module status
+      if (blueprintStatus) {
+        setBlueprintStatus({
+          ...blueprintStatus,
+          blueprintVersion: '1.1.1',
+          moduleCount: blueprintStatus.moduleCount + result.enabledModules.length
+        });
+        
+        // Refresh module status
+        fetchModuleStatus(CLIENT_ID);
+      }
+    } catch (error) {
+      console.error('Error auto-enabling Blueprint v1.1.1 modules:', error);
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: 'Failed to auto-enable Blueprint v1.1.1 modules',
+      });
+    } finally {
+      setAutoEnableLoading(false);
+    }
+  };
+  
+  // Handler for reporting module loading failure
+  const handleReportModuleFailure = async (moduleId: string, context: string) => {
+    try {
+      await reportModuleLoadingFailure(moduleId, context);
+      toast({
+        title: 'Module Failure Handled',
+        description: 'Module loading failure was reported and handled with fallback',
+      });
+      
+      // Refresh module status
+      fetchModuleStatus(CLIENT_ID);
+    } catch (error) {
+      console.error('Error reporting module failure:', error);
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: 'Failed to report module loading failure',
+      });
+    }
+  };
 
   // Format timestamp
   const formatTimestamp = (timestamp: string | null) => {
@@ -530,6 +584,39 @@ export default function BlueprintManagerPage() {
                       <span>Upgrade Announcements are enabled</span>
                     </li>
                   </ul>
+                  
+                  {/* Auto-enable for new client instances */}
+                  <div className="mt-4 pt-4 border-t border-amber-200 dark:border-amber-800">
+                    <h4 className="text-sm font-medium mb-2 flex items-center gap-2">
+                      <Zap className="h-4 w-4 text-amber-600" />
+                      New Client Instance Configuration
+                    </h4>
+                    <p className="text-xs text-muted-foreground mb-3">
+                      Auto-enable Blueprint v1.1.1 modules for new client instances. This ensures all new clients receive the Companion Console, Cloudinary Upload, and Upgrade Announcements.
+                    </p>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={handleAutoEnableV111Modules}
+                      disabled={autoEnableLoading || (
+                        moduleStatusData.blueprintVersion === "1.1.1" && 
+                        moduleStatusData.v111ModulesCount === 5
+                      )}
+                      className="w-full bg-amber-100 dark:bg-amber-900/50 border-amber-200 dark:border-amber-800 hover:bg-amber-200 dark:hover:bg-amber-800"
+                    >
+                      {autoEnableLoading ? (
+                        <>
+                          <span className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-amber-800 border-t-transparent" />
+                          Auto-enabling...
+                        </>
+                      ) : (
+                        <>
+                          <Zap className="mr-2 h-4 w-4 text-amber-600" />
+                          Auto-enable v1.1.1 Modules
+                        </>
+                      )}
+                    </Button>
+                  </div>
                 </div>
               </div>
             ) : (
@@ -619,6 +706,76 @@ export default function BlueprintManagerPage() {
               <strong>Note:</strong> Exporting the blueprint package will create a snapshot of all
               configured modules and settings. Notifying Guardian will mark the blueprint as ready
               for deployment.
+            </p>
+          </div>
+          
+          {/* Module Failure Handling */}
+          <div className="border border-dashed border-red-300 dark:border-red-800 rounded-md p-4 mt-6">
+            <h3 className="text-lg font-semibold mb-3 flex items-center">
+              <AlertTriangle className="h-5 w-5 mr-2 text-red-500" />
+              Module Failure Handling
+            </h3>
+            <p className="text-sm text-muted-foreground mb-4">
+              If a module fails to load, you can report it here for graceful fallback handling. The system will automatically attempt to recover and log the failure.
+            </p>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <label className="text-sm font-medium mb-2 block">Module ID</label>
+                <select 
+                  className="w-full h-10 px-3 py-2 rounded-md border border-input bg-background text-sm"
+                  defaultValue=""
+                  id="failedModuleId"
+                >
+                  <option value="" disabled>Select module...</option>
+                  {moduleStatusData?.moduleStatus.map(module => (
+                    <option key={module.id} value={module.id}>{module.name}</option>
+                  ))}
+                </select>
+              </div>
+              
+              <div>
+                <label className="text-sm font-medium mb-2 block">Failure Context</label>
+                <select 
+                  className="w-full h-10 px-3 py-2 rounded-md border border-input bg-background text-sm" 
+                  defaultValue="loading"
+                  id="failureContext"
+                >
+                  <option value="loading">Failed to load module</option>
+                  <option value="initialization">Error during initialization</option>
+                  <option value="dependency_missing">Dependency missing</option>
+                  <option value="configuration">Configuration error</option>
+                  <option value="api_error">API response error</option>
+                </select>
+              </div>
+              
+              <div className="flex items-end">
+                <Button
+                  variant="outline"
+                  className="w-full border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-950/30 hover:bg-red-100 dark:hover:bg-red-900/30"
+                  onClick={() => {
+                    const moduleId = (document.getElementById('failedModuleId') as HTMLSelectElement).value;
+                    const context = (document.getElementById('failureContext') as HTMLSelectElement).value;
+                    
+                    if (moduleId) {
+                      handleReportModuleFailure(moduleId, context);
+                    } else {
+                      toast({
+                        variant: 'destructive',
+                        title: 'Error',
+                        description: 'Please select a module ID',
+                      });
+                    }
+                  }}
+                >
+                  <AlertTriangle className="mr-2 h-4 w-4 text-red-500" />
+                  Report Failure
+                </Button>
+              </div>
+            </div>
+            
+            <p className="text-xs text-muted-foreground mt-4">
+              <strong>How it works:</strong> When a module fails to load, the system will attempt to continue functioning without it, updating the module status to reflect the failure and providing fallback behavior where possible.
             </p>
           </div>
         </div>
