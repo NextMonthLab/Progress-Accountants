@@ -27,7 +27,7 @@ export default function WebsiteIntentPage() {
   };
   
   // Handle continue button click
-  const handleContinue = () => {
+  const handleContinue = async () => {
     if (!selectedIntent) {
       toast({
         title: "Please select an option",
@@ -40,16 +40,49 @@ export default function WebsiteIntentPage() {
     // Save the selection to localStorage
     localStorage.setItem('project_context.website_intent', selectedIntent);
     
+    // Map the selected intent to the homepage preference format
+    const homepagePreference = selectedIntent === 'full_website' ? 'full_site' : 
+                               selectedIntent === 'tools_only' ? 'tools_only' : 'undecided';
+                               
+    // Store the preference in localStorage for client-side access
+    localStorage.setItem('project_context.homepage_preference', homepagePreference);
+    
+    // Try to save the preference to the server as well
+    try {
+      const response = await fetch('/api/onboarding/preference', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          preference: homepagePreference,
+          userId: localStorage.getItem('userId') || '1' // Fallback to default if no userId
+        })
+      });
+      
+      if (!response.ok) {
+        console.warn('Failed to save preference to server, but continuing with local storage');
+      }
+    } catch (error) {
+      console.error('Error saving preference to server:', error);
+      // Continue with local storage if server request fails
+    }
+    
     // Route based on selection
     switch (selectedIntent) {
       case 'full_website':
+        toast({
+          title: "Full Website Mode Selected",
+          description: "Let's set up your complete website with NextMonth",
+        });
         setLocation('/homepage-setup');
         break;
+        
       case 'tools_only':
-        // Skip homepage setup and route to dashboard or relevant tool section
+        // Skip homepage setup and route to tools hub
         toast({
           title: "Tools Only Mode Selected",
-          description: "Taking you directly to the Client Portal with all available tools and features",
+          description: "Taking you directly to your Tools Hub, skipping website setup",
         });
         
         // Mark website setup stages as completed in localStorage
@@ -62,8 +95,13 @@ export default function WebsiteIntentPage() {
         // Route to the new tools hub page
         setLocation('/tools-hub');
         break;
+        
       case 'undecided':
         // Route to homepage setup but mark as optional
+        toast({
+          title: "Flexible Mode Selected",
+          description: "You'll see all options and can decide what works best later",
+        });
         localStorage.setItem('project_context.homepage_optional', 'true');
         setLocation('/homepage-setup');
         break;
