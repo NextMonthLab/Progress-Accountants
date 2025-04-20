@@ -154,15 +154,15 @@ export default function FoundationPagesOverviewPage() {
     localStorage.setItem('project_context.page_status', JSON.stringify(newStatus));
     setPageStatuses(newStatus);
     
-    // In a real implementation, navigate to the setup page
+    // Navigate to the setup page
     toast({
       title: `Starting ${page.title} Setup`,
       description: `Navigating to ${page.title} setup page...`,
       variant: "default",
     });
     
-    // Navigate to the setup page (currently commented out for demo)
-    // setLocation(page.setupPath);
+    // Navigate to the setup page
+    setLocation(page.setupPath);
   };
   
   // Handle skipping a page
