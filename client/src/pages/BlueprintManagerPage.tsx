@@ -4,9 +4,11 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { useToast } from '@/hooks/use-toast';
-import { registerCompanionConsole, getBlueprintStatus, exportBlueprintPackage, notifyGuardian, exportBlueprintV111, autoPublishBlueprintV111 } from '@/lib/blueprint';
-import { AlertTriangle, Check, Clock, Package, Router, Send, ShieldCheck, ThumbsUp, Zap } from 'lucide-react';
+import { registerCompanionConsole, getBlueprintStatus, exportBlueprintPackage, notifyGuardian, exportBlueprintV111, autoPublishBlueprintV111, getModuleStatus } from '@/lib/blueprint';
+import { AlertTriangle, Check, Clock, Package, Router, Send, ShieldCheck, ThumbsUp, Zap, AlertCircle, CloudUpload, MessageSquare, Bell } from 'lucide-react';
 import AdminLayout from '@/layouts/AdminLayout';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 // Client ID for Progress Accountants
 const CLIENT_ID = 'progress-accountants';
@@ -21,8 +23,36 @@ interface BlueprintStatus {
   moduleCount: number;
 }
 
+// Define module status interface
+interface ModuleStatus {
+  id: string;
+  name: string;
+  enabled: boolean;
+  optional: boolean;
+  status: string;
+  type: string;
+  version: string;
+  category: string;
+  icon: {
+    type: string;
+    color: string;
+  };
+  isV111Module: boolean;
+}
+
+interface ModuleStatusResponse {
+  success: boolean;
+  clientId: string;
+  blueprintVersion: string;
+  totalModules: number;
+  v111ModulesCount: number;
+  moduleStatus: ModuleStatus[];
+}
+
 export default function BlueprintManagerPage() {
   const [blueprintStatus, setBlueprintStatus] = useState<BlueprintStatus | null>(null);
+  const [moduleStatusData, setModuleStatusData] = useState<ModuleStatusResponse | null>(null);
+  const [moduleStatusLoading, setModuleStatusLoading] = useState(false);
   const [loading, setLoading] = useState(false);
   const [exportLoading, setExportLoading] = useState(false);
   const [notifyLoading, setNotifyLoading] = useState(false);
@@ -37,6 +67,9 @@ export default function BlueprintManagerPage() {
       try {
         const status = await getBlueprintStatus();
         setBlueprintStatus(status);
+        
+        // After getting blueprint status, fetch module status
+        fetchModuleStatus(status.clientId);
       } catch (error) {
         console.error('Error fetching blueprint status:', error);
         toast({
@@ -49,6 +82,24 @@ export default function BlueprintManagerPage() {
 
     fetchBlueprintStatus();
   }, [toast]);
+  
+  // Fetch module status
+  const fetchModuleStatus = async (clientId: string) => {
+    setModuleStatusLoading(true);
+    try {
+      const moduleStatus = await getModuleStatus(clientId);
+      setModuleStatusData(moduleStatus);
+    } catch (error) {
+      console.error('Error fetching module status:', error);
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: 'Failed to load module status',
+      });
+    } finally {
+      setModuleStatusLoading(false);
+    }
+  };
 
   // Handler for registering CompanionConsole module
   const handleRegisterCompanionConsole = async () => {

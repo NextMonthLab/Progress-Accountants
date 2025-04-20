@@ -306,6 +306,79 @@ export function registerBlueprintRoutes(app: Express): void {
     }
   });
   
+  // Get detailed module status for a client
+  app.get("/api/blueprint/module-status/:clientId", async (req: Request, res: Response) => {
+    try {
+      const { clientId } = req.params;
+      
+      if (!clientId) {
+        return res.status(400).json({ 
+          success: false,
+          message: "Client ID is required" 
+        });
+      }
+      
+      const registry = await storage.getClientRegistry();
+      
+      if (!registry || registry.clientId !== clientId) {
+        return res.status(404).json({ 
+          success: false,
+          message: "Client registry not found" 
+        });
+      }
+      
+      // Get all modules
+      const allModules = await storage.getAllModules();
+      
+      // Parse the exportable modules from the registry
+      const exportableModules = registry.exportableModules as any[] || [];
+      
+      // Create detailed module status objects
+      const moduleStatusList = exportableModules.map(moduleItem => {
+        // Find full module data
+        const fullModuleData = allModules.find(m => m.id === moduleItem.moduleId);
+        
+        return {
+          id: moduleItem.moduleId,
+          name: fullModuleData ? fullModuleData.name : moduleItem.moduleId.split('/').pop(),
+          enabled: moduleItem.enabled ?? false,
+          optional: moduleItem.optional ?? false,
+          status: moduleItem.status || 'inactive',
+          type: moduleItem.type || 'unknown',
+          version: moduleItem.version || '1.0.0',
+          category: fullModuleData ? fullModuleData.category : 'unknown',
+          icon: {
+            type: fullModuleData?.iconType || 'package',
+            color: fullModuleData?.iconColor || 'gray'
+          },
+          // Track if this is a v1.1.1 specific module (CompanionConsole, Cloudinary Uploads, Announcements)
+          isV111Module: [
+            'support/CompanionConsole', 
+            'media/CloudinaryUpload',
+            'announcement/UpgradeAnnouncement',
+            'announcement/UpgradeBanner',
+            'announcement/OnboardingUpgradeAlert'
+          ].includes(moduleItem.moduleId)
+        };
+      });
+      
+      return res.status(200).json({
+        success: true,
+        clientId,
+        blueprintVersion: registry.blueprintVersion,
+        totalModules: moduleStatusList.length,
+        v111ModulesCount: moduleStatusList.filter(m => m.isV111Module).length,
+        moduleStatus: moduleStatusList
+      });
+    } catch (error) {
+      console.error("Error getting module status:", error);
+      return res.status(500).json({ 
+        success: false,
+        message: "Error getting module status" 
+      });
+    }
+  });
+  
   // Create or update blueprint version
   app.post("/api/blueprint/tag", async (req: Request, res: Response) => {
     try {

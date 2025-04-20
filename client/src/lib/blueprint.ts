@@ -48,6 +48,26 @@ export async function getBlueprintStatus(): Promise<any> {
 }
 
 /**
+ * Get detailed module status from the client registry
+ * @param clientId The ID of the client
+ * @returns Promise with the module status information
+ */
+export async function getModuleStatus(clientId: string): Promise<any> {
+  try {
+    const response = await fetch(`/api/blueprint/module-status/${clientId}`);
+    
+    if (!response.ok) {
+      throw new Error(`Error getting module status: ${response.statusText}`);
+    }
+    
+    return await response.json();
+  } catch (error) {
+    console.error('Failed to get module status:', error);
+    throw error;
+  }
+}
+
+/**
  * Generate and export the blueprint package to the vault
  * @param clientId The ID of the client to generate the package for
  * @returns Promise with the export result
