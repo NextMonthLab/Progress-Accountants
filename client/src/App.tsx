@@ -32,6 +32,7 @@ import TestimonialsSetupPage from "@/pages/TestimonialsSetupPage";
 import FAQSetupPage from "@/pages/FAQSetupPage";
 import LaunchReadyPage from "@/pages/LaunchReadyPage";
 import OnboardingWelcomePage from "@/pages/OnboardingWelcomePage";
+import WebsiteIntentPage from "@/pages/WebsiteIntentPage";
 import AdminSettingsPage from "@/pages/AdminSettingsPage";
 import SEOConfigManagerPage from "@/pages/SEOConfigManagerPage";
 import BrandManagerPage from "@/pages/BrandManagerPage";
@@ -57,6 +58,7 @@ function Router() {
     <Switch>
       <Route path="/" component={HomePage} />
       <Route path="/onboarding" component={OnboardingWelcomePage} />
+      <Route path="/website-intent" component={WebsiteIntentPage} />
       <Route path="/studio-banbury" component={StudioPage} />
       <Route path="/client-dashboard" component={ProtectedDashboard} />
       <Route path="/client-portal" component={ProtectedClientDashboard} />

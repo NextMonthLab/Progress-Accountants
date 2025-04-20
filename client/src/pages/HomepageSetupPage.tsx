@@ -306,7 +306,7 @@ export default function HomepageSetupPage() {
             <Info className="h-4 w-4" />
             <AlertTitle>Heads up:</AlertTitle>
             <AlertDescription>
-              This is a basic layout preview to help you visualize structure and content. Final styling, images, and animations will be applied after publishing.
+              This is a basic layout preview to give you a general sense of structure. Your final site will include real images, videos, and styling.
             </AlertDescription>
           </Alert>
           

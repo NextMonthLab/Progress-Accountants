@@ -32,7 +32,8 @@ const OnboardingWelcomePage: React.FC = () => {
   });
 
   const beginOnboarding = () => {
-    navigate('/homepage-setup');
+    // Navigate to the new website intent page first, before homepage setup
+    navigate('/website-intent');
   };
 
   return (
