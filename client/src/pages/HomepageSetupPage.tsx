@@ -302,6 +302,14 @@ export default function HomepageSetupPage() {
             </DialogDescription>
           </DialogHeader>
           
+          <Alert className="mb-4">
+            <Info className="h-4 w-4" />
+            <AlertTitle>Heads up:</AlertTitle>
+            <AlertDescription>
+              This is a basic layout preview to help you visualize structure and content. Final styling, images, and animations will be applied after publishing.
+            </AlertDescription>
+          </Alert>
+          
           <div className="mt-4">
             {/* Preview of the homepage based on selected layout style */}
             <div className={`preview-container border rounded-lg overflow-hidden ${
