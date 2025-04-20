@@ -4,8 +4,8 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { useToast } from '@/hooks/use-toast';
-import { registerCompanionConsole, getBlueprintStatus, exportBlueprintPackage, notifyGuardian } from '@/lib/blueprint';
-import { AlertTriangle, Check, Clock, Package, Router, Send, ShieldCheck, ThumbsUp } from 'lucide-react';
+import { registerCompanionConsole, getBlueprintStatus, exportBlueprintPackage, notifyGuardian, exportBlueprintV111 } from '@/lib/blueprint';
+import { AlertTriangle, Check, Clock, Package, Router, Send, ShieldCheck, ThumbsUp, Zap } from 'lucide-react';
 import AdminLayout from '@/layouts/AdminLayout';
 
 // Client ID for Progress Accountants

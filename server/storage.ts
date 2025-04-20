@@ -37,7 +37,8 @@ import {
   type InsertBrandVersion,
   clientRegistry,
   type ClientRegistry,
-  type InsertClientRegistry
+  type InsertClientRegistry,
+  blueprintVersions
 } from "@shared/schema";
 import { PageMetadata, PageComplexityAssessment } from "@shared/page_metadata";
 import { db } from "./db";
@@ -951,7 +952,15 @@ export class DatabaseStorage implements IStorage {
   // Blueprint version management
   async getAllBlueprintVersions(): Promise<any[]> {
     try {
-      return await db.select().from(blueprintVersions).orderBy(desc(blueprintVersions.releaseDate));
+      if (!blueprintVersions) {
+        console.warn("blueprintVersions table not defined in schema");
+        return [];
+      }
+      
+      return await db
+        .select()
+        .from(blueprintVersions)
+        .orderBy(desc(blueprintVersions.releaseDate));
     } catch (error) {
       console.error("Error retrieving blueprint versions:", error);
       return [];
@@ -960,6 +969,11 @@ export class DatabaseStorage implements IStorage {
   
   async deprecateBlueprintVersion(version: string): Promise<boolean> {
     try {
+      if (!blueprintVersions) {
+        console.warn("blueprintVersions table not defined in schema");
+        return false;
+      }
+      
       await db
         .update(blueprintVersions)
         .set({ 
@@ -978,10 +992,17 @@ export class DatabaseStorage implements IStorage {
   // Activity logging
   async addActivityLog(log: Partial<InsertActivityLog>): Promise<void> {
     try {
-      await db.insert(activityLogs).values({
-        ...log,
-        timestamp: new Date()
-      });
+      // Ensure we have all required fields
+      const activityLogData = {
+        userType: log.userType || 'system',
+        actionType: log.actionType || 'info',
+        entityType: log.entityType || 'system',
+        entityId: log.entityId || '0',
+        userId: log.userId || null,
+        details: log.details || null
+      };
+      
+      await db.insert(activityLogs).values(activityLogData);
     } catch (error) {
       console.error("Error adding activity log:", error);
     }

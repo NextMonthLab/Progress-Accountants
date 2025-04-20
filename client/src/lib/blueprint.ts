@@ -99,3 +99,29 @@ export async function notifyGuardian(clientId: string, event = 'export-ready'): 
     throw error;
   }
 }
+
+/**
+ * Export Blueprint v1.1.1 with all announcement modules
+ * @param clientId The ID of the client to export
+ * @returns Promise with the export result
+ */
+export async function exportBlueprintV111(clientId: string): Promise<any> {
+  try {
+    const response = await fetch('/api/blueprint/export-v1.1.1', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ clientId }),
+    });
+    
+    if (!response.ok) {
+      throw new Error(`Error exporting Blueprint v1.1.1: ${response.statusText}`);
+    }
+    
+    return await response.json();
+  } catch (error) {
+    console.error('Failed to export Blueprint v1.1.1:', error);
+    throw error;
+  }
+}
