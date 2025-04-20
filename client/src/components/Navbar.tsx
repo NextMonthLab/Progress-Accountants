@@ -82,22 +82,16 @@ export default function Navbar() {
             Contact
           </Link>
           <Link 
-            href="/module-gallery" 
-            className="font-medium hover:text-[var(--orange)] transition duration-300 no-underline"
-          >
-            Module Gallery
-          </Link>
-          <Link 
-            href="/module-library" 
-            className="font-medium hover:text-[var(--orange)] transition duration-300 no-underline"
-          >
-            Module Library
-          </Link>
-          <Link 
             href="/marketplace" 
             className="font-medium hover:text-[var(--orange)] transition duration-300 no-underline"
           >
             Marketplace
+          </Link>
+          <Link 
+            href="/installed-tools" 
+            className="font-medium hover:text-[var(--orange)] transition duration-300 no-underline"
+          >
+            Installed Tools
           </Link>
           <Link 
             href="/brand-guidelines" 
@@ -241,25 +235,18 @@ export default function Navbar() {
             Contact
           </Link>
           <Link 
-            href="/module-gallery" 
-            className="py-2 font-medium hover:text-[var(--orange)] transition duration-300 no-underline"
-            onClick={closeMenu}
-          >
-            Module Gallery
-          </Link>
-          <Link 
-            href="/module-library" 
-            className="py-2 font-medium hover:text-[var(--orange)] transition duration-300 no-underline"
-            onClick={closeMenu}
-          >
-            Module Library
-          </Link>
-          <Link 
             href="/marketplace" 
             className="py-2 font-medium hover:text-[var(--orange)] transition duration-300 no-underline"
             onClick={closeMenu}
           >
             Marketplace
+          </Link>
+          <Link 
+            href="/installed-tools" 
+            className="py-2 font-medium hover:text-[var(--orange)] transition duration-300 no-underline"
+            onClick={closeMenu}
+          >
+            Installed Tools
           </Link>
           <Link 
             href="/brand-guidelines" 

@@ -90,9 +90,11 @@ function Router() {
       <Route path="/admin/brand" component={ProtectedBrandManager} />
       <Route path="/admin/blueprint" component={ProtectedBlueprintManager} />
       <Route path="/scope-request" component={ScopeRequestPage} />
-      <Route path="/module-gallery" component={ModuleGalleryPage} />
-      <Route path="/module-library" component={ModuleLibraryPage} />
       <Route path="/marketplace" component={MarketplacePage} />
+      <Route path="/installed-tools" component={ModuleLibraryPage} />
+      {/* Legacy routes for backward compatibility */}
+      <Route path="/module-gallery" component={MarketplacePage} />
+      <Route path="/module-library" component={ModuleLibraryPage} />
       <Route path="/brand-guidelines" component={BrandGuidelinesPage} />
       <Route path="/business-identity" component={BusinessIdentityPage} />
       <Route path="/homepage-setup" component={HomepageSetupPage} />
