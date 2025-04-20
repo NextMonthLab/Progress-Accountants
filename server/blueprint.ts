@@ -5,6 +5,13 @@ import { ModuleActivation, Module, insertClientRegistrySchema } from "@shared/sc
 import { PageMetadata } from "@shared/page_metadata";
 import axios from "axios";
 
+// Import support module functions
+import { 
+  registerCompanionConsoleModule, 
+  updateClientRegistryWithCompanionConsole,
+  syncCompanionConsoleToVault
+} from "./modules/support-console";
+
 // Validation schema for the blueprint version
 const blueprintVersionSchema = z.object({
   clientId: z.string().min(3),
@@ -324,6 +331,64 @@ export function registerBlueprintRoutes(app: Express): void {
     } catch (error) {
       console.error("Error notifying Guardian:", error);
       return res.status(500).json({ message: "Error notifying Guardian" });
+    }
+  });
+  
+  // Register and sync the CompanionConsole module
+  app.post("/api/blueprint/register-companion-console", async (req: Request, res: Response) => {
+    try {
+      const { clientId } = req.body;
+      
+      if (!clientId) {
+        return res.status(400).json({ 
+          success: false, 
+          message: "clientId is required" 
+        });
+      }
+      
+      // Step 1: Register the module in the system
+      const module = await registerCompanionConsoleModule();
+      
+      // Step 2: Update client registry with the module and new version
+      const updatedRegistry = await updateClientRegistryWithCompanionConsole(clientId);
+      
+      if (!updatedRegistry) {
+        return res.status(404).json({ 
+          success: false, 
+          message: "Client registry not found" 
+        });
+      }
+      
+      // Step 3: Sync to Vault
+      const vaultSynced = await syncCompanionConsoleToVault(clientId);
+      
+      // Step 4: Optional - Notify Guardian
+      const guardianSuccess = await notifyGuardian(clientId, "module-added", {
+        moduleId: "support/CompanionConsole",
+        blueprintVersion: "1.1.1",
+        timestamp: new Date().toISOString()
+      });
+      
+      return res.status(200).json({
+        success: true,
+        message: "CompanionConsole module registered and synced successfully",
+        module: {
+          id: module.id,
+          name: module.name,
+          category: module.category,
+          status: module.status
+        },
+        blueprintVersion: updatedRegistry.blueprintVersion,
+        vaultSynced,
+        guardianNotified: guardianSuccess
+      });
+      
+    } catch (error) {
+      console.error("Error registering CompanionConsole module:", error);
+      return res.status(500).json({ 
+        success: false, 
+        message: "Error registering CompanionConsole module" 
+      });
     }
   });
   
