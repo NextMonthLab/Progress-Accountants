@@ -38,7 +38,13 @@ import {
   clientRegistry,
   type ClientRegistry,
   type InsertClientRegistry,
-  blueprintVersions
+  blueprintVersions,
+  tools,
+  type Tool,
+  type InsertTool,
+  toolRequests,
+  type ToolRequest,
+  type InsertToolRequest
 } from "@shared/schema";
 import { PageMetadata, PageComplexityAssessment } from "@shared/page_metadata";
 import { db } from "./db";
@@ -139,6 +145,21 @@ export interface IStorage {
   saveBrandVersion(version: InsertBrandVersion): Promise<BrandVersion>;
   activateBrandVersion(id: number): Promise<BrandVersion | undefined>;
   updateBrandSyncStatus(id: number, vaultSynced?: boolean, guardianSynced?: boolean): Promise<BrandVersion | undefined>;
+  
+  // Tool operations
+  getTool(id: number): Promise<Tool | undefined>;
+  getToolsByType(toolType: string): Promise<Tool[]>;
+  getToolsByStatus(status: string): Promise<Tool[]>;
+  getToolsByUser(userId: number): Promise<Tool[]>;
+  saveTool(tool: InsertTool): Promise<Tool>;
+  updateToolStatus(id: number, status: string): Promise<Tool | undefined>;
+  updateTool(id: number, data: Partial<InsertTool>): Promise<Tool | undefined>;
+  deleteTool(id: number): Promise<boolean>;
+  
+  // Tool Request operations
+  saveToolRequest(request: InsertToolRequest): Promise<ToolRequest>;
+  getToolRequestsByStatus(status: string): Promise<ToolRequest[]>;
+  updateToolRequestStatus(id: number, status: string, processedAt?: Date): Promise<ToolRequest | undefined>;
   
   // Blueprint Export operations
   getClientRegistry(): Promise<ClientRegistry | undefined>;

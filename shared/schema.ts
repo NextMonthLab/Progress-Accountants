@@ -386,6 +386,66 @@ export type SeoConfiguration = typeof seoConfigurations.$inferSelect;
 export type InsertBrandVersion = z.infer<typeof insertBrandVersionSchema>;
 export type BrandVersion = typeof brandVersions.$inferSelect;
 
+// Tools table for interactive tools created by users
+export const tools = pgTable("tools", {
+  id: serial("id").primaryKey(),
+  name: varchar("name", { length: 255 }).notNull(),
+  description: text("description").notNull(),
+  toolType: varchar("tool_type", { length: 50 }).notNull(), // form, calculator, dashboard, embed
+  displayStyle: varchar("display_style", { length: 50 }), // modal, card, full-page, etc.
+  mediaUrl: varchar("media_url", { length: 500 }),
+  mediaId: varchar("media_id", { length: 255 }),
+  configuration: jsonb("configuration"), // Tool-specific configuration data
+  createdBy: integer("created_by").references(() => users.id),
+  status: varchar("status", { length: 20 }).default("draft").notNull(), // draft, published, archived
+  vaultRequestId: varchar("vault_request_id", { length: 255 }),
+  guardianSynced: boolean("guardian_synced").default(false),
+  vaultSynced: boolean("vault_synced").default(false),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export const insertToolSchema = createInsertSchema(tools).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export type InsertTool = z.infer<typeof insertToolSchema>;
+export type Tool = typeof tools.$inferSelect;
+
+// Tool requests table for tracking tool creation requests sent to the Vault
+export const toolRequests = pgTable("tool_requests", {
+  id: serial("id").primaryKey(),
+  toolId: integer("tool_id").references(() => tools.id),
+  businessId: varchar("business_id", { length: 100 }).notNull(),
+  requestData: jsonb("request_data").notNull(),
+  status: varchar("status", { length: 20 }).default("pending").notNull(), // pending, approved, rejected, completed
+  sentAt: timestamp("sent_at").defaultNow().notNull(),
+  processedAt: timestamp("processed_at"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export const insertToolRequestSchema = createInsertSchema(toolRequests).omit({
+  id: true,
+  sentAt: true,
+  processedAt: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export type InsertToolRequest = z.infer<typeof insertToolRequestSchema>;
+export type ToolRequest = typeof toolRequests.$inferSelect;
+
+// Define relationships for tools
+export const toolsRelations = relations(tools, ({ one }) => ({
+  creator: one(users, {
+    fields: [tools.createdBy],
+    references: [users.id],
+  }),
+}));
+
 // Client registry table for blueprint export
 export const clientRegistry = pgTable("client_registry", {
   id: serial("id").primaryKey(),
