@@ -33,46 +33,45 @@ export default function ToolsLandingPage() {
   // Define tool categories with their details
   const toolCategories = [
     {
-      id: 'build-tool',
-      title: 'Build a Smart Tool',
-      description: 'Create a branded, interactive tool powered by NextMonth.',
-      icon: <Wrench className="h-10 w-10 text-blue-600" />,
-      action: 'Start Building',
-      path: '/screens/new',
+      id: 'create-form',
+      title: 'Create a Form',
+      description: 'Build a custom form to collect information from your clients.',
+      icon: <FileText className="h-10 w-10 text-blue-600" />,
+      action: 'Create Form',
+      path: '/tools/create/form',
       color: 'bg-blue-50',
       iconBg: 'bg-blue-100',
       shadow: 'shadow-blue-100'
     },
     {
-      id: 'add-page',
-      title: 'Add a Page',
-      description: 'Design and launch additional pages that match your brand.',
-      icon: <FilePlus className="h-10 w-10 text-purple-600" />,
-      action: 'Create Page',
-      path: '/pages/new',
+      id: 'create-calculator',
+      title: 'Build a Calculator',
+      description: 'Create interactive calculators to help your clients make decisions.',
+      icon: <Wrench className="h-10 w-10 text-purple-600" />,
+      action: 'Create Calculator',
+      path: '/tools/create/calculator',
       color: 'bg-purple-50',
       iconBg: 'bg-purple-100',
       shadow: 'shadow-purple-100'
     },
     {
-      id: 'create-flow',
-      title: 'Create a Workflow',
-      description: 'Guide users through interactive logic and smart automation.',
-      icon: <Workflow className="h-10 w-10 text-orange-600" />,
-      action: 'Design Flow',
-      path: '/flow/new',
+      id: 'create-dashboard',
+      title: 'Design a Dashboard',
+      description: 'Visualize important metrics and data for your clients.',
+      icon: <LayoutGrid className="h-10 w-10 text-orange-600" />,
+      action: 'Create Dashboard',
+      path: '/tools/create/dashboard',
       color: 'bg-orange-50',
       iconBg: 'bg-orange-100',
-      shadow: 'shadow-orange-100',
-      comingSoon: true
+      shadow: 'shadow-orange-100'
     },
     {
-      id: 'browse-blueprint',
-      title: 'Blueprint Modules',
-      description: 'Unlock powerful features ready to deploy from the Vault.',
+      id: 'create-embed',
+      title: 'Add External Embed',
+      description: 'Integrate external content and tools into your client portal.',
       icon: <Puzzle className="h-10 w-10 text-green-600" />,
-      action: 'View Features',
-      path: '/admin/blueprint',
+      action: 'Create Embed',
+      path: '/tools/create/embed',
       color: 'bg-green-50',
       iconBg: 'bg-green-100',
       shadow: 'shadow-green-100'
@@ -195,9 +194,9 @@ export default function ToolsLandingPage() {
           <Button 
             variant="outline" 
             className="border-[var(--navy)] text-[var(--navy)]"
-            onClick={() => navigate('/module-gallery')}
+            onClick={() => navigate('/marketplace')}
           >
-            View All Templates
+            View All Tools
             <ChevronRight className="h-4 w-4 ml-1" />
           </Button>
         </div>
