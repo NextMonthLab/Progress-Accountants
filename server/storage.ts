@@ -1087,6 +1087,10 @@ export class MemStorage implements IStorage {
   seoConfigurations: Map<string, SeoConfiguration>;
   brandVersions: Map<number, BrandVersion>;
   clientRegistryData?: ClientRegistry;
+  tools: Map<number, Tool>;
+  toolRequests: Map<number, ToolRequest>;
+  toolIdCounter: number = 1;
+  toolRequestIdCounter: number = 1;
   sessionStore: session.Store = new session.MemoryStore();
 
   constructor() {
@@ -1101,6 +1105,8 @@ export class MemStorage implements IStorage {
     this.pageComplexityTriages = [];
     this.seoConfigurations = new Map();
     this.brandVersions = new Map();
+    this.tools = new Map();
+    this.toolRequests = new Map();
   }
 
   async getUser(id: number): Promise<User | undefined> {
