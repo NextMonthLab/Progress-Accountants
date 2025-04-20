@@ -10,7 +10,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Globe, Wrench, HelpCircle } from 'lucide-react';
+import { ArrowRight, Globe, Settings, HelpCircle } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 
 // Define website intent options
@@ -114,7 +114,7 @@ export default function WebsiteIntentPage() {
               >
                 <CardHeader className="pb-2">
                   <div className="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center">
-                    <Wrench className="h-6 w-6 text-orange-600" />
+                    <Settings className="h-6 w-6 text-orange-600" />
                   </div>
                   <CardTitle className="text-xl mt-2">Tools Only</CardTitle>
                 </CardHeader>

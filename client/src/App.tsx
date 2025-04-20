@@ -145,6 +145,7 @@ function FirstTimeUserDetector({ children }: { children: React.ReactNode }) {
     if (userType === 'client' && 
         !onboardingComplete &&
         location !== '/onboarding' && 
+        location !== '/website-intent' && // Add the new page to excluded redirects
         !location.startsWith('/homepage-setup') && 
         !location.startsWith('/foundation-pages') && 
         !location.startsWith('/launch-ready') &&
