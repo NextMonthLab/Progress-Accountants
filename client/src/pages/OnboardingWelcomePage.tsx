@@ -33,7 +33,9 @@ const OnboardingWelcomePage: React.FC = () => {
 
   const beginOnboarding = () => {
     // Navigate to the new website intent page first, before homepage setup
-    navigate('/website-intent');
+    console.log('Begin Setup button clicked, navigating to /website-intent');
+    // Use direct window.location for debugging purposes
+    window.location.href = '/website-intent';
   };
 
   return (

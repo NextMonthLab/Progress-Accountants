@@ -160,7 +160,8 @@ export default function WebsiteIntentPage() {
             
             <Button
               onClick={handleContinue}
-              className="bg-[var(--orange)] hover:bg-[var(--orange)]/90 text-white order-1 sm:order-2 w-full sm:w-auto"
+              size="lg"
+              className="bg-blue-700 hover:bg-blue-800 text-white order-1 sm:order-2 w-full sm:w-auto"
               disabled={!selectedIntent}
             >
               Continue
