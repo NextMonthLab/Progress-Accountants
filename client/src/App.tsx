@@ -40,6 +40,11 @@ import SEOConfigManagerPage from "@/pages/SEOConfigManagerPage";
 import BrandManagerPage from "@/pages/BrandManagerPage";
 import BlueprintManagerPage from "@/pages/BlueprintManagerPage";
 import MediaManagementPage from "@/pages/MediaManagementPage";
+// Import wizard components
+import CreateFormWizard from "@/pages/tools/wizards/CreateFormWizard";
+import CreateCalculatorWizard from "@/pages/tools/wizards/CreateCalculatorWizard";
+import CreateDashboardWizard from "@/pages/tools/wizards/CreateDashboardWizard";
+import CreateEmbedWizard from "@/pages/tools/wizards/CreateEmbedWizard";
 import { DocumentHead } from "@/components/DocumentHead";
 import MainLayout from "@/layouts/MainLayout";
 import { ClientDataProvider, withAuth } from "@/components/ClientDataProvider";
@@ -66,6 +71,11 @@ function Router() {
       <Route path="/client-portal" component={ProtectedClientDashboard} />
       <Route path="/tools-dashboard" component={ToolsDashboardPage} />
       <Route path="/tools-hub" component={ToolsLandingPage} />
+      {/* Tool wizard routes */}
+      <Route path="/tools/create/form" component={CreateFormWizard} />
+      <Route path="/tools/create/calculator" component={CreateCalculatorWizard} />
+      <Route path="/tools/create/dashboard" component={CreateDashboardWizard} />
+      <Route path="/tools/create/embed" component={CreateEmbedWizard} />
       <Route path="/admin/crm" component={ProtectedCRMView} />
       <Route path="/admin/crm-enhanced" component={ProtectedCRMViewEnhanced} />
       <Route path="/components" component={ComponentDemo} />
@@ -153,6 +163,7 @@ function FirstTimeUserDetector({ children }: { children: React.ReactNode }) {
         location !== '/client-portal' && // Allow client portal for 'tools only' users
         location !== '/tools-dashboard' && // Allow tools dashboard for 'tools only' users
         location !== '/tools-hub' && // Allow tools hub for 'tools only' users
+        !location.startsWith('/tools/create/') && // Allow tool wizards for 'tools only' users
         !location.startsWith('/homepage-setup') && 
         !location.startsWith('/foundation-pages') && 
         !location.startsWith('/launch-ready') &&
