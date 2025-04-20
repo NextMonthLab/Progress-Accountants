@@ -24,6 +24,14 @@ import { Badge } from "@/components/ui/badge";
 import { Info, Plus, X, Save, Eye, AlertCircle, ArrowRight, CheckCircle2 } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { useToast } from "@/hooks/use-toast";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog";
 
 // Define the homepage context interface
 interface HomepageContext {
@@ -80,6 +88,9 @@ export default function HomepageSetupPage() {
   // State for media file
   const [mediaFile, setMediaFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState('');
+  
+  // State for preview modal
+  const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   
   // Load homepage context data from localStorage on component mount
   useEffect(() => {
@@ -245,13 +256,8 @@ export default function HomepageSetupPage() {
       return;
     }
     
-    // For now, just display a toast message
-    // In a real application, this would open a preview modal or navigate to a preview page
-    toast({
-      title: "Preview Ready",
-      description: "Your homepage preview would appear here. This feature is coming soon!",
-      variant: "default",
-    });
+    // Open the preview modal
+    setIsPreviewOpen(true);
   };
   
   // Continue to next step
@@ -285,6 +291,165 @@ export default function HomepageSetupPage() {
       <Helmet>
         <title>Homepage Setup | Onboarding</title>
       </Helmet>
+      
+      {/* Homepage Preview Modal */}
+      <Dialog open={isPreviewOpen} onOpenChange={setIsPreviewOpen}>
+        <DialogContent className="max-w-5xl max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Homepage Preview</DialogTitle>
+            <DialogDescription>
+              This is how your homepage will look with the current settings
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="mt-4">
+            {/* Preview of the homepage based on selected layout style */}
+            <div className={`preview-container border rounded-lg overflow-hidden ${
+              homepage.layout_style === 'Modern' ? 'preview-modern' :
+              homepage.layout_style === 'Classic' ? 'preview-classic' :
+              homepage.layout_style === 'Bold' ? 'preview-bold' :
+              homepage.layout_style === 'Minimalist' ? 'preview-minimalist' :
+              'preview-corporate'
+            }`}>
+              {/* Hero Section */}
+              <div className="relative">
+                {/* Hero Image */}
+                {homepage.media_url ? (
+                  <div className="w-full h-96 bg-gray-100 relative overflow-hidden">
+                    <img 
+                      src={homepage.media_url} 
+                      alt="Hero" 
+                      className="w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-black bg-opacity-40"></div>
+                  </div>
+                ) : (
+                  <div className="w-full h-96 bg-gray-200 flex items-center justify-center">
+                    <span className="text-gray-400">No hero image selected</span>
+                  </div>
+                )}
+                
+                {/* Hero Content */}
+                <div className="absolute inset-0 flex items-center">
+                  <div className="container mx-auto px-6">
+                    <div className="max-w-xl text-white p-6 bg-black bg-opacity-20 backdrop-blur-sm rounded-lg">
+                      <h1 className="text-4xl font-bold mb-4">{homepage.headline}</h1>
+                      <h2 className="text-xl mb-6">{homepage.subheading}</h2>
+                      <p className="mb-6">{homepage.offer}</p>
+                      
+                      <div className="flex flex-wrap gap-2 mb-6">
+                        {homepage.benefits.map((benefit, index) => (
+                          <Badge key={index} className="bg-white text-black">
+                            {benefit}
+                          </Badge>
+                        ))}
+                      </div>
+                      
+                      <Button className="bg-orange-500 hover:bg-orange-600 text-white">
+                        {homepage.cta_text}
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Services Section Preview */}
+              <div className="bg-white py-12">
+                <div className="container mx-auto px-6">
+                  <h2 className="text-2xl font-bold mb-8 text-center">Our Services</h2>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    {(homepage.services?.length || 0) > 0 ? (
+                      homepage.services?.map((service, index) => (
+                        <div key={index} className="p-6 border rounded-lg text-center">
+                          <h3 className="font-bold mb-3">{service}</h3>
+                          <p className="text-gray-600">Service description will appear here.</p>
+                        </div>
+                      ))
+                    ) : (
+                      <>
+                        <div className="p-6 border rounded-lg text-center">
+                          <h3 className="font-bold mb-3">Tax Planning</h3>
+                          <p className="text-gray-600">Example service description.</p>
+                        </div>
+                        <div className="p-6 border rounded-lg text-center">
+                          <h3 className="font-bold mb-3">Business Consulting</h3>
+                          <p className="text-gray-600">Example service description.</p>
+                        </div>
+                        <div className="p-6 border rounded-lg text-center">
+                          <h3 className="font-bold mb-3">Financial Reporting</h3>
+                          <p className="text-gray-600">Example service description.</p>
+                        </div>
+                      </>
+                    )}
+                  </div>
+                </div>
+              </div>
+              
+              {/* Layout-specific styling */}
+              {homepage.layout_style === 'Modern' && (
+                <div className="bg-gray-50 py-12">
+                  <div className="container mx-auto px-6">
+                    <p className="text-center text-gray-500">Modern layout includes clean lines and minimalist design elements.</p>
+                  </div>
+                </div>
+              )}
+              
+              {homepage.layout_style === 'Classic' && (
+                <div className="bg-gray-100 py-12 border-t border-b border-gray-200">
+                  <div className="container mx-auto px-6">
+                    <p className="text-center text-gray-500">Classic layout includes traditional design elements with a timeless feel.</p>
+                  </div>
+                </div>
+              )}
+              
+              {homepage.layout_style === 'Bold' && (
+                <div className="bg-black text-white py-12">
+                  <div className="container mx-auto px-6">
+                    <p className="text-center">Bold layout includes high-contrast design elements for maximum impact.</p>
+                  </div>
+                </div>
+              )}
+              
+              {homepage.layout_style === 'Minimalist' && (
+                <div className="py-12">
+                  <div className="container mx-auto px-6">
+                    <p className="text-center text-gray-500">Minimalist layout focuses on typography and essential elements only.</p>
+                  </div>
+                </div>
+              )}
+              
+              {homepage.layout_style === 'Corporate' && (
+                <div className="bg-blue-900 text-white py-12">
+                  <div className="container mx-auto px-6">
+                    <p className="text-center">Corporate layout projects professionalism and reliability.</p>
+                  </div>
+                </div>
+              )}
+              
+              {/* Footer Preview */}
+              <div className="bg-gray-800 text-white py-8">
+                <div className="container mx-auto px-6">
+                  <div className="flex flex-col md:flex-row justify-between items-center">
+                    <p>© 2025 Progress Accountants. All rights reserved.</p>
+                    <div className="mt-4 md:mt-0">
+                      <Button variant="outline" size="sm" className="text-white border-white">
+                        Contact Us
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <DialogFooter>
+            <p className="text-sm text-gray-500 mr-auto">
+              This is a preview only. Actual appearance may vary slightly.
+            </p>
+            <Button onClick={() => setIsPreviewOpen(false)}>Close Preview</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
       
       <div className="container mx-auto px-4 max-w-5xl">
         <Card className="bg-white shadow-sm">
