@@ -1257,6 +1257,49 @@ export class MemStorage implements IStorage {
     return undefined;
   }
   
+  async saveOnboardingPreference(userId: number, preference: string): Promise<OnboardingState | undefined> {
+    try {
+      // Check if valid preference
+      const validPreference = ['full_site', 'tools_only', 'undecided'].includes(preference) 
+        ? preference 
+        : 'undecided';
+      
+      // Check if the user has an existing 'website_preference' stage entry
+      const existingPreference = await this.getOnboardingStageState(userId, 'website_preference');
+      
+      if (existingPreference) {
+        // Update the existing preference
+        const now = new Date();
+        const updatedState: OnboardingState = {
+          ...existingPreference,
+          data: { preference: validPreference },
+          checkpointTime: now,
+          updatedAt: now
+        };
+        
+        // Replace the old state
+        const userStates = this.onboardingStates.get(userId) || [];
+        const stateIndex = userStates.findIndex(s => s.id === existingPreference.id);
+        
+        if (stateIndex !== -1) {
+          userStates[stateIndex] = updatedState;
+          return updatedState;
+        }
+      }
+      
+      // Create new preference state
+      return this.saveOnboardingState({
+        userId,
+        stage: 'website_preference',
+        status: 'complete',
+        data: { preference: validPreference }
+      });
+    } catch (error) {
+      console.error("Error saving onboarding preference:", error);
+      return undefined;
+    }
+  }
+  
   async getModule(id: string): Promise<Module | undefined> {
     return this.modules.get(id);
   }
