@@ -22,7 +22,9 @@ import {
   registerUpgradeBannerModule,
   registerOnboardingUpgradeAlertModule,
   updateClientRegistryWithAnnouncements,
-  syncAnnouncementsToVault
+  syncAnnouncementsToVault,
+  autoEnableV111Modules,
+  handleModuleLoadingFailure
 } from "./modules/upgrade-announcements";
 
 // Validation schema for the blueprint version

@@ -381,6 +381,164 @@ export default function BlueprintManagerPage() {
           </Card>
         </div>
 
+        {/* Module Status Table for v1.1.1 Verification */}
+        <Card className="shadow-md my-8">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Package className="h-5 w-5" />
+              Module Status Verification
+            </CardTitle>
+            <CardDescription>
+              Verify that all Blueprint v1.1.1 modules are correctly enabled and configured
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            {moduleStatusLoading ? (
+              <div className="flex justify-center items-center py-8">
+                <div className="animate-spin h-8 w-8 border-4 border-primary border-t-transparent rounded-full"></div>
+              </div>
+            ) : moduleStatusData ? (
+              <div>
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-2">
+                  <div>
+                    <span className="text-sm font-medium">Blueprint Version: </span>
+                    <Badge variant="secondary" className="ml-1">v{moduleStatusData.blueprintVersion}</Badge>
+                  </div>
+                  <div>
+                    <span className="text-sm font-medium">v1.1.1 Modules: </span>
+                    <Badge variant="outline" className="ml-1">
+                      {moduleStatusData.v111ModulesCount} / {moduleStatusData.totalModules}
+                    </Badge>
+                  </div>
+                </div>
+                
+                <div className="rounded-md border overflow-hidden">
+                  <Table>
+                    <TableHeader>
+                      <TableRow className="bg-muted/50">
+                        <TableHead className="w-[200px]">Module</TableHead>
+                        <TableHead className="w-[100px] text-center">Status</TableHead>
+                        <TableHead className="w-[100px] text-center">Enabled</TableHead>
+                        <TableHead className="w-[100px] text-center">Optional</TableHead>
+                        <TableHead className="w-[100px] text-center">Version</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {moduleStatusData.moduleStatus.map((module) => (
+                        <TableRow 
+                          key={module.id} 
+                          className={module.isV111Module ? "bg-amber-50 dark:bg-amber-950/20" : ""}
+                        >
+                          <TableCell className="font-medium">
+                            <div className="flex items-center gap-2">
+                              <TooltipProvider>
+                                <Tooltip>
+                                  <TooltipTrigger asChild>
+                                    <div className="flex-shrink-0">
+                                      {module.id.includes('CompanionConsole') && <MessageSquare className="h-4 w-4 text-indigo-500" />}
+                                      {module.id.includes('CloudinaryUpload') && <CloudUpload className="h-4 w-4 text-blue-500" />}
+                                      {module.id.includes('Upgrade') && <Bell className="h-4 w-4 text-amber-500" />}
+                                      {!module.id.includes('CompanionConsole') && !module.id.includes('CloudinaryUpload') && !module.id.includes('Upgrade') && (
+                                        <Package className="h-4 w-4 text-gray-500" />
+                                      )}
+                                    </div>
+                                  </TooltipTrigger>
+                                  <TooltipContent>
+                                    <p>{module.id}</p>
+                                    <p className="text-xs text-muted-foreground mt-1">Category: {module.category}</p>
+                                  </TooltipContent>
+                                </Tooltip>
+                              </TooltipProvider>
+                              <span>{module.name}</span>
+                              {module.isV111Module && (
+                                <Badge variant="outline" className="ml-auto text-xs bg-amber-100 dark:bg-amber-900/30 border-amber-200 dark:border-amber-800">
+                                  v1.1.1
+                                </Badge>
+                              )}
+                            </div>
+                          </TableCell>
+                          <TableCell className="text-center">
+                            <Badge 
+                              variant={module.status === 'active' ? 'default' : 'outline'}
+                              className={module.status === 'active' ? 'bg-green-600' : ''}
+                            >
+                              {module.status}
+                            </Badge>
+                          </TableCell>
+                          <TableCell className="text-center">
+                            {module.enabled ? (
+                              <Check className="h-5 w-5 text-green-600 mx-auto" />
+                            ) : (
+                              <AlertCircle className="h-5 w-5 text-red-500 mx-auto" />
+                            )}
+                          </TableCell>
+                          <TableCell className="text-center">
+                            {module.optional ? (
+                              <Badge variant="outline" className="bg-blue-100 dark:bg-blue-900/30 border-blue-200 dark:border-blue-800">
+                                Optional
+                              </Badge>
+                            ) : (
+                              <Badge variant="secondary">Required</Badge>
+                            )}
+                          </TableCell>
+                          <TableCell className="text-center">
+                            <Badge variant="outline">{module.version}</Badge>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
+                
+                <div className="mt-4 p-3 bg-amber-50 dark:bg-amber-950/30 border border-amber-100 dark:border-amber-900/50 rounded-md">
+                  <h4 className="text-sm font-medium mb-2 flex items-center gap-2">
+                    <AlertCircle className="h-4 w-4 text-amber-600" />
+                    Blueprint v1.1.1 Verification
+                  </h4>
+                  <ul className="space-y-1 text-sm">
+                    <li className="flex items-center gap-2">
+                      {moduleStatusData.blueprintVersion === "1.1.1" ? (
+                        <Check className="h-4 w-4 text-green-600 flex-shrink-0" />
+                      ) : (
+                        <AlertCircle className="h-4 w-4 text-red-500 flex-shrink-0" />
+                      )}
+                      <span>Blueprint version is set to v1.1.1</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      {moduleStatusData.moduleStatus.some(m => m.id.includes('CompanionConsole') && m.enabled) ? (
+                        <Check className="h-4 w-4 text-green-600 flex-shrink-0" />
+                      ) : (
+                        <AlertCircle className="h-4 w-4 text-red-500 flex-shrink-0" />
+                      )}
+                      <span>Companion Console is enabled</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      {moduleStatusData.moduleStatus.some(m => m.id.includes('CloudinaryUpload') && m.enabled) ? (
+                        <Check className="h-4 w-4 text-green-600 flex-shrink-0" />
+                      ) : (
+                        <AlertCircle className="h-4 w-4 text-red-500 flex-shrink-0" />
+                      )}
+                      <span>Cloudinary Uploads is enabled</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      {moduleStatusData.moduleStatus.some(m => m.id.includes('Upgrade') && m.enabled) ? (
+                        <Check className="h-4 w-4 text-green-600 flex-shrink-0" />
+                      ) : (
+                        <AlertCircle className="h-4 w-4 text-red-500 flex-shrink-0" />
+                      )}
+                      <span>Upgrade Announcements are enabled</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            ) : (
+              <div className="p-4 text-center text-muted-foreground">
+                No module status data available
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
         <Separator className="my-8" />
 
         {/* Export and Handoff Controls */}

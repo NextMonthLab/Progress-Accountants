@@ -1,6 +1,7 @@
 import { db } from "../db";
 import { modules, clientRegistry, activityLogs } from "@shared/schema";
 import { eq } from "drizzle-orm";
+import { storage } from "../storage";
 
 /**
  * Register the UpgradeAnnouncement module in the system
@@ -305,5 +306,185 @@ export async function syncAnnouncementsToVault(clientId: string) {
   } catch (error) {
     console.error("Error syncing announcements to Vault:", error);
     return false;
+  }
+}
+
+/**
+ * Auto-enable Blueprint v1.1.1 modules for new client instances
+ * This function will automatically enable:
+ * - CompanionConsole
+ * - CloudinaryUpload
+ * - Upgrade Announcements for onboarding screens
+ *
+ * @param clientId The client ID
+ * @returns Whether the auto-enablement was successful
+ */
+export async function autoEnableV111Modules(clientId: string): Promise<boolean> {
+  try {
+    // Get the client registry
+    const existingRegistry = await storage.getClientRegistry();
+    
+    if (!existingRegistry || existingRegistry.clientId !== clientId) {
+      console.error("Client registry not found for ID:", clientId);
+      
+      // Log failed auto-enablement
+      await db.insert(activityLogs).values({
+        userType: "system",
+        actionType: "module_activation_failed",
+        entityType: "registry",
+        entityId: clientId,
+        details: JSON.stringify({
+          error: "Client registry not found",
+          tag: "auto_enable_v111_modules"
+        })
+      });
+      
+      return false;
+    }
+    
+    // Define v1.1.1 modules to auto-enable
+    const v111Modules = [
+      {
+        moduleId: "support/CompanionConsole",
+        type: "core",
+        status: "active",
+        version: "1.0.0",
+        optional: true,
+        enabled: true,
+      },
+      {
+        moduleId: "media/CloudinaryUpload",
+        type: "core",
+        status: "active",
+        version: "1.0.0",
+        optional: true,
+        enabled: true,
+      },
+      {
+        moduleId: "announcement/UpgradeAnnouncement",
+        type: "core",
+        status: "active",
+        version: "1.0.0",
+        optional: true,
+        enabled: true,
+      },
+      {
+        moduleId: "announcement/UpgradeBanner",
+        type: "core",
+        status: "active",
+        version: "1.0.0",
+        optional: true,
+        enabled: true,
+      },
+      {
+        moduleId: "announcement/OnboardingUpgradeAlert",
+        type: "core",
+        status: "active",
+        version: "1.0.0",
+        optional: true,
+        enabled: true,
+      }
+    ];
+    
+    // Update exportable modules
+    const exportableModules = existingRegistry.exportableModules as any[] || [];
+    
+    // Add each v1.1.1 module if it doesn't exist
+    let modulesAdded = 0;
+    for (const module of v111Modules) {
+      const moduleExists = exportableModules.some(
+        (m: any) => m.moduleId === module.moduleId
+      );
+      
+      if (!moduleExists) {
+        exportableModules.push(module);
+        modulesAdded++;
+      }
+    }
+    
+    // Only update if modules were added
+    if (modulesAdded > 0) {
+      // Update blueprint version to 1.1.1
+      const updated = await storage.updateClientRegistry(clientId, {
+        blueprintVersion: "1.1.1",
+        exportableModules
+      });
+      
+      // Log successful auto-enablement
+      await db.insert(activityLogs).values({
+        userType: "system",
+        actionType: "module_auto_enabled",
+        entityType: "registry",
+        entityId: clientId,
+        details: JSON.stringify({
+          blueprintVersion: "1.1.1",
+          modulesAdded,
+          modules: v111Modules.map(m => m.moduleId),
+          tag: "auto_enable_v111_modules"
+        })
+      });
+      
+      console.log(`Auto-enabled ${modulesAdded} v1.1.1 modules for client ${clientId}`);
+      return true;
+    } else {
+      console.log(`No new v1.1.1 modules to enable for client ${clientId}`);
+      return true; // Still success, just no new modules
+    }
+  } catch (error: any) {
+    console.error("Error auto-enabling v1.1.1 modules:", error);
+    
+    // Log error
+    await db.insert(activityLogs).values({
+      userType: "system",
+      actionType: "module_activation_failed",
+      entityType: "registry",
+      entityId: clientId,
+      details: JSON.stringify({
+        error: error.message || 'Unknown error',
+        tag: "auto_enable_v111_modules"
+      })
+    });
+    
+    return false;
+  }
+}
+
+/**
+ * Handle module loading failures with graceful fallbacks
+ * This ensures that if a module fails to load, the system still works
+ * 
+ * @param moduleId The ID of the module that failed to load
+ * @param context Additional context about the failure
+ */
+export async function handleModuleLoadingFailure(moduleId: string, context: string = ""): Promise<void> {
+  try {
+    console.error(`Module loading failure: ${moduleId}`, context);
+    
+    // Log the failure
+    await db.insert(activityLogs).values({
+      userType: "system",
+      actionType: "module_load_failed",
+      entityType: "module",
+      entityId: moduleId,
+      details: JSON.stringify({
+        moduleId,
+        context,
+        timestamp: new Date().toISOString(),
+        tag: context.includes("announcement") ? "announcement_failure" : "module_unavailable"
+      })
+    });
+    
+    // If it's an announcement module, update its status to reflect the failure
+    if (moduleId.includes("announcement/")) {
+      await db.update(modules)
+        .set({
+          status: "error",
+          description: `Failed to load: ${context}`
+        })
+        .where(eq(modules.id, moduleId));
+    }
+  } catch (error) {
+    // Last resort error handling - at least log to console
+    console.error("Critical error in handleModuleLoadingFailure:", error);
   }
 }
