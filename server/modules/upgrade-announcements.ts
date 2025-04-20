@@ -1,6 +1,53 @@
 import { db } from "../db";
-import { modules, clientRegistry, activityLogs } from "@shared/schema";
+import { modules, clientRegistry, activityLogs, insertModuleSchema, insertActivityLogSchema } from "@shared/schema";
 import { eq } from "drizzle-orm";
+import { json } from "drizzle-orm/pg-core";
+
+// Helper function to create module
+async function createModule(moduleId: string, name: string, description: string, path: string, iconType: string, moduleMetadata: any) {
+  const [existingModule] = await db
+    .select()
+    .from(modules)
+    .where(eq(modules.id, moduleId));
+  
+  if (existingModule) {
+    console.log(`${name} module already registered with ID: ${moduleId}`);
+    return existingModule;
+  }
+  
+  const [newModule] = await db
+    .insert(modules)
+    .values({
+      id: moduleId,
+      name,
+      description,
+      category: "core",
+      status: "active",
+      iconType, 
+      iconColor: "amber",
+      path,
+      previewAvailable: true,
+      premium: false
+    })
+    .returning();
+  
+  // Log the registration activity
+  await db.insert(activityLogs).values({
+    userType: "system",
+    actionType: "module_registered",
+    entityType: "module",
+    entityId: moduleId,
+    details: JSON.stringify({
+      moduleId,
+      category: "core",
+      tag: "blueprint_upgrade_announcement",
+      metadata: moduleMetadata
+    })
+  });
+  
+  console.log(`${name} module registered successfully with ID: ${moduleId}`);
+  return newModule;
+}
 
 /**
  * Register the UpgradeAnnouncement module in the system
@@ -31,7 +78,21 @@ export async function registerUpgradeAnnouncementModule() {
         iconColor: "amber",
         path: "/components/UpgradeAnnouncement",
         previewAvailable: true,
-        premium: false,
+        premium: false
+      })
+      .returning();
+    
+    // Log the registration activity
+    await db.insert(activityLogs).values({
+      userId: 1, // System user
+      userType: "system",
+      actionType: "module_registered",
+      entityType: "module",
+      entityId: "announcement/UpgradeAnnouncement",
+      details: JSON.stringify({
+        moduleId: "announcement/UpgradeAnnouncement",
+        category: "core",
+        tag: "blueprint_upgrade_announcement",
         metadata: {
           module_type: "announcement",
           context: "platform upgrade",
@@ -40,18 +101,6 @@ export async function registerUpgradeAnnouncementModule() {
           enabled_by_default: true
         }
       })
-      .returning();
-    
-    // Log the registration activity
-    await db.insert(activityLogs).values({
-      userId: 1, // System user
-      action: "module_registered",
-      details: JSON.stringify({
-        moduleId: "announcement/UpgradeAnnouncement",
-        category: "core",
-        tag: "blueprint_upgrade_announcement"
-      }),
-      timestamp: new Date()
     });
     
     console.log("UpgradeAnnouncement module registered successfully");
