@@ -46,6 +46,33 @@ const OnboardingWelcomePage: React.FC = () => {
         </CardHeader>
         <CardContent className="pt-6 pb-4 px-6">
           <div className="space-y-6">
+            <Alert className="border-primary/20 bg-primary/5 mb-6">
+              <div className="flex items-center gap-2">
+                <BellRing className="h-5 w-5" />
+                <AlertTitle className="font-semibold flex items-center">
+                  Blueprint Upgraded
+                  <Badge className="ml-2 bg-primary/20 hover:bg-primary/30 text-primary">v1.1.1</Badge>
+                </AlertTitle>
+              </div>
+              <AlertDescription className="mt-2">
+                <p className="mb-2">We've just upgraded your Progress Accountants workspace with two exciting new features:</p>
+                <div className="pl-2 border-l-2 border-primary/20 mt-2 space-y-3">
+                  <div className="flex gap-2">
+                    <MessageSquare className="h-4 w-4 mt-1 flex-shrink-0" />
+                    <div>
+                      <span className="font-medium">Companion Console</span> – Your on-demand support buddy with context-aware help. Look for the chat button in the bottom-right corner.
+                    </div>
+                  </div>
+                  <div className="flex gap-2">
+                    <CloudUpload className="h-4 w-4 mt-1 flex-shrink-0" />
+                    <div>
+                      <span className="font-medium">Smarter Media Uploads</span> – Upload unlimited images with AI-suggested placement and business attribution.
+                    </div>
+                  </div>
+                </div>
+              </AlertDescription>
+            </Alert>
+            
             <div className="bg-muted/40 p-6 rounded-lg">
               <h3 className="text-xl font-semibold mb-3">Hello {userName},</h3>
               <p className="text-muted-foreground">
