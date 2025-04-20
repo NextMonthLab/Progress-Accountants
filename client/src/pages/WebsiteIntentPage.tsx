@@ -59,8 +59,8 @@ export default function WebsiteIntentPage() {
         // Mark onboarding as complete for tools-only users
         localStorage.setItem('project_context.status', 'onboarded');
         
-        // Route to the client portal which has all the tools
-        setLocation('/client-portal');
+        // Route to the tools dashboard we just created
+        setLocation('/tools-dashboard');
         break;
       case 'undecided':
         // Route to homepage setup but mark as optional

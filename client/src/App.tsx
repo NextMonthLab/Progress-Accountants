@@ -11,6 +11,7 @@ import DashboardPage from "@/pages/DashboardPage";
 import ClientDashboardPage from "@/pages/ClientDashboardPage";
 import CRMViewPage from "@/pages/CRMViewPage";
 import CRMViewPageEnhanced from "@/pages/CRMViewPageEnhanced";
+import ToolsDashboardPage from "@/pages/ToolsDashboardPage";
 import ComponentDemo from "@/pages/ComponentDemo";
 import TeamPage from "@/pages/TeamPage";
 import AboutPage from "@/pages/AboutPage";
@@ -62,6 +63,7 @@ function Router() {
       <Route path="/studio-banbury" component={StudioPage} />
       <Route path="/client-dashboard" component={ProtectedDashboard} />
       <Route path="/client-portal" component={ProtectedClientDashboard} />
+      <Route path="/tools-dashboard" component={ToolsDashboardPage} />
       <Route path="/admin/crm" component={ProtectedCRMView} />
       <Route path="/admin/crm-enhanced" component={ProtectedCRMViewEnhanced} />
       <Route path="/components" component={ComponentDemo} />
@@ -147,6 +149,7 @@ function FirstTimeUserDetector({ children }: { children: React.ReactNode }) {
         location !== '/onboarding' && 
         location !== '/website-intent' && // Add the new page to excluded redirects
         location !== '/client-portal' && // Allow client portal for 'tools only' users
+        location !== '/tools-dashboard' && // Allow tools dashboard for 'tools only' users
         !location.startsWith('/homepage-setup') && 
         !location.startsWith('/foundation-pages') && 
         !location.startsWith('/launch-ready') &&
