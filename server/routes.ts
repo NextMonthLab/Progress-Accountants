@@ -15,6 +15,7 @@ import {
 } from "@shared/schema";
 import { registerBlueprintRoutes } from "./blueprint";
 import { registerMediaRoutes } from "./media-upload";
+import { registerSupportRoutes } from "./support";
 import { 
   PageMetadata, 
   PageComplexityAssessment, 
@@ -173,6 +174,9 @@ storage.getContactSubmissions = async function() {
 export async function registerRoutes(app: Express): Promise<Server> {
   // Register media upload endpoints
   registerMediaRoutes(app);
+  
+  // Register support chat endpoints
+  registerSupportRoutes(app);
   // Contact form submission endpoint
   app.post("/api/contact", async (req, res) => {
     try {
