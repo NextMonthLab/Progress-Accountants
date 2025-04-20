@@ -815,12 +815,17 @@ export class DatabaseStorage implements IStorage {
   
   // Blueprint Export operations
   async getClientRegistry(): Promise<ClientRegistry | undefined> {
-    const [registry] = await db
-      .select()
-      .from(clientRegistry)
-      .limit(1);
-    
-    return registry;
+    try {
+      const [registry] = await db
+        .select()
+        .from(clientRegistry)
+        .limit(1);
+      
+      return registry;
+    } catch (error) {
+      console.error("Error fetching client registry:", error);
+      return undefined;
+    }
   }
   
   async createClientRegistry(data: InsertClientRegistry): Promise<ClientRegistry> {
@@ -941,6 +946,45 @@ export class DatabaseStorage implements IStorage {
       .returning();
     
     return updated;
+  }
+  
+  // Blueprint version management
+  async getAllBlueprintVersions(): Promise<any[]> {
+    try {
+      return await db.select().from(blueprintVersions).orderBy(desc(blueprintVersions.releaseDate));
+    } catch (error) {
+      console.error("Error retrieving blueprint versions:", error);
+      return [];
+    }
+  }
+  
+  async deprecateBlueprintVersion(version: string): Promise<boolean> {
+    try {
+      await db
+        .update(blueprintVersions)
+        .set({ 
+          deprecated: true,
+          updatedAt: new Date()
+        })
+        .where(eq(blueprintVersions.version, version));
+      
+      return true;
+    } catch (error) {
+      console.error(`Error deprecating blueprint version ${version}:`, error);
+      return false;
+    }
+  }
+  
+  // Activity logging
+  async addActivityLog(log: Partial<InsertActivityLog>): Promise<void> {
+    try {
+      await db.insert(activityLogs).values({
+        ...log,
+        timestamp: new Date()
+      });
+    } catch (error) {
+      console.error("Error adding activity log:", error);
+    }
   }
 }
 
@@ -1656,6 +1700,33 @@ export class MemStorage implements IStorage {
     
     this.clientRegistryData = updated;
     return updated;
+  }
+  
+  // Blueprint version management
+  async getAllBlueprintVersions(): Promise<any[]> {
+    // Return empty array for in-memory implementation
+    return [];
+  }
+  
+  async deprecateBlueprintVersion(version: string): Promise<boolean> {
+    // Always return true for in-memory implementation
+    return true;
+  }
+  
+  // Activity logging
+  async addActivityLog(log: any): Promise<void> {
+    const id = this.currentId++;
+    const activityLog = {
+      id,
+      userType: log.userType || 'system',
+      actionType: log.actionType || 'info',
+      entityType: log.entityType || 'system',
+      entityId: log.entityId || '0',
+      userId: log.userId || null,
+      details: log.details || null,
+      timestamp: new Date()
+    };
+    this.activityLogs.push(activityLog);
   }
 }
 
