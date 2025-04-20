@@ -184,11 +184,11 @@ export default function ScopeRequestPage() {
             if (!structuredData) {
               const newStructuredData = {
                 project: "progress_accountants",
-                type: "screen_request",
+                type: "page_request",
                 payload: {
-                  screen_name: matchedModule || "new_screen",
-                  description: `Auto-generated request for ${matchedModule || "new feature"}`,
-                  features: [`${category === 'template_ready' ? 'Template' : 'Custom'} screen: ${matchedModule || "general"}`]
+                  page_name: matchedModule || "new_page",
+                  description: `Auto-generated request for ${matchedModule || "new page"}`,
+                  features: [`${category === 'template_ready' ? 'Template' : 'Custom'} page: ${matchedModule || "general"}`]
                 }
               };
               setStructuredData(newStructuredData);
@@ -369,7 +369,7 @@ export default function ScopeRequestPage() {
       
       <h3 className="text-xl font-medium mb-4 text-center">All done!</h3>
       <p className="text-gray-700 text-center mb-8 max-w-md">
-        Your request has been received by the Dev team. They'll begin work on your new screen shortly.
+        Your request has been received by the Dev team. They'll begin work on your new page shortly.
       </p>
       
       <Button
@@ -578,13 +578,13 @@ export default function ScopeRequestPage() {
   return (
     <div className="bg-gray-50 min-h-screen py-10">
       <Helmet>
-        <title>New Feature Request | Progress Accountants</title>
+        <title>New Page Request | Progress Accountants</title>
       </Helmet>
 
       <div className="container mx-auto max-w-5xl px-4">
         <Card className="shadow-lg">
           <CardHeader className="bg-[var(--navy)] text-white">
-            <CardTitle className="text-2xl">New Feature Request</CardTitle>
+            <CardTitle className="text-2xl">New Page Request</CardTitle>
             <CardDescription className="text-gray-200">
               Use the assistant below to scope your idea. Once you're ready, it'll send your request to the Dev team.
             </CardDescription>
