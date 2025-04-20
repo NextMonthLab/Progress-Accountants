@@ -17,6 +17,7 @@ export default function BlueprintManagerPage() {
   const [exportLoading, setExportLoading] = useState(false);
   const [notifyLoading, setNotifyLoading] = useState(false);
   const [registerLoading, setRegisterLoading] = useState(false);
+  const [exportV111Loading, setExportV111Loading] = useState(false);
   const { toast } = useToast();
 
   // Fetch blueprint status on mount
@@ -118,6 +119,35 @@ export default function BlueprintManagerPage() {
       });
     } finally {
       setNotifyLoading(false);
+    }
+  };
+  
+  // Handler for exporting Blueprint v1.1.1
+  const handleExportBlueprintV111 = async () => {
+    setExportV111Loading(true);
+    try {
+      const result = await exportBlueprintV111(CLIENT_ID);
+      toast({
+        title: 'Success',
+        description: 'Blueprint v1.1.1 exported successfully with all announcement modules',
+      });
+      
+      // Update status
+      setBlueprintStatus(prev => ({
+        ...prev,
+        blueprintVersion: '1.1.1',
+        exportReady: true,
+        lastExported: new Date().toISOString()
+      }));
+    } catch (error) {
+      console.error('Error exporting Blueprint v1.1.1:', error);
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: 'Failed to export Blueprint v1.1.1',
+      });
+    } finally {
+      setExportV111Loading(false);
     }
   };
 
@@ -258,26 +288,47 @@ export default function BlueprintManagerPage() {
             Export your blueprint package to the NextMonth Vault and notify Guardian when ready.
           </p>
 
-          <div className="flex flex-col md:flex-row gap-4">
-            <Button
-              onClick={handleExportBlueprint}
-              disabled={exportLoading || !blueprintStatus?.clientId}
-              variant="default"
-              className="flex-1"
-            >
-              <Package className="mr-2 h-4 w-4" />
-              {exportLoading ? 'Exporting...' : 'Export Blueprint Package'}
-            </Button>
+          <div className="flex flex-col gap-4">
+            <div className="flex flex-col md:flex-row gap-4">
+              <Button
+                onClick={handleExportBlueprint}
+                disabled={exportLoading || !blueprintStatus?.clientId}
+                variant="default"
+                className="flex-1"
+              >
+                <Package className="mr-2 h-4 w-4" />
+                {exportLoading ? 'Exporting...' : 'Export Blueprint Package'}
+              </Button>
 
-            <Button
-              onClick={handleNotifyGuardian}
-              disabled={notifyLoading || !blueprintStatus?.exportReady}
-              variant="outline"
-              className="flex-1"
-            >
-              <Send className="mr-2 h-4 w-4" />
-              {notifyLoading ? 'Notifying...' : 'Notify Guardian'}
-            </Button>
+              <Button
+                onClick={handleNotifyGuardian}
+                disabled={notifyLoading || !blueprintStatus?.exportReady}
+                variant="outline"
+                className="flex-1"
+              >
+                <Send className="mr-2 h-4 w-4" />
+                {notifyLoading ? 'Notifying...' : 'Notify Guardian'}
+              </Button>
+            </div>
+            
+            <div className="border border-dashed border-primary/50 rounded-md p-4 mt-2">
+              <h3 className="text-lg font-semibold mb-3 flex items-center">
+                <Zap className="h-5 w-5 mr-2 text-yellow-500" />
+                Blueprint v1.1.1 Export
+              </h3>
+              <p className="text-sm text-muted-foreground mb-4">
+                Export Blueprint v1.1.1 with Companion Console and all announcement modules, properly tagged for automatic upgrades.
+              </p>
+              <Button
+                onClick={handleExportBlueprintV111}
+                disabled={exportV111Loading || !blueprintStatus?.clientId}
+                variant="secondary"
+                className="w-full"
+              >
+                <Zap className="mr-2 h-4 w-4 text-yellow-500" />
+                {exportV111Loading ? 'Exporting v1.1.1...' : 'Export Blueprint v1.1.1'}
+              </Button>
+            </div>
           </div>
 
           <div className="bg-muted rounded-md p-4 mt-4">
