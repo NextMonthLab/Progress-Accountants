@@ -876,6 +876,131 @@ export class DatabaseStorage implements IStorage {
     return updated;
   }
   
+  // Tool operations
+  async getTool(id: number): Promise<Tool | undefined> {
+    try {
+      const [tool] = await db.select().from(tools).where(eq(tools.id, id));
+      return tool;
+    } catch (error) {
+      console.error("Error fetching tool:", error);
+      return undefined;
+    }
+  }
+
+  async getToolsByType(toolType: string): Promise<Tool[]> {
+    try {
+      return await db.select().from(tools).where(eq(tools.toolType, toolType));
+    } catch (error) {
+      console.error(`Error fetching tools by type ${toolType}:`, error);
+      return [];
+    }
+  }
+
+  async getToolsByStatus(status: string): Promise<Tool[]> {
+    try {
+      return await db.select().from(tools).where(eq(tools.status, status));
+    } catch (error) {
+      console.error(`Error fetching tools by status ${status}:`, error);
+      return [];
+    }
+  }
+
+  async getToolsByUser(userId: number): Promise<Tool[]> {
+    try {
+      return await db.select().from(tools).where(eq(tools.createdBy, userId));
+    } catch (error) {
+      console.error(`Error fetching tools by user ${userId}:`, error);
+      return [];
+    }
+  }
+
+  async saveTool(tool: InsertTool): Promise<Tool> {
+    try {
+      const [savedTool] = await db.insert(tools).values(tool).returning();
+      return savedTool;
+    } catch (error) {
+      console.error("Error saving tool:", error);
+      throw error;
+    }
+  }
+
+  async updateToolStatus(id: number, status: string): Promise<Tool | undefined> {
+    try {
+      const [updated] = await db
+        .update(tools)
+        .set({ status, updatedAt: new Date() })
+        .where(eq(tools.id, id))
+        .returning();
+      return updated;
+    } catch (error) {
+      console.error(`Error updating tool status for ID ${id}:`, error);
+      return undefined;
+    }
+  }
+
+  async updateTool(id: number, data: Partial<InsertTool>): Promise<Tool | undefined> {
+    try {
+      const [updated] = await db
+        .update(tools)
+        .set({ ...data, updatedAt: new Date() })
+        .where(eq(tools.id, id))
+        .returning();
+      return updated;
+    } catch (error) {
+      console.error(`Error updating tool for ID ${id}:`, error);
+      return undefined;
+    }
+  }
+
+  async deleteTool(id: number): Promise<boolean> {
+    try {
+      await db.delete(tools).where(eq(tools.id, id));
+      return true;
+    } catch (error) {
+      console.error(`Error deleting tool ID ${id}:`, error);
+      return false;
+    }
+  }
+
+  // Tool Request operations
+  async saveToolRequest(request: InsertToolRequest): Promise<ToolRequest> {
+    try {
+      const [savedRequest] = await db.insert(toolRequests).values(request).returning();
+      return savedRequest;
+    } catch (error) {
+      console.error("Error saving tool request:", error);
+      throw error;
+    }
+  }
+
+  async getToolRequestsByStatus(status: string): Promise<ToolRequest[]> {
+    try {
+      return await db.select().from(toolRequests).where(eq(toolRequests.status, status));
+    } catch (error) {
+      console.error(`Error fetching tool requests by status ${status}:`, error);
+      return [];
+    }
+  }
+
+  async updateToolRequestStatus(id: number, status: string, processedAt?: Date): Promise<ToolRequest | undefined> {
+    try {
+      const updateData: any = { status };
+      if (processedAt) {
+        updateData.processedAt = processedAt;
+      }
+      
+      const [updated] = await db
+        .update(toolRequests)
+        .set(updateData)
+        .where(eq(toolRequests.id, id))
+        .returning();
+      return updated;
+    } catch (error) {
+      console.error(`Error updating tool request status for ID ${id}:`, error);
+      return undefined;
+    }
+  }
+  
   // Blueprint Export operations
   async getClientRegistry(): Promise<ClientRegistry | undefined> {
     try {
