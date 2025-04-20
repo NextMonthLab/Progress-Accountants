@@ -190,13 +190,12 @@ export default function ToolsLandingPage() {
             </div>
           ))}
         </div>
-        <div className="mt-6 flex justify-end">
+        <div className="mt-6 flex justify-center">
           <Button 
-            variant="outline" 
-            className="border-[var(--navy)] text-[var(--navy)]"
+            className="bg-[var(--navy)] hover:bg-[var(--navy)]/90 text-white px-6"
             onClick={() => navigate('/marketplace')}
           >
-            View All Tools
+            Explore Marketplace
             <ChevronRight className="h-4 w-4 ml-1" />
           </Button>
         </div>

@@ -22,7 +22,7 @@ import ContactPage from "@/pages/ContactPage";
 import ScopeRequestPage from "@/pages/ScopeRequestPage";
 import ModuleGalleryPage from "@/pages/ModuleGalleryPage";
 import ModuleLibraryPage from "@/pages/ModuleLibraryPage";
-import MarketplacePage from "@/pages/MarketplacePage.fixed";
+import MarketplacePage from "@/pages/EnhancedMarketplacePage";
 import BrandGuidelinesPage from "@/pages/BrandGuidelinesPage";
 import BusinessIdentityPage from "@/pages/BusinessIdentityPage";
 import HomepageSetupPage from "@/pages/HomepageSetupPage";
