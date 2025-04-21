@@ -1,12 +1,80 @@
 import { useState } from "react";
-import { Link } from "wouter";
-import { Menu, X, Settings, FileImage } from "lucide-react";
+import { Link, useLocation } from "wouter";
+import { Menu, X, Settings, FileImage, ChevronDown, Users, HomeIcon, Briefcase, Phone, Layout, LayoutDashboard, Store, Box, PaintBucket, BookOpen, FastForward, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/components/ClientDataProvider";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+
+// Define menu item groups
+type MenuItem = {
+  label: string;
+  href: string;
+  icon?: React.ReactNode;
+  requiresStaff?: boolean;
+};
+
+type MenuGroup = {
+  label: string;
+  items: MenuItem[];
+};
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { isStaff } = useAuth();
+  const [location] = useLocation();
+
+  // Define public-facing menu items
+  const publicMenuGroups: MenuGroup[] = [
+    {
+      label: "Business",
+      items: [
+        { label: "Services", href: "/services", icon: <Briefcase className="h-4 w-4 mr-2" /> },
+        { label: "Industries", href: "#industries", icon: <FastForward className="h-4 w-4 mr-2" /> },
+        { label: "Why Us", href: "#why-us", icon: <Sparkles className="h-4 w-4 mr-2" /> },
+      ]
+    },
+    {
+      label: "Company",
+      items: [
+        { label: "About Us", href: "/about", icon: <BookOpen className="h-4 w-4 mr-2" /> },
+        { label: "Our Team", href: "/team", icon: <Users className="h-4 w-4 mr-2" /> },
+        { label: "Studio", href: "/studio-banbury", icon: <Layout className="h-4 w-4 mr-2" /> },
+        { label: "Contact", href: "/contact", icon: <Phone className="h-4 w-4 mr-2" /> },
+      ]
+    }
+  ];
+
+  // Define admin menu items (only visible to staff)
+  const adminMenuGroups: MenuGroup[] = [
+    {
+      label: "Client Tools",
+      items: [
+        { label: "Dashboard", href: "/client-dashboard", icon: <LayoutDashboard className="h-4 w-4 mr-2" /> },
+        { label: "Tools Hub", href: "/tools-hub", icon: <Box className="h-4 w-4 mr-2" /> },
+        { label: "Marketplace", href: "/marketplace", icon: <Store className="h-4 w-4 mr-2" /> },
+        { label: "Installed Tools", href: "/installed-tools", icon: <Box className="h-4 w-4 mr-2" /> },
+      ]
+    },
+    {
+      label: "Admin",
+      items: [
+        { label: "Brand Guidelines", href: "/brand-guidelines", icon: <PaintBucket className="h-4 w-4 mr-2" />, requiresStaff: true },
+        { label: "Business Identity", href: "/business-identity", icon: <HomeIcon className="h-4 w-4 mr-2" />, requiresStaff: true },
+        { label: "Homepage Setup", href: "/homepage-setup", icon: <Layout className="h-4 w-4 mr-2" />, requiresStaff: true },
+        { label: "Foundation Pages", href: "/foundation-pages", icon: <Layout className="h-4 w-4 mr-2" />, requiresStaff: true },
+        { label: "Launch Ready", href: "/launch-ready", icon: <FastForward className="h-4 w-4 mr-2" />, requiresStaff: true },
+        { label: "Media Manager", href: "/media", icon: <FileImage className="h-4 w-4 mr-2" />, requiresStaff: true },
+        { label: "Admin Settings", href: "/admin/settings", icon: <Settings className="h-4 w-4 mr-2" />, requiresStaff: true },
+      ]
+    }
+  ];
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -16,140 +84,137 @@ export default function Navbar() {
     setIsMenuOpen(false);
   };
 
+  // Helper to determine if a link is active
+  const isActive = (href: string) => {
+    return location === href;
+  };
+
+  // Determine if we should show the Public or Admin menu based on the current path
+  const isAdminView = location.startsWith('/admin') || 
+                     location.includes('-setup') || 
+                     location === '/brand-guidelines' || 
+                     location === '/business-identity' || 
+                     location === '/foundation-pages' || 
+                     location === '/marketplace' || 
+                     location === '/installed-tools' || 
+                     location === '/media';
+
+  // Function to render nav links with dropdown
+  const renderDesktopDropdown = (group: MenuGroup) => {
+    const filteredItems = group.items.filter(item => !item.requiresStaff || (item.requiresStaff && isStaff));
+    
+    if (filteredItems.length === 0) return null;
+    
+    return (
+      <DropdownMenu key={group.label}>
+        <DropdownMenuTrigger className="font-medium hover:text-[var(--orange)] transition duration-300 outline-none flex items-center">
+          {group.label} <ChevronDown className="h-4 w-4 ml-1 opacity-70" />
+        </DropdownMenuTrigger>
+        <DropdownMenuContent className="min-w-[200px]">
+          <DropdownMenuLabel>{group.label}</DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          {filteredItems.map((item) => (
+            <DropdownMenuItem key={item.label} asChild>
+              <Link
+                href={item.href}
+                className={`flex items-center py-2 px-2 ${isActive(item.href) ? 'text-[var(--orange)]' : 'hover:text-[var(--orange)]'} transition duration-300 no-underline w-full`}
+              >
+                {item.icon}
+                {item.label}
+              </Link>
+            </DropdownMenuItem>
+          ))}
+        </DropdownMenuContent>
+      </DropdownMenu>
+    );
+  };
+
+  // Function to render mobile menu items with headings
+  const renderMobileMenuGroup = (group: MenuGroup) => {
+    const filteredItems = group.items.filter(item => !item.requiresStaff || (item.requiresStaff && isStaff));
+    
+    if (filteredItems.length === 0) return null;
+    
+    return (
+      <div key={group.label} className="py-2">
+        <h4 className="text-sm uppercase tracking-wider text-gray-500 mb-2 px-2">{group.label}</h4>
+        {filteredItems.map((item) => (
+          <Link
+            key={item.label}
+            href={item.href}
+            className={`flex items-center py-2 px-2 font-medium ${isActive(item.href) ? 'text-[var(--orange)]' : 'hover:text-[var(--orange)]'} transition duration-300 no-underline`}
+            onClick={closeMenu}
+          >
+            {item.icon}
+            {item.label}
+          </Link>
+        ))}
+      </div>
+    );
+  };
+
   return (
     <header className="bg-white sticky top-0 z-50 shadow-sm">
       <nav className="container mx-auto px-4 py-4 flex justify-between items-center">
         <div className="flex items-center">
           <Link href="/" className="font-poppins font-bold text-2xl no-underline" style={{ color: 'var(--navy)' }}>
-              Progress <span style={{ color: 'var(--orange)' }}>Accountants</span>
+            Progress <span style={{ color: 'var(--orange)' }}>Accountants</span>
           </Link>
         </div>
         
-        {/* Desktop Menu */}
-        <div className="hidden md:flex items-center space-x-8">
-          <Link 
-            href="/services" 
-            className="font-medium hover:text-[var(--orange)] transition duration-300 no-underline"
-          >
-            Services
-          </Link>
-          <Link 
-            href="/studio-banbury" 
-            className="font-medium hover:text-[var(--orange)] transition duration-300 no-underline"
-          >
-            Studio
-          </Link>
-          <Link 
-            href="/client-dashboard" 
-            className="font-medium hover:text-[var(--orange)] transition duration-300 no-underline"
-          >
-            Dashboard
-          </Link>
-          <Link 
-            href="/tools-hub" 
-            className="font-medium hover:text-[var(--orange)] transition duration-300 no-underline"
-          >
-            Tools
-          </Link>
-          <a 
-            href="#industries" 
-            className="font-medium hover:text-[var(--orange)] transition duration-300"
-          >
-            Industries
-          </a>
-          <a 
-            href="#why-us" 
-            className="font-medium hover:text-[var(--orange)] transition duration-300"
-          >
-            Why Us
-          </a>
-          <Link 
-            href="/about" 
-            className="font-medium hover:text-[var(--orange)] transition duration-300 no-underline"
-          >
-            About Us
-          </Link>
-          <Link 
-            href="/team" 
-            className="font-medium hover:text-[var(--orange)] transition duration-300 no-underline"
-          >
-            Our Team
-          </Link>
-          <Link 
-            href="/contact" 
-            className="font-medium hover:text-[var(--orange)] transition duration-300 no-underline"
-          >
-            Contact
-          </Link>
-          <Link 
-            href="/marketplace" 
-            className="font-medium hover:text-[var(--orange)] transition duration-300 no-underline"
-          >
-            Marketplace
-          </Link>
-          <Link 
-            href="/installed-tools" 
-            className="font-medium hover:text-[var(--orange)] transition duration-300 no-underline"
-          >
-            Installed Tools
-          </Link>
-          <Link 
-            href="/brand-guidelines" 
-            className="font-medium hover:text-[var(--orange)] transition duration-300 no-underline"
-          >
-            Brand Guidelines
-          </Link>
-          <Link 
-            href="/business-identity" 
-            className="font-medium hover:text-[var(--orange)] transition duration-300 no-underline"
-          >
-            Business Identity
-          </Link>
-          <Link 
-            href="/homepage-setup" 
-            className="font-medium hover:text-[var(--orange)] transition duration-300 no-underline"
-          >
-            Homepage Setup
-          </Link>
-          <Link 
-            href="/foundation-pages" 
-            className="font-medium hover:text-[var(--orange)] transition duration-300 no-underline"
-          >
-            Foundation Pages
-          </Link>
-          <Link 
-            href="/launch-ready" 
-            className="font-medium hover:text-[var(--orange)] transition duration-300 no-underline"
-          >
-            Launch Ready
-          </Link>
-          <Link 
-            href="/media" 
-            className="font-medium hover:text-[var(--orange)] transition duration-300 no-underline flex items-center"
-          >
-            <FileImage className="h-4 w-4 mr-1" />
-            Media Manager
-          </Link>
-          {isStaff && (
-            <Link 
-              href="/admin/settings" 
-              className="font-medium hover:text-[var(--orange)] transition duration-300 no-underline flex items-center"
-            >
-              <Settings className="h-4 w-4 mr-1" />
-              Admin
-            </Link>
+        {/* Desktop Menu - Show public-facing menu by default, or admin menu if in admin section */}
+        <div className="hidden md:flex items-center space-x-6">
+          {!isAdminView ? (
+            // Public-facing menu
+            <>
+              {publicMenuGroups.map(renderDesktopDropdown)}
+              
+              {/* Always show the Client Portal link if the user is authenticated */}
+              <Link 
+                href="/client-portal" 
+                className={`font-medium ${isActive('/client-portal') ? 'text-[var(--orange)]' : 'hover:text-[var(--orange)]'} transition duration-300 no-underline`}
+              >
+                Client Portal
+              </Link>
+              
+              {/* Show a link to Admin area if user is staff */}
+              {isStaff && (
+                <Link 
+                  href="/client-dashboard" 
+                  className="font-medium hover:text-[var(--orange)] transition duration-300 no-underline flex items-center"
+                >
+                  <LayoutDashboard className="h-4 w-4 mr-1" />
+                  Dashboard
+                </Link>
+              )}
+              
+              <a href="#book-call">
+                <Button 
+                  style={{ 
+                    backgroundColor: 'var(--orange)',
+                    color: 'white' 
+                  }}
+                  className="hover:shadow-md hover:-translate-y-[2px] transition duration-300"
+                >
+                  Book a Call
+                </Button>
+              </a>
+            </>
+          ) : (
+            // Admin menu - only shown when in admin area or to staff
+            <>
+              {adminMenuGroups.map(renderDesktopDropdown)}
+              
+              {/* Always show a way to go back to the public site */}
+              <Link 
+                href="/" 
+                className="font-medium hover:text-[var(--orange)] transition duration-300 no-underline flex items-center"
+              >
+                <HomeIcon className="h-4 w-4 mr-1" />
+                View Website
+              </Link>
+            </>
           )}
-          <a href="#book-call">
-            <Button 
-              style={{ 
-                backgroundColor: 'var(--orange)',
-                color: 'white' 
-              }}
-              className="hover:shadow-md hover:-translate-y-[2px] transition duration-300"
-            >
-              Book a Call
-            </Button>
-          </a>
         </div>
         
         {/* Mobile menu button */}
@@ -168,154 +233,81 @@ export default function Navbar() {
       
       {/* Mobile Menu */}
       <div 
-        className={`md:hidden bg-white w-full absolute z-20 shadow-md ${isMenuOpen ? '' : 'hidden'}`}
+        className={`md:hidden bg-white w-full absolute z-20 shadow-md overflow-y-auto max-h-[80vh] ${isMenuOpen ? '' : 'hidden'}`}
       >
-        <div className="container mx-auto px-4 py-3 flex flex-col space-y-3">
-          <Link 
-            href="/services" 
-            className="py-2 font-medium hover:text-[var(--orange)] transition duration-300 no-underline"
-            onClick={closeMenu}
-          >
-            Services
-          </Link>
-          <Link 
-            href="/studio-banbury" 
-            className="py-2 font-medium hover:text-[var(--orange)] transition duration-300 no-underline"
-            onClick={closeMenu}
-          >
-            Studio
-          </Link>
-          <Link 
-            href="/client-dashboard" 
-            className="py-2 font-medium hover:text-[var(--orange)] transition duration-300 no-underline"
-            onClick={closeMenu}
-          >
-            Dashboard
-          </Link>
-          <Link 
-            href="/tools-hub" 
-            className="py-2 font-medium hover:text-[var(--orange)] transition duration-300 no-underline"
-            onClick={closeMenu}
-          >
-            Tools
-          </Link>
-          <a 
-            href="#industries" 
-            className="py-2 font-medium hover:text-[var(--orange)] transition duration-300"
-            onClick={closeMenu}
-          >
-            Industries
-          </a>
-          <a 
-            href="#why-us" 
-            className="py-2 font-medium hover:text-[var(--orange)] transition duration-300"
-            onClick={closeMenu}
-          >
-            Why Us
-          </a>
-          <Link 
-            href="/about" 
-            className="py-2 font-medium hover:text-[var(--orange)] transition duration-300 no-underline"
-            onClick={closeMenu}
-          >
-            About Us
-          </Link>
-          <Link 
-            href="/team" 
-            className="py-2 font-medium hover:text-[var(--orange)] transition duration-300 no-underline"
-            onClick={closeMenu}
-          >
-            Our Team
-          </Link>
-          <Link 
-            href="/contact" 
-            className="py-2 font-medium hover:text-[var(--orange)] transition duration-300 no-underline"
-            onClick={closeMenu}
-          >
-            Contact
-          </Link>
-          <Link 
-            href="/marketplace" 
-            className="py-2 font-medium hover:text-[var(--orange)] transition duration-300 no-underline"
-            onClick={closeMenu}
-          >
-            Marketplace
-          </Link>
-          <Link 
-            href="/installed-tools" 
-            className="py-2 font-medium hover:text-[var(--orange)] transition duration-300 no-underline"
-            onClick={closeMenu}
-          >
-            Installed Tools
-          </Link>
-          <Link 
-            href="/brand-guidelines" 
-            className="py-2 font-medium hover:text-[var(--orange)] transition duration-300 no-underline"
-            onClick={closeMenu}
-          >
-            Brand Guidelines
-          </Link>
-          <Link 
-            href="/business-identity" 
-            className="py-2 font-medium hover:text-[var(--orange)] transition duration-300 no-underline"
-            onClick={closeMenu}
-          >
-            Business Identity
-          </Link>
-          <Link 
-            href="/homepage-setup" 
-            className="py-2 font-medium hover:text-[var(--orange)] transition duration-300 no-underline"
-            onClick={closeMenu}
-          >
-            Homepage Setup
-          </Link>
-          <Link 
-            href="/foundation-pages" 
-            className="py-2 font-medium hover:text-[var(--orange)] transition duration-300 no-underline"
-            onClick={closeMenu}
-          >
-            Foundation Pages
-          </Link>
-          <Link 
-            href="/launch-ready" 
-            className="py-2 font-medium hover:text-[var(--orange)] transition duration-300 no-underline"
-            onClick={closeMenu}
-          >
-            Launch Ready
-          </Link>
-          <Link 
-            href="/media" 
-            className="py-2 font-medium hover:text-[var(--orange)] transition duration-300 no-underline flex items-center"
-            onClick={closeMenu}
-          >
-            <FileImage className="h-4 w-4 mr-1" />
-            Media Manager
-          </Link>
-          {isStaff && (
-            <Link 
-              href="/admin/settings" 
-              className="py-2 font-medium hover:text-[var(--orange)] transition duration-300 no-underline flex items-center"
-              onClick={closeMenu}
-            >
-              <Settings className="h-4 w-4 mr-1" />
-              Admin Settings
-            </Link>
+        <div className="container mx-auto px-4 py-3 flex flex-col divide-y">
+          {!isAdminView ? (
+            // Public-facing mobile menu
+            <>
+              {/* Public menu groups */}
+              {publicMenuGroups.map(renderMobileMenuGroup)}
+              
+              {/* Client Portal section */}
+              <div className="py-2">
+                <h4 className="text-sm uppercase tracking-wider text-gray-500 mb-2 px-2">Portal</h4>
+                <Link 
+                  href="/client-portal" 
+                  className="flex items-center py-2 px-2 font-medium hover:text-[var(--orange)] transition duration-300 no-underline"
+                  onClick={closeMenu}
+                >
+                  <LayoutDashboard className="h-4 w-4 mr-2" />
+                  Client Portal
+                </Link>
+              </div>
+              
+              {/* Admin link if staff */}
+              {isStaff && (
+                <div className="py-2">
+                  <h4 className="text-sm uppercase tracking-wider text-gray-500 mb-2 px-2">Admin</h4>
+                  <Link 
+                    href="/client-dashboard" 
+                    className="flex items-center py-2 px-2 font-medium hover:text-[var(--orange)] transition duration-300 no-underline"
+                    onClick={closeMenu}
+                  >
+                    <LayoutDashboard className="h-4 w-4 mr-2" />
+                    Dashboard
+                  </Link>
+                </div>
+              )}
+              
+              {/* Call to action */}
+              <div className="py-4">
+                <a 
+                  href="#book-call"
+                  onClick={closeMenu}
+                  className="inline-block text-center w-full"
+                >
+                  <Button 
+                    className="w-full hover:shadow-md hover:-translate-y-[2px] transition duration-300"
+                    style={{ 
+                      backgroundColor: 'var(--orange)',
+                      color: 'white' 
+                    }}
+                  >
+                    Book a Call
+                  </Button>
+                </a>
+              </div>
+            </>
+          ) : (
+            // Admin mobile menu
+            <>
+              {/* Admin menu groups */}
+              {adminMenuGroups.map(renderMobileMenuGroup)}
+              
+              {/* Link back to public site */}
+              <div className="py-4">
+                <Link 
+                  href="/"
+                  onClick={closeMenu}
+                  className="flex items-center py-2 px-2 font-medium hover:text-[var(--orange)] transition duration-300 no-underline"
+                >
+                  <HomeIcon className="h-4 w-4 mr-2" />
+                  View Website
+                </Link>
+              </div>
+            </>
           )}
-          <a 
-            href="#book-call"
-            onClick={closeMenu}
-            className="inline-block text-center"
-          >
-            <Button 
-              className="w-full hover:shadow-md hover:-translate-y-[2px] transition duration-300"
-              style={{ 
-                backgroundColor: 'var(--orange)',
-                color: 'white' 
-              }}
-            >
-              Book a Call
-            </Button>
-          </a>
         </div>
       </div>
     </header>
