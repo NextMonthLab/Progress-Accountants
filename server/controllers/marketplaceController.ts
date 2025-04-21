@@ -32,7 +32,7 @@ const getMarketplaceClient = async () => {
       marketplaceClient = adapter.createClient(
         tenantId,
         process.env.NEXTMONTH_DEV_URL || 'https://nextmonth-dev.replit.app',
-        process.env.MARKETPLACE_API_KEY || null
+        process.env.MARKETPLACE_API_KEY || undefined
       );
     } catch (error) {
       console.error('Failed to initialize marketplace client:', error);
