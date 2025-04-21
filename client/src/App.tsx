@@ -28,6 +28,7 @@ import AboutPage from "@/pages/AboutPage";
 import ServicesPage from "@/pages/ServicesPage";
 import ServiceDetailPage from "@/pages/ServiceDetailPage";
 import ContactPage from "@/pages/ContactPage";
+import TestimonialsPage from "@/pages/TestimonialsPage";
 import ScopeRequestPage from "@/pages/ScopeRequestPage";
 import ModuleGalleryPage from "@/pages/ModuleGalleryPage";
 import ModuleLibraryPage from "@/pages/ModuleLibraryPage";
@@ -92,6 +93,7 @@ function Router() {
       <Route path="/services" component={ServicesPage} />
       <Route path="/services/:slug" component={ServiceDetailPage} />
       <Route path="/contact" component={ContactPage} />
+      <Route path="/testimonials" component={TestimonialsPage} />
       <Route path="/" component={HomePage} />
 
       {/* Super Admin routes (require super admin privileges) */}
