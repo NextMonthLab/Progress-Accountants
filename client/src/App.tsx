@@ -201,7 +201,7 @@ function Router() {
       <ProtectedRoute path="/services-setup" component={ServicesSetupPage} />
       <ProtectedRoute path="/contact-setup" component={ContactSetupPage} />
       <ProtectedRoute path="/testimonials-setup" component={TestimonialsSetupPage} />
-      <ProtectedRoute path="/resources-setup" component={ResourcesSetupPage} />
+      <ProtectedRoute path="/admin/resources-setup" component={ResourcesSetupPage} />
       <ProtectedRoute path="/faq-setup" component={FAQSetupPage} />
       <ProtectedRoute path="/launch-ready" component={LaunchReadyPage} />
       <ProtectedRoute path="/media" component={MediaManagementPage} />
@@ -288,7 +288,8 @@ function FirstTimeUserDetector({ children }: { children: React.ReactNode }) {
       location.startsWith('/homepage-setup') || 
       location.startsWith('/foundation-pages') || 
       location.startsWith('/launch-ready') ||
-      location.startsWith('/marketplace');
+      location.startsWith('/marketplace') ||
+      location.startsWith('/admin/resources-setup');
     
     // If we need to redirect to onboarding
     if (!onboardingComplete && !isAllowedPath) {

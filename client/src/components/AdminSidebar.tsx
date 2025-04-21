@@ -14,7 +14,8 @@ import {
   Menu,
   X,
   ChevronRight,
-  MessageCircle
+  MessageCircle,
+  FileText
 } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import { useState } from "react";
@@ -116,6 +117,12 @@ export default function AdminSidebar() {
           title: "Media Manager", 
           href: "/media", 
           icon: <FileImage className="h-5 w-5" />,
+          requiresStaff: true 
+        },
+        { 
+          title: "Resources Setup", 
+          href: "/admin/resources-setup", 
+          icon: <FileText className="h-5 w-5" />,
           requiresStaff: true 
         },
       ]
