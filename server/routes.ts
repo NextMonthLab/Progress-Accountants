@@ -26,6 +26,8 @@ import { registerPageToolIntegrationRoutes } from "./page-tool-integrations";
 import { registerTenantRoutes } from "./controllers/tenantController";
 import { registerSystemRoutes } from "./controllers/systemController";
 import { registerClientRoutes } from "./controllers/clientController";
+import { registerBlogRoutes } from "./controllers/registerBlogRoutes";
+import { registerOpenAIRoutes } from "./controllers/openai/registerOpenAIRoutes";
 import { setupAuth, hashPassword } from "./auth";
 import { simpleStorage } from "./simpleStorage";
 import { 
@@ -207,6 +209,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
   
   // Register client registration endpoints
   registerClientRoutes(app);
+  
+  // Register blog endpoints
+  registerBlogRoutes(app);
+  
+  // Register OpenAI endpoints for AI generation features
+  registerOpenAIRoutes(app);
   // Contact form submission endpoint
   app.post("/api/contact", async (req, res) => {
     try {
