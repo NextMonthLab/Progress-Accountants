@@ -8,10 +8,14 @@ import {
   type SeoConfiguration,
   type BrandVersion,
   type ClientRegistry,
+  type Tool,
+  type ToolRequest,
   insertPageComplexityTriageSchema,
   insertModuleActivationSchema,
   insertSeoConfigurationSchema,
-  insertBrandVersionSchema
+  insertBrandVersionSchema,
+  insertToolSchema,
+  insertToolRequestSchema
 } from "@shared/schema";
 import { registerBlueprintRoutes } from "./blueprint";
 import { registerMediaRoutes } from "./media-upload";
@@ -2108,6 +2112,378 @@ export async function registerRoutes(app: Express): Promise<Server> {
       return res.status(200).json({ success: true });
     } catch (error) {
       handleApiError(res, error, "Failed to delete brand version");
+    }
+  });
+
+  // ============= TOOLS API ENDPOINTS =============
+  // Get all tools
+  app.get("/api/tools", async (req, res) => {
+    try {
+      let tools = [];
+      const toolType = req.query.type as string;
+      const status = req.query.status as string;
+      
+      if (toolType) {
+        tools = await storage.getToolsByType(toolType);
+      } else if (status) {
+        tools = await storage.getToolsByStatus(status);
+      } else {
+        // Get tools created by the current user
+        const userId = req.user?.id;
+        if (userId) {
+          tools = await storage.getToolsByUser(userId);
+        }
+      }
+      
+      res.status(200).json({
+        success: true,
+        data: tools
+      });
+    } catch (error) {
+      handleApiError(res, error, "Failed to retrieve tools");
+    }
+  });
+
+  // Get tool by ID
+  app.get("/api/tools/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      
+      if (isNaN(id)) {
+        return res.status(400).json({
+          success: false,
+          message: "Invalid tool ID"
+        });
+      }
+      
+      const tool = await storage.getTool(id);
+      
+      if (!tool) {
+        return res.status(404).json({
+          success: false,
+          message: "Tool not found"
+        });
+      }
+      
+      res.status(200).json({
+        success: true,
+        data: tool
+      });
+    } catch (error) {
+      handleApiError(res, error, "Failed to retrieve tool");
+    }
+  });
+
+  // Create a new tool
+  app.post("/api/tools", async (req, res) => {
+    try {
+      const toolData = insertToolSchema.parse(req.body);
+      
+      // Set the created by user ID if logged in
+      if (req.user) {
+        toolData.createdBy = req.user.id;
+      }
+      
+      const tool = await storage.saveTool(toolData);
+      
+      // Log activity
+      if (req.user) {
+        await storage.logActivity({
+          userId: req.user.id,
+          userType: req.user.userType || 'client',
+          actionType: 'create',
+          entityType: 'tool',
+          entityId: tool.id.toString(),
+          details: { toolType: tool.toolType, name: tool.name }
+        });
+      }
+      
+      res.status(201).json({
+        success: true,
+        message: "Tool created successfully",
+        data: tool
+      });
+    } catch (error) {
+      handleApiError(res, error, "Failed to create tool");
+    }
+  });
+
+  // Update a tool
+  app.patch("/api/tools/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      
+      if (isNaN(id)) {
+        return res.status(400).json({
+          success: false,
+          message: "Invalid tool ID"
+        });
+      }
+      
+      // Get the current tool to check permissions
+      const existingTool = await storage.getTool(id);
+      
+      if (!existingTool) {
+        return res.status(404).json({
+          success: false,
+          message: "Tool not found"
+        });
+      }
+      
+      // Check if the user is the creator of the tool
+      if (req.user && existingTool.createdBy && existingTool.createdBy !== req.user.id) {
+        return res.status(403).json({
+          success: false,
+          message: "You are not authorized to update this tool"
+        });
+      }
+      
+      const updateData = req.body;
+      const updatedTool = await storage.updateTool(id, updateData);
+      
+      // Log activity
+      if (req.user) {
+        await storage.logActivity({
+          userId: req.user.id,
+          userType: req.user.userType || 'client',
+          actionType: 'update',
+          entityType: 'tool',
+          entityId: id.toString(),
+          details: { toolType: existingTool.toolType, name: existingTool.name }
+        });
+      }
+      
+      res.status(200).json({
+        success: true,
+        message: "Tool updated successfully",
+        data: updatedTool
+      });
+    } catch (error) {
+      handleApiError(res, error, "Failed to update tool");
+    }
+  });
+  
+  // Update tool status
+  app.patch("/api/tools/:id/status", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      
+      if (isNaN(id)) {
+        return res.status(400).json({
+          success: false,
+          message: "Invalid tool ID"
+        });
+      }
+      
+      const { status } = req.body;
+      
+      if (!status || !['draft', 'published', 'archived'].includes(status)) {
+        return res.status(400).json({
+          success: false,
+          message: "Invalid status value. Must be 'draft', 'published', or 'archived'"
+        });
+      }
+      
+      const updatedTool = await storage.updateToolStatus(id, status);
+      
+      if (!updatedTool) {
+        return res.status(404).json({
+          success: false,
+          message: "Tool not found"
+        });
+      }
+      
+      // Log activity
+      if (req.user) {
+        await storage.logActivity({
+          userId: req.user.id,
+          userType: req.user.userType || 'client',
+          actionType: 'status_change',
+          entityType: 'tool',
+          entityId: id.toString(),
+          details: { status, name: updatedTool.name }
+        });
+      }
+      
+      res.status(200).json({
+        success: true,
+        message: "Tool status updated successfully",
+        data: updatedTool
+      });
+    } catch (error) {
+      handleApiError(res, error, "Failed to update tool status");
+    }
+  });
+
+  // Delete a tool
+  app.delete("/api/tools/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      
+      if (isNaN(id)) {
+        return res.status(400).json({
+          success: false,
+          message: "Invalid tool ID"
+        });
+      }
+      
+      // Get tool first to check permissions
+      const tool = await storage.getTool(id);
+      
+      if (!tool) {
+        return res.status(404).json({
+          success: false,
+          message: "Tool not found"
+        });
+      }
+      
+      // Check if the user is the creator of the tool
+      if (req.user && tool.createdBy && tool.createdBy !== req.user.id) {
+        return res.status(403).json({
+          success: false,
+          message: "You are not authorized to delete this tool"
+        });
+      }
+      
+      const deleted = await storage.deleteTool(id);
+      
+      if (!deleted) {
+        return res.status(500).json({
+          success: false,
+          message: "Failed to delete tool"
+        });
+      }
+      
+      // Log activity
+      if (req.user) {
+        await storage.logActivity({
+          userId: req.user.id,
+          userType: req.user.userType || 'client',
+          actionType: 'delete',
+          entityType: 'tool',
+          entityId: id.toString(),
+          details: { toolType: tool.toolType, name: tool.name }
+        });
+      }
+      
+      res.status(200).json({
+        success: true,
+        message: "Tool deleted successfully"
+      });
+    } catch (error) {
+      handleApiError(res, error, "Failed to delete tool");
+    }
+  });
+
+  // ============= TOOL-PAGE INTEGRATION API ENDPOINTS =============
+  // Add a tool to a page
+  app.post("/api/pages/:pageId/tools", async (req, res) => {
+    try {
+      const pageId = req.params.pageId;
+      const { toolId, position } = req.body;
+      
+      if (!toolId) {
+        return res.status(400).json({
+          success: false,
+          message: "Tool ID is required"
+        });
+      }
+      
+      // Get the tool details
+      const toolIdNumber = parseInt(toolId);
+      if (isNaN(toolIdNumber)) {
+        return res.status(400).json({
+          success: false,
+          message: "Invalid tool ID format"
+        });
+      }
+      
+      const tool = await storage.getTool(toolIdNumber);
+      if (!tool) {
+        return res.status(404).json({
+          success: false,
+          message: "Tool not found"
+        });
+      }
+      
+      // Mock the integration process for now
+      // In a real implementation, we would store the tool-page relationship
+      res.status(200).json({
+        success: true,
+        message: "Tool added to page successfully",
+        data: {
+          pageId,
+          tool: {
+            id: tool.id,
+            name: tool.name,
+            toolType: tool.toolType,
+            position: position || "main"
+          }
+        }
+      });
+      
+      // Log activity
+      if (req.user) {
+        await storage.logActivity({
+          userId: req.user.id,
+          userType: req.user.userType || 'client',
+          actionType: 'add_to_page',
+          entityType: 'tool',
+          entityId: tool.id.toString(),
+          details: { pageId, toolName: tool.name, toolType: tool.toolType }
+        });
+      }
+    } catch (error) {
+      handleApiError(res, error, "Failed to add tool to page");
+    }
+  });
+
+  // Remove a tool from a page
+  app.delete("/api/pages/:pageId/tools/:toolId", async (req, res) => {
+    try {
+      const pageId = req.params.pageId;
+      const toolId = parseInt(req.params.toolId);
+      
+      if (isNaN(toolId)) {
+        return res.status(400).json({
+          success: false,
+          message: "Invalid tool ID format"
+        });
+      }
+      
+      // Get the tool details
+      const tool = await storage.getTool(toolId);
+      if (!tool) {
+        return res.status(404).json({
+          success: false,
+          message: "Tool not found"
+        });
+      }
+      
+      // Mock the removal process
+      // In a real implementation, we would remove the tool-page relationship
+      res.status(200).json({
+        success: true,
+        message: "Tool removed from page successfully",
+        data: {
+          pageId,
+          toolId
+        }
+      });
+      
+      // Log activity
+      if (req.user) {
+        await storage.logActivity({
+          userId: req.user.id,
+          userType: req.user.userType || 'client',
+          actionType: 'remove_from_page',
+          entityType: 'tool',
+          entityId: toolId.toString(),
+          details: { pageId, toolName: tool.name }
+        });
+      }
+    } catch (error) {
+      handleApiError(res, error, "Failed to remove tool from page");
     }
   });
 
