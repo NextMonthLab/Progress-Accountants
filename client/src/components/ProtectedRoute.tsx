@@ -6,7 +6,7 @@ import { Loader2 } from "lucide-react";
 
 interface ProtectedRouteProps {
   path: string;
-  component: React.ComponentType;
+  component: any; // Using any to bypass the type issue with wouter's Route component expectations
   allowedRoles?: UserRole[];
   requireSuperAdmin?: boolean;
 }

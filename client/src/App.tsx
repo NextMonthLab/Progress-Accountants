@@ -7,6 +7,7 @@ import { useAuth, AuthProvider } from "@/hooks/use-auth";
 import { TenantProvider } from "@/hooks/use-tenant";
 import { PermissionsProvider } from "@/hooks/use-permissions";
 import { UpgradeAnnouncement } from "@/components/UpgradeAnnouncement";
+import { ProtectedRoute } from "@/components/ProtectedRoute";
 import SuperAdminDashboard from "@/pages/super-admin/SuperAdminDashboard";
 import HomePage from "@/pages/HomePage";
 import StudioPage from "@/pages/StudioPage";
@@ -76,60 +77,115 @@ const ProtectedThemeManagement = withAuth(ThemeManagementPage, 'staff');
 function Router() {
   return (
     <Switch>
-      <Route path="/auth">
-        <AuthPage />
-      </Route>
-      <Route path="/super-admin">
-        <SuperAdminDashboard />
-      </Route>
-      <Route path="/onboarding" component={OnboardingWelcomePage} />
-      <Route path="/new-client-setup" component={NewClientOnboarding} />
-      <Route path="/website-intent" component={WebsiteIntentPage} />
-      <Route path="/studio-banbury" component={StudioPage} />
-      <Route path="/client-dashboard" component={ProtectedDashboard} />
-      <Route path="/client-portal" component={ProtectedClientDashboard} />
-      <Route path="/tools-dashboard" component={ToolsDashboardPage} />
-      <Route path="/tools-hub" component={ToolsLandingPage} />
-      {/* Tool wizard routes */}
-      <Route path="/tools/create/form" component={CreateFormWizard} />
-      <Route path="/tools/create/calculator" component={CreateCalculatorWizard} />
-      <Route path="/tools/create/dashboard" component={CreateDashboardWizard} />
-      <Route path="/tools/create/embed" component={CreateEmbedWizard} />
-      <Route path="/admin/crm" component={ProtectedCRMView} />
-      <Route path="/admin/crm-enhanced" component={ProtectedCRMViewEnhanced} />
-      <Route path="/components" component={ComponentDemo} />
+      {/* Public routes */}
+      <Route path="/auth" component={AuthPage} />
       <Route path="/team" component={TeamPage} />
       <Route path="/about" component={AboutPage} />
       <Route path="/services" component={ServicesPage} />
       <Route path="/services/:slug" component={ServiceDetailPage} />
       <Route path="/contact" component={ContactPage} />
-      <Route path="/admin/new-request" component={ScopeRequestPage} />
-      <Route path="/admin/settings" component={ProtectedAdminSettings} />
-      <Route path="/admin/seo" component={ProtectedSEOConfigManager} />
-      <Route path="/admin/brand" component={ProtectedBrandManager} />
-      <Route path="/admin/blueprint" component={ProtectedBlueprintManager} />
-      <Route path="/admin/tenant-customization" component={ProtectedTenantCustomization} />
-      <Route path="/admin/theme-management" component={ProtectedThemeManagement} />
-      <Route path="/scope-request" component={ScopeRequestPage} />
-      <Route path="/marketplace" component={EnhancedMarketplacePage} />
-      <Route path="/installed-tools" component={InstalledToolsPage} />
-      {/* Legacy routes for backward compatibility */}
-      <Route path="/module-gallery" component={MarketplacePage} />
-      <Route path="/module-library" component={ModuleLibraryPage} />
-      <Route path="/brand-guidelines" component={BrandGuidelinesPage} />
-      <Route path="/business-identity" component={BusinessIdentityPage} />
-      <Route path="/homepage-setup" component={HomepageSetupPage} />
-      <Route path="/foundation-pages" component={FoundationPagesOverviewPage} />
-      <Route path="/about-setup" component={AboutSetupPage} />
-      <Route path="/services-setup" component={ServicesSetupPage} />
-      <Route path="/contact-setup" component={ContactSetupPage} />
-      <Route path="/testimonials-setup" component={TestimonialsSetupPage} />
-      <Route path="/faq-setup" component={FAQSetupPage} />
-      <Route path="/launch-ready" component={LaunchReadyPage} />
-      <Route path="/media" component={MediaManagementPage} />
-      <Route path="/">
-        <HomePage />
-      </Route>
+      <Route path="/" component={HomePage} />
+
+      {/* Super Admin routes (require super admin privileges) */}
+      <ProtectedRoute 
+        path="/super-admin" 
+        component={SuperAdminDashboard} 
+        requireSuperAdmin={true} 
+      />
+      
+      {/* Admin routes (require admin or super admin) */}
+      <ProtectedRoute 
+        path="/admin/crm" 
+        component={CRMViewPage} 
+        allowedRoles={['admin', 'super_admin', 'editor']} 
+      />
+      <ProtectedRoute 
+        path="/admin/crm-enhanced" 
+        component={CRMViewPageEnhanced} 
+        allowedRoles={['admin', 'super_admin']} 
+      />
+      <ProtectedRoute 
+        path="/admin/settings" 
+        component={AdminSettingsPage} 
+        allowedRoles={['admin', 'super_admin']} 
+      />
+      <ProtectedRoute 
+        path="/admin/seo" 
+        component={SEOConfigManagerPage} 
+        allowedRoles={['admin', 'super_admin', 'editor']} 
+      />
+      <ProtectedRoute 
+        path="/admin/brand" 
+        component={BrandManagerPage} 
+        allowedRoles={['admin', 'super_admin', 'editor']} 
+      />
+      <ProtectedRoute 
+        path="/admin/blueprint" 
+        component={BlueprintManagerPage} 
+        allowedRoles={['admin', 'super_admin']} 
+      />
+      <ProtectedRoute 
+        path="/admin/tenant-customization" 
+        component={TenantCustomizationPage} 
+        allowedRoles={['admin', 'super_admin']} 
+      />
+      <ProtectedRoute 
+        path="/admin/theme-management" 
+        component={ThemeManagementPage} 
+        allowedRoles={['admin', 'super_admin']} 
+      />
+      <ProtectedRoute 
+        path="/admin/new-request" 
+        component={ScopeRequestPage} 
+        allowedRoles={['admin', 'super_admin', 'editor']} 
+      />
+      
+      {/* Client dashboard routes */}
+      <ProtectedRoute 
+        path="/client-dashboard" 
+        component={DashboardPage} 
+        allowedRoles={['client', 'admin', 'super_admin']} 
+      />
+      <ProtectedRoute 
+        path="/client-portal" 
+        component={ClientDashboardPage} 
+        allowedRoles={['client', 'admin', 'super_admin']} 
+      />
+      
+      {/* Tools and marketplace routes */}
+      <ProtectedRoute path="/tools-dashboard" component={ToolsDashboardPage} />
+      <ProtectedRoute path="/tools-hub" component={ToolsLandingPage} />
+      <ProtectedRoute path="/tools/create/form" component={CreateFormWizard} />
+      <ProtectedRoute path="/tools/create/calculator" component={CreateCalculatorWizard} />
+      <ProtectedRoute path="/tools/create/dashboard" component={CreateDashboardWizard} />
+      <ProtectedRoute path="/tools/create/embed" component={CreateEmbedWizard} />
+      <ProtectedRoute path="/marketplace" component={EnhancedMarketplacePage} />
+      <ProtectedRoute path="/installed-tools" component={InstalledToolsPage} />
+      <ProtectedRoute path="/module-gallery" component={MarketplacePage} />
+      <ProtectedRoute path="/module-library" component={ModuleLibraryPage} />
+      
+      {/* Onboarding and setup routes */}
+      <ProtectedRoute path="/onboarding" component={OnboardingWelcomePage} />
+      <ProtectedRoute path="/new-client-setup" component={NewClientOnboarding} />
+      <ProtectedRoute path="/website-intent" component={WebsiteIntentPage} />
+      <ProtectedRoute path="/studio-banbury" component={StudioPage} />
+      <ProtectedRoute path="/scope-request" component={ScopeRequestPage} />
+      <ProtectedRoute path="/brand-guidelines" component={BrandGuidelinesPage} />
+      <ProtectedRoute path="/business-identity" component={BusinessIdentityPage} />
+      <ProtectedRoute path="/homepage-setup" component={HomepageSetupPage} />
+      <ProtectedRoute path="/foundation-pages" component={FoundationPagesOverviewPage} />
+      <ProtectedRoute path="/about-setup" component={AboutSetupPage} />
+      <ProtectedRoute path="/services-setup" component={ServicesSetupPage} />
+      <ProtectedRoute path="/contact-setup" component={ContactSetupPage} />
+      <ProtectedRoute path="/testimonials-setup" component={TestimonialsSetupPage} />
+      <ProtectedRoute path="/faq-setup" component={FAQSetupPage} />
+      <ProtectedRoute path="/launch-ready" component={LaunchReadyPage} />
+      <ProtectedRoute path="/media" component={MediaManagementPage} />
+      
+      {/* Component demo route */}
+      <Route path="/components" component={ComponentDemo} />
+      
+      {/* Fallback 404 route */}
       <Route component={NotFound} />
     </Switch>
   );
@@ -180,7 +236,7 @@ function FirstTimeUserDetector({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     // Skip if user is not logged in or is an admin/super admin
     if (!user) return;
-    if (user.role === 'admin' || user.role === 'super_admin' || user.role === 'editor') return;
+    if (user.userType === 'admin' || user.userType === 'super_admin' || user.userType === 'editor') return;
     
     // For demo purposes, we'll redirect based on simple localStorage check
     // In a production environment, this would use the onboardingState from the backend
