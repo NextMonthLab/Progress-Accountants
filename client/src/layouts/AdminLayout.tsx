@@ -13,7 +13,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
       
       {/* Main Content */}
       <div className="flex-1 overflow-y-auto">
-        <main className="min-h-full">
+        <main className="min-h-full px-6">
           {children}
         </main>
       </div>
