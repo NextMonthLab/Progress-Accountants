@@ -65,6 +65,7 @@ export default function ResourcesSetupPage() {
       fileUrl: '',
       imageUrl: '',
       isPublished: false,
+      order: 0
     },
   });
 
@@ -209,10 +210,11 @@ export default function ResourcesSetupPage() {
       form.reset({
         title: editingResource.title,
         description: editingResource.description,
-        category: editingResource.category,
-        fileUrl: editingResource.fileUrl,
+        category: editingResource.category || editingResource.type,
+        fileUrl: editingResource.fileUrl || editingResource.link,
         imageUrl: editingResource.imageUrl || '',
         isPublished: editingResource.isPublished,
+        order: editingResource.order || 0
       });
     }
   }, [editingResource, form]);
@@ -226,6 +228,7 @@ export default function ResourcesSetupPage() {
       fileUrl: '',
       imageUrl: '',
       isPublished: false,
+      order: 0
     });
     setEditingResource(null);
     setIsAddMode(false);
@@ -353,7 +356,7 @@ export default function ResourcesSetupPage() {
                               <div>
                                 <h3 className="font-medium text-lg">{resource.title}</h3>
                                 <div className="flex items-center gap-2 my-1">
-                                  <Badge variant="outline">{resource.category}</Badge>
+                                  <Badge variant="outline">{resource.category || resource.type || 'resource'}</Badge>
                                   {resource.isPublished ? (
                                     <Badge variant="default" className="bg-green-600">Published</Badge>
                                   ) : (

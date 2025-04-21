@@ -87,8 +87,8 @@ export default function ResourcesPage() {
                   )}
                   <div className="p-6">
                     <div className="flex items-center mb-2">
-                      <Badge variant={getCategoryBadgeVariant(resource.category)}>
-                        {resource.category.replace(/-/g, ' ')}
+                      <Badge variant={getCategoryBadgeVariant(resource.category || resource.type)}>
+                        {(resource.category || resource.type || 'resource').replace(/-/g, ' ')}
                       </Badge>
                     </div>
                     <h3 className="text-xl font-semibold mb-2">{resource.title}</h3>
@@ -100,7 +100,7 @@ export default function ResourcesPage() {
                       className="w-full"
                     >
                       <a 
-                        href={resource.fileUrl}
+                        href={resource.fileUrl || resource.link}
                         target="_blank" 
                         rel="noopener noreferrer"
                       >
