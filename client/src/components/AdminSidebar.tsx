@@ -13,7 +13,8 @@ import {
   Globe,
   Menu,
   X,
-  ChevronRight 
+  ChevronRight,
+  MessageCircle
 } from "lucide-react";
 import { useAuth } from "@/components/ClientDataProvider";
 import { useState } from "react";
@@ -147,6 +148,12 @@ export default function AdminSidebar() {
           title: "Theme Management", 
           href: "/admin/theme", 
           icon: <PaintBucket className="h-5 w-5" />,
+          requiresStaff: true 
+        },
+        { 
+          title: "Companion Settings", 
+          href: "/admin/companion-settings", 
+          icon: <MessageCircle className="h-5 w-5" />,
           requiresStaff: true 
         },
       ]

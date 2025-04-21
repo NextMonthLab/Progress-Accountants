@@ -29,6 +29,7 @@ import { registerClientRoutes } from "./controllers/clientController";
 import { registerBlogRoutes } from "./controllers/registerBlogRoutes";
 import { registerOpenAIRoutes } from "./controllers/openai/registerOpenAIRoutes";
 import { registerCompanionRoutes } from "./controllers/companionController";
+import { registerCompanionConfigRoutes } from "./controllers/registerCompanionConfigRoutes";
 import { setupAuth, hashPassword } from "./auth";
 import { simpleStorage } from "./simpleStorage";
 import { 
@@ -219,6 +220,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
   
   // Register companion routes for context-aware chat
   registerCompanionRoutes(app);
+  
+  // Register companion configuration routes
+  registerCompanionConfigRoutes(app);
   // Contact form submission endpoint
   app.post("/api/contact", async (req, res) => {
     try {

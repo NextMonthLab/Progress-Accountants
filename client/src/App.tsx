@@ -48,6 +48,7 @@ import WebsiteIntentPage from "@/pages/WebsiteIntentPage";
 import AdminSettingsPage from "@/pages/AdminSettingsPage";
 import SEOConfigManagerPage from "@/pages/SEOConfigManagerPage";
 import BrandManagerPage from "@/pages/BrandManagerPage";
+import CompanionSettingsPage from "@/pages/admin/companion-settings";
 import BlueprintManagerPage from "@/pages/BlueprintManagerPage";
 import MediaManagementPage from "@/pages/MediaManagementPage";
 import NewClientOnboarding from "@/pages/NewClientOnboarding";
@@ -138,6 +139,11 @@ function Router() {
       <ProtectedRoute 
         path="/admin/theme-management" 
         component={ThemeManagementPage} 
+        allowedRoles={['admin', 'super_admin']} 
+      />
+      <ProtectedRoute 
+        path="/admin/companion-settings" 
+        component={CompanionSettingsPage} 
         allowedRoles={['admin', 'super_admin']} 
       />
       <ProtectedRoute 
