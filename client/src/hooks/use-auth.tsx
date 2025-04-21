@@ -108,10 +108,11 @@ export function AuthProvider({
         console.error("Error parsing login error:", e);
       }
       
+      // Use the friendly variant for authentication errors
       toast({
         title: errorTitle,
         description: errorMessage,
-        variant: "destructive",
+        variant: "friendly",
       });
     },
   });
@@ -134,11 +135,27 @@ export function AuthProvider({
         setLocation(response.redirectPath);
       }
     },
-    onError: (error: Error) => {
+    onError: (error: any) => {
+      // Handle structured error responses from the server
+      let errorTitle = "Registration Unsuccessful";
+      let errorMessage = "We couldn't create your account. Please check your information and try again.";
+      
+      try {
+        if (error.response) {
+          const data = error.response;
+          errorTitle = data.title || errorTitle;
+          errorMessage = data.error || errorMessage;
+        } else if (typeof error === 'object' && error.message) {
+          errorMessage = error.message;
+        }
+      } catch (e) {
+        console.error("Error parsing registration error:", e);
+      }
+      
       toast({
-        title: "Registration failed",
-        description: error.message || "Could not create account",
-        variant: "destructive",
+        title: errorTitle,
+        description: errorMessage,
+        variant: "friendly",
       });
     },
   });
