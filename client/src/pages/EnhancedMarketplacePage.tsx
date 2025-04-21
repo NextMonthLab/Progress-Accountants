@@ -131,14 +131,31 @@ export default function EnhancedMarketplacePage() {
   // Check if a tool is installed
   const isToolInstalled = (toolId: number) => {
     if (!Array.isArray(installedTools) || installedTools.length === 0) return false;
-    return installedTools.some((item: any) => item.tool.id === toolId);
+    
+    // Handle different response formats
+    if (installedTools[0] && installedTools[0].tool) {
+      // If installedTools has the expected structure with tool property
+      return installedTools.some((item: any) => item.tool && item.tool.id === toolId);
+    } else {
+      // If installedTools is a simple array of installation objects
+      return installedTools.some((item: any) => item.toolId === toolId);
+    }
   };
   
   // Get installation ID for a tool
   const getInstallationId = (toolId: number) => {
     if (!Array.isArray(installedTools) || installedTools.length === 0) return null;
-    const installation = installedTools.find((item: any) => item.tool.id === toolId);
-    return installation ? installation.installation.id : null;
+    
+    // Handle different response formats
+    if (installedTools[0] && installedTools[0].tool) {
+      // If installedTools has the expected structure with tool and installation properties
+      const installation = installedTools.find((item: any) => item.tool && item.tool.id === toolId);
+      return installation ? installation.installation.id : null;
+    } else {
+      // If installedTools is a simple array of installation objects
+      const installation = installedTools.find((item: any) => item.toolId === toolId);
+      return installation ? installation.id : null;
+    }
   };
   
   // Handle tool installation
@@ -151,8 +168,14 @@ export default function EnhancedMarketplacePage() {
     uninstallToolMutation.mutate(installationId);
   };
   
-  // Get unique categories from tools
-  const getUniqueCategories = (): ToolCategory[] => {
+  // Get categories from API or from tools as fallback
+  const getCategories = (): ToolCategory[] => {
+    // If we have categories from the dedicated endpoint, use those
+    if (Array.isArray(toolCategories) && toolCategories.length > 0) {
+      return toolCategories.map((category: any) => category.id);
+    }
+    
+    // Otherwise extract unique categories from the tools themselves
     if (!Array.isArray(marketplaceTools) || marketplaceTools.length === 0) return [];
     
     const categories = new Set<ToolCategory>();
@@ -201,7 +224,7 @@ export default function EnhancedMarketplacePage() {
         <Tabs defaultValue="all" value={activeTab} onValueChange={setActiveTab} className="mb-8">
           <TabsList className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 w-full max-w-4xl mx-auto">
             <TabsTrigger value="all">All</TabsTrigger>
-            {getUniqueCategories().map((category) => (
+            {getCategories().map((category) => (
               <TabsTrigger key={category} value={category}>
                 {category.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())}
               </TabsTrigger>
