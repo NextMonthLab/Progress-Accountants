@@ -206,6 +206,7 @@ export default function CreateFormWizard() {
         displayStyle: data.displayStyle,
         toolType: "form",
         createdBy: user.id,
+        tenantId: user.tenantId || null, // Pass tenant ID for multi-tenant support
         status: "published",
         settings: {
           fields: [],  // Empty fields array for now - will be configured in a subsequent step
@@ -232,6 +233,7 @@ export default function CreateFormWizard() {
       const requestResponse = await apiRequest("POST", "/api/tool-requests", {
         toolId: toolId,
         businessId: user.id.toString(),
+        tenantId: user.tenantId || null, // Pass tenant ID for multi-tenant support
         requestData: {
           toolType: "form",
           name: data.name,
@@ -254,6 +256,7 @@ export default function CreateFormWizard() {
             position: data.position,
             enabled: true,
             createdBy: user.id,
+            tenantId: user.tenantId || null, // Pass tenant ID for multi-tenant support
             settings: {
               displayMode: data.displayStyle
             }
