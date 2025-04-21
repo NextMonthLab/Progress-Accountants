@@ -44,7 +44,7 @@ export const users = pgTable("users", {
   username: text("username").notNull(),
   password: text("password").notNull(),
   name: varchar("name", { length: 100 }),
-  userType: varchar("user_type", { length: 20 }).default("client").notNull(), // client or staff
+  userType: varchar("user_type", { length: 20 }).default("public").notNull(), // Roles: 'super_admin', 'admin', 'editor', 'public'
   email: varchar("email", { length: 255 }),
   tenantId: uuid("tenant_id").references(() => tenants.id), // Reference to tenant
   isSuperAdmin: boolean("is_super_admin").default(false), // For NextMonth admins who need cross-tenant access
@@ -163,7 +163,7 @@ export const insertContactSubmissionSchema = createInsertSchema(contactSubmissio
 export const activityLogs = pgTable("activity_logs", {
   id: serial("id").primaryKey(),
   userId: integer("user_id").references(() => users.id),
-  userType: varchar("user_type", { length: 20 }).notNull(),
+  userType: varchar("user_type", { length: 20 }).notNull(), // 'super_admin', 'admin', 'editor', 'public'
   actionType: varchar("action_type", { length: 50 }).notNull(),
   entityType: varchar("entity_type", { length: 50 }).notNull(),
   entityId: varchar("entity_id", { length: 100 }),
@@ -371,6 +371,9 @@ export interface TenantCustomization {
     resourceCenter: boolean;
   };
 }
+
+// Define user role type for type safety
+export type UserRole = 'super_admin' | 'admin' | 'editor' | 'public';
 
 export type InsertUser = z.infer<typeof insertUserSchema>;
 export type User = typeof users.$inferSelect;

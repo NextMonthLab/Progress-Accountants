@@ -1,0 +1,40 @@
+Prompt to Replit (System Sync – Post-SSO and Tenant Isolation Rollout)
+
+Please update all relevant Replit instances with the following unified configuration and architecture confirmations:
+
+⸻
+
+1. System Architecture & Access
+	•	Single Sign-On (SSO) has been confirmed as the universal authentication method across all clients and internal tools.
+	•	All instances must adopt a shared JWT or OAuth-based identity provider (TBD by the Vault or Guardian).
+	•	Each tenant must include support for role-based access control (RBAC) as follows:
+	•	Super Admin – full system control across all tenants (reserved for platform owner only)
+	•	Admin – tenant-level control (business owner)
+	•	Editor – limited access for content/tool/page editing
+	•	Public – read-only access to public-facing pages and content
+
+2. Multi-Tenant Readiness
+	•	Confirm tenant ID is respected on all queries, tool usage, and API interactions.
+	•	Ensure CreateFormWizard and all integration workflows properly filter and save by tenant.
+	•	The system must ensure that no data leakage occurs between tenants, even in demo mode.
+
+3. Role-Aware UI & API
+	•	Pages, buttons, and routes must only be visible to users with proper roles.
+	•	Admin UI and settings must be completely hidden from Editors or Public users.
+	•	Super Admin interface must allow tenant switching, vault inspection, and system health monitoring.
+
+4. Client Deployment Logic
+	•	The Progress instance now serves as the live demo template for cloning.
+	•	All new clients will be deployed via blueprint exports + clone orchestration.
+	•	Finalize deployment scripts and confirm Vault sync compatibility.
+
+5. System Communication
+	•	Ensure all Replit instances confirm:
+	•	Their role in the ecosystem
+	•	Their awareness of Vault, Guardian, Lab, Dev, and Client responsibilities
+	•	Their ability to push or pull from Vault depending on scope
+	•	Their support for Marketplace tool distribution and import
+
+⸻
+
+If any instance has not yet implemented the above, it should immediately begin applying the changes and respond with a status update once complete.
