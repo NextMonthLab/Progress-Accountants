@@ -2256,7 +2256,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
       
       const updateData = req.body;
-      const updatedTool = await storage.updateTool(id, updateData);
+      const updatedTool = await storage.updateTool(id, updateData, tenantId);
       
       // Log activity
       if (req.user) {
@@ -2374,7 +2374,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         });
       }
       
-      const deleted = await storage.deleteTool(id);
+      const deleted = await storage.deleteTool(id, tenantId);
       
       if (!deleted) {
         return res.status(500).json({
