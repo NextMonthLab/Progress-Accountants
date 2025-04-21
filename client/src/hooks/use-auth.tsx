@@ -91,10 +91,26 @@ export function AuthProvider({
         setLocation(response.redirectPath);
       }
     },
-    onError: (error: Error) => {
+    onError: (error: any) => {
+      // Handle structured error responses from the server
+      let errorTitle = "Sign In Unsuccessful";
+      let errorMessage = "We couldn't sign you in. Please check your credentials and try again.";
+      
+      try {
+        if (error.response) {
+          const data = error.response;
+          errorTitle = data.title || errorTitle;
+          errorMessage = data.error || errorMessage;
+        } else if (typeof error === 'object' && error.message) {
+          errorMessage = error.message;
+        }
+      } catch (e) {
+        console.error("Error parsing login error:", e);
+      }
+      
       toast({
-        title: "Login failed",
-        description: error.message || "Invalid username or password",
+        title: errorTitle,
+        description: errorMessage,
         variant: "destructive",
       });
     },

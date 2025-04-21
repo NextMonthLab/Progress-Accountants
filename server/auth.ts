@@ -188,7 +188,13 @@ export function setupAuth(app: Express) {
   app.post("/api/login", (req, res, next) => {
     passport.authenticate("local", (err: Error, user: User, info: any) => {
       if (err) return next(err);
-      if (!user) return res.status(401).json({ error: "Invalid credentials" });
+      if (!user) {
+        return res.status(401).json({ 
+          error: "We couldn't sign you in with those credentials. Please check your username and password and try again.",
+          title: "Sign In Unsuccessful",
+          code: "invalid_credentials" 
+        });
+      }
       
       req.login(user, (err) => {
         if (err) return next(err);
