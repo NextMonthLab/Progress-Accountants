@@ -62,7 +62,7 @@ const platforms = [
 
 const SocialMediaPostGenerator: React.FC = () => {
   const { user } = useAuth();
-  const { hasPermission } = usePermissions();
+  const { can } = usePermissions();
   const { toast } = useToast();
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatedCaption, setGeneratedCaption] = useState<string>("");
@@ -72,7 +72,7 @@ const SocialMediaPostGenerator: React.FC = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Check if user has appropriate permissions
-  const canUseGenerator = user && hasPermission("use_tools");
+  const canUseGenerator = user && can("use_tools");
 
   // Initialize form
   const form = useForm<FormValues>({
@@ -99,17 +99,12 @@ const SocialMediaPostGenerator: React.FC = () => {
   // Generate AI image based on subject
   const generateAIImage = async (subject: string, platform: string) => {
     try {
-      // Check if OpenAI API key is available
-      if (!process.env.OPENAI_API_KEY) {
-        toast({
-          title: "API Key Missing",
-          description: "OpenAI API key is not configured",
-          variant: "destructive",
-        });
-        return null;
-      }
-
       setIsGenerating(true);
+      
+      // Enhanced prompt for better image generation
+      const enhancedPrompt = `A professional, visually appealing image for ${platform} about "${subject}". 
+      The image should be clean, modern, and appropriate for a professional accounting firm's social media post.
+      Include visual elements that represent "${subject}" in a thoughtful way.`;
       
       // OpenAI image generation
       const response = await fetch("/api/openai/generate-image", {
@@ -118,22 +113,35 @@ const SocialMediaPostGenerator: React.FC = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          prompt: `A professional, visually appealing image for ${platform} about ${subject}. Suitable for a professional accounting firm's social media post.`,
+          prompt: enhancedPrompt,
         }),
       });
 
       if (!response.ok) {
-        throw new Error("Failed to generate image");
+        const errorData = await response.json();
+        throw new Error(errorData?.details || "Failed to generate image");
       }
 
       const data = await response.json();
       setGeneratedImageUrl(data.url);
       return data.url;
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error generating image:", error);
+      
+      // Check for specific API errors
+      let errorMessage = "Failed to generate an image. Please try again.";
+      
+      if (error.message.includes("API key")) {
+        errorMessage = "API Key missing or invalid. Please contact an administrator.";
+      } else if (error.message.includes("content policy")) {
+        errorMessage = "Content policy violation. Please adjust your subject matter.";
+      } else if (error.message.includes("rate limit")) {
+        errorMessage = "Rate limit exceeded. Please try again in a few minutes.";
+      }
+      
       toast({
         title: "Image Generation Failed",
-        description: "Failed to generate an image. Please try again.",
+        description: errorMessage,
         variant: "destructive",
       });
       return null;
@@ -149,37 +157,34 @@ const SocialMediaPostGenerator: React.FC = () => {
 
       // Platform-specific instructions for the AI
       const platformGuides: Record<string, string> = {
-        linkedin: "professional tone, 1-3 paragraphs, 1-3 relevant hashtags, call-to-action",
-        instagram: "engaging tone, emojis, 5-10 hashtags, question for engagement",
-        facebook: "conversational tone, 1-2 paragraphs, 1-2 hashtags, question for engagement",
-        twitter: "concise text under 280 characters, 1-2 hashtags, punchy opening",
-        tiktok: "very casual, trendy language, 3-5 hashtags, call to action",
-        youtube: "descriptive, keyword-rich, calls to subscribe, timestamps if relevant",
-        threads: "casual, brief, conversation starter, minimal hashtags",
-        other: "balanced professional tone, 1-2 paragraphs, 2-3 hashtags",
+        linkedin: "professional tone, 1-3 paragraphs, 1-3 relevant hashtags, call-to-action, suited for B2B audience",
+        instagram: "engaging tone, emojis, 5-10 hashtags, question for engagement, visually descriptive",
+        facebook: "conversational tone, 1-2 paragraphs, 1-2 hashtags, question for engagement, community-focused",
+        twitter: "concise text under 280 characters, 1-2 hashtags, punchy opening, direct message",
+        tiktok: "very casual, trendy language, 3-5 hashtags, call to action, hook in first sentence",
+        youtube: "descriptive, keyword-rich, calls to subscribe, timestamps if relevant, SEO-optimized",
+        threads: "casual, brief, conversation starter, minimal hashtags, thought-provoking",
+        other: "balanced professional tone, 1-2 paragraphs, 2-3 hashtags, clear message",
       };
 
       // Get the appropriate guide
       const platformKey = data.platform as keyof typeof platformGuides;
       const guide = platformGuides[platformKey] || platformGuides.other;
 
-      // Create prompt for generating the caption
-      let prompt = `Generate a social media caption for ${data.platform} about "${data.subject}". 
-      Follow these platform-specific guidelines: ${guide}.`;
+      // Create enhanced prompt for generating the caption
+      let prompt = `Generate a high-quality, engaging social media caption for ${data.platform} about "${data.subject}" for a professional accounting firm. 
+      Follow these platform-specific guidelines: ${guide}.
+      The caption should reflect the brand voice of a professional but approachable accounting firm.
+      Include relevant industry terminology but avoid jargon that might confuse non-experts.`;
 
       if (data.additionalContext) {
         prompt += ` Additional context: ${data.additionalContext}.`;
       }
 
       // If we have an image, include vision analysis
-      let visionAnalysis = "";
       if (imageUrl) {
         prompt += " The caption should reference the accompanying image appropriately.";
-        
-        // If we have an uploaded image, we would analyze it here
-        // For now, we'll just mention the image topic
-        visionAnalysis = `The image is related to ${data.subject}.`;
-        prompt += ` ${visionAnalysis}`;
+        prompt += ` The image is related to ${data.subject} and should be integrated naturally into the caption.`;
       }
 
       // Call OpenAI API to generate the caption
@@ -195,17 +200,30 @@ const SocialMediaPostGenerator: React.FC = () => {
       });
 
       if (!response.ok) {
-        throw new Error("Failed to generate caption");
+        const errorData = await response.json();
+        throw new Error(errorData?.details || "Failed to generate caption");
       }
 
-      const data = await response.json();
-      setGeneratedCaption(data.text);
-      return data.text;
-    } catch (error) {
+      const result = await response.json();
+      setGeneratedCaption(result.text);
+      return result.text;
+    } catch (error: any) {
       console.error("Error generating caption:", error);
+      
+      // More helpful error messages based on the specific error
+      let errorMessage = "Failed to generate a caption. Please try again.";
+      
+      if (error.message.includes("API key")) {
+        errorMessage = "API key issue. Please contact an administrator.";
+      } else if (error.message.includes("rate limit")) {
+        errorMessage = "Rate limit exceeded. Please try again in a few minutes.";
+      } else if (error.message.includes("timeout")) {
+        errorMessage = "Request timed out. Try with a simpler subject.";
+      }
+      
       toast({
         title: "Caption Generation Failed",
-        description: "Failed to generate a caption. Please try again.",
+        description: errorMessage,
         variant: "destructive",
       });
       return "";
@@ -303,7 +321,58 @@ const SocialMediaPostGenerator: React.FC = () => {
                   <FormItem>
                     <FormLabel>Social Media Platform</FormLabel>
                     <Select
-                      onValueChange={field.onChange}
+                      onValueChange={(value) => {
+                        field.onChange(value);
+                        
+                        // Update subject/context suggestions based on platform
+                        const platformSuggestions: Record<string, { subject: string, context: string }> = {
+                          linkedin: {
+                            subject: "Tax planning strategies for small businesses",
+                            context: "Focus on professional networking and thought leadership"
+                          },
+                          instagram: {
+                            subject: "Behind the scenes at our accounting firm",
+                            context: "Use vibrant, visual storytelling with a personal touch"
+                          },
+                          facebook: {
+                            subject: "How we helped a local business save on taxes",
+                            context: "Share as a client success story with community emphasis"
+                          },
+                          twitter: {
+                            subject: "Quick tip: End of quarter tax reminder",
+                            context: "Keep it brief and actionable with 1-2 hashtags"
+                          },
+                          tiktok: {
+                            subject: "Accounting hack that saves businesses time",
+                            context: "Explain a complex concept in a simple, engaging way"
+                          },
+                          youtube: {
+                            subject: "5-minute guide to understanding business expenses",
+                            context: "Structure as a tutorial with clear sections"
+                          },
+                          threads: {
+                            subject: "Common accounting misconception debunked",
+                            context: "Frame as a conversation starter with a surprising fact"
+                          }
+                        };
+                        
+                        // Set placeholder text based on selection
+                        const suggestion = platformSuggestions[value];
+                        if (suggestion) {
+                          // Only set placeholders if fields are empty
+                          const subjectField = form.getValues("subject");
+                          const contextField = form.getValues("additionalContext");
+                          
+                          // Update form with platform-specific suggestions
+                          if (!subjectField) {
+                            form.setValue("subject", suggestion.subject);
+                          }
+                          
+                          if (!contextField) {
+                            form.setValue("additionalContext", suggestion.context);
+                          }
+                        }
+                      }}
                       defaultValue={field.value}
                     >
                       <FormControl>
