@@ -3,8 +3,9 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAuth } from "@/hooks/use-auth";
+import { usePermissions } from "@/hooks/use-permissions";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2, Copy, Download, RefreshCw, Image } from "lucide-react";
+import { Loader2, Copy, Download, RefreshCw, Image, Share2, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -34,7 +35,7 @@ import {
 } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { usePermissions } from "@/hooks/use-permissions";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 
 // Form validation schema
 const formSchema = z.object({
@@ -287,6 +288,21 @@ const SocialMediaPostGenerator: React.FC = () => {
       fileInputRef.current.value = "";
     }
   };
+  
+  // Share to social media
+  const getPlatformShareUrl = (platform: string, caption: string, imageUrl: string | null) => {
+    const encodedText = encodeURIComponent(caption);
+    switch (platform) {
+      case "linkedin":
+        return `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(window.location.href)}`;
+      case "facebook":
+        return `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}&quote=${encodedText}`;
+      case "twitter":
+        return `https://twitter.com/intent/tweet?text=${encodedText}`;
+      default:
+        return "";
+    }
+  };
 
   // If user doesn't have permission, show message
   if (!canUseGenerator) {
@@ -308,8 +324,17 @@ const SocialMediaPostGenerator: React.FC = () => {
         <CardHeader>
           <CardTitle className="text-2xl">Universal Social Media Post Generator</CardTitle>
           <CardDescription>
-            Create optimized posts for any social media platform
+            Create optimized posts for any social media platform with AI-powered captions and images
           </CardDescription>
+          {/* Add a helpful explanation about how the tool works */}
+          <div className="mt-2 text-sm text-muted-foreground">
+            <p className="mb-1">This tool helps you create professional social media content in three simple steps:</p>
+            <ol className="list-decimal list-inside space-y-1">
+              <li>Select a platform and enter your post subject</li>
+              <li>Choose to upload your own image or generate one with AI</li>
+              <li>Click "Generate Post" to create platform-optimized content</li>
+            </ol>
+          </div>
         </CardHeader>
         <CardContent>
           <Form {...form}>
@@ -554,6 +579,61 @@ const SocialMediaPostGenerator: React.FC = () => {
                 <Download className="mr-2 h-4 w-4" /> Download Image
               </Button>
             )}
+            
+            {/* Share Dialog */}
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button variant="secondary">
+                  <Share2 className="mr-2 h-4 w-4" /> Share
+                </Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Share to Social Media</DialogTitle>
+                  <DialogDescription>
+                    Choose a platform to share your generated content
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="grid gap-4">
+                  <div className="grid grid-cols-2 gap-2">
+                    <a 
+                      href={getPlatformShareUrl("linkedin", generatedCaption, generatedImageUrl || uploadedImage || null)} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-center rounded-md border border-input p-2 hover:bg-accent"
+                    >
+                      <Button variant="ghost" className="w-full">
+                        LinkedIn <ExternalLink className="ml-2 h-4 w-4" />
+                      </Button>
+                    </a>
+                    <a 
+                      href={getPlatformShareUrl("facebook", generatedCaption, generatedImageUrl || uploadedImage || null)} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-center rounded-md border border-input p-2 hover:bg-accent"
+                    >
+                      <Button variant="ghost" className="w-full">
+                        Facebook <ExternalLink className="ml-2 h-4 w-4" />
+                      </Button>
+                    </a>
+                    <a 
+                      href={getPlatformShareUrl("twitter", generatedCaption, generatedImageUrl || uploadedImage || null)} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-center rounded-md border border-input p-2 hover:bg-accent"
+                    >
+                      <Button variant="ghost" className="w-full">
+                        X (Twitter) <ExternalLink className="ml-2 h-4 w-4" />
+                      </Button>
+                    </a>
+                  </div>
+                  <p className="text-sm text-muted-foreground">
+                    Note: Image sharing capabilities may vary by platform. Some platforms may only allow text or URL sharing.
+                  </p>
+                </div>
+              </DialogContent>
+            </Dialog>
+            
             <Button variant="outline" onClick={resetGenerator}>
               <RefreshCw className="mr-2 h-4 w-4" /> Start Over
             </Button>
