@@ -13,14 +13,10 @@ import {
   CardHeader, 
   CardTitle 
 } from "@/components/ui/card";
-import { 
-  Badge, 
-  Button, 
-  Skeleton,
-  Alert,
-  AlertDescription,
-  AlertTitle
-} from "@/components/ui";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { 
   Download, 
   Package, 

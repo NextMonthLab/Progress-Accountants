@@ -22,6 +22,7 @@ import CRMViewPage from "@/pages/CRMViewPage";
 import CRMViewPageEnhanced from "@/pages/CRMViewPageEnhanced";
 import ToolsDashboardPage from "@/pages/ToolsDashboardPage";
 import ToolsLandingPage from "@/pages/ToolsLandingPage";
+import ToolMarketplaceBrowserPage from "@/pages/ToolMarketplaceBrowserPage";
 import ComponentDemo from "@/pages/ComponentDemo";
 import TeamPage from "@/pages/TeamPage";
 import AboutPage from "@/pages/AboutPage";
@@ -187,6 +188,7 @@ function Router() {
       <ProtectedRoute path="/installed-tools" component={InstalledToolsPage} />
       <ProtectedRoute path="/module-gallery" component={MarketplacePage} />
       <ProtectedRoute path="/module-library" component={ModuleLibraryPage} />
+      <ProtectedRoute path="/tool-marketplace" component={ToolMarketplaceBrowserPage} allowedRoles={['admin', 'super_admin', 'editor']} />
       
       {/* Onboarding and setup routes */}
       <ProtectedRoute path="/onboarding" component={OnboardingWelcomePage} />
