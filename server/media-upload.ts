@@ -18,6 +18,10 @@ cloudinary.config({
 });
 
 // Configure multer for file uploads
+// Get current directory path using import.meta.url for ES modules
+const __filename = new URL(import.meta.url).pathname;
+const __dirname = path.dirname(__filename);
+
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     const uploadDir = path.join(__dirname, '../uploads');
