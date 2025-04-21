@@ -1,0 +1,116 @@
+import { Request, Response, NextFunction } from "express";
+import { simpleStorage } from "../simpleStorage";
+import jwt from "jsonwebtoken";
+import { User, UserRole } from "@shared/schema";
+
+// Augment the Express.User interface to include our custom fields
+declare global {
+  namespace Express {
+    interface AuthenticatedRequest extends Request {
+      isAuthenticated(): boolean;
+    }
+  }
+}
+
+// JWT secret key - should be in environment variable in production
+const JWT_SECRET = process.env.JWT_SECRET || "progress-accountants-jwt-secret-key";
+const JWT_EXPIRES_IN = "1d"; // Token expiration
+
+interface JwtPayload {
+  userId: number;
+  username: string;
+  userType: UserRole;
+  tenantId?: string;
+  isSuperAdmin: boolean;
+  iat: number;
+  exp: number;
+}
+
+/**
+ * Generate a JWT token for a user
+ */
+export function generateToken(user: User): string {
+  const payload = {
+    userId: user.id,
+    username: user.username,
+    userType: user.userType as UserRole,
+    tenantId: user.tenantId,
+    isSuperAdmin: user.isSuperAdmin || false
+  };
+
+  return jwt.sign(payload, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
+}
+
+/**
+ * Verify and decode a JWT token
+ */
+export function verifyToken(token: string): JwtPayload | null {
+  try {
+    return jwt.verify(token, JWT_SECRET) as JwtPayload;
+  } catch (error) {
+    console.error("JWT verification error:", error);
+    return null;
+  }
+}
+
+/**
+ * Middleware to authenticate via JWT
+ */
+export function authenticateJwt(req: Request, res: Response, next: NextFunction) {
+  // Get token from Authorization header
+  const authHeader = req.headers.authorization;
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    return next(); // No token, proceed unauthenticated
+  }
+
+  const token = authHeader.split(" ")[1];
+  const payload = verifyToken(token);
+
+  if (!payload) {
+    return next(); // Invalid token, proceed unauthenticated
+  }
+
+  // Look up the user in the database
+  simpleStorage.getUser(payload.userId)
+    .then(user => {
+      if (user) {
+        // Populate req.user for passport compatibility
+        req.user = user;
+        // Store the original function if it exists
+        const originalIsAuthenticated = req.isAuthenticated;
+        
+        // Define a new isAuthenticated function that always returns true
+        (req as any).isAuthenticated = function(): boolean {
+          return true;
+        };
+      }
+      next();
+    })
+    .catch(err => {
+      console.error("Error retrieving user:", err);
+      next();
+    });
+}
+
+/**
+ * Handle SSO token validation and user lookup
+ * This will be expanded when integrating with external identity provider
+ */
+export async function handleSsoAuth(token: string): Promise<User | null> {
+  try {
+    // Placeholder for SSO token validation logic
+    // In a real implementation, this would validate with an identity provider
+    const payload = verifyToken(token);
+    
+    if (!payload) {
+      return null;
+    }
+    
+    // Look up user by ID from the token
+    const user = await simpleStorage.getUser(payload.userId);
+    return user || null;
+  } catch (error) {
+    console.error("SSO authentication error:", error);
+    return null;
+  }
+}
