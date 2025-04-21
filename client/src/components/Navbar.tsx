@@ -131,15 +131,21 @@ export default function Navbar() {
             Client Portal
           </Link>
           
-          {/* Show admin dashboard link if user is staff */}
+          {/* Show admin dashboard link with high visibility for staff */}
           {isStaff && (
-            <Link 
-              href="/client-dashboard" 
-              className="font-medium hover:text-[var(--orange)] transition duration-300 no-underline flex items-center"
+            <Button 
+              variant="outline"
+              className="border-[var(--navy)] text-[var(--navy)] hover:text-[var(--orange)] hover:border-[var(--orange)]"
+              asChild
             >
-              <LayoutDashboard className="h-4 w-4 mr-1" />
-              Admin Dashboard
-            </Link>
+              <Link 
+                href="/client-dashboard" 
+                className="no-underline flex items-center"
+              >
+                <LayoutDashboard className="h-4 w-4 mr-2" />
+                Admin Dashboard
+              </Link>
+            </Button>
           )}
           
           <a href="#book-call">
@@ -193,14 +199,20 @@ export default function Navbar() {
           {isStaff && (
             <div className="py-2">
               <h4 className="text-sm uppercase tracking-wider text-gray-500 mb-2 px-2">Admin</h4>
-              <Link 
-                href="/client-dashboard" 
-                className="flex items-center py-2 px-2 font-medium hover:text-[var(--orange)] transition duration-300 no-underline"
+              <Button 
+                variant="outline"
+                className="w-full border-[var(--navy)] text-[var(--navy)] hover:text-[var(--orange)] hover:border-[var(--orange)]"
                 onClick={closeMenu}
+                asChild
               >
-                <LayoutDashboard className="h-4 w-4 mr-2" />
-                Admin Dashboard
-              </Link>
+                <Link 
+                  href="/client-dashboard" 
+                  className="flex items-center justify-center py-2 no-underline"
+                >
+                  <LayoutDashboard className="h-4 w-4 mr-2" />
+                  Admin Dashboard
+                </Link>
+              </Button>
             </div>
           )}
           
