@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation } from 'wouter';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -11,9 +11,21 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Progress } from '@/components/ui/progress';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Label } from '@/components/ui/label';
+import { Loader2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { apiRequest, queryClient } from '@/lib/queryClient';
 import { useAuth } from '@/components/ClientDataProvider';
+import { useQuery } from '@tanstack/react-query';
+
+// Define interface for page selection
+interface PageOption {
+  id: string;
+  name: string;
+  path: string;
+}
 
 // Define step-specific schemas
 const nameStepSchema = z.object({
@@ -33,11 +45,18 @@ const displayStyleStepSchema = z.object({
   displayStyle: z.enum(['modal', 'card', 'full-page', 'sidebar']),
 });
 
+const integrationStepSchema = z.object({
+  addToPage: z.boolean().default(false),
+  pageId: z.string().optional(),
+  position: z.enum(['top', 'middle', 'bottom']).optional(),
+});
+
 // Combined schema for the entire form
 const formSchema = nameStepSchema
   .merge(descriptionStepSchema)
   .merge(mediaStepSchema)
-  .merge(displayStyleStepSchema);
+  .merge(displayStyleStepSchema)
+  .merge(integrationStepSchema);
 
 type FormValues = z.infer<typeof formSchema>;
 
@@ -47,7 +66,8 @@ const STEPS = [
   { id: 2, name: 'Description', description: 'Describe what this form does' },
   { id: 3, name: 'Media', description: 'Add images or other media' },
   { id: 4, name: 'Display Style', description: 'Choose how the form will appear' },
-  { id: 5, name: 'Confirm', description: 'Review and create' }
+  { id: 5, name: 'Integration', description: 'Add to an existing page' },
+  { id: 6, name: 'Confirm', description: 'Review and create' }
 ];
 
 export default function CreateFormWizard() {
@@ -57,6 +77,12 @@ export default function CreateFormWizard() {
   const [, navigate] = useLocation();
   const { toast } = useToast();
   
+  // Fetch available pages for integration
+  const { data: availablePages = [] } = useQuery<PageOption[]>({
+    queryKey: ['/api/pages'],
+    enabled: currentStep === 5, // Only fetch when on integration step
+  });
+  
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -65,11 +91,14 @@ export default function CreateFormWizard() {
       mediaUrl: '',
       mediaId: '',
       displayStyle: 'modal',
+      addToPage: false,
+      position: 'bottom',
     },
     mode: 'onChange',
   });
 
   const watchAllFields = form.watch();
+  const addToPage = form.watch('addToPage');
 
   // Determine if the current step is valid
   const isCurrentStepValid = () => {
@@ -85,6 +114,8 @@ export default function CreateFormWizard() {
       case 4:
         return !errors.displayStyle && !!dirtyFields.displayStyle;
       case 5:
+        return !addToPage || (!!form.getValues('pageId') && !!form.getValues('position'));
+      case 6:
         return true; // Confirmation step is always valid
       default:
         return false;
@@ -133,7 +164,7 @@ export default function CreateFormWizard() {
           description: "Your form has been saved as a draft",
           variant: "default",
         });
-        queryClient.invalidateQueries(['/api/tools']);
+        queryClient.invalidateQueries({ queryKey: ['/api/tools'] });
       } else {
         toast({
           title: "Failed to save draft",
@@ -192,13 +223,32 @@ export default function CreateFormWizard() {
         },
         status: "pending"
       });
+      
+      // If user opted to add to a page, create that integration
+      if (data.addToPage && data.pageId && data.position) {
+        await apiRequest("POST", "/api/page-tool-integrations", {
+          pageId: data.pageId,
+          toolId: toolData.id,
+          position: data.position,
+          enabled: true,
+          createdBy: user.id
+        });
+        
+        toast({
+          title: "Tool integrated with page",
+          description: `Form successfully added to the selected page at the ${data.position} position`,
+          variant: "default",
+        });
+        
+        queryClient.invalidateQueries({ queryKey: ['/api/pages'] });
+      }
 
       toast({
         title: "Form created",
         description: "Your form has been created successfully",
         variant: "default",
       });
-      queryClient.invalidateQueries(['/api/tools']);
+      queryClient.invalidateQueries({ queryKey: ['/api/tools'] });
       navigate('/tools-hub');
     } catch (error) {
       console.error("Error creating form:", error);
@@ -214,7 +264,6 @@ export default function CreateFormWizard() {
 
   const handleMediaUpload = () => {
     // This would typically open a file selector and upload to Cloudinary
-    // For now, we'll just add a placeholder URL
     toast({
       title: "Media Upload",
       description: "Image upload functionality will be implemented soon",
@@ -355,7 +404,7 @@ export default function CreateFormWizard() {
                           <Label htmlFor="full-page" className="flex flex-col">
                             <div className="font-medium">Full Page</div>
                             <div className="text-sm text-muted-foreground">
-                              Takes up the entire page
+                              Takes up an entire page
                             </div>
                           </Label>
                         </div>
@@ -376,9 +425,6 @@ export default function CreateFormWizard() {
                     </FormItem>
                   </RadioGroup>
                 </FormControl>
-                <FormDescription>
-                  Select how you want your form to be displayed to users
-                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -387,29 +433,133 @@ export default function CreateFormWizard() {
       case 5:
         return (
           <div className="space-y-6">
-            <div className="rounded-md border border-border p-4">
-              <h3 className="font-medium mb-2">Form Summary</h3>
+            <FormField
+              control={form.control}
+              name="addToPage"
+              render={({ field }) => (
+                <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+                  <FormControl>
+                    <Checkbox
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                  </FormControl>
+                  <div className="space-y-1 leading-none">
+                    <FormLabel>
+                      Add this form to an existing page
+                    </FormLabel>
+                    <FormDescription>
+                      Integrate this form directly into one of your existing pages
+                    </FormDescription>
+                  </div>
+                </FormItem>
+              )}
+            />
+            
+            {addToPage && (
+              <>
+                <FormField
+                  control={form.control}
+                  name="pageId"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Select Page</FormLabel>
+                      <Select 
+                        onValueChange={field.onChange} 
+                        defaultValue={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select a page" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {availablePages.length > 0 ? (
+                            availablePages.map(page => (
+                              <SelectItem key={page.id} value={page.id}>
+                                {page.name}
+                              </SelectItem>
+                            ))
+                          ) : (
+                            <SelectItem value="none" disabled>
+                              No pages available
+                            </SelectItem>
+                          )}
+                        </SelectContent>
+                      </Select>
+                      <FormDescription>
+                        Choose the page where this form will appear
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                
+                <FormField
+                  control={form.control}
+                  name="position"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Position on Page</FormLabel>
+                      <Select 
+                        onValueChange={field.onChange} 
+                        defaultValue={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select position" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="top">Top</SelectItem>
+                          <SelectItem value="middle">Middle</SelectItem>
+                          <SelectItem value="bottom">Bottom</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormDescription>
+                        Choose where on the page the form should appear
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </>
+            )}
+          </div>
+        );
+      case 6:
+        return (
+          <div className="space-y-6">
+            <div className="rounded-md border p-4">
+              <h3 className="text-lg font-medium mb-2">Form Summary</h3>
               <div className="space-y-2">
-                <div className="grid grid-cols-3 gap-2">
-                  <div className="font-medium">Name:</div>
-                  <div className="col-span-2">{watchAllFields.name}</div>
+                <div>
+                  <span className="font-semibold">Name:</span> {watchAllFields.name}
                 </div>
-                <div className="grid grid-cols-3 gap-2">
-                  <div className="font-medium">Display Style:</div>
-                  <div className="col-span-2 capitalize">{watchAllFields.displayStyle}</div>
+                <div>
+                  <span className="font-semibold">Description:</span> {watchAllFields.description}
                 </div>
-                <div className="grid grid-cols-3 gap-2">
-                  <div className="font-medium">Description:</div>
-                  <div className="col-span-2">{watchAllFields.description}</div>
+                <div>
+                  <span className="font-semibold">Display Style:</span> {watchAllFields.displayStyle}
                 </div>
-                <div className="grid grid-cols-3 gap-2">
-                  <div className="font-medium">Has Media:</div>
-                  <div className="col-span-2">{watchAllFields.mediaUrl ? 'Yes' : 'No'}</div>
-                </div>
+                {watchAllFields.mediaUrl && (
+                  <div>
+                    <span className="font-semibold">Media:</span> Included
+                  </div>
+                )}
+                {watchAllFields.addToPage && (
+                  <div>
+                    <span className="font-semibold">Page Integration:</span> 
+                    {' '}
+                    {availablePages.find(p => p.id === watchAllFields.pageId)?.name || 'Selected page'} 
+                    ({watchAllFields.position} position)
+                  </div>
+                )}
               </div>
             </div>
             <div className="text-sm text-muted-foreground">
-              Please review the details above. When you're ready, click 'Create Form' to finalize your form.
+              By creating this form, you acknowledge that it will need to be reviewed 
+              by an administrator before being published to your site.
             </div>
           </div>
         );
@@ -419,81 +569,84 @@ export default function CreateFormWizard() {
   };
 
   return (
-    <div className="container max-w-4xl mx-auto py-10">
-      <Card className="border-2">
+    <div className="container max-w-3xl mx-auto py-6">
+      <div className="mb-8">
+        <h1 className="text-2xl font-bold">Create New Form</h1>
+        <p className="text-muted-foreground">
+          Build a custom form to collect information from your clients or visitors.
+        </p>
+      </div>
+      
+      <div className="mb-8">
+        <div className="flex justify-between mb-2">
+          <span className="text-sm font-medium">
+            Step {currentStep} of {STEPS.length}: {STEPS[currentStep - 1].name}
+          </span>
+          <span className="text-sm text-muted-foreground">
+            {Math.round((currentStep / STEPS.length) * 100)}% Complete
+          </span>
+        </div>
+        <Progress value={(currentStep / STEPS.length) * 100} className="h-2" />
+      </div>
+      
+      <Card>
         <CardHeader>
-          <CardTitle>Create Form Tool</CardTitle>
-          <CardDescription>
-            Create a custom form to collect information from your clients
-          </CardDescription>
-          <Progress value={(currentStep / STEPS.length) * 100} className="mt-2" />
+          <CardTitle>{STEPS[currentStep - 1].name}</CardTitle>
+          <CardDescription>{STEPS[currentStep - 1].description}</CardDescription>
         </CardHeader>
         <CardContent>
-          <Tabs value={currentStep.toString()} onValueChange={(value) => setCurrentStep(parseInt(value))}>
-            <TabsList className="grid grid-cols-5 mb-8">
-              {STEPS.map((step) => (
-                <TabsTrigger
-                  key={step.id}
-                  value={step.id.toString()}
-                  disabled={step.id > currentStep}
-                  className="text-xs sm:text-sm"
-                >
-                  {step.name}
-                </TabsTrigger>
-              ))}
-            </TabsList>
-            <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                {renderStepContent()}
-              </form>
-            </Form>
-          </Tabs>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+              {renderStepContent()}
+            </form>
+          </Form>
         </CardContent>
-        <CardFooter className="flex justify-between border-t p-6">
-          <div className="flex gap-2">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => navigate('/tools-hub')}
-              disabled={isSubmitting}
-            >
-              Cancel
-            </Button>
-            <Button
-              type="button"
-              variant="secondary"
-              onClick={handleSaveAsDraft}
-              disabled={isSubmitting}
-            >
-              Save as Draft
-            </Button>
-          </div>
-          <div className="flex gap-2">
+        <CardFooter className="flex justify-between">
+          <div>
             {currentStep > 1 && (
-              <Button
-                type="button"
-                variant="outline"
+              <Button 
+                type="button" 
+                variant="outline" 
                 onClick={goToPreviousStep}
                 disabled={isSubmitting}
               >
                 Previous
               </Button>
             )}
+          </div>
+          <div className="flex space-x-2">
+            {currentStep < STEPS.length && currentStep > 1 && (
+              <Button 
+                type="button" 
+                variant="outline" 
+                onClick={handleSaveAsDraft}
+                disabled={isSubmitting}
+              >
+                Save as Draft
+              </Button>
+            )}
+            
             {currentStep < STEPS.length ? (
-              <Button
-                type="button"
+              <Button 
+                type="button" 
                 onClick={goToNextStep}
                 disabled={!isCurrentStepValid() || isSubmitting}
               >
                 Next
               </Button>
             ) : (
-              <Button
+              <Button 
                 type="button"
                 onClick={form.handleSubmit(onSubmit)}
-                disabled={!form.formState.isValid || isSubmitting}
+                disabled={isSubmitting}
+                className="bg-[var(--navy)] hover:bg-[var(--navy)]/90"
               >
-                {isSubmitting ? 'Creating...' : 'Create Form'}
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Creating...
+                  </>
+                ) : 'Create Form'}
               </Button>
             )}
           </div>
@@ -502,21 +655,3 @@ export default function CreateFormWizard() {
     </div>
   );
 }
-
-// Label component for RadioGroup items
-const Label = ({
-  htmlFor,
-  className,
-  children,
-}: {
-  htmlFor: string;
-  className?: string;
-  children: React.ReactNode;
-}) => (
-  <label
-    htmlFor={htmlFor}
-    className={`text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 ${className}`}
-  >
-    {children}
-  </label>
-);
