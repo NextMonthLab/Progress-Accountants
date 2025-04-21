@@ -7,13 +7,19 @@ import { Request, Response } from "express";
 /**
  * Get all tool integrations for a specific page
  */
-export async function getPageToolIntegrations(pageId: string): Promise<PageToolIntegration[]> {
+export async function getPageToolIntegrations(pageId: string, tenantId?: string): Promise<PageToolIntegration[]> {
   try {
-    return await db
+    const query = db
       .select()
       .from(pageToolIntegrations)
       .where(eq(pageToolIntegrations.pageId, pageId))
       .orderBy({ id: "asc" });
+    
+    if (tenantId) {
+      query.where(eq(pageToolIntegrations.tenantId, tenantId));
+    }
+    
+    return await query;
   } catch (error) {
     console.error(`Error fetching page-tool integrations for page ID ${pageId}:`, error);
     return [];
@@ -23,15 +29,37 @@ export async function getPageToolIntegrations(pageId: string): Promise<PageToolI
 /**
  * Get all page integrations for a specific tool
  */
-export async function getToolIntegrations(toolId: number): Promise<PageToolIntegration[]> {
+export async function getToolIntegrations(toolId: number, tenantId?: string): Promise<PageToolIntegration[]> {
   try {
-    return await db
+    const query = db
       .select()
       .from(pageToolIntegrations)
       .where(eq(pageToolIntegrations.toolId, toolId))
       .orderBy({ id: "asc" });
+    
+    if (tenantId) {
+      query.where(eq(pageToolIntegrations.tenantId, tenantId));
+    }
+    
+    return await query;
   } catch (error) {
     console.error(`Error fetching tool integrations for tool ID ${toolId}:`, error);
+    return [];
+  }
+}
+
+/**
+ * Get all integrations for a specific tenant
+ */
+export async function getTenantIntegrations(tenantId: string): Promise<PageToolIntegration[]> {
+  try {
+    return await db
+      .select()
+      .from(pageToolIntegrations)
+      .where(eq(pageToolIntegrations.tenantId, tenantId))
+      .orderBy({ id: "asc" });
+  } catch (error) {
+    console.error(`Error fetching integrations for tenant ID ${tenantId}:`, error);
     return [];
   }
 }
@@ -91,11 +119,14 @@ export async function deletePageToolIntegration(id: number): Promise<boolean> {
  * Register page-tool integration API routes
  */
 export function registerPageToolIntegrationRoutes(app: any): void {
-  // Get all integrations for a page
+  // Get all integrations for a page with optional tenant filtering
   app.get("/api/page-integrations/:pageId", async (req: Request, res: Response) => {
     try {
       const { pageId } = req.params;
-      const integrations = await getPageToolIntegrations(pageId);
+      // Extract tenant ID from authenticated user if available
+      const tenantId = req.user?.tenantId;
+      
+      const integrations = await getPageToolIntegrations(pageId, tenantId);
       
       // Get associated tool data for each integration
       const detailedIntegrations = await Promise.all(
@@ -125,7 +156,7 @@ export function registerPageToolIntegrationRoutes(app: any): void {
     }
   });
   
-  // Get all page integrations for a tool
+  // Get all page integrations for a tool with optional tenant filtering
   app.get("/api/tool-integrations/:toolId", async (req: Request, res: Response) => {
     try {
       const toolId = parseInt(req.params.toolId);
@@ -136,7 +167,10 @@ export function registerPageToolIntegrationRoutes(app: any): void {
         });
       }
       
-      const integrations = await getToolIntegrations(toolId);
+      // Extract tenant ID from authenticated user if available
+      const tenantId = req.user?.tenantId;
+      
+      const integrations = await getToolIntegrations(toolId, tenantId);
       res.status(200).json({
         success: true,
         data: integrations
@@ -146,6 +180,54 @@ export function registerPageToolIntegrationRoutes(app: any): void {
       res.status(500).json({
         success: false,
         error: "Failed to fetch tool integrations"
+      });
+    }
+  });
+  
+  // Get all integrations for the current tenant
+  app.get("/api/tenant-integrations", async (req: Request, res: Response) => {
+    try {
+      if (!req.isAuthenticated()) {
+        return res.status(401).json({
+          success: false,
+          error: "Authentication required"
+        });
+      }
+      
+      const tenantId = req.user?.tenantId;
+      if (!tenantId) {
+        return res.status(400).json({
+          success: false,
+          error: "User is not associated with a tenant"
+        });
+      }
+      
+      const integrations = await getTenantIntegrations(tenantId);
+      
+      // Get associated tool data for each integration
+      const detailedIntegrations = await Promise.all(
+        integrations.map(async (integration) => {
+          const [tool] = await db
+            .select()
+            .from(tools)
+            .where(eq(tools.id, integration.toolId));
+            
+          return {
+            ...integration,
+            tool: tool || null
+          };
+        })
+      );
+      
+      res.status(200).json({
+        success: true,
+        data: detailedIntegrations
+      });
+    } catch (error) {
+      console.error("Error fetching tenant integrations:", error);
+      res.status(500).json({
+        success: false,
+        error: "Failed to fetch tenant integrations"
       });
     }
   });
@@ -170,16 +252,27 @@ export function registerPageToolIntegrationRoutes(app: any): void {
         });
       }
       
-      // Check if the tool exists
-      const [tool] = await db
+      // Assign the tenant ID from the authenticated user if available
+      if (req.user?.tenantId && !data.tenantId) {
+        data.tenantId = req.user.tenantId;
+      }
+      
+      // Check if the tool exists and belongs to the user's tenant
+      const query = db
         .select()
         .from(tools)
         .where(eq(tools.id, data.toolId));
-        
+      
+      if (data.tenantId) {
+        query.where(eq(tools.tenantId, data.tenantId));
+      }
+      
+      const [tool] = await query;
+      
       if (!tool) {
         return res.status(404).json({
           success: false,
-          error: "Tool not found"
+          error: "Tool not found or not accessible in your tenant"
         });
       }
       
@@ -214,6 +307,27 @@ export function registerPageToolIntegrationRoutes(app: any): void {
         return res.status(400).json({
           success: false,
           error: "Invalid integration ID"
+        });
+      }
+      
+      // Get the integration to verify tenant access
+      const [integration] = await db
+        .select()
+        .from(pageToolIntegrations)
+        .where(eq(pageToolIntegrations.id, id));
+      
+      if (!integration) {
+        return res.status(404).json({
+          success: false,
+          error: "Integration not found"
+        });
+      }
+      
+      // Verify tenant access if tenant functionality is being used
+      if (req.user?.tenantId && integration.tenantId && req.user.tenantId !== integration.tenantId) {
+        return res.status(403).json({
+          success: false,
+          error: "You don't have permission to modify this integration"
         });
       }
       
@@ -255,6 +369,27 @@ export function registerPageToolIntegrationRoutes(app: any): void {
         return res.status(400).json({
           success: false,
           error: "Invalid integration ID"
+        });
+      }
+      
+      // Get the integration to verify tenant access
+      const [integration] = await db
+        .select()
+        .from(pageToolIntegrations)
+        .where(eq(pageToolIntegrations.id, id));
+      
+      if (!integration) {
+        return res.status(404).json({
+          success: false,
+          error: "Integration not found"
+        });
+      }
+      
+      // Verify tenant access if tenant functionality is being used
+      if (req.user?.tenantId && integration.tenantId && req.user.tenantId !== integration.tenantId) {
+        return res.status(403).json({
+          success: false,
+          error: "You don't have permission to delete this integration"
         });
       }
       

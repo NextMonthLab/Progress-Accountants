@@ -674,25 +674,36 @@ export class DatabaseStorage implements IStorage {
   }
 
   // SEO Configuration operations
-  async getSeoConfiguration(routePath: string): Promise<SeoConfiguration | undefined> {
-    const [config] = await db
+  async getSeoConfiguration(routePath: string, tenantId?: string): Promise<SeoConfiguration | undefined> {
+    const query = db
       .select()
       .from(seoConfigurations)
       .where(eq(seoConfigurations.routePath, routePath));
     
+    if (tenantId) {
+      query.where(eq(seoConfigurations.tenantId, tenantId));
+    }
+    
+    const [config] = await query;
     return config;
   }
   
-  async getAllSeoConfigurations(): Promise<SeoConfiguration[]> {
-    return await db
+  async getAllSeoConfigurations(tenantId?: string): Promise<SeoConfiguration[]> {
+    const query = db
       .select()
       .from(seoConfigurations)
       .orderBy(asc(seoConfigurations.routePath));
+    
+    if (tenantId) {
+      query.where(eq(seoConfigurations.tenantId, tenantId));
+    }
+    
+    return await query;
   }
   
   async saveSeoConfiguration(config: InsertSeoConfiguration): Promise<SeoConfiguration> {
-    // Check if a configuration for this route already exists
-    const existing = await this.getSeoConfiguration(config.routePath);
+    // Check if a configuration for this route already exists for this tenant
+    const existing = await this.getSeoConfiguration(config.routePath, config.tenantId);
     
     if (existing) {
       // Update existing record
@@ -782,30 +793,46 @@ export class DatabaseStorage implements IStorage {
     return version;
   }
   
-  async getBrandVersionByNumber(versionNumber: string): Promise<BrandVersion | undefined> {
-    const [version] = await db
+  async getBrandVersionByNumber(versionNumber: string, tenantId?: string): Promise<BrandVersion | undefined> {
+    const query = db
       .select()
       .from(brandVersions)
       .where(eq(brandVersions.versionNumber, versionNumber));
     
+    if (tenantId) {
+      query.where(eq(brandVersions.tenantId, tenantId));
+    }
+    
+    const [version] = await query;
     return version;
   }
   
-  async getActiveBrandVersion(): Promise<BrandVersion | undefined> {
-    const [version] = await db
+  async getActiveBrandVersion(tenantId?: string): Promise<BrandVersion | undefined> {
+    const query = db
       .select()
       .from(brandVersions)
       .where(eq(brandVersions.isActive, true))
       .orderBy(desc(brandVersions.appliedAt));
     
+    if (tenantId) {
+      query.where(eq(brandVersions.tenantId, tenantId));
+    }
+    
+    const [version] = await query;
     return version;
   }
   
-  async getAllBrandVersions(): Promise<BrandVersion[]> {
-    return await db
+  async getAllBrandVersions(tenantId?: string): Promise<BrandVersion[]> {
+    const query = db
       .select()
       .from(brandVersions)
       .orderBy(desc(brandVersions.createdAt));
+    
+    if (tenantId) {
+      query.where(eq(brandVersions.tenantId, tenantId));
+    }
+    
+    return await query;
   }
   
   async saveBrandVersion(version: InsertBrandVersion): Promise<BrandVersion> {
@@ -897,29 +924,56 @@ export class DatabaseStorage implements IStorage {
     }
   }
 
-  async getToolsByType(toolType: string): Promise<Tool[]> {
+  async getToolsByType(toolType: string, tenantId?: string): Promise<Tool[]> {
     try {
-      return await db.select().from(tools).where(eq(tools.toolType, toolType));
+      const query = db.select().from(tools).where(eq(tools.toolType, toolType));
+      
+      if (tenantId) {
+        query.where(eq(tools.tenantId, tenantId));
+      }
+      
+      return await query;
     } catch (error) {
       console.error(`Error fetching tools by type ${toolType}:`, error);
       return [];
     }
   }
 
-  async getToolsByStatus(status: string): Promise<Tool[]> {
+  async getToolsByStatus(status: string, tenantId?: string): Promise<Tool[]> {
     try {
-      return await db.select().from(tools).where(eq(tools.status, status));
+      const query = db.select().from(tools).where(eq(tools.status, status));
+      
+      if (tenantId) {
+        query.where(eq(tools.tenantId, tenantId));
+      }
+      
+      return await query;
     } catch (error) {
       console.error(`Error fetching tools by status ${status}:`, error);
       return [];
     }
   }
 
-  async getToolsByUser(userId: number): Promise<Tool[]> {
+  async getToolsByUser(userId: number, tenantId?: string): Promise<Tool[]> {
     try {
-      return await db.select().from(tools).where(eq(tools.createdBy, userId));
+      const query = db.select().from(tools).where(eq(tools.createdBy, userId));
+      
+      if (tenantId) {
+        query.where(eq(tools.tenantId, tenantId));
+      }
+      
+      return await query;
     } catch (error) {
       console.error(`Error fetching tools by user ${userId}:`, error);
+      return [];
+    }
+  }
+  
+  async getToolsByTenant(tenantId: string): Promise<Tool[]> {
+    try {
+      return await db.select().from(tools).where(eq(tools.tenantId, tenantId));
+    } catch (error) {
+      console.error(`Error fetching tools for tenant ${tenantId}:`, error);
       return [];
     }
   }
