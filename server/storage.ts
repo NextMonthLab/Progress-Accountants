@@ -952,9 +952,19 @@ export class DatabaseStorage implements IStorage {
   }
   
   // Tool operations
-  async getTool(id: number): Promise<Tool | undefined> {
+  async getTool(id: number, tenantId?: string): Promise<Tool | undefined> {
     try {
-      const [tool] = await db.select().from(tools).where(eq(tools.id, id));
+      let conditions = eq(tools.id, id);
+      
+      // Apply tenant filtering if provided
+      if (tenantId) {
+        conditions = and(
+          conditions,
+          eq(tools.tenantId, tenantId)
+        );
+      }
+      
+      const [tool] = await db.select().from(tools).where(conditions);
       return tool;
     } catch (error) {
       console.error("Error fetching tool:", error);

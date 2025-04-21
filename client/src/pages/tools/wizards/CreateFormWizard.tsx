@@ -155,6 +155,7 @@ export default function CreateFormWizard() {
         mediaUrl: form.getValues('mediaUrl'),
         mediaId: form.getValues('mediaId'),
         createdBy: user.id,
+        tenantId: user.tenantId || null, // Pass tenant ID for multi-tenant support
         status: "draft",
       });
 

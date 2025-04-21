@@ -2128,16 +2128,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
       let tools = [];
       const toolType = req.query.type as string;
       const status = req.query.status as string;
+      const tenantId = req.user?.tenantId; // Get tenant ID from authenticated user
       
       if (toolType) {
-        tools = await storage.getToolsByType(toolType);
+        tools = await storage.getToolsByType(toolType, tenantId);
       } else if (status) {
-        tools = await storage.getToolsByStatus(status);
+        tools = await storage.getToolsByStatus(status, tenantId);
       } else {
         // Get tools created by the current user
         const userId = req.user?.id;
         if (userId) {
-          tools = await storage.getToolsByUser(userId);
+          tools = await storage.getToolsByUser(userId, tenantId);
+        } else if (tenantId) {
+          // If no user ID but tenant ID is available, get all tools for tenant
+          tools = await storage.getToolsByTenant(tenantId);
         }
       }
       
@@ -2154,6 +2158,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/tools/:id", async (req, res) => {
     try {
       const id = parseInt(req.params.id);
+      const tenantId = req.user?.tenantId; // Get tenant ID from authenticated user
       
       if (isNaN(id)) {
         return res.status(400).json({
@@ -2162,7 +2167,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         });
       }
       
-      const tool = await storage.getTool(id);
+      const tool = await storage.getTool(id, tenantId);
       
       if (!tool) {
         return res.status(404).json({
@@ -2227,7 +2232,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
       
       // Get the current tool to check permissions
-      const existingTool = await storage.getTool(id);
+      const tenantId = req.user?.tenantId;
+      const existingTool = await storage.getTool(id, tenantId);
       
       if (!existingTool) {
         return res.status(404).json({
