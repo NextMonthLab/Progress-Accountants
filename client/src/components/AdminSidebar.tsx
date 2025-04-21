@@ -16,7 +16,7 @@ import {
   ChevronRight,
   MessageCircle
 } from "lucide-react";
-import { useAuth } from "@/components/ClientDataProvider";
+import { useAuth } from "@/hooks/use-auth";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -35,8 +35,11 @@ type SidebarSection = {
 
 export default function AdminSidebar() {
   const [collapsed, setCollapsed] = useState(false);
-  const { isStaff } = useAuth();
+  const { user } = useAuth();
   const [location] = useLocation();
+  
+  // Check if user has staff privileges (admin, super_admin, or editor)
+  const isStaff = user?.userType === 'admin' || user?.userType === 'super_admin' || user?.userType === 'editor' || user?.isSuperAdmin;
 
   // Define all admin menu sections
   const sidebarSections: SidebarSection[] = [

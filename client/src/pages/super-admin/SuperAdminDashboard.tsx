@@ -71,13 +71,13 @@ export default function SuperAdminDashboard() {
   // Fetch system stats
   const { data: systemStats } = useQuery<SystemStats>({
     queryKey: ['/api/system/stats'],
-    queryFn: getQueryFn(),
+    queryFn: getQueryFn({ on401: 'redirect' }),
   });
   
   // Fetch tenant stats
   const { data: tenantStats } = useQuery({
     queryKey: ['/api/tenants/stats'],
-    queryFn: getQueryFn(),
+    queryFn: getQueryFn({ on401: 'redirect' }),
   });
 
   const activeTenants = systemStats?.activeTenants || 0;
