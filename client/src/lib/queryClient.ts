@@ -39,8 +39,9 @@ type UnauthorizedBehavior = "returnNull" | "throw";
 export const getQueryFn: <T>(options: {
   on401: UnauthorizedBehavior;
 }) => QueryFunction<T> =
-  ({ on401: unauthorizedBehavior }) =>
+  (options) =>
   async ({ queryKey }) => {
+    const unauthorizedBehavior = options.on401;
     const res = await fetch(queryKey[0] as string, {
       credentials: "include",
     });
