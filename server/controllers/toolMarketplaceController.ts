@@ -1,20 +1,16 @@
 import { Request, Response } from "express";
 import { db } from "../db";
-import { eq, and, desc, isNull, sql } from "drizzle-orm";
-import { tools, toolInstallations, toolPublishingLogs, type Tool, type InsertTool, insertToolSchema } from "@shared/schema";
+import { eq, and, desc, sql } from "drizzle-orm";
+import { tools, toolInstallations, toolPublishingLogs } from "@shared/schema";
 import { z } from "zod";
 
 /**
- * Create a system log entry for tool publishing workflow
+ * Create a system log entry for tool installation activities
  */
-async function logToolPublishingAction(
+async function logToolActivity(
   toolId: number,
   actor: string,
   action: string,
-  instanceType: "lab" | "dev" | "client",
-  previousStatus: string | null,
-  newStatus: string,
-  toolVersion: string | null = null,
   metadata: any = {},
   successful: boolean = true,
   errorMessage: string | null = null
@@ -24,149 +20,15 @@ async function logToolPublishingAction(
       toolId,
       actor,
       action,
-      instanceType,
-      previousStatus,
-      newStatus,
-      toolVersion,
+      instanceType: "client",
+      previousStatus: null,
+      newStatus: action === "tool_installed" ? "active" : "uninstalled",
       metadata,
       successful,
       errorMessage
     });
   } catch (error) {
-    console.error("Failed to log tool publishing action:", error);
-  }
-}
-
-/**
- * Submit a tool to the marketplace (Lab → Dev)
- */
-export async function submitToolToMarketplace(req: Request, res: Response) {
-  try {
-    // Validate request
-    const submitSchema = z.object({
-      toolId: z.number(),
-      toolVersion: z.string().regex(/^v\d+\.\d+\.\d+$/, { 
-        message: "Tool version must be in semantic format (e.g., v1.0.0)" 
-      }),
-      toolCategory: z.string().min(1)
-    });
-
-    const { toolId, toolVersion, toolCategory } = submitSchema.parse(req.body);
-
-    // Check if user is authenticated
-    if (!req.user) {
-      return res.status(401).json({ error: "Unauthorized" });
-    }
-
-    // Get the tool
-    const [tool] = await db.select().from(tools).where(eq(tools.id, toolId));
-    
-    if (!tool) {
-      return res.status(404).json({ error: "Tool not found" });
-    }
-
-    // Update the tool with marketplace submission data
-    const updatedTool = await db.update(tools)
-      .set({
-        publishStatus: "draft_for_marketplace",
-        toolVersion,
-        toolCategory,
-        sourceInstance: "lab",
-        updatedAt: new Date()
-      })
-      .where(eq(tools.id, toolId))
-      .returning();
-
-    // Log the action
-    await logToolPublishingAction(
-      toolId,
-      req.user.username,
-      "draft_submitted",
-      "lab",
-      tool.publishStatus,
-      "draft_for_marketplace",
-      toolVersion,
-      { category: toolCategory }
-    );
-
-    // Notify Dev and Guardian (would typically send a notification or webhook)
-    // This is a placeholder for the actual notification mechanism
-    
-    res.status(200).json({
-      success: true,
-      message: "Tool submitted to marketplace",
-      tool: updatedTool[0]
-    });
-  } catch (error) {
-    console.error("Error submitting tool to marketplace:", error);
-    if (error instanceof z.ZodError) {
-      return res.status(400).json({ error: "Validation failed", details: error.errors });
-    }
-    res.status(500).json({ error: "Failed to submit tool to marketplace" });
-  }
-}
-
-/**
- * Publish a tool to the marketplace (Dev only)
- */
-export async function publishToolToMarketplace(req: Request, res: Response) {
-  try {
-    const { toolId } = req.params;
-    
-    // Check if user is authenticated and authorized (Dev instance)
-    if (!req.user || !req.user.isSuperAdmin) {
-      return res.status(401).json({ error: "Unauthorized" });
-    }
-
-    // Get the tool
-    const [tool] = await db.select().from(tools).where(eq(tools.id, parseInt(toolId)));
-    
-    if (!tool) {
-      return res.status(404).json({ error: "Tool not found" });
-    }
-
-    // Verify tool is in the right state
-    if (tool.publishStatus !== "draft_for_marketplace") {
-      return res.status(400).json({ 
-        error: "Tool must be in 'draft_for_marketplace' status to be published" 
-      });
-    }
-
-    // Update the tool to published status
-    const updatedTool = await db.update(tools)
-      .set({
-        publishStatus: "published_in_marketplace",
-        publishedAt: new Date(),
-        updatedAt: new Date()
-      })
-      .where(eq(tools.id, parseInt(toolId)))
-      .returning();
-
-    // Log the action
-    await logToolPublishingAction(
-      parseInt(toolId),
-      req.user.username,
-      "marketplace_published",
-      "dev",
-      tool.publishStatus,
-      "published_in_marketplace",
-      tool.toolVersion
-    );
-
-    // Sync to Vault (WordPress) would go here
-    // This is a placeholder for the actual sync mechanism
-    
-    // Notify client instances of new tool availability
-    // This is a placeholder for the actual notification mechanism
-
-    res.status(200).json({
-      success: true,
-      message: "Tool published to marketplace",
-      tool: updatedTool[0]
-    });
-  } catch (error) {
-    console.error("Error publishing tool to marketplace:", error);
-    res.status(500).json({ error: "Failed to publish tool to marketplace" });
+    console.error("Failed to log tool activity:", error);
   }
 }
 
@@ -271,15 +133,12 @@ export async function installMarketplaceTool(req: Request, res: Response) {
       .where(eq(tools.id, parseInt(toolId)));
 
     // Log the action
-    await logToolPublishingAction(
+    await logToolActivity(
       parseInt(toolId),
-      req.user.username,
+      req.user.username || "unknown",
       "tool_installed",
-      "client",
-      null,
-      "active",
-      tool.toolVersion,
-      { tenantId: req.user.tenantId }
+      { tenantId: req.user.tenantId },
+      true
     );
 
     res.status(200).json({
@@ -364,15 +223,12 @@ export async function uninstallTool(req: Request, res: Response) {
       .returning();
 
     // Log the action
-    await logToolPublishingAction(
+    await logToolActivity(
       installation.toolId,
-      req.user.username,
+      req.user.username || "unknown",
       "tool_uninstalled",
-      "client",
-      "active",
-      "uninstalled",
-      installation.version,
-      { tenantId: req.user.tenantId }
+      { tenantId: req.user.tenantId },
+      true
     );
 
     res.status(200).json({
@@ -414,13 +270,7 @@ export async function getToolPublishingLogs(req: Request, res: Response) {
  * Register tool marketplace routes
  */
 export function registerToolMarketplaceRoutes(app: any) {
-  // Lab instance endpoints
-  app.post("/api/tools/marketplace/submit", submitToolToMarketplace);
-  
-  // Dev instance endpoints
-  app.post("/api/tools/marketplace/publish/:toolId", publishToolToMarketplace);
-  
-  // General marketplace endpoints (all instances)
+  // Marketplace browsing endpoints
   app.get("/api/tools/marketplace", getMarketplaceTools);
   app.get("/api/tools/marketplace/:toolId", getMarketplaceTool);
   
