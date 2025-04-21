@@ -11,6 +11,7 @@ import SuperAdminDashboard from "@/pages/super-admin/SuperAdminDashboard";
 import HomePage from "@/pages/HomePage";
 import StudioPage from "@/pages/StudioPage";
 import DashboardPage from "@/pages/DashboardPage";
+import AuthPage from "@/pages/AuthPage";
 import ClientDashboardPage from "@/pages/ClientDashboardPage";
 import CRMViewPage from "@/pages/CRMViewPage";
 import CRMViewPageEnhanced from "@/pages/CRMViewPageEnhanced";
@@ -75,8 +76,12 @@ const ProtectedThemeManagement = withAuth(ThemeManagementPage, 'staff');
 function Router() {
   return (
     <Switch>
-      <Route path="/super-admin" component={SuperAdminDashboard} />
-      <Route path="/" component={HomePage} />
+      <Route path="/auth">
+        <AuthPage />
+      </Route>
+      <Route path="/super-admin">
+        <SuperAdminDashboard />
+      </Route>
       <Route path="/onboarding" component={OnboardingWelcomePage} />
       <Route path="/new-client-setup" component={NewClientOnboarding} />
       <Route path="/website-intent" component={WebsiteIntentPage} />
@@ -122,6 +127,9 @@ function Router() {
       <Route path="/faq-setup" component={FAQSetupPage} />
       <Route path="/launch-ready" component={LaunchReadyPage} />
       <Route path="/media" component={MediaManagementPage} />
+      <Route path="/">
+        <HomePage />
+      </Route>
       <Route component={NotFound} />
     </Switch>
   );
@@ -132,7 +140,7 @@ const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       staleTime: 1000 * 60 * 5, // 5 minutes
-      cacheTime: 1000 * 60 * 30, // 30 minutes
+      gcTime: 1000 * 60 * 30, // 30 minutes (previously called cacheTime)
     },
   },
 });
