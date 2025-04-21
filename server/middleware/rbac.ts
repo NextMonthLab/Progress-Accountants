@@ -2,8 +2,9 @@ import { Request, Response, NextFunction } from "express";
 
 // Role-based access control middleware
 
-// Define the user roles
-export type UserRole = 'super_admin' | 'admin' | 'editor' | 'public';
+// Define the user roles 
+// Imported from shared schema to ensure consistency
+import { UserRole } from "@shared/schema";
 
 // Define permissions for each role
 const rolePermissions: Record<UserRole, string[]> = {
@@ -18,7 +19,9 @@ const rolePermissions: Record<UserRole, string[]> = {
     'manage_pages',
     'manage_tools',
     'export_data',
-    'import_data'
+    'import_data',
+    'view_all_data',
+    'access_admin_dashboard'
   ],
   admin: [
     'manage_users',
@@ -26,16 +29,23 @@ const rolePermissions: Record<UserRole, string[]> = {
     'manage_seo',
     'manage_brand',
     'manage_pages',
-    'manage_tools'
+    'manage_tools',
+    'view_analytics',
+    'access_admin_dashboard'
   ],
   editor: [
     'edit_pages',
     'edit_content',
     'view_analytics',
-    'use_tools'
+    'use_tools',
+    'access_admin_dashboard'
   ],
-  public: [
-    'view_public_content'
+  client: [
+    'view_public_content',
+    'access_client_dashboard',
+    'view_own_data',
+    'submit_requests',
+    'use_client_tools'
   ]
 };
 
@@ -47,8 +57,8 @@ export function hasPermission(user: any, permission: string): boolean {
   if (user.isSuperAdmin) return true;
   
   // Get permissions for the user's role
-  const userRole = user.role || 'public';
-  const permissions = rolePermissions[userRole as UserRole] || [];
+  const userRole = user.userType as UserRole || 'client';
+  const permissions = rolePermissions[userRole] || [];
   
   return permissions.includes(permission);
 }
@@ -110,7 +120,7 @@ export function requireRole(role: UserRole) {
       return next();
     }
     
-    const userRole = req.user.role || 'public';
+    const userRole = req.user.userType as UserRole || 'client';
     
     // Check if user has the required role
     if (userRole === role) {

@@ -20,22 +20,31 @@ interface JwtPayload {
   userId: number;
   username: string;
   userType: UserRole;
+  email?: string;
   tenantId?: string;
   isSuperAdmin: boolean;
   iat: number;
   exp: number;
+  expiresAt: number;
 }
 
 /**
  * Generate a JWT token for a user
  */
 export function generateToken(user: User): string {
+  // Calculate expiration timestamp
+  const now = Math.floor(Date.now() / 1000);
+  const expirySeconds = 60 * 60 * 24; // 1 day in seconds
+  const expiresAt = now + expirySeconds;
+  
   const payload = {
     userId: user.id,
     username: user.username,
     userType: user.userType as UserRole,
+    email: user.email,
     tenantId: user.tenantId,
-    isSuperAdmin: user.isSuperAdmin || false
+    isSuperAdmin: user.isSuperAdmin || false,
+    expiresAt
   };
 
   return jwt.sign(payload, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });

@@ -163,9 +163,16 @@ export function setupAuth(app: Express) {
         // Generate a JWT token for the newly registered user
         const token = generateToken(user);
         
+        // Determine redirect path based on role
+        const redirectPath = getRedirectPathForRole(
+          user.userType as UserRole, 
+          user.isSuperAdmin || false
+        );
+        
         return res.status(201).json({
           user,
-          token
+          token,
+          redirectPath
         });
       });
     } catch (err) {
@@ -179,7 +186,7 @@ export function setupAuth(app: Express) {
 
   // Login route
   app.post("/api/login", (req, res, next) => {
-    passport.authenticate("local", (err, user, info) => {
+    passport.authenticate("local", (err: Error, user: User, info: any) => {
       if (err) return next(err);
       if (!user) return res.status(401).json({ error: "Invalid credentials" });
       
@@ -189,9 +196,16 @@ export function setupAuth(app: Express) {
         // Generate a JWT token
         const token = generateToken(user);
         
+        // Determine redirect path based on role
+        const redirectPath = getRedirectPathForRole(
+          user.userType as UserRole, 
+          user.isSuperAdmin || false
+        );
+        
         return res.json({
           user,
-          token
+          token,
+          redirectPath
         });
       });
     })(req, res, next);
@@ -225,9 +239,16 @@ export function setupAuth(app: Express) {
         // Generate a JWT token
         const newToken = generateToken(user);
         
+        // Determine redirect path based on role
+        const redirectPath = getRedirectPathForRole(
+          user.userType as UserRole, 
+          user.isSuperAdmin || false
+        );
+        
         return res.json({
           user,
-          token: newToken
+          token: newToken,
+          redirectPath
         });
       });
     } catch (error) {
@@ -279,6 +300,27 @@ export function setupAuth(app: Express) {
 }
 
 /**
+ * Determine redirect path based on user role
+ */
+export function getRedirectPathForRole(role: UserRole, isSuperAdmin: boolean): string {
+  if (isSuperAdmin) {
+    return '/super-admin';
+  }
+  
+  switch (role) {
+    case 'super_admin':
+      return '/super-admin';
+    case 'admin':
+    case 'editor':
+      return '/admin';
+    case 'client':
+      return '/client-dashboard';
+    default:
+      return '/';
+  }
+}
+
+/**
  * Get permissions for a specific role
  */
 function getRolePermissions(role: UserRole, isSuperAdmin: boolean) {
@@ -289,7 +331,7 @@ function getRolePermissions(role: UserRole, isSuperAdmin: boolean) {
   
   // Permissions for each role
   const rolePermissions: Record<UserRole, string[]> = {
-    'public': [...basePermissions],
+    'client': [...basePermissions],
     'editor': [
       ...basePermissions,
       'edit_content',
