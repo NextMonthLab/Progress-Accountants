@@ -51,7 +51,16 @@ import {
   type InsertToolRequest,
   pageToolIntegrations,
   type PageToolIntegration,
-  type InsertPageToolIntegration
+  type InsertPageToolIntegration,
+  blogPosts,
+  type BlogPost,
+  type InsertBlogPost,
+  blogPages,
+  type BlogPage,
+  type InsertBlogPage,
+  integrationRequests,
+  type IntegrationRequest,
+  type InsertIntegrationRequest
 } from "@shared/schema";
 import { PageMetadata, PageComplexityAssessment } from "@shared/page_metadata";
 import { db } from "./db";
@@ -183,6 +192,29 @@ export interface IStorage {
   savePageToolIntegration(integration: InsertPageToolIntegration): Promise<PageToolIntegration>;
   updatePageToolIntegration(id: number, data: Partial<InsertPageToolIntegration>): Promise<PageToolIntegration | undefined>;
   deletePageToolIntegration(id: number): Promise<boolean>;
+  
+  // Blog page operations
+  getBlogPages(tenantId?: string): Promise<BlogPage[]>;
+  getBlogPage(id: number): Promise<BlogPage | undefined>;
+  getBlogPageBySlug(slug: string, tenantId?: string): Promise<BlogPage | undefined>;
+  createBlogPage(page: InsertBlogPage): Promise<BlogPage>;
+  updateBlogPage(id: number, data: Partial<BlogPage>): Promise<BlogPage | undefined>;
+  deleteBlogPage(id: number): Promise<boolean>;
+  
+  // Blog post operations
+  getBlogPosts(tenantId?: string): Promise<BlogPost[]>;
+  getBlogPost(id: number): Promise<BlogPost | undefined>;
+  getBlogPostBySlug(slug: string, tenantId?: string): Promise<BlogPost | undefined>;
+  createBlogPost(post: InsertBlogPost): Promise<BlogPost>;
+  updateBlogPost(id: number, data: Partial<BlogPost>): Promise<BlogPost | undefined>;
+  deleteBlogPost(id: number): Promise<boolean>;
+
+  // Integration request operations
+  getIntegrationRequests(tenantId?: string): Promise<IntegrationRequest[]>;
+  getIntegrationRequest(id: number): Promise<IntegrationRequest | undefined>;
+  createIntegrationRequest(request: InsertIntegrationRequest): Promise<IntegrationRequest>;
+  updateIntegrationRequest(id: number, data: Partial<IntegrationRequest>): Promise<IntegrationRequest | undefined>;
+  deleteIntegrationRequest(id: number): Promise<boolean>;
   
   // Blueprint Export operations
   getClientRegistry(): Promise<ClientRegistry | undefined>;
