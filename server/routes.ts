@@ -10,16 +10,19 @@ import {
   type ClientRegistry,
   type Tool,
   type ToolRequest,
+  type PageToolIntegration,
   insertPageComplexityTriageSchema,
   insertModuleActivationSchema,
   insertSeoConfigurationSchema,
   insertBrandVersionSchema,
   insertToolSchema,
-  insertToolRequestSchema
+  insertToolRequestSchema,
+  insertPageToolIntegrationSchema
 } from "@shared/schema";
 import { registerBlueprintRoutes } from "./blueprint";
 import { registerMediaRoutes } from "./media-upload";
 import { registerSupportRoutes } from "./support";
+import { registerPageToolIntegrationRoutes } from "./page-tool-integrations";
 import { 
   PageMetadata, 
   PageComplexityAssessment, 
@@ -184,6 +187,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
   
   // Register blueprint API endpoints
   registerBlueprintRoutes(app);
+  
+  // Register page-tool integration endpoints
+  registerPageToolIntegrationRoutes(app);
   // Contact form submission endpoint
   app.post("/api/contact", async (req, res) => {
     try {
