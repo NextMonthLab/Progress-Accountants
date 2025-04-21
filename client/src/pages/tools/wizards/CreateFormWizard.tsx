@@ -77,10 +77,10 @@ export default function CreateFormWizard() {
   const [, navigate] = useLocation();
   const { toast } = useToast();
   
-  // Fetch available pages for integration
+  // Fetch available pages for integration (tenant-specific)
   const { data: availablePages = [] } = useQuery<PageOption[]>({
-    queryKey: ['/api/pages'],
-    enabled: currentStep === 5, // Only fetch when on integration step
+    queryKey: ['/api/pages', user?.tenantId || 'default'],
+    enabled: currentStep === 5 && !!user, // Only fetch when on integration step and user is authenticated
   });
   
   const form = useForm<FormValues>({
@@ -164,7 +164,7 @@ export default function CreateFormWizard() {
           description: "Your form has been saved as a draft",
           variant: "default",
         });
-        queryClient.invalidateQueries({ queryKey: ['/api/tools'] });
+        queryClient.invalidateQueries({ queryKey: ['/api/tools', user?.tenantId || 'default'] });
       } else {
         toast({
           title: "Failed to save draft",
@@ -270,7 +270,7 @@ export default function CreateFormWizard() {
             });
             
             // Invalidate relevant queries
-            queryClient.invalidateQueries({ queryKey: ['/api/pages'] });
+            queryClient.invalidateQueries({ queryKey: ['/api/pages', user?.tenantId || 'default'] });
             queryClient.invalidateQueries({ queryKey: ['/api/page-integrations', data.pageId] });
           } else {
             console.warn("Failed to create page integration, but tool was created successfully");
@@ -290,7 +290,7 @@ export default function CreateFormWizard() {
         description: "Your form has been created successfully",
         variant: "default",
       });
-      queryClient.invalidateQueries({ queryKey: ['/api/tools'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/tools', user?.tenantId || 'default'] });
       navigate('/tools-hub');
     } catch (error) {
       console.error("Error creating form:", error);
