@@ -141,7 +141,8 @@ export default function TenantCustomizationPage() {
                   enableFinancialReporting: true,
                   enableClientPortal: true,
                   enableMarketplaceAccess: true,
-                  enableCustomPages: true
+                  enableCustomPages: true,
+                  enableClientLogin: true // Enable client login by default
                 },
                 sectionsEnabled: {
                   servicesShowcase: true,
@@ -395,6 +396,21 @@ export default function TenantCustomizationPage() {
                   <Switch
                     checked={localCustomization.featureFlags?.enableCustomPages || false}
                     onCheckedChange={(checked) => handleFeatureFlagToggle("enableCustomPages", checked)}
+                  />
+                </div>
+                
+                <Separator />
+                
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h3 className="font-medium">Client Login System</h3>
+                    <p className="text-sm text-muted-foreground">
+                      Enable client login and registration on your public website
+                    </p>
+                  </div>
+                  <Switch
+                    checked={localCustomization.featureFlags?.enableClientLogin || false}
+                    onCheckedChange={(checked) => handleFeatureFlagToggle("enableClientLogin", checked)}
                   />
                 </div>
               </div>

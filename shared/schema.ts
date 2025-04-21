@@ -360,6 +360,7 @@ export interface TenantCustomization {
     enableClientPortal: boolean;
     enableMarketplaceAccess: boolean;
     enableCustomPages: boolean;
+    enableClientLogin: boolean; // Controls whether clients can log in to the site
   };
   sectionsEnabled?: {
     // Page sections that can be toggled on/off
