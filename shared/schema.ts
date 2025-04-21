@@ -361,6 +361,35 @@ export const insertCreditUsageLogSchema = createInsertSchema(creditUsageLog).omi
   updatedAt: true,
 });
 
+// Resources table for custom resource page
+export const resources = pgTable("resources", {
+  id: serial("id").primaryKey(),
+  tenantId: uuid("tenant_id").references(() => tenants.id),
+  title: varchar("title", { length: 255 }).notNull(),
+  description: text("description").notNull(),
+  imageUrl: varchar("image_url", { length: 500 }),
+  link: varchar("link", { length: 500 }),
+  type: varchar("type", { length: 50 }).notNull(), // guide, template, calculator, article
+  isPublished: boolean("is_published").default(false),
+  order: integer("order").default(0),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export const insertResourceSchema = createInsertSchema(resources).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+// Define relationships for resources
+export const resourcesRelations = relations(resources, ({ one }) => ({
+  tenant: one(tenants, {
+    fields: [resources.tenantId],
+    references: [tenants.id],
+  }),
+}));
+
 
 
 // Export types
@@ -499,6 +528,9 @@ export type MediaUpload = typeof mediaUploads.$inferSelect;
 
 export type InsertCreditUsageLog = z.infer<typeof insertCreditUsageLogSchema>;
 export type CreditUsageLog = typeof creditUsageLog.$inferSelect;
+
+export type InsertResource = z.infer<typeof insertResourceSchema>;
+export type Resource = typeof resources.$inferSelect;
 
 // SEO Configuration table
 export const seoConfigurations = pgTable("seo_configurations", {
