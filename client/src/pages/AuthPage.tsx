@@ -35,10 +35,32 @@ export default function AuthPage() {
   const [, navigate] = useLocation();
   const { user, loginMutation, registerMutation } = useAuth();
 
+  // Helper function to determine redirect path based on user role
+  const getRedirectPath = (user: any) => {
+    if (!user) return null;
+    
+    if (user.isSuperAdmin) {
+      return '/super-admin';
+    }
+    
+    switch (user.userType) {
+      case 'super_admin':
+        return '/super-admin';
+      case 'admin':
+      case 'editor':
+        return '/admin';
+      case 'client':
+        return '/client-dashboard';
+      default:
+        return '/';
+    }
+  };
+
   // Redirect if user is already authenticated
   useEffect(() => {
     if (user) {
-      navigate("/client-dashboard");
+      const redirectPath = getRedirectPath(user);
+      navigate(redirectPath || '/');
     }
   }, [user, navigate]);
 
@@ -65,12 +87,15 @@ export default function AuthPage() {
   // Handle login form submission
   const onLoginSubmit = (values: LoginFormValues) => {
     loginMutation.mutate(values, {
-      onSuccess: () => {
+      onSuccess: (response) => {
         toast({
           title: "Login successful",
           description: "Welcome back!",
         });
-        navigate("/client-dashboard");
+        // Use the redirectPath from the API response
+        if (response.redirectPath) {
+          navigate(response.redirectPath);
+        }
       },
     });
   };
@@ -78,12 +103,15 @@ export default function AuthPage() {
   // Handle registration form submission
   const onRegisterSubmit = (values: RegisterFormValues) => {
     registerMutation.mutate(values, {
-      onSuccess: () => {
+      onSuccess: (response) => {
         toast({
           title: "Registration successful",
           description: "Your account has been created!",
         });
-        navigate("/client-dashboard");
+        // Use the redirectPath from the API response
+        if (response.redirectPath) {
+          navigate(response.redirectPath);
+        }
       },
     });
   };

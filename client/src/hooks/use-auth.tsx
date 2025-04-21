@@ -7,26 +7,35 @@ import {
 } from "@tanstack/react-query";
 import { getQueryFn, apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
+import { useLocation } from "wouter";
+
+import { UserRole } from "@shared/schema";
 
 export interface User {
   id: number;
   username: string;
   email: string;
   name?: string;
-  role: 'super_admin' | 'admin' | 'editor' | 'public';
+  userType: UserRole;
   tenantId?: string;
   isSuperAdmin: boolean;
   avatarUrl?: string;
   createdAt: string;
 }
 
+interface AuthResponse {
+  user: User;
+  token: string;
+  redirectPath: string;
+}
+
 type AuthContextType = {
   user: User | null;
   isLoading: boolean;
   error: Error | null;
-  loginMutation: UseMutationResult<User, Error, LoginData>;
+  loginMutation: UseMutationResult<AuthResponse, Error, LoginData>;
   logoutMutation: UseMutationResult<void, Error, void>;
-  registerMutation: UseMutationResult<User, Error, RegisterData>;
+  registerMutation: UseMutationResult<AuthResponse, Error, RegisterData>;
 };
 
 type LoginData = {
@@ -53,6 +62,7 @@ export function AuthProvider({
   queryClient?: QueryClient;
 }) {
   const { toast } = useToast();
+  const [, setLocation] = useLocation();
   
   const {
     data: user,
@@ -68,12 +78,18 @@ export function AuthProvider({
       const res = await apiRequest("POST", "/api/login", credentials);
       return res.json();
     },
-    onSuccess: (user: User) => {
-      queryClient.setQueryData(["/api/user"], user);
+    onSuccess: (response: AuthResponse) => {
+      queryClient.setQueryData(["/api/user"], response.user);
+      
       toast({
         title: "Login successful",
-        description: `Welcome back, ${user.name || user.username}!`,
+        description: `Welcome back, ${response.user.name || response.user.username}!`,
       });
+      
+      // Redirect to the appropriate dashboard based on role
+      if (response.redirectPath) {
+        setLocation(response.redirectPath);
+      }
     },
     onError: (error: Error) => {
       toast({
@@ -89,12 +105,18 @@ export function AuthProvider({
       const res = await apiRequest("POST", "/api/register", userData);
       return res.json();
     },
-    onSuccess: (user: User) => {
-      queryClient.setQueryData(["/api/user"], user);
+    onSuccess: (response: AuthResponse) => {
+      queryClient.setQueryData(["/api/user"], response.user);
+      
       toast({
         title: "Registration successful",
-        description: `Welcome to Progress, ${user.name || user.username}!`,
+        description: `Welcome to Progress, ${response.user.name || response.user.username}!`,
       });
+      
+      // Redirect to the appropriate dashboard based on role
+      if (response.redirectPath) {
+        setLocation(response.redirectPath);
+      }
     },
     onError: (error: Error) => {
       toast({
@@ -115,6 +137,9 @@ export function AuthProvider({
         title: "Logged out",
         description: "You have been successfully logged out",
       });
+      
+      // Redirect to home page after logout
+      setLocation("/");
     },
     onError: (error: Error) => {
       toast({
