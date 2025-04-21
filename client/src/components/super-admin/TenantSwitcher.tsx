@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { Check, ChevronsUpDown, Building2, Briefcase, AlertTriangle } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
+import React, { useState } from "react";
+import { Check, ChevronsUpDown, Building, Plus, RefreshCw, Shield, CircleAlert } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 import {
   Command,
   CommandEmpty,
@@ -11,221 +10,261 @@ import {
   CommandItem,
   CommandList,
   CommandSeparator,
-} from '@/components/ui/command';
+} from "@/components/ui/command";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from '@/components/ui/popover';
-import { useToast } from '@/hooks/use-toast';
-import { Badge } from '@/components/ui/badge';
-import { getQueryFn, apiRequest } from '@/lib/queryClient';
-import { useTenant } from '@/hooks/use-tenant';
-import { usePermissions } from '@/hooks/use-permissions';
-import { Loader2, PlusCircle } from 'lucide-react';
-import { Tenant } from '@shared/schema';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
+} from "@/components/ui/popover";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { getQueryFn, apiRequest, queryClient } from "@/lib/queryClient";
+import { useToast } from "@/hooks/use-toast";
 
+// Tenant type definition
+export interface Tenant {
+  id: string;
+  name: string;
+  domain: string;
+  status: 'active' | 'inactive' | 'suspended';
+  industry?: string;
+  plan?: string;
+  isTemplate: boolean;
+  parentTemplate?: string;
+  createdAt: string;
+  updatedAt?: string;
+}
+
+// Component props
 interface TenantSwitcherProps {
   className?: string;
 }
 
+// TenantSwitcher component
 export function TenantSwitcher({ className }: TenantSwitcherProps) {
-  const { toast } = useToast();
-  const { tenant, setTenant } = useTenant();
-  const { can } = usePermissions();
   const [open, setOpen] = useState(false);
-  const queryClient = useQueryClient();
+  const { toast } = useToast();
   
-  const canManageTenants = can('manage_tenants');
-
   // Fetch tenants
-  const { data: tenants, isLoading } = useQuery({
+  const { data: tenants, isLoading, refetch } = useQuery({
     queryKey: ['/api/tenants'],
     queryFn: getQueryFn(),
-    enabled: canManageTenants,
   });
-
-  // Handle tenant switching
+  
+  // Tenant switch mutation
   const switchTenantMutation = useMutation({
     mutationFn: async (tenantId: string) => {
-      const response = await apiRequest('POST', '/api/tenants/switch', { tenantId });
-      return await response.json();
+      const res = await apiRequest('POST', '/api/tenants/switch', { tenantId });
+      const data = await res.json();
+      return data;
     },
     onSuccess: (data) => {
-      setTenant(data.tenant);
-      
-      // Invalidate relevant queries to refresh with new tenant data
-      queryClient.invalidateQueries({ queryKey: ['/api/user'] });
-      queryClient.invalidateQueries({ queryKey: ['/api/modules'] });
-      queryClient.invalidateQueries({ queryKey: ['/api/seo/configs'] });
-      
       toast({
-        title: 'Tenant switched',
-        description: `You are now managing: ${data.tenant.name}`,
+        title: "Tenant switched",
+        description: `Now viewing ${data.tenant.name}`,
       });
       
+      queryClient.invalidateQueries({ queryKey: ['/api/user'] });
+      // Close the popover
       setOpen(false);
+      
+      // Redirect or reload content as needed
+      window.location.reload();
     },
     onError: (error: Error) => {
       toast({
-        title: 'Failed to switch tenant',
+        title: "Failed to switch tenant",
         description: error.message,
-        variant: 'destructive',
+        variant: "destructive",
       });
     },
   });
 
-  // If the user doesn't have tenant management permissions, don't render
-  if (!canManageTenants) {
-    return null;
+  // Handle tenant selection
+  function handleTenantSelect(tenantId: string) {
+    switchTenantMutation.mutate(tenantId);
   }
+  
+  // Get the current tenant from the list
+  // This is a placeholder - in a real application, you would store the current tenant in context
+  const currentTenant = tenants && tenants.length > 0 ? tenants[0] : null;
 
   return (
-    <div className={className}>
-      <Popover open={open} onOpenChange={setOpen}>
-        <PopoverTrigger asChild>
-          <Button
-            variant="outline"
-            role="combobox"
-            aria-expanded={open}
-            aria-label="Select a tenant"
-            className={cn("w-full justify-between")}
-          >
-            <div className="flex items-center">
-              {tenant ? (
-                <>
-                  <Building2 className="mr-2 h-4 w-4" />
-                  <span className="truncate">{tenant.name}</span>
-                  {tenant.isTemplate && (
-                    <Badge variant="secondary" className="ml-2">
-                      Template
-                    </Badge>
-                  )}
-                </>
-              ) : (
-                <>
-                  <Briefcase className="mr-2 h-4 w-4" />
-                  <span>Select Tenant</span>
-                </>
-              )}
-            </div>
-            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent className="w-[300px] p-0">
-          {isLoading ? (
-            <div className="flex justify-center p-4">
-              <Loader2 className="h-5 w-5 animate-spin" />
-            </div>
-          ) : (
-            <Command>
-              <CommandInput placeholder="Search tenants..." />
-              <CommandList>
-                <CommandEmpty>No tenants found.</CommandEmpty>
-                <CommandGroup heading="Templates">
-                  {tenants?.filter(t => t.isTemplate).map((tenant: Tenant) => (
-                    <CommandItem
-                      key={tenant.id}
-                      value={tenant.id}
-                      onSelect={() => {
-                        switchTenantMutation.mutate(tenant.id);
-                      }}
-                      className="text-sm"
-                    >
-                      <Building2 className="mr-2 h-4 w-4" />
-                      <span>{tenant.name}</span>
-                      <Badge variant="secondary" className="ml-auto">Template</Badge>
-                      {tenant.id === tenant?.id && (
-                        <Check className="ml-2 h-4 w-4" />
-                      )}
-                    </CommandItem>
-                  ))}
-                </CommandGroup>
-                
-                <CommandGroup heading="Active Tenants">
-                  {tenants?.filter(t => !t.isTemplate && t.status === 'active').map((tenant: Tenant) => (
-                    <CommandItem
-                      key={tenant.id}
-                      value={tenant.id}
-                      onSelect={() => {
-                        switchTenantMutation.mutate(tenant.id);
-                      }}
-                      className="text-sm"
-                    >
-                      <Building2 className="mr-2 h-4 w-4" />
-                      <span>{tenant.name}</span>
-                      {tenant.id === tenant?.id && (
-                        <Check className="ml-auto h-4 w-4" />
-                      )}
-                    </CommandItem>
-                  ))}
-                </CommandGroup>
-                
-                {tenants?.some(t => t.status === 'inactive' || t.status === 'suspended') && (
-                  <>
-                    <CommandSeparator />
-                    <CommandGroup heading="Inactive Tenants">
-                      {tenants?.filter(t => t.status === 'inactive' || t.status === 'suspended').map((tenant: Tenant) => (
-                        <CommandItem
-                          key={tenant.id}
-                          value={tenant.id}
-                          onSelect={() => {
-                            switchTenantMutation.mutate(tenant.id);
-                          }}
-                          className="text-sm"
-                        >
-                          <Building2 className="mr-2 h-4 w-4" />
-                          <span>{tenant.name}</span>
-                          <Badge 
-                            variant={tenant.status === 'suspended' ? 'destructive' : 'outline'} 
-                            className="ml-auto"
-                          >
-                            {tenant.status}
-                          </Badge>
-                          {tenant.id === tenant?.id && (
-                            <Check className="ml-2 h-4 w-4" />
-                          )}
-                        </CommandItem>
-                      ))}
-                    </CommandGroup>
-                  </>
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger asChild>
+        <Button
+          variant="outline"
+          role="combobox"
+          aria-expanded={open}
+          aria-label="Select a tenant"
+          className={cn("w-full justify-between", className)}
+        >
+          <div className="flex items-center">
+            {currentTenant ? (
+              <>
+                <Building className="mr-2 h-4 w-4" />
+                <span>{currentTenant.name}</span>
+                {currentTenant.isTemplate && (
+                  <Badge variant="secondary" className="ml-2 text-xs py-0">Template</Badge>
                 )}
-                
-                <CommandSeparator />
-                <CommandGroup>
-                  <CommandItem 
-                    onSelect={() => {
-                      // Close the menu and navigate to create tenant page
-                      setOpen(false);
-                      // TODO: Implement navigation to create tenant page
-                    }}
+                {currentTenant.status !== 'active' && (
+                  <Badge variant="destructive" className="ml-2 text-xs py-0">{currentTenant.status}</Badge>
+                )}
+              </>
+            ) : (
+              <>
+                <Building className="mr-2 h-4 w-4" />
+                <span>Select tenant...</span>
+              </>
+            )}
+          </div>
+          <ChevronsUpDown className="ml-auto h-4 w-4 shrink-0 opacity-50" />
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-[300px] p-0">
+        <Command>
+          <CommandInput placeholder="Search tenant..." />
+          <CommandList>
+            <CommandEmpty>No tenant found.</CommandEmpty>
+            
+            {/* Template tenants */}
+            {tenants && tenants.filter(t => t.isTemplate).length > 0 && (
+              <CommandGroup heading="Template Tenants">
+                {tenants?.filter(t => t.isTemplate).map((tenant: Tenant) => (
+                  <CommandItem
+                    key={tenant.id}
+                    value={tenant.id}
+                    onSelect={() => handleTenantSelect(tenant.id)}
+                    className="flex items-center"
                   >
-                    <PlusCircle className="mr-2 h-4 w-4" />
-                    <span>Create New Tenant</span>
+                    <Shield className="mr-2 h-4 w-4" />
+                    <span>{tenant.name}</span>
+                    <Check
+                      className={cn(
+                        "ml-auto h-4 w-4",
+                        currentTenant?.id === tenant.id ? "opacity-100" : "opacity-0"
+                      )}
+                    />
                   </CommandItem>
-                </CommandGroup>
-              </CommandList>
-            </Command>
-          )}
-        </PopoverContent>
-      </Popover>
-    </div>
+                ))}
+              </CommandGroup>
+            )}
+            
+            {/* Active tenants */}
+            <CommandGroup heading="Active Tenants">
+              {tenants?.filter(t => !t.isTemplate && t.status === 'active').map((tenant: Tenant) => (
+                <CommandItem
+                  key={tenant.id}
+                  value={tenant.id}
+                  onSelect={() => handleTenantSelect(tenant.id)}
+                  className="flex items-center"
+                >
+                  <Building className="mr-2 h-4 w-4" />
+                  <span>{tenant.name}</span>
+                  <Check
+                    className={cn(
+                      "ml-auto h-4 w-4",
+                      currentTenant?.id === tenant.id ? "opacity-100" : "opacity-0"
+                    )}
+                  />
+                </CommandItem>
+              ))}
+            </CommandGroup>
+            
+            {/* Inactive/Suspended tenants */}
+            {tenants && tenants.some(t => t.status === 'inactive' || t.status === 'suspended') && (
+              <CommandGroup heading="Inactive Tenants">
+                {tenants?.filter(t => t.status === 'inactive' || t.status === 'suspended').map((tenant: Tenant) => (
+                  <CommandItem
+                    key={tenant.id}
+                    value={tenant.id}
+                    onSelect={() => handleTenantSelect(tenant.id)}
+                    className="flex items-center"
+                  >
+                    <CircleAlert className="mr-2 h-4 w-4 text-amber-500" />
+                    <span>{tenant.name}</span>
+                    <Badge 
+                      variant={tenant.status === 'suspended' ? 'destructive' : 'outline'} 
+                      className="ml-2 text-xs py-0"
+                    >
+                      {tenant.status}
+                    </Badge>
+                    <Check
+                      className={cn(
+                        "ml-auto h-4 w-4",
+                        currentTenant?.id === tenant.id ? "opacity-100" : "opacity-0"
+                      )}
+                    />
+                  </CommandItem>
+                ))}
+              </CommandGroup>
+            )}
+          </CommandList>
+          <CommandSeparator />
+          <CommandList>
+            <CommandGroup>
+              <CommandItem
+                onSelect={() => {
+                  refetch();
+                  toast({
+                    title: "Refreshed",
+                    description: "Tenant list refreshed",
+                  });
+                }}
+              >
+                <RefreshCw className="mr-2 h-4 w-4" />
+                Refresh
+              </CommandItem>
+              <CommandItem
+                onSelect={() => {
+                  toast({
+                    title: "Create Tenant",
+                    description: "This feature is coming soon",
+                  });
+                }}
+              >
+                <Plus className="mr-2 h-4 w-4" />
+                Create Tenant
+              </CommandItem>
+            </CommandGroup>
+          </CommandList>
+        </Command>
+      </PopoverContent>
+    </Popover>
   );
 }
 
+// Card version of the TenantSwitcher for dashboard use
 export function TenantSwitcherCard() {
   return (
-    <Card>
+    <Card className="h-full">
       <CardHeader>
         <CardTitle>Tenant Management</CardTitle>
         <CardDescription>
-          As a Super Admin, you can switch between tenants to manage their data
+          Manage and switch between tenant instances
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <TenantSwitcher className="w-full" />
+        <div className="space-y-4">
+          <TenantSwitcher />
+          
+          <div className="grid grid-cols-2 gap-2 mt-4">
+            <Button variant="outline" className="w-full">
+              <Plus className="h-4 w-4 mr-2" />
+              New Tenant
+            </Button>
+            <Button variant="outline" className="w-full">
+              <Shield className="h-4 w-4 mr-2" />
+              New Template
+            </Button>
+          </div>
+        </div>
       </CardContent>
+      <CardFooter className="border-t pt-4 flex justify-between text-xs text-muted-foreground">
+        <div>4 Active Tenants</div>
+        <div>1 Template</div>
+      </CardFooter>
     </Card>
   );
 }

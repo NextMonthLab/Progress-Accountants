@@ -23,6 +23,9 @@ import { registerBlueprintRoutes } from "./blueprint";
 import { registerMediaRoutes } from "./media-upload";
 import { registerSupportRoutes } from "./support";
 import { registerPageToolIntegrationRoutes } from "./page-tool-integrations";
+import { registerTenantRoutes } from "./controllers/tenantController";
+import { registerSystemRoutes } from "./controllers/systemController";
+import { setupAuth } from "./auth";
 import { 
   PageMetadata, 
   PageComplexityAssessment, 
@@ -179,6 +182,9 @@ storage.getContactSubmissions = async function() {
 };
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Set up authentication
+  setupAuth(app);
+  
   // Register media upload endpoints
   registerMediaRoutes(app);
   
@@ -190,6 +196,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
   
   // Register page-tool integration endpoints
   registerPageToolIntegrationRoutes(app);
+  
+  // Register tenant management endpoints
+  registerTenantRoutes(app);
+  
+  // Register system monitoring endpoints
+  registerSystemRoutes(app);
   // Contact form submission endpoint
   app.post("/api/contact", async (req, res) => {
     try {

@@ -1,145 +1,149 @@
-import { 
-  users, 
-  type User, 
-  type InsertUser
-} from "@shared/schema";
-import { db } from "./db";
-import { eq, and } from "drizzle-orm";
-import session from "express-session";
+import { storage } from "./storage";
 
-/**
- * Simplified storage interface with just the authentication-related methods
- */
-export interface ISimpleStorage {
-  getUser(id: number): Promise<User | undefined>;
-  getUserByUsername(username: string, tenantId?: string): Promise<User | undefined>;
-  createUser(user: InsertUser): Promise<User>;
-  sessionStore: session.Store;
-}
+// Extend the storage with additional methods needed for the multi-tenant system
+// These are temporary implementations using in-memory storage until we switch to a database
 
-/**
- * Database-backed implementation of simplified storage for authentication
- */
-export class DatabaseStorage implements ISimpleStorage {
-  sessionStore: session.Store;
+// Tenants
+storage.getAllTenants = async function() {
+  if (!this.tenants) {
+    this.tenants = new Map();
+    
+    // Add some default tenants for demo purposes
+    const defaultTenants = [
+      {
+        id: "t1",
+        name: "Progress Accountants",
+        domain: "progressaccountants.com",
+        status: "active",
+        industry: "accounting",
+        plan: "premium",
+        isTemplate: false,
+        createdAt: new Date()
+      },
+      {
+        id: "t2",
+        name: "Financial Solutions",
+        domain: "financialsolutions.com",
+        status: "active",
+        industry: "finance",
+        plan: "standard",
+        isTemplate: false,
+        createdAt: new Date()
+      },
+      {
+        id: "t3",
+        name: "Legal Edge",
+        domain: "legaledge.com",
+        status: "inactive",
+        industry: "legal",
+        plan: "basic",
+        isTemplate: false,
+        createdAt: new Date()
+      },
+      {
+        id: "t4",
+        name: "Template - Accounting Firm",
+        domain: "template-accounting.nextmonth.dev",
+        status: "active",
+        industry: "accounting",
+        plan: "enterprise",
+        isTemplate: true,
+        createdAt: new Date()
+      }
+    ];
+    
+    for (const tenant of defaultTenants) {
+      this.tenants.set(tenant.id, tenant);
+    }
+  }
   
-  constructor() {
-    // Use built-in MemoryStore for sessions - simplest option to get started
-    this.sessionStore = new session.MemoryStore();
+  return Array.from(this.tenants.values());
+};
+
+storage.getTenant = async function(id) {
+  if (!this.tenants) {
+    await this.getAllTenants();
   }
   
-  // User operations
-  async getUser(id: number): Promise<User | undefined> {
-    const [user] = await db.select().from(users).where(eq(users.id, id));
-    return user;
+  return this.tenants.get(id);
+};
+
+storage.getTenantByDomain = async function(domain) {
+  if (!this.tenants) {
+    await this.getAllTenants();
   }
+  
+  const tenants = Array.from(this.tenants.values());
+  return tenants.find(t => t.domain === domain);
+};
 
-  async getUserByUsername(username: string, tenantId?: string): Promise<User | undefined> {
-    if (tenantId) {
-      // Check for username uniqueness within tenant scope
-      const [user] = await db
-        .select()
-        .from(users)
-        .where(
-          and(
-            eq(users.username, username),
-            eq(users.tenantId, tenantId)
-          )
-        );
-      return user;
-    } else {
-      // Global lookup for usernames (still useful for system admin functions)
-      const [user] = await db
-        .select()
-        .from(users)
-        .where(eq(users.username, username));
-      return user;
-    }
+storage.saveTenant = async function(tenant) {
+  if (!this.tenants) {
+    await this.getAllTenants();
   }
+  
+  const id = tenant.id || `t${this.tenants.size + 1}`;
+  const newTenant = {
+    ...tenant,
+    id,
+    createdAt: new Date()
+  };
+  
+  this.tenants.set(id, newTenant);
+  return newTenant;
+};
 
-  async createUser(insertUser: InsertUser): Promise<User> {
-    // Check for tenant-scoped username uniqueness before creating
-    // This is mirroring the validation in auth.ts but adding an extra safety layer
-    if (insertUser.tenantId) {
-      const existingUser = await this.getUserByUsername(insertUser.username, insertUser.tenantId);
-      if (existingUser) {
-        throw new Error(`Username '${insertUser.username}' already exists in this tenant`);
-      }
-    } else {
-      const existingUser = await this.getUserByUsername(insertUser.username);
-      if (existingUser) {
-        throw new Error(`Username '${insertUser.username}' already exists`);
-      }
-    }
-    
-    // Add timestamps
-    const userWithTimestamps = {
-      ...insertUser,
-      createdAt: new Date(),
-      updatedAt: new Date()
-    };
-    
-    const [user] = await db.insert(users).values(userWithTimestamps).returning();
-    return user;
+storage.updateTenant = async function(id, updates) {
+  if (!this.tenants) {
+    await this.getAllTenants();
   }
-}
-
-// Create a simpler memory-based storage implementation
-export class MemStorage implements ISimpleStorage {
-  private users: Map<number, User>;
-  private currentId: number;
-  sessionStore: session.Store;
-
-  constructor() {
-    this.users = new Map();
-    this.currentId = 1;
-    this.sessionStore = new session.MemoryStore();
+  
+  const tenant = this.tenants.get(id);
+  
+  if (!tenant) {
+    return null;
   }
+  
+  const updatedTenant = {
+    ...tenant,
+    ...updates,
+    id, // Ensure ID doesn't change
+    updatedAt: new Date()
+  };
+  
+  this.tenants.set(id, updatedTenant);
+  return updatedTenant;
+};
 
-  async getUser(id: number): Promise<User | undefined> {
-    return this.users.get(id);
+// Activity Logs
+storage.logActivity = async function(activity) {
+  if (!this.activityLogs) {
+    this.activityLogs = [];
   }
+  
+  const logEntry = {
+    id: this.activityLogs.length + 1,
+    timestamp: new Date(),
+    ...activity
+  };
+  
+  this.activityLogs.push(logEntry);
+  return logEntry;
+};
 
-  async getUserByUsername(username: string, tenantId?: string): Promise<User | undefined> {
-    if (tenantId) {
-      // Tenant-scoped username lookup
-      return Array.from(this.users.values()).find(
-        (user) => user.username === username && user.tenantId === tenantId
-      );
-    } else {
-      // Global username lookup
-      return Array.from(this.users.values()).find(
-        (user) => user.username === username
-      );
-    }
+storage.getActivityLogs = async function(userId, limit = 100) {
+  if (!this.activityLogs) {
+    this.activityLogs = [];
   }
-
-  async createUser(insertUser: InsertUser): Promise<User> {
-    // Check for tenant-scoped username uniqueness
-    if (insertUser.tenantId) {
-      const existingUser = await this.getUserByUsername(insertUser.username, insertUser.tenantId);
-      if (existingUser) {
-        throw new Error(`Username '${insertUser.username}' already exists in this tenant`);
-      }
-    } else {
-      // Check for global uniqueness
-      const existingUser = await this.getUserByUsername(insertUser.username);
-      if (existingUser) {
-        throw new Error(`Username '${insertUser.username}' already exists`);
-      }
-    }
-    
-    const id = this.currentId++;
-    const user = { 
-      ...insertUser, 
-      id, 
-      createdAt: new Date(),
-      updatedAt: new Date()
-    };
-    this.users.set(id, user);
-    return user;
+  
+  let logs = this.activityLogs;
+  
+  if (userId) {
+    logs = logs.filter(log => log.userId === userId);
   }
-}
+  
+  return logs.slice(-limit).reverse();
+};
 
-// Using the DatabaseStorage implementation for production
-export const simpleStorage = new DatabaseStorage();
+// Export a named object for easier imports in controllers
+export const simpleStorage = storage;
