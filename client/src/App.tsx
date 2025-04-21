@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import NotFound from "@/pages/not-found";
 import { useAuth } from "@/components/ClientDataProvider";
+import { TenantProvider } from "@/hooks/use-tenant";
 import { UpgradeAnnouncement } from "@/components/UpgradeAnnouncement";
 import HomePage from "@/pages/HomePage";
 import StudioPage from "@/pages/StudioPage";
@@ -43,6 +44,9 @@ import BrandManagerPage from "@/pages/BrandManagerPage";
 import BlueprintManagerPage from "@/pages/BlueprintManagerPage";
 import MediaManagementPage from "@/pages/MediaManagementPage";
 import NewClientOnboarding from "@/pages/NewClientOnboarding";
+// Admin settings pages
+import TenantCustomizationPage from "@/pages/admin/TenantCustomizationPage";
+import ThemeManagementPage from "@/pages/admin/ThemeManagementPage";
 // Import wizard components
 import CreateFormWizard from "@/pages/tools/wizards/CreateFormWizard";
 import CreateCalculatorWizard from "@/pages/tools/wizards/CreateCalculatorWizard";
@@ -62,6 +66,8 @@ const ProtectedAdminSettings = withAuth(AdminSettingsPage, 'staff');
 const ProtectedSEOConfigManager = withAuth(SEOConfigManagerPage, 'staff');
 const ProtectedBrandManager = withAuth(BrandManagerPage, 'staff');
 const ProtectedBlueprintManager = withAuth(BlueprintManagerPage, 'staff');
+const ProtectedTenantCustomization = withAuth(TenantCustomizationPage, 'staff');
+const ProtectedThemeManagement = withAuth(ThemeManagementPage, 'staff');
 
 function Router() {
   return (
@@ -93,6 +99,8 @@ function Router() {
       <Route path="/admin/seo" component={ProtectedSEOConfigManager} />
       <Route path="/admin/brand" component={ProtectedBrandManager} />
       <Route path="/admin/blueprint" component={ProtectedBlueprintManager} />
+      <Route path="/admin/tenant-customization" component={ProtectedTenantCustomization} />
+      <Route path="/admin/theme-management" component={ProtectedThemeManagement} />
       <Route path="/scope-request" component={ScopeRequestPage} />
       <Route path="/marketplace" component={EnhancedMarketplacePage} />
       <Route path="/installed-tools" component={InstalledToolsPage} />
@@ -119,14 +127,16 @@ function App() {
   return (
     <ClientDataProvider>
       <ThemeProvider>
-        <DocumentHead route="/" />
-        <FirstTimeUserDetector>
-          <MainLayout>
-            <Router />
-          </MainLayout>
-        </FirstTimeUserDetector>
-        <UpgradeAnnouncement />
-        <Toaster />
+        <TenantProvider>
+          <DocumentHead route="/" />
+          <FirstTimeUserDetector>
+            <MainLayout>
+              <Router />
+            </MainLayout>
+          </FirstTimeUserDetector>
+          <UpgradeAnnouncement />
+          <Toaster />
+        </TenantProvider>
       </ThemeProvider>
     </ClientDataProvider>
   );
