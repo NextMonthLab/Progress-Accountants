@@ -382,6 +382,63 @@ export type User = typeof users.$inferSelect;
 export type InsertBusinessIdentity = z.infer<typeof insertBusinessIdentitySchema>;
 export type BusinessIdentity = typeof businessIdentity.$inferSelect;
 
+// Blog Post Schema
+export const blogPosts = pgTable("blog_posts", {
+  id: serial("id").primaryKey(),
+  title: text("title").notNull(),
+  slug: text("slug").notNull().unique(),
+  content: text("content").notNull(),
+  excerpt: text("excerpt"),
+  metaDescription: text("meta_description"),
+  featuredImage: text("featured_image"),
+  keywords: text("keywords").array(),
+  author: integer("author").references(() => users.id),
+  tenantId: text("tenant_id"),
+  status: text("status").default("draft").notNull(), // draft, published, archived
+  publishedAt: timestamp("published_at", { mode: 'date' }),
+  createdAt: timestamp("created_at", { mode: 'date' }).defaultNow().notNull(),
+  updatedAt: timestamp("updated_at", { mode: 'date' }).defaultNow().notNull(),
+  externalPublishData: jsonb("external_publish_data"), // For tracking external publishing locations
+});
+
+export const blogPages = pgTable("blog_pages", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull(),
+  slug: text("slug").notNull(),
+  description: text("description"),
+  tenantId: text("tenant_id"),
+  isActive: boolean("is_active").default(true),
+  createdAt: timestamp("created_at", { mode: 'date' }).defaultNow().notNull(),
+  updatedAt: timestamp("updated_at", { mode: 'date' }).defaultNow().notNull(),
+});
+
+export const integrationRequests = pgTable("integration_requests", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id").references(() => users.id),
+  tenantId: text("tenant_id"),
+  websiteUrl: text("website_url").notNull(),
+  platform: text("platform").notNull(), // WordPress, Squarespace, Wix, Webflow, Other
+  contactEmail: text("contact_email"),
+  additionalInfo: text("additional_info"),
+  status: text("status").default("pending").notNull(), // pending, in_progress, completed, rejected
+  createdAt: timestamp("created_at", { mode: 'date' }).defaultNow().notNull(),
+  updatedAt: timestamp("updated_at", { mode: 'date' }).defaultNow().notNull(),
+});
+
+// Create insert and select schemas for new tables
+export const insertBlogPostSchema = createInsertSchema(blogPosts).omit({ id: true, createdAt: true, updatedAt: true });
+export const insertBlogPageSchema = createInsertSchema(blogPages).omit({ id: true, createdAt: true, updatedAt: true });
+export const insertIntegrationRequestSchema = createInsertSchema(integrationRequests).omit({ id: true, createdAt: true, updatedAt: true });
+
+export type InsertBlogPost = z.infer<typeof insertBlogPostSchema>;
+export type BlogPost = typeof blogPosts.$inferSelect;
+
+export type InsertBlogPage = z.infer<typeof insertBlogPageSchema>;
+export type BlogPage = typeof blogPages.$inferSelect;
+
+export type InsertIntegrationRequest = z.infer<typeof insertIntegrationRequestSchema>;
+export type IntegrationRequest = typeof integrationRequests.$inferSelect;
+
 export type InsertProjectContext = z.infer<typeof insertProjectContextSchema>;
 export type ProjectContext = typeof projectContext.$inferSelect;
 
