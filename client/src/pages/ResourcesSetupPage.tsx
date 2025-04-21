@@ -1,478 +1,580 @@
-import React, { useState } from "react";
-import AdminLayout from "@/layouts/AdminLayout";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { useToast } from "@/hooks/use-toast";
-import { apiRequest, queryClient } from "@/lib/queryClient";
-import { Loader2, Plus, Save, Trash2 } from "lucide-react";
-import { Switch } from "@/components/ui/switch";
-import { Label } from "@/components/ui/label";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import MediaSelector from "@/components/MediaSelector";
+import React, { useState, useEffect } from 'react';
+import { useLocation } from 'wouter';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import AdminLayout from '@/layouts/AdminLayout';
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Textarea } from '@/components/ui/textarea';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { useToast } from '@/hooks/use-toast';
+import MediaSelector from '@/components/MediaSelector';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useAuth } from '@/hooks/use-auth';
+import { useTenant } from '@/hooks/use-tenant';
+import { Plus, Save, FileText, Trash2, FileCheck, FileQuestion, Clock, ExternalLink } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { Switch } from '@/components/ui/switch';
 
-type Resource = {
-  id?: number;
-  title: string;
-  description: string;
-  imageUrl?: string;
-  link?: string;
-  isPublished: boolean;
-  type: 'guide' | 'template' | 'calculator' | 'article';
-};
+// Resource schema
+const resourceSchema = z.object({
+  title: z.string().min(3, { message: 'Title must be at least 3 characters' }),
+  description: z.string().min(10, { message: 'Description must be at least 10 characters' }),
+  category: z.string().min(1, { message: 'Please select a category' }),
+  fileUrl: z.string().url({ message: 'Please provide a valid file URL' }),
+  imageUrl: z.string().url({ message: 'Please provide a valid image URL' }).optional(),
+  isPublished: z.boolean().default(false),
+});
+
+type ResourceFormValues = z.infer<typeof resourceSchema>;
 
 export default function ResourcesSetupPage() {
+  const [, navigate] = useLocation();
   const { toast } = useToast();
-  const [resources, setResources] = useState<Resource[]>([]);
-  const [selectedResourceId, setSelectedResourceId] = useState<number | null>(null);
-  const [currentTab, setCurrentTab] = useState<'guide' | 'template' | 'calculator' | 'article'>('guide');
-  
-  // Get existing resources
-  const { isLoading } = useQuery({
-    queryKey: ['/api/pages/resources'],
-    onSuccess: (data) => {
-      if (data && Array.isArray(data.resources)) {
-        setResources(data.resources);
-      }
-    },
-    onError: (error: Error) => {
-      toast({
-        title: "Error loading resources",
-        description: error.message,
-        variant: "destructive",
-      });
+  const { user } = useAuth();
+  const { tenant } = useTenant();
+  const queryClient = useQueryClient();
+  const [editingResource, setEditingResource] = useState<any>(null);
+  const [isAddMode, setIsAddMode] = useState(false);
+
+  // Get project context
+  const { data: projectContext } = useQuery({
+    queryKey: ['/api/project-context'],
+    onSuccess: (data: any) => {
+      // Check if Resources page is completed
+      const resourcesCompleted = data?.pageStatus?.resources === 'completed';
     }
   });
 
-  // Add new resource
-  const addResourceMutation = useMutation({
-    mutationFn: async (resource: Resource) => {
-      const response = await apiRequest("POST", "/api/pages/resources", resource);
-      return response.json();
-    },
-    onSuccess: (data) => {
-      setResources((prev) => [...prev, data.resource]);
-      toast({
-        title: "Resource added",
-        description: "The resource has been added successfully.",
-      });
-    },
-    onError: (error: Error) => {
-      toast({
-        title: "Error adding resource",
-        description: error.message,
-        variant: "destructive",
-      });
+  // Get all resources
+  const { data: resources = [], isLoading } = useQuery({
+    queryKey: ['/api/resources'],
+  });
+
+  // Form setup
+  const form = useForm<ResourceFormValues>({
+    resolver: zodResolver(resourceSchema),
+    defaultValues: {
+      title: '',
+      description: '',
+      category: '',
+      fileUrl: '',
+      imageUrl: '',
+      isPublished: false,
     },
   });
 
-  // Update resource
-  const updateResourceMutation = useMutation({
-    mutationFn: async (resource: Resource) => {
-      const response = await apiRequest("PATCH", `/api/pages/resources/${resource.id}`, resource);
-      return response.json();
-    },
-    onSuccess: (data) => {
-      setResources((prev) => 
-        prev.map(r => r.id === data.resource.id ? data.resource : r)
-      );
-      toast({
-        title: "Resource updated",
-        description: "The resource has been updated successfully.",
+  // Mutations
+  const createResource = useMutation({
+    mutationFn: async (data: ResourceFormValues) => {
+      const response = await fetch('/api/resources', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
       });
-    },
-    onError: (error: Error) => {
-      toast({
-        title: "Error updating resource",
-        description: error.message,
-        variant: "destructive",
-      });
-    },
-  });
-
-  // Delete resource
-  const deleteResourceMutation = useMutation({
-    mutationFn: async (id: number) => {
-      const response = await apiRequest("DELETE", `/api/pages/resources/${id}`);
-      return response.json();
-    },
-    onSuccess: (_, id) => {
-      setResources((prev) => prev.filter(r => r.id !== id));
-      setSelectedResourceId(null);
-      toast({
-        title: "Resource deleted",
-        description: "The resource has been deleted successfully.",
-      });
-    },
-    onError: (error: Error) => {
-      toast({
-        title: "Error deleting resource",
-        description: error.message,
-        variant: "destructive",
-      });
-    },
-  });
-
-  // Update page status to complete
-  const completePageMutation = useMutation({
-    mutationFn: async () => {
-      const response = await apiRequest("POST", "/api/pages/complete", { 
-        path: "/resources",
-        displayName: "Resources",
-        order: 6 // After services, team, etc.
-      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to create resource');
+      }
+      
       return response.json();
     },
     onSuccess: () => {
       toast({
-        title: "Page completed",
-        description: "The Resources page is now live on your site.",
+        title: 'Resource Created',
+        description: 'Resource has been successfully created',
       });
-      queryClient.invalidateQueries({ queryKey: ['/api/pages/public'] });
+      resetForm();
+      setIsAddMode(false);
+      queryClient.invalidateQueries({ queryKey: ['/api/resources'] });
     },
-    onError: (error: Error) => {
+    onError: (error) => {
       toast({
-        title: "Error completing page",
-        description: error.message,
-        variant: "destructive",
+        title: 'Error',
+        description: `Failed to create resource: ${error.message}`,
+        variant: 'destructive',
       });
-    },
+    }
   });
 
-  // Find the currently selected resource
-  const selectedResource = selectedResourceId ? 
-    resources.find(r => r.id === selectedResourceId) : null;
+  const updateResource = useMutation({
+    mutationFn: async (data: ResourceFormValues & { id: number }) => {
+      const { id, ...resourceData } = data;
+      const response = await fetch(`/api/resources/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(resourceData),
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to update resource');
+      }
+      
+      return response.json();
+    },
+    onSuccess: () => {
+      toast({
+        title: 'Resource Updated',
+        description: 'Resource has been successfully updated',
+      });
+      resetForm();
+      setEditingResource(null);
+      queryClient.invalidateQueries({ queryKey: ['/api/resources'] });
+    },
+    onError: (error) => {
+      toast({
+        title: 'Error',
+        description: `Failed to update resource: ${error.message}`,
+        variant: 'destructive',
+      });
+    }
+  });
 
-  // Add a new resource to the form (without saving yet)
-  const handleAddResource = () => {
-    const newResource: Resource = {
-      title: "",
-      description: "",
-      isPublished: false,
-      type: currentTab,
-    };
-    setResources((prev) => [...prev, newResource]);
-    setSelectedResourceId(null); // Select the new one we're creating
-  };
+  const deleteResource = useMutation({
+    mutationFn: async (id: number) => {
+      const response = await fetch(`/api/resources/${id}`, {
+        method: 'DELETE',
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to delete resource');
+      }
+      
+      return response.json();
+    },
+    onSuccess: () => {
+      toast({
+        title: 'Resource Deleted',
+        description: 'Resource has been successfully deleted',
+      });
+      queryClient.invalidateQueries({ queryKey: ['/api/resources'] });
+    },
+    onError: (error) => {
+      toast({
+        title: 'Error',
+        description: `Failed to delete resource: ${error.message}`,
+        variant: 'destructive',
+      });
+    }
+  });
 
-  // Save a resource
-  const handleSaveResource = (resource: Resource) => {
-    if (resource.id) {
-      updateResourceMutation.mutate(resource);
+  const markPageComplete = useMutation({
+    mutationFn: async () => {
+      const response = await fetch('/api/pages/resources/complete', {
+        method: 'POST',
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to mark page as complete');
+      }
+      
+      return response.json();
+    },
+    onSuccess: () => {
+      toast({
+        title: 'Page Completed',
+        description: 'Resources page has been marked as complete',
+      });
+      queryClient.invalidateQueries({ queryKey: ['/api/project-context'] });
+    },
+    onError: (error) => {
+      toast({
+        title: 'Error',
+        description: `Failed to mark page as complete: ${error.message}`,
+        variant: 'destructive',
+      });
+    }
+  });
+
+  // Handle form submission
+  const onSubmit = async (data: ResourceFormValues) => {
+    if (editingResource) {
+      updateResource.mutate({ ...data, id: editingResource.id });
     } else {
-      addResourceMutation.mutate(resource);
+      createResource.mutate(data);
     }
   };
 
-  // Update a field in the selected resource
-  const handleUpdateField = (field: keyof Resource, value: any) => {
-    if (!selectedResource) return;
-    
-    const updatedResources = resources.map(r => {
-      if ((selectedResourceId && r.id === selectedResourceId) || 
-          (!selectedResourceId && r === selectedResource)) {
-        return { ...r, [field]: value };
-      }
-      return r;
+  // Load resource for editing
+  useEffect(() => {
+    if (editingResource) {
+      form.reset({
+        title: editingResource.title,
+        description: editingResource.description,
+        category: editingResource.category,
+        fileUrl: editingResource.fileUrl,
+        imageUrl: editingResource.imageUrl || '',
+        isPublished: editingResource.isPublished,
+      });
+    }
+  }, [editingResource, form]);
+
+  // Reset form and editing state
+  const resetForm = () => {
+    form.reset({
+      title: '',
+      description: '',
+      category: '',
+      fileUrl: '',
+      imageUrl: '',
+      isPublished: false,
     });
+    setEditingResource(null);
+    setIsAddMode(false);
+  };
+
+  // Navigate to public page to view
+  const viewPublicPage = () => {
+    navigate('/resources');
+  };
+
+  // Handle edit resource
+  const handleEditResource = (resource: any) => {
+    setEditingResource(resource);
+    setIsAddMode(true);
+  };
+
+  // Handle delete resource
+  const handleDeleteResource = (id: number) => {
+    if (window.confirm('Are you sure you want to delete this resource?')) {
+      deleteResource.mutate(id);
+    }
+  };
+
+  // Handle mark as complete
+  const handleMarkAsComplete = () => {
+    if (resources.length === 0) {
+      toast({
+        title: 'No Resources Added',
+        description: 'Please add at least one resource before marking the page as complete.',
+        variant: 'destructive',
+      });
+      return;
+    }
     
-    setResources(updatedResources);
+    markPageComplete.mutate();
   };
 
-  // Mark page as complete and make it live
-  const handleCompletePage = () => {
-    completePageMutation.mutate();
+  // Handle image selection
+  const handleImageSelected = (url: string) => {
+    form.setValue('imageUrl', url);
   };
 
-  const filteredResources = resources.filter(r => r.type === currentTab);
+  // Resource categories
+  const resourceCategories = [
+    { label: 'Tax Guide', value: 'tax-guide' },
+    { label: 'Financial Template', value: 'financial-template' },
+    { label: 'Accounting Tool', value: 'accounting-tool' },
+    { label: 'Business Planning', value: 'business-planning' },
+    { label: 'Reference', value: 'reference' },
+  ];
+
+  // Check if resources page is complete
+  const isResourcesPageComplete = projectContext?.pageStatus?.resources === 'completed';
 
   return (
     <AdminLayout>
-      <div className="p-6">
+      <div className="container px-6 py-8">
         <div className="flex justify-between items-center mb-6">
           <div>
             <h1 className="text-3xl font-bold">Resources Setup</h1>
-            <p className="text-gray-500">
-              Manage resources that will appear on your Resources page
+            <p className="text-muted-foreground">
+              Manage downloadable resources for your clients
             </p>
           </div>
-          <Button 
-            onClick={handleCompletePage} 
-            disabled={completePageMutation.isPending || resources.length === 0}
-          >
-            {completePageMutation.isPending ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Publishing...
-              </>
-            ) : (
-              "Publish Page"
-            )}
-          </Button>
+          <div className="flex gap-2">
+            <Button
+              variant="outline"
+              onClick={viewPublicPage}
+            >
+              <ExternalLink className="h-4 w-4 mr-2" />
+              View Public Page
+            </Button>
+            <Button
+              variant={isResourcesPageComplete ? "outline" : "default"}
+              onClick={handleMarkAsComplete}
+              disabled={resources.length === 0}
+            >
+              <FileCheck className="h-4 w-4 mr-2" />
+              {isResourcesPageComplete ? 'Page Completed' : 'Mark as Complete'}
+            </Button>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Left sidebar - Resource types and list */}
-          <div className="lg:col-span-1">
+          {/* Resource List */}
+          <div className="lg:col-span-2 space-y-4">
             <Card>
-              <CardHeader>
-                <CardTitle>Resource Categories</CardTitle>
-                <CardDescription>
-                  Select a resource type to manage
-                </CardDescription>
+              <CardHeader className="flex flex-row items-center justify-between">
+                <div>
+                  <CardTitle>Resources</CardTitle>
+                  <CardDescription>
+                    Manage your downloadable resources
+                  </CardDescription>
+                </div>
+                <Button onClick={() => {
+                  setIsAddMode(true);
+                  setEditingResource(null);
+                  resetForm();
+                }}>
+                  <Plus className="h-4 w-4 mr-2" />
+                  Add Resource
+                </Button>
               </CardHeader>
               <CardContent>
-                <Tabs 
-                  defaultValue="guide" 
-                  value={currentTab}
-                  onValueChange={(value) => setCurrentTab(value as any)}
-                  className="w-full"
-                >
-                  <TabsList className="grid grid-cols-4 w-full">
-                    <TabsTrigger value="guide">Guides</TabsTrigger>
-                    <TabsTrigger value="template">Templates</TabsTrigger>
-                    <TabsTrigger value="calculator">Calculators</TabsTrigger>
-                    <TabsTrigger value="article">Articles</TabsTrigger>
-                  </TabsList>
-                  
-                  <TabsContent value="guide" className="mt-4">
-                    <ResourceList 
-                      resources={filteredResources}
-                      selectedId={selectedResourceId}
-                      onSelect={setSelectedResourceId}
-                      onAdd={handleAddResource}
-                      isLoading={isLoading}
-                    />
-                  </TabsContent>
-                  
-                  <TabsContent value="template" className="mt-4">
-                    <ResourceList 
-                      resources={filteredResources}
-                      selectedId={selectedResourceId}
-                      onSelect={setSelectedResourceId}
-                      onAdd={handleAddResource}
-                      isLoading={isLoading}
-                    />
-                  </TabsContent>
-                  
-                  <TabsContent value="calculator" className="mt-4">
-                    <ResourceList 
-                      resources={filteredResources}
-                      selectedId={selectedResourceId}
-                      onSelect={setSelectedResourceId}
-                      onAdd={handleAddResource}
-                      isLoading={isLoading}
-                    />
-                  </TabsContent>
-                  
-                  <TabsContent value="article" className="mt-4">
-                    <ResourceList 
-                      resources={filteredResources}
-                      selectedId={selectedResourceId}
-                      onSelect={setSelectedResourceId}
-                      onAdd={handleAddResource}
-                      isLoading={isLoading}
-                    />
-                  </TabsContent>
-                </Tabs>
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Main content - Resource editor */}
-          <div className="lg:col-span-2">
-            <Card>
-              <CardHeader>
-                <CardTitle>
-                  {selectedResource ? "Edit Resource" : "Resource Details"}
-                </CardTitle>
-                <CardDescription>
-                  {selectedResource 
-                    ? "Update resource information" 
-                    : "Select a resource to edit or add a new one"}
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                {selectedResource ? (
-                  <ResourceEditor 
-                    resource={selectedResource}
-                    onSave={handleSaveResource}
-                    onUpdate={handleUpdateField}
-                    onDelete={() => {
-                      if (selectedResource.id) {
-                        deleteResourceMutation.mutate(selectedResource.id);
-                      } else {
-                        setResources(prev => prev.filter(r => r !== selectedResource));
-                        setSelectedResourceId(null);
-                      }
-                    }}
-                    isPending={
-                      updateResourceMutation.isPending || 
-                      addResourceMutation.isPending || 
-                      deleteResourceMutation.isPending
-                    }
-                  />
+                {isLoading ? (
+                  <div className="flex justify-center items-center py-12">
+                    <div className="animate-spin w-8 h-8 border-4 border-primary border-t-transparent rounded-full"></div>
+                  </div>
+                ) : resources.length > 0 ? (
+                  <div className="space-y-4">
+                    {resources.map((resource: any) => (
+                      <Card key={resource.id} className="overflow-hidden">
+                        <div className="flex flex-col sm:flex-row">
+                          {resource.imageUrl && (
+                            <div className="sm:w-48 h-32 overflow-hidden">
+                              <img 
+                                src={resource.imageUrl} 
+                                alt={resource.title} 
+                                className="w-full h-full object-cover"
+                              />
+                            </div>
+                          )}
+                          <div className="flex-1 p-4">
+                            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2">
+                              <div>
+                                <h3 className="font-medium text-lg">{resource.title}</h3>
+                                <div className="flex items-center gap-2 my-1">
+                                  <Badge variant="outline">{resource.category}</Badge>
+                                  {resource.isPublished ? (
+                                    <Badge variant="default" className="bg-green-600">Published</Badge>
+                                  ) : (
+                                    <Badge variant="secondary">Draft</Badge>
+                                  )}
+                                </div>
+                                <p className="text-muted-foreground text-sm line-clamp-2">
+                                  {resource.description}
+                                </p>
+                              </div>
+                              <div className="flex sm:flex-col gap-2 mt-2 sm:mt-0">
+                                <Button 
+                                  variant="outline" 
+                                  size="sm"
+                                  onClick={() => handleEditResource(resource)}
+                                >
+                                  Edit
+                                </Button>
+                                <Button 
+                                  variant="destructive" 
+                                  size="sm"
+                                  onClick={() => handleDeleteResource(resource.id)}
+                                >
+                                  <Trash2 className="h-4 w-4" />
+                                </Button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </Card>
+                    ))}
+                  </div>
                 ) : (
-                  <div className="text-center py-10 text-gray-500">
-                    <p>Select a resource from the list or add a new one</p>
+                  <div className="text-center py-12">
+                    <FileQuestion className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
+                    <h3 className="text-xl font-medium mb-2">No resources yet</h3>
+                    <p className="text-muted-foreground mb-4">
+                      Add your first resource to get started
+                    </p>
+                    <Button onClick={() => setIsAddMode(true)}>
+                      <Plus className="h-4 w-4 mr-2" />
+                      Add Resource
+                    </Button>
                   </div>
                 )}
               </CardContent>
             </Card>
           </div>
+
+          {/* Resource Form */}
+          {isAddMode && (
+            <div className="lg:col-span-1">
+              <Card>
+                <CardHeader>
+                  <CardTitle>{editingResource ? 'Edit Resource' : 'Add Resource'}</CardTitle>
+                  <CardDescription>
+                    {editingResource 
+                      ? 'Update resource details' 
+                      : 'Create a new downloadable resource'}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <Form {...form}>
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                      <FormField
+                        control={form.control}
+                        name="title"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Title</FormLabel>
+                            <FormControl>
+                              <Input placeholder="Tax Guide 2025" {...field} />
+                            </FormControl>
+                            <FormDescription>
+                              Name of the resource
+                            </FormDescription>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      
+                      <FormField
+                        control={form.control}
+                        name="category"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Category</FormLabel>
+                            <Select 
+                              onValueChange={field.onChange} 
+                              defaultValue={field.value}
+                              value={field.value}
+                            >
+                              <FormControl>
+                                <SelectTrigger>
+                                  <SelectValue placeholder="Select a category" />
+                                </SelectTrigger>
+                              </FormControl>
+                              <SelectContent>
+                                {resourceCategories.map((category) => (
+                                  <SelectItem 
+                                    key={category.value} 
+                                    value={category.value}
+                                  >
+                                    {category.label}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                            <FormDescription>
+                              Type of resource
+                            </FormDescription>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      
+                      <FormField
+                        control={form.control}
+                        name="description"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Description</FormLabel>
+                            <FormControl>
+                              <Textarea 
+                                placeholder="A comprehensive guide to tax planning for small businesses..." 
+                                className="min-h-24" 
+                                {...field} 
+                              />
+                            </FormControl>
+                            <FormDescription>
+                              Brief description of the resource
+                            </FormDescription>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      
+                      <FormField
+                        control={form.control}
+                        name="fileUrl"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>File URL</FormLabel>
+                            <FormControl>
+                              <Input 
+                                placeholder="https://example.com/file.pdf" 
+                                {...field} 
+                              />
+                            </FormControl>
+                            <FormDescription>
+                              URL to the downloadable file
+                            </FormDescription>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      
+                      <FormField
+                        control={form.control}
+                        name="imageUrl"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Image</FormLabel>
+                            <FormControl>
+                              <MediaSelector
+                                currentImageUrl={field.value}
+                                onImageSelected={handleImageSelected}
+                                businessId={tenant?.id || '0'}
+                              />
+                            </FormControl>
+                            <FormDescription>
+                              Optional thumbnail image
+                            </FormDescription>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      
+                      <FormField
+                        control={form.control}
+                        name="isPublished"
+                        render={({ field }) => (
+                          <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+                            <div className="space-y-0.5">
+                              <FormLabel className="text-base">
+                                Published
+                              </FormLabel>
+                              <FormDescription>
+                                Make this resource visible to clients
+                              </FormDescription>
+                            </div>
+                            <FormControl>
+                              <Switch
+                                checked={field.value}
+                                onCheckedChange={field.onChange}
+                              />
+                            </FormControl>
+                          </FormItem>
+                        )}
+                      />
+                      
+                      <div className="flex justify-end gap-2">
+                        <Button 
+                          type="button" 
+                          variant="outline" 
+                          onClick={resetForm}
+                        >
+                          Cancel
+                        </Button>
+                        <Button type="submit">
+                          <Save className="h-4 w-4 mr-2" />
+                          {editingResource ? 'Update' : 'Save'} Resource
+                        </Button>
+                      </div>
+                    </form>
+                  </Form>
+                </CardContent>
+              </Card>
+            </div>
+          )}
         </div>
       </div>
     </AdminLayout>
-  );
-}
-
-// Resource list component
-function ResourceList({ 
-  resources, 
-  selectedId, 
-  onSelect, 
-  onAdd, 
-  isLoading 
-}: { 
-  resources: Resource[], 
-  selectedId: number | null, 
-  onSelect: (id: number | null) => void, 
-  onAdd: () => void,
-  isLoading: boolean 
-}) {
-  if (isLoading) {
-    return (
-      <div className="py-6 text-center">
-        <Loader2 className="animate-spin h-6 w-6 mx-auto" />
-        <p className="mt-2 text-sm text-gray-500">Loading resources...</p>
-      </div>
-    );
-  }
-
-  return (
-    <div>
-      <div className="space-y-2 mb-4">
-        {resources.length === 0 ? (
-          <p className="text-center py-4 text-sm text-gray-500">No resources added yet</p>
-        ) : (
-          resources.map((resource, index) => (
-            <div 
-              key={resource.id || `new-${index}`}
-              className={`p-3 rounded-md cursor-pointer ${
-                selectedId === resource.id ? "bg-accent" : "hover:bg-gray-100"
-              }`}
-              onClick={() => onSelect(resource.id || null)}
-            >
-              <p className="font-medium">{resource.title || "Untitled Resource"}</p>
-              {!resource.isPublished && (
-                <span className="text-sm text-orange-500">Draft</span>
-              )}
-            </div>
-          ))
-        )}
-      </div>
-      <Button onClick={onAdd} variant="outline" className="w-full">
-        <Plus className="h-4 w-4 mr-2" />
-        Add New Resource
-      </Button>
-    </div>
-  );
-}
-
-// Resource editor component
-function ResourceEditor({ 
-  resource, 
-  onSave, 
-  onUpdate, 
-  onDelete, 
-  isPending 
-}: { 
-  resource: Resource, 
-  onSave: (resource: Resource) => void, 
-  onUpdate: (field: keyof Resource, value: any) => void,
-  onDelete: () => void,
-  isPending: boolean 
-}) {
-  return (
-    <div className="space-y-4">
-      <div>
-        <Label htmlFor="title">Title</Label>
-        <Input 
-          id="title"
-          value={resource.title} 
-          onChange={(e) => onUpdate("title", e.target.value)}
-          placeholder="Resource title"
-        />
-      </div>
-      
-      <div>
-        <Label htmlFor="description">Description</Label>
-        <Textarea 
-          id="description"
-          value={resource.description} 
-          onChange={(e) => onUpdate("description", e.target.value)}
-          placeholder="Describe this resource"
-          rows={4}
-        />
-      </div>
-      
-      <div>
-        <Label htmlFor="link">Link (Optional)</Label>
-        <Input 
-          id="link"
-          value={resource.link || ""} 
-          onChange={(e) => onUpdate("link", e.target.value)}
-          placeholder="https://example.com/resource"
-        />
-      </div>
-      
-      <div>
-        <Label>Image</Label>
-        <MediaSelector
-          currentImageUrl={resource.imageUrl}
-          onImageSelected={(url) => onUpdate("imageUrl", url)}
-          businessId="progress_main"
-        />
-      </div>
-      
-      <div className="flex items-center space-x-2">
-        <Switch 
-          id="isPublished"
-          checked={resource.isPublished} 
-          onCheckedChange={(checked) => onUpdate("isPublished", checked)}
-        />
-        <Label htmlFor="isPublished">Publish this resource</Label>
-      </div>
-      
-      <div className="flex justify-between pt-4">
-        <Button 
-          onClick={onDelete} 
-          variant="outline" 
-          disabled={isPending}
-        >
-          <Trash2 className="h-4 w-4 mr-2" />
-          Delete
-        </Button>
-        
-        <Button 
-          onClick={() => onSave(resource)} 
-          disabled={!resource.title || isPending}
-        >
-          {isPending ? (
-            <>
-              <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-              Saving...
-            </>
-          ) : (
-            <>
-              <Save className="h-4 w-4 mr-2" />
-              Save Resource
-            </>
-          )}
-        </Button>
-      </div>
-    </div>
   );
 }

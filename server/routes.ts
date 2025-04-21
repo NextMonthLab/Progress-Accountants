@@ -28,6 +28,16 @@ import { registerSystemRoutes } from "./controllers/systemController";
 import { registerClientRoutes } from "./controllers/clientController";
 import { registerBlogRoutes } from "./controllers/registerBlogRoutes";
 import { registerOpenAIRoutes } from "./controllers/openai/registerOpenAIRoutes";
+import { 
+  getAllResources, 
+  getPublicResources, 
+  getResourceById, 
+  createResource, 
+  updateResource, 
+  deleteResource, 
+  updateResourceOrder 
+} from "./controllers/resourcesController";
+import { registerResourcesRoutes } from "./controllers/resourcesController";
 import { registerCompanionRoutes } from "./controllers/companionController";
 import { registerCompanionConfigRoutes } from "./controllers/registerCompanionConfigRoutes";
 import { setupAuth, hashPassword } from "./auth";
@@ -223,6 +233,49 @@ export async function registerRoutes(app: Express): Promise<Server> {
   
   // Register companion configuration routes
   registerCompanionConfigRoutes(app);
+  
+  // Register resources routes
+  registerResourcesRoutes(app);
+  
+  // Page completion endpoint
+  app.post("/api/pages/complete", async (req, res) => {
+    try {
+      // Validate request
+      const pageSchema = z.object({
+        path: z.string().min(1),
+        displayName: z.string().min(1),
+        order: z.number().optional().default(99)
+      });
+      
+      const { path, displayName, order } = pageSchema.parse(req.body);
+      
+      // Get current project context
+      const projectContext = await storage.getProjectContext();
+      
+      // Update page status
+      if (!projectContext.pageStatus) {
+        projectContext.pageStatus = {};
+      }
+      
+      projectContext.pageStatus[path] = {
+        displayName,
+        complete: true,
+        order
+      };
+      
+      // Save updated context
+      await storage.updateProjectContext(projectContext);
+      
+      // Return success
+      res.status(200).json({
+        success: true,
+        message: `${displayName} page marked as complete`,
+        path
+      });
+    } catch (error) {
+      handleApiError(res, error, "Failed to mark page as complete");
+    }
+  });
   // Contact form submission endpoint
   app.post("/api/contact", async (req, res) => {
     try {

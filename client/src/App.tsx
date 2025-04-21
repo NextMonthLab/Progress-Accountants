@@ -48,6 +48,8 @@ import LaunchReadyPage from "@/pages/LaunchReadyPage";
 import OnboardingWelcomePage from "@/pages/OnboardingWelcomePage";
 import WebsiteIntentPage from "@/pages/WebsiteIntentPage";
 import AdminSettingsPage from "@/pages/AdminSettingsPage";
+import ResourcesPage from "@/pages/ResourcesPage";
+import ResourcesSetupPage from "@/pages/ResourcesSetupPage";
 import SEOConfigManagerPage from "@/pages/SEOConfigManagerPage";
 import BrandManagerPage from "@/pages/BrandManagerPage";
 import CompanionSettingsPage from "@/pages/admin/companion-settings";
@@ -94,6 +96,7 @@ function Router() {
       <Route path="/services/:slug" component={ServiceDetailPage} />
       <Route path="/contact" component={ContactPage} />
       <Route path="/testimonials" component={TestimonialsPage} />
+      <Route path="/resources" component={ResourcesPage} />
       <Route path="/" component={HomePage} />
 
       {/* Super Admin routes (require super admin privileges) */}
@@ -198,6 +201,7 @@ function Router() {
       <ProtectedRoute path="/services-setup" component={ServicesSetupPage} />
       <ProtectedRoute path="/contact-setup" component={ContactSetupPage} />
       <ProtectedRoute path="/testimonials-setup" component={TestimonialsSetupPage} />
+      <ProtectedRoute path="/resources-setup" component={ResourcesSetupPage} />
       <ProtectedRoute path="/faq-setup" component={FAQSetupPage} />
       <ProtectedRoute path="/launch-ready" component={LaunchReadyPage} />
       <ProtectedRoute path="/media" component={MediaManagementPage} />

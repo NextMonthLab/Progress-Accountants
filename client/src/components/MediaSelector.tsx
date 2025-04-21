@@ -1,13 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Image, Upload, X } from 'lucide-react';
-import { useQuery } from '@tanstack/react-query';
-import { useToast } from '@/hooks/use-toast';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { ScrollArea } from '@/components/ui/scroll-area';
+import { useToast } from '@/hooks/use-toast';
+import { Image as ImageIcon, Upload, Link as LinkIcon } from 'lucide-react';
+import { useQuery } from '@tanstack/react-query';
 
 interface MediaSelectorProps {
   currentImageUrl?: string;
@@ -16,190 +15,233 @@ interface MediaSelectorProps {
 }
 
 export default function MediaSelector({ currentImageUrl, onImageSelected, businessId }: MediaSelectorProps) {
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const [uploadingFile, setUploadingFile] = useState<File | null>(null);
-  const [isUploading, setIsUploading] = useState(false);
   const { toast } = useToast();
+  const [open, setOpen] = useState(false);
+  const [tab, setTab] = useState('upload');
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [externalUrl, setExternalUrl] = useState('');
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Fetch existing media assets for the business
-  const { data: mediaFiles, isLoading, refetch } = useQuery({
-    queryKey: [`/api/media/files/${businessId}`],
-    queryFn: async () => {
-      const res = await fetch(`/api/media/files/${businessId}`);
-      if (!res.ok) throw new Error('Failed to fetch media files');
-      return res.json();
-    }
+  // Fetch user's media uploads
+  const { data: mediaUploads = [], refetch: refetchMedia } = useQuery({
+    queryKey: ['/api/media/uploads', businessId],
+    enabled: open && tab === 'library',
   });
 
-  // Handle file selection for upload
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files.length > 0) {
-      setUploadingFile(e.target.files[0]);
+  const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Check file size (limit to 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      toast({
+        title: 'File too large',
+        description: 'Maximum file size is 5MB',
+        variant: 'destructive',
+      });
+      return;
     }
-  };
 
-  // Handle file upload
-  const handleUpload = async () => {
-    if (!uploadingFile) return;
-
-    setIsUploading(true);
+    // Create form data
     const formData = new FormData();
-    formData.append('file', uploadingFile);
-    formData.append('business_id', businessId);
-    formData.append('description', 'Uploaded from media selector');
-
+    formData.append('file', file);
+    formData.append('businessId', businessId);
+    
     try {
+      setUploadProgress(10);
+      
+      // Upload file
       const response = await fetch('/api/media/upload', {
         method: 'POST',
         body: formData,
       });
-
+      
+      setUploadProgress(90);
+      
       if (!response.ok) {
         throw new Error('Upload failed');
       }
-
-      const result = await response.json();
+      
+      const data = await response.json();
+      setUploadProgress(100);
+      
+      // Notify success
       toast({
-        title: "Upload successful",
-        description: "Your file has been uploaded",
+        title: 'Upload Successful',
+        description: 'Your image has been uploaded',
       });
-      setUploadingFile(null);
-      refetch(); // Refresh the media list
+      
+      // Select the uploaded image
+      onImageSelected(data.url);
+      
+      // Refresh media library
+      refetchMedia();
+      
+      // Close dialog
+      setOpen(false);
+      
+      // Reset progress
+      setTimeout(() => setUploadProgress(0), 500);
     } catch (error) {
+      console.error('Upload error:', error);
       toast({
-        title: "Upload failed",
-        description: error.message,
-        variant: "destructive",
+        title: 'Upload Failed',
+        description: 'There was an error uploading your image',
+        variant: 'destructive',
       });
-    } finally {
-      setIsUploading(false);
+      setUploadProgress(0);
     }
   };
 
-  // Handle image selection
-  const selectImage = (url: string) => {
-    onImageSelected(url);
-    setDialogOpen(false);
+  const handleExternalUrl = () => {
+    if (!externalUrl.trim()) {
+      toast({
+        title: 'Invalid URL',
+        description: 'Please enter a valid URL',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    // Basic URL validation
+    try {
+      new URL(externalUrl);
+    } catch (e) {
+      toast({
+        title: 'Invalid URL',
+        description: 'Please enter a valid URL starting with http:// or https://',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    // Select the external URL
+    onImageSelected(externalUrl);
+    
+    // Close dialog
+    setOpen(false);
   };
 
-  // Handle removal of current image
-  const removeImage = () => {
-    onImageSelected('');
+  const selectFromLibrary = (url: string) => {
+    onImageSelected(url);
+    setOpen(false);
   };
 
   return (
-    <div>
+    <div className="space-y-4">
       {currentImageUrl ? (
-        <div className="relative mb-2 inline-block">
+        <div className="relative border rounded-md overflow-hidden">
           <img 
             src={currentImageUrl} 
             alt="Selected media" 
-            className="w-32 h-32 object-cover rounded-md border border-border"
+            className="w-full max-h-[200px] object-cover"
           />
-          <Button 
-            variant="destructive" 
-            size="icon" 
-            className="absolute -top-2 -right-2 rounded-full w-6 h-6"
-            onClick={removeImage}
-          >
-            <X className="h-3 w-3" />
-          </Button>
+          <div className="absolute inset-0 bg-black/60 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
+            <Button variant="outline" onClick={() => setOpen(true)}>
+              Change Image
+            </Button>
+          </div>
         </div>
       ) : (
-        <div className="w-32 h-32 border border-dashed border-gray-300 rounded-md flex items-center justify-center bg-gray-50 mb-2">
-          <Image className="h-8 w-8 text-gray-400" />
-        </div>
+        <Button onClick={() => setOpen(true)} variant="outline" className="w-full h-32 flex flex-col gap-2">
+          <ImageIcon className="h-6 w-6" />
+          <span>Select Image</span>
+        </Button>
       )}
 
-      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogTrigger asChild>
-          <Button variant="outline" className="mt-2">
-            <Image className="h-4 w-4 mr-2" /> 
-            {currentImageUrl ? 'Change Image' : 'Select Image'}
-          </Button>
-        </DialogTrigger>
-        <DialogContent className="sm:max-w-[700px]">
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogContent className="sm:max-w-[550px]">
           <DialogHeader>
-            <DialogTitle>Media Library</DialogTitle>
+            <DialogTitle>Select Media</DialogTitle>
             <DialogDescription>
-              Select an existing image or upload a new one
+              Choose an image from your library, upload a new one, or use an external URL.
             </DialogDescription>
           </DialogHeader>
 
-          <Tabs defaultValue="browse">
-            <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="browse">Browse Library</TabsTrigger>
-              <TabsTrigger value="upload">Upload New</TabsTrigger>
+          <Tabs value={tab} onValueChange={setTab}>
+            <TabsList className="grid grid-cols-3 w-full mb-4">
+              <TabsTrigger value="upload">Upload</TabsTrigger>
+              <TabsTrigger value="library">Media Library</TabsTrigger>
+              <TabsTrigger value="external">External URL</TabsTrigger>
             </TabsList>
             
-            {/* Browse existing media */}
-            <TabsContent value="browse" className="pt-4">
-              {isLoading ? (
-                <div className="text-center py-8">
-                  <p className="text-sm text-gray-500">Loading media library...</p>
-                </div>
-              ) : mediaFiles?.data && mediaFiles.data.length > 0 ? (
-                <ScrollArea className="h-[400px] pr-4">
-                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-                    {mediaFiles.data.map((file: any) => (
-                      <div 
-                        key={file.id} 
-                        className="relative group cursor-pointer border rounded-md overflow-hidden"
-                        onClick={() => selectImage(file.publicUrl)}
-                      >
-                        <img 
-                          src={file.publicUrl} 
-                          alt={file.fileName}
-                          className="w-full h-28 object-cover transition-transform group-hover:scale-105"
-                        />
-                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
-                          <span className="text-white text-xs font-medium px-2 py-1 bg-primary/80 rounded">Select</span>
-                        </div>
-                      </div>
-                    ))}
+            <TabsContent value="upload" className="space-y-4">
+              <div className="grid w-full items-center gap-4">
+                <Input 
+                  id="file-upload" 
+                  type="file" 
+                  className="hidden" 
+                  accept="image/*" 
+                  onChange={handleUpload}
+                  ref={fileInputRef}
+                />
+                <Button 
+                  variant="outline" 
+                  className="h-32 border-dashed w-full flex flex-col gap-2"
+                  onClick={() => fileInputRef.current?.click()}
+                >
+                  <Upload className="h-6 w-6" />
+                  <span>Click to upload an image</span>
+                </Button>
+                
+                {uploadProgress > 0 && (
+                  <div className="w-full bg-secondary rounded-full h-2.5">
+                    <div 
+                      className="bg-primary h-2.5 rounded-full" 
+                      style={{ width: `${uploadProgress}%` }}
+                    />
                   </div>
-                </ScrollArea>
+                )}
+              </div>
+            </TabsContent>
+            
+            <TabsContent value="library" className="space-y-4">
+              {mediaUploads.length > 0 ? (
+                <div className="grid grid-cols-3 gap-2">
+                  {mediaUploads.map((item: any) => (
+                    <div 
+                      key={item.id} 
+                      className="border rounded-md overflow-hidden cursor-pointer hover:opacity-80 transition-opacity"
+                      onClick={() => selectFromLibrary(item.url)}
+                    >
+                      <img 
+                        src={item.url} 
+                        alt={item.filename} 
+                        className="w-full h-20 object-cover"
+                      />
+                    </div>
+                  ))}
+                </div>
               ) : (
-                <div className="text-center py-8">
-                  <p className="text-sm text-gray-500">No media files found. Upload one to get started.</p>
+                <div className="text-center py-8 text-muted-foreground">
+                  <ImageIcon className="mx-auto h-12 w-12 mb-2" />
+                  <p>No media uploads yet</p>
                 </div>
               )}
             </TabsContent>
             
-            {/* Upload new media */}
-            <TabsContent value="upload" className="pt-4">
-              <div className="space-y-4">
-                <div>
-                  <Label htmlFor="file-upload">Select File</Label>
+            <TabsContent value="external" className="space-y-4">
+              <div className="grid w-full items-center gap-4">
+                <Label htmlFor="external-url">External Image URL</Label>
+                <div className="flex gap-2">
                   <Input 
-                    id="file-upload" 
-                    type="file" 
-                    accept="image/*" 
-                    onChange={handleFileChange}
-                    disabled={isUploading}
+                    id="external-url" 
+                    placeholder="https://example.com/image.jpg" 
+                    value={externalUrl}
+                    onChange={(e) => setExternalUrl(e.target.value)}
                   />
+                  <Button onClick={handleExternalUrl}>
+                    <LinkIcon className="h-4 w-4 mr-2" />
+                    Use
+                  </Button>
                 </div>
-                
-                {uploadingFile && (
-                  <div className="p-4 border rounded-md bg-gray-50">
-                    <p className="text-sm font-medium">{uploadingFile.name}</p>
-                    <p className="text-xs text-gray-500">
-                      {(uploadingFile.size / 1024 / 1024).toFixed(2)} MB
-                    </p>
-                  </div>
-                )}
-                
-                <Button 
-                  className="w-full" 
-                  onClick={handleUpload}
-                  disabled={!uploadingFile || isUploading}
-                >
-                  <Upload className="h-4 w-4 mr-2" />
-                  {isUploading ? 'Uploading...' : 'Upload File'}
-                </Button>
               </div>
             </TabsContent>
           </Tabs>
+
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setOpen(false)}>Cancel</Button>
+          </DialogFooter>
         </DialogContent>
       </Dialog>
     </div>
