@@ -323,14 +323,29 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Register tool marketplace routes
   registerToolMarketplaceRoutes(app);
   
-  // Register NextMonth marketplace integration routes
+  // ============= NEXTMONTH MARKETPLACE API ENDPOINTS =============
+  // Get available tools from NextMonth marketplace
   app.get("/api/nextmonth/marketplace/tools", getAvailableTools);
+  
+  // Get tool categories from NextMonth marketplace
   app.get("/api/nextmonth/marketplace/categories", getToolCategories);
+  
+  // Get installed tools from NextMonth marketplace
   app.get("/api/nextmonth/marketplace/installed", getInstalledTools);
+  
+  // Install a tool from NextMonth marketplace
   app.post("/api/nextmonth/marketplace/install/:toolId", installTool);
+  
+  // Uninstall a tool from NextMonth marketplace
   app.post("/api/nextmonth/marketplace/uninstall/:installationId", uninstallTool);
-  app.get("/api/nextmonth/marketplace/config/:installationId", getToolConfiguration);
-  app.patch("/api/nextmonth/marketplace/config/:installationId", updateToolConfiguration);
+  
+  // Get tool configuration from NextMonth marketplace
+  app.get("/api/nextmonth/marketplace/tools/:installationId/config", getToolConfiguration);
+  
+  // Update tool configuration in NextMonth marketplace
+  app.patch("/api/nextmonth/marketplace/tools/:installationId/config", updateToolConfiguration);
+  
+
   
   // Page completion endpoint
   app.post("/api/pages/complete", async (req, res) => {

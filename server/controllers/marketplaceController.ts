@@ -3,7 +3,10 @@ import axios from "axios";
 import { db } from "../db";
 import { eq } from "drizzle-orm";
 import { tools, toolInstallations } from "@shared/schema";
-import { getEnvVar } from "../utils";
+// Import environment variable utility function
+const getEnvVar = (key: string, fallback: string = ''): string => {
+  return process.env[key] || fallback;
+};
 
 // Import marketplace client adapter
 import { createClient } from '../marketplace/client-marketplace-adapter';
@@ -13,7 +16,7 @@ const tenantId = process.env.TENANT_ID || 'progress-accountants-tenant-id';
 const marketplaceClient = createClient(
   tenantId,
   process.env.NEXTMONTH_DEV_URL || 'https://nextmonth-dev.replit.app',
-  process.env.MARKETPLACE_API_KEY
+  process.env.MARKETPLACE_API_KEY || null
 );
 
 /**
