@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { User } from '@shared/schema';
 import axios from "axios";
 import { db } from "../db";
 import { eq } from "drizzle-orm";
@@ -9,15 +10,37 @@ const getEnvVar = (key: string, fallback: string = ''): string => {
 };
 
 // Import marketplace client adapter
-import { createClient } from '../marketplace/client-marketplace-adapter';
+// Note: this is using dynamic import since it's an ESM module
+const importMarketplaceAdapter = async () => {
+  try {
+    return await import('../marketplace/client-marketplace-adapter');
+  } catch (error) {
+    console.error('Error importing marketplace adapter:', error);
+    throw error;
+  }
+};
 
 // Initialize marketplace client with tenant ID and (optional) API key
 const tenantId = process.env.TENANT_ID || 'progress-accountants-tenant-id';
-const marketplaceClient = createClient(
-  tenantId,
-  process.env.NEXTMONTH_DEV_URL || 'https://nextmonth-dev.replit.app',
-  process.env.MARKETPLACE_API_KEY || null
-);
+let marketplaceClient: any = null; 
+
+// We'll initialize the client lazily on first use
+const getMarketplaceClient = async () => {
+  if (!marketplaceClient) {
+    try {
+      const adapter = await importMarketplaceAdapter();
+      marketplaceClient = adapter.createClient(
+        tenantId,
+        process.env.NEXTMONTH_DEV_URL || 'https://nextmonth-dev.replit.app',
+        process.env.MARKETPLACE_API_KEY || null
+      );
+    } catch (error) {
+      console.error('Failed to initialize marketplace client:', error);
+      throw new Error('Marketplace client initialization failed');
+    }
+  }
+  return marketplaceClient;
+};
 
 /**
  * Get all available tools from marketplace
@@ -26,8 +49,11 @@ export async function getAvailableTools(req: Request, res: Response) {
   try {
     const category = req.query.category as string | undefined;
     
+    // Get marketplace client
+    const client = await getMarketplaceClient();
+    
     // Get tools from NextMonth marketplace, with optional category filter
-    const tools = await marketplaceClient.getAvailableTools(
+    const tools = await client.getAvailableTools(
       category ? { category } : {}
     );
     
@@ -45,7 +71,11 @@ export async function getAvailableTools(req: Request, res: Response) {
  */
 export async function getToolCategories(req: Request, res: Response) {
   try {
-    const categories = await marketplaceClient.getCategories();
+    // Get marketplace client
+    const client = await getMarketplaceClient();
+    
+    // Get categories from NextMonth marketplace
+    const categories = await client.getCategories();
     res.json(categories);
   } catch (error: any) {
     console.error('Error fetching tool categories:', error);
@@ -60,7 +90,11 @@ export async function getToolCategories(req: Request, res: Response) {
  */
 export async function getInstalledTools(req: Request, res: Response) {
   try {
-    const installedTools = await marketplaceClient.getInstalledTools();
+    // Get marketplace client
+    const client = await getMarketplaceClient();
+    
+    // Get installed tools from NextMonth marketplace
+    const installedTools = await client.getInstalledTools();
     res.json(installedTools);
   } catch (error: any) {
     console.error('Error fetching installed tools:', error);
@@ -87,8 +121,11 @@ export async function installTool(req: Request, res: Response) {
     // Use default configuration if none provided
     const configuration = req.body.configuration || {};
     
+    // Get marketplace client
+    const client = await getMarketplaceClient();
+    
     // Install the tool via marketplace client
-    const result = await marketplaceClient.installTool(
+    const result = await client.installTool(
       toolId,
       configuration,
       userEmail
