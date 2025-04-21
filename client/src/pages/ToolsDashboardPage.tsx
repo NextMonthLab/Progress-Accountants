@@ -9,7 +9,8 @@ import {
   Mail, 
   Calendar, 
   Globe,
-  PanelLeft 
+  PanelLeft,
+  Image
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -39,6 +40,15 @@ export default function ToolsDashboardPage() {
   
   // Tool items data
   const toolItems: ToolItem[] = [
+    {
+      id: 'social-media-generator',
+      name: 'Social Media Generator',
+      description: 'Create optimized posts for any social media platform',
+      icon: <Image className="h-6 w-6" />,
+      category: ['marketing', 'content'],
+      path: '/tools/social-media-generator',
+      isPopular: true,
+    },
     {
       id: 'financial-dashboard',
       name: 'Financial Dashboard',

@@ -21,20 +21,20 @@ const rolePermissions = {
     'metrics:read', 'metrics:admin',
     'template:create', 'template:read', 'template:update', 'template:delete',
     'page:create', 'page:read', 'page:update', 'page:delete',
-    'tool:create', 'tool:read', 'tool:update', 'tool:delete',
+    'tool:create', 'tool:read', 'tool:update', 'tool:delete', 'use_tools',
     'media:create', 'media:read', 'media:update', 'media:delete'
   ],
   admin: [
     'user:create', 'user:read', 'user:update',
     'settings:read', 'settings:update',
     'page:create', 'page:read', 'page:update', 'page:delete',
-    'tool:create', 'tool:read', 'tool:update', 'tool:delete',
+    'tool:create', 'tool:read', 'tool:update', 'tool:delete', 'use_tools',
     'media:create', 'media:read', 'media:update', 'media:delete',
     'metrics:read'
   ],
   editor: [
     'page:read', 'page:update',
-    'tool:read', 'tool:update',
+    'tool:read', 'tool:update', 'use_tools',
     'media:create', 'media:read', 'media:update'
   ],
   public: [

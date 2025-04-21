@@ -57,6 +57,8 @@ import CreateFormWizard from "@/pages/tools/wizards/CreateFormWizard";
 import CreateCalculatorWizard from "@/pages/tools/wizards/CreateCalculatorWizard";
 import CreateDashboardWizard from "@/pages/tools/wizards/CreateDashboardWizard";
 import CreateEmbedWizard from "@/pages/tools/wizards/CreateEmbedWizard";
+// Import tool pages
+import SocialMediaGeneratorPage from "@/pages/tools/social-media-generator";
 import { DocumentHead } from "@/components/DocumentHead";
 import MainLayout from "@/layouts/MainLayout";
 import { ClientDataProvider, withAuth } from "@/components/ClientDataProvider";
@@ -161,6 +163,11 @@ function Router() {
       <ProtectedRoute path="/tools/create/calculator" component={CreateCalculatorWizard} />
       <ProtectedRoute path="/tools/create/dashboard" component={CreateDashboardWizard} />
       <ProtectedRoute path="/tools/create/embed" component={CreateEmbedWizard} />
+      <ProtectedRoute 
+        path="/tools/social-media-generator" 
+        component={SocialMediaGeneratorPage} 
+        allowedRoles={['admin', 'super_admin', 'editor']} 
+      />
       <ProtectedRoute path="/marketplace" component={EnhancedMarketplacePage} />
       <ProtectedRoute path="/installed-tools" component={InstalledToolsPage} />
       <ProtectedRoute path="/module-gallery" component={MarketplacePage} />
@@ -259,6 +266,7 @@ function FirstTimeUserDetector({ children }: { children: React.ReactNode }) {
     const isAllowedPath = 
       allowedPaths.includes(location) || 
       location.startsWith('/tools/create/') ||
+      location.startsWith('/tools/social-media-generator') ||
       location.startsWith('/homepage-setup') || 
       location.startsWith('/foundation-pages') || 
       location.startsWith('/launch-ready') ||
