@@ -82,6 +82,14 @@ export interface IStorage {
   getUserByUsername(username: string): Promise<User | undefined>;
   createUser(user: InsertUser): Promise<User>;
   
+  // Tenant operations
+  getTenant(id: string): Promise<Tenant | undefined>;
+  getTenantByDomain(domain: string): Promise<Tenant | undefined>;
+  saveTenant(tenant: InsertTenant): Promise<Tenant>;
+  updateTenant(id: string, data: Partial<Tenant>): Promise<Tenant | undefined>;
+  getTenantCustomization(tenantId: string): Promise<TenantCustomization | undefined>;
+  updateTenantCustomization(tenantId: string, customization: TenantCustomization): Promise<TenantCustomization | undefined>;
+  
   // Business identity operations
   getBusinessIdentity(): Promise<BusinessIdentity | undefined>;
   saveBusinessIdentity(data: InsertBusinessIdentity): Promise<BusinessIdentity>;
@@ -192,6 +200,87 @@ export class DatabaseStorage implements IStorage {
     });
   }
   
+  // Tenant operations
+  async getTenant(id: string): Promise<Tenant | undefined> {
+    try {
+      const [tenant] = await db.select().from(tenants).where(eq(tenants.id, id));
+      return tenant;
+    } catch (error) {
+      console.error(`Error fetching tenant with id ${id}:`, error);
+      return undefined;
+    }
+  }
+
+  async getTenantByDomain(domain: string): Promise<Tenant | undefined> {
+    try {
+      const [tenant] = await db.select().from(tenants).where(eq(tenants.domain, domain));
+      return tenant;
+    } catch (error) {
+      console.error(`Error fetching tenant with domain ${domain}:`, error);
+      return undefined;
+    }
+  }
+
+  async saveTenant(tenant: InsertTenant): Promise<Tenant> {
+    try {
+      const [savedTenant] = await db.insert(tenants).values(tenant).returning();
+      return savedTenant;
+    } catch (error) {
+      console.error("Error saving tenant:", error);
+      throw error;
+    }
+  }
+
+  async updateTenant(id: string, data: Partial<Tenant>): Promise<Tenant | undefined> {
+    try {
+      const [updatedTenant] = await db
+        .update(tenants)
+        .set({ ...data, updatedAt: new Date() })
+        .where(eq(tenants.id, id))
+        .returning();
+      return updatedTenant;
+    } catch (error) {
+      console.error(`Error updating tenant with id ${id}:`, error);
+      return undefined;
+    }
+  }
+
+  async getTenantCustomization(tenantId: string): Promise<TenantCustomization | undefined> {
+    try {
+      const tenant = await this.getTenant(tenantId);
+      if (!tenant || !tenant.customization) {
+        return undefined;
+      }
+      
+      return tenant.customization as TenantCustomization;
+    } catch (error) {
+      console.error(`Error fetching customization for tenant ${tenantId}:`, error);
+      return undefined;
+    }
+  }
+
+  async updateTenantCustomization(tenantId: string, customization: TenantCustomization): Promise<TenantCustomization | undefined> {
+    try {
+      const [updatedTenant] = await db
+        .update(tenants)
+        .set({ 
+          customization: customization,
+          updatedAt: new Date() 
+        })
+        .where(eq(tenants.id, tenantId))
+        .returning();
+      
+      if (!updatedTenant) {
+        return undefined;
+      }
+      
+      return updatedTenant.customization as TenantCustomization;
+    } catch (error) {
+      console.error(`Error updating customization for tenant ${tenantId}:`, error);
+      return undefined;
+    }
+  }
+
   // User operations
   async getUser(id: number): Promise<User | undefined> {
     const [user] = await db.select().from(users).where(eq(users.id, id));

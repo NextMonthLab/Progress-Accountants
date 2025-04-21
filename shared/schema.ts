@@ -14,6 +14,7 @@ export const tenants = pgTable("tenants", {
   industry: varchar("industry", { length: 100 }),
   plan: varchar("plan", { length: 50 }).default("standard").notNull(), // standard, premium, enterprise
   theme: jsonb("theme"), // Theme configuration
+  customization: jsonb("customization"), // Client-specific customization (UI labels, tone, feature flags)
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
   parentTemplate: uuid("parent_template"), // Will add the reference constraint later
@@ -334,6 +335,42 @@ export const insertCreditUsageLogSchema = createInsertSchema(creditUsageLog).omi
 // Export types
 export type InsertTenant = z.infer<typeof insertTenantSchema>;
 export type Tenant = typeof tenants.$inferSelect;
+
+// Tenant customization interface
+export interface TenantCustomization {
+  uiLabels?: {
+    // System-wide labels that can be customized per tenant
+    siteName?: string;
+    dashboardTitle?: string;
+    toolsLabel?: string;
+    pagesLabel?: string;
+    marketplaceLabel?: string;
+    accountLabel?: string;
+    settingsLabel?: string;
+  };
+  tone?: {
+    // Communication tone preferences
+    formality: 'casual' | 'neutral' | 'formal';
+    personality: 'friendly' | 'professional' | 'technical';
+  };
+  featureFlags?: {
+    // Feature toggles for tenant-specific functionality
+    enablePodcastTools: boolean;
+    enableFinancialReporting: boolean;
+    enableClientPortal: boolean;
+    enableMarketplaceAccess: boolean;
+    enableCustomPages: boolean;
+  };
+  sectionsEnabled?: {
+    // Page sections that can be toggled on/off
+    servicesShowcase: boolean;
+    teamMembers: boolean;
+    testimonialsSlider: boolean;
+    blogPosts: boolean;
+    eventCalendar: boolean;
+    resourceCenter: boolean;
+  };
+}
 
 export type InsertUser = z.infer<typeof insertUserSchema>;
 export type User = typeof users.$inferSelect;
