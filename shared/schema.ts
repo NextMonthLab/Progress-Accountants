@@ -439,9 +439,44 @@ export type InsertToolRequest = z.infer<typeof insertToolRequestSchema>;
 export type ToolRequest = typeof toolRequests.$inferSelect;
 
 // Define relationships for tools
-export const toolsRelations = relations(tools, ({ one }) => ({
+export const toolsRelations = relations(tools, ({ one, many }) => ({
   creator: one(users, {
     fields: [tools.createdBy],
+    references: [users.id],
+  }),
+  pageIntegrations: many(pageToolIntegrations),
+}));
+
+// Page-Tool integrations table for connecting tools with pages
+export const pageToolIntegrations = pgTable("page_tool_integrations", {
+  id: serial("id").primaryKey(),
+  pageId: varchar("page_id", { length: 100 }).notNull(),
+  toolId: integer("tool_id").references(() => tools.id).notNull(),
+  position: varchar("position", { length: 20 }).default("bottom").notNull(), // top, middle, bottom
+  enabled: boolean("enabled").default(true).notNull(),
+  settings: jsonb("settings"), // Any custom settings for this integration
+  createdBy: integer("created_by").references(() => users.id),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export const insertPageToolIntegrationSchema = createInsertSchema(pageToolIntegrations).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export type InsertPageToolIntegration = z.infer<typeof insertPageToolIntegrationSchema>;
+export type PageToolIntegration = typeof pageToolIntegrations.$inferSelect;
+
+// Define relationships for page tool integrations
+export const pageToolIntegrationsRelations = relations(pageToolIntegrations, ({ one }) => ({
+  tool: one(tools, {
+    fields: [pageToolIntegrations.toolId],
+    references: [tools.id],
+  }),
+  creator: one(users, {
+    fields: [pageToolIntegrations.createdBy],
     references: [users.id],
   }),
 }));

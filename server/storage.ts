@@ -44,7 +44,10 @@ import {
   type InsertTool,
   toolRequests,
   type ToolRequest,
-  type InsertToolRequest
+  type InsertToolRequest,
+  pageToolIntegrations,
+  type PageToolIntegration,
+  type InsertPageToolIntegration
 } from "@shared/schema";
 import { PageMetadata, PageComplexityAssessment } from "@shared/page_metadata";
 import { db } from "./db";
@@ -160,6 +163,13 @@ export interface IStorage {
   saveToolRequest(request: InsertToolRequest): Promise<ToolRequest>;
   getToolRequestsByStatus(status: string): Promise<ToolRequest[]>;
   updateToolRequestStatus(id: number, status: string, processedAt?: Date): Promise<ToolRequest | undefined>;
+  
+  // Page-Tool Integration operations
+  getPageToolIntegrations(pageId: string): Promise<PageToolIntegration[]>;
+  getToolIntegrations(toolId: number): Promise<PageToolIntegration[]>;
+  savePageToolIntegration(integration: InsertPageToolIntegration): Promise<PageToolIntegration>;
+  updatePageToolIntegration(id: number, data: Partial<InsertPageToolIntegration>): Promise<PageToolIntegration | undefined>;
+  deletePageToolIntegration(id: number): Promise<boolean>;
   
   // Blueprint Export operations
   getClientRegistry(): Promise<ClientRegistry | undefined>;
