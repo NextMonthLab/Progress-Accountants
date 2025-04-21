@@ -13,7 +13,7 @@ const getEnvVar = (key: string, fallback: string = ''): string => {
 // Note: this is using dynamic import since it's an ESM module
 const importMarketplaceAdapter = async () => {
   try {
-    return await import('../marketplace/client-marketplace-adapter');
+    return await import('../marketplace/client-marketplace-adapter.js');
   } catch (error) {
     console.error('Error importing marketplace adapter:', error);
     throw error;
@@ -151,8 +151,11 @@ export async function uninstallTool(req: Request, res: Response) {
       return res.status(400).json({ error: 'Invalid installation ID' });
     }
     
+    // Get marketplace client
+    const client = await getMarketplaceClient();
+    
     // Uninstall the tool via marketplace client
-    const result = await marketplaceClient.uninstallTool(installationId);
+    const result = await client.uninstallTool(installationId);
     
     res.json(result);
   } catch (error: any) {
@@ -174,8 +177,11 @@ export async function getToolConfiguration(req: Request, res: Response) {
       return res.status(400).json({ error: 'Invalid installation ID' });
     }
     
+    // Get marketplace client
+    const client = await getMarketplaceClient();
+    
     // Get tool configuration via marketplace client
-    const config = await marketplaceClient.getToolConfiguration(installationId);
+    const config = await client.getToolConfiguration(installationId);
     
     res.json(config);
   } catch (error: any) {
@@ -201,8 +207,11 @@ export async function updateToolConfiguration(req: Request, res: Response) {
       return res.status(400).json({ error: 'Configuration data is required' });
     }
     
+    // Get marketplace client
+    const client = await getMarketplaceClient();
+    
     // Update tool configuration via marketplace client
-    const result = await marketplaceClient.updateToolConfiguration(
+    const result = await client.updateToolConfiguration(
       installationId,
       req.body.configuration
     );
