@@ -15,7 +15,8 @@ import {
   X,
   ChevronRight,
   MessageCircle,
-  FileText
+  FileText,
+  PlusCircle
 } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import { useState } from "react";
