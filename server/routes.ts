@@ -40,6 +40,7 @@ import {
 import { registerResourcesRoutes } from "./controllers/resourcesController";
 import { registerCompanionRoutes } from "./controllers/companionController";
 import { registerCompanionConfigRoutes } from "./controllers/registerCompanionConfigRoutes";
+import { registerToolMarketplaceRoutes } from "./controllers/toolMarketplaceController";
 import { setupAuth, hashPassword } from "./auth";
 import { simpleStorage } from "./simpleStorage";
 import { 
@@ -309,6 +310,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
   
   // Register resources routes
   registerResourcesRoutes(app);
+  
+  // Register tool marketplace routes
+  registerToolMarketplaceRoutes(app);
   
   // Page completion endpoint
   app.post("/api/pages/complete", async (req, res) => {

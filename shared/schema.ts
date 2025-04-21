@@ -614,6 +614,15 @@ export const tools = pgTable("tools", {
   guardianSynced: boolean("guardian_synced").default(false),
   vaultSynced: boolean("vault_synced").default(false),
   isGlobal: boolean("is_global").default(false), // Indicates if this tool can be accessed across tenants
+  
+  // Marketplace & publishing fields
+  publishStatus: varchar("publish_status", { length: 50 }).default("unpublished").notNull(), // unpublished, draft_for_marketplace, published_in_marketplace
+  toolVersion: varchar("tool_version", { length: 20 }), // Semantic versioning format (e.g., v1.0.0)
+  toolCategory: varchar("tool_category", { length: 50 }), // CRM, Analytics, SEO, etc.
+  sourceInstance: varchar("source_instance", { length: 20 }), // lab, dev, client
+  publishedAt: timestamp("published_at"),  // When the tool was published to the marketplace
+  installationCount: integer("installation_count").default(0), // Number of tenant installations
+  
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
@@ -724,3 +733,82 @@ export const insertClientRegistrySchema = createInsertSchema(clientRegistry).omi
 
 export type InsertClientRegistry = z.infer<typeof insertClientRegistrySchema>;
 export type ClientRegistry = typeof clientRegistry.$inferSelect;
+
+// Tool installations table to track which tenants have installed which tools
+export const toolInstallations = pgTable("tool_installations", {
+  id: serial("id").primaryKey(),
+  toolId: integer("tool_id").references(() => tools.id).notNull(),
+  tenantId: uuid("tenant_id").references(() => tenants.id).notNull(),
+  installationDate: timestamp("installation_date").defaultNow().notNull(),
+  installationStatus: varchar("installation_status", { length: 30 }).default("active").notNull(), // active, disabled, uninstalled
+  customSettings: jsonb("custom_settings"), // Tenant-specific tool settings
+  installedBy: integer("installed_by").references(() => users.id),
+  usageCount: integer("usage_count").default(0), // Number of times this tool has been used
+  lastUsed: timestamp("last_used"), // When this tool was last used
+  version: varchar("version", { length: 20 }).notNull(), // The version of the tool installed
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export const insertToolInstallationSchema = createInsertSchema(toolInstallations).omit({
+  id: true,
+  installationDate: true,
+  usageCount: true,
+  lastUsed: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export type InsertToolInstallation = z.infer<typeof insertToolInstallationSchema>;
+export type ToolInstallation = typeof toolInstallations.$inferSelect;
+
+// Define relationships for tool installations
+export const toolInstallationsRelations = relations(toolInstallations, ({ one }) => ({
+  tool: one(tools, {
+    fields: [toolInstallations.toolId],
+    references: [tools.id],
+  }),
+  tenant: one(tenants, {
+    fields: [toolInstallations.tenantId],
+    references: [tenants.id],
+  }),
+  installer: one(users, {
+    fields: [toolInstallations.installedBy],
+    references: [users.id],
+  }),
+}));
+
+// Tool publishing activity logs
+export const toolPublishingLogs = pgTable("tool_publishing_logs", {
+  id: serial("id").primaryKey(),
+  toolId: integer("tool_id").references(() => tools.id).notNull(),
+  actor: varchar("actor", { length: 100 }).notNull(), // User or system that performed the action
+  action: varchar("action", { length: 100 }).notNull(), // e.g., "draft_submitted", "marketplace_published", "tool_installed"
+  instanceType: varchar("instance_type", { length: 30 }).notNull(), // "lab", "dev", "client"
+  previousStatus: varchar("previous_status", { length: 50 }), 
+  newStatus: varchar("new_status", { length: 50 }).notNull(),
+  toolVersion: varchar("tool_version", { length: 20 }),
+  metadata: jsonb("metadata"), // Additional details about the action
+  successful: boolean("successful").default(true),
+  errorMessage: text("error_message"),
+  timestamp: timestamp("timestamp").defaultNow().notNull(),
+});
+
+export const insertToolPublishingLogSchema = createInsertSchema(toolPublishingLogs).omit({
+  id: true,
+  timestamp: true,
+});
+
+export type InsertToolPublishingLog = z.infer<typeof insertToolPublishingLogSchema>;
+export type ToolPublishingLog = typeof toolPublishingLogs.$inferSelect;
+
+// Extend tool relations to include installations and logs
+export const toolRelationsExtended = relations(tools, ({ one, many }) => ({
+  creator: one(users, {
+    fields: [tools.createdBy],
+    references: [users.id],
+  }),
+  pageIntegrations: many(pageToolIntegrations),
+  installations: many(toolInstallations),
+  publishingLogs: many(toolPublishingLogs),
+}));
