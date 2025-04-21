@@ -42,6 +42,7 @@ import SEOConfigManagerPage from "@/pages/SEOConfigManagerPage";
 import BrandManagerPage from "@/pages/BrandManagerPage";
 import BlueprintManagerPage from "@/pages/BlueprintManagerPage";
 import MediaManagementPage from "@/pages/MediaManagementPage";
+import NewClientOnboarding from "@/pages/NewClientOnboarding";
 // Import wizard components
 import CreateFormWizard from "@/pages/tools/wizards/CreateFormWizard";
 import CreateCalculatorWizard from "@/pages/tools/wizards/CreateCalculatorWizard";
@@ -67,6 +68,7 @@ function Router() {
     <Switch>
       <Route path="/" component={HomePage} />
       <Route path="/onboarding" component={OnboardingWelcomePage} />
+      <Route path="/new-client-setup" component={NewClientOnboarding} />
       <Route path="/website-intent" component={WebsiteIntentPage} />
       <Route path="/studio-banbury" component={StudioPage} />
       <Route path="/client-dashboard" component={ProtectedDashboard} />
@@ -163,7 +165,8 @@ function FirstTimeUserDetector({ children }: { children: React.ReactNode }) {
     if (userType === 'client' && 
         !onboardingComplete &&
         location !== '/onboarding' && 
-        location !== '/website-intent' && // Add the new page to excluded redirects
+        location !== '/website-intent' && 
+        location !== '/new-client-setup' && // Allow new client setup page
         location !== '/client-portal' && // Allow client portal for 'tools only' users
         location !== '/tools-dashboard' && // Allow tools dashboard for 'tools only' users
         location !== '/tools-hub' && // Allow tools hub for 'tools only' users
