@@ -1,11 +1,13 @@
 import { Switch, Route, useLocation } from "wouter";
 import { Toaster } from "@/components/ui/toaster";
 import { useEffect } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import NotFound from "@/pages/not-found";
-import { useAuth } from "@/components/ClientDataProvider";
+import { useAuth, AuthProvider } from "@/hooks/use-auth";
 import { TenantProvider } from "@/hooks/use-tenant";
+import { PermissionsProvider } from "@/hooks/use-permissions";
 import { UpgradeAnnouncement } from "@/components/UpgradeAnnouncement";
+import SuperAdminDashboard from "@/pages/super-admin/SuperAdminDashboard";
 import HomePage from "@/pages/HomePage";
 import StudioPage from "@/pages/StudioPage";
 import DashboardPage from "@/pages/DashboardPage";
@@ -69,9 +71,11 @@ const ProtectedBlueprintManager = withAuth(BlueprintManagerPage, 'staff');
 const ProtectedTenantCustomization = withAuth(TenantCustomizationPage, 'staff');
 const ProtectedThemeManagement = withAuth(ThemeManagementPage, 'staff');
 
+// Router for all application routes
 function Router() {
   return (
     <Switch>
+      <Route path="/super-admin" component={SuperAdminDashboard} />
       <Route path="/" component={HomePage} />
       <Route path="/onboarding" component={OnboardingWelcomePage} />
       <Route path="/new-client-setup" component={NewClientOnboarding} />
@@ -123,36 +127,53 @@ function Router() {
   );
 }
 
+// Create a client
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 1000 * 60 * 5, // 5 minutes
+      cacheTime: 1000 * 60 * 30, // 30 minutes
+    },
+  },
+});
+
 function App() {
   return (
-    <ClientDataProvider>
-      <ThemeProvider>
-        <TenantProvider>
-          <DocumentHead route="/" />
-          <FirstTimeUserDetector>
-            <MainLayout>
-              <Router />
-            </MainLayout>
-          </FirstTimeUserDetector>
-          <UpgradeAnnouncement />
-          <Toaster />
-        </TenantProvider>
-      </ThemeProvider>
-    </ClientDataProvider>
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider queryClient={queryClient}>
+        <PermissionsProvider>
+          <ThemeProvider>
+            <TenantProvider>
+              <DocumentHead route="/" />
+              <FirstTimeUserDetector>
+                <MainLayout>
+                  <Router />
+                </MainLayout>
+              </FirstTimeUserDetector>
+              <UpgradeAnnouncement />
+              <Toaster />
+            </TenantProvider>
+          </ThemeProvider>
+        </PermissionsProvider>
+      </AuthProvider>
+    </QueryClientProvider>
   );
 }
 
 // Component to detect first-time users and redirect to onboarding
 function FirstTimeUserDetector({ children }: { children: React.ReactNode }) {
   const [, navigate] = useLocation();
-  const { userId, userType } = useAuth();
+  const { user } = useAuth();
+  const userType = user?.role || 'public';
   
   // Query the user's onboarding state
   const { data: onboardingState, isLoading } = useQuery({
-    queryKey: [`/api/onboarding/${userId}`],
+    queryKey: [`/api/onboarding/${user?.id}`],
     queryFn: async () => {
+      if (!user?.id) return null;
+      
       try {
-        const response = await fetch(`/api/onboarding/${userId}`);
+        const response = await fetch(`/api/onboarding/${user.id}`);
         if (!response.ok) return null;
         return response.json();
       } catch (error) {
@@ -160,6 +181,7 @@ function FirstTimeUserDetector({ children }: { children: React.ReactNode }) {
         return null;
       }
     },
+    enabled: !!user?.id,
   });
 
   // Query current location

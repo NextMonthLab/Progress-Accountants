@@ -1,145 +1,119 @@
-import { createContext, ReactNode, useContext } from "react";
-import {
-  useQuery,
-  useMutation,
-  useQueryClient
-} from "@tanstack/react-query";
-import { TenantCustomization } from "@shared/schema";
+import { createContext, ReactNode, useContext, useState } from "react";
+import { useQuery, useMutation } from "@tanstack/react-query";
+import { getQueryFn, apiRequest, queryClient } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
-import { apiRequest } from "@/lib/queryClient";
-import { useAuth } from "@/components/ClientDataProvider";
+import { useAuth } from "./use-auth";
+
+interface Tenant {
+  id: string;
+  name: string;
+  domain: string;
+  status: string;
+  industry: string | null;
+  plan: string;
+  theme: any;
+  customization: any;
+  createdAt: Date;
+  updatedAt: Date;
+  parentTemplate: string | null;
+  isTemplate: boolean | null;
+}
 
 type TenantContextType = {
-  customization: TenantCustomization | null;
+  tenant: Tenant | null;
   isLoading: boolean;
   error: Error | null;
-  updateCustomizationMutation: ReturnType<typeof useUpdateCustomization>;
-  updateThemeMutation: ReturnType<typeof useUpdateTheme>;
+  setTenant: (tenant: Tenant) => void;
+  switchTenant: (tenantId: string) => void;
 };
 
-const TenantContext = createContext<TenantContextType | null>(null);
-
-// Define hook to update tenant customization
-function useUpdateCustomization() {
-  const queryClient = useQueryClient();
-  const { toast } = useToast();
-  
-  return useMutation({
-    mutationFn: async ({ tenantId, customization }: { 
-      tenantId: string; 
-      customization: TenantCustomization 
-    }) => {
-      const res = await apiRequest(
-        "PATCH", 
-        `/api/tenants/${tenantId}/customization`, 
-        customization
-      );
-      
-      if (!res.ok) {
-        const errorData = await res.json();
-        throw new Error(errorData.message || "Failed to update tenant customization");
-      }
-      
-      return res.json();
-    },
-    onSuccess: () => {
-      // Invalidate tenant data queries to refresh the UI
-      queryClient.invalidateQueries({ queryKey: ["/api/tenants"] });
-      
-      toast({
-        title: "Settings updated",
-        description: "Tenant customization settings have been saved successfully.",
-      });
-    },
-    onError: (error: Error) => {
-      toast({
-        title: "Update failed",
-        description: error.message,
-        variant: "destructive",
-      });
-    },
-  });
-}
-
-// Define hook to update tenant theme
-function useUpdateTheme() {
-  const queryClient = useQueryClient();
-  const { toast } = useToast();
-  
-  return useMutation({
-    mutationFn: async ({ tenantId, theme }: { 
-      tenantId: string; 
-      theme: Record<string, any> 
-    }) => {
-      const res = await apiRequest(
-        "PATCH", 
-        `/api/tenants/${tenantId}/theme`, 
-        { theme }
-      );
-      
-      if (!res.ok) {
-        const errorData = await res.json();
-        throw new Error(errorData.message || "Failed to update tenant theme");
-      }
-      
-      return res.json();
-    },
-    onSuccess: () => {
-      // Invalidate tenant data queries to refresh the UI
-      queryClient.invalidateQueries({ queryKey: ["/api/tenants"] });
-      
-      toast({
-        title: "Theme updated",
-        description: "Tenant theme settings have been saved successfully.",
-      });
-    },
-    onError: (error: Error) => {
-      toast({
-        title: "Update failed",
-        description: error.message,
-        variant: "destructive",
-      });
-    },
-  });
-}
+export const TenantContext = createContext<TenantContextType | null>(null);
 
 export function TenantProvider({ children }: { children: ReactNode }) {
   const { user } = useAuth();
-  const tenantId = user?.tenantId;
   const { toast } = useToast();
-  
+  const [selectedTenantId, setSelectedTenantId] = useState<string | null>(
+    user?.tenantId || null
+  );
+
+  // Fetch current tenant data
   const {
-    data: customization,
+    data: tenant,
     error,
     isLoading,
-  } = useQuery({
-    queryKey: ["/api/tenants", tenantId, "customization"],
-    queryFn: async () => {
-      if (!tenantId) return null;
+  } = useQuery<Tenant | null, Error>({
+    queryKey: ['/api/tenant', selectedTenantId],
+    queryFn: async ({ queryKey }) => {
+      // Don't fetch if no tenant is selected
+      if (!selectedTenantId) return null;
       
-      const res = await apiRequest("GET", `/api/tenants/${tenantId}/customization`);
+      const [, tenantId] = queryKey;
+      const response = await fetch(`/api/tenant/${tenantId}`);
       
-      if (!res.ok) {
-        throw new Error("Failed to fetch tenant customization");
+      if (!response.ok) {
+        if (response.status === 404) {
+          return null;
+        }
+        throw new Error("Failed to fetch tenant");
       }
       
-      const data = await res.json();
-      return data.data as TenantCustomization;
+      return response.json();
     },
-    enabled: !!tenantId,
+    enabled: !!selectedTenantId,
   });
 
-  const updateCustomizationMutation = useUpdateCustomization();
-  const updateThemeMutation = useUpdateTheme();
+  // Switch tenant mutation
+  const switchTenantMutation = useMutation({
+    mutationFn: async (tenantId: string) => {
+      const res = await apiRequest("POST", "/api/tenant/switch", { tenantId });
+      return res.json();
+    },
+    onSuccess: () => {
+      // Invalidate queries that might depend on the tenant
+      queryClient.invalidateQueries({ queryKey: ['/api/user'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/pages'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/tools'] });
+      
+      toast({
+        title: "Tenant switched",
+        description: "Successfully switched to new tenant",
+      });
+    },
+    onError: (error: Error) => {
+      toast({
+        title: "Failed to switch tenant",
+        description: error.message,
+        variant: "destructive",
+      });
+    },
+  });
+
+  // Set tenant directly (useful for initial load)
+  const setTenant = (newTenant: Tenant) => {
+    queryClient.setQueryData(['/api/tenant', newTenant.id], newTenant);
+    setSelectedTenantId(newTenant.id);
+  };
+
+  // Switch to a different tenant
+  const switchTenant = async (tenantId: string) => {
+    if (tenantId === selectedTenantId) return;
+    
+    setSelectedTenantId(tenantId);
+    
+    // Call API to update session
+    if (user?.isSuperAdmin) {
+      await switchTenantMutation.mutateAsync(tenantId);
+    }
+  };
 
   return (
     <TenantContext.Provider
       value={{
-        customization: customization || null,
+        tenant,
         isLoading,
         error,
-        updateCustomizationMutation,
-        updateThemeMutation,
+        setTenant,
+        switchTenant,
       }}
     >
       {children}

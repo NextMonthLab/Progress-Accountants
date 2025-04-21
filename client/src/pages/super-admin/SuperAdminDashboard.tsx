@@ -1,362 +1,291 @@
-import React, { useEffect } from 'react';
-import { useQuery } from '@tanstack/react-query';
-import { useToast } from '@/hooks/use-toast';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { getQueryFn } from '@/lib/queryClient';
-import { Separator } from '@/components/ui/separator';
-import { TenantSwitcherCard } from '@/components/super-admin/TenantSwitcher';
-import { usePermissions } from '@/hooks/use-permissions';
-import { useLocation, navigate } from 'wouter';
-import { Badge } from '@/components/ui/badge';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Button } from '@/components/ui/button';
+import React from "react";
+import { useQuery } from "@tanstack/react-query";
+import { getQueryFn } from "@/lib/queryClient";
+import { useLocation } from "wouter";
+import { TenantSwitcherCard } from "@/components/super-admin/TenantSwitcher";
+import { useAuth } from "@/hooks/use-auth";
+import { usePermissions } from "@/hooks/use-permissions";
+
 import {
-  Monitor,
-  BarChart3,
-  Layers,
-  ShieldAlert,
-  Building2,
-  Users,
-  AlertCircle,
-  CheckCircle2,
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  Activity,
   AlertTriangle,
-  LoaderCircle,
-  Bolt,
-  Lock
-} from 'lucide-react';
+  Building,
+  CheckCircle,
+  Clock,
+  Database,
+  Lock,
+  RefreshCw,
+  Server,
+  ShieldAlert,
+  ShieldCheck,
+  Users,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Progress } from "@/components/ui/progress";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export default function SuperAdminDashboard() {
-  const { toast } = useToast();
-  const [_, setLocation] = useLocation();
-  const { can, hasRole } = usePermissions();
+  const [, navigate] = useLocation();
+  const { user } = useAuth();
+  const { can } = usePermissions();
   
-  // Redirect if not a super admin
-  useEffect(() => {
-    if (!hasRole('super_admin') && !can('manage_tenants')) {
-      toast({
-        title: 'Access Denied',
-        description: 'You do not have permission to access the Super Admin Dashboard',
-        variant: 'destructive',
-      });
-      setLocation('/');
-    }
-  }, [hasRole, can, setLocation, toast]);
+  // Only super admins can access this dashboard
+  if (!user?.isSuperAdmin) {
+    navigate("/");
+    return null;
+  }
   
-  // Fetch system status
-  const { data: systemStatus, isLoading: statusLoading } = useQuery({
-    queryKey: ['/api/system/status'],
-    queryFn: getQueryFn(),
-    refetchInterval: 60000, // Refresh every minute
-  });
-
-  // Fetch tenants overview
-  const { data: tenantsOverview, isLoading: tenantsLoading } = useQuery({
-    queryKey: ['/api/tenants/overview'],
+  // Fetch system stats
+  const { data: systemStats } = useQuery({
+    queryKey: ['/api/system/stats'],
     queryFn: getQueryFn(),
   });
-
+  
+  // Fetch tenant stats
+  const { data: tenantStats } = useQuery({
+    queryKey: ['/api/tenants/stats'],
+    queryFn: getQueryFn(),
+  });
+  
   return (
-    <div className="container mx-auto py-6">
-      <div className="flex justify-between items-center mb-6">
+    <div className="container mx-auto py-6 space-y-6">
+      <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">System Administration</h1>
-          <p className="text-muted-foreground mt-1">
-            Manage and monitor all tenants, system health, and global settings
-          </p>
+          <h1 className="text-3xl font-bold">Super Admin Dashboard</h1>
+          <p className="text-muted-foreground">Monitor and manage the Progress platform</p>
         </div>
-        <div className="flex items-center space-x-2">
-          <Badge variant="outline" className="py-1">
-            <Bolt className="w-4 h-4 mr-1 text-amber-500" />
-            Super Admin
-          </Badge>
+        <div>
+          <Button variant="outline" className="mr-2">
+            <RefreshCw className="w-4 h-4 mr-2" />
+            Refresh
+          </Button>
+          <Button>
+            <ShieldCheck className="w-4 h-4 mr-2" />
+            System Check
+          </Button>
         </div>
       </div>
-
-      <Tabs defaultValue="dashboard">
-        <TabsList className="grid w-full grid-cols-4 mb-6">
-          <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
+      
+      <div className="grid grid-cols-4 gap-4">
+        {/* Tenant Stats Card */}
+        <Card className="col-span-1">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-medium">Tenant Stats</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="flex flex-col space-y-6">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center">
+                  <Building className="w-4 h-4 mr-2 text-primary" />
+                  <span className="text-sm">Active Tenants</span>
+                </div>
+                <Badge>{systemStats?.activeTenants || 0}</Badge>
+              </div>
+              <Progress 
+                value={systemStats?.activeTenants ? (systemStats.activeTenants / systemStats.totalTenants) * 100 : 0} 
+                className="h-2" 
+              />
+              <div className="flex items-center justify-between text-sm text-muted-foreground">
+                <span>Total: {systemStats?.totalTenants || 0}</span>
+                <span>Templates: {systemStats?.templateCount || 0}</span>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+        
+        {/* User Stats Card */}
+        <Card className="col-span-1">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-medium">User Stats</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="flex flex-col space-y-6">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center">
+                  <Users className="w-4 h-4 mr-2 text-primary" />
+                  <span className="text-sm">Active Users</span>
+                </div>
+                <Badge>{systemStats?.activeUsers || 0}</Badge>
+              </div>
+              <Progress 
+                value={systemStats?.activeUsers ? (systemStats.activeUsers / systemStats.totalUsers) * 100 : 0} 
+                className="h-2" 
+              />
+              <div className="grid grid-cols-2 gap-2 text-sm text-muted-foreground">
+                <div>Admins: {systemStats?.adminCount || 0}</div>
+                <div>Editors: {systemStats?.editorCount || 0}</div>
+                <div>Public: {systemStats?.publicCount || 0}</div>
+                <div>Super: {systemStats?.superAdminCount || 0}</div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+        
+        {/* System Health Card */}
+        <Card className="col-span-1">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-medium">System Health</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="flex flex-col space-y-6">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center">
+                  <Server className="w-4 h-4 mr-2 text-primary" />
+                  <span className="text-sm">Server Status</span>
+                </div>
+                <Badge variant={systemStats?.health?.status === 'healthy' ? 'default' : 'destructive'}>
+                  {systemStats?.health?.status === 'healthy' ? 'Healthy' : 'Issues'}
+                </Badge>
+              </div>
+              <div className="space-y-2">
+                <div className="flex items-center">
+                  <Database className="w-4 h-4 mr-2 text-amber-500" />
+                  <span className="text-sm">Database: {systemStats?.health?.database ? 'Connected' : 'Error'}</span>
+                </div>
+                <div className="flex items-center">
+                  <Activity className="w-4 h-4 mr-2 text-green-500" />
+                  <span className="text-sm">API: {systemStats?.health?.api ? 'Operational' : 'Error'}</span>
+                </div>
+                <div className="flex items-center mt-2">
+                  <Clock className="w-4 h-4 mr-2 text-muted-foreground" />
+                  <span className="text-sm text-muted-foreground">Uptime: {systemStats?.uptimeFormatted || 'N/A'}</span>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+        
+        {/* Security Card */}
+        <Card className="col-span-1">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-medium">Security Status</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="flex flex-col space-y-6">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center">
+                  <Lock className="w-4 h-4 mr-2 text-primary" />
+                  <span className="text-sm">Status</span>
+                </div>
+                <Badge 
+                  variant={systemStats?.securityStatus === 'secure' ? 'default' : 'destructive'}
+                >
+                  {systemStats?.securityStatus === 'secure' ? 'Secure' : 'Action Required'}
+                </Badge>
+              </div>
+              <div className="space-y-2">
+                {systemStats?.securityStatus === 'secure' ? (
+                  <div className="flex items-center text-green-500">
+                    <CheckCircle className="w-4 h-4 mr-2" />
+                    <span className="text-sm">All systems secure</span>
+                  </div>
+                ) : (
+                  <div className="space-y-2">
+                    {systemStats?.securityAlerts?.map((alert: string, index: number) => (
+                      <div key={index} className="flex items-center text-destructive">
+                        <AlertTriangle className="w-4 h-4 mr-2" />
+                        <span className="text-sm">{alert}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          </CardContent>
+          <CardFooter className="pt-2 pb-4">
+            <Button size="sm" variant="outline" className="w-full">
+              <ShieldAlert className="w-4 h-4 mr-2" />
+              Security Audit
+            </Button>
+          </CardFooter>
+        </Card>
+      </div>
+      
+      <Tabs defaultValue="tenants">
+        <TabsList className="grid w-full grid-cols-3 mb-4">
           <TabsTrigger value="tenants">Tenant Management</TabsTrigger>
-          <TabsTrigger value="vault">Vault Integration</TabsTrigger>
-          <TabsTrigger value="system">System Configuration</TabsTrigger>
+          <TabsTrigger value="system">System Management</TabsTrigger>
+          <TabsTrigger value="users">User Management</TabsTrigger>
         </TabsList>
         
-        <TabsContent value="dashboard" className="space-y-6">
-          <div className="grid grid-cols-4 gap-4">
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium flex items-center">
-                  <Building2 className="w-4 h-4 mr-2 text-blue-500" />
-                  Active Tenants
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">
-                  {tenantsLoading ? (
-                    <LoaderCircle className="w-5 h-5 animate-spin" />
-                  ) : (
-                    tenantsOverview?.activeTenants || 0
-                  )}
-                </div>
-                <p className="text-xs text-muted-foreground">
-                  {tenantsLoading ? 'Loading...' : `${tenantsOverview?.totalTenants || 0} total tenants`}
-                </p>
-              </CardContent>
-            </Card>
-            
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium flex items-center">
-                  <Users className="w-4 h-4 mr-2 text-indigo-500" />
-                  Active Users
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">
-                  {statusLoading ? (
-                    <LoaderCircle className="w-5 h-5 animate-spin" />
-                  ) : (
-                    systemStatus?.activeUsers || 0
-                  )}
-                </div>
-                <p className="text-xs text-muted-foreground">
-                  {statusLoading ? 'Loading...' : 'Logged in past 24h'}
-                </p>
-              </CardContent>
-            </Card>
-            
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium flex items-center">
-                  <Monitor className="w-4 h-4 mr-2 text-emerald-500" />
-                  System Health
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold flex items-center">
-                  {statusLoading ? (
-                    <LoaderCircle className="w-5 h-5 animate-spin" />
-                  ) : systemStatus?.health === 'healthy' ? (
-                    <>
-                      <CheckCircle2 className="w-5 h-5 mr-2 text-green-500" />
-                      <span>Good</span>
-                    </>
-                  ) : systemStatus?.health === 'warning' ? (
-                    <>
-                      <AlertTriangle className="w-5 h-5 mr-2 text-amber-500" />
-                      <span>Warning</span>
-                    </>
-                  ) : (
-                    <>
-                      <AlertCircle className="w-5 h-5 mr-2 text-red-500" />
-                      <span>Alert</span>
-                    </>
-                  )}
-                </div>
-                <p className="text-xs text-muted-foreground">
-                  {statusLoading ? 'Loading...' : systemStatus?.uptimeFormatted || 'Unknown uptime'}
-                </p>
-              </CardContent>
-            </Card>
-            
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium flex items-center">
-                  <Lock className="w-4 h-4 mr-2 text-purple-500" />
-                  Security Status
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold flex items-center">
-                  {statusLoading ? (
-                    <LoaderCircle className="w-5 h-5 animate-spin" />
-                  ) : systemStatus?.securityStatus === 'secure' ? (
-                    <>
-                      <CheckCircle2 className="w-5 h-5 mr-2 text-green-500" />
-                      <span>Secure</span>
-                    </>
-                  ) : (
-                    <>
-                      <ShieldAlert className="w-5 h-5 mr-2 text-red-500" />
-                      <span>Issues</span>
-                    </>
-                  )}
-                </div>
-                <p className="text-xs text-muted-foreground">
-                  {statusLoading 
-                    ? 'Loading...' 
-                    : systemStatus?.securityStatus === 'secure'
-                    ? 'All systems secure'
-                    : `${systemStatus?.securityAlerts || 0} security alerts`
-                  }
-                </p>
-              </CardContent>
-            </Card>
-          </div>
-          
-          <div className="grid grid-cols-3 gap-6">
-            <div className="col-span-2">
-              <Card className="h-full">
-                <CardHeader>
-                  <CardTitle>System Health Monitoring</CardTitle>
-                  <CardDescription>
-                    Real-time status of all essential system components
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    <div className="grid grid-cols-3 gap-4">
-                      <div className="space-y-2">
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center">
-                            <div className="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
-                            <span className="text-sm font-medium">API Services</span>
-                          </div>
-                          <Badge variant="outline">Operational</Badge>
-                        </div>
-                        <div className="text-xs text-muted-foreground">
-                          100% uptime in past 24h
-                        </div>
-                      </div>
-                      
-                      <div className="space-y-2">
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center">
-                            <div className="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
-                            <span className="text-sm font-medium">Database</span>
-                          </div>
-                          <Badge variant="outline">Operational</Badge>
-                        </div>
-                        <div className="text-xs text-muted-foreground">
-                          99.9% uptime in past 24h
-                        </div>
-                      </div>
-                      
-                      <div className="space-y-2">
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center">
-                            <div className="w-2 h-2 bg-amber-500 rounded-full mr-2"></div>
-                            <span className="text-sm font-medium">Vault Integration</span>
-                          </div>
-                          <Badge variant="outline" className="text-amber-500 border-amber-200">Degraded</Badge>
-                        </div>
-                        <div className="text-xs text-muted-foreground">
-                          95.4% uptime in past 24h
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <Separator />
-                    
-                    <div className="space-y-2">
-                      <h4 className="text-sm font-medium">Recent Alerts</h4>
-                      <ScrollArea className="h-[180px]">
-                        <div className="space-y-3 pr-4">
-                          <div className="p-2 border border-amber-200 bg-amber-50 rounded-md">
-                            <div className="flex items-start">
-                              <AlertTriangle className="w-4 h-4 text-amber-500 mt-0.5 mr-2" />
-                              <div>
-                                <p className="text-sm font-medium">Slow Vault Response Times</p>
-                                <p className="text-xs text-muted-foreground">
-                                  Response times from Vault are higher than normal (320ms vs 150ms avg)
-                                </p>
-                              </div>
-                            </div>
-                            <div className="flex justify-between items-center mt-1">
-                              <span className="text-xs text-muted-foreground">2 hours ago</span>
-                              <Button variant="outline" size="sm" className="h-7">
-                                Investigate
-                              </Button>
-                            </div>
-                          </div>
-                          
-                          <div className="p-2 border border-gray-200 rounded-md">
-                            <div className="flex items-start">
-                              <ShieldAlert className="w-4 h-4 text-gray-500 mt-0.5 mr-2" />
-                              <div>
-                                <p className="text-sm font-medium">Failed Login Attempts</p>
-                                <p className="text-xs text-muted-foreground">
-                                  5 failed login attempts detected from IP 203.0.113.42
-                                </p>
-                              </div>
-                            </div>
-                            <div className="flex justify-between items-center mt-1">
-                              <span className="text-xs text-muted-foreground">8 hours ago</span>
-                              <Button variant="outline" size="sm" className="h-7">
-                                Review
-                              </Button>
-                            </div>
-                          </div>
-                          
-                          <div className="p-2 border border-green-200 bg-green-50 rounded-md">
-                            <div className="flex items-start">
-                              <CheckCircle2 className="w-4 h-4 text-green-500 mt-0.5 mr-2" />
-                              <div>
-                                <p className="text-sm font-medium">Database Performance Improved</p>
-                                <p className="text-xs text-muted-foreground">
-                                  Average query time reduced by 35% after optimization
-                                </p>
-                              </div>
-                            </div>
-                            <div className="flex justify-between items-center mt-1">
-                              <span className="text-xs text-muted-foreground">12 hours ago</span>
-                              <Button variant="outline" size="sm" className="h-7">
-                                Details
-                              </Button>
-                            </div>
-                          </div>
-                        </div>
-                      </ScrollArea>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-            
+        <TabsContent value="tenants" className="space-y-4">
+          <div className="grid grid-cols-3 gap-4">
             <div className="col-span-1">
               <TenantSwitcherCard />
             </div>
+            <Card className="col-span-2">
+              <CardHeader>
+                <CardTitle>Tenant Overview</CardTitle>
+                <CardDescription>
+                  Monitor tenant health and performance
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                {/* Tenant monitoring content will go here */}
+                <p className="text-muted-foreground">
+                  Detailed tenant metrics and analytics will be displayed here.
+                </p>
+              </CardContent>
+            </Card>
           </div>
         </TabsContent>
         
-        <TabsContent value="tenants">
-          <Card>
-            <CardHeader>
-              <CardTitle>Tenant Management</CardTitle>
-              <CardDescription>
-                Create and manage tenants across the platform
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p>Tenant management interface will be implemented here</p>
-            </CardContent>
-          </Card>
+        <TabsContent value="system" className="space-y-4">
+          <div className="grid grid-cols-2 gap-4">
+            <Card className="col-span-1">
+              <CardHeader>
+                <CardTitle>Backup & Restore</CardTitle>
+                <CardDescription>
+                  Manage system backups and restore points
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                {/* Backup controls will go here */}
+                <p className="text-muted-foreground">
+                  System backup and restore controls will be displayed here.
+                </p>
+              </CardContent>
+            </Card>
+            
+            <Card className="col-span-1">
+              <CardHeader>
+                <CardTitle>System Maintenance</CardTitle>
+                <CardDescription>
+                  Schedule and manage maintenance tasks
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                {/* Maintenance controls will go here */}
+                <p className="text-muted-foreground">
+                  System maintenance controls will be displayed here.
+                </p>
+              </CardContent>
+            </Card>
+          </div>
         </TabsContent>
         
-        <TabsContent value="vault">
+        <TabsContent value="users" className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle>Vault Integration</CardTitle>
+              <CardTitle>User Management</CardTitle>
               <CardDescription>
-                Manage data synchronization with the Vault system
+                Manage users and permissions across all tenants
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <p>Vault integration interface will be implemented here</p>
-            </CardContent>
-          </Card>
-        </TabsContent>
-        
-        <TabsContent value="system">
-          <Card>
-            <CardHeader>
-              <CardTitle>System Configuration</CardTitle>
-              <CardDescription>
-                Manage global system settings and security options
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p>System configuration interface will be implemented here</p>
+              {/* User management controls will go here */}
+              <p className="text-muted-foreground">
+                User management interface will be displayed here.
+              </p>
             </CardContent>
           </Card>
         </TabsContent>

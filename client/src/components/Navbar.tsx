@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { Menu, X, LayoutDashboard, ChevronDown, Users, Briefcase, Phone, Layout, BookOpen, FastForward, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useAuth } from "@/components/ClientDataProvider";
+import { useAuth } from "@/hooks/use-auth";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -27,7 +27,8 @@ type MenuGroup = {
 // This navbar is ONLY for public-facing pages
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { isStaff } = useAuth();
+  const { user } = useAuth();
+  const isStaff = user?.role === 'admin' || user?.role === 'super_admin' || user?.role === 'editor';
   const [location] = useLocation();
 
   // Define public-facing menu items
