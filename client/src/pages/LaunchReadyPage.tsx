@@ -14,7 +14,7 @@ import { Badge } from "@/components/ui/badge";
 import { CheckCircle, FileEdit, ExternalLink, CheckCircle2, AlertCircle, Sparkles, Rocket, Loader2 } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 import { Confetti } from '../components/Confetti';
-import { useAuth } from '@/components/ClientDataProvider';
+import { useAuth } from '@/hooks/use-auth';
 import { useQuery, useMutation } from '@tanstack/react-query';
 
 // Define page types and status types
@@ -37,17 +37,18 @@ interface PageStatusData {
 export default function LaunchReadyPage() {
   const { toast } = useToast();
   const [, setLocation] = useLocation();
-  const { userId } = useAuth();
+  const { user } = useAuth();
   
   // Create a mutation to mark onboarding as complete
   const completionMutation = useMutation({
     mutationFn: async () => {
+      // Use the user?.id if available, otherwise default to 1
       const response = await fetch(`/api/onboarding/complete`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ userId, complete: true })
+        body: JSON.stringify({ userId: user?.id || 1, complete: true })
       });
       
       if (!response.ok) {
