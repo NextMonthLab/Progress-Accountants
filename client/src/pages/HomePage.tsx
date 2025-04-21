@@ -42,14 +42,6 @@ export default function HomePage() {
   return (
     <>
       <HeroSection />
-      
-      {/* Temporary test link to WebsiteIntentPage - for development only */}
-      <div className="container mx-auto py-4 text-center">
-        <a href="/website-intent" className="inline-block px-6 py-3 bg-blue-700 text-white rounded-md hover:bg-blue-800">
-          Test Website Intent Page
-        </a>
-      </div>
-      
       <ServicesSection />
       <IndustriesSection />
       <WhyUsSection />
