@@ -219,6 +219,79 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Register system monitoring endpoints
   registerSystemRoutes(app);
   
+  // Pages API endpoints
+  app.get("/api/pages/public", async (req: Request, res: Response) => {
+    // Return list of public page paths
+    try {
+      // In a real app, we would fetch this from database
+      // For demo, return hardcoded values based on Progress Accountants
+      const publicPages = [
+        "/",
+        "/about",
+        "/services",
+        "/team", 
+        "/contact",
+        "/testimonials",
+        "/resources"
+      ];
+      
+      res.json(publicPages);
+    } catch (error) {
+      console.error("Error fetching public pages:", error);
+      res.status(500).json({ error: "Failed to fetch public pages" });
+    }
+  });
+  
+  app.post("/api/pages", async (req: Request, res: Response) => {
+    try {
+      if (!req.user) {
+        return res.status(401).json({ error: "Unauthorized" });
+      }
+      
+      const { name, slug, description, pageType, isPublished, tenantId } = req.body;
+      
+      // Basic validation
+      if (!name || !slug || !description || !pageType) {
+        return res.status(400).json({ error: "Missing required fields" });
+      }
+      
+      // Ensure slug contains only allowed characters
+      const slugRegex = /^[a-z0-9-]+$/;
+      if (!slugRegex.test(slug)) {
+        return res.status(400).json({ 
+          error: "Invalid slug format. Slug can only contain lowercase letters, numbers, and hyphens."
+        });
+      }
+      
+      // Create a new page data object (in a real app, this would be saved to database)
+      const newPage = {
+        id: Date.now(), // Simple ID generation for demo
+        name,
+        slug,
+        description,
+        pageType,
+        isPublished: isPublished || false,
+        tenantId: tenantId || (req.user as any).tenantId || null,
+        createdById: (req.user as any).id || null,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        content: {}, // Initialize with empty content
+        seoMetadata: {
+          title: name,
+          description: description
+        }
+      };
+      
+      // In a real app, we would save this to the database
+      // storage.savePage(newPage);
+      
+      res.status(201).json(newPage);
+    } catch (error) {
+      console.error("Error creating page:", error);
+      res.status(500).json({ error: "Failed to create page" });
+    }
+  });
+  
   // Register client registration endpoints
   registerClientRoutes(app);
   
