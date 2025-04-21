@@ -27,6 +27,7 @@ const resourceSchema = z.object({
   fileUrl: z.string().url({ message: 'Please provide a valid file URL' }),
   imageUrl: z.string().url({ message: 'Please provide a valid image URL' }).optional(),
   isPublished: z.boolean().default(false),
+  order: z.number().optional(),
 });
 
 type ResourceFormValues = z.infer<typeof resourceSchema>;

@@ -368,8 +368,10 @@ export const resources = pgTable("resources", {
   title: varchar("title", { length: 255 }).notNull(),
   description: text("description").notNull(),
   imageUrl: varchar("image_url", { length: 500 }),
-  link: varchar("link", { length: 500 }),
-  type: varchar("type", { length: 50 }).notNull(), // guide, template, calculator, article
+  fileUrl: varchar("file_url", { length: 500 }),    // Direct download URL
+  link: varchar("link", { length: 500 }),          // Legacy field - kept for backward compatibility
+  category: varchar("category", { length: 50 }),   // New field to match our UI
+  type: varchar("type", { length: 50 }),          // Legacy field - kept for backward compatibility
   isPublished: boolean("is_published").default(false),
   order: integer("order").default(0),
   createdAt: timestamp("created_at").defaultNow().notNull(),
