@@ -2193,6 +2193,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Set the created by user ID if logged in
       if (req.user) {
         toolData.createdBy = req.user.id;
+        
+        // Set tenant ID if available
+        if (req.user.tenantId && !toolData.tenantId) {
+          toolData.tenantId = req.user.tenantId;
+        }
       }
       
       const tool = await storage.saveTool(toolData);
@@ -2296,7 +2301,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
         });
       }
       
-      const updatedTool = await storage.updateToolStatus(id, status);
+      // Get the current tool to verify tenant boundaries
+      const tenantId = req.user?.tenantId;
+      const existingTool = await storage.getTool(id, tenantId);
+      
+      if (!existingTool) {
+        return res.status(404).json({
+          success: false,
+          message: "Tool not found"
+        });
+      }
+      
+      const updatedTool = await storage.updateToolStatus(id, status, tenantId);
       
       if (!updatedTool) {
         return res.status(404).json({
@@ -2340,7 +2356,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
       
       // Get tool first to check permissions
-      const tool = await storage.getTool(id);
+      const tenantId = req.user?.tenantId;
+      const tool = await storage.getTool(id, tenantId);
       
       if (!tool) {
         return res.status(404).json({
@@ -2393,6 +2410,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const pageId = req.params.pageId;
       const { toolId, position } = req.body;
+      const tenantId = req.user?.tenantId; // Get tenant ID from authenticated user
       
       if (!toolId) {
         return res.status(400).json({
@@ -2410,7 +2428,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         });
       }
       
-      const tool = await storage.getTool(toolIdNumber);
+      const tool = await storage.getTool(toolIdNumber, tenantId);
       if (!tool) {
         return res.status(404).json({
           success: false,
@@ -2455,6 +2473,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const pageId = req.params.pageId;
       const toolId = parseInt(req.params.toolId);
+      const tenantId = req.user?.tenantId; // Get tenant ID from authenticated user
       
       if (isNaN(toolId)) {
         return res.status(400).json({
@@ -2464,7 +2483,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
       
       // Get the tool details
-      const tool = await storage.getTool(toolId);
+      const tool = await storage.getTool(toolId, tenantId);
       if (!tool) {
         return res.status(404).json({
           success: false,

@@ -1036,12 +1036,22 @@ export class DatabaseStorage implements IStorage {
     }
   }
 
-  async updateToolStatus(id: number, status: string): Promise<Tool | undefined> {
+  async updateToolStatus(id: number, status: string, tenantId?: string): Promise<Tool | undefined> {
     try {
+      let condition = eq(tools.id, id);
+      
+      // Apply tenant filtering if provided
+      if (tenantId) {
+        condition = and(
+          condition,
+          eq(tools.tenantId, tenantId)
+        );
+      }
+      
       const [updated] = await db
         .update(tools)
         .set({ status, updatedAt: new Date() })
-        .where(eq(tools.id, id))
+        .where(condition)
         .returning();
       return updated;
     } catch (error) {
@@ -1050,12 +1060,22 @@ export class DatabaseStorage implements IStorage {
     }
   }
 
-  async updateTool(id: number, data: Partial<InsertTool>): Promise<Tool | undefined> {
+  async updateTool(id: number, data: Partial<InsertTool>, tenantId?: string): Promise<Tool | undefined> {
     try {
+      let condition = eq(tools.id, id);
+      
+      // Apply tenant filtering if provided
+      if (tenantId) {
+        condition = and(
+          condition,
+          eq(tools.tenantId, tenantId)
+        );
+      }
+      
       const [updated] = await db
         .update(tools)
         .set({ ...data, updatedAt: new Date() })
-        .where(eq(tools.id, id))
+        .where(condition)
         .returning();
       return updated;
     } catch (error) {
@@ -1064,9 +1084,19 @@ export class DatabaseStorage implements IStorage {
     }
   }
 
-  async deleteTool(id: number): Promise<boolean> {
+  async deleteTool(id: number, tenantId?: string): Promise<boolean> {
     try {
-      await db.delete(tools).where(eq(tools.id, id));
+      let condition = eq(tools.id, id);
+      
+      // Apply tenant filtering if provided
+      if (tenantId) {
+        condition = and(
+          condition,
+          eq(tools.tenantId, tenantId)
+        );
+      }
+      
+      await db.delete(tools).where(condition);
       return true;
     } catch (error) {
       console.error(`Error deleting tool ID ${id}:`, error);
