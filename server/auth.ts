@@ -58,14 +58,28 @@ export function setupAuth(app: Express) {
   app.use(passport.initialize());
   app.use(passport.session());
 
-  // Configure local strategy for username/password authentication
+  // Configure local strategy for username/password authentication with tenant awareness
   passport.use(
-    new LocalStrategy(async (username, password, done) => {
+    new LocalStrategy({
+      usernameField: 'username',
+      passwordField: 'password',
+      passReqToCallback: true // This allows us to access the request object
+    }, async (req, username, password, done) => {
       try {
-        const user = await simpleStorage.getUserByUsername(username);
+        let user;
+        
+        // If tenant login is requested, check username uniqueness within that tenant
+        if (req.body.tenantId) {
+          user = await simpleStorage.getUserByUsername(username, req.body.tenantId);
+        } else {
+          // Regular global login (for system admins)
+          user = await simpleStorage.getUserByUsername(username);
+        }
+        
         if (!user || !(await comparePasswords(password, user.password))) {
           return done(null, false);
         }
+        
         return done(null, user);
       } catch (err) {
         return done(err);
