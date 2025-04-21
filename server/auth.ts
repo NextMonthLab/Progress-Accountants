@@ -90,10 +90,25 @@ export function setupAuth(app: Express) {
   // Authentication routes
   app.post("/api/register", async (req, res, next) => {
     try {
-      // Check if user already exists
-      const existingUser = await simpleStorage.getUserByUsername(req.body.username);
-      if (existingUser) {
-        return res.status(400).json({ error: "Username already exists" });
+      const { username, tenantId } = req.body;
+
+      // Handle tenant-scoped username uniqueness
+      if (tenantId) {
+        // For tenant-scoped users, check uniqueness within that tenant
+        const existingUser = await simpleStorage.getUserByUsername(username, tenantId);
+        if (existingUser) {
+          return res.status(400).json({ 
+            error: "Username already exists within this organization" 
+          });
+        }
+      } else {
+        // For non-tenant users (system admins), check global uniqueness
+        const existingUser = await simpleStorage.getUserByUsername(username);
+        if (existingUser) {
+          return res.status(400).json({ 
+            error: "Username already exists" 
+          });
+        }
       }
 
       // Create new user with hashed password
@@ -108,6 +123,10 @@ export function setupAuth(app: Express) {
         return res.status(201).json(user);
       });
     } catch (err) {
+      console.error("Registration error:", err);
+      if (err instanceof Error && err.message.includes("exists")) {
+        return res.status(400).json({ error: err.message });
+      }
       next(err);
     }
   });

@@ -198,12 +198,50 @@ export class DatabaseStorage implements IStorage {
     return user;
   }
 
-  async getUserByUsername(username: string): Promise<User | undefined> {
-    const [user] = await db.select().from(users).where(eq(users.username, username));
-    return user;
+  async getUserByUsername(username: string, tenantId?: string): Promise<User | undefined> {
+    if (tenantId) {
+      // Check for username uniqueness within tenant scope
+      const [user] = await db
+        .select()
+        .from(users)
+        .where(
+          and(
+            eq(users.username, username),
+            eq(users.tenantId, tenantId)
+          )
+        );
+      return user;
+    } else {
+      // Global lookup for usernames (still useful for system admin functions)
+      const [user] = await db
+        .select()
+        .from(users)
+        .where(eq(users.username, username));
+      return user;
+    }
+  }
+  
+  // Check if username is unique within a specific tenant
+  async isUsernameUniqueInTenant(username: string, tenantId: string): Promise<boolean> {
+    const existingUser = await this.getUserByUsername(username, tenantId);
+    return !existingUser;
   }
 
   async createUser(insertUser: InsertUser): Promise<User> {
+    // If tenantId is provided, check for username uniqueness within that tenant
+    if (insertUser.tenantId) {
+      const existingUser = await this.getUserByUsername(insertUser.username, insertUser.tenantId);
+      if (existingUser) {
+        throw new Error(`Username '${insertUser.username}' already exists in this tenant`);
+      }
+    } else {
+      // For non-tenant users (like system admins), check global uniqueness
+      const existingUser = await this.getUserByUsername(insertUser.username);
+      if (existingUser) {
+        throw new Error(`Username '${insertUser.username}' already exists`);
+      }
+    }
+    
     const [user] = await db.insert(users).values(insertUser).returning();
     return user;
   }
