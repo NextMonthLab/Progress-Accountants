@@ -324,145 +324,217 @@ export class DatabaseStorage implements IStorage {
     return user;
   }
 
-  async getUserByUsername(username: string, tenantId?: string): Promise<User | undefined> {
-    if (tenantId) {
-      // Check for username uniqueness within tenant scope
-      const [user] = await db
-        .select()
-        .from(users)
-        .where(
-          and(
-            eq(users.username, username),
-            eq(users.tenantId, tenantId)
-          )
-        );
-      return user;
-    } else {
-      // Global lookup for usernames (still useful for system admin functions)
-      const [user] = await db
-        .select()
-        .from(users)
-        .where(eq(users.username, username));
-      return user;
-    }
-  }
-  
-  // Check if username is unique within a specific tenant
-  async isUsernameUniqueInTenant(username: string, tenantId: string): Promise<boolean> {
-    const existingUser = await this.getUserByUsername(username, tenantId);
-    return !existingUser;
-  }
-
-  async createUser(insertUser: InsertUser): Promise<User> {
-    // If tenantId is provided, check for username uniqueness within that tenant
-    if (insertUser.tenantId) {
-      const existingUser = await this.getUserByUsername(insertUser.username, insertUser.tenantId);
-      if (existingUser) {
-        throw new Error(`Username '${insertUser.username}' already exists in this tenant`);
-      }
-    } else {
-      // For non-tenant users (like system admins), check global uniqueness
-      const existingUser = await this.getUserByUsername(insertUser.username);
-      if (existingUser) {
-        throw new Error(`Username '${insertUser.username}' already exists`);
-      }
-    }
-    
-    const [user] = await db.insert(users).values(insertUser).returning();
+  async getUserByUsername(username: string): Promise<User | undefined> {
+    const [user] = await db
+      .select()
+      .from(users)
+      .where(eq(users.username, username));
     return user;
   }
-  
+
+  async createUser(user: InsertUser): Promise<User> {
+    const [createdUser] = await db
+      .insert(users)
+      .values(user)
+      .returning();
+    return createdUser;
+  }
+
   // Business identity operations
   async getBusinessIdentity(): Promise<BusinessIdentity | undefined> {
-    const [identity] = await db.select().from(businessIdentity).limit(1);
+    const [identity] = await db.select().from(businessIdentity);
     return identity;
   }
-  
+
   async saveBusinessIdentity(data: InsertBusinessIdentity): Promise<BusinessIdentity> {
-    // Check if we already have a record
-    const existing = await this.getBusinessIdentity();
-    
-    // Ensure null values for optional fields
-    const preparedData = {
-      name: data.name ?? null,
-      mission: data.mission ?? null,
-      vision: data.vision ?? null,
-      values: data.values ?? null,
-      marketFocus: data.marketFocus ?? null,
-      targetAudience: data.targetAudience ?? null,
-      brandVoice: data.brandVoice ?? null,
-      brandPositioning: data.brandPositioning ?? null,
-      teamValues: data.teamValues ?? null,
-      cultureStatements: data.cultureStatements ?? null
-    };
-    
-    if (existing) {
-      // Update existing record
-      const [updated] = await db
-        .update(businessIdentity)
-        .set({ ...preparedData, updatedAt: new Date() })
-        .where(eq(businessIdentity.id, existing.id))
-        .returning();
-      return updated;
-    } else {
-      // Create new record
-      const [created] = await db
-        .insert(businessIdentity)
-        .values(preparedData)
-        .returning();
-      return created;
-    }
+    const [identity] = await db
+      .insert(businessIdentity)
+      .values(data)
+      .returning();
+    return identity;
   }
-  
+
   // Project context operations
   async getProjectContext(): Promise<ProjectContext | undefined> {
-    const [context] = await db.select().from(projectContext).limit(1);
+    const [context] = await db.select().from(projectContext);
     return context;
   }
-  
+
   async saveProjectContext(data: InsertProjectContext): Promise<ProjectContext> {
-    // Check if we already have a record
-    const existing = await this.getProjectContext();
-    
-    // Ensure valid data for the database
-    const preparedData = {
-      homepageSetup: data.homepageSetup ?? null,
-      pageStatus: data.pageStatus ?? null,
-      onboardingComplete: data.onboardingComplete ?? null
-    };
-    
-    if (existing) {
-      // Update existing record
-      const [updated] = await db
-        .update(projectContext)
-        .set({ ...preparedData, updatedAt: new Date() })
-        .where(eq(projectContext.id, existing.id))
-        .returning();
-      return updated;
-    } else {
-      // Create new record
-      const [created] = await db
-        .insert(projectContext)
-        .values(preparedData)
-        .returning();
-      return created;
-    }
+    const [context] = await db
+      .insert(projectContext)
+      .values(data)
+      .returning();
+    return context;
   }
-  
+
+  // Feature request operations
+  async saveFeatureRequest(request: InsertFeatureRequest): Promise<FeatureRequest> {
+    const [savedRequest] = await db
+      .insert(featureRequests)
+      .values(request)
+      .returning();
+    return savedRequest;
+  }
+
+  async getFeatureRequests(): Promise<FeatureRequest[]> {
+    return db.select().from(featureRequests).orderBy(desc(featureRequests.createdAt));
+  }
+
+  async updateFeatureRequestStatus(id: number, status: string): Promise<FeatureRequest | undefined> {
+    const [updatedRequest] = await db
+      .update(featureRequests)
+      .set({ 
+        status: status,
+        updatedAt: new Date()
+      })
+      .where(eq(featureRequests.id, id))
+      .returning();
+    return updatedRequest;
+  }
+
+  // Contact form submission operations
+  async saveContactSubmission(data: InsertContactSubmission): Promise<ContactSubmission> {
+    const [submission] = await db
+      .insert(contactSubmissions)
+      .values({
+        ...data,
+        date: new Date()
+      })
+      .returning();
+    return submission;
+  }
+
+  async getContactSubmissions(): Promise<ContactSubmission[]> {
+    return db
+      .select()
+      .from(contactSubmissions)
+      .orderBy(desc(contactSubmissions.date));
+  }
+
+  // Activity logging
+  async logActivity(activity: InsertActivityLog): Promise<ActivityLog> {
+    const [log] = await db
+      .insert(activityLogs)
+      .values({
+        ...activity,
+        timestamp: new Date()
+      })
+      .returning();
+    return log;
+  }
+
+  async getActivityLogs(userId?: number, limit?: number): Promise<ActivityLog[]> {
+    let query = db
+      .select()
+      .from(activityLogs)
+      .orderBy(desc(activityLogs.timestamp));
+    
+    if (userId) {
+      query = query.where(eq(activityLogs.userId, userId));
+    }
+    
+    if (limit) {
+      query = query.limit(limit);
+    }
+    
+    return query;
+  }
+
+  // Module operations
+  async getModule(id: string): Promise<Module | undefined> {
+    const [module] = await db
+      .select()
+      .from(modules)
+      .where(eq(modules.id, id));
+    return module;
+  }
+
+  async getAllModules(): Promise<Module[]> {
+    return db.select().from(modules);
+  }
+
+  async getModulesByCategory(category: string): Promise<Module[]> {
+    return db
+      .select()
+      .from(modules)
+      .where(eq(modules.category, category));
+  }
+
+  async saveModule(module: InsertModule): Promise<Module> {
+    const [savedModule] = await db
+      .insert(modules)
+      .values(module)
+      .returning();
+    return savedModule;
+  }
+
+  async updateModuleStatus(id: string, status: string): Promise<Module | undefined> {
+    const [updatedModule] = await db
+      .update(modules)
+      .set({ 
+        status: status,
+        updatedAt: new Date()
+      })
+      .where(eq(modules.id, id))
+      .returning();
+    return updatedModule;
+  }
+
+  // Module activation logging
+  async logModuleActivation(activation: InsertModuleActivation): Promise<ModuleActivation> {
+    const [log] = await db
+      .insert(moduleActivations)
+      .values({
+        ...activation,
+        activatedAt: new Date()
+      })
+      .returning();
+    return log;
+  }
+
+  async getModuleActivations(userId?: number, moduleId?: string): Promise<ModuleActivation[]> {
+    let query = db
+      .select()
+      .from(moduleActivations)
+      .orderBy(desc(moduleActivations.activatedAt));
+    
+    if (userId) {
+      query = query.where(eq(moduleActivations.userId, userId));
+    }
+    
+    if (moduleId) {
+      query = query.where(eq(moduleActivations.moduleId, moduleId));
+    }
+    
+    return query;
+  }
+
+  async markModuleActivationSynced(id: number, synced: boolean): Promise<ModuleActivation | undefined> {
+    const [updated] = await db
+      .update(moduleActivations)
+      .set({ 
+        syncedWithGuardian: synced,
+        updatedAt: new Date()
+      })
+      .where(eq(moduleActivations.id, id))
+      .returning();
+    return updated;
+  }
+
   // Onboarding state operations
   async getOnboardingState(userId: number): Promise<OnboardingState | undefined> {
-    const latest = await db
+    const states = await db
       .select()
       .from(onboardingState)
       .where(eq(onboardingState.userId, userId))
-      .orderBy(desc(onboardingState.checkpointTime))
-      .limit(1);
+      .orderBy(desc(onboardingState.updatedAt));
     
-    return latest[0];
+    return states[0];
   }
-  
+
   async getOnboardingStageState(userId: number, stage: string): Promise<OnboardingState | undefined> {
-    const [stageState] = await db
+    const [state] = await db
       .select()
       .from(onboardingState)
       .where(
@@ -471,74 +543,57 @@ export class DatabaseStorage implements IStorage {
           eq(onboardingState.stage, stage)
         )
       )
-      .orderBy(desc(onboardingState.checkpointTime))
-      .limit(1);
+      .orderBy(desc(onboardingState.updatedAt));
     
-    return stageState;
+    return state;
   }
-  
+
   async saveOnboardingState(data: InsertOnboardingState): Promise<OnboardingState> {
-    // Generate a recovery token if not provided
-    if (!data.recoveryToken) {
-      data.recoveryToken = crypto.randomBytes(16).toString('hex');
-    }
-    
-    // Ensure data is in the correct format
-    const preparedData = {
-      userId: data.userId,
-      stage: data.stage,
-      status: data.status,
-      data: data.data ?? null,
-      checkpointTime: new Date(),
-      recoveryToken: data.recoveryToken,
-      blueprintVersion: data.blueprintVersion ?? '1.0.0',
-      guardianSynced: data.guardianSynced ?? false
-    };
-    
-    // Insert new state
-    const [created] = await db
+    const [state] = await db
       .insert(onboardingState)
-      .values(preparedData)
+      .values({
+        ...data,
+        checkpointTime: new Date()
+      })
       .returning();
-    
-    return created;
+    return state;
   }
-  
+
   async updateOnboardingStatus(userId: number, stage: string, status: string, data?: any): Promise<OnboardingState | undefined> {
-    // Get the current state for this stage
-    const currentState = await this.getOnboardingStageState(userId, stage);
+    // First, check if the onboarding state exists
+    const existing = await this.getOnboardingStageState(userId, stage);
     
-    if (currentState) {
-      // Update existing record
+    if (existing) {
+      // Update existing state
       const [updated] = await db
         .update(onboardingState)
-        .set({
-          status,
-          data: data ?? currentState.data,
-          checkpointTime: new Date(),
-          updatedAt: new Date()
+        .set({ 
+          status: status,
+          data: data || existing.data,
+          updatedAt: new Date(),
+          checkpointTime: new Date()
         })
-        .where(eq(onboardingState.id, currentState.id))
+        .where(eq(onboardingState.id, existing.id))
         .returning();
-      
       return updated;
     } else {
-      // Create new record
-      return await this.saveOnboardingState({
+      // Create new state
+      return this.saveOnboardingState({
         userId,
         stage,
         status,
-        data: data ?? null
+        data: data || {},
+        recoveryToken: crypto.randomBytes(32).toString('hex')
       });
     }
   }
-  
+
   async markOnboardingStageComplete(userId: number, stage: string, data?: any): Promise<OnboardingState | undefined> {
-    return await this.updateOnboardingStatus(userId, stage, 'complete', data);
+    return this.updateOnboardingStatus(userId, stage, 'completed', data);
   }
-  
+
   async getIncompleteOnboarding(userId: number): Promise<OnboardingState | undefined> {
-    const [incompleteState] = await db
+    const states = await db
       .select()
       .from(onboardingState)
       .where(
@@ -547,278 +602,77 @@ export class DatabaseStorage implements IStorage {
           eq(onboardingState.status, 'in_progress')
         )
       )
-      .orderBy(desc(onboardingState.checkpointTime))
-      .limit(1);
+      .orderBy(desc(onboardingState.updatedAt));
     
-    return incompleteState;
+    return states[0];
   }
-  
-  async markGuardianSynced(id: number, synced: boolean = true): Promise<OnboardingState | undefined> {
+
+  async markGuardianSynced(id: number, synced: boolean): Promise<OnboardingState | undefined> {
     const [updated] = await db
       .update(onboardingState)
-      .set({
+      .set({ 
         guardianSynced: synced,
         updatedAt: new Date()
       })
       .where(eq(onboardingState.id, id))
       .returning();
-    
     return updated;
   }
-  
+
   async saveOnboardingPreference(userId: number, preference: string): Promise<OnboardingState | undefined> {
-    try {
-      // Check if the user has an existing 'website_preference' stage entry
-      const existingPreference = await this.getOnboardingStageState(userId, 'website_preference');
-      
-      // Function to validate the preference
-      const validPreference = ['full_site', 'tools_only', 'undecided'].includes(preference) 
-        ? preference 
-        : 'undecided';
-      
-      if (existingPreference) {
-        // Update the existing preference
-        const [updated] = await db
-          .update(onboardingState)
-          .set({
-            data: { preference: validPreference },
-            updatedAt: new Date(),
-            checkpointTime: new Date()
-          })
-          .where(eq(onboardingState.id, existingPreference.id))
-          .returning();
-        
-        return updated;
-      } else {
-        // Create a new preference entry
-        const newPreferenceState = await this.saveOnboardingState({
-          userId,
-          stage: 'website_preference',
-          status: 'complete',
-          data: { preference: validPreference }
-        });
-        
-        return newPreferenceState;
-      }
-    } catch (error) {
-      console.error("Error saving onboarding preference:", error);
+    // Get the most recent onboarding state
+    const state = await this.getOnboardingState(userId);
+    
+    if (!state) {
       return undefined;
     }
-  }
-  
-  // Module operations
-  async getModule(id: string): Promise<Module | undefined> {
-    const [module] = await db.select().from(modules).where(eq(modules.id, id));
-    return module;
-  }
-  
-  async getAllModules(): Promise<Module[]> {
-    return await db.select().from(modules);
-  }
-  
-  async getModulesByCategory(category: string): Promise<Module[]> {
-    return await db.select().from(modules).where(eq(modules.category, category));
-  }
-  
-  async saveModule(moduleData: InsertModule): Promise<Module> {
-    // Check if module exists
-    const existing = await this.getModule(moduleData.id);
     
-    if (existing) {
-      // Update existing module
-      const [updated] = await db
-        .update(modules)
-        .set({ ...moduleData, updatedAt: new Date() })
-        .where(eq(modules.id, moduleData.id))
-        .returning();
-      return updated;
-    } else {
-      // Create new module
-      const [created] = await db
-        .insert(modules)
-        .values(moduleData)
-        .returning();
-      return created;
-    }
-  }
-  
-  async updateModuleStatus(id: string, status: string): Promise<Module | undefined> {
+    // Update with the preference
     const [updated] = await db
-      .update(modules)
-      .set({ status, updatedAt: new Date() })
-      .where(eq(modules.id, id))
-      .returning();
-    return updated;
-  }
-  
-  // Feature request operations
-  async saveFeatureRequest(request: InsertFeatureRequest): Promise<FeatureRequest> {
-    const [created] = await db
-      .insert(featureRequests)
-      .values(request)
-      .returning();
-    return created;
-  }
-  
-  async getFeatureRequests(): Promise<FeatureRequest[]> {
-    return await db.select().from(featureRequests);
-  }
-  
-  async updateFeatureRequestStatus(id: number, status: string): Promise<FeatureRequest | undefined> {
-    const [updated] = await db
-      .update(featureRequests)
-      .set({ status })
-      .where(eq(featureRequests.id, id))
-      .returning();
-    return updated;
-  }
-  
-  // Contact operations
-  async saveContactSubmission(data: InsertContactSubmission): Promise<ContactSubmission> {
-    const [submission] = await db
-      .insert(contactSubmissions)
-      .values({
-        name: data.name,
-        business: data.business ?? null,
-        email: data.email,
-        phone: data.phone ?? null,
-        industry: data.industry ?? null,
-        message: data.message
-      })
-      .returning();
-    
-    return submission;
-  }
-  
-  async getContactSubmissions(): Promise<ContactSubmission[]> {
-    return await db.select().from(contactSubmissions);
-  }
-  
-  // Activity logging
-  async logActivity(activity: InsertActivityLog): Promise<ActivityLog> {
-    const [log] = await db
-      .insert(activityLogs)
-      .values(activity)
-      .returning();
-    return log;
-  }
-  
-  async getActivityLogs(userId?: number, limit: number = 50): Promise<ActivityLog[]> {
-    if (userId) {
-      return await db
-        .select()
-        .from(activityLogs)
-        .where(eq(activityLogs.userId, userId))
-        .limit(limit);
-    } else {
-      return await db
-        .select()
-        .from(activityLogs)
-        .limit(limit);
-    }
-  }
-  
-  // Module activation logging
-  async logModuleActivation(activation: InsertModuleActivation): Promise<ModuleActivation> {
-    const [created] = await db
-      .insert(moduleActivations)
-      .values({
-        userId: activation.userId,
-        moduleId: activation.moduleId,
-        activatedAt: new Date(),
-        pageMetadata: activation.pageMetadata ?? null,
-        guardianSynced: activation.guardianSynced ?? false
-      })
-      .returning();
-    
-    return created;
-  }
-  
-  async getModuleActivations(userId?: number, moduleId?: string): Promise<ModuleActivation[]> {
-    // Base query
-    let query = db.select().from(moduleActivations);
-    
-    // Apply filters if provided
-    if (userId && moduleId) {
-      query = query.where(
-        and(
-          eq(moduleActivations.userId, userId),
-          eq(moduleActivations.moduleId, moduleId)
-        )
-      );
-    } else if (userId) {
-      query = query.where(eq(moduleActivations.userId, userId));
-    } else if (moduleId) {
-      query = query.where(eq(moduleActivations.moduleId, moduleId));
-    }
-    
-    // Order by most recent first
-    query = query.orderBy(desc(moduleActivations.activatedAt));
-    
-    return await query;
-  }
-  
-  async markModuleActivationSynced(id: number, synced: boolean = true): Promise<ModuleActivation | undefined> {
-    const [updated] = await db
-      .update(moduleActivations)
-      .set({
-        guardianSynced: synced,
+      .update(onboardingState)
+      .set({ 
+        data: {
+          ...state.data,
+          preferredSetup: preference
+        },
         updatedAt: new Date()
       })
-      .where(eq(moduleActivations.id, id))
+      .where(eq(onboardingState.id, state.id))
       .returning();
     
     return updated;
   }
-  
-  // Page complexity triage
+
+  // Page complexity triage operations
   async savePageComplexityTriage(triage: InsertPageComplexityTriage): Promise<PageComplexityTriage> {
-    const [created] = await db
+    const [saved] = await db
       .insert(pageComplexityTriage)
       .values({
-        userId: triage.userId,
-        requestDescription: triage.requestDescription,
-        visualComplexity: triage.visualComplexity,
-        logicComplexity: triage.logicComplexity,
-        dataComplexity: triage.dataComplexity,
-        estimatedHours: triage.estimatedHours,
-        complexityLevel: triage.complexityLevel,
-        aiAssessment: triage.aiAssessment,
-        vaultSynced: triage.vaultSynced ?? false,
-        guardianSynced: triage.guardianSynced ?? false,
+        ...triage,
         triageTimestamp: new Date()
       })
       .returning();
-    
-    return created;
+    return saved;
   }
-  
+
   async getPageComplexityTriage(id: number): Promise<PageComplexityTriage | undefined> {
     const [triage] = await db
       .select()
       .from(pageComplexityTriage)
       .where(eq(pageComplexityTriage.id, id));
-    
     return triage;
   }
-  
+
   async getPageComplexityTriagesByUser(userId: number): Promise<PageComplexityTriage[]> {
-    return await db
+    return db
       .select()
       .from(pageComplexityTriage)
       .where(eq(pageComplexityTriage.userId, userId))
       .orderBy(desc(pageComplexityTriage.triageTimestamp));
   }
-  
-  async updatePageComplexitySyncStatus(
-    id: number, 
-    vaultSynced?: boolean, 
-    guardianSynced?: boolean
-  ): Promise<PageComplexityTriage | undefined> {
-    // Build update object based on provided parameters
-    const updateData: { vaultSynced?: boolean, guardianSynced?: boolean, updatedAt: Date } = {
-      updatedAt: new Date()
-    };
+
+  async updatePageComplexitySyncStatus(id: number, vaultSynced?: boolean, guardianSynced?: boolean): Promise<PageComplexityTriage | undefined> {
+    const updateData: any = { updatedAt: new Date() };
     
     if (vaultSynced !== undefined) {
       updateData.vaultSynced = vaultSynced;
@@ -838,97 +692,62 @@ export class DatabaseStorage implements IStorage {
   }
 
   // SEO Configuration operations
-  async getSeoConfiguration(routePath: string, tenantId?: string): Promise<SeoConfiguration | undefined> {
-    const query = db
+  async getSeoConfiguration(routePath: string): Promise<SeoConfiguration | undefined> {
+    const [config] = await db
       .select()
       .from(seoConfigurations)
       .where(eq(seoConfigurations.routePath, routePath));
     
-    if (tenantId) {
-      query.where(eq(seoConfigurations.tenantId, tenantId));
-    }
-    
-    const [config] = await query;
     return config;
   }
-  
-  async getAllSeoConfigurations(tenantId?: string): Promise<SeoConfiguration[]> {
-    const query = db
+
+  async getAllSeoConfigurations(): Promise<SeoConfiguration[]> {
+    return db
       .select()
       .from(seoConfigurations)
       .orderBy(asc(seoConfigurations.routePath));
-    
-    if (tenantId) {
-      query.where(eq(seoConfigurations.tenantId, tenantId));
-    }
-    
-    return await query;
   }
-  
+
   async saveSeoConfiguration(config: InsertSeoConfiguration): Promise<SeoConfiguration> {
-    // Check if a configuration for this route already exists for this tenant
-    const existing = await this.getSeoConfiguration(config.routePath, config.tenantId);
+    const [savedConfig] = await db
+      .insert(seoConfigurations)
+      .values(config)
+      .returning();
     
-    if (existing) {
-      // Update existing record
-      const [updated] = await db
-        .update(seoConfigurations)
-        .set({
-          ...config,
-          updatedAt: new Date()
-        })
-        .where(eq(seoConfigurations.id, existing.id))
-        .returning();
-      
-      return updated;
-    } else {
-      // Create new record
-      const [created] = await db
-        .insert(seoConfigurations)
-        .values({
-          ...config,
-          vaultSynced: false,
-          guardianSynced: false
-        })
-        .returning();
-      
-      return created;
-    }
+    return savedConfig;
   }
-  
+
   async updateSeoConfiguration(id: number, config: Partial<InsertSeoConfiguration>): Promise<SeoConfiguration | undefined> {
-    const [updated] = await db
+    const [updatedConfig] = await db
       .update(seoConfigurations)
-      .set({
+      .set({ 
         ...config,
         updatedAt: new Date()
       })
       .where(eq(seoConfigurations.id, id))
       .returning();
     
-    return updated;
+    return updatedConfig;
   }
-  
+
   async deleteSeoConfiguration(id: number): Promise<boolean> {
     const result = await db
       .delete(seoConfigurations)
       .where(eq(seoConfigurations.id, id));
     
-    return result.rowCount > 0;
+    return result.rowCount ? result.rowCount > 0 : false;
   }
-  
+
   async getSeoConfigurationsByStatus(indexable: boolean): Promise<SeoConfiguration[]> {
-    return await db
+    return db
       .select()
       .from(seoConfigurations)
       .where(eq(seoConfigurations.indexable, indexable))
-      .orderBy(desc(seoConfigurations.priority));
+      .orderBy(asc(seoConfigurations.routePath));
   }
-  
+
   async updateSeoSyncStatus(id: number, vaultSynced?: boolean, guardianSynced?: boolean): Promise<SeoConfiguration | undefined> {
-    const updateData: { vaultSynced?: boolean, guardianSynced?: boolean, updatedAt: Date } = {
-      updatedAt: new Date()
-    };
+    const updateData: any = { updatedAt: new Date() };
     
     if (vaultSynced !== undefined) {
       updateData.vaultSynced = vaultSynced;
@@ -946,7 +765,7 @@ export class DatabaseStorage implements IStorage {
     
     return updated;
   }
-  
+
   // Brand Versioning operations
   async getBrandVersion(id: number): Promise<BrandVersion | undefined> {
     const [version] = await db
@@ -956,97 +775,62 @@ export class DatabaseStorage implements IStorage {
     
     return version;
   }
-  
-  async getBrandVersionByNumber(versionNumber: string, tenantId?: string): Promise<BrandVersion | undefined> {
-    const query = db
+
+  async getBrandVersionByNumber(versionNumber: string): Promise<BrandVersion | undefined> {
+    const [version] = await db
       .select()
       .from(brandVersions)
-      .where(eq(brandVersions.versionNumber, versionNumber));
+      .where(eq(brandVersions.version, versionNumber));
     
-    if (tenantId) {
-      query.where(eq(brandVersions.tenantId, tenantId));
-    }
-    
-    const [version] = await query;
     return version;
   }
-  
-  async getActiveBrandVersion(tenantId?: string): Promise<BrandVersion | undefined> {
-    const query = db
+
+  async getActiveBrandVersion(): Promise<BrandVersion | undefined> {
+    const [version] = await db
       .select()
       .from(brandVersions)
-      .where(eq(brandVersions.isActive, true))
-      .orderBy(desc(brandVersions.appliedAt));
+      .where(eq(brandVersions.active, true));
     
-    if (tenantId) {
-      query.where(eq(brandVersions.tenantId, tenantId));
-    }
-    
-    const [version] = await query;
     return version;
   }
-  
-  async getAllBrandVersions(tenantId?: string): Promise<BrandVersion[]> {
-    const query = db
+
+  async getAllBrandVersions(): Promise<BrandVersion[]> {
+    return db
       .select()
       .from(brandVersions)
       .orderBy(desc(brandVersions.createdAt));
-    
-    if (tenantId) {
-      query.where(eq(brandVersions.tenantId, tenantId));
-    }
-    
-    return await query;
   }
-  
+
   async saveBrandVersion(version: InsertBrandVersion): Promise<BrandVersion> {
-    // Check if a version with this number already exists
-    const existing = await this.getBrandVersionByNumber(version.versionNumber);
+    // If this is the first version, make it active by default
+    const existingVersions = await this.getAllBrandVersions();
+    const isFirstVersion = existingVersions.length === 0;
     
-    if (existing) {
-      // Update existing record
-      const [updated] = await db
-        .update(brandVersions)
-        .set({
-          ...version,
-          updatedAt: new Date()
-        })
-        .where(eq(brandVersions.id, existing.id))
-        .returning();
-      
-      return updated;
-    } else {
-      // Create new record
-      const [created] = await db
-        .insert(brandVersions)
-        .values({
-          ...version,
-          vaultSynced: false,
-          guardianSynced: false,
-          isActive: false
-        })
-        .returning();
-      
-      return created;
-    }
+    const [savedVersion] = await db
+      .insert(brandVersions)
+      .values({
+        ...version,
+        active: isFirstVersion || version.active
+      })
+      .returning();
+    
+    return savedVersion;
   }
-  
+
   async activateBrandVersion(id: number): Promise<BrandVersion | undefined> {
-    // First, deactivate all currently active versions
+    // First, deactivate all versions
     await db
       .update(brandVersions)
-      .set({
-        isActive: false,
+      .set({ 
+        active: false,
         updatedAt: new Date()
-      })
-      .where(eq(brandVersions.isActive, true));
+      });
     
-    // Then, activate the requested version
+    // Then activate the requested version
     const [activated] = await db
       .update(brandVersions)
-      .set({
-        isActive: true,
-        appliedAt: new Date(),
+      .set({ 
+        active: true,
         updatedAt: new Date()
       })
       .where(eq(brandVersions.id, id))
@@ -1054,11 +838,9 @@ export class DatabaseStorage implements IStorage {
     
     return activated;
   }
-  
+
   async updateBrandSyncStatus(id: number, vaultSynced?: boolean, guardianSynced?: boolean): Promise<BrandVersion | undefined> {
-    const updateData: { vaultSynced?: boolean, guardianSynced?: boolean, updatedAt: Date } = {
-      updatedAt: new Date()
-    };
+    const updateData: any = { updatedAt: new Date() };
     
     if (vaultSynced !== undefined) {
       updateData.vaultSynced = vaultSynced;
@@ -1076,200 +858,431 @@ export class DatabaseStorage implements IStorage {
     
     return updated;
   }
-  
+
   // Tool operations
   async getTool(id: number, tenantId?: string): Promise<Tool | undefined> {
-    try {
-      let conditions = eq(tools.id, id);
-      
-      // Apply tenant filtering if provided
-      if (tenantId) {
-        conditions = and(
-          conditions,
-          eq(tools.tenantId, tenantId)
-        );
-      }
-      
-      const [tool] = await db.select().from(tools).where(conditions);
-      return tool;
-    } catch (error) {
-      console.error("Error fetching tool:", error);
-      return undefined;
+    let query = db
+      .select()
+      .from(tools)
+      .where(eq(tools.id, id));
+    
+    if (tenantId) {
+      query = query.where(eq(tools.tenantId, tenantId));
     }
+    
+    const [tool] = await query;
+    return tool;
   }
 
   async getToolsByType(toolType: string, tenantId?: string): Promise<Tool[]> {
-    try {
-      const query = db.select().from(tools).where(eq(tools.toolType, toolType));
-      
-      if (tenantId) {
-        query.where(eq(tools.tenantId, tenantId));
-      }
-      
-      return await query;
-    } catch (error) {
-      console.error(`Error fetching tools by type ${toolType}:`, error);
-      return [];
+    let query = db
+      .select()
+      .from(tools)
+      .where(eq(tools.type, toolType));
+    
+    if (tenantId) {
+      query = query.where(eq(tools.tenantId, tenantId));
     }
+    
+    return query;
   }
 
   async getToolsByStatus(status: string, tenantId?: string): Promise<Tool[]> {
-    try {
-      const query = db.select().from(tools).where(eq(tools.status, status));
-      
-      if (tenantId) {
-        query.where(eq(tools.tenantId, tenantId));
-      }
-      
-      return await query;
-    } catch (error) {
-      console.error(`Error fetching tools by status ${status}:`, error);
-      return [];
+    let query = db
+      .select()
+      .from(tools)
+      .where(eq(tools.status, status));
+    
+    if (tenantId) {
+      query = query.where(eq(tools.tenantId, tenantId));
     }
+    
+    return query;
   }
 
   async getToolsByUser(userId: number, tenantId?: string): Promise<Tool[]> {
-    try {
-      const query = db.select().from(tools).where(eq(tools.createdBy, userId));
-      
-      if (tenantId) {
-        query.where(eq(tools.tenantId, tenantId));
-      }
-      
-      return await query;
-    } catch (error) {
-      console.error(`Error fetching tools by user ${userId}:`, error);
-      return [];
+    let query = db
+      .select()
+      .from(tools)
+      .where(eq(tools.createdBy, userId));
+    
+    if (tenantId) {
+      query = query.where(eq(tools.tenantId, tenantId));
     }
+    
+    return query;
   }
-  
+
   async getToolsByTenant(tenantId: string): Promise<Tool[]> {
-    try {
-      return await db.select().from(tools).where(eq(tools.tenantId, tenantId));
-    } catch (error) {
-      console.error(`Error fetching tools for tenant ${tenantId}:`, error);
-      return [];
-    }
+    return db
+      .select()
+      .from(tools)
+      .where(eq(tools.tenantId, tenantId));
   }
 
   async saveTool(tool: InsertTool): Promise<Tool> {
-    try {
-      const [savedTool] = await db.insert(tools).values(tool).returning();
-      return savedTool;
-    } catch (error) {
-      console.error("Error saving tool:", error);
-      throw error;
-    }
+    const [savedTool] = await db
+      .insert(tools)
+      .values(tool)
+      .returning();
+    
+    return savedTool;
   }
 
   async updateToolStatus(id: number, status: string, tenantId?: string): Promise<Tool | undefined> {
-    try {
-      let condition = eq(tools.id, id);
-      
-      // Apply tenant filtering if provided
-      if (tenantId) {
-        condition = and(
-          condition,
-          eq(tools.tenantId, tenantId)
-        );
-      }
-      
-      const [updated] = await db
-        .update(tools)
-        .set({ status, updatedAt: new Date() })
-        .where(condition)
-        .returning();
-      return updated;
-    } catch (error) {
-      console.error(`Error updating tool status for ID ${id}:`, error);
-      return undefined;
+    let query = db
+      .update(tools)
+      .set({ 
+        status: status,
+        updatedAt: new Date()
+      })
+      .where(eq(tools.id, id));
+    
+    if (tenantId) {
+      query = query.where(eq(tools.tenantId, tenantId));
     }
+    
+    const [updated] = await query.returning();
+    return updated;
   }
 
   async updateTool(id: number, data: Partial<InsertTool>, tenantId?: string): Promise<Tool | undefined> {
-    try {
-      let condition = eq(tools.id, id);
-      
-      // Apply tenant filtering if provided
-      if (tenantId) {
-        condition = and(
-          condition,
-          eq(tools.tenantId, tenantId)
-        );
-      }
-      
-      const [updated] = await db
-        .update(tools)
-        .set({ ...data, updatedAt: new Date() })
-        .where(condition)
-        .returning();
-      return updated;
-    } catch (error) {
-      console.error(`Error updating tool for ID ${id}:`, error);
-      return undefined;
+    let query = db
+      .update(tools)
+      .set({ 
+        ...data,
+        updatedAt: new Date()
+      })
+      .where(eq(tools.id, id));
+    
+    if (tenantId) {
+      query = query.where(eq(tools.tenantId, tenantId));
     }
+    
+    const [updated] = await query.returning();
+    return updated;
   }
 
   async deleteTool(id: number, tenantId?: string): Promise<boolean> {
-    try {
-      let condition = eq(tools.id, id);
-      
-      // Apply tenant filtering if provided
-      if (tenantId) {
-        condition = and(
-          condition,
-          eq(tools.tenantId, tenantId)
-        );
-      }
-      
-      await db.delete(tools).where(condition);
-      return true;
-    } catch (error) {
-      console.error(`Error deleting tool ID ${id}:`, error);
-      return false;
+    let query = db
+      .delete(tools)
+      .where(eq(tools.id, id));
+    
+    if (tenantId) {
+      query = query.where(eq(tools.tenantId, tenantId));
     }
+    
+    const result = await query;
+    return result.rowCount ? result.rowCount > 0 : false;
   }
 
   // Tool Request operations
   async saveToolRequest(request: InsertToolRequest): Promise<ToolRequest> {
-    try {
-      const [savedRequest] = await db.insert(toolRequests).values(request).returning();
-      return savedRequest;
-    } catch (error) {
-      console.error("Error saving tool request:", error);
-      throw error;
-    }
+    const [saved] = await db
+      .insert(toolRequests)
+      .values(request)
+      .returning();
+    
+    return saved;
   }
 
   async getToolRequestsByStatus(status: string): Promise<ToolRequest[]> {
+    return db
+      .select()
+      .from(toolRequests)
+      .where(eq(toolRequests.status, status))
+      .orderBy(desc(toolRequests.createdAt));
+  }
+
+  async updateToolRequestStatus(id: number, status: string, processedAt?: Date): Promise<ToolRequest | undefined> {
+    const [updated] = await db
+      .update(toolRequests)
+      .set({ 
+        status: status,
+        processedAt: processedAt || (status === 'processed' ? new Date() : undefined),
+        updatedAt: new Date()
+      })
+      .where(eq(toolRequests.id, id))
+      .returning();
+    
+    return updated;
+  }
+
+  // Page-Tool Integration operations
+  async getPageToolIntegrations(pageId: string): Promise<PageToolIntegration[]> {
+    return db
+      .select()
+      .from(pageToolIntegrations)
+      .where(eq(pageToolIntegrations.pageId, pageId));
+  }
+
+  async getToolIntegrations(toolId: number): Promise<PageToolIntegration[]> {
+    return db
+      .select()
+      .from(pageToolIntegrations)
+      .where(eq(pageToolIntegrations.toolId, toolId));
+  }
+
+  async savePageToolIntegration(integration: InsertPageToolIntegration): Promise<PageToolIntegration> {
+    const [saved] = await db
+      .insert(pageToolIntegrations)
+      .values(integration)
+      .returning();
+    
+    return saved;
+  }
+
+  async updatePageToolIntegration(id: number, data: Partial<InsertPageToolIntegration>): Promise<PageToolIntegration | undefined> {
+    const [updated] = await db
+      .update(pageToolIntegrations)
+      .set({ 
+        ...data,
+        updatedAt: new Date()
+      })
+      .where(eq(pageToolIntegrations.id, id))
+      .returning();
+    
+    return updated;
+  }
+
+  async deletePageToolIntegration(id: number): Promise<boolean> {
+    const result = await db
+      .delete(pageToolIntegrations)
+      .where(eq(pageToolIntegrations.id, id));
+    
+    return result.rowCount ? result.rowCount > 0 : false;
+  }
+
+  // Blog page operations
+  async getBlogPages(tenantId?: string): Promise<BlogPage[]> {
     try {
-      return await db.select().from(toolRequests).where(eq(toolRequests.status, status));
+      if (tenantId) {
+        return db.select().from(blogPages).where(eq(blogPages.tenantId, tenantId));
+      }
+      return db.select().from(blogPages);
     } catch (error) {
-      console.error(`Error fetching tool requests by status ${status}:`, error);
+      console.error("Error fetching blog pages:", error);
       return [];
     }
   }
 
-  async updateToolRequestStatus(id: number, status: string, processedAt?: Date): Promise<ToolRequest | undefined> {
+  async getBlogPage(id: number): Promise<BlogPage | undefined> {
     try {
-      const updateData: any = { status };
-      if (processedAt) {
-        updateData.processedAt = processedAt;
-      }
-      
-      const [updated] = await db
-        .update(toolRequests)
-        .set(updateData)
-        .where(eq(toolRequests.id, id))
-        .returning();
-      return updated;
+      const [page] = await db.select().from(blogPages).where(eq(blogPages.id, id));
+      return page;
     } catch (error) {
-      console.error(`Error updating tool request status for ID ${id}:`, error);
+      console.error(`Error fetching blog page with id ${id}:`, error);
       return undefined;
     }
   }
+
+  async getBlogPageBySlug(slug: string, tenantId?: string): Promise<BlogPage | undefined> {
+    try {
+      if (tenantId) {
+        const [page] = await db
+          .select()
+          .from(blogPages)
+          .where(
+            and(
+              eq(blogPages.slug, slug),
+              eq(blogPages.tenantId, tenantId)
+            )
+          );
+        return page;
+      }
+      
+      const [page] = await db
+        .select()
+        .from(blogPages)
+        .where(eq(blogPages.slug, slug));
+      return page;
+    } catch (error) {
+      console.error(`Error fetching blog page with slug ${slug}:`, error);
+      return undefined;
+    }
+  }
+
+  async createBlogPage(page: InsertBlogPage): Promise<BlogPage> {
+    try {
+      const [created] = await db.insert(blogPages).values(page).returning();
+      return created;
+    } catch (error) {
+      console.error("Error creating blog page:", error);
+      throw error;
+    }
+  }
+
+  async updateBlogPage(id: number, data: Partial<BlogPage>): Promise<BlogPage | undefined> {
+    try {
+      const [updated] = await db
+        .update(blogPages)
+        .set({ ...data, updatedAt: new Date() })
+        .where(eq(blogPages.id, id))
+        .returning();
+      return updated;
+    } catch (error) {
+      console.error(`Error updating blog page with id ${id}:`, error);
+      return undefined;
+    }
+  }
+
+  async deleteBlogPage(id: number): Promise<boolean> {
+    try {
+      const result = await db
+        .delete(blogPages)
+        .where(eq(blogPages.id, id));
+      return result.rowCount ? result.rowCount > 0 : false;
+    } catch (error) {
+      console.error(`Error deleting blog page with id ${id}:`, error);
+      return false;
+    }
+  }
   
-  // Blueprint Export operations
+  // Blog post operations
+  async getBlogPosts(tenantId?: string): Promise<BlogPost[]> {
+    try {
+      if (tenantId) {
+        return db.select().from(blogPosts).where(eq(blogPosts.tenantId, tenantId));
+      }
+      return db.select().from(blogPosts);
+    } catch (error) {
+      console.error("Error fetching blog posts:", error);
+      return [];
+    }
+  }
+
+  async getBlogPost(id: number): Promise<BlogPost | undefined> {
+    try {
+      const [post] = await db.select().from(blogPosts).where(eq(blogPosts.id, id));
+      return post;
+    } catch (error) {
+      console.error(`Error fetching blog post with id ${id}:`, error);
+      return undefined;
+    }
+  }
+
+  async getBlogPostBySlug(slug: string, tenantId?: string): Promise<BlogPost | undefined> {
+    try {
+      if (tenantId) {
+        const [post] = await db
+          .select()
+          .from(blogPosts)
+          .where(
+            and(
+              eq(blogPosts.slug, slug),
+              eq(blogPosts.tenantId, tenantId)
+            )
+          );
+        return post;
+      }
+      
+      const [post] = await db
+        .select()
+        .from(blogPosts)
+        .where(eq(blogPosts.slug, slug));
+      return post;
+    } catch (error) {
+      console.error(`Error fetching blog post with slug ${slug}:`, error);
+      return undefined;
+    }
+  }
+
+  async createBlogPost(post: InsertBlogPost): Promise<BlogPost> {
+    try {
+      const [created] = await db.insert(blogPosts).values(post).returning();
+      return created;
+    } catch (error) {
+      console.error("Error creating blog post:", error);
+      throw error;
+    }
+  }
+
+  async updateBlogPost(id: number, data: Partial<BlogPost>): Promise<BlogPost | undefined> {
+    try {
+      const [updated] = await db
+        .update(blogPosts)
+        .set({ ...data, updatedAt: new Date() })
+        .where(eq(blogPosts.id, id))
+        .returning();
+      return updated;
+    } catch (error) {
+      console.error(`Error updating blog post with id ${id}:`, error);
+      return undefined;
+    }
+  }
+
+  async deleteBlogPost(id: number): Promise<boolean> {
+    try {
+      const result = await db
+        .delete(blogPosts)
+        .where(eq(blogPosts.id, id));
+      return result.rowCount ? result.rowCount > 0 : false;
+    } catch (error) {
+      console.error(`Error deleting blog post with id ${id}:`, error);
+      return false;
+    }
+  }
+
+  // Integration request operations
+  async getIntegrationRequests(tenantId?: string): Promise<IntegrationRequest[]> {
+    try {
+      if (tenantId) {
+        return db.select().from(integrationRequests).where(eq(integrationRequests.tenantId, tenantId));
+      }
+      return db.select().from(integrationRequests);
+    } catch (error) {
+      console.error("Error fetching integration requests:", error);
+      return [];
+    }
+  }
+
+  async getIntegrationRequest(id: number): Promise<IntegrationRequest | undefined> {
+    try {
+      const [request] = await db.select().from(integrationRequests).where(eq(integrationRequests.id, id));
+      return request;
+    } catch (error) {
+      console.error(`Error fetching integration request with id ${id}:`, error);
+      return undefined;
+    }
+  }
+
+  async createIntegrationRequest(request: InsertIntegrationRequest): Promise<IntegrationRequest> {
+    try {
+      const [created] = await db.insert(integrationRequests).values(request).returning();
+      return created;
+    } catch (error) {
+      console.error("Error creating integration request:", error);
+      throw error;
+    }
+  }
+
+  async updateIntegrationRequest(id: number, data: Partial<IntegrationRequest>): Promise<IntegrationRequest | undefined> {
+    try {
+      const [updated] = await db
+        .update(integrationRequests)
+        .set({ ...data, updatedAt: new Date() })
+        .where(eq(integrationRequests.id, id))
+        .returning();
+      return updated;
+    } catch (error) {
+      console.error(`Error updating integration request with id ${id}:`, error);
+      return undefined;
+    }
+  }
+
+  async deleteIntegrationRequest(id: number): Promise<boolean> {
+    try {
+      const result = await db
+        .delete(integrationRequests)
+        .where(eq(integrationRequests.id, id));
+      return result.rowCount ? result.rowCount > 0 : false;
+    } catch (error) {
+      console.error(`Error deleting integration request with id ${id}:`, error);
+      return false;
+    }
+  }
+
+  // Client Registry operations for Blueprint Export
   async getClientRegistry(): Promise<ClientRegistry | undefined> {
     try {
       const [registry] = await db
@@ -1283,975 +1296,90 @@ export class DatabaseStorage implements IStorage {
       return undefined;
     }
   }
-  
+
   async createClientRegistry(data: InsertClientRegistry): Promise<ClientRegistry> {
-    // Check if we already have a record
-    const existing = await this.getClientRegistry();
-    
-    if (existing) {
-      // Update the existing record
-      const [updated] = await db
-        .update(clientRegistry)
-        .set({
-          ...data,
-          updatedAt: new Date()
-        })
-        .where(eq(clientRegistry.id, existing.id))
-        .returning();
-      
-      return updated;
-    } else {
-      // Create a new record
+    try {
       const [created] = await db
         .insert(clientRegistry)
-        .values({
-          ...data,
-          exportReady: data.exportReady ?? false,
-          handoffStatus: data.handoffStatus ?? "in_progress"
-        })
+        .values(data)
         .returning();
       
       return created;
-    }
-  }
-  
-  async updateClientRegistry(clientId: string, data: Partial<InsertClientRegistry>): Promise<ClientRegistry | undefined> {
-    const [registry] = await db
-      .select()
-      .from(clientRegistry)
-      .where(eq(clientRegistry.clientId, clientId));
-    
-    if (!registry) {
-      return undefined;
-    }
-    
-    const [updated] = await db
-      .update(clientRegistry)
-      .set({
-        ...data,
-        updatedAt: new Date()
-      })
-      .where(eq(clientRegistry.id, registry.id))
-      .returning();
-    
-    return updated;
-  }
-  
-  async updateExportableModules(clientId: string, moduleList: any[]): Promise<ClientRegistry | undefined> {
-    const [registry] = await db
-      .select()
-      .from(clientRegistry)
-      .where(eq(clientRegistry.clientId, clientId));
-    
-    if (!registry) {
-      return undefined;
-    }
-    
-    const [updated] = await db
-      .update(clientRegistry)
-      .set({
-        exportableModules: moduleList,
-        updatedAt: new Date()
-      })
-      .where(eq(clientRegistry.id, registry.id))
-      .returning();
-    
-    return updated;
-  }
-  
-  async markAsExportReady(clientId: string, exportReady: boolean): Promise<ClientRegistry | undefined> {
-    const [registry] = await db
-      .select()
-      .from(clientRegistry)
-      .where(eq(clientRegistry.clientId, clientId));
-    
-    if (!registry) {
-      return undefined;
-    }
-    
-    const [updated] = await db
-      .update(clientRegistry)
-      .set({
-        exportReady,
-        lastExported: exportReady ? new Date() : registry.lastExported,
-        updatedAt: new Date()
-      })
-      .where(eq(clientRegistry.id, registry.id))
-      .returning();
-    
-    return updated;
-  }
-  
-  async updateHandoffStatus(clientId: string, status: string): Promise<ClientRegistry | undefined> {
-    const [registry] = await db
-      .select()
-      .from(clientRegistry)
-      .where(eq(clientRegistry.clientId, clientId));
-    
-    if (!registry) {
-      return undefined;
-    }
-    
-    const [updated] = await db
-      .update(clientRegistry)
-      .set({
-        handoffStatus: status,
-        updatedAt: new Date()
-      })
-      .where(eq(clientRegistry.id, registry.id))
-      .returning();
-    
-    return updated;
-  }
-  
-  // Blueprint version management
-  async getAllBlueprintVersions(): Promise<any[]> {
-    try {
-      if (!blueprintVersions) {
-        console.warn("blueprintVersions table not defined in schema");
-        return [];
-      }
-      
-      return await db
-        .select()
-        .from(blueprintVersions)
-        .orderBy(desc(blueprintVersions.releaseDate));
     } catch (error) {
-      console.error("Error retrieving blueprint versions:", error);
-      return [];
+      console.error("Error creating client registry:", error);
+      throw error;
     }
   }
-  
-  async deprecateBlueprintVersion(version: string): Promise<boolean> {
+
+  async updateClientRegistry(clientId: string, data: Partial<InsertClientRegistry>): Promise<ClientRegistry | undefined> {
     try {
-      if (!blueprintVersions) {
-        console.warn("blueprintVersions table not defined in schema");
-        return false;
-      }
-      
-      await db
-        .update(blueprintVersions)
+      const [updated] = await db
+        .update(clientRegistry)
         .set({ 
-          deprecated: true,
+          ...data,
           updatedAt: new Date()
         })
-        .where(eq(blueprintVersions.version, version));
+        .where(eq(clientRegistry.clientId, clientId))
+        .returning();
       
-      return true;
+      return updated;
     } catch (error) {
-      console.error(`Error deprecating blueprint version ${version}:`, error);
-      return false;
-    }
-  }
-  
-  // Activity logging
-  async addActivityLog(log: Partial<InsertActivityLog>): Promise<void> {
-    try {
-      // Ensure we have all required fields
-      const activityLogData = {
-        userType: log.userType || 'system',
-        actionType: log.actionType || 'info',
-        entityType: log.entityType || 'system',
-        entityId: log.entityId || '0',
-        userId: log.userId || null,
-        details: log.details || null
-      };
-      
-      await db.insert(activityLogs).values(activityLogData);
-    } catch (error) {
-      console.error("Error adding activity log:", error);
-    }
-  }
-}
-
-// For compatibility with existing code, provide an in-memory implementation
-export class MemStorage implements IStorage {
-  private users: Map<number, User>;
-  currentId: number;
-  featureRequests: InsertFeatureRequest[];
-  contactSubmissions: Map<number, ContactSubmission>;
-  modules: Map<string, Module>;
-  businessIdentityData?: BusinessIdentity;
-  projectContextData?: ProjectContext;
-  activityLogs: ActivityLog[];
-  onboardingStates: Map<number, OnboardingState[]>;
-  moduleActivationLogs: ModuleActivation[];
-  pageComplexityTriages: PageComplexityTriage[];
-  seoConfigurations: Map<string, SeoConfiguration>;
-  brandVersions: Map<number, BrandVersion>;
-  clientRegistryData?: ClientRegistry;
-  tools: Map<number, Tool>;
-  toolRequests: Map<number, ToolRequest>;
-  toolIdCounter: number = 1;
-  toolRequestIdCounter: number = 1;
-  sessionStore: session.Store = new session.MemoryStore();
-
-  constructor() {
-    this.users = new Map();
-    this.currentId = 1;
-    this.featureRequests = [];
-    this.contactSubmissions = new Map();
-    this.modules = new Map();
-    this.activityLogs = [];
-    this.onboardingStates = new Map();
-    this.moduleActivationLogs = [];
-    this.pageComplexityTriages = [];
-    this.seoConfigurations = new Map();
-    this.brandVersions = new Map();
-    this.tools = new Map();
-    this.toolRequests = new Map();
-  }
-
-  async getUser(id: number): Promise<User | undefined> {
-    return this.users.get(id);
-  }
-
-  async getUserByUsername(username: string): Promise<User | undefined> {
-    return Array.from(this.users.values()).find(
-      (user) => user.username === username,
-    );
-  }
-
-  async createUser(insertUser: InsertUser): Promise<User> {
-    const id = this.currentId++;
-    const user = { 
-      ...insertUser, 
-      id, 
-      createdAt: new Date(),
-      name: insertUser.name || null,
-      email: insertUser.email || null,
-      userType: insertUser.userType || 'client'
-    };
-    this.users.set(id, user);
-    return user;
-  }
-  
-  async getBusinessIdentity(): Promise<BusinessIdentity | undefined> {
-    return this.businessIdentityData;
-  }
-  
-  async saveBusinessIdentity(data: InsertBusinessIdentity): Promise<BusinessIdentity> {
-    const identity = {
-      ...data,
-      id: 1,
-      updatedAt: new Date()
-    };
-    this.businessIdentityData = identity;
-    return identity;
-  }
-  
-  async getProjectContext(): Promise<ProjectContext | undefined> {
-    return this.projectContextData;
-  }
-  
-  async saveProjectContext(data: InsertProjectContext): Promise<ProjectContext> {
-    const context = {
-      ...data,
-      id: 1,
-      updatedAt: new Date()
-    };
-    this.projectContextData = context;
-    return context;
-  }
-  
-  // Onboarding state operations
-  async getOnboardingState(userId: number): Promise<OnboardingState | undefined> {
-    const userStates = this.onboardingStates.get(userId) || [];
-    if (userStates.length === 0) return undefined;
-    
-    // Return the most recent state
-    return userStates.sort((a, b) => 
-      b.checkpointTime.getTime() - a.checkpointTime.getTime()
-    )[0];
-  }
-  
-  async getOnboardingStageState(userId: number, stage: string): Promise<OnboardingState | undefined> {
-    const userStates = this.onboardingStates.get(userId) || [];
-    
-    // Find the most recent state for the given stage
-    const stageStates = userStates
-      .filter(state => state.stage === stage)
-      .sort((a, b) => b.checkpointTime.getTime() - a.checkpointTime.getTime());
-    
-    return stageStates.length > 0 ? stageStates[0] : undefined;
-  }
-  
-  async saveOnboardingState(data: InsertOnboardingState): Promise<OnboardingState> {
-    const id = this.currentId++;
-    const now = new Date();
-    
-    // Generate a recovery token if not provided
-    const recoveryToken = data.recoveryToken || crypto.randomBytes(16).toString('hex');
-    
-    const state: OnboardingState = {
-      id,
-      userId: data.userId,
-      stage: data.stage,
-      status: data.status,
-      data: data.data || null,
-      checkpointTime: now,
-      recoveryToken,
-      blueprintVersion: data.blueprintVersion || '1.0.0',
-      guardianSynced: data.guardianSynced || false,
-      createdAt: now,
-      updatedAt: now
-    };
-    
-    // Initialize user's states array if not exists
-    if (!this.onboardingStates.has(data.userId)) {
-      this.onboardingStates.set(data.userId, []);
-    }
-    
-    // Add the new state
-    this.onboardingStates.get(data.userId)!.push(state);
-    
-    return state;
-  }
-  
-  async updateOnboardingStatus(userId: number, stage: string, status: string, data?: any): Promise<OnboardingState | undefined> {
-    // Get current state for this stage
-    const currentState = await this.getOnboardingStageState(userId, stage);
-    
-    if (currentState) {
-      // Update the existing state
-      const now = new Date();
-      const updatedState: OnboardingState = {
-        ...currentState,
-        status,
-        data: data !== undefined ? data : currentState.data,
-        checkpointTime: now,
-        updatedAt: now
-      };
-      
-      // Replace the old state with the updated one
-      const userStates = this.onboardingStates.get(userId) || [];
-      const stateIndex = userStates.findIndex(s => s.id === currentState.id);
-      
-      if (stateIndex !== -1) {
-        userStates[stateIndex] = updatedState;
-        return updatedState;
-      }
-    }
-    
-    // If no existing state or updating failed, create a new one
-    return this.saveOnboardingState({
-      userId,
-      stage,
-      status,
-      data: data || null
-    });
-  }
-  
-  async markOnboardingStageComplete(userId: number, stage: string, data?: any): Promise<OnboardingState | undefined> {
-    return this.updateOnboardingStatus(userId, stage, 'complete', data);
-  }
-  
-  async getIncompleteOnboarding(userId: number): Promise<OnboardingState | undefined> {
-    const userStates = this.onboardingStates.get(userId) || [];
-    
-    // Find the most recent in_progress state
-    const incompleteStates = userStates
-      .filter(state => state.status === 'in_progress')
-      .sort((a, b) => b.checkpointTime.getTime() - a.checkpointTime.getTime());
-    
-    return incompleteStates.length > 0 ? incompleteStates[0] : undefined;
-  }
-  
-  async markGuardianSynced(id: number, synced: boolean = true): Promise<OnboardingState | undefined> {
-    // Find the state with this ID across all users
-    for (const userStates of this.onboardingStates.values()) {
-      const stateIndex = userStates.findIndex(state => state.id === id);
-      
-      if (stateIndex !== -1) {
-        const updatedState: OnboardingState = {
-          ...userStates[stateIndex],
-          guardianSynced: synced,
-          updatedAt: new Date()
-        };
-        
-        userStates[stateIndex] = updatedState;
-        return updatedState;
-      }
-    }
-    
-    return undefined;
-  }
-  
-  async saveOnboardingPreference(userId: number, preference: string): Promise<OnboardingState | undefined> {
-    try {
-      // Check if valid preference
-      const validPreference = ['full_site', 'tools_only', 'undecided'].includes(preference) 
-        ? preference 
-        : 'undecided';
-      
-      // Check if the user has an existing 'website_preference' stage entry
-      const existingPreference = await this.getOnboardingStageState(userId, 'website_preference');
-      
-      if (existingPreference) {
-        // Update the existing preference
-        const now = new Date();
-        const updatedState: OnboardingState = {
-          ...existingPreference,
-          data: { preference: validPreference },
-          checkpointTime: now,
-          updatedAt: now
-        };
-        
-        // Replace the old state
-        const userStates = this.onboardingStates.get(userId) || [];
-        const stateIndex = userStates.findIndex(s => s.id === existingPreference.id);
-        
-        if (stateIndex !== -1) {
-          userStates[stateIndex] = updatedState;
-          return updatedState;
-        }
-      }
-      
-      // Create new preference state
-      return this.saveOnboardingState({
-        userId,
-        stage: 'website_preference',
-        status: 'complete',
-        data: { preference: validPreference }
-      });
-    } catch (error) {
-      console.error("Error saving onboarding preference:", error);
+      console.error(`Error updating client registry with id ${clientId}:`, error);
       return undefined;
     }
   }
-  
-  async getModule(id: string): Promise<Module | undefined> {
-    return this.modules.get(id);
-  }
-  
-  async getAllModules(): Promise<Module[]> {
-    return Array.from(this.modules.values());
-  }
-  
-  async getModulesByCategory(category: string): Promise<Module[]> {
-    return Array.from(this.modules.values()).filter(
-      module => module.category === category
-    );
-  }
-  
-  async saveModule(moduleData: InsertModule): Promise<Module> {
-    const now = new Date();
-    const module = {
-      ...moduleData,
-      createdAt: now,
-      updatedAt: now
-    };
-    this.modules.set(module.id, module);
-    return module;
-  }
-  
-  async updateModuleStatus(id: string, status: string): Promise<Module | undefined> {
-    const module = this.modules.get(id);
-    if (module) {
-      const updated = { ...module, status, updatedAt: new Date() };
-      this.modules.set(id, updated);
-      return updated;
-    }
-    return undefined;
-  }
 
-  async saveFeatureRequest(request: InsertFeatureRequest): Promise<FeatureRequest> {
-    const id = this.currentId++;
-    const featureRequest = {
-      ...request,
-      id,
-      sentAt: new Date().toISOString(),
-      status: request.status || 'sent'
-    };
-    this.featureRequests.push(featureRequest);
-    return featureRequest;
-  }
-  
-  async getFeatureRequests(): Promise<FeatureRequest[]> {
-    return this.featureRequests;
-  }
-  
-  async updateFeatureRequestStatus(id: number, status: string): Promise<FeatureRequest | undefined> {
-    const index = this.featureRequests.findIndex(req => req.id === id);
-    if (index !== -1) {
-      this.featureRequests[index] = {
-        ...this.featureRequests[index],
-        status
-      };
-      return this.featureRequests[index];
-    }
-    return undefined;
-  }
-
-  async saveContactSubmission(data: InsertContactSubmission): Promise<ContactSubmission> {
-    const id = this.currentId++;
-    const submission = { 
-      ...data, 
-      id, 
-      date: new Date() 
-    };
-    
-    this.contactSubmissions.set(id, submission);
-    return submission;
-  }
-
-  async getContactSubmissions(): Promise<ContactSubmission[]> {
-    return Array.from(this.contactSubmissions.values());
-  }
-  
-  async logActivity(activity: InsertActivityLog): Promise<ActivityLog> {
-    const id = this.currentId++;
-    const log = {
-      ...activity,
-      id,
-      timestamp: new Date()
-    };
-    this.activityLogs.push(log);
-    return log;
-  }
-  
-  async getActivityLogs(userId?: number, limit: number = 50): Promise<ActivityLog[]> {
-    let logs = this.activityLogs;
-    
-    if (userId) {
-      logs = logs.filter(log => log.userId === userId);
-    }
-    
-    return logs.slice(0, limit);
-  }
-  
-  // Module activation logging implementation
-  async logModuleActivation(activation: InsertModuleActivation): Promise<ModuleActivation> {
-    const id = this.currentId++;
-    const now = new Date();
-    
-    const moduleActivation: ModuleActivation = {
-      id,
-      userId: activation.userId,
-      moduleId: activation.moduleId,
-      activatedAt: new Date(),
-      pageMetadata: activation.pageMetadata ?? null,
-      guardianSynced: activation.guardianSynced ?? false,
-      createdAt: now,
-      updatedAt: now
-    };
-    
-    this.moduleActivationLogs.push(moduleActivation);
-    return moduleActivation;
-  }
-  
-  async getModuleActivations(userId?: number, moduleId?: string): Promise<ModuleActivation[]> {
-    let activations = this.moduleActivationLogs;
-    
-    // Apply filters if provided
-    if (userId && moduleId) {
-      activations = activations.filter(
-        activation => activation.userId === userId && activation.moduleId === moduleId
-      );
-    } else if (userId) {
-      activations = activations.filter(activation => activation.userId === userId);
-    } else if (moduleId) {
-      activations = activations.filter(activation => activation.moduleId === moduleId);
-    }
-    
-    // Sort by most recent first
-    return activations.sort(
-      (a, b) => b.activatedAt.getTime() - a.activatedAt.getTime()
-    );
-  }
-  
-  async markModuleActivationSynced(id: number, synced: boolean = true): Promise<ModuleActivation | undefined> {
-    const index = this.moduleActivationLogs.findIndex(activation => activation.id === id);
-    
-    if (index !== -1) {
-      const updated: ModuleActivation = {
-        ...this.moduleActivationLogs[index],
-        guardianSynced: synced,
-        updatedAt: new Date()
-      };
-      
-      this.moduleActivationLogs[index] = updated;
-      return updated;
-    }
-    
-    return undefined;
-  }
-  
-  // Page complexity triage implementation
-  async savePageComplexityTriage(triage: InsertPageComplexityTriage): Promise<PageComplexityTriage> {
-    const id = this.currentId++;
-    const now = new Date();
-    
-    const pageComplexityTriage: PageComplexityTriage = {
-      id,
-      userId: triage.userId,
-      requestDescription: triage.requestDescription,
-      visualComplexity: triage.visualComplexity,
-      logicComplexity: triage.logicComplexity,
-      dataComplexity: triage.dataComplexity,
-      estimatedHours: triage.estimatedHours,
-      complexityLevel: triage.complexityLevel,
-      aiAssessment: triage.aiAssessment,
-      vaultSynced: triage.vaultSynced ?? false,
-      guardianSynced: triage.guardianSynced ?? false,
-      triageTimestamp: now,
-      createdAt: now,
-      updatedAt: now
-    };
-    
-    this.pageComplexityTriages.push(pageComplexityTriage);
-    return pageComplexityTriage;
-  }
-  
-  async getPageComplexityTriage(id: number): Promise<PageComplexityTriage | undefined> {
-    return this.pageComplexityTriages.find(triage => triage.id === id);
-  }
-  
-  async getPageComplexityTriagesByUser(userId: number): Promise<PageComplexityTriage[]> {
-    return this.pageComplexityTriages
-      .filter(triage => triage.userId === userId)
-      .sort((a, b) => b.triageTimestamp.getTime() - a.triageTimestamp.getTime());
-  }
-  
-  async updatePageComplexitySyncStatus(
-    id: number, 
-    vaultSynced?: boolean, 
-    guardianSynced?: boolean
-  ): Promise<PageComplexityTriage | undefined> {
-    const index = this.pageComplexityTriages.findIndex(triage => triage.id === id);
-    
-    if (index !== -1) {
-      const updateData: { vaultSynced?: boolean, guardianSynced?: boolean } = {};
-      
-      if (vaultSynced !== undefined) {
-        updateData.vaultSynced = vaultSynced;
-      }
-      
-      if (guardianSynced !== undefined) {
-        updateData.guardianSynced = guardianSynced;
-      }
-      
-      const updated: PageComplexityTriage = {
-        ...this.pageComplexityTriages[index],
-        ...updateData,
-        updatedAt: new Date()
-      };
-      
-      this.pageComplexityTriages[index] = updated;
-      return updated;
-    }
-    
-    return undefined;
-  }
-
-  // SEO Configuration operations
-  async getSeoConfiguration(routePath: string): Promise<SeoConfiguration | undefined> {
-    return Array.from(this.seoConfigurations.values()).find(
-      config => config.routePath === routePath
-    );
-  }
-  
-  async getAllSeoConfigurations(): Promise<SeoConfiguration[]> {
-    return Array.from(this.seoConfigurations.values()).sort(
-      (a, b) => a.routePath.localeCompare(b.routePath)
-    );
-  }
-  
-  async saveSeoConfiguration(config: InsertSeoConfiguration): Promise<SeoConfiguration> {
-    const existing = await this.getSeoConfiguration(config.routePath);
-    
-    if (existing) {
-      // Update existing configuration
-      const updated = {
-        ...existing,
-        ...config,
-        updatedAt: new Date()
-      };
-      this.seoConfigurations.set(config.routePath, updated);
-      return updated;
-    } else {
-      // Create new configuration
-      const now = new Date();
-      const newConfig = {
-        ...config,
-        id: this.currentId++,
-        vaultSynced: false,
-        guardianSynced: false,
-        createdAt: now,
-        updatedAt: now
-      };
-      this.seoConfigurations.set(config.routePath, newConfig);
-      return newConfig;
-    }
-  }
-  
-  async updateSeoConfiguration(id: number, config: Partial<InsertSeoConfiguration>): Promise<SeoConfiguration | undefined> {
-    // Find the configuration with this ID
-    const found = Array.from(this.seoConfigurations.values()).find(conf => conf.id === id);
-    
-    if (found) {
-      const updated = {
-        ...found,
-        ...config,
-        updatedAt: new Date()
-      };
-      
-      this.seoConfigurations.set(found.routePath, updated);
-      return updated;
-    }
-    
-    return undefined;
-  }
-  
-  async deleteSeoConfiguration(id: number): Promise<boolean> {
-    // Find the configuration to delete
-    const found = Array.from(this.seoConfigurations.values()).find(conf => conf.id === id);
-    
-    if (found) {
-      this.seoConfigurations.delete(found.routePath);
-      return true;
-    }
-    
-    return false;
-  }
-  
-  async getSeoConfigurationsByStatus(indexable: boolean): Promise<SeoConfiguration[]> {
-    return Array.from(this.seoConfigurations.values())
-      .filter(conf => conf.indexable === indexable)
-      .sort((a, b) => b.priority - a.priority);
-  }
-  
-  async updateSeoSyncStatus(id: number, vaultSynced?: boolean, guardianSynced?: boolean): Promise<SeoConfiguration | undefined> {
-    // Find the configuration to update
-    const found = Array.from(this.seoConfigurations.values()).find(conf => conf.id === id);
-    
-    if (found) {
-      const updated = {
-        ...found,
-        vaultSynced: vaultSynced !== undefined ? vaultSynced : found.vaultSynced,
-        guardianSynced: guardianSynced !== undefined ? guardianSynced : found.guardianSynced,
-        updatedAt: new Date()
-      };
-      
-      this.seoConfigurations.set(found.routePath, updated);
-      return updated;
-    }
-    
-    return undefined;
-  }
-  
-  // Brand Versioning operations
-  async getBrandVersion(id: number): Promise<BrandVersion | undefined> {
-    return this.brandVersions.get(id);
-  }
-  
-  async getBrandVersionByNumber(versionNumber: string): Promise<BrandVersion | undefined> {
-    return Array.from(this.brandVersions.values()).find(
-      version => version.versionNumber === versionNumber
-    );
-  }
-  
-  async getActiveBrandVersion(): Promise<BrandVersion | undefined> {
-    return Array.from(this.brandVersions.values())
-      .filter(version => version.isActive)
-      .sort((a, b) => (b.appliedAt?.getTime() || 0) - (a.appliedAt?.getTime() || 0))[0];
-  }
-  
-  async getAllBrandVersions(): Promise<BrandVersion[]> {
-    return Array.from(this.brandVersions.values())
-      .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
-  }
-  
-  async saveBrandVersion(version: InsertBrandVersion): Promise<BrandVersion> {
-    const existing = await this.getBrandVersionByNumber(version.versionNumber);
-    
-    if (existing) {
-      // Update existing version
-      const updated = {
-        ...existing,
-        ...version,
-        updatedAt: new Date()
-      };
-      this.brandVersions.set(existing.id, updated);
-      return updated;
-    } else {
-      // Create new version
-      const now = new Date();
-      const newVersion = {
-        ...version,
-        id: this.currentId++,
-        isActive: false,
-        vaultSynced: false,
-        guardianSynced: false,
-        createdAt: now,
-        updatedAt: now
-      };
-      this.brandVersions.set(newVersion.id, newVersion);
-      return newVersion;
-    }
-  }
-  
-  async activateBrandVersion(id: number): Promise<BrandVersion | undefined> {
-    // Find the version to activate
-    const version = this.brandVersions.get(id);
-    
-    if (!version) {
-      return undefined;
-    }
-    
-    // Deactivate all currently active versions
-    Array.from(this.brandVersions.values())
-      .filter(v => v.isActive)
-      .forEach(v => {
-        const updated = { ...v, isActive: false, updatedAt: new Date() };
-        this.brandVersions.set(v.id, updated);
-      });
-    
-    // Activate the requested version
-    const activated = {
-      ...version,
-      isActive: true,
-      appliedAt: new Date(),
-      updatedAt: new Date()
-    };
-    
-    this.brandVersions.set(id, activated);
-    return activated;
-  }
-  
-  async updateBrandSyncStatus(id: number, vaultSynced?: boolean, guardianSynced?: boolean): Promise<BrandVersion | undefined> {
-    const version = this.brandVersions.get(id);
-    
-    if (version) {
-      const updated = {
-        ...version,
-        vaultSynced: vaultSynced !== undefined ? vaultSynced : version.vaultSynced,
-        guardianSynced: guardianSynced !== undefined ? guardianSynced : version.guardianSynced,
-        updatedAt: new Date()
-      };
-      
-      this.brandVersions.set(id, updated);
-      return updated;
-    }
-    
-    return undefined;
-  }
-  
-  // Blueprint Export operations
-  async getClientRegistry(): Promise<ClientRegistry | undefined> {
-    return this.clientRegistryData;
-  }
-  
-  async createClientRegistry(data: InsertClientRegistry): Promise<ClientRegistry> {
-    const id = this.currentId++;
-    const now = new Date();
-    
-    const clientRegistry: ClientRegistry = {
-      id,
-      clientId: data.clientId,
-      blueprintVersion: data.blueprintVersion || "1.0.0",
-      sector: data.sector || null,
-      location: data.location || null,
-      projectStartDate: data.projectStartDate || now,
-      userRoles: data.userRoles || null,
-      exportReady: data.exportReady || false,
-      handoffStatus: data.handoffStatus || "in_progress",
-      exportableModules: data.exportableModules || null,
-      lastExported: data.lastExported || null,
-      createdAt: now,
-      updatedAt: now
-    };
-    
-    this.clientRegistryData = clientRegistry;
-    return clientRegistry;
-  }
-  
-  async updateClientRegistry(clientId: string, data: Partial<InsertClientRegistry>): Promise<ClientRegistry | undefined> {
-    if (!this.clientRegistryData || this.clientRegistryData.clientId !== clientId) {
-      return undefined;
-    }
-    
-    const updated: ClientRegistry = {
-      ...this.clientRegistryData,
-      ...data,
-      updatedAt: new Date()
-    };
-    
-    this.clientRegistryData = updated;
-    return updated;
-  }
-  
   async updateExportableModules(clientId: string, moduleList: any[]): Promise<ClientRegistry | undefined> {
-    if (!this.clientRegistryData || this.clientRegistryData.clientId !== clientId) {
+    try {
+      const [updated] = await db
+        .update(clientRegistry)
+        .set({ 
+          exportableModules: moduleList,
+          updatedAt: new Date()
+        })
+        .where(eq(clientRegistry.clientId, clientId))
+        .returning();
+      
+      return updated;
+    } catch (error) {
+      console.error(`Error updating exportable modules for client ${clientId}:`, error);
       return undefined;
     }
-    
-    const updated: ClientRegistry = {
-      ...this.clientRegistryData,
-      exportableModules: moduleList,
-      updatedAt: new Date()
-    };
-    
-    this.clientRegistryData = updated;
-    return updated;
   }
-  
+
   async markAsExportReady(clientId: string, exportReady: boolean): Promise<ClientRegistry | undefined> {
-    if (!this.clientRegistryData || this.clientRegistryData.clientId !== clientId) {
+    try {
+      const [updated] = await db
+        .update(clientRegistry)
+        .set({ 
+          exportReady,
+          updatedAt: new Date()
+        })
+        .where(eq(clientRegistry.clientId, clientId))
+        .returning();
+      
+      return updated;
+    } catch (error) {
+      console.error(`Error updating export ready status for client ${clientId}:`, error);
       return undefined;
     }
-    
-    const updated: ClientRegistry = {
-      ...this.clientRegistryData,
-      exportReady,
-      lastExported: exportReady ? new Date() : this.clientRegistryData.lastExported,
-      updatedAt: new Date()
-    };
-    
-    this.clientRegistryData = updated;
-    return updated;
   }
-  
+
   async updateHandoffStatus(clientId: string, status: string): Promise<ClientRegistry | undefined> {
-    if (!this.clientRegistryData || this.clientRegistryData.clientId !== clientId) {
+    try {
+      const [updated] = await db
+        .update(clientRegistry)
+        .set({ 
+          handoffStatus: status,
+          updatedAt: new Date()
+        })
+        .where(eq(clientRegistry.clientId, clientId))
+        .returning();
+      return updated;
+    } catch (error) {
+      console.error(`Error updating handoff status for client ${clientId}:`, error);
       return undefined;
     }
-    
-    const updated: ClientRegistry = {
-      ...this.clientRegistryData,
-      handoffStatus: status,
-      updatedAt: new Date()
-    };
-    
-    this.clientRegistryData = updated;
-    return updated;
-  }
-  
-  // Blueprint version management
-  async getAllBlueprintVersions(): Promise<any[]> {
-    // Return empty array for in-memory implementation
-    return [];
-  }
-  
-  async deprecateBlueprintVersion(version: string): Promise<boolean> {
-    // Always return true for in-memory implementation
-    return true;
-  }
-  
-  // Activity logging
-  async addActivityLog(log: any): Promise<void> {
-    const id = this.currentId++;
-    const activityLog = {
-      id,
-      userType: log.userType || 'system',
-      actionType: log.actionType || 'info',
-      entityType: log.entityType || 'system',
-      entityId: log.entityId || '0',
-      userId: log.userId || null,
-      details: log.details || null,
-      timestamp: new Date()
-    };
-    this.activityLogs.push(activityLog);
   }
 }
 
