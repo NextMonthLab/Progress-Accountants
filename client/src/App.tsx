@@ -164,54 +164,45 @@ function App() {
 function FirstTimeUserDetector({ children }: { children: React.ReactNode }) {
   const [, navigate] = useLocation();
   const { user } = useAuth();
-  const userType = user?.role || 'public';
   
-  // Query the user's onboarding state
-  const { data: onboardingState, isLoading } = useQuery({
-    queryKey: [`/api/onboarding/${user?.id}`],
-    queryFn: async () => {
-      if (!user?.id) return null;
-      
-      try {
-        const response = await fetch(`/api/onboarding/${user.id}`);
-        if (!response.ok) return null;
-        return response.json();
-      } catch (error) {
-        console.error("Error fetching onboarding state:", error);
-        return null;
-      }
-    },
-    enabled: !!user?.id,
-  });
-
   // Query current location
   const [location] = useLocation();
   
-  // Only redirect client users who don't have complete onboarding
+  // Only redirect authenticated non-admin users who haven't completed onboarding
   useEffect(() => {
+    // Skip if user is not logged in or is an admin/super admin
+    if (!user) return;
+    if (user.role === 'admin' || user.role === 'super_admin' || user.role === 'editor') return;
+    
     // For demo purposes, we'll redirect based on simple localStorage check
     // In a production environment, this would use the onboardingState from the backend
     const onboardingComplete = localStorage.getItem('project_context.status') === 'onboarded';
     
-    // Check for client user and incomplete onboarding
-    if (userType === 'client' && 
-        !onboardingComplete &&
-        location !== '/onboarding' && 
-        location !== '/website-intent' && 
-        location !== '/new-client-setup' && // Allow new client setup page
-        location !== '/client-portal' && // Allow client portal for 'tools only' users
-        location !== '/tools-dashboard' && // Allow tools dashboard for 'tools only' users
-        location !== '/tools-hub' && // Allow tools hub for 'tools only' users
-        !location.startsWith('/tools/create/') && // Allow tool wizards for 'tools only' users
-        !location.startsWith('/homepage-setup') && 
-        !location.startsWith('/foundation-pages') && 
-        !location.startsWith('/launch-ready') &&
-        !location.startsWith('/marketplace')) {
-      
-      // Redirect to onboarding
+    // Skip redirection for specific paths that are allowed before onboarding
+    const allowedPaths = [
+      '/onboarding',
+      '/website-intent',
+      '/new-client-setup',
+      '/client-portal',
+      '/tools-dashboard',
+      '/tools-hub',
+      '/auth',
+      '/'
+    ];
+    
+    const isAllowedPath = 
+      allowedPaths.includes(location) || 
+      location.startsWith('/tools/create/') ||
+      location.startsWith('/homepage-setup') || 
+      location.startsWith('/foundation-pages') || 
+      location.startsWith('/launch-ready') ||
+      location.startsWith('/marketplace');
+    
+    // If we need to redirect to onboarding
+    if (!onboardingComplete && !isAllowedPath) {
       navigate('/onboarding');
     }
-  }, [userType, location, navigate]);
+  }, [user, location, navigate]);
 
   return <>{children}</>;
 }

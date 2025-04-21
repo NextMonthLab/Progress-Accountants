@@ -132,6 +132,22 @@ export default function Navbar() {
             Client Portal
           </Link>
           
+          {/* Show login button for non-authenticated users */}
+          {!user && (
+            <Button 
+              variant="outline"
+              className="border-[var(--orange)] text-[var(--orange)] hover:bg-[var(--orange)] hover:text-white"
+              asChild
+            >
+              <Link 
+                href="/auth" 
+                className="no-underline flex items-center"
+              >
+                Login / Register
+              </Link>
+            </Button>
+          )}
+          
           {/* Show admin dashboard link with high visibility for staff */}
           {isStaff && (
             <Button 
@@ -195,6 +211,26 @@ export default function Navbar() {
               Client Portal
             </Link>
           </div>
+          
+          {/* Login section for non-authenticated users */}
+          {!user && (
+            <div className="py-2">
+              <h4 className="text-sm uppercase tracking-wider text-gray-500 mb-2 px-2">Access</h4>
+              <Button 
+                variant="outline"
+                className="w-full border-[var(--orange)] text-[var(--orange)] hover:bg-[var(--orange)] hover:text-white"
+                onClick={closeMenu}
+                asChild
+              >
+                <Link 
+                  href="/auth" 
+                  className="flex items-center justify-center py-2 no-underline"
+                >
+                  Login / Register
+                </Link>
+              </Button>
+            </div>
+          )}
           
           {/* Admin link if staff */}
           {isStaff && (
