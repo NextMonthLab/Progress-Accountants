@@ -34,6 +34,29 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
+// Define the types for systemStats
+interface SystemHealth {
+  status: 'healthy' | 'issues';
+  database: boolean;
+  api: boolean;
+}
+
+interface SystemStats {
+  activeTenants: number;
+  totalTenants: number;
+  templateCount: number;
+  activeUsers: number;
+  totalUsers: number;
+  adminCount: number;
+  editorCount: number;
+  publicCount: number;
+  superAdminCount: number;
+  health: SystemHealth;
+  uptimeFormatted: string;
+  securityStatus: 'secure' | 'insecure';
+  securityAlerts: string[];
+}
+
 export default function SuperAdminDashboard() {
   const [, navigate] = useLocation();
   const { user } = useAuth();
@@ -45,17 +68,33 @@ export default function SuperAdminDashboard() {
     return null;
   }
   
-  // Fetch system stats with fallback
-  const { data: systemStats = {} } = useQuery({
+  // Fetch system stats
+  const { data: systemStats } = useQuery<SystemStats>({
     queryKey: ['/api/system/stats'],
-    queryFn: getQueryFn({ fallbackData: {} }),
+    queryFn: getQueryFn(),
   });
   
-  // Fetch tenant stats with fallback
-  const { data: tenantStats = {} } = useQuery({
+  // Fetch tenant stats
+  const { data: tenantStats } = useQuery({
     queryKey: ['/api/tenants/stats'],
-    queryFn: getQueryFn({ fallbackData: {} }),
+    queryFn: getQueryFn(),
   });
+
+  const activeTenants = systemStats?.activeTenants || 0;
+  const totalTenants = systemStats?.totalTenants || 0;
+  const templateCount = systemStats?.templateCount || 0;
+  const activeUsers = systemStats?.activeUsers || 0;
+  const totalUsers = systemStats?.totalUsers || 0;
+  const adminCount = systemStats?.adminCount || 0;
+  const editorCount = systemStats?.editorCount || 0;
+  const publicCount = systemStats?.publicCount || 0;
+  const superAdminCount = systemStats?.superAdminCount || 0;
+  const uptimeFormatted = systemStats?.uptimeFormatted || 'N/A';
+  const securityStatus = systemStats?.securityStatus || 'insecure';
+  const healthStatus = systemStats?.health?.status || 'issues';
+  const databaseConnected = systemStats?.health?.database || false;
+  const apiOperational = systemStats?.health?.api || false;
+  const securityAlerts = systemStats?.securityAlerts || [];
   
   return (
     <AdminLayout>
@@ -90,15 +129,15 @@ export default function SuperAdminDashboard() {
                     <Building className="w-4 h-4 mr-2 text-primary" />
                     <span className="text-sm">Active Tenants</span>
                   </div>
-                  <Badge>{systemStats?.activeTenants || 0}</Badge>
+                  <Badge>{activeTenants}</Badge>
                 </div>
                 <Progress 
-                  value={systemStats?.activeTenants && systemStats?.totalTenants ? (systemStats.activeTenants / systemStats.totalTenants) * 100 : 0} 
+                  value={totalTenants > 0 ? (activeTenants / totalTenants) * 100 : 0} 
                   className="h-2" 
                 />
                 <div className="flex items-center justify-between text-sm text-muted-foreground">
-                  <span>Total: {systemStats?.totalTenants || 0}</span>
-                  <span>Templates: {systemStats?.templateCount || 0}</span>
+                  <span>Total: {totalTenants}</span>
+                  <span>Templates: {templateCount}</span>
                 </div>
               </div>
             </CardContent>
@@ -116,17 +155,17 @@ export default function SuperAdminDashboard() {
                     <Users className="w-4 h-4 mr-2 text-primary" />
                     <span className="text-sm">Active Users</span>
                   </div>
-                  <Badge>{systemStats?.activeUsers || 0}</Badge>
+                  <Badge>{activeUsers}</Badge>
                 </div>
                 <Progress 
-                  value={systemStats?.activeUsers && systemStats?.totalUsers ? (systemStats.activeUsers / systemStats.totalUsers) * 100 : 0} 
+                  value={totalUsers > 0 ? (activeUsers / totalUsers) * 100 : 0} 
                   className="h-2" 
                 />
                 <div className="grid grid-cols-2 gap-2 text-sm text-muted-foreground">
-                  <div>Admins: {systemStats?.adminCount || 0}</div>
-                  <div>Editors: {systemStats?.editorCount || 0}</div>
-                  <div>Public: {systemStats?.publicCount || 0}</div>
-                  <div>Super: {systemStats?.superAdminCount || 0}</div>
+                  <div>Admins: {adminCount}</div>
+                  <div>Editors: {editorCount}</div>
+                  <div>Public: {publicCount}</div>
+                  <div>Super: {superAdminCount}</div>
                 </div>
               </div>
             </CardContent>
@@ -144,22 +183,22 @@ export default function SuperAdminDashboard() {
                     <Server className="w-4 h-4 mr-2 text-primary" />
                     <span className="text-sm">Server Status</span>
                   </div>
-                  <Badge variant={systemStats?.health?.status === 'healthy' ? 'default' : 'destructive'}>
-                    {systemStats?.health?.status === 'healthy' ? 'Healthy' : 'Issues'}
+                  <Badge variant={healthStatus === 'healthy' ? 'default' : 'destructive'}>
+                    {healthStatus === 'healthy' ? 'Healthy' : 'Issues'}
                   </Badge>
                 </div>
                 <div className="space-y-2">
                   <div className="flex items-center">
                     <Database className="w-4 h-4 mr-2 text-amber-500" />
-                    <span className="text-sm">Database: {systemStats?.health?.database ? 'Connected' : 'Error'}</span>
+                    <span className="text-sm">Database: {databaseConnected ? 'Connected' : 'Error'}</span>
                   </div>
                   <div className="flex items-center">
                     <Activity className="w-4 h-4 mr-2 text-green-500" />
-                    <span className="text-sm">API: {systemStats?.health?.api ? 'Operational' : 'Error'}</span>
+                    <span className="text-sm">API: {apiOperational ? 'Operational' : 'Error'}</span>
                   </div>
                   <div className="flex items-center mt-2">
                     <Clock className="w-4 h-4 mr-2 text-muted-foreground" />
-                    <span className="text-sm text-muted-foreground">Uptime: {systemStats?.uptimeFormatted || 'N/A'}</span>
+                    <span className="text-sm text-muted-foreground">Uptime: {uptimeFormatted}</span>
                   </div>
                 </div>
               </div>
@@ -179,20 +218,20 @@ export default function SuperAdminDashboard() {
                     <span className="text-sm">Status</span>
                   </div>
                   <Badge 
-                    variant={systemStats?.securityStatus === 'secure' ? 'default' : 'destructive'}
+                    variant={securityStatus === 'secure' ? 'default' : 'destructive'}
                   >
-                    {systemStats?.securityStatus === 'secure' ? 'Secure' : 'Action Required'}
+                    {securityStatus === 'secure' ? 'Secure' : 'Action Required'}
                   </Badge>
                 </div>
                 <div className="space-y-2">
-                  {systemStats?.securityStatus === 'secure' ? (
+                  {securityStatus === 'secure' ? (
                     <div className="flex items-center text-green-500">
                       <CheckCircle className="w-4 h-4 mr-2" />
                       <span className="text-sm">All systems secure</span>
                     </div>
                   ) : (
                     <div className="space-y-2">
-                      {systemStats?.securityAlerts?.map((alert: string, index: number) => (
+                      {securityAlerts.map((alert: string, index: number) => (
                         <div key={index} className="flex items-center text-destructive">
                           <AlertTriangle className="w-4 h-4 mr-2" />
                           <span className="text-sm">{alert}</span>
