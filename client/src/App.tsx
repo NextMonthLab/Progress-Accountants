@@ -6,6 +6,8 @@ import NotFound from "@/pages/not-found";
 import { useAuth, AuthProvider } from "@/hooks/use-auth";
 import { TenantProvider } from "@/hooks/use-tenant";
 import { PermissionsProvider } from "@/hooks/use-permissions";
+import { CompanionContextProvider } from "@/hooks/use-companion-context";
+import { DualModeCompanion } from "@/components/companions/DualModeCompanion";
 import { UpgradeAnnouncement } from "@/components/UpgradeAnnouncement";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import SuperAdminDashboard from "@/pages/super-admin/SuperAdminDashboard";
@@ -217,14 +219,17 @@ function App() {
         <PermissionsProvider>
           <ThemeProvider>
             <TenantProvider>
-              <DocumentHead route="/" />
-              <FirstTimeUserDetector>
-                <MainLayout>
-                  <Router />
-                </MainLayout>
-              </FirstTimeUserDetector>
-              <UpgradeAnnouncement />
-              <Toaster />
+              <CompanionContextProvider>
+                <DocumentHead route="/" />
+                <FirstTimeUserDetector>
+                  <MainLayout>
+                    <Router />
+                  </MainLayout>
+                </FirstTimeUserDetector>
+                <DualModeCompanion />
+                <UpgradeAnnouncement />
+                <Toaster />
+              </CompanionContextProvider>
             </TenantProvider>
           </ThemeProvider>
         </PermissionsProvider>
