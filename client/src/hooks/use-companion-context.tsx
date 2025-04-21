@@ -1,6 +1,9 @@
 import { createContext, ReactNode, useContext, useEffect, useState } from "react";
 import { useLocation } from "wouter";
 import { useAuth } from "@/hooks/use-auth";
+import { useTenant } from "@/hooks/use-tenant";
+import { useQuery } from "@tanstack/react-query";
+import { apiRequest } from "@/lib/queryClient";
 
 /**
  * Defines the structure of business identity data used by the companion
@@ -68,7 +71,7 @@ export interface CompanionContext {
   forceMode: (mode: CompanionMode) => void;
 }
 
-// Default context
+// Create context with default values
 const defaultContext: CompanionContext = {
   mode: 'public',
   businessIdentity: null,
@@ -81,8 +84,7 @@ const defaultContext: CompanionContext = {
   forceMode: () => {},
 };
 
-// Create context
-const CompanionContextContext = createContext<CompanionContext>(defaultContext);
+const CompanionContextValue = createContext<CompanionContext>(defaultContext);
 
 /**
  * Provider component for the companion context
@@ -90,198 +92,126 @@ const CompanionContextContext = createContext<CompanionContext>(defaultContext);
 export function CompanionContextProvider({ children }: { children: ReactNode }) {
   const [location] = useLocation();
   const { user } = useAuth();
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<Error | null>(null);
-  const [businessIdentity, setBusinessIdentity] = useState<BusinessIdentity | null>(null);
-  const [brandSettings, setBrandSettings] = useState<BrandSettings | null>(null);
-  const [publicPages, setPublicPages] = useState<string[]>([]);
+  const { tenant } = useTenant();
   const [debugMode, setDebugMode] = useState(false);
   const [forcedMode, setForcedMode] = useState<CompanionMode | null>(null);
-
-  // Determine if the current location is an admin page
-  const isAdminPage = () => {
-    return (
-      location.startsWith('/admin') ||
-      location.startsWith('/tools') ||
-      location.startsWith('/onboarding') ||
-      location.startsWith('/dashboard') ||
-      location.startsWith('/settings') ||
-      location.startsWith('/media') ||
-      location.startsWith('/client-dashboard') ||
-      location.startsWith('/marketplace') ||
-      location.startsWith('/module-library') ||
-      location.includes('setup')
-    );
-  };
-
-  // Determine the current mode based on page and user
+  
+  // Get public pages from API
+  const { data: publicPages = [], isLoading: pagesLoading } = useQuery<string[]>({
+    queryKey: ['/api/pages/public'],
+    queryFn: async () => {
+      const response = await apiRequest('GET', '/api/pages/public');
+      if (!response.ok) {
+        throw new Error('Failed to fetch public pages');
+      }
+      return response.json();
+    },
+    staleTime: 1000 * 60 * 5, // 5 minutes
+  });
+  
+  // Fetch business identity from API
+  const { 
+    data: businessIdentity, 
+    isLoading: identityLoading, 
+    error: identityError 
+  } = useQuery<BusinessIdentity>({
+    queryKey: ['/api/business-identity'],
+    queryFn: async () => {
+      const response = await apiRequest('GET', '/api/business-identity');
+      if (!response.ok) {
+        throw new Error('Failed to fetch business identity');
+      }
+      return response.json();
+    },
+    staleTime: 1000 * 60 * 5, // 5 minutes
+  });
+  
+  // Determine whether we're on an admin page or public page
   const determineMode = (): CompanionMode => {
-    // If mode is forced via debug controls, use that
-    if (forcedMode) {
-      return forcedMode;
-    }
+    // If we have a forced mode from debug, use it
+    if (forcedMode) return forcedMode;
     
-    // Check if it's an admin page and user has appropriate role
-    if (isAdminPage() && user && ['admin', 'super_admin', 'editor'].includes(user.userType)) {
+    // Check if the current path is in public pages list
+    const isPublicPage = publicPages.some(page => location === page || location.startsWith(page + '/'));
+    
+    // Admin-specific pages
+    const adminPaths = [
+      '/admin',
+      '/dashboard',
+      '/tools-dashboard',
+      '/tools-hub',
+      '/tools',
+      '/blueprint-manager',
+      '/media',
+      '/brand-manager',
+      '/seo-manager',
+      '/client-dashboard',
+      '/module-gallery',
+      '/module-library',
+      '/marketplace',
+      '/installed-tools',
+      '/brand-guidelines',
+      '/business-identity',
+      '/homepage-setup',
+      '/foundation-pages',
+      '/about-setup',
+      '/services-setup',
+      '/contact-setup',
+      '/testimonials-setup',
+      '/faq-setup',
+      '/launch-ready',
+    ];
+    
+    const isAdminPage = adminPaths.some(path => location === path || location.startsWith(path + '/'));
+    
+    // Logic for determining mode:
+    // 1. If it's clearly an admin page, use admin mode
+    // 2. If user is logged in and has admin privileges, use admin mode on non-public pages
+    // 3. Otherwise, use public mode
+    if (isAdminPage) {
       return 'admin';
+    } else if (user && ['admin', 'super_admin', 'editor'].includes(user.userType) && !isPublicPage) {
+      return 'admin';
+    } else {
+      return 'public';
     }
-    
-    // Default to public mode
-    return 'public';
   };
-
-  // Toggle debug mode
-  const toggleDebugMode = () => {
-    setDebugMode((prev) => !prev);
-  };
-
-  // Force a specific mode (for debug purposes)
+  
+  // Function to force mode from debug panel
   const forceMode = (mode: CompanionMode) => {
     setForcedMode(mode);
   };
-
-  // Load business identity data
-  useEffect(() => {
-    const loadBusinessIdentity = async () => {
-      setIsLoading(true);
-      try {
-        // First try to load from API
-        const response = await fetch('/api/business-identity');
-        
-        if (response.ok) {
-          const data = await response.json();
-          setBusinessIdentity(data);
-        } else {
-          // Fallback to localStorage if API fails
-          const savedData = localStorage.getItem('system_context.business_identity');
-          if (savedData) {
-            setBusinessIdentity(JSON.parse(savedData));
-          }
-        }
-      } catch (error) {
-        console.error('Error loading business identity:', error);
-        
-        // Attempt to load from localStorage as final fallback
-        try {
-          const savedData = localStorage.getItem('system_context.business_identity');
-          if (savedData) {
-            setBusinessIdentity(JSON.parse(savedData));
-          }
-        } catch (e) {
-          setError(new Error('Failed to load business identity data'));
-        }
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    
-    // Load brand settings
-    const loadBrandSettings = async () => {
-      try {
-        // Try to get brand version from API
-        const response = await fetch('/api/brand/versions/latest');
-        
-        if (response.ok) {
-          const data = await response.json();
-          setBrandSettings({
-            color: {
-              primary: data.primaryColor || '#1e3a8a',
-              secondary: data.secondaryColor || '#f97316',
-            },
-            voice: {
-              tone: data.tonalStyle || 'professional',
-              formality: data.formality || 'neutral',
-              personality: data.personality || 'professional',
-            }
-          });
-        } else {
-          // Set defaults if API fails
-          setBrandSettings({
-            color: {
-              primary: '#1e3a8a', // Navy blue
-              secondary: '#f97316', // Burnt orange
-            },
-            voice: {
-              tone: 'professional',
-              formality: 'neutral',
-              personality: 'professional',
-            }
-          });
-        }
-      } catch (error) {
-        console.error('Error loading brand settings:', error);
-        // Set defaults
-        setBrandSettings({
-          color: {
-            primary: '#1e3a8a', // Navy blue
-            secondary: '#f97316', // Burnt orange
-          },
-          voice: {
-            tone: 'professional',
-            formality: 'neutral',
-            personality: 'professional',
-          }
-        });
-      }
-    };
-    
-    // Load list of public pages
-    const loadPublicPages = async () => {
-      try {
-        const response = await fetch('/api/pages/public');
-        
-        if (response.ok) {
-          const data = await response.json();
-          setPublicPages(data.map((page: any) => page.slug));
-        } else {
-          // Default public pages
-          setPublicPages([
-            '/',
-            '/about',
-            '/services',
-            '/contact',
-            '/blog',
-            '/faq',
-            '/testimonials'
-          ]);
-        }
-      } catch (error) {
-        console.error('Error loading public pages:', error);
-        // Default public pages
-        setPublicPages([
-          '/',
-          '/about',
-          '/services',
-          '/contact',
-          '/blog',
-          '/faq',
-          '/testimonials'
-        ]);
-      }
-    };
-
-    loadBusinessIdentity();
-    loadBrandSettings();
-    loadPublicPages();
-  }, []);
-
+  
+  // Generate brand settings from tenant data
+  const brandSettings: BrandSettings | null = tenant ? {
+    color: {
+      primary: (tenant as any).primaryColor || '#1e3a8a', // Default: navy blue
+      secondary: (tenant as any).secondaryColor || '#d97706', // Default: burnt orange
+    },
+    voice: {
+      tone: 'professional',
+      formality: 'formal',
+      personality: 'professional',
+    }
+  } : null;
+  
   // Create the context value
   const contextValue: CompanionContext = {
     mode: determineMode(),
-    businessIdentity,
+    businessIdentity: businessIdentity || null,
     brandSettings,
-    publicPages,
-    isLoading,
-    error,
+    publicPages: publicPages || [],
+    isLoading: identityLoading || pagesLoading,
+    error: identityError || null,
     debugMode,
-    toggleDebugMode,
+    toggleDebugMode: () => setDebugMode(prev => !prev),
     forceMode,
   };
-
+  
   return (
-    <CompanionContextContext.Provider value={contextValue}>
+    <CompanionContextValue.Provider value={contextValue}>
       {children}
-    </CompanionContextContext.Provider>
+    </CompanionContextValue.Provider>
   );
 }
 
@@ -289,11 +219,9 @@ export function CompanionContextProvider({ children }: { children: ReactNode }) 
  * Hook to access companion context
  */
 export function useCompanionContext() {
-  const context = useContext(CompanionContextContext);
-  
-  if (context === undefined) {
+  const context = useContext(CompanionContextValue);
+  if (!context) {
     throw new Error('useCompanionContext must be used within a CompanionContextProvider');
   }
-  
   return context;
 }

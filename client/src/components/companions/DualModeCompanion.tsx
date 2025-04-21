@@ -1,21 +1,41 @@
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
+import { 
+  Drawer, 
+  DrawerContent,
+  DrawerHeader,
+  DrawerFooter, 
+  DrawerTitle,
+  DrawerDescription,
+  DrawerClose
+} from '@/components/ui/drawer';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Textarea } from '@/components/ui/textarea';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { 
+  Card, 
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription
+} from '@/components/ui/card';
+import { Label } from '@/components/ui/label';
+import { 
+  Send,
+  Loader2,
+  MessageCircle,
+  X,
+  Trash2,
+  Info,
+  Bug 
+} from 'lucide-react';
 import { useCompanionContext } from '@/hooks/use-companion-context';
 import { useAuth } from '@/hooks/use-auth';
-import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Drawer, DrawerClose, DrawerContent, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from "@/components/ui/drawer";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { MessageSquare, Send, Loader2, Trash2, X, Bug, ToggleRight, Bot, Settings, Info } from 'lucide-react';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { useToast } from '@/hooks/use-toast';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Switch } from '@/components/ui/switch';
-import { Label } from '@/components/ui/label';
-import { Badge } from '@/components/ui/badge';
-import { apiRequest } from "@/lib/queryClient";
+import { apiRequest } from '@/lib/queryClient';
+import { v4 as uuidv4 } from 'uuid';
 
-// Define message type for chat
+// For our companion message format
 interface ChatMessage {
   id: string;
   role: 'user' | 'assistant' | 'system';
@@ -23,229 +43,209 @@ interface ChatMessage {
   timestamp: Date;
 }
 
+// Helper to format code blocks and text
+function formatMessage(text: string): React.ReactNode {
+  // Basic markdown-like formatting for code blocks
+  const parts = text.split(/```([\s\S]*?)```/);
+  return parts.map((part, index) => {
+    // Odd indexes are code blocks
+    if (index % 2 === 1) {
+      return (
+        <div key={index} className="bg-gray-100 rounded p-2 my-2 font-mono text-xs overflow-x-auto">
+          {part.trim()}
+        </div>
+      );
+    }
+    
+    // Even indexes are regular text
+    return part.split('\n').map((line, i) => (
+      <span key={`${index}-${i}`}>
+        {line}
+        {i < part.split('\n').length - 1 && <br />}
+      </span>
+    ));
+  });
+}
+
 export function DualModeCompanion() {
-  // Get the companion context and auth state
-  const { mode, businessIdentity, brandSettings, debugMode, toggleDebugMode, forceMode } = useCompanionContext();
+  // Get context data from provider
+  const { 
+    mode, 
+    businessIdentity, 
+    brandSettings, 
+    isLoading,
+    error,
+    debugMode,
+    toggleDebugMode,
+    forceMode
+  } = useCompanionContext();
+  
   const { user } = useAuth();
-  const { toast } = useToast();
   
-  // State for the component
-  const [isOpen, setIsOpen] = useState(false);
-  const [messages, setMessages] = useState<ChatMessage[]>([
-    {
-      id: 'welcome',
-      role: 'system',
-      content: getWelcomeMessage(mode),
-      timestamp: new Date(),
-    },
-  ]);
+  // State variables
+  const [open, setOpen] = useState(false);
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [messageText, setMessageText] = useState('');
-  const [conversationId, setConversationId] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [forcedMode, setForcedMode] = useState<'admin' | 'public' | null>(null);
   const [isError, setIsError] = useState(false);
+  const [conversationId, setConversationId] = useState<string | null>(null);
+  const [forcedMode, setForcedMode] = useState<'admin' | 'public' | null>(null);
   
-  // Refs
+  // References
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const drawerBodyRef = useRef<HTMLDivElement>(null);
-  
-  // Auto-scroll to bottom on new messages
+
+  // Scroll to bottom when messages change
   useEffect(() => {
     if (messagesEndRef.current) {
       messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   }, [messages]);
-
-  // Function to generate a welcome message based on mode
+  
+  // Get welcome message based on context
   function getWelcomeMessage(mode: 'admin' | 'public' | 'debug'): string {
-    if (mode === 'admin') {
-      return `Hi there! I'm your administrative assistant. I can help you with content creation, SEO, and managing your Progress Accountants platform. Just ask me anything about setting up pages, creating content, or administrative tasks.`;
-    } else {
-      return `Welcome to Progress Accountants! I'm here to help answer your questions about our services, team, and how we can assist with your accounting needs. How can I help you today?`;
+    if (mode === 'debug') {
+      return 'Debug mode is active. You can now test both admin and public modes regardless of your current page.';
     }
+    
+    if (mode === 'admin') {
+      return 'Hi there! I can help you with content creation, platform management, and administrative tasks. What would you like assistance with today?';
+    }
+    
+    return 'Welcome to Progress Accountants! How can I help you with your accounting needs today?';
   }
-
-  // Reset the conversation
-  const resetConversation = () => {
-    setMessages([
-      {
-        id: 'welcome',
-        role: 'system',
-        content: getWelcomeMessage(forcedMode || mode),
-        timestamp: new Date(),
-      },
-    ]);
-    setConversationId(null);
-    setIsError(false);
-  };
-
-  // Handle submitting a new message
+  
+  // Initialize the chat with a welcome message
+  useEffect(() => {
+    if (open && messages.length === 0) {
+      const userMessage: ChatMessage = {
+        id: uuidv4(),
+        role: 'user',
+        content: 'Hi there!',
+        timestamp: new Date()
+      };
+      
+      const assistantMessage: ChatMessage = {
+        id: uuidv4(),
+        role: 'assistant',
+        content: getWelcomeMessage(mode),
+        timestamp: new Date()
+      };
+      
+      setMessages([userMessage, assistantMessage]);
+    }
+  }, [open, mode, messages.length]);
+  
+  // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
     if (!messageText.trim() || isSubmitting) return;
     
-    // Add user message to UI
     const userMessage: ChatMessage = {
-      id: Date.now().toString(),
+      id: uuidv4(),
       role: 'user',
       content: messageText,
-      timestamp: new Date(),
+      timestamp: new Date()
     };
     
-    setMessages(prev => [...prev, userMessage]);
+    // Add user message to chat
+    setMessages((prev) => [...prev, userMessage]);
     setMessageText('');
     setIsSubmitting(true);
     setIsError(false);
-    
+
     try {
-      // Get current mode, respecting any debug overrides
-      const currentMode = forcedMode || mode;
-      
-      // Send to API
-      const response = await apiRequest('POST', '/api/companion/chat', {
-        message: userMessage.content,
-        conversationId,
-        mode: currentMode,
-      });
+      // Call API with the current mode
+      const response = await apiRequest(
+        'POST',
+        '/api/companion/chat',
+        {
+          message: userMessage.content,
+          conversationId,
+          mode: debugMode ? forcedMode || mode : mode
+        }
+      );
       
       if (!response.ok) {
-        throw new Error('Failed to get response from assistant');
+        throw new Error('Failed to get response');
       }
       
       const data = await response.json();
       
-      // Save conversation ID if provided
-      if (data.conversationId) {
+      // Set conversation ID for continuity
+      if (!conversationId) {
         setConversationId(data.conversationId);
       }
       
-      // Add assistant's response to UI
+      // Add assistant response to chat
       const assistantMessage: ChatMessage = {
-        id: Date.now().toString(),
+        id: uuidv4(),
         role: 'assistant',
         content: data.message,
-        timestamp: new Date(),
+        timestamp: new Date()
       };
       
-      setMessages(prev => [...prev, assistantMessage]);
+      setMessages((prev) => [...prev, assistantMessage]);
     } catch (error) {
-      console.error('Error getting assistant response:', error);
+      console.error('Error sending message:', error);
       setIsError(true);
       
       // Add error message
       const errorMessage: ChatMessage = {
-        id: Date.now().toString(),
-        role: 'system',
-        content: 'Sorry, there was an error processing your request. Please try again later.',
-        timestamp: new Date(),
+        id: uuidv4(),
+        role: 'assistant',
+        content: 'Sorry, I experienced an error. Please try again.',
+        timestamp: new Date()
       };
       
-      setMessages(prev => [...prev, errorMessage]);
-      
-      toast({
-        title: 'Error',
-        description: 'Failed to get response from assistant',
-        variant: 'destructive',
-      });
+      setMessages((prev) => [...prev, errorMessage]);
     } finally {
       setIsSubmitting(false);
     }
   };
-
-  // Toggle the debug mode for developers
+  
+  // Reset conversation
+  const resetConversation = () => {
+    setMessages([]);
+    setConversationId(null);
+  };
+  
+  // Toggle debug mode
   const handleToggleDebugMode = () => {
     toggleDebugMode();
-    toast({
-      title: debugMode ? 'Debug Mode Disabled' : 'Debug Mode Enabled',
-      description: debugMode 
-        ? 'Assistant will now work in regular mode' 
-        : 'You can now override the assistant mode',
-    });
+    // Reset forced mode when toggling debug
+    setForcedMode(null);
   };
-
-  // Change the mode in debug mode
-  const handleForceMode = (mode: 'admin' | 'public' | null) => {
-    setForcedMode(mode);
-    if (mode) {
-      forceMode(mode);
-      toast({
-        title: `Mode Forced: ${mode.toUpperCase()}`,
-        description: `Assistant is now in ${mode} mode`,
-      });
-    } else {
-      forceMode(mode === 'admin' ? 'admin' : 'public');
-      toast({
-        title: 'Mode Reset',
-        description: 'Assistant is now using automatic mode detection',
-      });
-    }
-    resetConversation();
+  
+  // Force a specific mode for testing
+  const handleForceMode = (newMode: 'admin' | 'public' | null) => {
+    setForcedMode(newMode);
+    forceMode(newMode || mode);
   };
-
-  // Format the display message (add proper line breaks for display)
-  const formatMessage = (content: string) => {
-    return content.split('\\n').map((line, i) => (
-      <React.Fragment key={i}>
-        {line}
-        <br />
-      </React.Fragment>
-    ));
-  };
-
+  
   return (
     <>
-      {/* Chat trigger button (fixed position, bottom right) */}
-      <TooltipProvider>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button
-              onClick={() => setIsOpen(true)}
-              className="fixed bottom-6 right-6 rounded-full h-14 w-14 shadow-lg"
-              style={{ 
-                backgroundColor: brandSettings?.color.primary || '#1e3a8a',
-                color: 'white',
-                zIndex: 100,
-              }}
-            >
-              <MessageSquare size={24} />
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>Ask Progress Assistant</p>
-          </TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
-
+      {/* Floating button to open chat */}
+      <Button
+        onClick={() => setOpen(true)}
+        className="fixed bottom-6 right-6 z-50 rounded-full p-3 shadow-lg"
+        style={{ backgroundColor: brandSettings?.color.primary || '#1e3a8a' }}
+      >
+        <MessageCircle className="h-6 w-6" />
+      </Button>
+      
       {/* Chat drawer */}
-      <Drawer open={isOpen} onOpenChange={setIsOpen}>
-        <DrawerContent className="h-[85vh] max-w-[450px] mx-auto rounded-t-xl">
-          <DrawerHeader className="border-b" style={{ 
-            backgroundColor: mode === 'admin' ? brandSettings?.color.primary : brandSettings?.color.secondary,
-            color: 'white',
-          }}>
-            <div className="flex items-center justify-between">
-              <div className="flex items-center">
-                <Bot className="mr-2" size={20} />
-                <DrawerTitle>
-                  {mode === 'admin' ? 'Admin Assistant' : 'Progress Assistant'}
-                </DrawerTitle>
-              </div>
-              
-              {/* Mode indicator for debug mode */}
-              {debugMode && (
-                <Badge 
-                  variant="outline" 
-                  className="text-xs border-white text-white"
-                >
-                  {forcedMode || mode} mode
-                </Badge>
-              )}
-              
-              <DrawerClose>
-                <Button variant="ghost" size="icon" className="text-white">
-                  <X size={18} />
-                </Button>
+      <Drawer open={open} onOpenChange={setOpen}>
+        <DrawerContent className="max-h-[90vh] sm:max-w-[500px] mx-auto rounded-t-lg">
+          <DrawerHeader className="bg-primary text-primary-foreground rounded-t-lg px-4 py-3" 
+            style={{ backgroundColor: brandSettings?.color.primary || '#1e3a8a' }}
+          >
+            <div className="flex justify-between items-center">
+              <DrawerTitle className="text-white text-lg">
+                {mode === 'admin' ? 'Admin Assistant' : 'Progress Accountants'}
+              </DrawerTitle>
+              <DrawerClose className="text-white">
+                <X className="h-5 w-5" />
               </DrawerClose>
             </div>
             
@@ -253,7 +253,7 @@ export function DualModeCompanion() {
             <CardDescription className="text-gray-100 text-sm mt-1">
               {mode === 'admin' 
                 ? 'I can help with admin tasks and content creation' 
-                : `Ask questions about ${businessIdentity?.core.businessName || 'our accounting services'}`
+                : 'Ask questions about our accounting services'
               }
             </CardDescription>
           </DrawerHeader>
