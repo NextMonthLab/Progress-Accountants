@@ -373,7 +373,7 @@ export interface TenantCustomization {
 }
 
 // Define user role type for type safety
-export type UserRole = 'super_admin' | 'admin' | 'editor' | 'public';
+export type UserRole = 'super_admin' | 'admin' | 'editor' | 'client';
 
 export type InsertUser = z.infer<typeof insertUserSchema>;
 export type User = typeof users.$inferSelect;
