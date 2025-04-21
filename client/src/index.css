@@ -24,6 +24,12 @@
   }
 }
 
+@layer components {
+  .container {
+    @apply px-8;
+  }
+}
+
 /* Animation utilities */
 .fade-in-section {
   opacity: 0;
