@@ -10,6 +10,7 @@ import { CompanionContextProvider } from "@/hooks/use-companion-context";
 import { DualModeCompanion } from "@/components/companions/DualModeCompanion";
 import { UpgradeAnnouncement } from "@/components/UpgradeAnnouncement";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
+import { testLogin } from "@/lib/test-login";
 import SuperAdminDashboard from "@/pages/super-admin/SuperAdminDashboard";
 import HomePage from "@/pages/HomePage";
 import StudioPage from "@/pages/StudioPage";
