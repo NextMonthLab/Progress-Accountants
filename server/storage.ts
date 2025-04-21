@@ -219,6 +219,11 @@ export interface IStorage {
   updateIntegrationRequest(id: number, data: Partial<IntegrationRequest>): Promise<IntegrationRequest | undefined>;
   deleteIntegrationRequest(id: number): Promise<boolean>;
   
+  // Companion Config operations
+  getCompanionConfig(tenantId: string): Promise<CompanionConfig | undefined>;
+  createCompanionConfig(config: InsertCompanionConfig): Promise<CompanionConfig>;
+  updateCompanionConfig(id: number, data: Partial<InsertCompanionConfig>): Promise<CompanionConfig | undefined>;
+  
   // Blueprint Export operations
   getClientRegistry(): Promise<ClientRegistry | undefined>;
   createClientRegistry(data: InsertClientRegistry): Promise<ClientRegistry>;
@@ -1282,6 +1287,50 @@ export class DatabaseStorage implements IStorage {
     } catch (error) {
       console.error(`Error deleting integration request with id ${id}:`, error);
       return false;
+    }
+  }
+
+  // Companion Config operations
+  async getCompanionConfig(tenantId: string): Promise<CompanionConfig | undefined> {
+    try {
+      const [config] = await db
+        .select()
+        .from(companionConfig)
+        .where(eq(companionConfig.tenantId, tenantId));
+      return config;
+    } catch (error) {
+      console.error(`Error fetching companion config for tenant ${tenantId}:`, error);
+      return undefined;
+    }
+  }
+
+  async createCompanionConfig(config: InsertCompanionConfig): Promise<CompanionConfig> {
+    try {
+      const [newConfig] = await db
+        .insert(companionConfig)
+        .values(config)
+        .returning();
+      return newConfig;
+    } catch (error) {
+      console.error("Error creating companion config:", error);
+      throw error;
+    }
+  }
+
+  async updateCompanionConfig(id: number, data: Partial<InsertCompanionConfig>): Promise<CompanionConfig | undefined> {
+    try {
+      const [updatedConfig] = await db
+        .update(companionConfig)
+        .set({ 
+          ...data,
+          updatedAt: new Date() 
+        })
+        .where(eq(companionConfig.id, id))
+        .returning();
+      return updatedConfig;
+    } catch (error) {
+      console.error(`Error updating companion config with id ${id}:`, error);
+      return undefined;
     }
   }
 
