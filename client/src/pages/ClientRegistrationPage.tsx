@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { z } from "zod";
-import { useLocation, useParams, useNavigate } from "wouter";
+import { useLocation, useParams } from "wouter";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
@@ -47,7 +47,7 @@ export default function ClientRegistrationPage() {
   const { toast } = useToast();
   const [, navigate] = useLocation();
   const { tenantId } = useParams();
-  const { tenant } = useTenant(tenantId);
+  const { tenant } = useTenant();
   const [serverError, setServerError] = useState<string | null>(null);
 
   // If tenant doesn't exist or client login is disabled, show error

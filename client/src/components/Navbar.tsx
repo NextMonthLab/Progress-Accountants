@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { Link, useLocation } from "wouter";
-import { Menu, X, LayoutDashboard, ChevronDown, Users, Briefcase, Phone, Layout, BookOpen, FastForward, Sparkles } from "lucide-react";
+import { Menu, X, LayoutDashboard, ChevronDown, Users, Briefcase, Phone, Layout, BookOpen, FastForward, Sparkles, UserPlus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/use-auth";
+import { useTenant } from "@/hooks/use-tenant";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -28,8 +29,12 @@ type MenuGroup = {
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { user } = useAuth();
+  const { tenant } = useTenant();
   const isStaff = user?.role === 'admin' || user?.role === 'super_admin' || user?.role === 'editor';
   const [location] = useLocation();
+  
+  // Check if client registration is enabled
+  const clientRegistrationEnabled = tenant?.customization?.featureFlags?.enableClientLogin;
 
   // Define public-facing menu items
   const publicMenuGroups: MenuGroup[] = [
@@ -132,20 +137,37 @@ export default function Navbar() {
             Client Portal
           </Link>
           
-          {/* Show login button for non-authenticated users */}
+          {/* Show login button and potentially client registration for non-authenticated users */}
           {!user && (
-            <Button 
-              variant="outline"
-              className="border-[var(--orange)] text-[var(--orange)] hover:bg-[var(--orange)] hover:text-white"
-              asChild
-            >
-              <Link 
-                href="/auth" 
-                className="no-underline flex items-center"
+            <>
+              {clientRegistrationEnabled && tenant?.id && (
+                <Button 
+                  variant="outline"
+                  className="border-[var(--navy)] text-[var(--navy)] hover:bg-[var(--orange)] hover:text-white hover:border-[var(--orange)]"
+                  asChild
+                >
+                  <Link 
+                    href={`/client-register/${tenant.id}`} 
+                    className="no-underline flex items-center"
+                  >
+                    <UserPlus className="h-4 w-4 mr-2" />
+                    Create Account
+                  </Link>
+                </Button>
+              )}
+              <Button 
+                variant="outline"
+                className="border-[var(--orange)] text-[var(--orange)] hover:bg-[var(--orange)] hover:text-white"
+                asChild
               >
-                Login / Register
-              </Link>
-            </Button>
+                <Link 
+                  href="/auth" 
+                  className="no-underline flex items-center"
+                >
+                  Login / Register
+                </Link>
+              </Button>
+            </>
           )}
           
           {/* Show admin dashboard link with high visibility for staff */}
@@ -216,6 +238,24 @@ export default function Navbar() {
           {!user && (
             <div className="py-2">
               <h4 className="text-sm uppercase tracking-wider text-gray-500 mb-2 px-2">Access</h4>
+              
+              {clientRegistrationEnabled && tenant?.id && (
+                <Button 
+                  variant="outline"
+                  className="w-full mb-2 border-[var(--navy)] text-[var(--navy)] hover:bg-[var(--orange)] hover:text-white hover:border-[var(--orange)]"
+                  onClick={closeMenu}
+                  asChild
+                >
+                  <Link 
+                    href={`/client-register/${tenant.id}`} 
+                    className="flex items-center justify-center py-2 no-underline"
+                  >
+                    <UserPlus className="h-4 w-4 mr-2" />
+                    Create Account
+                  </Link>
+                </Button>
+              )}
+              
               <Button 
                 variant="outline"
                 className="w-full border-[var(--orange)] text-[var(--orange)] hover:bg-[var(--orange)] hover:text-white"

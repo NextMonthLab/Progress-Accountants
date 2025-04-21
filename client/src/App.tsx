@@ -13,6 +13,7 @@ import HomePage from "@/pages/HomePage";
 import StudioPage from "@/pages/StudioPage";
 import DashboardPage from "@/pages/DashboardPage";
 import AuthPage from "@/pages/AuthPage";
+import ClientRegistrationPage from "@/pages/ClientRegistrationPage";
 import ClientDashboardPage from "@/pages/ClientDashboardPage";
 import CRMViewPage from "@/pages/CRMViewPage";
 import CRMViewPageEnhanced from "@/pages/CRMViewPageEnhanced";
@@ -79,6 +80,7 @@ function Router() {
     <Switch>
       {/* Public routes */}
       <Route path="/auth" component={AuthPage} />
+      <Route path="/client-register/:tenantId" component={ClientRegistrationPage} />
       <Route path="/team" component={TeamPage} />
       <Route path="/about" component={AboutPage} />
       <Route path="/services" component={ServicesPage} />
