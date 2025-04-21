@@ -25,7 +25,9 @@ import { registerSupportRoutes } from "./support";
 import { registerPageToolIntegrationRoutes } from "./page-tool-integrations";
 import { registerTenantRoutes } from "./controllers/tenantController";
 import { registerSystemRoutes } from "./controllers/systemController";
-import { setupAuth } from "./auth";
+import { registerClientRoutes } from "./controllers/clientController";
+import { setupAuth, hashPassword } from "./auth";
+import { simpleStorage } from "./simpleStorage";
 import { 
   PageMetadata, 
   PageComplexityAssessment, 
@@ -202,6 +204,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
   
   // Register system monitoring endpoints
   registerSystemRoutes(app);
+  
+  // Register client registration endpoints
+  registerClientRoutes(app);
   // Contact form submission endpoint
   app.post("/api/contact", async (req, res) => {
     try {

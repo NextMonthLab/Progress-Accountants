@@ -145,5 +145,75 @@ storage.getActivityLogs = async function(userId, limit = 100) {
   return logs.slice(-limit).reverse();
 };
 
+// User by email lookup
+storage.getUserByEmail = async function(email, tenantId) {
+  if (!email) return null;
+  
+  // Initialize users Map if needed
+  if (!this.users) {
+    this.users = new Map();
+  }
+  
+  // Find user by email
+  const users = Array.from(this.users.values());
+  return users.find(user => 
+    user.email === email && 
+    (tenantId ? user.tenantId === tenantId : true)
+  );
+};
+
+// Tenant customization
+storage.getTenantCustomization = async function(tenantId) {
+  if (!this.tenantCustomizations) {
+    this.tenantCustomizations = new Map();
+  }
+  
+  // If customization doesn't exist, return default
+  if (!this.tenantCustomizations.has(tenantId)) {
+    return {
+      uiLabels: {
+        siteName: "Business Manager",
+        dashboardTitle: "Dashboard",
+        toolsLabel: "Tools",
+        pagesLabel: "Pages",
+        marketplaceLabel: "Marketplace",
+        accountLabel: "Account",
+        settingsLabel: "Settings"
+      },
+      tone: {
+        formality: "neutral",
+        personality: "professional"
+      },
+      featureFlags: {
+        enablePodcastTools: false,
+        enableFinancialReporting: true,
+        enableClientPortal: true,
+        enableMarketplaceAccess: true,
+        enableCustomPages: true,
+        enableClientLogin: true // Enable client login by default
+      },
+      sectionsEnabled: {
+        servicesShowcase: true,
+        teamMembers: true,
+        testimonialsSlider: true,
+        blogPosts: true,
+        eventCalendar: false,
+        resourceCenter: false
+      }
+    };
+  }
+  
+  return this.tenantCustomizations.get(tenantId);
+};
+
+storage.updateTenantCustomization = async function(tenantId, customization) {
+  if (!this.tenantCustomizations) {
+    this.tenantCustomizations = new Map();
+  }
+  
+  this.tenantCustomizations.set(tenantId, customization);
+  return customization;
+};
+
 // Export a named object for easier imports in controllers
 export const simpleStorage = storage;
