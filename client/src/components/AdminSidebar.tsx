@@ -108,6 +108,12 @@ export default function AdminSidebar() {
           requiresStaff: true 
         },
         { 
+          title: "Create New Page", 
+          href: "/create-new-page", 
+          icon: <PlusCircle className="h-5 w-5" />,
+          requiresStaff: true 
+        },
+        { 
           title: "Launch Ready", 
           href: "/launch-ready", 
           icon: <FastForward className="h-5 w-5" />,

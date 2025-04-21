@@ -56,6 +56,7 @@ import CompanionSettingsPage from "@/pages/admin/companion-settings";
 import BlueprintManagerPage from "@/pages/BlueprintManagerPage";
 import MediaManagementPage from "@/pages/MediaManagementPage";
 import NewClientOnboarding from "@/pages/NewClientOnboarding";
+import CreateNewPagePage from "@/pages/CreateNewPagePage";
 // Admin settings pages
 import TenantCustomizationPage from "@/pages/admin/TenantCustomizationPage";
 import ThemeManagementPage from "@/pages/admin/ThemeManagementPage";
@@ -197,6 +198,7 @@ function Router() {
       <ProtectedRoute path="/business-identity" component={BusinessIdentityPage} />
       <ProtectedRoute path="/homepage-setup" component={HomepageSetupPage} />
       <ProtectedRoute path="/foundation-pages" component={FoundationPagesOverviewPage} />
+      <ProtectedRoute path="/create-new-page" component={CreateNewPagePage} allowedRoles={['admin', 'super_admin', 'editor']} />
       <ProtectedRoute path="/about-setup" component={AboutSetupPage} />
       <ProtectedRoute path="/services-setup" component={ServicesSetupPage} />
       <ProtectedRoute path="/contact-setup" component={ContactSetupPage} />
