@@ -37,7 +37,7 @@ export default function EnhancedMarketplacePage() {
     isLoading: isLoadingMarketplace, 
     error: marketplaceError 
   } = useQuery({
-    queryKey: ['/api/tools/marketplace'],
+    queryKey: ['/api/nextmonth/marketplace/tools'],
     enabled: !!user,
   });
   
@@ -46,14 +46,28 @@ export default function EnhancedMarketplacePage() {
     data: installedTools = [], 
     isLoading: isLoadingInstalled,
   } = useQuery({
-    queryKey: ['/api/tools/installed'],
+    queryKey: ['/api/nextmonth/marketplace/installed'],
+    enabled: !!user,
+  });
+  
+  // Fetch tool categories
+  const {
+    data: toolCategories = [],
+    isLoading: isLoadingCategories,
+  } = useQuery({
+    queryKey: ['/api/nextmonth/marketplace/categories'],
     enabled: !!user,
   });
   
   // Install a tool mutation
   const installToolMutation = useMutation({
     mutationFn: async (toolId: number) => {
-      const response = await apiRequest("POST", `/api/tools/marketplace/install/${toolId}`, {});
+      const response = await apiRequest("POST", `/api/nextmonth/marketplace/install/${toolId}`, {
+        configuration: { 
+          business_name: "Progress Accountants",
+          notification_email: user ? (user as any).email : null
+        }
+      });
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.error || "Failed to install tool");
@@ -61,7 +75,7 @@ export default function EnhancedMarketplacePage() {
       return await response.json();
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['/api/tools/installed'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/nextmonth/marketplace/installed'] });
       toast({
         title: "Tool installed",
         description: "The tool has been installed successfully",
@@ -80,7 +94,7 @@ export default function EnhancedMarketplacePage() {
   // Uninstall a tool mutation
   const uninstallToolMutation = useMutation({
     mutationFn: async (installationId: number) => {
-      const response = await apiRequest("POST", `/api/tools/uninstall/${installationId}`, {});
+      const response = await apiRequest("POST", `/api/nextmonth/marketplace/uninstall/${installationId}`, {});
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.error || "Failed to uninstall tool");
@@ -88,7 +102,7 @@ export default function EnhancedMarketplacePage() {
       return await response.json();
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['/api/tools/installed'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/nextmonth/marketplace/installed'] });
       toast({
         title: "Tool uninstalled",
         description: "The tool has been uninstalled successfully",

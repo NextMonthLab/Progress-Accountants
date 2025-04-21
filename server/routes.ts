@@ -41,6 +41,15 @@ import { registerResourcesRoutes } from "./controllers/resourcesController";
 import { registerCompanionRoutes } from "./controllers/companionController";
 import { registerCompanionConfigRoutes } from "./controllers/registerCompanionConfigRoutes";
 import { registerToolMarketplaceRoutes } from "./controllers/toolMarketplaceController";
+import { 
+  getAvailableTools,
+  getToolCategories,
+  getInstalledTools,
+  installTool,
+  uninstallTool,
+  getToolConfiguration,
+  updateToolConfiguration
+} from "./controllers/marketplaceController";
 import { setupAuth, hashPassword } from "./auth";
 import { simpleStorage } from "./simpleStorage";
 import { 
@@ -313,6 +322,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
   
   // Register tool marketplace routes
   registerToolMarketplaceRoutes(app);
+  
+  // Register NextMonth marketplace integration routes
+  app.get("/api/nextmonth/marketplace/tools", getAvailableTools);
+  app.get("/api/nextmonth/marketplace/categories", getToolCategories);
+  app.get("/api/nextmonth/marketplace/installed", getInstalledTools);
+  app.post("/api/nextmonth/marketplace/install/:toolId", installTool);
+  app.post("/api/nextmonth/marketplace/uninstall/:installationId", uninstallTool);
+  app.get("/api/nextmonth/marketplace/config/:installationId", getToolConfiguration);
+  app.patch("/api/nextmonth/marketplace/config/:installationId", updateToolConfiguration);
   
   // Page completion endpoint
   app.post("/api/pages/complete", async (req, res) => {
