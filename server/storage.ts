@@ -28,6 +28,10 @@ import {
   type InsertModuleActivation,
   pageComplexityTriage,
   type PageComplexityTriage,
+  tenants,
+  type Tenant,
+  type InsertTenant,
+  type TenantCustomization,
   type InsertPageComplexityTriage,
   seoConfigurations,
   type SeoConfiguration,
@@ -158,14 +162,15 @@ export interface IStorage {
   updateBrandSyncStatus(id: number, vaultSynced?: boolean, guardianSynced?: boolean): Promise<BrandVersion | undefined>;
   
   // Tool operations
-  getTool(id: number): Promise<Tool | undefined>;
-  getToolsByType(toolType: string): Promise<Tool[]>;
-  getToolsByStatus(status: string): Promise<Tool[]>;
-  getToolsByUser(userId: number): Promise<Tool[]>;
+  getTool(id: number, tenantId?: string): Promise<Tool | undefined>;
+  getToolsByType(toolType: string, tenantId?: string): Promise<Tool[]>;
+  getToolsByStatus(status: string, tenantId?: string): Promise<Tool[]>;
+  getToolsByUser(userId: number, tenantId?: string): Promise<Tool[]>;
+  getToolsByTenant(tenantId: string): Promise<Tool[]>;
   saveTool(tool: InsertTool): Promise<Tool>;
-  updateToolStatus(id: number, status: string): Promise<Tool | undefined>;
-  updateTool(id: number, data: Partial<InsertTool>): Promise<Tool | undefined>;
-  deleteTool(id: number): Promise<boolean>;
+  updateToolStatus(id: number, status: string, tenantId?: string): Promise<Tool | undefined>;
+  updateTool(id: number, data: Partial<InsertTool>, tenantId?: string): Promise<Tool | undefined>;
+  deleteTool(id: number, tenantId?: string): Promise<boolean>;
   
   // Tool Request operations
   saveToolRequest(request: InsertToolRequest): Promise<ToolRequest>;

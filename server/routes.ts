@@ -2121,6 +2121,178 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // ============= TENANT API ENDPOINTS =============
+  // Get tenant by ID
+  app.get("/api/tenants/:id", async (req, res) => {
+    try {
+      // Check if user is authorized for this tenant
+      const requestedTenantId = req.params.id;
+      const userTenantId = req.user?.tenantId;
+      const isSuperAdmin = req.user?.isSuperAdmin;
+      
+      // Only allow super admins or users in the same tenant to access
+      if (!isSuperAdmin && userTenantId !== requestedTenantId) {
+        return res.status(403).json({
+          success: false,
+          message: "Not authorized to access this tenant"
+        });
+      }
+      
+      const tenant = await storage.getTenant(requestedTenantId);
+      
+      if (!tenant) {
+        return res.status(404).json({
+          success: false,
+          message: "Tenant not found"
+        });
+      }
+      
+      res.status(200).json({
+        success: true,
+        data: tenant
+      });
+    } catch (error) {
+      handleApiError(res, error, "Failed to retrieve tenant");
+    }
+  });
+  
+  // Update tenant theme
+  app.patch("/api/tenants/:id/theme", async (req, res) => {
+    try {
+      const tenantId = req.params.id;
+      const { theme } = req.body;
+      
+      // Check authorization
+      const userTenantId = req.user?.tenantId;
+      const isSuperAdmin = req.user?.isSuperAdmin;
+      
+      if (!isSuperAdmin && userTenantId !== tenantId) {
+        return res.status(403).json({
+          success: false,
+          message: "Not authorized to update this tenant"
+        });
+      }
+      
+      // Update the tenant theme
+      const updatedTenant = await storage.updateTenant(tenantId, { theme });
+      
+      if (!updatedTenant) {
+        return res.status(404).json({
+          success: false,
+          message: "Tenant not found"
+        });
+      }
+      
+      res.status(200).json({
+        success: true,
+        message: "Tenant theme updated successfully",
+        data: updatedTenant
+      });
+    } catch (error) {
+      handleApiError(res, error, "Failed to update tenant theme");
+    }
+  });
+  
+  // Get tenant customization
+  app.get("/api/tenants/:id/customization", async (req, res) => {
+    try {
+      const tenantId = req.params.id;
+      
+      // Check authorization
+      const userTenantId = req.user?.tenantId;
+      const isSuperAdmin = req.user?.isSuperAdmin;
+      
+      if (!isSuperAdmin && userTenantId !== tenantId) {
+        return res.status(403).json({
+          success: false,
+          message: "Not authorized to access this tenant's customization"
+        });
+      }
+      
+      const customization = await storage.getTenantCustomization(tenantId);
+      
+      if (!customization) {
+        // Return default customization settings instead of 404
+        return res.status(200).json({
+          success: true,
+          data: {
+            uiLabels: {
+              siteName: "Business Manager",
+              dashboardTitle: "Dashboard",
+              toolsLabel: "Tools",
+              pagesLabel: "Pages",
+              marketplaceLabel: "Marketplace",
+              accountLabel: "Account",
+              settingsLabel: "Settings"
+            },
+            tone: {
+              formality: "neutral",
+              personality: "professional"
+            },
+            featureFlags: {
+              enablePodcastTools: false,
+              enableFinancialReporting: true,
+              enableClientPortal: true,
+              enableMarketplaceAccess: true,
+              enableCustomPages: true
+            },
+            sectionsEnabled: {
+              servicesShowcase: true,
+              teamMembers: true,
+              testimonialsSlider: true,
+              blogPosts: true,
+              eventCalendar: false,
+              resourceCenter: false
+            }
+          }
+        });
+      }
+      
+      res.status(200).json({
+        success: true,
+        data: customization
+      });
+    } catch (error) {
+      handleApiError(res, error, "Failed to retrieve tenant customization");
+    }
+  });
+  
+  // Update tenant customization
+  app.patch("/api/tenants/:id/customization", async (req, res) => {
+    try {
+      const tenantId = req.params.id;
+      const customization = req.body;
+      
+      // Check authorization
+      const userTenantId = req.user?.tenantId;
+      const isSuperAdmin = req.user?.isSuperAdmin;
+      
+      if (!isSuperAdmin && userTenantId !== tenantId) {
+        return res.status(403).json({
+          success: false,
+          message: "Not authorized to update this tenant's customization"
+        });
+      }
+      
+      const updatedCustomization = await storage.updateTenantCustomization(tenantId, customization);
+      
+      if (!updatedCustomization) {
+        return res.status(404).json({
+          success: false,
+          message: "Tenant not found"
+        });
+      }
+      
+      res.status(200).json({
+        success: true,
+        message: "Tenant customization updated successfully",
+        data: updatedCustomization
+      });
+    } catch (error) {
+      handleApiError(res, error, "Failed to update tenant customization");
+    }
+  });
+
   // ============= TOOLS API ENDPOINTS =============
   // Get all tools
   app.get("/api/tools", async (req, res) => {
