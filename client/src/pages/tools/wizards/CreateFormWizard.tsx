@@ -199,21 +199,38 @@ export default function CreateFormWizard() {
     try {
       // First save the tool
       const toolResponse = await apiRequest("POST", "/api/tools", {
-        ...data,
+        name: data.name,
+        description: data.description,
+        mediaUrl: data.mediaUrl || null,
+        mediaId: data.mediaId || null,
+        displayStyle: data.displayStyle,
         toolType: "form",
         createdBy: user.id,
         status: "published",
+        settings: {
+          fields: [],  // Empty fields array for now - will be configured in a subsequent step
+          submitLabel: "Submit",
+          successMessage: "Thank you for your submission"
+        }
       });
 
       if (!toolResponse.ok) {
-        throw new Error("Failed to create form");
+        const errorData = await toolResponse.json();
+        throw new Error(errorData.error || "Failed to create form");
       }
 
       const toolData = await toolResponse.json();
+      const toolId = toolData.data?.id || toolData.id;
+      
+      if (!toolId) {
+        throw new Error("No tool ID returned from server");
+      }
+      
+      console.log("Created tool with ID:", toolId);
       
       // Then create a tool request for internal processing
-      await apiRequest("POST", "/api/tool-requests", {
-        toolId: toolData.id,
+      const requestResponse = await apiRequest("POST", "/api/tool-requests", {
+        toolId: toolId,
         businessId: user.id.toString(),
         requestData: {
           toolType: "form",
@@ -224,23 +241,45 @@ export default function CreateFormWizard() {
         status: "pending"
       });
       
+      if (!requestResponse.ok) {
+        console.warn("Failed to create tool request, but tool was created successfully");
+      }
+      
       // If user opted to add to a page, create that integration
       if (data.addToPage && data.pageId && data.position) {
-        await apiRequest("POST", "/api/page-tool-integrations", {
-          pageId: data.pageId,
-          toolId: toolData.id,
-          position: data.position,
-          enabled: true,
-          createdBy: user.id
-        });
-        
-        toast({
-          title: "Tool integrated with page",
-          description: `Form successfully added to the selected page at the ${data.position} position`,
-          variant: "default",
-        });
-        
-        queryClient.invalidateQueries({ queryKey: ['/api/pages'] });
+        try {
+          const integrationResponse = await apiRequest("POST", "/api/page-tool-integrations", {
+            pageId: data.pageId,
+            toolId: toolId,
+            position: data.position,
+            enabled: true,
+            createdBy: user.id,
+            settings: {
+              displayMode: data.displayStyle
+            }
+          });
+          
+          if (integrationResponse.ok) {
+            toast({
+              title: "Tool integrated with page",
+              description: `Form successfully added to the selected page at the ${data.position} position`,
+              variant: "default",
+            });
+            
+            // Invalidate relevant queries
+            queryClient.invalidateQueries({ queryKey: ['/api/pages'] });
+            queryClient.invalidateQueries({ queryKey: ['/api/page-integrations', data.pageId] });
+          } else {
+            console.warn("Failed to create page integration, but tool was created successfully");
+          }
+        } catch (integrationError) {
+          console.error("Error creating page integration:", integrationError);
+          toast({
+            title: "Integration Warning",
+            description: "Your form was created but couldn't be added to the page. You can add it later from the Tools Hub.",
+            variant: "warning",
+          });
+        }
       }
 
       toast({
