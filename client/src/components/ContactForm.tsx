@@ -21,7 +21,12 @@ const formSchema = z.object({
 
 type FormValues = z.infer<typeof formSchema>;
 
-export default function ContactForm() {
+interface ContactFormProps {
+  compact?: boolean;
+  className?: string;
+}
+
+export default function ContactForm({ compact = false, className = "" }: ContactFormProps) {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = React.useState(false);
 
@@ -73,6 +78,118 @@ export default function ContactForm() {
     }
   }
 
+  // Use a different layout for the compact version
+  if (compact) {
+    return (
+      <div className={`rounded-lg border border-gray-200 shadow-sm bg-white ${className}`}>
+        <div className="p-4 md:p-6">
+          <h2 className="text-xl font-bold mb-4" style={{ color: 'var(--navy)' }}>Get in Touch</h2>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <FormField
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-sm" style={{ color: 'var(--navy)' }}>Name*</FormLabel>
+                      <FormControl>
+                        <Input size={3} placeholder="Your name" {...field} className="h-9" />
+                      </FormControl>
+                      <FormMessage className="text-xs" />
+                    </FormItem>
+                  )}
+                />
+                
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-sm" style={{ color: 'var(--navy)' }}>Email*</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Your email" {...field} className="h-9" />
+                      </FormControl>
+                      <FormMessage className="text-xs" />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <FormField
+                  control={form.control}
+                  name="phone"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-sm" style={{ color: 'var(--navy)' }}>Phone</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Your phone" {...field} className="h-9" />
+                      </FormControl>
+                      <FormMessage className="text-xs" />
+                    </FormItem>
+                  )}
+                />
+                
+                <FormField
+                  control={form.control}
+                  name="business"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-sm" style={{ color: 'var(--navy)' }}>Business</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Your business" {...field} className="h-9" />
+                      </FormControl>
+                      <FormMessage className="text-xs" />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              
+              <FormField
+                control={form.control}
+                name="message"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-sm" style={{ color: 'var(--navy)' }}>Message*</FormLabel>
+                    <FormControl>
+                      <Textarea 
+                        placeholder="Tell us how we can help" 
+                        className="min-h-[80px] resize-none"
+                        {...field} 
+                      />
+                    </FormControl>
+                    <FormMessage className="text-xs" />
+                  </FormItem>
+                )}
+              />
+              
+              <Button 
+                type="submit" 
+                className="w-full"
+                style={{ 
+                  backgroundColor: 'var(--orange)',
+                  color: 'white' 
+                }}
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Sending...
+                  </>
+                ) : (
+                  'Send Message'
+                )}
+              </Button>
+            </form>
+          </Form>
+        </div>
+      </div>
+    );
+  }
+
+  // Original full-size version
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">

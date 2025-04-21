@@ -46,7 +46,23 @@ export default function HomePage() {
       <IndustriesSection />
       <WhyUsSection />
       <SEOFooterSection />
-      <ContactForm />
+      
+      {/* Contact Section */}
+      <section className="py-12 bg-gray-50" id="contact">
+        <div className="container mx-auto px-4">
+          <div className="max-w-5xl mx-auto">
+            <div className="text-center mb-8">
+              <h2 className="text-3xl font-bold mb-2" style={{ color: 'var(--navy)' }}>
+                Get in Touch
+              </h2>
+              <p className="text-gray-600 max-w-2xl mx-auto">
+                Ready to take your accounting to the next level? Let's talk about how we can help your business thrive.
+              </p>
+            </div>
+            <ContactForm compact={true} className="max-w-3xl mx-auto" />
+          </div>
+        </div>
+      </section>
     </>
   );
 }
