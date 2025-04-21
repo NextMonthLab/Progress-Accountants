@@ -1,6 +1,10 @@
 import { useState } from "react";
 import { Link, useLocation } from "wouter";
-import { Menu, X, LayoutDashboard, ChevronDown, Users, Briefcase, Phone, Layout, BookOpen, FastForward, Sparkles, UserPlus } from "lucide-react";
+import { 
+  Menu, X, LayoutDashboard, ChevronDown, Users, Briefcase, 
+  Phone, Layout, BookOpen, FastForward, Sparkles, UserPlus,
+  ArrowLeftCircle
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/use-auth";
 import { useTenant } from "@/hooks/use-tenant";
@@ -30,7 +34,7 @@ export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { user } = useAuth();
   const { tenant } = useTenant();
-  const isStaff = user?.role === 'admin' || user?.role === 'super_admin' || user?.role === 'editor';
+  const isStaff = user?.userType === 'admin' || user?.userType === 'super_admin' || user?.userType === 'editor' || user?.isSuperAdmin;
   const [location] = useLocation();
   
   // Check if client registration is enabled
