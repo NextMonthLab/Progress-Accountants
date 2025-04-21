@@ -9,17 +9,23 @@ import { Request, Response } from "express";
  */
 export async function getPageToolIntegrations(pageId: string, tenantId?: string): Promise<PageToolIntegration[]> {
   try {
-    const query = db
-      .select()
-      .from(pageToolIntegrations)
-      .where(eq(pageToolIntegrations.pageId, pageId))
-      .orderBy({ id: "asc" });
+    let conditions = eq(pageToolIntegrations.pageId, pageId);
     
+    // Apply tenant filtering if provided
     if (tenantId) {
-      query.where(eq(pageToolIntegrations.tenantId, tenantId));
+      conditions = and(
+        conditions, 
+        eq(pageToolIntegrations.tenantId, tenantId)
+      );
     }
     
-    return await query;
+    const result = await db
+      .select()
+      .from(pageToolIntegrations)
+      .where(conditions)
+      .orderBy({ id: "asc" });
+    
+    return result;
   } catch (error) {
     console.error(`Error fetching page-tool integrations for page ID ${pageId}:`, error);
     return [];
@@ -31,17 +37,23 @@ export async function getPageToolIntegrations(pageId: string, tenantId?: string)
  */
 export async function getToolIntegrations(toolId: number, tenantId?: string): Promise<PageToolIntegration[]> {
   try {
-    const query = db
-      .select()
-      .from(pageToolIntegrations)
-      .where(eq(pageToolIntegrations.toolId, toolId))
-      .orderBy({ id: "asc" });
+    let conditions = eq(pageToolIntegrations.toolId, toolId);
     
+    // Apply tenant filtering if provided
     if (tenantId) {
-      query.where(eq(pageToolIntegrations.tenantId, tenantId));
+      conditions = and(
+        conditions,
+        eq(pageToolIntegrations.tenantId, tenantId)
+      );
     }
     
-    return await query;
+    const result = await db
+      .select()
+      .from(pageToolIntegrations)
+      .where(conditions)
+      .orderBy({ id: "asc" });
+    
+    return result;
   } catch (error) {
     console.error(`Error fetching tool integrations for tool ID ${toolId}:`, error);
     return [];
@@ -258,16 +270,20 @@ export function registerPageToolIntegrationRoutes(app: any): void {
       }
       
       // Check if the tool exists and belongs to the user's tenant
-      const query = db
-        .select()
-        .from(tools)
-        .where(eq(tools.id, data.toolId));
+      let toolConditions = eq(tools.id, data.toolId);
       
+      // Apply tenant filtering if provided
       if (data.tenantId) {
-        query.where(eq(tools.tenantId, data.tenantId));
+        toolConditions = and(
+          toolConditions,
+          eq(tools.tenantId, data.tenantId)
+        );
       }
       
-      const [tool] = await query;
+      const [tool] = await db
+        .select()
+        .from(tools)
+        .where(toolConditions);
       
       if (!tool) {
         return res.status(404).json({
@@ -418,15 +434,38 @@ export function registerPageToolIntegrationRoutes(app: any): void {
   // Get available pages for integration
   app.get("/api/pages", async (req: Request, res: Response) => {
     try {
-      // In a real implementation, this would fetch from a pages table
-      // For now, we'll return a hardcoded list of sample pages
-      res.status(200).json([
+      // Extract tenant ID from authenticated user if available
+      const tenantId = req.user?.tenantId;
+      
+      // Common pages available to all tenants
+      const commonPages = [
         { id: "homepage", name: "Homepage", path: "/" },
-        { id: "about", name: "About Us", path: "/about" },
-        { id: "services", name: "Services", path: "/services" },
-        { id: "contact", name: "Contact", path: "/contact" },
-        { id: "blog", name: "Blog", path: "/blog" }
-      ]);
+        { id: "contact", name: "Contact", path: "/contact" }
+      ];
+      
+      // For Progress Accountants, include additional industry-specific pages
+      if (!tenantId || tenantId === "progress-accountants") {
+        const progressPages = [
+          { id: "about", name: "About Us", path: "/about" },
+          { id: "services", name: "Services", path: "/services" },
+          { id: "blog", name: "Blog", path: "/blog" },
+          { id: "podcast", name: "Podcast & Video", path: "/podcast" },
+          { id: "team", name: "Meet the Team", path: "/team" }
+        ];
+        
+        res.status(200).json([...commonPages, ...progressPages]);
+      } 
+      // For other tenants, use their industry-specific pages or defaults
+      else {
+        // In the future, we would fetch industry-specific pages from a database
+        // For now, return common pages plus generic defaults
+        const defaultPages = [
+          { id: "about", name: "About Us", path: "/about" },
+          { id: "services", name: "Services", path: "/services" }
+        ];
+        
+        res.status(200).json([...commonPages, ...defaultPages]);
+      }
     } catch (error) {
       console.error("Error fetching available pages:", error);
       res.status(500).json({
