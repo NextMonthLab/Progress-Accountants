@@ -22,7 +22,8 @@ import {
   FileText,
   BookOpen,
   Users,
-  Calendar 
+  Calendar,
+  Image
 } from 'lucide-react';
 import { PoweredBy } from '@/components/PoweredBy';
 
@@ -46,6 +47,17 @@ export default function ToolsLandingPage() {
 
   // Define tool categories with their details
   const toolCategories: ToolCategory[] = [
+    {
+      id: 'social-media-generator',
+      title: 'Social Media Generator',
+      description: 'Create optimized posts for any social media platform with AI assistance.',
+      icon: <Image className="h-10 w-10 text-indigo-600" />,
+      action: 'Create Posts',
+      path: '/tools/social-media-generator',
+      color: 'bg-indigo-50',
+      iconBg: 'bg-indigo-100',
+      shadow: 'shadow-indigo-100'
+    },
     {
       id: 'create-form',
       title: 'Create a Form',
