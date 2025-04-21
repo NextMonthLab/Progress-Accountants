@@ -60,7 +60,10 @@ import {
   type InsertBlogPage,
   integrationRequests,
   type IntegrationRequest,
-  type InsertIntegrationRequest
+  type InsertIntegrationRequest,
+  companionConfig,
+  type CompanionConfig,
+  type InsertCompanionConfig
 } from "@shared/schema";
 import { PageMetadata, PageComplexityAssessment } from "@shared/page_metadata";
 import { db } from "./db";

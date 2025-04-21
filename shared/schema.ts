@@ -283,6 +283,37 @@ export const pageComplexityTriageRelations = relations(pageComplexityTriage, ({ 
   }),
 }));
 
+// Companion Configuration table
+export const companionConfig = pgTable("companion_config", {
+  id: serial("id").primaryKey(),
+  tenantId: uuid("tenant_id").references(() => tenants.id).notNull(),
+  toneStyle: varchar("tone_style", { length: 50 }), // Friendly, Professional, Concise, Empathetic
+  examplePhrases: text("example_phrases"), // Example greeting and phrases
+  allowedTopics: jsonb("allowed_topics"), // Topics the companion can discuss - stored as JSON array
+  offLimitTopics: text("off_limit_topics"), // Topics the companion should avoid
+  isRegulated: boolean("is_regulated").default(false), // Whether in a regulated industry
+  regulatoryGuidelinesLink: varchar("regulatory_guidelines_link", { length: 500 }), // Link to guidelines
+  regulatedTermsToAvoid: text("regulated_terms_to_avoid"), // Terms to avoid in regulated industries
+  legalDisclaimer: text("legal_disclaimer"), // Legal disclaimer for AI responses
+  allowWebSearch: boolean("allow_web_search").default(false), // Whether the AI can access external data
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export const insertCompanionConfigSchema = createInsertSchema(companionConfig).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+// Define relationships for companion config
+export const companionConfigRelations = relations(companionConfig, ({ one }) => ({
+  tenant: one(tenants, {
+    fields: [companionConfig.tenantId],
+    references: [tenants.id],
+  }),
+}));
+
 // Media uploads table
 export const mediaUploads = pgTable("media_uploads", {
   id: serial("id").primaryKey(),
@@ -528,6 +559,9 @@ export type SeoConfiguration = typeof seoConfigurations.$inferSelect;
 
 export type InsertBrandVersion = z.infer<typeof insertBrandVersionSchema>;
 export type BrandVersion = typeof brandVersions.$inferSelect;
+
+export type InsertCompanionConfig = z.infer<typeof insertCompanionConfigSchema>;
+export type CompanionConfig = typeof companionConfig.$inferSelect;
 
 // Tools table for interactive tools created by users
 export const tools = pgTable("tools", {
