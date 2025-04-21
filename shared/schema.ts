@@ -1,8 +1,30 @@
-import { pgTable, text, serial, integer, boolean, timestamp, varchar, jsonb, real } from "drizzle-orm/pg-core";
+import { pgTable, text, serial, integer, boolean, timestamp, varchar, jsonb, real, uuid } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 import { relations } from "drizzle-orm";
 import { PageMetadata, PageComplexityAssessment, ComplexityLevel } from "./page_metadata";
+
+// Tenants table to track all client instances
+// Define the table without self-reference first to fix circular reference
+export const tenants = pgTable("tenants", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  name: varchar("name", { length: 255 }).notNull(),
+  domain: varchar("domain", { length: 255 }).notNull().unique(),
+  status: varchar("status", { length: 20 }).default("active").notNull(), // active, inactive, suspended
+  industry: varchar("industry", { length: 100 }),
+  plan: varchar("plan", { length: 50 }).default("standard").notNull(), // standard, premium, enterprise
+  theme: jsonb("theme"), // Theme configuration
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+  parentTemplate: uuid("parent_template"), // Will add the reference constraint later
+  isTemplate: boolean("is_template").default(false),
+});
+
+export const insertTenantSchema = createInsertSchema(tenants).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
 
 // Blueprint versions table
 export const blueprintVersions = pgTable("blueprint_versions", {
@@ -18,12 +40,16 @@ export const blueprintVersions = pgTable("blueprint_versions", {
 // User authentication tables
 export const users = pgTable("users", {
   id: serial("id").primaryKey(),
-  username: text("username").notNull().unique(),
+  username: text("username").notNull(),
   password: text("password").notNull(),
   name: varchar("name", { length: 100 }),
   userType: varchar("user_type", { length: 20 }).default("client").notNull(), // client or staff
   email: varchar("email", { length: 255 }),
+  tenantId: uuid("tenant_id").references(() => tenants.id), // Reference to tenant
+  isSuperAdmin: boolean("is_super_admin").default(false), // For NextMonth admins who need cross-tenant access
   createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+  // Note: The tenant+username uniqueness will be enforced through application logic
 });
 
 export const insertUserSchema = createInsertSchema(users).pick({
@@ -32,11 +58,14 @@ export const insertUserSchema = createInsertSchema(users).pick({
   name: true,
   userType: true,
   email: true,
+  tenantId: true,
+  isSuperAdmin: true,
 });
 
 // Business identity and branding data
 export const businessIdentity = pgTable("business_identity", {
   id: serial("id").primaryKey(),
+  tenantId: uuid("tenant_id").references(() => tenants.id), // Tenant reference
   name: varchar("name", { length: 255 }),
   mission: text("mission"),
   vision: text("vision"),
@@ -47,25 +76,30 @@ export const businessIdentity = pgTable("business_identity", {
   brandPositioning: text("brand_positioning"),
   teamValues: jsonb("team_values"),
   cultureStatements: jsonb("culture_statements"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
 
 export const insertBusinessIdentitySchema = createInsertSchema(businessIdentity).omit({
   id: true,
+  createdAt: true,
   updatedAt: true,
 });
 
 // Project context for pages and setup status
 export const projectContext = pgTable("project_context", {
   id: serial("id").primaryKey(),
+  tenantId: uuid("tenant_id").references(() => tenants.id), // Tenant reference
   homepageSetup: jsonb("homepage_setup"), // Homepage setup details
   pageStatus: jsonb("page_status"), // Status of various pages
   onboardingComplete: boolean("onboarding_complete").default(false),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
 
 export const insertProjectContextSchema = createInsertSchema(projectContext).omit({
   id: true,
+  createdAt: true,
   updatedAt: true,
 });
 
@@ -142,8 +176,12 @@ export const insertActivityLogSchema = createInsertSchema(activityLogs).omit({
 });
 
 // Define relationships between tables
-export const usersRelations = relations(users, ({ many }) => ({
+export const usersRelations = relations(users, ({ many, one }) => ({
   activityLogs: many(activityLogs),
+  tenant: one(tenants, {
+    fields: [users.tenantId],
+    references: [tenants.id],
+  }),
 }));
 
 export const activityLogsRelations = relations(activityLogs, ({ one }) => ({
@@ -291,7 +329,12 @@ export const insertCreditUsageLogSchema = createInsertSchema(creditUsageLog).omi
   updatedAt: true,
 });
 
+
+
 // Export types
+export type InsertTenant = z.infer<typeof insertTenantSchema>;
+export type Tenant = typeof tenants.$inferSelect;
+
 export type InsertUser = z.infer<typeof insertUserSchema>;
 export type User = typeof users.$inferSelect;
 
@@ -331,7 +374,8 @@ export type CreditUsageLog = typeof creditUsageLog.$inferSelect;
 // SEO Configuration table
 export const seoConfigurations = pgTable("seo_configurations", {
   id: serial("id").primaryKey(),
-  routePath: varchar("route_path", { length: 255 }).notNull().unique(),
+  tenantId: uuid("tenant_id").references(() => tenants.id), // Tenant reference
+  routePath: varchar("route_path", { length: 255 }).notNull(),
   title: varchar("title", { length: 255 }).notNull(),
   description: text("description").notNull(),
   canonical: varchar("canonical", { length: 255 }),
@@ -356,6 +400,7 @@ export const insertSeoConfigurationSchema = createInsertSchema(seoConfigurations
 // Brand versioning table
 export const brandVersions = pgTable("brand_versions", {
   id: serial("id").primaryKey(),
+  tenantId: uuid("tenant_id").references(() => tenants.id), // Tenant reference
   versionNumber: varchar("version_number", { length: 20 }).notNull(),
   versionName: varchar("version_name", { length: 100 }),
   primaryColor: varchar("primary_color", { length: 30 }),
@@ -389,6 +434,7 @@ export type BrandVersion = typeof brandVersions.$inferSelect;
 // Tools table for interactive tools created by users
 export const tools = pgTable("tools", {
   id: serial("id").primaryKey(),
+  tenantId: uuid("tenant_id").references(() => tenants.id), // Tenant reference
   name: varchar("name", { length: 255 }).notNull(),
   description: text("description").notNull(),
   toolType: varchar("tool_type", { length: 50 }).notNull(), // form, calculator, dashboard, embed
@@ -401,6 +447,7 @@ export const tools = pgTable("tools", {
   vaultRequestId: varchar("vault_request_id", { length: 255 }),
   guardianSynced: boolean("guardian_synced").default(false),
   vaultSynced: boolean("vault_synced").default(false),
+  isGlobal: boolean("is_global").default(false), // Indicates if this tool can be accessed across tenants
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
@@ -450,6 +497,7 @@ export const toolsRelations = relations(tools, ({ one, many }) => ({
 // Page-Tool integrations table for connecting tools with pages
 export const pageToolIntegrations = pgTable("page_tool_integrations", {
   id: serial("id").primaryKey(),
+  tenantId: uuid("tenant_id").references(() => tenants.id), // Tenant reference
   pageId: varchar("page_id", { length: 100 }).notNull(),
   toolId: integer("tool_id").references(() => tools.id).notNull(),
   position: varchar("position", { length: 20 }).default("bottom").notNull(), // top, middle, bottom
@@ -478,6 +526,10 @@ export const pageToolIntegrationsRelations = relations(pageToolIntegrations, ({ 
   creator: one(users, {
     fields: [pageToolIntegrations.createdBy],
     references: [users.id],
+  }),
+  tenant: one(tenants, {
+    fields: [pageToolIntegrations.tenantId],
+    references: [tenants.id],
   }),
 }));
 
