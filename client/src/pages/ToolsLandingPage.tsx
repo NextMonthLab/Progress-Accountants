@@ -30,8 +30,22 @@ export default function ToolsLandingPage() {
   const [, navigate] = useLocation();
   const [hoveredCard, setHoveredCard] = useState<string | null>(null);
   
+  // Define the category interface to fix TypeScript errors
+  interface ToolCategory {
+    id: string;
+    title: string;
+    description: string;
+    icon: React.ReactNode;
+    action: string;
+    path: string;
+    color: string;
+    iconBg: string;
+    shadow: string;
+    comingSoon?: boolean;
+  }
+
   // Define tool categories with their details
-  const toolCategories = [
+  const toolCategories: ToolCategory[] = [
     {
       id: 'create-form',
       title: 'Create a Form',
@@ -141,13 +155,13 @@ export default function ToolsLandingPage() {
       },
       {
         icon: <LayoutGrid className="h-5 w-5 text-purple-600" />,
-        title: "Financial Dashboard",
+        title: "Business Dashboard",
         description: "Real-time data visualization",
         bgColor: "bg-purple-100"
       },
       {
         icon: <Clock className="h-5 w-5 text-orange-600" />,
-        title: "Tax Reminder System",
+        title: "Reminder System",
         description: "Automated client notifications",
         bgColor: "bg-orange-100"
       },
@@ -173,7 +187,7 @@ export default function ToolsLandingPage() {
 
     return (
       <div className="mt-16">
-        <h2 className="text-2xl font-bold text-gray-900 mb-6">Popular with Accounting Firms</h2>
+        <h2 className="text-2xl font-bold text-gray-900 mb-6">Popular Business Tools</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
           {popularTools.map((tool, index) => (
             <div 
@@ -203,44 +217,10 @@ export default function ToolsLandingPage() {
     );
   };
   
-  // Render upcoming events
+  // Render upcoming events (placeholder, currently disabled)
   const renderUpcomingEvents = () => {
-    return (
-      <div className="mt-16 bg-[var(--navy)]/5 p-6 rounded-xl">
-        <div className="flex items-center mb-4">
-          <Calendar className="h-6 w-6 text-[var(--navy)] mr-2" />
-          <h2 className="text-2xl font-bold text-gray-900">Upcoming Tool Training</h2>
-        </div>
-        <div className="space-y-4">
-          <div className="bg-white p-4 rounded-lg shadow-sm flex justify-between items-center">
-            <div>
-              <h3 className="font-medium text-[var(--navy)]">Getting Started with Smart Tools</h3>
-              <p className="text-sm text-gray-500">Wednesday, April 24 · 2:00 PM GMT</p>
-            </div>
-            <Button 
-              size="sm" 
-              variant="outline" 
-              className="border-[var(--orange)] text-[var(--orange)]"
-            >
-              Register
-            </Button>
-          </div>
-          <div className="bg-white p-4 rounded-lg shadow-sm flex justify-between items-center">
-            <div>
-              <h3 className="font-medium text-[var(--navy)]">Advanced Blueprint Customization</h3>
-              <p className="text-sm text-gray-500">Friday, April 26 · 3:30 PM GMT</p>
-            </div>
-            <Button 
-              size="sm" 
-              variant="outline" 
-              className="border-[var(--orange)] text-[var(--orange)]"
-            >
-              Register
-            </Button>
-          </div>
-        </div>
-      </div>
-    );
+    // Function kept for future implementation but returns null
+    return null;
   };
   
   return (
