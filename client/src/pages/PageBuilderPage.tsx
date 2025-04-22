@@ -16,6 +16,7 @@ import PageBuilderSections from "@/components/page-builder/PageBuilderSections";
 import PageBuilderComponentPanel from "@/components/page-builder/PageBuilderComponentPanel";
 import PageBuilderSeoPanel from "@/components/page-builder/PageBuilderSeoPanel";
 import PageBuilderPreview from "@/components/page-builder/PageBuilderPreview";
+import PageBuilderTemplateGallery from "@/components/page-builder/PageBuilderTemplateGallery";
 import {
   Save,
   Eye,
@@ -29,6 +30,7 @@ import {
   Sparkles,
   Undo2,
   CornerUpLeft,
+  LayoutTemplate,
 } from "lucide-react";
 
 // Internal component that does NOT include AdminLayout
