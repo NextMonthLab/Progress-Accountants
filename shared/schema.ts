@@ -3,6 +3,7 @@ import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 import { relations } from "drizzle-orm";
 import { PageMetadata, PageComplexityAssessment, ComplexityLevel } from "./page_metadata";
+import { ComponentType, SeoImpactLevel, ComponentContext } from "./advanced_page_builder";
 
 // Tenants table to track all client instances
 // Define the table without self-reference first to fix circular reference
@@ -392,6 +393,215 @@ export const resourcesRelations = relations(resources, ({ one }) => ({
   }),
 }));
 
+// Advanced Page Builder tables
+// ===========================
+
+// Page Builder Pages table - the central table for all pages created with the builder
+export const pageBuilderPages = pgTable("page_builder_pages", {
+  id: serial("id").primaryKey(),
+  tenantId: uuid("tenant_id").references(() => tenants.id).notNull(),
+  name: varchar("name", { length: 255 }).notNull(),
+  slug: varchar("slug", { length: 255 }).notNull(),
+  description: text("description"),
+  template: varchar("template", { length: 100 }),
+  status: varchar("status", { length: 20 }).default("draft").notNull(), // draft, published, archived
+  pageType: varchar("page_type", { length: 50 }).notNull(), // standard, landing, specialized
+  metadata: jsonb("metadata"), // PageMetadata object
+  seo: jsonb("seo"), // PageSeoMetadata object with extensions
+  businessContext: jsonb("business_context"), // Business-specific context for the page
+  analytics: jsonb("analytics"), // Analytics data for the page
+  version: integer("version").default(1).notNull(),
+  published: boolean("published").default(false),
+  publishedAt: timestamp("published_at"),
+  createdBy: integer("created_by").references(() => users.id),
+  lastEditedBy: integer("last_edited_by").references(() => users.id),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export const insertPageBuilderPageSchema = createInsertSchema(pageBuilderPages).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+  publishedAt: true,
+});
+
+// Page Builder Sections table - sections for each page
+export const pageBuilderSections = pgTable("page_builder_sections", {
+  id: serial("id").primaryKey(),
+  pageId: integer("page_id").references(() => pageBuilderPages.id).notNull(),
+  name: varchar("name", { length: 255 }).notNull(),
+  description: text("description"),
+  order: integer("order").default(0).notNull(),
+  settings: jsonb("settings"), // Section settings like background, spacing, etc.
+  seoWeight: integer("seo_weight").default(5), // Value from 1-10 indicating SEO importance
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export const insertPageBuilderSectionSchema = createInsertSchema(pageBuilderSections).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+// Page Builder Components table - components within sections
+export const pageBuilderComponents = pgTable("page_builder_components", {
+  id: serial("id").primaryKey(),
+  sectionId: integer("section_id").references(() => pageBuilderSections.id).notNull(),
+  parentId: integer("parent_id"), // For nested components
+  type: varchar("type", { length: 50 }).notNull(), // ComponentType enum as string
+  label: varchar("label", { length: 255 }),
+  context: varchar("context", { length: 50 }).notNull(), // ComponentContext enum as string
+  hidden: boolean("hidden").default(false),
+  seoImpact: varchar("seo_impact", { length: 20 }).default("low"), // SeoImpactLevel enum as string
+  settings: jsonb("settings"), // Component settings
+  content: jsonb("content"), // Component content
+  metadata: jsonb("metadata"), // SEO metadata for the component
+  analytics: jsonb("analytics"), // Component-specific analytics
+  order: integer("order").default(0),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export const insertPageBuilderComponentSchema = createInsertSchema(pageBuilderComponents).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+// Page Builder Templates table - reusable templates
+export const pageBuilderTemplates = pgTable("page_builder_templates", {
+  id: serial("id").primaryKey(),
+  tenantId: uuid("tenant_id").references(() => tenants.id), // Null means globally available
+  name: varchar("name", { length: 255 }).notNull(),
+  description: text("description"),
+  industry: jsonb("industry"), // Array of industries this template is suitable for
+  purpose: varchar("purpose", { length: 100 }), // What the template is designed for
+  seoRecommendations: jsonb("seo_recommendations"), // SEO guidance for this template
+  complexity: varchar("complexity", { length: 20 }).default("simple"), // ComplexityLevel enum as string
+  isGlobal: boolean("is_global").default(false), // Available to all tenants
+  thumbnail: varchar("thumbnail", { length: 500 }), // Preview image URL
+  author: integer("author").references(() => users.id),
+  structure: jsonb("structure"), // The template's default sections and components
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export const insertPageBuilderTemplateSchema = createInsertSchema(pageBuilderTemplates).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+// Page Builder Component Library table - available components
+export const pageBuilderComponentLibrary = pgTable("page_builder_component_library", {
+  id: serial("id").primaryKey(),
+  type: varchar("type", { length: 50 }).notNull(), // ComponentType enum as string
+  name: varchar("name", { length: 255 }).notNull(),
+  description: text("description"),
+  thumbnail: varchar("thumbnail", { length: 500 }),
+  defaultSettings: jsonb("default_settings"), // Default configuration for this component
+  seoImpact: varchar("seo_impact", { length: 20 }).default("low"), // SeoImpactLevel enum as string
+  context: jsonb("context"), // Array of ComponentContext values
+  recommended: boolean("recommended").default(false),
+  premium: boolean("premium").default(false),
+  complexity: varchar("complexity", { length: 20 }).default("simple"), // ComplexityLevel enum as string
+  isGlobal: boolean("is_global").default(true),
+  tenantId: uuid("tenant_id").references(() => tenants.id), // Null means globally available
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export const insertPageBuilderComponentLibrarySchema = createInsertSchema(pageBuilderComponentLibrary).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+// Page Builder Recommendations table - AI suggestions
+export const pageBuilderRecommendations = pgTable("page_builder_recommendations", {
+  id: serial("id").primaryKey(),
+  pageId: integer("page_id").references(() => pageBuilderPages.id).notNull(),
+  type: varchar("type", { length: 50 }).notNull(), // 'seo', 'content', 'structure', 'performance'
+  severity: varchar("severity", { length: 20 }).notNull(), // 'suggestion', 'recommendation', 'critical'
+  message: text("message").notNull(),
+  details: text("details"),
+  affectedComponents: jsonb("affected_components"), // Array of component IDs
+  improvement: text("improvement"),
+  autoFixAvailable: boolean("auto_fix_available").default(false),
+  dismissed: boolean("dismissed").default(false),
+  applied: boolean("applied").default(false),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export const insertPageBuilderRecommendationSchema = createInsertSchema(pageBuilderRecommendations).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+// Page Builder Version History table - track changes
+export const pageBuilderVersionHistory = pgTable("page_builder_version_history", {
+  id: serial("id").primaryKey(),
+  pageId: integer("page_id").references(() => pageBuilderPages.id).notNull(),
+  version: integer("version").notNull(),
+  snapshot: jsonb("snapshot").notNull(), // Full page state at this version
+  changedBy: integer("changed_by").references(() => users.id),
+  changeDescription: text("change_description"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export const insertPageBuilderVersionHistorySchema = createInsertSchema(pageBuilderVersionHistory).omit({
+  id: true,
+  createdAt: true,
+});
+
+// Define relationships for page builder
+export const pageBuilderPagesRelations = relations(pageBuilderPages, ({ one, many }) => ({
+  tenant: one(tenants, {
+    fields: [pageBuilderPages.tenantId],
+    references: [tenants.id],
+  }),
+  createdByUser: one(users, {
+    fields: [pageBuilderPages.createdBy],
+    references: [users.id],
+  }),
+  lastEditedByUser: one(users, {
+    fields: [pageBuilderPages.lastEditedBy],
+    references: [users.id],
+  }),
+  sections: many(pageBuilderSections),
+  recommendations: many(pageBuilderRecommendations),
+  versionHistory: many(pageBuilderVersionHistory),
+}));
+
+export const pageBuilderSectionsRelations = relations(pageBuilderSections, ({ one, many }) => ({
+  page: one(pageBuilderPages, {
+    fields: [pageBuilderSections.pageId],
+    references: [pageBuilderPages.id],
+  }),
+  components: many(pageBuilderComponents),
+}));
+
+export const pageBuilderComponentsRelations = relations(pageBuilderComponents, ({ one, many }) => ({
+  section: one(pageBuilderSections, {
+    fields: [pageBuilderComponents.sectionId],
+    references: [pageBuilderSections.id],
+  }),
+  // Add self-reference after component table is created 
+  parent: one(pageBuilderComponents, {
+    fields: [pageBuilderComponents.parentId],
+    references: [pageBuilderComponents.id],
+  }),
+  children: many(pageBuilderComponents, { relationName: "parent_child" }),
+}));
+
+// Add foreign key constraint to components table for parent ID
+// This is done after the component table is fully defined
+pgTable("page_builder_components").columns.parentId.references(() => pageBuilderComponents.id);
+
 
 
 // Export types
@@ -533,6 +743,28 @@ export type CreditUsageLog = typeof creditUsageLog.$inferSelect;
 
 export type InsertResource = z.infer<typeof insertResourceSchema>;
 export type Resource = typeof resources.$inferSelect;
+
+// Export types for the Page Builder
+export type InsertPageBuilderPage = z.infer<typeof insertPageBuilderPageSchema>;
+export type PageBuilderPage = typeof pageBuilderPages.$inferSelect;
+
+export type InsertPageBuilderSection = z.infer<typeof insertPageBuilderSectionSchema>;
+export type PageBuilderSection = typeof pageBuilderSections.$inferSelect;
+
+export type InsertPageBuilderComponent = z.infer<typeof insertPageBuilderComponentSchema>;
+export type PageBuilderComponent = typeof pageBuilderComponents.$inferSelect;
+
+export type InsertPageBuilderTemplate = z.infer<typeof insertPageBuilderTemplateSchema>;
+export type PageBuilderTemplate = typeof pageBuilderTemplates.$inferSelect;
+
+export type InsertPageBuilderComponentLibrary = z.infer<typeof insertPageBuilderComponentLibrarySchema>;
+export type PageBuilderComponentLibraryItem = typeof pageBuilderComponentLibrary.$inferSelect;
+
+export type InsertPageBuilderRecommendation = z.infer<typeof insertPageBuilderRecommendationSchema>;
+export type PageBuilderRecommendation = typeof pageBuilderRecommendations.$inferSelect;
+
+export type InsertPageBuilderVersionHistory = z.infer<typeof insertPageBuilderVersionHistorySchema>;
+export type PageBuilderVersionHistory = typeof pageBuilderVersionHistory.$inferSelect;
 
 // SEO Configuration table
 export const seoConfigurations = pgTable("seo_configurations", {
