@@ -45,9 +45,10 @@ const PageBuilderContent: React.FC = () => {
   // States
   const [page, setPage] = useState<any | null>(null);
   const [deviceType, setDeviceType] = useState<"desktop" | "tablet" | "mobile">("desktop");
-  const [activeTab, setActiveTab] = useState<string>("content");
+  const [activeTab, setActiveTab] = useState<string>(isNewPage ? "templates" : "content");
   const [selectedSectionId, setSelectedSectionId] = useState<number | undefined>(undefined);
   const [pageUnsaved, setPageUnsaved] = useState(false);
+  const [showTemplateGallery, setShowTemplateGallery] = useState(isNewPage);
   
   // Helper function for path navigation that uses window.location
   const navigate = (path: string) => {
@@ -264,6 +265,40 @@ const PageBuilderContent: React.FC = () => {
     });
     
     setPageUnsaved(true);
+  };
+  
+  // Handle template selection
+  const handleApplyTemplate = (template: any) => {
+    if (!page) return;
+    
+    // Apply the template data to the current page
+    setPage({
+      ...page,
+      title: template.title,
+      path: template.path,
+      description: template.description,
+      pageType: template.pageType,
+      seoSettings: template.seoSettings,
+      sections: template.sections.map((section: any) => ({
+        ...section,
+        id: Date.now() + Math.floor(Math.random() * 1000) + section.order, // Generate unique IDs
+        components: section.components.map((component: any) => ({
+          ...component,
+          id: Date.now() + Math.floor(Math.random() * 1000) + component.order // Generate unique IDs
+        }))
+      }))
+    });
+    
+    // Switch to the content tab
+    setActiveTab("content");
+    setShowTemplateGallery(false);
+    setPageUnsaved(true);
+    
+    toast({
+      title: "Template applied",
+      description: "The template has been applied to your page. You can now customize it.",
+      variant: "default"
+    });
   };
   
   // Get page type label
@@ -915,6 +950,7 @@ const PageBuilderContent: React.FC = () => {
       <Tabs defaultValue="content" value={activeTab} onValueChange={setActiveTab}>
         <div className="flex justify-between items-center mb-6">
           <TabsList>
+            {isNewPage && <TabsTrigger value="templates" className="flex items-center gap-1"><LayoutTemplate className="h-4 w-4" /> Templates</TabsTrigger>}
             <TabsTrigger value="content">Content</TabsTrigger>
             <TabsTrigger value="seo">SEO</TabsTrigger>
             <TabsTrigger value="preview">Preview</TabsTrigger>
@@ -976,27 +1012,61 @@ const PageBuilderContent: React.FC = () => {
         </div>
         
         <TabsContent value="content">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-            <div className="md:col-span-3">
-              <PageBuilderSections 
-                sections={page.sections}
-                onUpdateSection={handleUpdateSection}
-                onRemoveSection={handleRemoveSection}
-                onReorderSections={handleReorderSections}
-                onAddComponent={handleAddComponent}
-                onUpdateComponent={handleUpdateComponent}
-                onRemoveComponent={handleRemoveComponent}
-                onReorderComponents={handleReorderComponents}
-              />
+          {page.sections.length === 0 && isNewPage ? (
+            <div className="text-center py-8 space-y-4">
+              <div className="mx-auto rounded-full bg-primary/10 p-4 w-16 h-16 flex items-center justify-center">
+                <LayoutTemplate className="text-primary h-8 w-8" />
+              </div>
+              <h3 className="text-xl font-semibold">Start with a template</h3>
+              <p className="text-muted-foreground max-w-md mx-auto">
+                Choose from our collection of professionally designed templates to get started quickly.
+              </p>
+              <Button
+                onClick={() => setActiveTab("templates")}
+                variant="outline"
+                className="gap-2"
+              >
+                <LayoutTemplate className="h-4 w-4" />
+                Browse Templates
+              </Button>
             </div>
-            <div>
-              <PageBuilderComponentPanel 
-                onAddSection={handleAddSection}
-                onAddComponent={handleAddComponent}
-                currentSectionId={selectedSectionId}
-              />
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+              <div className="md:col-span-3">
+                <PageBuilderSections 
+                  sections={page.sections}
+                  onUpdateSection={handleUpdateSection}
+                  onRemoveSection={handleRemoveSection}
+                  onReorderSections={handleReorderSections}
+                  onAddComponent={handleAddComponent}
+                  onUpdateComponent={handleUpdateComponent}
+                  onRemoveComponent={handleRemoveComponent}
+                  onReorderComponents={handleReorderComponents}
+                />
+                
+                {isNewPage && page.sections.length > 0 && (
+                  <div className="mt-4 flex justify-center">
+                    <Button
+                      onClick={() => setActiveTab("templates")}
+                      variant="outline"
+                      size="sm"
+                      className="gap-1"
+                    >
+                      <LayoutTemplate className="h-4 w-4" />
+                      Browse More Templates
+                    </Button>
+                  </div>
+                )}
+              </div>
+              <div>
+                <PageBuilderComponentPanel 
+                  onAddSection={handleAddSection}
+                  onAddComponent={handleAddComponent}
+                  currentSectionId={selectedSectionId}
+                />
+              </div>
             </div>
-          </div>
+          )}
         </TabsContent>
         
         <TabsContent value="seo">
@@ -1009,6 +1079,21 @@ const PageBuilderContent: React.FC = () => {
             description={page.description}
           />
         </TabsContent>
+        
+        {isNewPage && (
+          <TabsContent value="templates">
+            <div className="mb-4">
+              <h2 className="text-2xl font-bold flex items-center gap-2 mb-2">
+                <LayoutTemplate className="h-5 w-5 text-primary" />
+                Start with a professional template
+              </h2>
+              <p className="text-muted-foreground mb-6">
+                Choose from our collection of professionally designed templates to get started quickly. All templates are fully customizable.
+              </p>
+              <PageBuilderTemplateGallery onSelectTemplate={handleApplyTemplate} />
+            </div>
+          </TabsContent>
+        )}
         
         <TabsContent value="preview">
           <div className="flex justify-center py-6 overflow-x-auto">

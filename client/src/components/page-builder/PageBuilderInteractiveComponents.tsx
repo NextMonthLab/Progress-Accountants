@@ -1,19 +1,19 @@
 import React from "react";
 import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardFooter,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import {
@@ -23,110 +23,117 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { MapPin } from "lucide-react";
+import { Label } from "@/components/ui/label";
+import { CheckCircle2, MapPin } from "lucide-react";
 
 // Form Component
-interface FormField {
-  type: string;
-  label: string;
-  required: boolean;
-  placeholder?: string;
-  options?: string[];
-}
+export const FormComponent: React.FC<{ content: any }> = ({ content }) => {
+  const {
+    title = "Contact Form",
+    description = "Fill out the form below and we'll get back to you.",
+    fields = [
+      { type: "text", label: "Name", required: true, placeholder: "Your name" },
+      { type: "email", label: "Email", required: true, placeholder: "your.email@example.com" },
+      { type: "textarea", label: "Message", required: true, placeholder: "How can we help you?" }
+    ],
+    submitText = "Send Message",
+    successMessage = "Thank you! Your message has been sent successfully.",
+    errorMessage = "Something went wrong. Please try again later."
+  } = content;
 
-interface FormComponentProps {
-  content: {
-    title: string;
-    description: string;
-    fields: FormField[];
-    submitText: string;
-    successMessage: string;
-    errorMessage: string;
-    emailTarget: string;
-  };
-  isEditing?: boolean;
-  onUpdate?: (updatedContent: any) => void;
-}
+  const [submitted, setSubmitted] = React.useState(false);
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
 
-export const FormComponent: React.FC<FormComponentProps> = ({ 
-  content, 
-  isEditing = false,
-  onUpdate
-}) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!isEditing) {
-      alert(content.successMessage || "Form submitted successfully!");
-    }
+    
+    // This is just for preview purposes
+    setIsSubmitting(true);
+    setTimeout(() => {
+      setIsSubmitting(false);
+      setSubmitted(true);
+    }, 1500);
   };
+
+  if (submitted) {
+    return (
+      <Card className="w-full">
+        <CardContent className="pt-6 text-center">
+          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-green-100">
+            <CheckCircle2 className="h-8 w-8 text-green-600" />
+          </div>
+          <h3 className="mt-3 text-lg font-medium">Form Submitted Successfully</h3>
+          <p className="mt-2 text-sm text-muted-foreground">
+            {successMessage}
+          </p>
+          <Button 
+            className="mt-4" 
+            variant="outline" 
+            onClick={() => setSubmitted(false)}
+          >
+            Reset Form
+          </Button>
+        </CardContent>
+      </Card>
+    );
+  }
 
   return (
     <Card className="w-full">
-      <CardHeader>
-        <CardTitle>{content.title}</CardTitle>
-        {content.description && <CardDescription>{content.description}</CardDescription>}
-      </CardHeader>
+      {(title || description) && (
+        <CardHeader>
+          {title && <CardTitle>{title}</CardTitle>}
+          {description && <CardDescription>{description}</CardDescription>}
+        </CardHeader>
+      )}
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">
-          {content.fields.map((field, index) => (
-            <div key={index} className="space-y-2">
-              <label 
-                htmlFor={`field-${index}`} 
-                className="text-sm font-medium"
-              >
-                {field.label} {field.required && <span className="text-red-500">*</span>}
-              </label>
+          {fields.map((field: any, index: number) => (
+            <div key={index} className="space-y-1">
+              <Label htmlFor={`field-${index}`}>{field.label} {field.required && <span className="text-destructive">*</span>}</Label>
               
-              {field.type === 'text' && (
+              {field.type === "text" && (
                 <Input 
-                  id={`field-${index}`}
-                  placeholder={field.placeholder || ''}
-                  disabled={!isEditing}
-                  required={field.required}
+                  id={`field-${index}`} 
+                  placeholder={field.placeholder} 
+                  required={field.required} 
                 />
               )}
-
-              {field.type === 'email' && (
+              
+              {field.type === "email" && (
                 <Input 
-                  id={`field-${index}`}
-                  type="email"
-                  placeholder={field.placeholder || ''}
-                  disabled={!isEditing}
-                  required={field.required}
+                  id={`field-${index}`} 
+                  type="email" 
+                  placeholder={field.placeholder} 
+                  required={field.required} 
                 />
               )}
-
-              {field.type === 'tel' && (
+              
+              {field.type === "tel" && (
                 <Input 
-                  id={`field-${index}`}
-                  type="tel"
-                  placeholder={field.placeholder || ''}
-                  disabled={!isEditing}
-                  required={field.required}
+                  id={`field-${index}`} 
+                  type="tel" 
+                  placeholder={field.placeholder} 
+                  required={field.required} 
                 />
               )}
-
-              {field.type === 'textarea' && (
+              
+              {field.type === "textarea" && (
                 <Textarea 
-                  id={`field-${index}`}
-                  placeholder={field.placeholder || ''}
-                  disabled={!isEditing}
-                  required={field.required}
+                  id={`field-${index}`} 
+                  placeholder={field.placeholder} 
+                  required={field.required} 
                 />
               )}
-
-              {field.type === 'select' && field.options && (
-                <Select disabled={!isEditing}>
-                  <SelectTrigger>
+              
+              {field.type === "select" && (
+                <Select>
+                  <SelectTrigger id={`field-${index}`}>
                     <SelectValue placeholder="Select an option" />
                   </SelectTrigger>
                   <SelectContent>
-                    {field.options.map((option, optIndex) => (
-                      <SelectItem key={optIndex} value={option}>
-                        {option}
-                      </SelectItem>
+                    {field.options?.map((option: string, i: number) => (
+                      <SelectItem key={i} value={option}>{option}</SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
@@ -134,8 +141,8 @@ export const FormComponent: React.FC<FormComponentProps> = ({
             </div>
           ))}
           
-          <Button type="submit" className="w-full">
-            {content.submitText}
+          <Button className="w-full" type="submit" disabled={isSubmitting}>
+            {isSubmitting ? "Sending..." : submitText}
           </Button>
         </form>
       </CardContent>
@@ -144,107 +151,99 @@ export const FormComponent: React.FC<FormComponentProps> = ({
 };
 
 // Map Component
-interface MapMarker {
-  lat: number;
-  lng: number;
-  title: string;
-}
+export const MapComponent: React.FC<{ content: any }> = ({ content }) => {
+  const {
+    address = "123 Main Street, Anytown, CA 12345",
+    title = "Our Location",
+    description = "We're located in the heart of downtown.",
+    height = 400,
+    zoom = 14,
+    markers = [
+      {
+        lat: 37.7749, 
+        lng: -122.4194,
+        title: "Our Office"
+      }
+    ]
+  } = content;
 
-interface MapComponentProps {
-  content: {
-    address: string;
-    title: string;
-    description: string;
-    height: number;
-    showControls: boolean;
-    zoom: number;
-    markers: MapMarker[];
-  };
-  isEditing?: boolean;
-  onUpdate?: (updatedContent: any) => void;
-}
-
-export const MapComponent: React.FC<MapComponentProps> = ({ 
-  content, 
-  isEditing = false,
-  onUpdate
-}) => {
-  // In a real implementation, this would integrate with a mapping service
+  // In a real implementation, we'd use a mapping library like Google Maps or Mapbox
+  // For preview purposes, we'll show a placeholder with the address info
   return (
     <Card className="w-full overflow-hidden">
-      <CardHeader>
-        <CardTitle>{content.title}</CardTitle>
-        {content.description && <CardDescription>{content.description}</CardDescription>}
-      </CardHeader>
-      <CardContent>
-        <div 
-          className="relative bg-gray-200 rounded-md flex items-center justify-center"
-          style={{ height: `${content.height}px` }}
-        >
-          {isEditing ? (
-            <div className="text-center p-6">
-              <p className="mb-2 text-muted-foreground">Map Preview (Google Maps will display here)</p>
-              <p className="font-medium">Address: {content.address}</p>
-              <div className="mt-4">
-                {content.markers.map((marker, idx) => (
-                  <div key={idx} className="text-sm">
-                    Marker {idx + 1}: {marker.title} ({marker.lat}, {marker.lng})
-                  </div>
-                ))}
-              </div>
+      {title && (
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <MapPin className="h-5 w-5 text-primary" />
+            {title}
+          </CardTitle>
+          {description && <CardDescription>{description}</CardDescription>}
+        </CardHeader>
+      )}
+      <div 
+        className="flex flex-col items-center justify-center bg-secondary/20" 
+        style={{ height: `${height}px` }}
+      >
+        <div className="bg-background p-4 rounded-lg shadow-md max-w-md w-full m-4">
+          <div className="flex items-start gap-3">
+            <MapPin className="h-5 w-5 text-primary mt-0.5" />
+            <div>
+              <h4 className="font-medium">Address</h4>
+              <p className="text-sm text-muted-foreground whitespace-pre-line">{address}</p>
             </div>
-          ) : (
-            <div className="text-center p-6">
-              <MapPin className="w-12 h-12 text-primary mx-auto mb-2" />
-              <p className="font-medium text-lg">{content.address}</p>
-              <p className="mt-2 text-sm text-muted-foreground">
-                Map loading... If this were connected to Google Maps, you would see the location here.
-              </p>
-            </div>
-          )}
+          </div>
+          <div className="mt-3 text-sm text-center text-muted-foreground italic">
+            In published view, an interactive map will be displayed here.
+          </div>
+          <Button className="w-full mt-3" variant="outline" size="sm">
+            Get Directions
+          </Button>
         </div>
-      </CardContent>
+      </div>
     </Card>
   );
 };
 
 // Accordion Component
-interface AccordionItem {
-  title: string;
-  content: string;
-}
+export const AccordionComponent: React.FC<{ content: any }> = ({ content }) => {
+  const {
+    title = "Frequently Asked Questions",
+    items = [
+      { 
+        title: "How do I get started?", 
+        content: "Getting started is easy! Simply register for an account and follow the onboarding process." 
+      },
+      { 
+        title: "What payment methods do you accept?", 
+        content: "We accept all major credit cards, PayPal, and bank transfers." 
+      },
+      { 
+        title: "Do you offer refunds?", 
+        content: "Yes, we offer a 30-day money-back guarantee on all our services." 
+      }
+    ],
+    allowMultiple = false
+  } = content;
 
-interface AccordionComponentProps {
-  content: {
-    title: string;
-    items: AccordionItem[];
-    allowMultiple: boolean;
-  };
-  isEditing?: boolean;
-  onUpdate?: (updatedContent: any) => void;
-}
-
-export const AccordionComponent: React.FC<AccordionComponentProps> = ({ 
-  content, 
-  isEditing = false,
-  onUpdate
-}) => {
   return (
-    <div className="w-full">
-      {content.title && <h3 className="text-xl font-semibold mb-4">{content.title}</h3>}
-      
-      <Accordion type={content.allowMultiple ? "multiple" : "single"} collapsible>
-        {content.items.map((item, index) => (
-          <AccordionItem key={index} value={`item-${index}`}>
-            <AccordionTrigger>{item.title}</AccordionTrigger>
-            <AccordionContent>
-              <div className="prose max-w-none dark:prose-invert">
+    <Card className="w-full">
+      {title && (
+        <CardHeader>
+          <CardTitle>{title}</CardTitle>
+        </CardHeader>
+      )}
+      <CardContent>
+        <Accordion type={allowMultiple ? "multiple" : "single"} collapsible>
+          {items.map((item: any, index: number) => (
+            <AccordionItem key={index} value={`item-${index}`}>
+              <AccordionTrigger>{item.title}</AccordionTrigger>
+              <AccordionContent>
                 {item.content}
-              </div>
-            </AccordionContent>
-          </AccordionItem>
-        ))}
-      </Accordion>
-    </div>
+              </AccordionContent>
+            </AccordionItem>
+          ))}
+        </Accordion>
+      </CardContent>
+    </Card>
   );
 };
