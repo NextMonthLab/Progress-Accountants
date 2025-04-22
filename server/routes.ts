@@ -41,7 +41,6 @@ import { registerResourcesRoutes } from "./controllers/resourcesController";
 import { registerCompanionRoutes } from "./controllers/companionController";
 import { registerCompanionConfigRoutes } from "./controllers/registerCompanionConfigRoutes";
 import { registerToolMarketplaceRoutes } from "./controllers/toolMarketplaceController";
-import { registerPageBuilderRoutes } from "./controllers/registerPageBuilderRoutes";
 import { 
   getAvailableTools,
   getToolCategories,
@@ -208,6 +207,8 @@ storage.getContactSubmissions = async function() {
   return Array.from(this.contactSubmissions.values());
 };
 
+import { registerPageBuilderRoutes as registerPageBuilderApiRoutes } from "./controllers/registerPageBuilderRoutes";
+
 export async function registerRoutes(app: Express): Promise<Server> {
   // Set up authentication
   setupAuth(app);
@@ -325,7 +326,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   registerToolMarketplaceRoutes(app);
   
   // Register page builder routes
-  registerPageBuilderRoutes(app);
+  registerPageBuilderApiRoutes(app);
   
   // ============= NEXTMONTH MARKETPLACE API ENDPOINTS =============
   // Get available tools from NextMonth marketplace

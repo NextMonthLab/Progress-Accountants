@@ -184,7 +184,16 @@ async function createPageBuilderVersionHistoryTable() {
 export { migratePageBuilderTables };
 
 // If this script is run directly (not imported), execute the migration
-if (require.main === module) {
+// Using ES Module approach for detecting if file is run directly
+import { fileURLToPath } from 'url';
+import path from 'path';
+
+// Get the current file's path as a URL
+const currentFileUrl = import.meta.url;
+// Convert the URL to a file path
+const currentFilePath = fileURLToPath(currentFileUrl);
+// Check if this file is the main module (i.e., it's being run directly)
+if (process.argv[1] === currentFilePath) {
   migratePageBuilderTables()
     .then(() => {
       console.log('Page Builder migration completed successfully');

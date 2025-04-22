@@ -34,6 +34,7 @@ import {
   FileText,
   Clock,
   ArrowUpDown,
+  LayoutGrid,
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -904,7 +905,7 @@ const PageBuilderListPageWrapper: React.FC = () => {
             </Card>
             <Card className="p-4">
               <CardContent className="pt-4 text-center">
-                <Layout className="h-8 w-8 mx-auto mb-2 text-primary" />
+                <LayoutGrid className="h-8 w-8 mx-auto mb-2 text-primary" />
                 <h4 className="font-medium">Drag-and-Drop Layouts</h4>
                 <p className="text-sm text-muted-foreground">Build beautiful, responsive page layouts without code</p>
               </CardContent>
