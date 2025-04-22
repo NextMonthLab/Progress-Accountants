@@ -793,24 +793,131 @@ const PageBuilderListPage: React.FC = () => {
 
 // Create a wrapper component for AdminLayout
 const PageBuilderListPageWrapper: React.FC = () => {
+  const [isInitializing, setIsInitializing] = useState(false);
+  const [initResult, setInitResult] = useState<{success: boolean; message: string} | null>(null);
+  
+  const initPageBuilderMutation = useMutation({
+    mutationFn: async () => {
+      setIsInitializing(true);
+      const res = await apiRequest("POST", "/api/page-builder/initialize");
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.message || "Failed to initialize page builder tables");
+      }
+      return await res.json();
+    },
+    onSuccess: (data) => {
+      setInitResult({
+        success: true,
+        message: data.message || "Page Builder tables initialized successfully!"
+      });
+      toast({
+        title: "Success",
+        description: "Page Builder tables have been initialized. You can now create pages.",
+        variant: "default"
+      });
+      // Refresh the page after a short delay to show updated UI
+      setTimeout(() => {
+        window.location.reload();
+      }, 2000);
+    },
+    onError: (error) => {
+      setInitResult({
+        success: false,
+        message: (error as Error).message
+      });
+      toast({
+        title: "Error",
+        description: `Failed to initialize Page Builder: ${(error as Error).message}`,
+        variant: "destructive"
+      });
+    },
+    onSettled: () => {
+      setIsInitializing(false);
+    }
+  });
+  
+  const handleInitialize = () => {
+    initPageBuilderMutation.mutate();
+  };
+  
   return (
     <AdminLayout>
       <div className="container px-8 py-6">
         <h1 className="text-3xl font-bold tracking-tight mb-6">Page Builder</h1>
         <p className="text-muted-foreground mb-8">Create and manage your pages with the Advanced Page Builder</p>
-        <div className="flex justify-end mb-6">
-          <Button>
-            <Plus className="h-4 w-4 mr-2" />
-            Create New Page
-          </Button>
-        </div>
-        <Card>
+        
+        <Card className="mb-8">
           <CardContent className="p-6">
-            <p>The page builder tables are not yet initialized in the database.</p>
-            <p className="mt-2 mb-4 text-muted-foreground">To use this feature, the required database tables need to be created first.</p>
-            <Button variant="outline">Initialize Page Builder</Button>
+            <div className="flex flex-col items-center text-center py-10">
+              <FileText className="h-16 w-16 text-muted-foreground mb-6" />
+              <h2 className="text-2xl font-bold mb-2">Set Up Page Builder</h2>
+              <p className="text-muted-foreground mb-6 max-w-md">
+                The Advanced Page Builder requires database tables to be initialized before you can create and manage pages.
+              </p>
+              
+              {initResult && (
+                <div className={`p-4 mb-6 rounded-md w-full max-w-md ${
+                  initResult.success ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                }`}>
+                  <p>{initResult.message}</p>
+                </div>
+              )}
+              
+              <Button 
+                onClick={handleInitialize}
+                disabled={isInitializing}
+                className="min-w-[200px]"
+              >
+                {isInitializing ? (
+                  <>
+                    <svg className="animate-spin -ml-1 mr-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Initializing...
+                  </>
+                ) : (
+                  'Initialize Page Builder'
+                )}
+              </Button>
+              
+              <p className="text-xs text-muted-foreground mt-4">
+                This action will create all necessary database tables for the Advanced Page Builder feature.
+              </p>
+            </div>
           </CardContent>
         </Card>
+        
+        <div className="flex flex-col items-center text-center py-12">
+          <h3 className="text-lg font-medium mb-2">Coming Soon</h3>
+          <p className="text-muted-foreground mb-4">
+            The Advanced Page Builder will allow you to:
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mt-4">
+            <Card className="p-4">
+              <CardContent className="pt-4 text-center">
+                <Sparkles className="h-8 w-8 mx-auto mb-2 text-primary" />
+                <h4 className="font-medium">AI-Enhanced Content Creation</h4>
+                <p className="text-sm text-muted-foreground">Create dynamic, SEO-optimized content with AI assistance</p>
+              </CardContent>
+            </Card>
+            <Card className="p-4">
+              <CardContent className="pt-4 text-center">
+                <Layout className="h-8 w-8 mx-auto mb-2 text-primary" />
+                <h4 className="font-medium">Drag-and-Drop Layouts</h4>
+                <p className="text-sm text-muted-foreground">Build beautiful, responsive page layouts without code</p>
+              </CardContent>
+            </Card>
+            <Card className="p-4">
+              <CardContent className="pt-4 text-center">
+                <FileText className="h-8 w-8 mx-auto mb-2 text-primary" />
+                <h4 className="font-medium">SEO Optimization</h4>
+                <p className="text-sm text-muted-foreground">Get real-time SEO recommendations and scoring</p>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
       </div>
     </AdminLayout>
   );
