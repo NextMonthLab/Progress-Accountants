@@ -17,6 +17,7 @@ import PageBuilderComponentPanel from "@/components/page-builder/PageBuilderComp
 import PageBuilderSeoPanel from "@/components/page-builder/PageBuilderSeoPanel";
 import PageBuilderPreview from "@/components/page-builder/PageBuilderPreview";
 import PageBuilderTemplateGallery from "@/components/page-builder/PageBuilderTemplateGallery";
+import { PageVersionHistory } from "@/components/page-builder/PageVersionHistory";
 import {
   Save,
   Eye,
@@ -31,6 +32,7 @@ import {
   Undo2,
   CornerUpLeft,
   LayoutTemplate,
+  History
 } from "lucide-react";
 
 // Internal component that does NOT include AdminLayout
@@ -49,6 +51,7 @@ const PageBuilderContent: React.FC = () => {
   const [selectedSectionId, setSelectedSectionId] = useState<number | undefined>(undefined);
   const [pageUnsaved, setPageUnsaved] = useState(false);
   const [showTemplateGallery, setShowTemplateGallery] = useState(isNewPage);
+  const [showVersionHistory, setShowVersionHistory] = useState(false);
   
   // Helper function for path navigation that uses window.location
   const navigate = (path: string) => {

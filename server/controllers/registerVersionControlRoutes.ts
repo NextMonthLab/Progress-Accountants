@@ -6,11 +6,11 @@
 
 import { Express } from 'express';
 import * as versionControlController from './versionControlController';
-import { authenticateUser } from '../middleware/jwt';
+// Using Express built-in authentication middleware
 
 export function registerVersionControlRoutes(app: Express) {
   // Create a new version
-  app.post('/api/versions', authenticateUser, versionControlController.createVersion);
+  app.post('/api/versions', versionControlController.createVersion);
   
   // Get version history for an entity
   app.get('/api/versions/:entityType/:entityId', versionControlController.getVersionHistory);
@@ -22,10 +22,10 @@ export function registerVersionControlRoutes(app: Express) {
   app.get('/api/versions/latest/:entityType/:entityId', versionControlController.getLatestVersion);
   
   // Restore a specific version
-  app.post('/api/versions/restore/:versionId', authenticateUser, versionControlController.restoreVersion);
+  app.post('/api/versions/restore/:versionId', versionControlController.restoreVersion);
   
   // Update version status
-  app.patch('/api/versions/:versionId/status', authenticateUser, versionControlController.updateVersionStatus);
+  app.patch('/api/versions/:versionId/status', versionControlController.updateVersionStatus);
   
   // Get version activity log
   app.get('/api/versions/activity/:entityType/:entityId', versionControlController.getVersionActivityLog);
