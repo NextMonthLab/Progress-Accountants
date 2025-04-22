@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { teamMembers } from '@/lib/teamMembers';
 import { TeamMemberCard } from '@/components/TeamMemberCard';
@@ -6,8 +6,55 @@ import { Link } from 'wouter';
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
 import teamPhotoPath from '@assets/Team Photo.jpg';
+import { PageHeaderSkeleton, TeamMemberSkeleton, CtaSkeleton } from '@/components/ui/skeletons';
 
 export default function TeamPage() {
+  const [isLoading, setIsLoading] = useState(true);
+  
+  useEffect(() => {
+    // Simulate content loading
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1500);
+    
+    return () => clearTimeout(timer);
+  }, []);
+  // Show skeleton during loading state
+  if (isLoading) {
+    return (
+      <div className="bg-gray-50 min-h-screen">
+        <Helmet>
+          <title>Meet Our Team | Progress Accountants</title>
+        </Helmet>
+
+        {/* Skeleton Hero Section */}
+        <section className="bg-[var(--navy)] text-white py-16 md:py-24 relative overflow-hidden">
+          <div className="container mx-auto px-4 relative z-10">
+            <PageHeaderSkeleton />
+          </div>
+        </section>
+
+        {/* Skeleton Team Members */}
+        <section className="py-16 md:py-24">
+          <div className="container mx-auto px-4">
+            <div className="mb-8">
+              <div className="h-8 w-64 bg-muted animate-pulse mx-auto rounded-md mb-12"></div>
+            </div>
+            <TeamMemberSkeleton count={6} />
+          </div>
+        </section>
+
+        {/* Skeleton CTA Section */}
+        <section className="py-16 bg-gray-100">
+          <div className="container mx-auto px-4">
+            <CtaSkeleton />
+          </div>
+        </section>
+      </div>
+    );
+  }
+
+  // Return actual content once loaded
   return (
     <div className="bg-gray-50 min-h-screen">
       <Helmet>

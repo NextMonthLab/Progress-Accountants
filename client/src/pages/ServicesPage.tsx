@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { Link } from 'wouter';
 import { 
@@ -13,6 +13,12 @@ import {
   ArrowRight
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { 
+  PageHeaderSkeleton,
+  ServicesSkeleton,
+  CardSkeleton,
+  CtaSkeleton
+} from '@/components/ui/skeletons';
 
 interface Service {
   id: number;
@@ -82,6 +88,70 @@ const services: Service[] = [
 ];
 
 export default function ServicesPage() {
+  const [isLoading, setIsLoading] = useState(true);
+  
+  useEffect(() => {
+    // Simulate content loading
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1500);
+    
+    return () => clearTimeout(timer);
+  }, []);
+  
+  // Return skeleton during loading state
+  if (isLoading) {
+    return (
+      <div className="bg-gray-50 min-h-screen">
+        <Helmet>
+          <title>Our Services | Progress Accountants</title>
+        </Helmet>
+        
+        {/* Skeleton Hero Section */}
+        <section className="bg-[var(--navy)] text-white py-16 md:py-24">
+          <div className="container mx-auto px-4">
+            <PageHeaderSkeleton />
+          </div>
+        </section>
+        
+        {/* Skeleton Services Section */}
+        <section className="py-16">
+          <div className="container mx-auto px-4">
+            <div className="space-y-4 mb-16 max-w-3xl mx-auto">
+              <div className="h-8 w-64 mx-auto bg-muted animate-pulse rounded-md"></div>
+              <div className="h-4 w-full bg-muted animate-pulse rounded-md"></div>
+              <div className="h-4 w-full bg-muted animate-pulse rounded-md"></div>
+              <div className="h-4 w-3/4 mx-auto bg-muted animate-pulse rounded-md"></div>
+            </div>
+            
+            <ServicesSkeleton count={8} />
+          </div>
+        </section>
+        
+        {/* Skeleton Feature Sections */}
+        <section className="py-16 bg-gray-100">
+          <div className="container mx-auto px-4">
+            <CardSkeleton count={1} />
+          </div>
+        </section>
+        
+        <section className="py-16">
+          <div className="container mx-auto px-4">
+            <CardSkeleton count={1} />
+          </div>
+        </section>
+        
+        {/* Skeleton CTA */}
+        <section className="py-16 bg-[var(--navy)]">
+          <div className="container mx-auto px-4">
+            <CtaSkeleton />
+          </div>
+        </section>
+      </div>
+    );
+  }
+  
+  // Return actual content once loaded
   return (
     <div className="bg-gray-50 min-h-screen">
       <Helmet>

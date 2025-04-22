@@ -1,10 +1,77 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { Link } from 'wouter';
 import { Button } from '@/components/ui/button';
 import { Check, ArrowRight, Zap, Clock, Users, FileText, BarChart, Shield } from 'lucide-react';
+import { 
+  PageHeaderSkeleton, 
+  FeaturesSkeleton, 
+  CardSkeleton,
+  TestimonialsSkeleton
+} from '@/components/ui/skeletons';
 
 export default function AboutPage() {
+  const [isLoading, setIsLoading] = useState(true);
+  
+  useEffect(() => {
+    // Simulate content loading (replace with actual API calls in production)
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1500);
+    
+    return () => clearTimeout(timer);
+  }, []);
+  // Return skeleton during loading state
+  if (isLoading) {
+    return (
+      <div className="bg-gray-50 min-h-screen">
+        <Helmet>
+          <title>About Us | Progress Accountants</title>
+        </Helmet>
+
+        {/* Skeleton Hero Section */}
+        <section className="bg-[var(--navy)] text-white py-16 md:py-24 relative overflow-hidden">
+          <div className="container mx-auto px-4">
+            <PageHeaderSkeleton />
+          </div>
+        </section>
+
+        {/* Skeleton Content Sections */}
+        <section className="py-16 md:py-24 bg-white">
+          <div className="container mx-auto px-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+              <div className="space-y-4">
+                <div className="w-3/4">
+                  <FeaturesSkeleton count={1} />
+                </div>
+              </div>
+              <div className="flex justify-center">
+                <div className="p-8 rounded-full">
+                  <div className="h-40 w-40 rounded-full bg-muted animate-pulse" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Skeleton Features */}
+        <section className="py-16 md:py-24 bg-gray-50">
+          <div className="container mx-auto px-4">
+            <FeaturesSkeleton count={3} />
+          </div>
+        </section>
+
+        {/* Skeleton Cards */}
+        <section className="py-16 md:py-24 bg-white">
+          <div className="container mx-auto px-4">
+            <CardSkeleton count={4} />
+          </div>
+        </section>
+      </div>
+    );
+  }
+
+  // Return actual content once loaded
   return (
     <div className="bg-gray-50 min-h-screen">
       <Helmet>
