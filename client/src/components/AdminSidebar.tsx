@@ -16,7 +16,8 @@ import {
   ChevronRight,
   MessageCircle,
   FileText,
-  PlusCircle
+  PlusCircle,
+  Layers
 } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import { useState } from "react";
@@ -112,6 +113,12 @@ export default function AdminSidebar() {
           title: "Create New Page", 
           href: "/create-new-page", 
           icon: <PlusCircle className="h-5 w-5" />,
+          requiresStaff: true 
+        },
+        { 
+          title: "Page Builder", 
+          href: "/page-builder", 
+          icon: <Layers className="h-5 w-5" />,
           requiresStaff: true 
         },
         { 

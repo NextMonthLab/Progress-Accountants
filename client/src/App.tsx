@@ -215,6 +215,23 @@ function Router() {
       
       {/* Page Builder routes */}
       <ProtectedRoute 
+        path="/page-builder" 
+        component={PageBuilderListPage} 
+        allowedRoles={['admin', 'super_admin', 'editor']} 
+      />
+      <ProtectedRoute 
+        path="/page-builder/new" 
+        component={PageBuilderPage} 
+        allowedRoles={['admin', 'super_admin', 'editor']} 
+      />
+      <ProtectedRoute 
+        path="/page-builder/:id" 
+        component={PageBuilderPage} 
+        allowedRoles={['admin', 'super_admin', 'editor']} 
+      />
+      
+      {/* Legacy Page Builder routes - keeping for compatibility */}
+      <ProtectedRoute 
         path="/admin/page-builder" 
         component={PageBuilderListPage} 
         allowedRoles={['admin', 'super_admin', 'editor']} 
