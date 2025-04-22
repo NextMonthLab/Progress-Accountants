@@ -196,41 +196,54 @@ export default function EnhancedMarketplacePage() {
       
       <div className="container mx-auto px-4 max-w-7xl">
         {/* Banner */}
-        <div className="bg-gradient-to-r from-[var(--navy)] to-[var(--navy)]/90 rounded-xl p-6 mb-10 text-white">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-            <div className="flex-1">
-              <h2 className="text-2xl font-bold mb-2">Transform Your Accounting Practice</h2>
-              <p className="text-white/90">
-                Browse our curated collection of pages and tools designed for accounting firms. Find, install, and launch with just a few clicks.
+        <div className="bg-gradient-to-r from-[var(--navy)] to-[var(--navy)]/90 rounded-xl p-4 sm:p-6 mb-6 sm:mb-10 text-white">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4 sm:gap-6">
+            <div className="flex-1 text-center md:text-left">
+              <h2 className="text-xl sm:text-2xl font-bold mb-2">Transform Your Accounting Practice</h2>
+              <p className="text-white/90 text-sm sm:text-base">
+                Browse our curated collection of tools designed for accounting firms. Find, install, and launch with just a few clicks.
               </p>
             </div>
             <Button 
               onClick={() => {}} 
-              className="bg-white text-[var(--navy)] hover:bg-white/90 px-6 shrink-0"
+              className="bg-white text-[var(--navy)] hover:bg-white/90 px-4 sm:px-6 py-1.5 sm:py-2 text-sm sm:text-base w-full md:w-auto shrink-0 mt-2 md:mt-0"
             >
-              View Getting Started Guide
+              Getting Started Guide
             </Button>
           </div>
         </div>
         
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold mb-3 text-[var(--navy)]">Marketplace</h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Add new pages, tools, and automations to enhance your Progress Accountants platform. No code. No friction.
+        <div className="text-center mb-6 sm:mb-8 px-4">
+          <h1 className="text-3xl sm:text-4xl font-bold mb-2 sm:mb-3 text-[var(--navy)]">Marketplace</h1>
+          <p className="text-base sm:text-xl text-gray-600 max-w-3xl mx-auto">
+            Add new tools and automations to enhance your accounting platform. No code. No friction.
           </p>
         </div>
         
         {/* Category Tabs */}
-        <Tabs defaultValue="all" value={activeTab} onValueChange={setActiveTab} className="mb-8">
-          <TabsList className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 w-full max-w-4xl mx-auto">
-            <TabsTrigger value="all">All</TabsTrigger>
-            {getCategories().map((category) => (
-              <TabsTrigger key={category} value={category}>
-                {category.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())}
-              </TabsTrigger>
-            ))}
-          </TabsList>
-        </Tabs>
+        <div className="mb-8 overflow-hidden">
+          <Tabs defaultValue="all" value={activeTab} onValueChange={setActiveTab}>
+            <div className="relative">
+              {/* Gradient indicators for horizontal scroll */}
+              <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-gray-50 to-transparent z-10 pointer-events-none hidden sm:block"></div>
+              <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-gray-50 to-transparent z-10 pointer-events-none hidden sm:block"></div>
+              
+              {/* Scrollable tabs container */}
+              <div className="overflow-x-auto pb-3 px-1 -mx-1 hide-scrollbar">
+                <TabsList className="inline-flex w-auto min-w-full sm:min-w-0 max-w-none justify-start sm:justify-center space-x-2">
+                  <TabsTrigger value="all" className="whitespace-nowrap">All</TabsTrigger>
+                  {getCategories().map((category) => (
+                    <TabsTrigger key={category} value={category} className="whitespace-nowrap">
+                      {category.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                    </TabsTrigger>
+                  ))}
+                </TabsList>
+              </div>
+            </div>
+          </Tabs>
+        </div>
+        
+        {/* Custom scrollbar styling is added to the global CSS */}
         
         {/* API-based Marketplace Tools */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
@@ -272,56 +285,56 @@ export default function EnhancedMarketplacePage() {
               <Card key={tool.id} className={`overflow-hidden transition-all hover:shadow-md ${
                 isToolInstalled(tool.id) ? 'border-green-300 bg-green-50/30' : 'border-gray-200'
               }`}>
-                <CardHeader>
+                <CardHeader className="p-4 sm:p-6">
                   <div className="flex justify-between items-start">
-                    <CardTitle className="text-xl">{tool.name}</CardTitle>
+                    <CardTitle className="text-lg sm:text-xl">{tool.name}</CardTitle>
                     {tool.toolVersion && (
-                      <Badge variant="outline" className="bg-blue-100 text-blue-700">
+                      <Badge variant="outline" className="bg-blue-100 text-blue-700 text-xs sm:text-sm ml-2">
                         {tool.toolVersion}
                       </Badge>
                     )}
                   </div>
-                  <CardDescription className="line-clamp-2">{tool.description}</CardDescription>
+                  <CardDescription className="line-clamp-2 text-sm sm:text-base mt-1">{tool.description}</CardDescription>
                 </CardHeader>
                 
-                <CardContent className="pb-0 flex-grow">
-                  <div className="flex flex-wrap gap-2 mb-3">
+                <CardContent className="p-4 sm:p-6 pt-0 sm:pt-0 pb-0 sm:pb-0 flex-grow">
+                  <div className="flex flex-wrap gap-1.5 sm:gap-2 mb-2 sm:mb-3">
                     {tool.toolCategory && (
-                      <Badge className="bg-green-100 text-green-700">
+                      <Badge className="bg-green-100 text-green-700 text-xs sm:text-sm">
                         {tool.toolCategory}
                       </Badge>
                     )}
                     {tool.toolType && (
-                      <Badge variant="outline" className="bg-slate-50">
+                      <Badge variant="outline" className="bg-slate-50 text-xs sm:text-sm">
                         {tool.toolType}
                       </Badge>
                     )}
                   </div>
                   
                   {isToolInstalled(tool.id) && (
-                    <div className="text-sm text-green-600 font-medium mt-3 flex items-center">
-                      <CheckCircle2 className="h-4 w-4 mr-1" /> Installed
+                    <div className="text-xs sm:text-sm text-green-600 font-medium mt-2 sm:mt-3 flex items-center">
+                      <CheckCircle2 className="h-3 w-3 sm:h-4 sm:w-4 mr-1" /> Installed
                     </div>
                   )}
                 </CardContent>
                 
-                <CardFooter className="pt-4">
+                <CardFooter className="p-4 sm:p-6 pt-3 sm:pt-4">
                   {isToolInstalled(tool.id) ? (
                     <Button 
                       variant="outline" 
                       size="sm" 
-                      className="ml-auto"
+                      className="ml-auto text-xs sm:text-sm py-1 sm:py-1.5 h-auto"
                       onClick={() => handleUninstallTool(getInstallationId(tool.id) || 0)}
                     >
                       Uninstall
                     </Button>
                   ) : (
                     <Button 
-                      className="w-full" 
+                      className="w-full text-xs sm:text-sm py-1.5 sm:py-2 h-auto"
                       variant="default"
                       onClick={() => handleInstallTool(tool.id)}
                     >
-                      <Download className="h-4 w-4 mr-2" /> Install Tool
+                      <Download className="h-3 w-3 sm:h-4 sm:w-4 mr-1.5 sm:mr-2" /> Install Tool
                     </Button>
                   )}
                 </CardFooter>
@@ -331,15 +344,15 @@ export default function EnhancedMarketplacePage() {
         </div>
         
         {/* Help Section */}
-        <div className="mt-20 p-8 bg-blue-50 rounded-xl border border-blue-100">
+        <div className="mt-12 sm:mt-16 lg:mt-20 p-5 sm:p-8 bg-blue-50 rounded-xl border border-blue-100">
           <div className="max-w-3xl mx-auto text-center">
-            <h2 className="text-2xl font-semibold text-blue-800 mb-4">Need a custom tool?</h2>
-            <p className="text-blue-700 mb-6">
+            <h2 className="text-xl sm:text-2xl font-semibold text-blue-800 mb-2 sm:mb-4">Need a custom tool?</h2>
+            <p className="text-sm sm:text-base text-blue-700 mb-4 sm:mb-6 px-2">
               Don't see what you need? Request a custom tool for your specific business requirements.
             </p>
             <Button 
               onClick={() => setLocation('/scope-request')}
-              className="bg-blue-600 hover:bg-blue-700"
+              className="bg-blue-600 hover:bg-blue-700 text-sm sm:text-base py-1.5 sm:py-2 h-auto px-3 sm:px-4"
             >
               Request Custom Tool
             </Button>
