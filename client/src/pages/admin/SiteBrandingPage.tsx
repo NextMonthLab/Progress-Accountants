@@ -27,7 +27,8 @@ import {
 } from "@/components/ui/form";
 import { Separator } from "@/components/ui/separator";
 import { ImageIcon, Loader2, Globe, Type, Palette } from "lucide-react";
-import { useNavigationLock } from "@/hooks/use-navigation-lock";
+// Remove navigation lock for now
+// import { useNavigationLock } from "../hooks/use-navigation-lock";
 
 // Schema for the form validation
 const siteBrandingSchema = z.object({
@@ -65,7 +66,7 @@ export default function SiteBrandingPage() {
   
   // Check for unsaved changes
   const isDirty = form.formState.isDirty;
-  useNavigationLock(isDirty);
+  // Removed navigation lock for simplicity
   
   // Load existing branding settings
   useEffect(() => {
@@ -100,7 +101,7 @@ export default function SiteBrandingPage() {
       toast({
         title: "Success",
         description: "Site branding settings have been updated",
-        variant: "success",
+        variant: "default",
       });
       
       // Mark form as no longer dirty after successful save
