@@ -36,26 +36,28 @@ import {
 } from "lucide-react";
 
 // Internal component that does NOT include AdminLayout
-// Fixed: Adding console logs to debug the component loading
 const PageBuilderContent: React.FC = () => {
-  console.log("PageBuilderContent is rendering");
   const { id } = useParams<{ id: string }>();
   const isNewPage = !id || id === "new";
-  const [, setLocation] = useLocation();
+  const [, navigate] = useLocation();
   const queryClient = useQueryClient();
   
   // States
   const [page, setPage] = useState<any | null>(null);
   const [deviceType, setDeviceType] = useState<"desktop" | "tablet" | "mobile">("desktop");
   const [activeTab, setActiveTab] = useState<string>(isNewPage ? "templates" : "content");
-  const [selectedSectionId, setSelectedSectionId] = useState<number | undefined>(undefined);
-  const [pageUnsaved, setPageUnsaved] = useState(false);
-  const [showTemplateGallery, setShowTemplateGallery] = useState(isNewPage);
-  const [showVersionHistory, setShowVersionHistory] = useState(false);
+  const [selectedSectionId, setSelectedSectionId] = useState<number | null>(null);
+  const [pageUnsaved, setPageUnsaved] = useState<boolean>(false);
+  const [showVersionHistory, setShowVersionHistory] = useState<boolean>(false);
   
-  // Helper function for path navigation that uses window.location
-  const navigate = (path: string) => {
-    window.location.href = path;
+  // Helper for getting page type label
+  const getPageTypeLabel = (type: string) => {
+    const types: Record<string, string> = {
+      'core': 'Core Page',
+      'custom': 'Custom Page',
+      'automation': 'Automation Page'
+    };
+    return types[type] || type;
   };
   
   // Create a new blank page with default values
@@ -161,7 +163,6 @@ const PageBuilderContent: React.FC = () => {
       return await res.json();
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['/api/page-builder/pages'] });
       navigate("/page-builder");
       toast({
         title: "Page deleted",
@@ -176,35 +177,35 @@ const PageBuilderContent: React.FC = () => {
       });
     }
   });
-
-  // Handle page save
+  
+  // Handle save page
   const handleSavePage = () => {
     if (!page) return;
-    
     saveMutation.mutate(page);
   };
   
-  // Handle page delete
+  // Handle delete page
   const handleDeletePage = () => {
+    if (isNewPage) return;
+    
     if (window.confirm("Are you sure you want to delete this page? This action cannot be undone.")) {
       deleteMutation.mutate();
     }
   };
   
-  // Handle page publish toggle
+  // Handle publish/unpublish toggle
   const handlePublishToggle = () => {
     if (!page) return;
     
-    const updatedPage = {
+    setPage({
       ...page,
       isPublished: !page.isPublished
-    };
+    });
     
-    setPage(updatedPage);
-    saveMutation.mutate(updatedPage);
+    setPageUnsaved(true);
   };
   
-  // Handle page title change
+  // Handle title change
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!page) return;
     
@@ -216,25 +217,26 @@ const PageBuilderContent: React.FC = () => {
     setPageUnsaved(true);
   };
   
-  // Handle page path change
+  // Handle path change
   const handlePathChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!page) return;
     
-    // Ensure path starts with a slash
     let path = e.target.value;
+    
+    // Ensure path starts with /
     if (!path.startsWith('/')) {
       path = '/' + path;
     }
     
     setPage({
       ...page,
-      path
+      path: path
     });
     
     setPageUnsaved(true);
   };
   
-  // Handle page description change
+  // Handle description change
   const handleDescriptionChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     if (!page) return;
     
@@ -264,220 +266,24 @@ const PageBuilderContent: React.FC = () => {
     
     setPage({
       ...page,
-      seoSettings
+      seoSettings: {
+        ...page.seoSettings,
+        ...seoSettings
+      }
     });
     
     setPageUnsaved(true);
   };
   
-  // Handle template selection
+  // Handle apply template
   const handleApplyTemplate = (template: any) => {
-    if (!page) return;
-    
-    // Apply the template data to the current page
     setPage({
       ...page,
-      title: template.title,
-      path: template.path,
-      description: template.description,
-      pageType: template.pageType,
-      seoSettings: template.seoSettings,
-      sections: template.sections.map((section: any) => ({
-        ...section,
-        id: Date.now() + Math.floor(Math.random() * 1000) + section.order, // Generate unique IDs
-        components: section.components.map((component: any) => ({
-          ...component,
-          id: Date.now() + Math.floor(Math.random() * 1000) + component.order // Generate unique IDs
-        }))
-      }))
+      sections: template.sections || []
     });
     
-    // Switch to the content tab
     setActiveTab("content");
-    setShowTemplateGallery(false);
     setPageUnsaved(true);
-    
-    toast({
-      title: "Template applied",
-      description: "The template has been applied to your page. You can now customize it.",
-      variant: "default"
-    });
-  };
-  
-  // Get page type label
-  const getPageTypeLabel = (type: string) => {
-    switch (type) {
-      case "core": return "Core Page";
-      case "custom": return "Custom Page";
-      case "automation": return "Automation Page";
-      default: return type;
-    }
-  };
-  
-  // Get default section name
-  const getDefaultSectionName = (type: string) => {
-    switch (type) {
-      case "hero": return "Hero Section";
-      case "feature-grid": return "Features Grid";
-      case "cta-section": return "Call to Action";
-      case "content-section": return "Content Section";
-      case "testimonials": return "Testimonials";
-      case "team": return "Team Members";
-      case "faq": return "FAQ Section";
-      case "pricing": return "Pricing Section";
-      case "contact": return "Contact Information";
-      case "gallery": return "Image Gallery";
-      default: return type;
-    }
-  };
-  
-  // Get default component name
-  const getDefaultComponentName = (type: string) => {
-    switch (type) {
-      case "heading": return "Heading";
-      case "paragraph": return "Paragraph";
-      case "image": return "Image";
-      case "button": return "Button";
-      case "divider": return "Divider";
-      case "spacer": return "Spacer";
-      case "card": return "Card";
-      case "cta": return "Call to Action";
-      case "form": return "Form";
-      case "video": return "Video";
-      case "carousel": return "Carousel";
-      case "icon": return "Icon";
-      case "quote": return "Quote";
-      default: return type;
-    }
-  };
-  
-  // Get default component content
-  const getDefaultComponentContent = (type: string) => {
-    switch (type) {
-      case "heading":
-        return {
-          text: "Add a Heading",
-          level: "h2"
-        };
-      case "paragraph":
-        return {
-          text: "Add your content here. This is a paragraph component that can be edited to add your custom text."
-        };
-      case "image":
-        return {
-          src: "",
-          alt: "Image description",
-          width: 800,
-          height: 600
-        };
-      case "button":
-        return {
-          text: "Click Me",
-          url: "#",
-          variant: "default"
-        };
-      case "divider":
-        return {
-          style: "solid"
-        };
-      case "spacer":
-        return {
-          height: 40
-        };
-      case "card":
-        return {
-          title: "Card Title",
-          content: "Card content goes here",
-          image: ""
-        };
-      case "cta":
-        return {
-          heading: "Call to Action",
-          text: "Description text",
-          buttonText: "Learn More",
-          buttonUrl: "#"
-        };
-      case "form":
-        return {
-          title: "Contact Form",
-          description: "Fill out the form below and we'll get back to you.",
-          fields: [
-            { type: "text", label: "Name", required: true, placeholder: "Your name" },
-            { type: "email", label: "Email", required: true, placeholder: "your.email@example.com" },
-            { type: "tel", label: "Phone", required: false, placeholder: "(123) 456-7890" },
-            { type: "select", label: "Subject", required: true, options: ["General Inquiry", "Support", "Feedback"] },
-            { type: "textarea", label: "Message", required: true, placeholder: "How can we help you?" }
-          ],
-          submitText: "Send Message",
-          successMessage: "Thank you! Your message has been sent successfully.",
-          errorMessage: "Something went wrong. Please try again later.",
-          emailTarget: "" // Will be set by admin during configuration
-        };
-      case "map":
-        return {
-          address: "123 Main Street, Anytown, CA 12345",
-          title: "Our Location",
-          description: "We're located in the heart of downtown.",
-          height: 400,
-          showControls: true,
-          zoom: 14,
-          markers: [
-            {
-              lat: 37.7749, 
-              lng: -122.4194,
-              title: "Our Office"
-            }
-          ]
-        };
-      case "accordion":
-        return {
-          title: "Frequently Asked Questions",
-          items: [
-            { 
-              title: "How do I get started?", 
-              content: "Getting started is easy! Simply register for an account and follow the onboarding process." 
-            },
-            { 
-              title: "What payment methods do you accept?", 
-              content: "We accept all major credit cards, PayPal, and bank transfers." 
-            },
-            { 
-              title: "Do you offer refunds?", 
-              content: "Yes, we offer a 30-day money-back guarantee on all our services." 
-            }
-          ],
-          allowMultiple: false
-        };
-      case "video":
-        return {
-          url: "",
-          poster: "",
-          autoplay: false,
-          controls: true
-        };
-      case "carousel":
-        return {
-          items: [
-            { image: "", caption: "Slide 1" },
-            { image: "", caption: "Slide 2" },
-            { image: "", caption: "Slide 3" }
-          ]
-        };
-      case "icon":
-        return {
-          name: "star",
-          size: 24,
-          color: "currentColor"
-        };
-      case "quote":
-        return {
-          text: "This is a sample quote.",
-          author: "Author Name",
-          position: "Position"
-        };
-      default:
-        return {};
-    }
   };
   
   // Handle add section
@@ -485,34 +291,21 @@ const PageBuilderContent: React.FC = () => {
     if (!page) return;
     
     const newSection = {
-      id: Date.now(), // Temporary ID that will be replaced on the server
-      name: getDefaultSectionName(sectionType),
+      id: Date.now(), // Temporary ID
+      name: sectionType === 'hero' ? 'Hero Section' : 'New Section',
       type: sectionType,
-      pageId: page.id,
       order: page.sections.length,
-      layout: 'single',
-      settings: {
-        backgroundColor: '#ffffff',
-        padding: {
-          top: 48,
-          right: 24,
-          bottom: 48,
-          left: 24
-        },
-        fullWidth: false
-      },
       components: [],
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
     };
     
-    // Add default components based on section type
+    // Add some default components for specific section types
     if (sectionType === 'hero') {
-      newSection.layout = 'single';
       newSection.components = [
         {
           id: Date.now(), // Temporary ID
-          name: "Heading",
+          name: "Hero Heading",
           type: "heading",
           sectionId: newSection.id,
           order: 0,
@@ -525,12 +318,12 @@ const PageBuilderContent: React.FC = () => {
         },
         {
           id: Date.now() + 1, // Temporary ID
-          name: "Subheading",
+          name: "Hero Paragraph",
           type: "paragraph",
           sectionId: newSection.id,
           order: 1,
           content: {
-            text: "We're excited to have you here. Learn more about our services and offerings."
+            text: "This is a hero section with a strong headline and supporting text to grab your visitors' attention."
           },
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString()
@@ -550,18 +343,17 @@ const PageBuilderContent: React.FC = () => {
           updatedAt: new Date().toISOString()
         }
       ];
-    } else if (sectionType === 'feature-grid') {
-      newSection.layout = 'three-column';
+    } else if (sectionType === 'features') {
       newSection.components = [
         {
           id: Date.now(), // Temporary ID
           name: "Feature 1",
-          type: "card",
+          type: "feature",
           sectionId: newSection.id,
           order: 0,
           content: {
-            title: "Feature One",
-            content: "Description of the first feature and its benefits."
+            title: "Feature 1",
+            content: "Description of feature 1"
           },
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString()
@@ -569,12 +361,12 @@ const PageBuilderContent: React.FC = () => {
         {
           id: Date.now() + 1, // Temporary ID
           name: "Feature 2",
-          type: "card",
+          type: "feature",
           sectionId: newSection.id,
           order: 1,
           content: {
-            title: "Feature Two",
-            content: "Description of the second feature and its benefits."
+            title: "Feature 2",
+            content: "Description of feature 2"
           },
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString()
@@ -582,19 +374,18 @@ const PageBuilderContent: React.FC = () => {
         {
           id: Date.now() + 2, // Temporary ID
           name: "Feature 3",
-          type: "card",
+          type: "feature",
           sectionId: newSection.id,
           order: 2,
           content: {
-            title: "Feature Three",
-            content: "Description of the third feature and its benefits."
+            title: "Feature 3",
+            content: "Description of feature 3"
           },
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString()
         }
       ];
-    } else if (sectionType === 'cta-section') {
-      newSection.layout = 'single';
+    } else if (sectionType === 'cta') {
       newSection.components = [
         {
           id: Date.now(), // Temporary ID
@@ -656,10 +447,6 @@ const PageBuilderContent: React.FC = () => {
       sections: updatedSections
     });
     
-    if (selectedSectionId === sectionId) {
-      setSelectedSectionId(undefined);
-    }
-    
     setPageUnsaved(true);
   };
   
@@ -679,28 +466,54 @@ const PageBuilderContent: React.FC = () => {
   const handleAddComponent = (sectionId: number, componentType: string) => {
     if (!page) return;
     
-    const section = page.sections.find((s: any) => s.id === sectionId);
-    if (!section) return;
-    
     const newComponent = {
-      id: Date.now(), // Temporary ID that will be replaced on the server
-      name: getDefaultComponentName(componentType),
+      id: Date.now(), // Temporary ID
+      name: `New ${componentType.charAt(0).toUpperCase() + componentType.slice(1)}`,
       type: componentType,
-      sectionId,
-      order: section.components.length,
-      content: getDefaultComponentContent(componentType),
+      sectionId: sectionId,
+      order: 0, // Will be updated when inserted
+      content: {},
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
     };
     
-    const updatedSections = page.sections.map((s: any) => {
-      if (s.id === sectionId) {
+    // Set default content based on component type
+    switch (componentType) {
+      case 'heading':
+        newComponent.content = { text: 'New Heading', level: 'h2' };
+        break;
+      case 'paragraph':
+        newComponent.content = { text: 'New paragraph text goes here.' };
+        break;
+      case 'image':
+        newComponent.content = { src: '', alt: 'Image description', width: 800, height: 600 };
+        break;
+      case 'button':
+        newComponent.content = { text: 'Click Me', url: '#', variant: 'default' };
+        break;
+      case 'form':
+        newComponent.content = { formId: 'contact', submitText: 'Submit' };
+        break;
+      case 'video':
+        newComponent.content = { videoUrl: '', posterUrl: '', autoplay: false };
+        break;
+      default:
+        break;
+    }
+    
+    const updatedSections = page.sections.map((section: any) => {
+      if (section.id === sectionId) {
+        const existingComponents = section.components || [];
+        
+        // Update the order of the new component to be at the end
+        newComponent.order = existingComponents.length;
+        
         return {
-          ...s,
-          components: [...s.components, newComponent]
+          ...section,
+          components: [...existingComponents, newComponent]
         };
       }
-      return s;
+      return section;
     });
     
     setPage({
@@ -798,42 +611,18 @@ const PageBuilderContent: React.FC = () => {
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
           <div>
             <Skeleton className="h-8 w-64 mb-2" />
-            <Skeleton className="h-4 w-96" />
+            <Skeleton className="h-4 w-48" />
           </div>
           <div className="flex items-center gap-2">
             <Skeleton className="h-10 w-28" />
             <Skeleton className="h-10 w-28" />
           </div>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          <div className="md:col-span-3">
-            <Skeleton className="h-12 w-full mb-6" />
-            <Skeleton className="h-64 w-full" />
-          </div>
-          <div>
-            <Skeleton className="h-64 w-full" />
-          </div>
-        </div>
-      </div>
-    );
-  }
-  
-  // Error state
-  if (error) {
-    return (
-      <div className="container px-8 py-6">
-        <div className="flex flex-col items-center justify-center h-96">
-          <h2 className="text-2xl font-bold text-destructive mb-4">Error</h2>
-          <p className="text-muted-foreground mb-6">{(error as Error).message}</p>
-          <div className="flex gap-4">
-            <Button onClick={() => navigate("/page-builder")}>
-              <ChevronLeft className="h-4 w-4 mr-2" />
-              Back to Pages
-            </Button>
-            <Button variant="outline" onClick={() => window.location.reload()}>
-              Reload Page
-            </Button>
-          </div>
+        <Skeleton className="h-64 w-full mb-8" />
+        <div className="space-y-2 mb-4">
+          <Skeleton className="h-20 w-full" />
+          <Skeleton className="h-20 w-full" />
+          <Skeleton className="h-20 w-full" />
         </div>
       </div>
     );
@@ -864,6 +653,15 @@ const PageBuilderContent: React.FC = () => {
           </p>
         </div>
         <div className="flex items-center gap-2">
+          {!isNewPage && (
+            <Button 
+              variant="outline" 
+              onClick={() => setShowVersionHistory(true)}
+            >
+              <History className="h-4 w-4 mr-2" />
+              Version History
+            </Button>
+          )}
           <Button 
             variant="outline" 
             onClick={handlePublishToggle}
@@ -1149,13 +947,31 @@ const PageBuilderContent: React.FC = () => {
           </Button>
         </div>
       </div>
+
+      {/* Version History Dialog */}
+      {!isNewPage && (
+        <PageVersionHistory
+          entityId={parseInt(id)}
+          entityType="page"
+          isOpen={showVersionHistory}
+          onClose={() => setShowVersionHistory(false)}
+          onVersionRestore={(versionId) => {
+            // Refresh the page after version restore
+            queryClient.invalidateQueries({ queryKey: ['/api/page-builder/pages', id] });
+            toast({
+              title: "Version restored",
+              description: "The page has been restored to a previous version."
+            });
+            setShowVersionHistory(false);
+          }}
+        />
+      )}
     </div>
   );
 };
 
 // Wrapper component that includes AdminLayout
 const PageBuilderPage: React.FC = () => {
-  console.log("PageBuilderPage: Main wrapper component rendering");
   return (
     <AdminLayout>
       <PageBuilderContent />
