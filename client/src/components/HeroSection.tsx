@@ -1,10 +1,21 @@
 import { Button } from "@/components/ui/button";
 import { heroTeamPhoto } from "../assets/imagePlaceholders";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import teamPhotoImage from "../assets/images/team_photo.jpg";
+import { HeroSkeleton } from "@/components/ui/skeletons";
 
 export default function HeroSection() {
   const sectionRef = useRef<HTMLElement>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    // Simulate content loading (remove in production or replace with actual data loading)
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1500);
+    
+    return () => clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -16,7 +27,7 @@ export default function HeroSection() {
       { threshold: 0.1 }
     );
 
-    if (sectionRef.current) {
+    if (sectionRef.current && !isLoading) {
       observer.observe(sectionRef.current);
     }
 
@@ -25,7 +36,18 @@ export default function HeroSection() {
         observer.unobserve(sectionRef.current);
       }
     };
-  }, []);
+  }, [isLoading]);
+
+  if (isLoading) {
+    return (
+      <section
+        style={{ backgroundColor: 'var(--navy)' }}
+        className="text-white py-16 md:py-24"
+      >
+        <HeroSkeleton />
+      </section>
+    );
+  }
 
   return (
     <section 

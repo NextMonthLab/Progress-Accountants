@@ -1,11 +1,22 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { toolsPodcastStudio, toolsDashboardMockup, toolsStrategySession } from "../assets/imagePlaceholders";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "wouter";
+import { FeaturesSkeleton } from "@/components/ui/skeletons";
 
 export default function ServicesSection() {
   const sectionRef = useRef<HTMLElement>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    // Simulate content loading
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1800); // Slightly longer than hero to create a cascading effect
+    
+    return () => clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -17,7 +28,7 @@ export default function ServicesSection() {
       { threshold: 0.1 }
     );
 
-    if (sectionRef.current) {
+    if (sectionRef.current && !isLoading) {
       observer.observe(sectionRef.current);
     }
 
@@ -26,7 +37,7 @@ export default function ServicesSection() {
         observer.unobserve(sectionRef.current);
       }
     };
-  }, []);
+  }, [isLoading]);
 
   const services = [
     {
@@ -45,6 +56,21 @@ export default function ServicesSection() {
       description: "Get expert strategy sessions, forecasting help, and actionable advice — whenever you need it."
     }
   ];
+
+  // Show skeleton during loading
+  if (isLoading) {
+    return (
+      <section
+        id="services"
+        className="py-16 md:py-24"
+        style={{ backgroundColor: 'var(--light-grey)' }}
+      >
+        <div className="container mx-auto px-4">
+          <FeaturesSkeleton count={3} />
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section 
