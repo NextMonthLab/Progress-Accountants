@@ -137,7 +137,7 @@ const PageBuilderListPage: React.FC = () => {
       });
       
       // Navigate to the new page
-      window.location.href = `/admin/page-builder/${data.data.id}`;
+      window.location.href = `/page-builder/${data.data.id}`;
     },
     onError: (error) => {
       toast({
@@ -301,7 +301,7 @@ const PageBuilderListPage: React.FC = () => {
           <p className="text-muted-foreground mt-1">Create and manage your pages with the Advanced Page Builder</p>
         </div>
         <Button 
-          onClick={() => window.location.href = "/admin/page-builder/new"}
+          onClick={() => window.location.href = "/page-builder/new"}
         >
           <Plus className="h-4 w-4 mr-2" />
           Create New Page
@@ -396,7 +396,7 @@ const PageBuilderListPage: React.FC = () => {
                       You haven't created any pages yet. Get started by creating your first page.
                     </p>
                     <Button 
-                      onClick={() => window.location.href = "/admin/page-builder/new"}
+                      onClick={() => window.location.href = "/page-builder/new"}
                     >
                       <Plus className="h-4 w-4 mr-2" />
                       Create First Page
@@ -478,7 +478,7 @@ const PageBuilderListPage: React.FC = () => {
                             <Button
                               variant="ghost"
                               size="icon"
-                              onClick={() => window.location.href = `/admin/page-builder/${page.id}`}
+                              onClick={() => window.location.href = `/page-builder/${page.id}`}
                               title="Edit Page"
                             >
                               <Edit className="h-4 w-4" />
@@ -583,7 +583,7 @@ const PageBuilderListPage: React.FC = () => {
                             <Button
                               variant="ghost"
                               size="icon"
-                              onClick={() => window.location.href = `/admin/page-builder/${page.id}`}
+                              onClick={() => window.location.href = `/page-builder/${page.id}`}
                               title="Edit Page"
                             >
                               <Edit className="h-4 w-4" />
@@ -657,7 +657,7 @@ const PageBuilderListPage: React.FC = () => {
                             <Button
                               variant="ghost"
                               size="icon"
-                              onClick={() => window.location.href = `/admin/page-builder/${page.id}`}
+                              onClick={() => window.location.href = `/page-builder/${page.id}`}
                               title="Edit Page"
                             >
                               <Edit className="h-4 w-4" />
