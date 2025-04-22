@@ -41,6 +41,7 @@ import { registerResourcesRoutes } from "./controllers/resourcesController";
 import { registerCompanionRoutes } from "./controllers/companionController";
 import { registerCompanionConfigRoutes } from "./controllers/registerCompanionConfigRoutes";
 import { registerToolMarketplaceRoutes } from "./controllers/toolMarketplaceController";
+import { registerPageBuilderRoutes } from "./controllers/registerPageBuilderRoutes";
 import { 
   getAvailableTools,
   getToolCategories,
@@ -322,6 +323,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
   
   // Register tool marketplace routes
   registerToolMarketplaceRoutes(app);
+  
+  // Register page builder routes
+  registerPageBuilderRoutes(app);
   
   // ============= NEXTMONTH MARKETPLACE API ENDPOINTS =============
   // Get available tools from NextMonth marketplace

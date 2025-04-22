@@ -598,9 +598,8 @@ export const pageBuilderComponentsRelations = relations(pageBuilderComponents, (
   children: many(pageBuilderComponents, { relationName: "parent_child" }),
 }));
 
-// Add foreign key constraint to components table for parent ID
-// This is done after the component table is fully defined
-pgTable("page_builder_components").columns.parentId.references(() => pageBuilderComponents.id);
+// Foreign key constraint will be handled by the relations definition
+// The explicit reference after definition was causing an error
 
 
 

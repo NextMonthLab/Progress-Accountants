@@ -1,1615 +1,1478 @@
-import { Request, Response } from 'express';
-import { db } from '../db';
+import { Request, Response } from "express";
+import { db } from "../db";
 import { 
   pageBuilderPages, 
   pageBuilderSections, 
-  pageBuilderComponents, 
+  pageBuilderComponents,
   pageBuilderTemplates,
+  pageBuilderComponentLibrary,
   pageBuilderRecommendations,
   pageBuilderVersionHistory,
-  pageBuilderComponentLibrary,
   InsertPageBuilderPage,
   InsertPageBuilderSection,
   InsertPageBuilderComponent,
-  PageBuilderComponent,
-  PageBuilderSection
-} from '../../shared/schema';
-import { PageMetadata, PageSeoMetadata, ComplexityLevel } from '../../shared/page_metadata';
-import { eq, and, desc, asc, inArray, like, sql } from 'drizzle-orm';
-import { v4 as uuidv4 } from 'uuid';
-import { extractTenantId, getJwtPayload } from '../middleware/jwt';
+  InsertPageBuilderTemplate,
+  InsertPageBuilderRecommendation,
+  InsertPageBuilderVersionHistory
+} from "@shared/schema";
+import { eq, and, desc, asc, sql } from "drizzle-orm";
+import { extractTenantId, getJwtPayload } from "../middleware/jwt";
+import { PageMetadata, PageSeoMetadata } from "@shared/page_metadata";
+import OpenAI from "openai";
 
-// Page Builder API - Main functions
+// Initialize OpenAI
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
+});
 
-/**
- * Get all pages for a tenant with optional filtering
- */
-export const getPages = async (req: Request, res: Response) => {
+// Utility function to handle API errors
+function handleError(res: Response, error: any, message: string) {
+  console.error(`${message}:`, error);
+  res.status(500).json({ 
+    success: false, 
+    message,
+    error: error.message 
+  });
+}
+
+// Get all pages for a tenant
+export async function getPages(req: Request, res: Response) {
   try {
     const tenantId = extractTenantId(req);
-    if (!tenantId) {
-      return res.status(400).json({ error: 'Tenant ID is required' });
-    }
-
-    const { status, pageType, search } = req.query;
     
-    let query = db.select().from(pageBuilderPages)
+    if (!tenantId) {
+      return res.status(400).json({ success: false, message: "Tenant ID is required" });
+    }
+    
+    const pages = await db.select().from(pageBuilderPages)
       .where(eq(pageBuilderPages.tenantId, tenantId));
     
-    if (status) {
-      query = query.where(eq(pageBuilderPages.status, status as string));
-    }
-    
-    if (pageType) {
-      query = query.where(eq(pageBuilderPages.pageType, pageType as string));
-    }
-    
-    if (search) {
-      query = query.where(
-        sql`${pageBuilderPages.name} ILIKE ${'%' + search + '%'} OR ${pageBuilderPages.description} ILIKE ${'%' + search + '%'}`
-      );
-    }
-    
-    const pages = await query.orderBy(desc(pageBuilderPages.updatedAt));
-    res.status(200).json(pages);
+    return res.status(200).json({ success: true, data: pages });
   } catch (error) {
-    console.error('Error fetching pages:', error);
-    res.status(500).json({ error: 'Failed to fetch pages' });
+    handleError(res, error, "Failed to retrieve pages");
   }
-};
+}
 
-/**
- * Get a specific page with its sections and components
- */
-export const getPage = async (req: Request, res: Response) => {
+// Get a single page by ID with its sections and components
+export async function getPage(req: Request, res: Response) {
   try {
-    const tenantId = extractTenantId(req);
     const { id } = req.params;
+    const tenantId = extractTenantId(req);
     
-    // Get page
-    const [page] = await db.select().from(pageBuilderPages)
+    if (!tenantId) {
+      return res.status(400).json({ success: false, message: "Tenant ID is required" });
+    }
+    
+    const page = await db.select().from(pageBuilderPages)
       .where(and(
         eq(pageBuilderPages.id, parseInt(id)),
         eq(pageBuilderPages.tenantId, tenantId)
       ));
     
-    if (!page) {
-      return res.status(404).json({ error: 'Page not found' });
+    if (!page.length) {
+      return res.status(404).json({ success: false, message: "Page not found" });
     }
     
-    // Get sections for the page
+    // Get sections for this page
     const sections = await db.select().from(pageBuilderSections)
       .where(eq(pageBuilderSections.pageId, parseInt(id)))
       .orderBy(asc(pageBuilderSections.order));
     
     // Get components for each section
     const sectionIds = sections.map(section => section.id);
-    const components = sectionIds.length > 0 
-      ? await db.select().from(pageBuilderComponents)
-          .where(inArray(pageBuilderComponents.sectionId, sectionIds))
-          .orderBy(asc(pageBuilderComponents.order))
-      : [];
     
-    // Group components by section
-    const sectionsWithComponents = sections.map(section => ({
-      ...section,
-      components: components.filter(component => component.sectionId === section.id)
-    }));
+    const components = await db.select().from(pageBuilderComponents)
+      .where(sql`${pageBuilderComponents.sectionId} IN (${sectionIds.length ? sectionIds : [0]})`)
+      .orderBy(asc(pageBuilderComponents.order));
     
-    // Get recommendations for the page
-    const recommendations = await db.select().from(pageBuilderRecommendations)
-      .where(and(
-        eq(pageBuilderRecommendations.pageId, parseInt(id)),
-        eq(pageBuilderRecommendations.dismissed, false)
-      ));
+    // Organize components by section
+    const sectionsWithComponents = sections.map(section => {
+      const sectionComponents = components.filter(comp => comp.sectionId === section.id);
+      return {
+        ...section,
+        components: sectionComponents
+      };
+    });
     
-    const result = {
-      ...page,
-      sections: sectionsWithComponents,
-      recommendations
-    };
-    
-    res.status(200).json(result);
+    return res.status(200).json({ 
+      success: true, 
+      data: {
+        ...page[0],
+        sections: sectionsWithComponents
+      }
+    });
   } catch (error) {
-    console.error('Error fetching page details:', error);
-    res.status(500).json({ error: 'Failed to fetch page details' });
+    handleError(res, error, "Failed to retrieve page");
   }
-};
+}
 
-/**
- * Create a new page
- */
-export const createPage = async (req: Request, res: Response) => {
+// Create a new page
+export async function createPage(req: Request, res: Response) {
   try {
     const tenantId = extractTenantId(req);
-    const userId = getJwtPayload(req)?.userId;
     
     if (!tenantId) {
-      return res.status(400).json({ error: 'Tenant ID is required' });
+      return res.status(400).json({ success: false, message: "Tenant ID is required" });
     }
     
-    const pageData: InsertPageBuilderPage = {
-      ...req.body,
+    const pageData = req.body as Omit<InsertPageBuilderPage, "id" | "createdAt" | "updatedAt">;
+    
+    // Validate basic requirements
+    if (!pageData.title || !pageData.path) {
+      return res.status(400).json({ 
+        success: false, 
+        message: "Title and path are required" 
+      });
+    }
+    
+    // Check if path already exists for this tenant
+    const existingPage = await db.select({ id: pageBuilderPages.id }).from(pageBuilderPages)
+      .where(and(
+        eq(pageBuilderPages.path, pageData.path),
+        eq(pageBuilderPages.tenantId, tenantId)
+      ));
+    
+    if (existingPage.length) {
+      return res.status(400).json({ 
+        success: false, 
+        message: "A page with this path already exists" 
+      });
+    }
+    
+    // Create the new page
+    const [newPage] = await db.insert(pageBuilderPages).values({
+      ...pageData,
       tenantId,
-      createdBy: userId,
-      lastEditedBy: userId,
-      // Initialize SEO performance object
-      seo: {
-        ...req.body.seo,
-        performance: {
-          score: calculateInitialSeoScore(req.body.metadata, req.body.seo),
-          suggestions: generateSeoSuggestions(req.body.metadata, req.body.seo),
-          keywordDensity: {},
-          readabilityScore: 0,
-          mobileOptimized: true
-        }
-      }
-    };
+      createdAt: new Date(),
+      updatedAt: new Date()
+    }).returning();
     
-    const [page] = await db.insert(pageBuilderPages).values(pageData).returning();
+    return res.status(201).json({ success: true, data: newPage });
+  } catch (error) {
+    handleError(res, error, "Failed to create page");
+  }
+}
+
+// Update an existing page
+export async function updatePage(req: Request, res: Response) {
+  try {
+    const { id } = req.params;
+    const tenantId = extractTenantId(req);
     
-    // If template was provided, initialize with template sections
-    if (req.body.template) {
-      await initializeFromTemplate(page.id, req.body.template);
-    } else {
-      // Create a default empty section
-      const defaultSection: InsertPageBuilderSection = {
-        pageId: page.id,
-        name: "Main Content",
-        description: "Primary content section",
-        order: 0,
-        settings: {
-          padding: { top: 40, right: 40, bottom: 40, left: 40 },
-          fullWidth: false
-        },
-        seoWeight: 10
-      };
-      
-      await db.insert(pageBuilderSections).values(defaultSection);
+    if (!tenantId) {
+      return res.status(400).json({ success: false, message: "Tenant ID is required" });
     }
     
-    // Create initial version history entry
-    const versionHistoryEntry = {
-      pageId: page.id,
-      version: 1,
-      snapshot: page,
-      changedBy: userId,
-      changeDescription: "Initial page creation"
-    };
+    const pageData = req.body;
     
-    await db.insert(pageBuilderVersionHistory).values(versionHistoryEntry);
-    
-    res.status(201).json(page);
-  } catch (error) {
-    console.error('Error creating page:', error);
-    res.status(500).json({ error: 'Failed to create page' });
-  }
-};
-
-/**
- * Update an existing page
- */
-export const updatePage = async (req: Request, res: Response) => {
-  try {
-    const tenantId = extractTenantId(req);
-    const userId = getJwtPayload(req)?.userId;
-    const { id } = req.params;
-    
-    // Get current page
-    const [existingPage] = await db.select().from(pageBuilderPages)
+    // Check if page exists and belongs to this tenant
+    const existingPage = await db.select().from(pageBuilderPages)
       .where(and(
         eq(pageBuilderPages.id, parseInt(id)),
         eq(pageBuilderPages.tenantId, tenantId)
       ));
     
-    if (!existingPage) {
-      return res.status(404).json({ error: 'Page not found' });
+    if (!existingPage.length) {
+      return res.status(404).json({ success: false, message: "Page not found" });
     }
     
-    // Update SEO performance metrics
-    const seo = {
-      ...req.body.seo,
-      performance: {
-        score: calculateSeoScore(req.body.metadata, req.body.seo, req.body.sections || []),
-        suggestions: generateSeoSuggestions(req.body.metadata, req.body.seo),
-        keywordDensity: calculateKeywordDensity(req.body.sections || []),
-        readabilityScore: calculateReadabilityScore(req.body.sections || []),
-        mobileOptimized: checkMobileOptimization(req.body.sections || [])
+    // If path is being changed, check for duplicates
+    if (pageData.path && pageData.path !== existingPage[0].path) {
+      const duplicatePath = await db.select({ id: pageBuilderPages.id }).from(pageBuilderPages)
+        .where(and(
+          eq(pageBuilderPages.path, pageData.path),
+          eq(pageBuilderPages.tenantId, tenantId),
+          sql`${pageBuilderPages.id} != ${parseInt(id)}`
+        ));
+      
+      if (duplicatePath.length) {
+        return res.status(400).json({ 
+          success: false, 
+          message: "A page with this path already exists" 
+        });
       }
-    };
+    }
     
-    // Update page
-    const updateData = {
-      ...req.body,
-      seo,
-      lastEditedBy: userId,
-      updatedAt: new Date()
-    };
-    
+    // Update the page
     const [updatedPage] = await db.update(pageBuilderPages)
-      .set(updateData)
+      .set({
+        ...pageData,
+        updatedAt: new Date()
+      })
+      .where(eq(pageBuilderPages.id, parseInt(id)))
+      .returning();
+    
+    return res.status(200).json({ success: true, data: updatedPage });
+  } catch (error) {
+    handleError(res, error, "Failed to update page");
+  }
+}
+
+// Delete a page and all its sections and components
+export async function deletePage(req: Request, res: Response) {
+  try {
+    const { id } = req.params;
+    const tenantId = extractTenantId(req);
+    
+    if (!tenantId) {
+      return res.status(400).json({ success: false, message: "Tenant ID is required" });
+    }
+    
+    // Check if page exists and belongs to this tenant
+    const existingPage = await db.select().from(pageBuilderPages)
       .where(and(
         eq(pageBuilderPages.id, parseInt(id)),
         eq(pageBuilderPages.tenantId, tenantId)
-      ))
-      .returning();
+      ));
     
-    // Create version history entry
-    const versionHistoryEntry = {
-      pageId: parseInt(id),
-      version: existingPage.version + 1,
-      snapshot: updatedPage,
-      changedBy: userId,
-      changeDescription: req.body.changeDescription || "Page updated"
-    };
+    if (!existingPage.length) {
+      return res.status(404).json({ success: false, message: "Page not found" });
+    }
     
-    await db.insert(pageBuilderVersionHistory).values(versionHistoryEntry);
-    
-    // Update page version number
-    await db.update(pageBuilderPages)
-      .set({ version: existingPage.version + 1 })
-      .where(eq(pageBuilderPages.id, parseInt(id)));
-    
-    res.status(200).json(updatedPage);
-  } catch (error) {
-    console.error('Error updating page:', error);
-    res.status(500).json({ error: 'Failed to update page' });
-  }
-};
-
-/**
- * Delete a page
- */
-export const deletePage = async (req: Request, res: Response) => {
-  try {
-    const tenantId = extractTenantId(req);
-    const { id } = req.params;
-    
-    // Get sections for the page
+    // Get all sections for this page
     const sections = await db.select().from(pageBuilderSections)
       .where(eq(pageBuilderSections.pageId, parseInt(id)));
     
     const sectionIds = sections.map(section => section.id);
     
-    // Delete components first (maintain referential integrity)
-    if (sectionIds.length > 0) {
+    // Delete components from each section
+    if (sectionIds.length) {
       await db.delete(pageBuilderComponents)
-        .where(inArray(pageBuilderComponents.sectionId, sectionIds));
+        .where(sql`${pageBuilderComponents.sectionId} IN (${sectionIds})`);
     }
     
     // Delete sections
     await db.delete(pageBuilderSections)
       .where(eq(pageBuilderSections.pageId, parseInt(id)));
     
-    // Delete recommendations
-    await db.delete(pageBuilderRecommendations)
-      .where(eq(pageBuilderRecommendations.pageId, parseInt(id)));
-    
-    // Delete version history
-    await db.delete(pageBuilderVersionHistory)
-      .where(eq(pageBuilderVersionHistory.pageId, parseInt(id)));
-    
     // Delete page
-    const [deletedPage] = await db.delete(pageBuilderPages)
-      .where(and(
-        eq(pageBuilderPages.id, parseInt(id)),
-        eq(pageBuilderPages.tenantId, tenantId)
-      ))
-      .returning();
+    await db.delete(pageBuilderPages)
+      .where(eq(pageBuilderPages.id, parseInt(id)));
     
-    if (!deletedPage) {
-      return res.status(404).json({ error: 'Page not found' });
-    }
-    
-    res.status(200).json({ message: 'Page deleted successfully' });
+    return res.status(200).json({ 
+      success: true, 
+      message: "Page and all its content deleted successfully" 
+    });
   } catch (error) {
-    console.error('Error deleting page:', error);
-    res.status(500).json({ error: 'Failed to delete page' });
+    handleError(res, error, "Failed to delete page");
   }
-};
+}
 
-/**
- * Publish or unpublish a page
- */
-export const togglePagePublishStatus = async (req: Request, res: Response) => {
+// Toggle page publish status
+export async function togglePagePublishStatus(req: Request, res: Response) {
   try {
-    const tenantId = extractTenantId(req);
     const { id } = req.params;
-    const { published } = req.body;
+    const tenantId = extractTenantId(req);
     
-    const updateData = {
-      published,
-      publishedAt: published ? new Date() : null,
-      updatedAt: new Date()
-    };
+    if (!tenantId) {
+      return res.status(400).json({ success: false, message: "Tenant ID is required" });
+    }
     
-    const [updatedPage] = await db.update(pageBuilderPages)
-      .set(updateData)
+    // Check if page exists and belongs to this tenant
+    const existingPage = await db.select().from(pageBuilderPages)
       .where(and(
         eq(pageBuilderPages.id, parseInt(id)),
         eq(pageBuilderPages.tenantId, tenantId)
-      ))
-      .returning();
+      ));
     
-    if (!updatedPage) {
-      return res.status(404).json({ error: 'Page not found' });
+    if (!existingPage.length) {
+      return res.status(404).json({ success: false, message: "Page not found" });
     }
     
-    res.status(200).json(updatedPage);
-  } catch (error) {
-    console.error('Error toggling page publish status:', error);
-    res.status(500).json({ error: 'Failed to update page publish status' });
-  }
-};
-
-// Section Management
-
-/**
- * Add a section to a page
- */
-export const addSection = async (req: Request, res: Response) => {
-  try {
-    const tenantId = extractTenantId(req);
-    const { pageId } = req.params;
+    const currentStatus = existingPage[0].isPublished;
     
-    // Verify page ownership
-    const [page] = await db.select().from(pageBuilderPages)
+    // Toggle publish status
+    const [updatedPage] = await db.update(pageBuilderPages)
+      .set({
+        isPublished: !currentStatus,
+        publishedAt: !currentStatus ? new Date() : existingPage[0].publishedAt,
+        updatedAt: new Date()
+      })
+      .where(eq(pageBuilderPages.id, parseInt(id)))
+      .returning();
+    
+    return res.status(200).json({ 
+      success: true, 
+      data: updatedPage,
+      message: `Page ${updatedPage.isPublished ? 'published' : 'unpublished'} successfully`
+    });
+  } catch (error) {
+    handleError(res, error, "Failed to update page publish status");
+  }
+}
+
+// Add a section to a page
+export async function addSection(req: Request, res: Response) {
+  try {
+    const { pageId } = req.params;
+    const tenantId = extractTenantId(req);
+    
+    if (!tenantId) {
+      return res.status(400).json({ success: false, message: "Tenant ID is required" });
+    }
+    
+    const sectionData = req.body as Omit<InsertPageBuilderSection, "id" | "createdAt" | "updatedAt">;
+    
+    // Check if page exists and belongs to this tenant
+    const existingPage = await db.select().from(pageBuilderPages)
       .where(and(
         eq(pageBuilderPages.id, parseInt(pageId)),
         eq(pageBuilderPages.tenantId, tenantId)
       ));
     
-    if (!page) {
-      return res.status(404).json({ error: 'Page not found' });
+    if (!existingPage.length) {
+      return res.status(404).json({ success: false, message: "Page not found" });
     }
     
-    // Get highest current order
-    const [highestOrderSection] = await db.select()
+    // Find highest order to place new section at the end
+    const highestOrderSection = await db.select()
       .from(pageBuilderSections)
       .where(eq(pageBuilderSections.pageId, parseInt(pageId)))
       .orderBy(desc(pageBuilderSections.order))
       .limit(1);
     
-    const newOrder = highestOrderSection ? highestOrderSection.order + 1 : 0;
+    const nextOrder = highestOrderSection.length ? (highestOrderSection[0].order || 0) + 1 : 0;
     
-    const sectionData: InsertPageBuilderSection = {
-      ...req.body,
+    // Create the new section
+    const [newSection] = await db.insert(pageBuilderSections).values({
+      ...sectionData,
       pageId: parseInt(pageId),
-      order: newOrder
-    };
+      order: nextOrder,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    }).returning();
     
-    const [section] = await db.insert(pageBuilderSections).values(sectionData).returning();
-    
-    res.status(201).json(section);
+    return res.status(201).json({ success: true, data: newSection });
   } catch (error) {
-    console.error('Error adding section:', error);
-    res.status(500).json({ error: 'Failed to add section' });
+    handleError(res, error, "Failed to add section");
   }
-};
+}
 
-/**
- * Update a section
- */
-export const updateSection = async (req: Request, res: Response) => {
+// Update a section
+export async function updateSection(req: Request, res: Response) {
   try {
-    const tenantId = extractTenantId(req);
     const { sectionId } = req.params;
+    const sectionData = req.body;
     
-    // Get section first to verify page ownership
-    const [section] = await db.select().from(pageBuilderSections)
+    // Check if section exists
+    const existingSection = await db.select().from(pageBuilderSections)
       .where(eq(pageBuilderSections.id, parseInt(sectionId)));
     
-    if (!section) {
-      return res.status(404).json({ error: 'Section not found' });
+    if (!existingSection.length) {
+      return res.status(404).json({ success: false, message: "Section not found" });
     }
     
-    // Verify page ownership
-    const [page] = await db.select().from(pageBuilderPages)
-      .where(and(
-        eq(pageBuilderPages.id, section.pageId),
-        eq(pageBuilderPages.tenantId, tenantId)
-      ));
+    // Check if user has access to this page
+    const page = await db.select().from(pageBuilderPages)
+      .where(eq(pageBuilderPages.id, existingSection[0].pageId));
     
-    if (!page) {
-      return res.status(403).json({ error: 'Not authorized to modify this section' });
+    if (!page.length) {
+      return res.status(404).json({ success: false, message: "Page not found" });
     }
     
-    // Update section
+    const tenantId = extractTenantId(req);
+    
+    if (!tenantId || tenantId !== page[0].tenantId) {
+      return res.status(403).json({ success: false, message: "Access denied" });
+    }
+    
+    // Update the section
     const [updatedSection] = await db.update(pageBuilderSections)
       .set({
-        ...req.body,
+        ...sectionData,
         updatedAt: new Date()
       })
       .where(eq(pageBuilderSections.id, parseInt(sectionId)))
       .returning();
     
-    res.status(200).json(updatedSection);
+    return res.status(200).json({ success: true, data: updatedSection });
   } catch (error) {
-    console.error('Error updating section:', error);
-    res.status(500).json({ error: 'Failed to update section' });
+    handleError(res, error, "Failed to update section");
   }
-};
+}
 
-/**
- * Delete a section
- */
-export const deleteSection = async (req: Request, res: Response) => {
+// Delete a section
+export async function deleteSection(req: Request, res: Response) {
   try {
-    const tenantId = extractTenantId(req);
     const { sectionId } = req.params;
     
-    // Get section first to verify page ownership
-    const [section] = await db.select().from(pageBuilderSections)
+    // Check if section exists
+    const existingSection = await db.select().from(pageBuilderSections)
       .where(eq(pageBuilderSections.id, parseInt(sectionId)));
     
-    if (!section) {
-      return res.status(404).json({ error: 'Section not found' });
+    if (!existingSection.length) {
+      return res.status(404).json({ success: false, message: "Section not found" });
     }
     
-    // Verify page ownership
-    const [page] = await db.select().from(pageBuilderPages)
-      .where(and(
-        eq(pageBuilderPages.id, section.pageId),
-        eq(pageBuilderPages.tenantId, tenantId)
-      ));
+    // Check if user has access to this page
+    const page = await db.select().from(pageBuilderPages)
+      .where(eq(pageBuilderPages.id, existingSection[0].pageId));
     
-    if (!page) {
-      return res.status(403).json({ error: 'Not authorized to delete this section' });
+    if (!page.length) {
+      return res.status(404).json({ success: false, message: "Page not found" });
     }
     
-    // Delete all components in the section
+    const tenantId = extractTenantId(req);
+    
+    if (!tenantId || tenantId !== page[0].tenantId) {
+      return res.status(403).json({ success: false, message: "Access denied" });
+    }
+    
+    // Delete components in this section
     await db.delete(pageBuilderComponents)
       .where(eq(pageBuilderComponents.sectionId, parseInt(sectionId)));
     
-    // Delete section
+    // Delete the section
     await db.delete(pageBuilderSections)
       .where(eq(pageBuilderSections.id, parseInt(sectionId)));
     
-    res.status(200).json({ message: 'Section deleted successfully' });
-  } catch (error) {
-    console.error('Error deleting section:', error);
-    res.status(500).json({ error: 'Failed to delete section' });
-  }
-};
-
-/**
- * Update section order
- */
-export const updateSectionOrder = async (req: Request, res: Response) => {
-  try {
-    const tenantId = extractTenantId(req);
-    const { pageId } = req.params;
-    const { sectionIds } = req.body;
+    // Reorder remaining sections
+    const remainingSections = await db.select().from(pageBuilderSections)
+      .where(eq(pageBuilderSections.pageId, existingSection[0].pageId))
+      .orderBy(asc(pageBuilderSections.order));
     
-    // Verify page ownership
-    const [page] = await db.select().from(pageBuilderPages)
-      .where(and(
-        eq(pageBuilderPages.id, parseInt(pageId)),
-        eq(pageBuilderPages.tenantId, tenantId)
-      ));
-    
-    if (!page) {
-      return res.status(404).json({ error: 'Page not found' });
-    }
-    
-    // Update order for each section
-    for (let i = 0; i < sectionIds.length; i++) {
+    // Update order for remaining sections
+    for (let i = 0; i < remainingSections.length; i++) {
       await db.update(pageBuilderSections)
         .set({ order: i })
-        .where(and(
-          eq(pageBuilderSections.id, parseInt(sectionIds[i])),
-          eq(pageBuilderSections.pageId, parseInt(pageId))
-        ));
+        .where(eq(pageBuilderSections.id, remainingSections[i].id));
     }
     
-    res.status(200).json({ message: 'Section order updated successfully' });
+    return res.status(200).json({ 
+      success: true, 
+      message: "Section and all its components deleted successfully" 
+    });
   } catch (error) {
-    console.error('Error updating section order:', error);
-    res.status(500).json({ error: 'Failed to update section order' });
+    handleError(res, error, "Failed to delete section");
   }
-};
+}
 
-// Component Management
-
-/**
- * Add a component to a section
- */
-export const addComponent = async (req: Request, res: Response) => {
+// Update section order
+export async function updateSectionOrder(req: Request, res: Response) {
   try {
-    const tenantId = extractTenantId(req);
-    const { sectionId } = req.params;
+    const { pageId } = req.params;
+    const { sectionOrder } = req.body;
     
-    // Get section first to verify page ownership
-    const [section] = await db.select().from(pageBuilderSections)
+    if (!Array.isArray(sectionOrder)) {
+      return res.status(400).json({ success: false, message: "Section order must be an array" });
+    }
+    
+    // Check if page exists and user has access
+    const page = await db.select().from(pageBuilderPages)
+      .where(eq(pageBuilderPages.id, parseInt(pageId)));
+    
+    if (!page.length) {
+      return res.status(404).json({ success: false, message: "Page not found" });
+    }
+    
+    const tenantId = extractTenantId(req);
+    
+    if (!tenantId || tenantId !== page[0].tenantId) {
+      return res.status(403).json({ success: false, message: "Access denied" });
+    }
+    
+    // Update each section's order
+    for (let i = 0; i < sectionOrder.length; i++) {
+      await db.update(pageBuilderSections)
+        .set({ order: i })
+        .where(eq(pageBuilderSections.id, sectionOrder[i]));
+    }
+    
+    // Get updated sections
+    const updatedSections = await db.select().from(pageBuilderSections)
+      .where(eq(pageBuilderSections.pageId, parseInt(pageId)))
+      .orderBy(asc(pageBuilderSections.order));
+    
+    return res.status(200).json({ 
+      success: true, 
+      data: updatedSections,
+      message: "Section order updated successfully" 
+    });
+  } catch (error) {
+    handleError(res, error, "Failed to update section order");
+  }
+}
+
+// Add a component to a section
+export async function addComponent(req: Request, res: Response) {
+  try {
+    const { sectionId } = req.params;
+    const componentData = req.body as Omit<InsertPageBuilderComponent, "id" | "createdAt" | "updatedAt">;
+    
+    // Check if section exists
+    const existingSection = await db.select().from(pageBuilderSections)
       .where(eq(pageBuilderSections.id, parseInt(sectionId)));
     
-    if (!section) {
-      return res.status(404).json({ error: 'Section not found' });
+    if (!existingSection.length) {
+      return res.status(404).json({ success: false, message: "Section not found" });
     }
     
-    // Verify page ownership
-    const [page] = await db.select().from(pageBuilderPages)
-      .where(and(
-        eq(pageBuilderPages.id, section.pageId),
-        eq(pageBuilderPages.tenantId, tenantId)
-      ));
+    // Check if user has access to this page
+    const page = await db.select().from(pageBuilderPages)
+      .where(eq(pageBuilderPages.id, existingSection[0].pageId));
     
-    if (!page) {
-      return res.status(403).json({ error: 'Not authorized to modify this section' });
+    if (!page.length) {
+      return res.status(404).json({ success: false, message: "Page not found" });
     }
     
-    // Get highest current order in the section
-    const [highestOrderComponent] = await db.select()
+    const tenantId = extractTenantId(req);
+    
+    if (!tenantId || tenantId !== page[0].tenantId) {
+      return res.status(403).json({ success: false, message: "Access denied" });
+    }
+    
+    // Find highest order to place new component at the end
+    const highestOrderComponent = await db.select()
       .from(pageBuilderComponents)
       .where(eq(pageBuilderComponents.sectionId, parseInt(sectionId)))
       .orderBy(desc(pageBuilderComponents.order))
       .limit(1);
     
-    const newOrder = highestOrderComponent ? highestOrderComponent.order + 1 : 0;
+    const nextOrder = highestOrderComponent.length ? (highestOrderComponent[0].order || 0) + 1 : 0;
     
-    const componentData: InsertPageBuilderComponent = {
-      ...req.body,
+    // Create the new component
+    const [newComponent] = await db.insert(pageBuilderComponents).values({
+      ...componentData,
       sectionId: parseInt(sectionId),
-      order: newOrder
-    };
+      order: nextOrder,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    }).returning();
     
-    const [component] = await db.insert(pageBuilderComponents).values(componentData).returning();
-    
-    // Update SEO metrics for the page
-    updatePageSeoMetrics(section.pageId);
-    
-    res.status(201).json(component);
+    return res.status(201).json({ success: true, data: newComponent });
   } catch (error) {
-    console.error('Error adding component:', error);
-    res.status(500).json({ error: 'Failed to add component' });
+    handleError(res, error, "Failed to add component");
   }
-};
+}
 
-/**
- * Update a component
- */
-export const updateComponent = async (req: Request, res: Response) => {
+// Update a component
+export async function updateComponent(req: Request, res: Response) {
   try {
-    const tenantId = extractTenantId(req);
     const { componentId } = req.params;
+    const componentData = req.body;
     
-    // Get component to verify ownership
-    const [component] = await db.select().from(pageBuilderComponents)
+    // Check if component exists
+    const existingComponent = await db.select().from(pageBuilderComponents)
       .where(eq(pageBuilderComponents.id, parseInt(componentId)));
     
-    if (!component) {
-      return res.status(404).json({ error: 'Component not found' });
+    if (!existingComponent.length) {
+      return res.status(404).json({ success: false, message: "Component not found" });
     }
     
-    // Get section
-    const [section] = await db.select().from(pageBuilderSections)
-      .where(eq(pageBuilderSections.id, component.sectionId));
+    // Check if user has access to this section/page
+    const section = await db.select().from(pageBuilderSections)
+      .where(eq(pageBuilderSections.id, existingComponent[0].sectionId));
     
-    if (!section) {
-      return res.status(404).json({ error: 'Section not found' });
+    if (!section.length) {
+      return res.status(404).json({ success: false, message: "Section not found" });
     }
     
-    // Verify page ownership
-    const [page] = await db.select().from(pageBuilderPages)
-      .where(and(
-        eq(pageBuilderPages.id, section.pageId),
-        eq(pageBuilderPages.tenantId, tenantId)
-      ));
+    const page = await db.select().from(pageBuilderPages)
+      .where(eq(pageBuilderPages.id, section[0].pageId));
     
-    if (!page) {
-      return res.status(403).json({ error: 'Not authorized to modify this component' });
+    if (!page.length) {
+      return res.status(404).json({ success: false, message: "Page not found" });
     }
     
-    // Update component
+    const tenantId = extractTenantId(req);
+    
+    if (!tenantId || tenantId !== page[0].tenantId) {
+      return res.status(403).json({ success: false, message: "Access denied" });
+    }
+    
+    // Update the component
     const [updatedComponent] = await db.update(pageBuilderComponents)
       .set({
-        ...req.body,
+        ...componentData,
         updatedAt: new Date()
       })
       .where(eq(pageBuilderComponents.id, parseInt(componentId)))
       .returning();
     
-    // Update SEO metrics for the page
-    updatePageSeoMetrics(section.pageId);
-    
-    res.status(200).json(updatedComponent);
+    return res.status(200).json({ success: true, data: updatedComponent });
   } catch (error) {
-    console.error('Error updating component:', error);
-    res.status(500).json({ error: 'Failed to update component' });
+    handleError(res, error, "Failed to update component");
   }
-};
+}
 
-/**
- * Delete a component
- */
-export const deleteComponent = async (req: Request, res: Response) => {
+// Delete a component
+export async function deleteComponent(req: Request, res: Response) {
   try {
-    const tenantId = extractTenantId(req);
     const { componentId } = req.params;
     
-    // Get component to verify ownership
-    const [component] = await db.select().from(pageBuilderComponents)
+    // Check if component exists
+    const existingComponent = await db.select().from(pageBuilderComponents)
       .where(eq(pageBuilderComponents.id, parseInt(componentId)));
     
-    if (!component) {
-      return res.status(404).json({ error: 'Component not found' });
+    if (!existingComponent.length) {
+      return res.status(404).json({ success: false, message: "Component not found" });
     }
     
-    // Get section
-    const [section] = await db.select().from(pageBuilderSections)
-      .where(eq(pageBuilderSections.id, component.sectionId));
+    // Check if user has access to this section/page
+    const section = await db.select().from(pageBuilderSections)
+      .where(eq(pageBuilderSections.id, existingComponent[0].sectionId));
     
-    if (!section) {
-      return res.status(404).json({ error: 'Section not found' });
+    if (!section.length) {
+      return res.status(404).json({ success: false, message: "Section not found" });
     }
     
-    // Verify page ownership
-    const [page] = await db.select().from(pageBuilderPages)
-      .where(and(
-        eq(pageBuilderPages.id, section.pageId),
-        eq(pageBuilderPages.tenantId, tenantId)
-      ));
+    const page = await db.select().from(pageBuilderPages)
+      .where(eq(pageBuilderPages.id, section[0].pageId));
     
-    if (!page) {
-      return res.status(403).json({ error: 'Not authorized to delete this component' });
+    if (!page.length) {
+      return res.status(404).json({ success: false, message: "Page not found" });
     }
     
-    // For parent components, handle children
-    if (component.parentId === null) {
-      // Delete all child components
-      await db.delete(pageBuilderComponents)
-        .where(eq(pageBuilderComponents.parentId, parseInt(componentId)));
+    const tenantId = extractTenantId(req);
+    
+    if (!tenantId || tenantId !== page[0].tenantId) {
+      return res.status(403).json({ success: false, message: "Access denied" });
     }
     
-    // Delete component
+    // Delete the component
     await db.delete(pageBuilderComponents)
       .where(eq(pageBuilderComponents.id, parseInt(componentId)));
     
-    // Update SEO metrics for the page
-    updatePageSeoMetrics(section.pageId);
+    // Reorder remaining components
+    const remainingComponents = await db.select().from(pageBuilderComponents)
+      .where(eq(pageBuilderComponents.sectionId, existingComponent[0].sectionId))
+      .orderBy(asc(pageBuilderComponents.order));
     
-    res.status(200).json({ message: 'Component deleted successfully' });
-  } catch (error) {
-    console.error('Error deleting component:', error);
-    res.status(500).json({ error: 'Failed to delete component' });
-  }
-};
-
-/**
- * Update component order
- */
-export const updateComponentOrder = async (req: Request, res: Response) => {
-  try {
-    const tenantId = extractTenantId(req);
-    const { sectionId } = req.params;
-    const { componentIds } = req.body;
-    
-    // Get section to verify ownership
-    const [section] = await db.select().from(pageBuilderSections)
-      .where(eq(pageBuilderSections.id, parseInt(sectionId)));
-    
-    if (!section) {
-      return res.status(404).json({ error: 'Section not found' });
-    }
-    
-    // Verify page ownership
-    const [page] = await db.select().from(pageBuilderPages)
-      .where(and(
-        eq(pageBuilderPages.id, section.pageId),
-        eq(pageBuilderPages.tenantId, tenantId)
-      ));
-    
-    if (!page) {
-      return res.status(403).json({ error: 'Not authorized to modify this section' });
-    }
-    
-    // Update order for each component
-    for (let i = 0; i < componentIds.length; i++) {
+    // Update order for remaining components
+    for (let i = 0; i < remainingComponents.length; i++) {
       await db.update(pageBuilderComponents)
         .set({ order: i })
-        .where(and(
-          eq(pageBuilderComponents.id, parseInt(componentIds[i])),
-          eq(pageBuilderComponents.sectionId, parseInt(sectionId))
-        ));
+        .where(eq(pageBuilderComponents.id, remainingComponents[i].id));
     }
     
-    res.status(200).json({ message: 'Component order updated successfully' });
+    return res.status(200).json({ 
+      success: true, 
+      message: "Component deleted successfully" 
+    });
   } catch (error) {
-    console.error('Error updating component order:', error);
-    res.status(500).json({ error: 'Failed to update component order' });
+    handleError(res, error, "Failed to delete component");
   }
-};
+}
 
-// Template Management
+// Update component order within a section
+export async function updateComponentOrder(req: Request, res: Response) {
+  try {
+    const { sectionId } = req.params;
+    const { componentOrder } = req.body;
+    
+    if (!Array.isArray(componentOrder)) {
+      return res.status(400).json({ success: false, message: "Component order must be an array" });
+    }
+    
+    // Check if section exists
+    const section = await db.select().from(pageBuilderSections)
+      .where(eq(pageBuilderSections.id, parseInt(sectionId)));
+    
+    if (!section.length) {
+      return res.status(404).json({ success: false, message: "Section not found" });
+    }
+    
+    // Check if user has access to this page
+    const page = await db.select().from(pageBuilderPages)
+      .where(eq(pageBuilderPages.id, section[0].pageId));
+    
+    if (!page.length) {
+      return res.status(404).json({ success: false, message: "Page not found" });
+    }
+    
+    const tenantId = extractTenantId(req);
+    
+    if (!tenantId || tenantId !== page[0].tenantId) {
+      return res.status(403).json({ success: false, message: "Access denied" });
+    }
+    
+    // Update each component's order
+    for (let i = 0; i < componentOrder.length; i++) {
+      await db.update(pageBuilderComponents)
+        .set({ order: i })
+        .where(eq(pageBuilderComponents.id, componentOrder[i]));
+    }
+    
+    // Get updated components
+    const updatedComponents = await db.select().from(pageBuilderComponents)
+      .where(eq(pageBuilderComponents.sectionId, parseInt(sectionId)))
+      .orderBy(asc(pageBuilderComponents.order));
+    
+    return res.status(200).json({ 
+      success: true, 
+      data: updatedComponents,
+      message: "Component order updated successfully" 
+    });
+  } catch (error) {
+    handleError(res, error, "Failed to update component order");
+  }
+}
 
-/**
- * Get all templates
- */
-export const getTemplates = async (req: Request, res: Response) => {
+// Get templates
+export async function getTemplates(req: Request, res: Response) {
   try {
     const tenantId = extractTenantId(req);
     
+    if (!tenantId) {
+      return res.status(400).json({ success: false, message: "Tenant ID is required" });
+    }
+    
+    // Get templates for this tenant and global templates
     const templates = await db.select().from(pageBuilderTemplates)
       .where(sql`${pageBuilderTemplates.tenantId} = ${tenantId} OR ${pageBuilderTemplates.isGlobal} = true`);
     
-    res.status(200).json(templates);
+    return res.status(200).json({ success: true, data: templates });
   } catch (error) {
-    console.error('Error fetching templates:', error);
-    res.status(500).json({ error: 'Failed to fetch templates' });
+    handleError(res, error, "Failed to retrieve templates");
   }
-};
+}
 
-/**
- * Get template details
- */
-export const getTemplate = async (req: Request, res: Response) => {
+// Get a single template
+export async function getTemplate(req: Request, res: Response) {
   try {
-    const tenantId = extractTenantId(req);
     const { id } = req.params;
+    const tenantId = extractTenantId(req);
     
-    const [template] = await db.select().from(pageBuilderTemplates)
+    if (!tenantId) {
+      return res.status(400).json({ success: false, message: "Tenant ID is required" });
+    }
+    
+    // Get template if it belongs to this tenant or is global
+    const template = await db.select().from(pageBuilderTemplates)
       .where(and(
         eq(pageBuilderTemplates.id, parseInt(id)),
-        sql`${pageBuilderTemplates.tenantId} = ${tenantId} OR ${pageBuilderTemplates.isGlobal} = true`
+        sql`(${pageBuilderTemplates.tenantId} = ${tenantId} OR ${pageBuilderTemplates.isGlobal} = true)`
       ));
     
-    if (!template) {
-      return res.status(404).json({ error: 'Template not found' });
+    if (!template.length) {
+      return res.status(404).json({ success: false, message: "Template not found" });
     }
     
-    res.status(200).json(template);
+    return res.status(200).json({ success: true, data: template[0] });
   } catch (error) {
-    console.error('Error fetching template:', error);
-    res.status(500).json({ error: 'Failed to fetch template' });
+    handleError(res, error, "Failed to retrieve template");
   }
-};
+}
 
-/**
- * Create a template
- */
-export const createTemplate = async (req: Request, res: Response) => {
+// Create a template
+export async function createTemplate(req: Request, res: Response) {
   try {
     const tenantId = extractTenantId(req);
-    const userId = getJwtPayload(req)?.userId;
     
-    const templateData = {
-      ...req.body,
+    if (!tenantId) {
+      return res.status(400).json({ success: false, message: "Tenant ID is required" });
+    }
+    
+    const templateData = req.body as Omit<InsertPageBuilderTemplate, "id" | "createdAt" | "updatedAt">;
+    
+    // Create the template
+    const [newTemplate] = await db.insert(pageBuilderTemplates).values({
+      ...templateData,
       tenantId,
-      author: userId
-    };
+      createdAt: new Date(),
+      updatedAt: new Date()
+    }).returning();
     
-    const [template] = await db.insert(pageBuilderTemplates).values(templateData).returning();
-    
-    res.status(201).json(template);
+    return res.status(201).json({ success: true, data: newTemplate });
   } catch (error) {
-    console.error('Error creating template:', error);
-    res.status(500).json({ error: 'Failed to create template' });
+    handleError(res, error, "Failed to create template");
   }
-};
+}
 
-/**
- * Save an existing page as a template
- */
-export const savePageAsTemplate = async (req: Request, res: Response) => {
+// Save a page as a template
+export async function savePageAsTemplate(req: Request, res: Response) {
   try {
-    const tenantId = extractTenantId(req);
-    const userId = getJwtPayload(req)?.userId;
     const { pageId } = req.params;
-    const { name, description, isGlobal = false } = req.body;
+    const { name, description, tags, isGlobal } = req.body;
     
-    // Get page
-    const [page] = await db.select().from(pageBuilderPages)
+    if (!name) {
+      return res.status(400).json({ success: false, message: "Template name is required" });
+    }
+    
+    const tenantId = extractTenantId(req);
+    
+    if (!tenantId) {
+      return res.status(400).json({ success: false, message: "Tenant ID is required" });
+    }
+    
+    // Check if page exists and belongs to this tenant
+    const page = await db.select().from(pageBuilderPages)
       .where(and(
         eq(pageBuilderPages.id, parseInt(pageId)),
         eq(pageBuilderPages.tenantId, tenantId)
       ));
     
-    if (!page) {
-      return res.status(404).json({ error: 'Page not found' });
+    if (!page.length) {
+      return res.status(404).json({ success: false, message: "Page not found" });
     }
     
-    // Get sections
+    // Get sections for this page
     const sections = await db.select().from(pageBuilderSections)
       .where(eq(pageBuilderSections.pageId, parseInt(pageId)))
       .orderBy(asc(pageBuilderSections.order));
     
     // Get components for each section
     const sectionIds = sections.map(section => section.id);
-    const components = sectionIds.length > 0
-      ? await db.select().from(pageBuilderComponents)
-          .where(inArray(pageBuilderComponents.sectionId, sectionIds))
-          .orderBy(asc(pageBuilderComponents.order))
-      : [];
     
-    // Prepare structure for template
-    const structure = {
-      sections: sections.map(section => ({
-        name: section.name,
-        description: section.description,
-        settings: section.settings,
-        seoWeight: section.seoWeight,
-        components: components
-          .filter(component => component.sectionId === section.id)
-          .map(component => ({
-            type: component.type,
-            label: component.label,
-            context: component.context,
-            settings: component.settings,
-            content: component.content,
-            metadata: component.metadata,
-            seoImpact: component.seoImpact,
-            hidden: component.hidden
-          }))
-      }))
-    };
+    const components = await db.select().from(pageBuilderComponents)
+      .where(sql`${pageBuilderComponents.sectionId} IN (${sectionIds.length ? sectionIds : [0]})`)
+      .orderBy(asc(pageBuilderComponents.order));
     
-    const templateData = {
+    // Organize components by section
+    const sectionsWithComponents = sections.map(section => {
+      const sectionComponents = components.filter(comp => comp.sectionId === section.id);
+      return {
+        ...section,
+        components: sectionComponents
+      };
+    });
+    
+    // Create template with page structure
+    const [newTemplate] = await db.insert(pageBuilderTemplates).values({
       name,
-      description,
-      tenantId: isGlobal ? null : tenantId,
-      isGlobal,
-      author: userId,
-      industry: page.businessContext?.industry ? [page.businessContext.industry] : [],
-      purpose: page.businessContext?.purpose || "",
-      structure,
-      seoRecommendations: {
-        title: page.seo?.title || "",
-        description: page.seo?.description || "",
-        keywords: page.seo?.keywords || []
+      description: description || page[0].description || '',
+      tags: tags || [],
+      pageType: page[0].pageType,
+      structure: {
+        page: {
+          title: page[0].title,
+          description: page[0].description,
+          pageType: page[0].pageType,
+          seoSettings: page[0].seoSettings
+        },
+        sections: sectionsWithComponents
       },
-      complexity: "moderate" as ComplexityLevel
-    };
+      tenantId,
+      isGlobal: isGlobal || false,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    }).returning();
     
-    const [template] = await db.insert(pageBuilderTemplates).values(templateData).returning();
-    
-    res.status(201).json(template);
+    return res.status(201).json({ 
+      success: true, 
+      data: newTemplate,
+      message: "Page saved as template successfully"
+    });
   } catch (error) {
-    console.error('Error creating template from page:', error);
-    res.status(500).json({ error: 'Failed to create template' });
+    handleError(res, error, "Failed to save page as template");
   }
-};
+}
 
-/**
- * Get component library items
- */
-export const getComponentLibrary = async (req: Request, res: Response) => {
+// Get component library
+export async function getComponentLibrary(req: Request, res: Response) {
   try {
     const tenantId = extractTenantId(req);
     
-    const components = await db.select().from(pageBuilderComponentLibrary)
+    if (!tenantId) {
+      return res.status(400).json({ success: false, message: "Tenant ID is required" });
+    }
+    
+    // Get component library items for this tenant and global items
+    const libraryItems = await db.select().from(pageBuilderComponentLibrary)
       .where(sql`${pageBuilderComponentLibrary.tenantId} = ${tenantId} OR ${pageBuilderComponentLibrary.isGlobal} = true`);
     
-    res.status(200).json(components);
+    return res.status(200).json({ success: true, data: libraryItems });
   } catch (error) {
-    console.error('Error fetching component library:', error);
-    res.status(500).json({ error: 'Failed to fetch component library' });
+    handleError(res, error, "Failed to retrieve component library");
   }
-};
+}
 
-// SEO Management
-
-/**
- * Generate recommendations for a page
- */
-export const generateRecommendations = async (req: Request, res: Response) => {
+// Generate SEO and content recommendations for a page
+export async function generateRecommendations(req: Request, res: Response) {
   try {
-    const tenantId = extractTenantId(req);
     const { pageId } = req.params;
+    const tenantId = extractTenantId(req);
     
-    // Verify page ownership
-    const [page] = await db.select().from(pageBuilderPages)
+    if (!tenantId) {
+      return res.status(400).json({ success: false, message: "Tenant ID is required" });
+    }
+    
+    // Check if page exists and belongs to this tenant
+    const page = await db.select().from(pageBuilderPages)
       .where(and(
         eq(pageBuilderPages.id, parseInt(pageId)),
         eq(pageBuilderPages.tenantId, tenantId)
       ));
     
-    if (!page) {
-      return res.status(404).json({ error: 'Page not found' });
+    if (!page.length) {
+      return res.status(404).json({ success: false, message: "Page not found" });
     }
     
-    // Get sections
+    // Get sections and components for this page
     const sections = await db.select().from(pageBuilderSections)
       .where(eq(pageBuilderSections.pageId, parseInt(pageId)))
       .orderBy(asc(pageBuilderSections.order));
     
-    // Get components for each section
     const sectionIds = sections.map(section => section.id);
-    const components = sectionIds.length > 0
-      ? await db.select().from(pageBuilderComponents)
-          .where(inArray(pageBuilderComponents.sectionId, sectionIds))
-          .orderBy(asc(pageBuilderComponents.order))
-      : [];
     
-    // Generate recommendations based on page content
-    const recommendations = generatePageRecommendations(page, sections, components);
+    const components = await db.select().from(pageBuilderComponents)
+      .where(sql`${pageBuilderComponents.sectionId} IN (${sectionIds.length ? sectionIds : [0]})`)
+      .orderBy(asc(pageBuilderComponents.order));
     
-    // Clear existing recommendations
+    // Prepare page content for analysis
+    const pageContext = {
+      title: page[0].title,
+      description: page[0].description,
+      pageType: page[0].pageType,
+      seoSettings: page[0].seoSettings,
+      sections: sections.map(section => {
+        const sectionComponents = components.filter(comp => comp.sectionId === section.id);
+        return {
+          name: section.name,
+          type: section.type,
+          components: sectionComponents.map(comp => ({
+            type: comp.type,
+            content: comp.content
+          }))
+        };
+      })
+    };
+    
+    // Extract existing text content for analysis
+    let extractedText = `Page Title: ${page[0].title}\nDescription: ${page[0].description || 'None'}\n\n`;
+    
+    pageContext.sections.forEach(section => {
+      extractedText += `Section: ${section.name}\n`;
+      section.components.forEach(comp => {
+        if (comp.content && typeof comp.content === 'object') {
+          if (comp.content.text) {
+            extractedText += `${comp.content.text}\n`;
+          }
+          if (comp.content.items && Array.isArray(comp.content.items)) {
+            comp.content.items.forEach((item: any) => {
+              if (typeof item === 'string') {
+                extractedText += `- ${item}\n`;
+              } else if (item && typeof item === 'object' && item.text) {
+                extractedText += `- ${item.text}\n`;
+              }
+            });
+          }
+        }
+      });
+      extractedText += '\n';
+    });
+    
+    // Get industry and purpose from SEO settings
+    const industry = page[0].seoSettings?.industry || '';
+    const purpose = page[0].seoSettings?.purpose || '';
+    
+    // Analyze content and generate recommendations
+    const seoRecommendations = await generateSeoRecommendations(
+      extractedText,
+      page[0].title,
+      page[0].description || '',
+      page[0].seoSettings?.keywords || [],
+      industry,
+      purpose,
+      page[0].pageType
+    );
+    
+    // Save recommendations to database
+    const recommendations: InsertPageBuilderRecommendation[] = seoRecommendations.map(rec => ({
+      pageId: parseInt(pageId),
+      type: rec.type,
+      priority: rec.priority,
+      recommendation: rec.recommendation,
+      implementationHint: rec.implementationHint,
+      originalValue: rec.originalValue,
+      suggestedValue: rec.suggestedValue,
+      isDismissed: false,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    }));
+    
+    // Delete existing non-dismissed recommendations
     await db.delete(pageBuilderRecommendations)
-      .where(eq(pageBuilderRecommendations.pageId, parseInt(pageId)));
+      .where(and(
+        eq(pageBuilderRecommendations.pageId, parseInt(pageId)),
+        eq(pageBuilderRecommendations.isDismissed, false)
+      ));
     
     // Insert new recommendations
-    if (recommendations.length > 0) {
-      await db.insert(pageBuilderRecommendations).values(
-        recommendations.map(rec => ({
-          ...rec,
-          pageId: parseInt(pageId)
-        }))
-      );
+    const savedRecommendations = [];
+    for (const rec of recommendations) {
+      const [saved] = await db.insert(pageBuilderRecommendations).values(rec).returning();
+      savedRecommendations.push(saved);
     }
     
-    res.status(200).json(recommendations);
+    return res.status(200).json({ 
+      success: true, 
+      data: savedRecommendations,
+      message: `Generated ${savedRecommendations.length} recommendations`
+    });
   } catch (error) {
-    console.error('Error generating recommendations:', error);
-    res.status(500).json({ error: 'Failed to generate recommendations' });
+    handleError(res, error, "Failed to generate recommendations");
   }
-};
+}
 
-/**
- * Dismiss a recommendation
- */
-export const dismissRecommendation = async (req: Request, res: Response) => {
+// Dismiss a recommendation
+export async function dismissRecommendation(req: Request, res: Response) {
   try {
     const { recommendationId } = req.params;
     
-    await db.update(pageBuilderRecommendations)
-      .set({ dismissed: true })
+    // Check if recommendation exists
+    const recommendation = await db.select().from(pageBuilderRecommendations)
       .where(eq(pageBuilderRecommendations.id, parseInt(recommendationId)));
     
-    res.status(200).json({ message: 'Recommendation dismissed' });
-  } catch (error) {
-    console.error('Error dismissing recommendation:', error);
-    res.status(500).json({ error: 'Failed to dismiss recommendation' });
-  }
-};
-
-/**
- * Calculate SEO score for a page
- */
-export const calculatePageSeoScore = async (req: Request, res: Response) => {
-  try {
-    const tenantId = extractTenantId(req);
-    const { pageId } = req.params;
+    if (!recommendation.length) {
+      return res.status(404).json({ success: false, message: "Recommendation not found" });
+    }
     
-    // Verify page ownership
-    const [page] = await db.select().from(pageBuilderPages)
+    // Check if user has access to this page
+    const page = await db.select().from(pageBuilderPages)
+      .where(eq(pageBuilderPages.id, recommendation[0].pageId));
+    
+    if (!page.length) {
+      return res.status(404).json({ success: false, message: "Page not found" });
+    }
+    
+    const tenantId = extractTenantId(req);
+    
+    if (!tenantId || tenantId !== page[0].tenantId) {
+      return res.status(403).json({ success: false, message: "Access denied" });
+    }
+    
+    // Mark recommendation as dismissed
+    const [updatedRecommendation] = await db.update(pageBuilderRecommendations)
+      .set({
+        isDismissed: true,
+        updatedAt: new Date()
+      })
+      .where(eq(pageBuilderRecommendations.id, parseInt(recommendationId)))
+      .returning();
+    
+    return res.status(200).json({ 
+      success: true, 
+      data: updatedRecommendation,
+      message: "Recommendation dismissed successfully" 
+    });
+  } catch (error) {
+    handleError(res, error, "Failed to dismiss recommendation");
+  }
+}
+
+// Calculate SEO score for a page
+export async function calculatePageSeoScore(req: Request, res: Response) {
+  try {
+    const { pageId } = req.params;
+    const tenantId = extractTenantId(req);
+    
+    if (!tenantId) {
+      return res.status(400).json({ success: false, message: "Tenant ID is required" });
+    }
+    
+    // Check if page exists and belongs to this tenant
+    const page = await db.select().from(pageBuilderPages)
       .where(and(
         eq(pageBuilderPages.id, parseInt(pageId)),
         eq(pageBuilderPages.tenantId, tenantId)
       ));
     
-    if (!page) {
-      return res.status(404).json({ error: 'Page not found' });
+    if (!page.length) {
+      return res.status(404).json({ success: false, message: "Page not found" });
     }
     
-    // Get sections
+    // Get sections and components for this page
     const sections = await db.select().from(pageBuilderSections)
       .where(eq(pageBuilderSections.pageId, parseInt(pageId)))
       .orderBy(asc(pageBuilderSections.order));
     
-    // Get components for each section
     const sectionIds = sections.map(section => section.id);
-    const components = sectionIds.length > 0
-      ? await db.select().from(pageBuilderComponents)
-          .where(inArray(pageBuilderComponents.sectionId, sectionIds))
-          .orderBy(asc(pageBuilderComponents.order))
-      : [];
     
-    // Build sections with components
-    const sectionsWithComponents = sections.map(section => ({
-      ...section,
-      components: components.filter(component => component.sectionId === section.id)
-    }));
+    const components = await db.select().from(pageBuilderComponents)
+      .where(sql`${pageBuilderComponents.sectionId} IN (${sectionIds.length ? sectionIds : [0]})`)
+      .orderBy(asc(pageBuilderComponents.order));
+    
+    // Prepare page content for analysis
+    const pageContent = {
+      title: page[0].title,
+      description: page[0].description,
+      seoSettings: page[0].seoSettings,
+      sections: sections.map(section => {
+        const sectionComponents = components.filter(comp => comp.sectionId === section.id);
+        return {
+          name: section.name,
+          type: section.type,
+          components: sectionComponents.map(comp => ({
+            type: comp.type,
+            content: comp.content
+          }))
+        };
+      })
+    };
     
     // Calculate SEO score
-    const score = calculateSeoScore(page.metadata, page.seo, sectionsWithComponents);
-    const suggestions = generateSeoSuggestions(page.metadata, page.seo);
-    const keywordDensity = calculateKeywordDensity(sectionsWithComponents);
-    const readabilityScore = calculateReadabilityScore(sectionsWithComponents);
-    const mobileOptimized = checkMobileOptimization(sectionsWithComponents);
+    const seoScore = calculateSeoScore(pageContent);
     
-    // Update page SEO metrics
+    // Update page with SEO score
     await db.update(pageBuilderPages)
-      .set({
-        seo: {
-          ...page.seo,
-          performance: {
-            score,
-            suggestions,
-            keywordDensity,
-            readabilityScore,
-            mobileOptimized
-          }
-        }
-      })
+      .set({ seoScore: seoScore.overallScore })
       .where(eq(pageBuilderPages.id, parseInt(pageId)));
     
-    res.status(200).json({
-      score,
-      suggestions,
-      keywordDensity,
-      readabilityScore,
-      mobileOptimized
+    return res.status(200).json({
+      success: true,
+      data: seoScore
     });
   } catch (error) {
-    console.error('Error calculating SEO score:', error);
-    res.status(500).json({ error: 'Failed to calculate SEO score' });
-  }
-};
-
-// Helper functions
-
-/**
- * Initialize a page from a template
- */
-async function initializeFromTemplate(pageId: number, templateId: string) {
-  try {
-    // Get template
-    const [template] = await db.select().from(pageBuilderTemplates)
-      .where(eq(pageBuilderTemplates.id, parseInt(templateId)));
-    
-    if (!template || !template.structure) {
-      return;
-    }
-    
-    // Create sections and components from template
-    const structure = template.structure as any;
-    
-    if (structure.sections && Array.isArray(structure.sections)) {
-      for (let i = 0; i < structure.sections.length; i++) {
-        const sectionTemplate = structure.sections[i];
-        
-        // Create section
-        const sectionData: InsertPageBuilderSection = {
-          pageId,
-          name: sectionTemplate.name,
-          description: sectionTemplate.description,
-          order: i,
-          settings: sectionTemplate.settings,
-          seoWeight: sectionTemplate.seoWeight || 5
-        };
-        
-        const [section] = await db.insert(pageBuilderSections).values(sectionData).returning();
-        
-        // Create components for the section
-        if (sectionTemplate.components && Array.isArray(sectionTemplate.components)) {
-          for (let j = 0; j < sectionTemplate.components.length; j++) {
-            const componentTemplate = sectionTemplate.components[j];
-            
-            const componentData: InsertPageBuilderComponent = {
-              sectionId: section.id,
-              type: componentTemplate.type,
-              label: componentTemplate.label,
-              context: componentTemplate.context,
-              settings: componentTemplate.settings,
-              content: componentTemplate.content,
-              metadata: componentTemplate.metadata,
-              seoImpact: componentTemplate.seoImpact || 'low',
-              hidden: componentTemplate.hidden || false,
-              order: j
-            };
-            
-            await db.insert(pageBuilderComponents).values(componentData);
-          }
-        }
-      }
-    }
-  } catch (error) {
-    console.error('Error initializing from template:', error);
-    throw error;
+    handleError(res, error, "Failed to calculate SEO score");
   }
 }
 
-/**
- * Update SEO metrics for a page
- */
-async function updatePageSeoMetrics(pageId: number) {
+// OpenAI helper for generating SEO recommendations
+async function generateSeoRecommendations(
+  pageContent: string,
+  title: string,
+  description: string,
+  keywords: string[],
+  industry: string,
+  purpose: string,
+  pageType: string
+): Promise<any[]> {
   try {
-    // Get page
-    const [page] = await db.select().from(pageBuilderPages)
-      .where(eq(pageBuilderPages.id, pageId));
-    
-    if (!page) {
-      return;
+    // Check if we have an API key
+    if (!process.env.OPENAI_API_KEY) {
+      console.error("OPENAI_API_KEY is not set");
+      return [
+        {
+          type: "error",
+          priority: "high",
+          recommendation: "OpenAI API key is not configured. Please set up your API key to get SEO recommendations.",
+          implementationHint: "Add your OpenAI API key to the environment variables.",
+          originalValue: "",
+          suggestedValue: ""
+        }
+      ];
     }
     
-    // Get sections
-    const sections = await db.select().from(pageBuilderSections)
-      .where(eq(pageBuilderSections.pageId, pageId))
-      .orderBy(asc(pageBuilderSections.order));
+    const prompt = `
+      As an SEO expert, analyze the following page content for a ${industry} business website.
+      The page purpose is: ${purpose}.
+      The page type is: ${pageType}.
+      
+      Current title: "${title}"
+      Current description: "${description}"
+      Current keywords: ${keywords.join(", ")}
+      
+      Page content:
+      ${pageContent}
+      
+      Provide detailed SEO recommendations in this JSON format:
+      [{
+        "type": "title"|"description"|"keywords"|"content"|"headings"|"images"|"structure",
+        "priority": "high"|"medium"|"low",
+        "recommendation": "<clear explanation of the recommendation>",
+        "implementationHint": "<specific advice on how to implement>",
+        "originalValue": "<current value if applicable>",
+        "suggestedValue": "<suggested improved value>"
+      }]
+      
+      Focus on:
+      1. Title optimization (length, keywords, clarity)
+      2. Meta description improvements
+      3. Primary and secondary keyword usage and density
+      4. Content structure and readability
+      5. Heading hierarchy (H1, H2, etc.)
+      6. Image alt text if images are mentioned
+      7. Internal linking opportunities
+      
+      Provide 3-6 actionable recommendations in the exact JSON format specified.
+    `;
     
-    // Get components for each section
-    const sectionIds = sections.map(section => section.id);
-    const components = sectionIds.length > 0
-      ? await db.select().from(pageBuilderComponents)
-          .where(inArray(pageBuilderComponents.sectionId, sectionIds))
-          .orderBy(asc(pageBuilderComponents.order))
-      : [];
+    const response = await openai.chat.completions.create({
+      model: "gpt-4o",
+      messages: [
+        { role: "system", content: "You are an SEO optimization expert analyzing web page content." },
+        { role: "user", content: prompt }
+      ],
+      response_format: { type: "json_object" }
+    });
     
-    // Build sections with components
-    const sectionsWithComponents = sections.map(section => ({
-      ...section,
-      components: components.filter(component => component.sectionId === section.id)
-    }));
+    const content = response.choices[0].message.content;
+    if (!content) {
+      return [];
+    }
     
-    // Calculate SEO metrics
-    const score = calculateSeoScore(page.metadata, page.seo, sectionsWithComponents);
-    const suggestions = generateSeoSuggestions(page.metadata, page.seo);
-    const keywordDensity = calculateKeywordDensity(sectionsWithComponents);
-    const readabilityScore = calculateReadabilityScore(sectionsWithComponents);
-    const mobileOptimized = checkMobileOptimization(sectionsWithComponents);
-    
-    // Update page SEO metrics
-    await db.update(pageBuilderPages)
-      .set({
-        seo: {
-          ...page.seo,
-          performance: {
-            score,
-            suggestions,
-            keywordDensity,
-            readabilityScore,
-            mobileOptimized
-          }
-        }
-      })
-      .where(eq(pageBuilderPages.id, pageId));
+    try {
+      const parsedResponse = JSON.parse(content);
+      return Array.isArray(parsedResponse) ? parsedResponse : (parsedResponse.recommendations || []);
+    } catch (error) {
+      console.error("Error parsing OpenAI response:", error);
+      return [];
+    }
   } catch (error) {
-    console.error('Error updating page SEO metrics:', error);
+    console.error("Error generating SEO recommendations:", error);
+    return [{
+      type: "error",
+      priority: "high",
+      recommendation: "Failed to generate SEO recommendations. Please try again later.",
+      implementationHint: "Check your OpenAI API key and network connection.",
+      originalValue: "",
+      suggestedValue: ""
+    }];
   }
 }
 
-/**
- * Calculate initial SEO score for a new page
- */
-function calculateInitialSeoScore(metadata: PageMetadata, seo: PageSeoMetadata): number {
-  let score = 50; // Start with a base score
+// Calculate SEO score for a page
+function calculateSeoScore(pageContent: any): { 
+  overallScore: number;
+  categoryScores: Record<string, number>;
+  analysis: Record<string, string>;
+} {
+  const results = {
+    overallScore: 0,
+    categoryScores: {
+      title: 0,
+      description: 0,
+      keywords: 0,
+      content: 0,
+      structure: 0,
+      images: 0,
+      performance: 0
+    },
+    analysis: {
+      title: "",
+      description: "",
+      keywords: "",
+      content: "",
+      structure: "",
+      images: "",
+      performance: ""
+    }
+  };
   
   // Check title
-  if (seo?.title && seo.title.length > 10 && seo.title.length < 60) {
-    score += 10;
+  let titleScore = 0;
+  let titleAnalysis = [];
+  
+  if (!pageContent.title) {
+    titleAnalysis.push("Missing page title.");
+  } else {
+    const titleLength = pageContent.title.length;
+    
+    if (titleLength < 10) {
+      titleAnalysis.push("Title is too short (< 10 characters).");
+    } else if (titleLength >= 10 && titleLength <= 30) {
+      titleScore += 5;
+      titleAnalysis.push("Title length is good (10-30 characters).");
+    } else if (titleLength > 30 && titleLength <= 60) {
+      titleScore += 10;
+      titleAnalysis.push("Title length is optimal (31-60 characters).");
+    } else {
+      titleScore += 5;
+      titleAnalysis.push("Title is too long (> 60 characters).");
+    }
+    
+    // Check for primary keyword in title
+    if (pageContent.seoSettings?.primaryKeyword && 
+        pageContent.title.toLowerCase().includes(pageContent.seoSettings.primaryKeyword.toLowerCase())) {
+      titleScore += 10;
+      titleAnalysis.push("Title contains primary keyword.");
+    } else if (pageContent.seoSettings?.primaryKeyword) {
+      titleAnalysis.push("Title does not contain primary keyword.");
+    }
   }
+  
+  results.categoryScores.title = Math.min(titleScore, 20);
+  results.analysis.title = titleAnalysis.join(" ");
   
   // Check description
-  if (seo?.description && seo.description.length > 50 && seo.description.length < 160) {
-    score += 10;
+  let descriptionScore = 0;
+  let descriptionAnalysis = [];
+  
+  if (!pageContent.description) {
+    descriptionAnalysis.push("Missing page description.");
+  } else {
+    const descriptionLength = pageContent.description.length;
+    
+    if (descriptionLength < 50) {
+      descriptionAnalysis.push("Description is too short (< 50 characters).");
+    } else if (descriptionLength >= 50 && descriptionLength <= 120) {
+      descriptionScore += 5;
+      descriptionAnalysis.push("Description length is good (50-120 characters).");
+    } else if (descriptionLength > 120 && descriptionLength <= 160) {
+      descriptionScore += 10;
+      descriptionAnalysis.push("Description length is optimal (121-160 characters).");
+    } else {
+      descriptionScore += 5;
+      descriptionAnalysis.push("Description is too long (> 160 characters).");
+    }
+    
+    // Check for primary keyword in description
+    if (pageContent.seoSettings?.primaryKeyword && 
+        pageContent.description.toLowerCase().includes(pageContent.seoSettings.primaryKeyword.toLowerCase())) {
+      descriptionScore += 5;
+      descriptionAnalysis.push("Description contains primary keyword.");
+    } else if (pageContent.seoSettings?.primaryKeyword) {
+      descriptionAnalysis.push("Description does not contain primary keyword.");
+    }
+    
+    // Check for call to action
+    const ctaPatterns = [
+      /learn more/i, /discover/i, /find out/i, /contact us/i, /call now/i, 
+      /get started/i, /sign up/i, /try/i, /schedule/i, /book/i, /explore/i
+    ];
+    
+    if (ctaPatterns.some(pattern => pattern.test(pageContent.description))) {
+      descriptionScore += 5;
+      descriptionAnalysis.push("Description contains a call to action.");
+    }
   }
+  
+  results.categoryScores.description = Math.min(descriptionScore, 20);
+  results.analysis.description = descriptionAnalysis.join(" ");
   
   // Check keywords
-  if (seo?.keywords && Array.isArray(seo.keywords) && seo.keywords.length > 0) {
-    score += 5;
-  }
+  let keywordScore = 0;
+  let keywordAnalysis = [];
   
-  // Check for primary keyword in title
-  if (seo?.primaryKeyword && seo?.title && seo.title.toLowerCase().includes(seo.primaryKeyword.toLowerCase())) {
-    score += 5;
-  }
-  
-  return Math.min(Math.max(score, 0), 100);
-}
-
-/**
- * Calculate SEO score for a page
- */
-function calculateSeoScore(
-  metadata: PageMetadata,
-  seo: PageSeoMetadata,
-  sections: (PageBuilderSection & { components: PageBuilderComponent[] })[]
-): number {
-  let score = 40; // Start with a base score
-  
-  // Check title
-  if (seo?.title) {
-    if (seo.title.length > 10 && seo.title.length < 60) {
-      score += 10;
-    } else if (seo.title.length > 0) {
-      score += 5;
-    }
-  }
-  
-  // Check description
-  if (seo?.description) {
-    if (seo.description.length > 50 && seo.description.length < 160) {
-      score += 10;
-    } else if (seo.description.length > 0) {
-      score += 5;
-    }
-  }
-  
-  // Check keywords
-  if (seo?.keywords && Array.isArray(seo.keywords)) {
-    score += Math.min(seo.keywords.length * 2, 10);
-  }
-  
-  // Check for primary keyword in title and description
-  if (seo?.primaryKeyword) {
-    if (seo?.title && seo.title.toLowerCase().includes(seo.primaryKeyword.toLowerCase())) {
-      score += 5;
-    }
-    
-    if (seo?.description && seo.description.toLowerCase().includes(seo.primaryKeyword.toLowerCase())) {
-      score += 5;
-    }
-  }
-  
-  // Check page structure
-  if (sections && sections.length > 0) {
-    // Has multiple sections
-    score += Math.min(sections.length * 2, 10);
-    
-    // Check for headings
-    const hasHeadings = sections.some(section => 
-      section.components.some(component => component.type === 'heading')
-    );
-    
-    if (hasHeadings) {
-      score += 5;
-    }
-    
-    // Check for images with alt text
-    const hasImagesWithAlt = sections.some(section => 
-      section.components.some(component => 
-        component.type === 'image' && 
-        component.metadata?.alt
-      )
-    );
-    
-    if (hasImagesWithAlt) {
-      score += 5;
-    }
-  }
-  
-  return Math.min(Math.max(score, 0), 100);
-}
-
-/**
- * Generate SEO suggestions based on page content
- */
-function generateSeoSuggestions(metadata: PageMetadata, seo: PageSeoMetadata): string[] {
-  const suggestions: string[] = [];
-  
-  // Title suggestions
-  if (!seo?.title) {
-    suggestions.push('Add a title to improve SEO');
-  } else if (seo.title.length < 10) {
-    suggestions.push('Make your title longer (10-60 characters recommended)');
-  } else if (seo.title.length > 60) {
-    suggestions.push('Shorten your title (10-60 characters recommended)');
-  }
-  
-  // Description suggestions
-  if (!seo?.description) {
-    suggestions.push('Add a meta description to improve SEO');
-  } else if (seo.description.length < 50) {
-    suggestions.push('Make your description longer (50-160 characters recommended)');
-  } else if (seo.description.length > 160) {
-    suggestions.push('Shorten your description (50-160 characters recommended)');
-  }
-  
-  // Keyword suggestions
-  if (!seo?.keywords || seo.keywords.length === 0) {
-    suggestions.push('Add keywords to improve SEO');
-  }
-  
-  // Primary keyword suggestions
-  if (!seo?.primaryKeyword) {
-    suggestions.push('Set a primary keyword to focus your SEO efforts');
+  if (!pageContent.seoSettings?.keywords || pageContent.seoSettings.keywords.length === 0) {
+    keywordAnalysis.push("No keywords defined.");
   } else {
-    if (seo?.title && !seo.title.toLowerCase().includes(seo.primaryKeyword.toLowerCase())) {
-      suggestions.push('Include your primary keyword in the title');
+    if (pageContent.seoSettings.keywords.length >= 3 && pageContent.seoSettings.keywords.length <= 10) {
+      keywordScore += 10;
+      keywordAnalysis.push(`Good number of keywords (${pageContent.seoSettings.keywords.length}).`);
+    } else if (pageContent.seoSettings.keywords.length > 10) {
+      keywordScore += 5;
+      keywordAnalysis.push("Too many keywords may dilute focus.");
+    } else {
+      keywordAnalysis.push("Consider adding more keywords (at least 3).");
     }
     
-    if (seo?.description && !seo.description.toLowerCase().includes(seo.primaryKeyword.toLowerCase())) {
-      suggestions.push('Include your primary keyword in the description');
+    if (pageContent.seoSettings.primaryKeyword) {
+      keywordScore += 5;
+      keywordAnalysis.push("Primary keyword is defined.");
+    } else {
+      keywordAnalysis.push("No primary keyword defined.");
     }
   }
   
-  return suggestions;
-}
-
-/**
- * Generate recommendations for a page
- */
-function generatePageRecommendations(
-  page: any,
-  sections: any[],
-  components: any[]
-): any[] {
-  const recommendations: any[] = [];
+  results.categoryScores.keywords = Math.min(keywordScore, 15);
+  results.analysis.keywords = keywordAnalysis.join(" ");
   
-  // Check SEO metadata
-  if (!page.seo?.title || page.seo?.title.length < 10) {
-    recommendations.push({
-      type: 'seo',
-      severity: 'recommendation',
-      message: 'Add a descriptive title',
-      details: 'A good title should be 10-60 characters and include your primary keyword',
-      improvement: 'Update the page title in the SEO settings',
-      autoFixAvailable: false
-    });
-  }
+  // Check content
+  let contentScore = 0;
+  let contentAnalysis = [];
+  let contentText = "";
+  let headingsCount = 0;
+  let imagesCount = 0;
+  let imageWithAltCount = 0;
   
-  if (!page.seo?.description || page.seo?.description.length < 50) {
-    recommendations.push({
-      type: 'seo',
-      severity: 'recommendation',
-      message: 'Add a meta description',
-      details: 'A good description should be 50-160 characters and include your primary keyword',
-      improvement: 'Update the page description in the SEO settings',
-      autoFixAvailable: false
-    });
-  }
-  
-  // Check page structure
-  if (sections.length === 0) {
-    recommendations.push({
-      type: 'structure',
-      severity: 'critical',
-      message: 'Add content to your page',
-      details: 'Your page needs at least one section with content',
-      improvement: 'Add a new section to your page',
-      autoFixAvailable: false
-    });
-  } else if (components.length === 0) {
-    recommendations.push({
-      type: 'structure',
-      severity: 'critical',
-      message: 'Add components to your page',
-      details: 'Your page has sections but no content components',
-      improvement: 'Add components to your sections',
-      autoFixAvailable: false
-    });
-  }
-  
-  // Check for headings
-  const hasHeading = components.some(component => component.type === 'heading');
-  if (!hasHeading) {
-    recommendations.push({
-      type: 'structure',
-      severity: 'recommendation',
-      message: 'Add heading elements',
-      details: 'Headings help structure your content and improve SEO',
-      improvement: 'Add at least one heading component',
-      autoFixAvailable: false
-    });
-  }
-  
-  // Check for images
-  const images = components.filter(component => component.type === 'image');
-  if (images.length === 0) {
-    recommendations.push({
-      type: 'content',
-      severity: 'suggestion',
-      message: 'Add images to your page',
-      details: 'Visual content makes your page more engaging',
-      improvement: 'Add at least one image component',
-      autoFixAvailable: false
-    });
-  } else {
-    // Check for alt text
-    const imagesWithoutAlt = images.filter(image => !image.metadata?.alt);
-    if (imagesWithoutAlt.length > 0) {
-      recommendations.push({
-        type: 'seo',
-        severity: 'recommendation',
-        message: 'Add alt text to images',
-        details: `${imagesWithoutAlt.length} image(s) missing alt text`,
-        affectedComponents: imagesWithoutAlt.map(image => image.id.toString()),
-        improvement: 'Add descriptive alt text to all images',
-        autoFixAvailable: false
-      });
-    }
-  }
-  
-  // SEO goal specific recommendations
-  if (page.seo?.seoGoal) {
-    switch (page.seo.seoGoal) {
-      case 'local':
-        recommendations.push({
-          type: 'seo',
-          severity: 'suggestion',
-          message: 'Include local keywords',
-          details: 'For local visibility, include location-specific terms',
-          improvement: 'Add your city, neighborhood, or region in headings and content',
-          autoFixAvailable: false
+  pageContent.sections.forEach((section: any) => {
+    section.components.forEach((component: any) => {
+      if (component.type === 'heading' && component.content?.text) {
+        headingsCount++;
+        contentText += component.content.text + " ";
+      } else if (component.type === 'paragraph' && component.content?.text) {
+        contentText += component.content.text + " ";
+      } else if (component.type === 'list' && component.content?.items) {
+        component.content.items.forEach((item: any) => {
+          if (typeof item === 'string') {
+            contentText += item + " ";
+          } else if (item?.text) {
+            contentText += item.text + " ";
+          }
         });
-        break;
-      
-      case 'industry':
-        recommendations.push({
-          type: 'content',
-          severity: 'suggestion',
-          message: 'Add authoritative content',
-          details: 'Industry leadership requires demonstrating expertise',
-          improvement: 'Include statistics, case studies, or research findings',
-          autoFixAvailable: false
-        });
-        break;
-      
-      case 'conversion':
-        const hasCta = components.some(component => component.type === 'cta' || component.type === 'button');
-        if (!hasCta) {
-          recommendations.push({
-            type: 'content',
-            severity: 'recommendation',
-            message: 'Add call-to-action elements',
-            details: 'Conversion-focused pages need clear CTAs',
-            improvement: 'Add buttons or call-to-action components',
-            autoFixAvailable: false
-          });
+      } else if (component.type === 'image') {
+        imagesCount++;
+        if (component.content?.alt) {
+          imageWithAltCount++;
         }
-        break;
-    }
-  }
-  
-  return recommendations;
-}
-
-/**
- * Calculate keyword density for a page
- */
-function calculateKeywordDensity(
-  sections: (PageBuilderSection & { components: PageBuilderComponent[] })[]
-): Record<string, number> {
-  const keywordDensity: Record<string, number> = {};
-  let totalWords = 0;
-  const wordCounts: Record<string, number> = {};
-  
-  // Extract text content from components
-  sections.forEach(section => {
-    section.components.forEach(component => {
-      let text = '';
-      
-      // Extract text based on component type
-      if (component.type === 'paragraph' || component.type === 'rich-text') {
-        text = extractTextFromHtml(component.content);
-      } else if (component.type === 'heading') {
-        text = component.content?.text || '';
-      } else if (component.type === 'list') {
-        const items = component.content?.items || [];
-        text = items.join(' ');
       }
-      
-      // Count words
-      const words = text.toLowerCase().split(/\s+/).filter(word => word.length > 3);
-      totalWords += words.length;
-      
-      words.forEach(word => {
-        wordCounts[word] = (wordCounts[word] || 0) + 1;
-      });
     });
   });
   
-  // Calculate density for top keywords
-  if (totalWords > 0) {
-    Object.entries(wordCounts)
-      .sort(([, countA], [, countB]) => countB - countA)
-      .slice(0, 10)
-      .forEach(([word, count]) => {
-        keywordDensity[word] = +(count / totalWords * 100).toFixed(2);
-      });
+  const wordCount = contentText.split(/\s+/).filter(Boolean).length;
+  
+  if (wordCount < 300) {
+    contentAnalysis.push("Content is too short (< 300 words).");
+  } else if (wordCount >= 300 && wordCount < 600) {
+    contentScore += 5;
+    contentAnalysis.push("Content length is acceptable (300-599 words).");
+  } else if (wordCount >= 600 && wordCount < 1200) {
+    contentScore += 10;
+    contentAnalysis.push("Content length is good (600-1199 words).");
+  } else {
+    contentScore += 15;
+    contentAnalysis.push("Content length is excellent (1200+ words).");
   }
   
-  return keywordDensity;
-}
-
-/**
- * Calculate readability score for a page
- */
-function calculateReadabilityScore(
-  sections: (PageBuilderSection & { components: PageBuilderComponent[] })[]
-): number {
-  // Simplified implementation - can be expanded with more complex algorithms
-  let totalSentences = 0;
-  let totalWords = 0;
-  let longWordCount = 0;
-  
-  // Extract text content
-  sections.forEach(section => {
-    section.components.forEach(component => {
-      let text = '';
-      
-      // Extract text based on component type
-      if (component.type === 'paragraph' || component.type === 'rich-text') {
-        text = extractTextFromHtml(component.content);
-      } else if (component.type === 'heading') {
-        text = component.content?.text || '';
-      } else if (component.type === 'list') {
-        const items = component.content?.items || [];
-        text = items.join('. ');
-      }
-      
-      // Count sentences
-      const sentences = text.split(/[.!?]+/).filter(sentence => sentence.trim().length > 0);
-      totalSentences += sentences.length;
-      
-      // Count words
-      const words = text.split(/\s+/).filter(word => word.trim().length > 0);
-      totalWords += words.length;
-      
-      // Count long words (more than 6 characters)
-      longWordCount += words.filter(word => word.length > 6).length;
-    });
-  });
-  
-  if (totalWords === 0 || totalSentences === 0) {
-    return 50; // Default score for empty content
-  }
-  
-  // Calculate average words per sentence
-  const avgWordsPerSentence = totalWords / totalSentences;
-  
-  // Calculate percentage of long words
-  const longWordPercentage = longWordCount / totalWords * 100;
-  
-  // Calculate simplified readability score (0-100)
-  // Lower avg words per sentence and lower percentage of long words = higher readability
-  const sentenceScore = Math.max(0, 100 - (avgWordsPerSentence - 10) * 5);
-  const wordScore = Math.max(0, 100 - longWordPercentage * 2);
-  
-  const readabilityScore = Math.round((sentenceScore + wordScore) / 2);
-  
-  return Math.min(Math.max(readabilityScore, 0), 100);
-}
-
-/**
- * Check if a page is optimized for mobile
- */
-function checkMobileOptimization(
-  sections: (PageBuilderSection & { components: PageBuilderComponent[] })[]
-): boolean {
-  // Check for mobile-friendly settings
-  let isMobileOptimized = true;
-  
-  // Check for responsive sections
-  for (const section of sections) {
-    // Check if section has responsive settings
-    const settings = section.settings || {};
+  // Check keyword usage in content
+  if (pageContent.seoSettings?.primaryKeyword) {
+    const primaryKeyword = pageContent.seoSettings.primaryKeyword.toLowerCase();
+    const primaryKeywordCount = (contentText.toLowerCase().match(new RegExp(primaryKeyword, 'g')) || []).length;
+    const keywordDensity = primaryKeywordCount / wordCount * 100;
     
-    // Check for potential mobile issues
-    if (settings.fullWidth === false && (!settings.padding || settings.padding.left < 16 || settings.padding.right < 16)) {
-      isMobileOptimized = false;
-      break;
-    }
-    
-    // Check component spacing
-    for (const component of section.components) {
-      // Check for potentially non-mobile-friendly components
-      if (component.type === 'columns' && component.settings?.columns > 2) {
-        isMobileOptimized = false;
-        break;
-      }
-      
-      // Check for image size issues
-      if (component.type === 'image' && component.settings?.width === 'fixed' && component.settings?.fixedWidth > 600) {
-        isMobileOptimized = false;
-        break;
-      }
-    }
-    
-    if (!isMobileOptimized) {
-      break;
+    if (keywordDensity > 0 && keywordDensity <= 2.5) {
+      contentScore += 10;
+      contentAnalysis.push(`Good primary keyword density (${keywordDensity.toFixed(1)}%).`);
+    } else if (keywordDensity > 2.5) {
+      contentScore += 5;
+      contentAnalysis.push(`Primary keyword may be overused (${keywordDensity.toFixed(1)}%).`);
+    } else {
+      contentAnalysis.push("Primary keyword not found in content.");
     }
   }
   
-  return isMobileOptimized;
-}
-
-/**
- * Extract plain text from HTML content
- */
-function extractTextFromHtml(content: any): string {
-  if (!content) return '';
+  results.categoryScores.content = Math.min(contentScore, 25);
+  results.analysis.content = contentAnalysis.join(" ");
   
-  let html = '';
+  // Check structure
+  let structureScore = 0;
+  let structureAnalysis = [];
   
-  if (typeof content === 'string') {
-    html = content;
-  } else if (content.html) {
-    html = content.html;
-  } else if (content.text) {
-    return content.text;
+  if (headingsCount === 0) {
+    structureAnalysis.push("No headings found in content.");
+  } else {
+    structureScore += 5;
+    structureAnalysis.push(`${headingsCount} headings found in content.`);
   }
   
-  // Simple HTML tag removal (for more advanced parsing, use a proper HTML parser)
-  return html.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+  // Assume a good structure has at least 3 sections
+  if (pageContent.sections.length < 3) {
+    structureAnalysis.push("Consider adding more sections to improve structure.");
+  } else {
+    structureScore += 5;
+    structureAnalysis.push(`Good number of sections (${pageContent.sections.length}).`);
+  }
+  
+  results.categoryScores.structure = Math.min(structureScore, 10);
+  results.analysis.structure = structureAnalysis.join(" ");
+  
+  // Check images
+  let imageScore = 0;
+  let imageAnalysis = [];
+  
+  if (imagesCount === 0) {
+    imageAnalysis.push("No images found in content.");
+  } else {
+    imageScore += 5;
+    imageAnalysis.push(`${imagesCount} images found in content.`);
+    
+    if (imageWithAltCount === imagesCount) {
+      imageScore += 5;
+      imageAnalysis.push("All images have alt text.");
+    } else if (imageWithAltCount > 0) {
+      imageScore += 3;
+      imageAnalysis.push(`${imageWithAltCount} out of ${imagesCount} images have alt text.`);
+    } else {
+      imageAnalysis.push("No images have alt text.");
+    }
+  }
+  
+  results.categoryScores.images = Math.min(imageScore, 10);
+  results.analysis.images = imageAnalysis.join(" ");
+  
+  // Sum up all scores
+  const totalPossibleScore = 100;
+  const actualScore = 
+    results.categoryScores.title + 
+    results.categoryScores.description + 
+    results.categoryScores.keywords + 
+    results.categoryScores.content + 
+    results.categoryScores.structure + 
+    results.categoryScores.images;
+  
+  results.overallScore = Math.min(Math.round(actualScore), totalPossibleScore);
+  
+  return results;
 }

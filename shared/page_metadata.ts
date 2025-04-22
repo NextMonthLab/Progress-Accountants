@@ -9,6 +9,8 @@ export interface PageSeoMetadata {
   canonical?: string;
   keywords?: string[];
   ogImage?: string;
+  primaryKeyword?: string;
+  seoGoal?: 'local' | 'industry' | 'conversion' | 'technical';
 }
 
 export interface PageMetadata {

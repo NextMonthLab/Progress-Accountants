@@ -123,3 +123,40 @@ export async function handleSsoAuth(token: string): Promise<User | null> {
     return null;
   }
 }
+
+/**
+ * Extract tenant ID from request
+ * First checks JWT token, then falls back to req.user
+ */
+export function extractTenantId(req: Request): string | undefined {
+  // Try to get from JWT
+  const authHeader = req.headers.authorization;
+  if (authHeader && authHeader.startsWith("Bearer ")) {
+    const token = authHeader.split(" ")[1];
+    const payload = verifyToken(token);
+    
+    if (payload && payload.tenantId) {
+      return payload.tenantId;
+    }
+  }
+  
+  // Fall back to req.user
+  if (req.user && (req.user as any).tenantId) {
+    return (req.user as any).tenantId;
+  }
+  
+  return undefined;
+}
+
+/**
+ * Get JWT payload from request
+ */
+export function getJwtPayload(req: Request): JwtPayload | null {
+  const authHeader = req.headers.authorization;
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    return null;
+  }
+  
+  const token = authHeader.split(" ")[1];
+  return verifyToken(token);
+}
