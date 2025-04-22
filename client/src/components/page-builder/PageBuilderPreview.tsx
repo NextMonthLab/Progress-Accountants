@@ -1,5 +1,6 @@
 import React from "react";
 import { Card } from "@/components/ui/card";
+import { FormComponent, MapComponent, AccordionComponent } from "./PageBuilderInteractiveComponents";
 
 interface PageBuilderComponent {
   id: number;
@@ -91,6 +92,12 @@ const PageBuilderPreview: React.FC<PageBuilderPreviewProps> = ({ page, deviceTyp
         return renderCard(component);
       case 'cta':
         return renderCta(component);
+      case 'form':
+        return <FormComponent content={component.content || {}} />;
+      case 'map':
+        return <MapComponent content={component.content || {}} />;
+      case 'accordion':
+        return <AccordionComponent content={component.content || {}} />;
       default:
         return <div className="p-4 border border-dashed border-gray-300 rounded">Component: {component.type}</div>;
     }

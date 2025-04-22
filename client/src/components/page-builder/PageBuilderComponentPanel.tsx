@@ -293,13 +293,15 @@ const PageBuilderComponentPanel: React.FC<PageBuilderComponentPanelProps> = ({
         </CardHeader>
         <CardContent>
           <Tabs defaultValue="basic">
-            <TabsList className="grid grid-cols-5 mb-4">
-              <TabsTrigger value="basic">Basic</TabsTrigger>
-              <TabsTrigger value="layout">Layout</TabsTrigger>
-              <TabsTrigger value="media">Media</TabsTrigger>
-              <TabsTrigger value="interactive">Forms</TabsTrigger>
-              <TabsTrigger value="advanced">Advanced</TabsTrigger>
-            </TabsList>
+            <div className="overflow-x-auto pb-2">
+              <TabsList className="w-full mb-4">
+                <TabsTrigger value="basic" className="flex-1 px-3">Basic</TabsTrigger>
+                <TabsTrigger value="layout" className="flex-1 px-3">Layout</TabsTrigger>
+                <TabsTrigger value="media" className="flex-1 px-3">Media</TabsTrigger>
+                <TabsTrigger value="interactive" className="flex-1 px-3">Forms</TabsTrigger>
+                <TabsTrigger value="advanced" className="flex-1 px-3">Advanced</TabsTrigger>
+              </TabsList>
+            </div>
             
             {['basic', 'layout', 'media', 'interactive', 'advanced'].map((category) => (
               <TabsContent key={category} value={category} className="space-y-4">

@@ -359,12 +359,54 @@ const PageBuilderContent: React.FC = () => {
         };
       case "form":
         return {
+          title: "Contact Form",
+          description: "Fill out the form below and we'll get back to you.",
           fields: [
-            { type: "text", label: "Name", required: true },
-            { type: "email", label: "Email", required: true },
-            { type: "textarea", label: "Message", required: false }
+            { type: "text", label: "Name", required: true, placeholder: "Your name" },
+            { type: "email", label: "Email", required: true, placeholder: "your.email@example.com" },
+            { type: "tel", label: "Phone", required: false, placeholder: "(123) 456-7890" },
+            { type: "select", label: "Subject", required: true, options: ["General Inquiry", "Support", "Feedback"] },
+            { type: "textarea", label: "Message", required: true, placeholder: "How can we help you?" }
           ],
-          submitText: "Submit"
+          submitText: "Send Message",
+          successMessage: "Thank you! Your message has been sent successfully.",
+          errorMessage: "Something went wrong. Please try again later.",
+          emailTarget: "" // Will be set by admin during configuration
+        };
+      case "map":
+        return {
+          address: "123 Main Street, Anytown, CA 12345",
+          title: "Our Location",
+          description: "We're located in the heart of downtown.",
+          height: 400,
+          showControls: true,
+          zoom: 14,
+          markers: [
+            {
+              lat: 37.7749, 
+              lng: -122.4194,
+              title: "Our Office"
+            }
+          ]
+        };
+      case "accordion":
+        return {
+          title: "Frequently Asked Questions",
+          items: [
+            { 
+              title: "How do I get started?", 
+              content: "Getting started is easy! Simply register for an account and follow the onboarding process." 
+            },
+            { 
+              title: "What payment methods do you accept?", 
+              content: "We accept all major credit cards, PayPal, and bank transfers." 
+            },
+            { 
+              title: "Do you offer refunds?", 
+              content: "Yes, we offer a 30-day money-back guarantee on all our services." 
+            }
+          ],
+          allowMultiple: false
         };
       case "video":
         return {
