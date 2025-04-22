@@ -24,7 +24,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Check, LayoutTemplate, Sparkles, BookOpen } from "lucide-react";
+import { Check, LayoutTemplate, Sparkles, BookOpen, Eye } from "lucide-react";
 
 // Define template categories
 type TemplateCategory = 'landing' | 'about' | 'services' | 'contact' | 'blog' | 'pricing' | 'faq' | 'portfolio';
