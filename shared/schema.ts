@@ -222,6 +222,215 @@ export const onboardingStateRelations = relations(onboardingState, ({ one }) => 
   }),
 }));
 
+// Page Builder tables
+// Main table for storing pages created with the page builder
+export const pageBuilderPages = pgTable("page_builder_pages", {
+  id: serial("id").primaryKey(),
+  tenantId: uuid("tenant_id").references(() => tenants.id).notNull(),
+  name: varchar("name", { length: 255 }).notNull(),
+  slug: varchar("slug", { length: 255 }).notNull(),
+  description: text("description"),
+  template: varchar("template", { length: 255 }),
+  status: varchar("status", { length: 20 }).default("draft").notNull(), // draft, in_progress, published, archived
+  pageType: varchar("page_type", { length: 20 }).default("custom").notNull(), // core, custom, automation
+  metadata: jsonb("metadata"), // Storing the PageMetadata object
+  seo: jsonb("seo"), // Storing the PageSeoMetadata object
+  businessContext: jsonb("business_context"), // Business context data
+  analytics: jsonb("analytics"), // Page analytics data
+  version: integer("version").default(1),
+  published: boolean("published").default(false),
+  publishedAt: timestamp("published_at"),
+  complexity: varchar("complexity", { length: 20 }), // simple, moderate, complex
+  author: integer("author").references(() => users.id),
+  lastEditedBy: integer("last_edited_by").references(() => users.id),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export const insertPageBuilderPageSchema = createInsertSchema(pageBuilderPages).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+// Page sections (top-level organization of the page)
+export const pageBuilderSections = pgTable("page_builder_sections", {
+  id: serial("id").primaryKey(),
+  pageId: integer("page_id").references(() => pageBuilderPages.id).notNull(),
+  name: varchar("name", { length: 255 }).notNull(),
+  description: text("description"),
+  order: integer("order").default(0).notNull(),
+  settings: jsonb("settings"), // Section settings (background, padding, etc)
+  seoWeight: integer("seo_weight"), // Importance of this section for SEO (1-10)
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export const insertPageBuilderSectionSchema = createInsertSchema(pageBuilderSections).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+// Components within sections
+export const pageBuilderComponents = pgTable("page_builder_components", {
+  id: serial("id").primaryKey(),
+  sectionId: integer("section_id").references(() => pageBuilderSections.id).notNull(),
+  componentType: varchar("component_type", { length: 50 }).notNull(), // References ComponentType
+  context: varchar("context", { length: 50 }).default("universal").notNull(), // References ComponentContext
+  settings: jsonb("settings").notNull(), // Component settings
+  content: jsonb("content"), // Component content data
+  metadata: jsonb("metadata"), // Component metadata
+  order: integer("order").default(0).notNull(),
+  parentId: integer("parent_id").references(() => pageBuilderComponents.id), // For nested components
+  seoImpact: varchar("seo_impact", { length: 20 }).default("low"), // References SeoImpactLevel
+  analytics: jsonb("analytics"), // Component-specific analytics
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export const insertPageBuilderComponentSchema = createInsertSchema(pageBuilderComponents).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+// Page templates
+export const pageBuilderTemplates = pgTable("page_builder_templates", {
+  id: serial("id").primaryKey(),
+  name: varchar("name", { length: 255 }).notNull(),
+  description: text("description"),
+  industry: jsonb("industry"), // Array of industry types
+  purpose: varchar("purpose", { length: 255 }),
+  structure: jsonb("structure"), // Template structure
+  seoRecommendations: jsonb("seo_recommendations"), // SEO recommendations for this template
+  complexity: varchar("complexity", { length: 20 }).default("simple"), // simple, moderate, complex
+  author: integer("author").references(() => users.id),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export const insertPageBuilderTemplateSchema = createInsertSchema(pageBuilderTemplates).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+// Component library
+export const pageBuilderComponentLibrary = pgTable("page_builder_component_library", {
+  id: serial("id").primaryKey(),
+  type: varchar("type", { length: 50 }).notNull(), // References ComponentType
+  name: varchar("name", { length: 255 }).notNull(),
+  description: text("description"),
+  thumbnail: varchar("thumbnail", { length: 255 }),
+  defaultSettings: jsonb("default_settings"),
+  seoImpact: varchar("seo_impact", { length: 20 }).default("low"), // References SeoImpactLevel
+  context: jsonb("context"), // Array of ComponentContext values
+  recommended: boolean("recommended").default(false),
+  premium: boolean("premium").default(false),
+  complexity: varchar("complexity", { length: 20 }).default("simple"), // simple, moderate, complex
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export const insertPageBuilderComponentLibrarySchema = createInsertSchema(pageBuilderComponentLibrary).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+// AI recommendations for pages
+export const pageBuilderRecommendations = pgTable("page_builder_recommendations", {
+  id: serial("id").primaryKey(),
+  pageId: integer("page_id").references(() => pageBuilderPages.id).notNull(),
+  type: varchar("type", { length: 50 }).notNull(), // seo, content, structure, performance
+  message: text("message").notNull(),
+  severity: varchar("severity", { length: 20 }).notNull(), // suggestion, recommendation, critical
+  details: text("details"),
+  affectedComponents: jsonb("affected_components"),
+  improvement: text("improvement"),
+  autoFixAvailable: boolean("auto_fix_available").default(false),
+  dismissed: boolean("dismissed").default(false),
+  applied: boolean("applied").default(false),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export const insertPageBuilderRecommendationSchema = createInsertSchema(pageBuilderRecommendations).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+// Version history for pages
+export const pageBuilderVersionHistory = pgTable("page_builder_version_history", {
+  id: serial("id").primaryKey(),
+  pageId: integer("page_id").references(() => pageBuilderPages.id).notNull(),
+  version: integer("version").default(1).notNull(),
+  snapshot: jsonb("snapshot").notNull(), // Full snapshot of the page at this version
+  changes: text("changes"), // Description of changes
+  createdBy: integer("created_by").references(() => users.id),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export const insertPageBuilderVersionHistorySchema = createInsertSchema(pageBuilderVersionHistory).omit({
+  id: true,
+  createdAt: true,
+});
+
+// Define relationships for page builder tables
+export const pageBuilderPagesRelations = relations(pageBuilderPages, ({ many, one }) => ({
+  sections: many(pageBuilderSections),
+  recommendations: many(pageBuilderRecommendations),
+  versionHistory: many(pageBuilderVersionHistory),
+  author: one(users, {
+    fields: [pageBuilderPages.author],
+    references: [users.id],
+  }),
+  lastEditor: one(users, {
+    fields: [pageBuilderPages.lastEditedBy],
+    references: [users.id],
+  }),
+}));
+
+export const pageBuilderSectionsRelations = relations(pageBuilderSections, ({ many, one }) => ({
+  page: one(pageBuilderPages, {
+    fields: [pageBuilderSections.pageId],
+    references: [pageBuilderPages.id],
+  }),
+  components: many(pageBuilderComponents),
+}));
+
+export const pageBuilderComponentsRelations = relations(pageBuilderComponents, ({ many, one }) => ({
+  section: one(pageBuilderSections, {
+    fields: [pageBuilderComponents.sectionId],
+    references: [pageBuilderSections.id],
+  }),
+  parent: one(pageBuilderComponents, {
+    fields: [pageBuilderComponents.parentId],
+    references: [pageBuilderComponents.id],
+  }),
+  children: many(pageBuilderComponents, { relationName: "childComponents" }),
+}));
+
+export const pageBuilderRecommendationsRelations = relations(pageBuilderRecommendations, ({ one }) => ({
+  page: one(pageBuilderPages, {
+    fields: [pageBuilderRecommendations.pageId],
+    references: [pageBuilderPages.id],
+  }),
+}));
+
+export const pageBuilderVersionHistoryRelations = relations(pageBuilderVersionHistory, ({ one }) => ({
+  page: one(pageBuilderPages, {
+    fields: [pageBuilderVersionHistory.pageId],
+    references: [pageBuilderPages.id],
+  }),
+  creator: one(users, {
+    fields: [pageBuilderVersionHistory.createdBy],
+    references: [users.id],
+  }),
+}));
+
 // Module activation logging
 export const moduleActivations = pgTable("module_activations", {
   id: serial("id").primaryKey(),
