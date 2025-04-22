@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useLocation } from "wouter";
-import AdminLayout from "@/layouts/AdminLayout";
 import { Button } from "@/components/ui/button";
 import {
   Table,
@@ -253,76 +252,71 @@ const PageBuilderListPage: React.FC = () => {
   // Loading state
   if (isLoading) {
     return (
-      <AdminLayout>
-        <div className="container px-8 py-6">
-          <div className="flex justify-between items-center mb-8">
-            <div>
-              <h1 className="text-3xl font-bold tracking-tight">Page Builder</h1>
-              <p className="text-muted-foreground mt-1">Create and manage your pages</p>
-            </div>
-            <Skeleton className="h-10 w-28" />
+      <div className="container px-8 py-6">
+        <div className="flex justify-between items-center mb-8">
+          <div>
+            <h1 className="text-3xl font-bold tracking-tight">Page Builder</h1>
+            <p className="text-muted-foreground mt-1">Create and manage your pages</p>
           </div>
-          
-          <div className="mb-6">
-            <Skeleton className="h-10 w-full mb-4" />
-            <div className="flex gap-4 mb-4">
-              <Skeleton className="h-10 w-48" />
-              <Skeleton className="h-10 w-48" />
-            </div>
-          </div>
-          
-          <Skeleton className="h-64 w-full" />
+          <Skeleton className="h-10 w-28" />
         </div>
-      </AdminLayout>
+        
+        <div className="mb-6">
+          <Skeleton className="h-10 w-full mb-4" />
+          <div className="flex gap-4 mb-4">
+            <Skeleton className="h-10 w-48" />
+            <Skeleton className="h-10 w-48" />
+          </div>
+        </div>
+        
+        <Skeleton className="h-64 w-full" />
+      </div>
     );
   }
   
   // Error state
   if (error) {
     return (
-      <AdminLayout>
-        <div className="container px-8 py-6">
-          <div className="flex flex-col items-center justify-center h-96">
-            <h2 className="text-2xl font-bold text-destructive mb-4">Error</h2>
-            <p className="text-muted-foreground mb-6">{(error as Error).message}</p>
-            <Button onClick={() => window.location.reload()}>
-              Reload Page
-            </Button>
-          </div>
+      <div className="container px-8 py-6">
+        <div className="flex flex-col items-center justify-center h-96">
+          <h2 className="text-2xl font-bold text-destructive mb-4">Error</h2>
+          <p className="text-muted-foreground mb-6">{(error as Error).message}</p>
+          <Button onClick={() => window.location.reload()}>
+            Reload Page
+          </Button>
         </div>
-      </AdminLayout>
+      </div>
     );
   }
   
   return (
-    <AdminLayout>
-      <div className="container px-8 py-6">
-        <div className="flex justify-between items-center mb-8">
-          <div>
-            <h1 className="text-3xl font-bold tracking-tight">Page Builder</h1>
-            <p className="text-muted-foreground mt-1">Create and manage your pages with the Advanced Page Builder</p>
-          </div>
-          <Button 
-            onClick={() => navigate("/admin/page-builder/new")}
-          >
-            <Plus className="h-4 w-4 mr-2" />
-            Create New Page
-          </Button>
+    <div className="container px-8 py-6">
+      <div className="flex justify-between items-center mb-8">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight">Page Builder</h1>
+          <p className="text-muted-foreground mt-1">Create and manage your pages with the Advanced Page Builder</p>
         </div>
-        
-        <Card className="mb-6">
-          <CardContent className="pt-6">
-            <div className="mb-4">
-              <div className="relative">
-                <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-                <Input
-                  placeholder="Search pages by title, description or path..."
-                  className="pl-8"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                />
-              </div>
+        <Button 
+          onClick={() => navigate("/admin/page-builder/new")}
+        >
+          <Plus className="h-4 w-4 mr-2" />
+          Create New Page
+        </Button>
+      </div>
+      
+      <Card className="mb-6">
+        <CardContent className="pt-6">
+          <div className="mb-4">
+            <div className="relative">
+              <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+              <Input
+                placeholder="Search pages by title, description or path..."
+                className="pl-8"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
             </div>
+          </div>
             
             <div className="flex flex-col sm:flex-row gap-4">
               <div className="w-full sm:w-48">
@@ -793,8 +787,16 @@ const PageBuilderListPage: React.FC = () => {
           </CardContent>
         </Card>
       </div>
+  );
+};
+
+// Create a wrapper component for AdminLayout
+const PageBuilderListPageWithAdmin: React.FC = () => {
+  return (
+    <AdminLayout>
+      <PageBuilderListPage />
     </AdminLayout>
   );
 };
 
-export default PageBuilderListPage;
+export default PageBuilderListPageWithAdmin;
