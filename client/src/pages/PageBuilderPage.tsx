@@ -110,7 +110,7 @@ const PageBuilderContent: React.FC = () => {
       
       if (isNewPage) {
         // Redirect to the edit page
-        navigate(`/admin/page-builder/${data.data.id}`);
+        navigate(`/page-builder/${data.data.id}`);
         toast({
           title: "Page created",
           description: "The page has been created successfully."
@@ -142,7 +142,7 @@ const PageBuilderContent: React.FC = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/page-builder/pages'] });
-      navigate("/admin/page-builder");
+      navigate("/page-builder");
       toast({
         title: "Page deleted",
         description: "The page has been deleted successfully."
@@ -730,7 +730,7 @@ const PageBuilderContent: React.FC = () => {
           <h2 className="text-2xl font-bold text-destructive mb-4">Error</h2>
           <p className="text-muted-foreground mb-6">{(error as Error).message}</p>
           <div className="flex gap-4">
-            <Button onClick={() => navigate("/admin/page-builder")}>
+            <Button onClick={() => navigate("/page-builder")}>
               <ChevronLeft className="h-4 w-4 mr-2" />
               Back to Pages
             </Button>
@@ -753,7 +753,7 @@ const PageBuilderContent: React.FC = () => {
       <Button 
         variant="ghost" 
         className="p-0 mb-6 hover:bg-transparent"
-        onClick={() => navigate("/admin/page-builder")}
+        onClick={() => navigate("/page-builder")}
       >
         <ChevronLeft className="h-4 w-4 mr-1" />
         <span>Back to Pages</span>
@@ -983,7 +983,7 @@ const PageBuilderContent: React.FC = () => {
         <div className="flex items-center gap-2">
           <Button 
             variant="outline" 
-            onClick={() => navigate("/admin/page-builder")}
+            onClick={() => navigate("/page-builder")}
           >
             <CornerUpLeft className="h-4 w-4 mr-2" />
             Cancel
