@@ -15,13 +15,25 @@ import { desc, eq, and } from "drizzle-orm";
 
 // Helper function to check if a table exists
 export async function checkIfTableExists(tableName: string): Promise<boolean> {
-  const result = await db.execute(sql`
-    SELECT EXISTS (
-      SELECT FROM information_schema.tables 
-      WHERE table_schema = 'public' AND table_name = ${tableName}
-    );
-  `);
-  return result.rows[0].exists;
+  try {
+    const result = await db.execute(sql`
+      SELECT EXISTS (
+        SELECT FROM information_schema.tables 
+        WHERE table_schema = 'public' AND table_name = ${tableName}
+      ) as "exists";
+    `);
+    
+    // Handle the boolean explicitly
+    if (result.rows && result.rows.length > 0) {
+      const exists = result.rows[0].exists;
+      return typeof exists === 'boolean' ? exists : exists === 'true' || exists === 't' || exists === '1';
+    }
+    
+    return false;
+  } catch (error) {
+    console.error('Error checking if table exists:', error);
+    return false;
+  }
 }
 
 export const pageBuilderController = {

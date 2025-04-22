@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { useLocation, useNavigate } from "wouter";
+import { useLocation } from "wouter";
 import AdminLayout from "@/layouts/AdminLayout";
 import { Button } from "@/components/ui/button";
 import {
@@ -58,7 +58,12 @@ interface PageInfo {
 }
 
 const PageBuilderListPage: React.FC = () => {
-  const [, navigate] = useLocation();
+  const [, setLocation] = useLocation();
+  
+  // Helper function to navigate to different routes
+  const navigate = (path: string) => {
+    setLocation(path);
+  };
   const queryClient = useQueryClient();
   const [searchQuery, setSearchQuery] = useState("");
   const [pageTypeFilter, setPageTypeFilter] = useState<string>("all");
@@ -299,7 +304,7 @@ const PageBuilderListPage: React.FC = () => {
           <p className="text-muted-foreground mt-1">Create and manage your pages with the Advanced Page Builder</p>
         </div>
         <Button 
-          onClick={() => navigate("/admin/page-builder/new")}
+          onClick={() => window.location.href = "/admin/page-builder/new"}
         >
           <Plus className="h-4 w-4 mr-2" />
           Create New Page
