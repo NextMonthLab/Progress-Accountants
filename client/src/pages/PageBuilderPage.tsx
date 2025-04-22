@@ -32,7 +32,9 @@ import {
 } from "lucide-react";
 
 // Internal component that does NOT include AdminLayout
+// Fixed: Adding console logs to debug the component loading
 const PageBuilderContent: React.FC = () => {
+  console.log("PageBuilderContent is rendering");
   const { id } = useParams<{ id: string }>();
   const isNewPage = !id || id === "new";
   const [, setLocation] = useLocation();
@@ -1009,9 +1011,16 @@ const PageBuilderContent: React.FC = () => {
 
 // Wrapper component that includes AdminLayout
 const PageBuilderPage: React.FC = () => {
+  console.log("PageBuilderPage: Main wrapper component rendering");
+  // Fix: We're having an issue where the page isn't rendering
+  // Let's try to simplify to diagnose the problem
   return (
     <AdminLayout>
-      <PageBuilderContent />
+      <div className="p-6">
+        <h1 className="text-3xl font-bold mb-4">Page Builder</h1>
+        <p>If you see this text, the basic component is rendering correctly.</p>
+        <PageBuilderContent />
+      </div>
     </AdminLayout>
   );
 };
