@@ -1770,12 +1770,11 @@ function createPortfolioPageTemplate(type: string) {
 const PageBuilderTemplateGallery: React.FC<PageBuilderTemplateGalleryProps> = ({
   onSelectTemplate
 }) => {
-  const [selectedCategory, setSelectedCategory] = useState<TemplateCategory>('landing');
   const [selectedTemplate, setSelectedTemplate] = useState<PageTemplate | null>(null);
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
 
-  // Filter templates by category
-  const filteredTemplates = sampleTemplates.filter(template => template.category === selectedCategory);
+  // We'll filter templates directly in the tabs, so we don't need this filtering here
+  const filteredTemplates = sampleTemplates;
   
   // Featured templates across categories
   const featuredTemplates = sampleTemplates.filter(template => template.isFeatured);
