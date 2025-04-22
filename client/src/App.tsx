@@ -61,6 +61,7 @@ import CreateNewPagePage from "@/pages/CreateNewPagePage";
 // Admin settings pages
 import TenantCustomizationPage from "@/pages/admin/TenantCustomizationPage";
 import ThemeManagementPage from "@/pages/admin/ThemeManagementPage";
+import SiteBrandingPage from "@/pages/admin/SiteBrandingPage";
 // Page Builder pages
 import PageBuilderListPage from "@/pages/PageBuilderListPage";
 import PageBuilderPage from "@/pages/PageBuilderPage";
@@ -150,6 +151,11 @@ function Router() {
       <ProtectedRoute 
         path="/admin/theme-management" 
         component={ThemeManagementPage} 
+        allowedRoles={['admin', 'super_admin']} 
+      />
+      <ProtectedRoute 
+        path="/admin/site-branding" 
+        component={SiteBrandingPage} 
         allowedRoles={['admin', 'super_admin']} 
       />
       <ProtectedRoute 

@@ -17,12 +17,75 @@ import {
   MessageCircle,
   FileText,
   PlusCircle,
-  Layers
+  Layers,
+  Image
 } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { getSiteBranding } from "@/lib/api";
+import { defaultSiteBranding, SiteBranding } from "@shared/site_branding";
+
+// Admin sidebar logo component
+function AdminSidebarLogo({ collapsed }: { collapsed: boolean }) {
+  const [siteBranding, setSiteBranding] = useState<SiteBranding>(defaultSiteBranding);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const loadBranding = async () => {
+      setIsLoading(true);
+      try {
+        const brandingData = await getSiteBranding();
+        if (brandingData) {
+          setSiteBranding(brandingData);
+        }
+      } catch (error) {
+        console.error("Error loading site branding for admin sidebar:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadBranding();
+  }, []);
+
+  if (collapsed) {
+    return null;
+  }
+
+  // Display image logo if available, otherwise use text logo
+  if (siteBranding.logo.imageUrl) {
+    return (
+      <Link href="/client-dashboard" className="no-underline flex items-center">
+        <img 
+          src={siteBranding.logo.imageUrl} 
+          alt={siteBranding.logo.altText} 
+          className="max-h-8 object-contain"
+        />
+        <span className="ml-2 font-bold text-[var(--orange)]">Admin</span>
+      </Link>
+    );
+  }
+
+  // Default text logo with "Admin" suffix
+  const logoText = siteBranding.logo.text;
+  const words = logoText.split(" ");
+  
+  return (
+    <Link href="/client-dashboard" className="font-poppins font-bold text-xl no-underline" style={{ color: 'var(--navy)' }}>
+      {words.length > 1 ? (
+        <>
+          <span>{words.slice(0, -1).join(" ")} </span>
+          <span style={{ color: 'var(--navy)' }}>{words[words.length - 1]} </span>
+        </>
+      ) : (
+        <span>{logoText} </span>
+      )}
+      <span style={{ color: 'var(--orange)' }}>Admin</span>
+    </Link>
+  );
+}
 
 type SidebarItem = {
   title: string;
@@ -163,6 +226,12 @@ export default function AdminSidebar() {
           requiresStaff: true 
         },
         { 
+          title: "Site Branding", 
+          href: "/admin/site-branding", 
+          icon: <Image className="h-5 w-5" />,
+          requiresStaff: true 
+        },
+        { 
           title: "Tenant Customization", 
           href: "/admin/tenant", 
           icon: <Settings className="h-5 w-5" />,
@@ -202,11 +271,7 @@ export default function AdminSidebar() {
     >
       {/* Sidebar Header */}
       <div className="h-16 border-b border-gray-200 flex items-center justify-between px-4">
-        {!collapsed && (
-          <Link href="/client-dashboard" className="font-poppins font-bold text-xl no-underline" style={{ color: 'var(--navy)' }}>
-            Progress <span style={{ color: 'var(--orange)' }}>Admin</span>
-          </Link>
-        )}
+        <AdminSidebarLogo collapsed={collapsed} />
         <button
           onClick={toggleSidebar}
           className="p-2 rounded-md hover:bg-gray-100 transition-colors"

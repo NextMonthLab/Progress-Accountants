@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
 import { 
   Menu, X, LayoutDashboard, ChevronDown, Users, Briefcase, 
@@ -8,6 +8,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/use-auth";
 import { useTenant } from "@/hooks/use-tenant";
+import { getSiteBranding } from "@/lib/api";
+import { defaultSiteBranding, SiteBranding } from "@shared/site_branding";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,6 +18,57 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+
+// NavbarLogo component for displaying site branding
+function NavbarLogo() {
+  const [siteBranding, setSiteBranding] = useState<SiteBranding>(defaultSiteBranding);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const loadBranding = async () => {
+      setIsLoading(true);
+      try {
+        const brandingData = await getSiteBranding();
+        if (brandingData) {
+          setSiteBranding(brandingData);
+        }
+      } catch (error) {
+        console.error("Error loading site branding for logo:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadBranding();
+  }, []);
+
+  // Display image logo if available, otherwise use text logo
+  if (siteBranding.logo.imageUrl) {
+    return (
+      <Link href="/" className="no-underline flex items-center">
+        <img 
+          src={siteBranding.logo.imageUrl} 
+          alt={siteBranding.logo.altText} 
+          className="max-h-10 object-contain"
+        />
+      </Link>
+    );
+  }
+
+  // Default text logo
+  return (
+    <Link href="/" className="font-poppins font-bold text-2xl no-underline" style={{ color: 'var(--navy)' }}>
+      {siteBranding.logo.text.includes(" ") 
+        ? siteBranding.logo.text.split(" ").map((word, index, arr) => (
+            <span key={index} style={{ color: index === arr.length - 1 ? 'var(--orange)' : 'var(--navy)' }}>
+              {word}{index < arr.length - 1 ? " " : ""}
+            </span>
+          ))
+        : siteBranding.logo.text
+      }
+    </Link>
+  );
+}
 
 // Define menu item groups
 type MenuItem = {
@@ -124,9 +177,7 @@ export default function Navbar() {
     <header className="bg-white sticky top-0 z-50 shadow-sm">
       <nav className="container mx-auto px-4 py-4 flex justify-between items-center">
         <div className="flex items-center">
-          <Link href="/" className="font-poppins font-bold text-2xl no-underline" style={{ color: 'var(--navy)' }}>
-            Progress <span style={{ color: 'var(--orange)' }}>Accountants</span>
-          </Link>
+          <NavbarLogo />
         </div>
         
         {/* Desktop Menu - Public-facing menu only */}

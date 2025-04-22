@@ -285,3 +285,41 @@ export async function generateSitemap() {
   const data = await response.json();
   return data;
 }
+
+// Site Branding API functions
+export async function getSiteBranding() {
+  // For now, we'll handle this client-side with localStorage
+  try {
+    const storedData = localStorage.getItem('site_branding');
+    if (storedData) {
+      return JSON.parse(storedData);
+    }
+    return null;
+  } catch (error) {
+    console.error('Error fetching site branding:', error);
+    return null;
+  }
+}
+
+export async function saveSiteBranding(branding: any) {
+  // For now, we'll handle this client-side with localStorage
+  try {
+    // Add last updated timestamp
+    const updatedBranding = {
+      ...branding,
+      lastUpdated: new Date().toISOString()
+    };
+    
+    localStorage.setItem('site_branding', JSON.stringify(updatedBranding));
+    
+    // In a future implementation, this would be an API call:
+    // const response = await apiRequest('POST', '/api/site-branding', updatedBranding);
+    // const data = await response.json();
+    // queryClient.invalidateQueries({ queryKey: ['/api/site-branding'] });
+    
+    return updatedBranding;
+  } catch (error) {
+    console.error('Error saving site branding:', error);
+    throw new Error('Failed to save site branding');
+  }
+}
