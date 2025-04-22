@@ -76,6 +76,7 @@ const PageBuilderContent: React.FC = () => {
     queryKey: ['/api/page-builder/pages', id],
     queryFn: async () => {
       if (isNewPage) {
+        // Create a new page with default values
         return null;
       }
       
@@ -83,16 +84,27 @@ const PageBuilderContent: React.FC = () => {
       if (!res.ok) throw new Error('Failed to fetch page');
       const data = await res.json();
       return data.data;
-    },
-    onSuccess: (data) => {
-      if (data) {
-        setPage(data);
-      } else if (isNewPage) {
-        // Create a new page with default values
-        setPage(createNewPage());
-      }
     }
   });
+  
+  // Fix: Use useEffect instead of onSuccess for setting page data
+  useEffect(() => {
+    if (isLoading) return;
+    
+    if (error) {
+      console.error("Error loading page data:", error);
+      return;
+    }
+    
+    // If we have data from the query
+    if (isNewPage) {
+      // Create a new page with default values
+      setPage(createNewPage());
+    } else if (queryClient.getQueryData(['/api/page-builder/pages', id])) {
+      const data = queryClient.getQueryData(['/api/page-builder/pages', id]);
+      setPage(data);
+    }
+  }, [isLoading, error, id, isNewPage, queryClient]);
   
   // Create or update page mutation
   const saveMutation = useMutation({
@@ -1012,15 +1024,9 @@ const PageBuilderContent: React.FC = () => {
 // Wrapper component that includes AdminLayout
 const PageBuilderPage: React.FC = () => {
   console.log("PageBuilderPage: Main wrapper component rendering");
-  // Fix: We're having an issue where the page isn't rendering
-  // Let's try to simplify to diagnose the problem
   return (
     <AdminLayout>
-      <div className="p-6">
-        <h1 className="text-3xl font-bold mb-4">Page Builder</h1>
-        <p>If you see this text, the basic component is rendering correctly.</p>
-        <PageBuilderContent />
-      </div>
+      <PageBuilderContent />
     </AdminLayout>
   );
 };
