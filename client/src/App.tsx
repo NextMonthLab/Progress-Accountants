@@ -230,7 +230,8 @@ function Router() {
         allowedRoles={['admin', 'super_admin', 'editor']} 
       />
       
-      {/* Legacy Page Builder routes - keeping for compatibility */}
+      {/* Legacy Page Builder routes - now disabled to prevent routing conflicts */}
+      {/* 
       <ProtectedRoute 
         path="/admin/page-builder" 
         component={PageBuilderListPage} 
@@ -246,6 +247,7 @@ function Router() {
         component={PageBuilderPage} 
         allowedRoles={['admin', 'super_admin', 'editor']} 
       />
+      */}
       
       {/* Component demo route */}
       <Route path="/components" component={ComponentDemo} />
