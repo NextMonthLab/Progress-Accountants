@@ -62,7 +62,7 @@ const PageBuilderListPage: React.FC = () => {
   
   // Helper function to navigate to different routes
   const navigate = (path: string) => {
-    setLocation(path);
+    window.location.href = path;
   };
   const queryClient = useQueryClient();
   const [searchQuery, setSearchQuery] = useState("");
@@ -973,7 +973,7 @@ const PageBuilderListPageWrapper: React.FC = () => {
             <p className="text-muted-foreground mt-1">Create and manage your pages with the Advanced Page Builder</p>
           </div>
           <Button 
-            onClick={() => navigate("/page-builder/new")}
+            onClick={() => navigate("/admin/page-builder/new")}
           >
             <Plus className="h-4 w-4 mr-2" />
             Create New Page
@@ -1056,7 +1056,7 @@ const PageBuilderListPageWrapper: React.FC = () => {
                     You haven't created any pages yet. Get started by creating your first page.
                   </p>
                   <Button 
-                    onClick={() => navigate("/page-builder/new")}
+                    onClick={() => navigate("/admin/page-builder/new")}
                   >
                     <Plus className="h-4 w-4 mr-2" />
                     Create First Page
