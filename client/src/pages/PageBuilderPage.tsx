@@ -31,88 +31,43 @@ import {
   CornerUpLeft,
 } from "lucide-react";
 
-// Interfaces
-interface PageBuilderComponent {
-  id: number;
-  name: string;
-  type: string;
-  sectionId: number;
-  order: number;
-  content: any;
-  createdAt: string;
-  updatedAt: string;
-  parentId?: number;
-  children?: PageBuilderComponent[];
-}
-
-interface PageBuilderSection {
-  id: number;
-  name: string;
-  type: string;
-  pageId: number;
-  order: number;
-  layout: 'single' | 'two-column' | 'three-column' | 'sidebar-left' | 'sidebar-right' | 'custom';
-  settings: any;
-  components: PageBuilderComponent[];
-  createdAt: string;
-  updatedAt: string;
-}
-
-interface PageBuilderPage {
-  id: number;
-  tenantId: string;
-  title: string;
-  path: string;
-  description: string;
-  pageType: 'core' | 'custom' | 'automation';
-  isPublished: boolean;
-  publishedAt?: string;
-  seoSettings: {
-    title?: string;
-    description?: string;
-    keywords?: string[];
-    primaryKeyword?: string;
-    seoGoal?: 'local' | 'industry' | 'conversion' | 'technical';
-    ogImage?: string;
-    canonical?: string;
-  };
-  seoScore?: number;
-  createdAt: string;
-  updatedAt: string;
-  sections: PageBuilderSection[];
-}
-
-// Create a new blank page with default values
-const createNewPage = (): Omit<PageBuilderPage, 'id' | 'tenantId' | 'createdAt' | 'updatedAt'> => {
-  return {
-    title: "New Page",
-    path: "/new-page",
-    description: "",
-    pageType: "custom",
-    isPublished: false,
-    seoSettings: {
-      title: "",
-      description: "",
-      keywords: [],
-      primaryKeyword: "",
-      seoGoal: "conversion",
-    },
-    sections: []
-  };
-};
-
-const PageBuilderPage: React.FC = () => {
+// Internal component that does NOT include AdminLayout
+const PageBuilderContent: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const isNewPage = !id || id === "new";
-  const [, navigate] = useLocation();
+  const [, setLocation] = useLocation();
   const queryClient = useQueryClient();
   
   // States
-  const [page, setPage] = useState<PageBuilderPage | null>(null);
+  const [page, setPage] = useState<any | null>(null);
   const [deviceType, setDeviceType] = useState<"desktop" | "tablet" | "mobile">("desktop");
   const [activeTab, setActiveTab] = useState<string>("content");
   const [selectedSectionId, setSelectedSectionId] = useState<number | undefined>(undefined);
   const [pageUnsaved, setPageUnsaved] = useState(false);
+  
+  // Helper function for path navigation that uses window.location
+  const navigate = (path: string) => {
+    window.location.href = path;
+  };
+  
+  // Create a new blank page with default values
+  const createNewPage = () => {
+    return {
+      title: "New Page",
+      path: "/new-page",
+      description: "",
+      pageType: "custom",
+      isPublished: false,
+      seoSettings: {
+        title: "",
+        description: "",
+        keywords: [],
+        primaryKeyword: "",
+        seoGoal: "conversion",
+      },
+      sections: []
+    };
+  };
   
   // Fetch page data if editing an existing page
   const { isLoading, error } = useQuery({
@@ -125,21 +80,21 @@ const PageBuilderPage: React.FC = () => {
       const res = await apiRequest("GET", `/api/page-builder/pages/${id}`);
       if (!res.ok) throw new Error('Failed to fetch page');
       const data = await res.json();
-      return data.data as PageBuilderPage;
+      return data.data;
     },
     onSuccess: (data) => {
       if (data) {
         setPage(data);
       } else if (isNewPage) {
         // Create a new page with default values
-        setPage(createNewPage() as PageBuilderPage);
+        setPage(createNewPage());
       }
     }
   });
   
   // Create or update page mutation
   const saveMutation = useMutation({
-    mutationFn: async (pageData: Partial<PageBuilderPage>) => {
+    mutationFn: async (pageData: any) => {
       if (isNewPage) {
         const res = await apiRequest("POST", "/api/page-builder/pages", pageData);
         if (!res.ok) throw new Error('Failed to create page');
@@ -201,7 +156,7 @@ const PageBuilderPage: React.FC = () => {
       });
     }
   });
-  
+
   // Handle page save
   const handleSavePage = () => {
     if (!page) return;
@@ -277,7 +232,7 @@ const PageBuilderPage: React.FC = () => {
     
     setPage({
       ...page,
-      pageType: value as 'core' | 'custom' | 'automation'
+      pageType: value
     });
     
     setPageUnsaved(true);
@@ -295,11 +250,145 @@ const PageBuilderPage: React.FC = () => {
     setPageUnsaved(true);
   };
   
+  // Get page type label
+  const getPageTypeLabel = (type: string) => {
+    switch (type) {
+      case "core": return "Core Page";
+      case "custom": return "Custom Page";
+      case "automation": return "Automation Page";
+      default: return type;
+    }
+  };
+  
+  // Get default section name
+  const getDefaultSectionName = (type: string) => {
+    switch (type) {
+      case "hero": return "Hero Section";
+      case "feature-grid": return "Features Grid";
+      case "cta-section": return "Call to Action";
+      case "content-section": return "Content Section";
+      case "testimonials": return "Testimonials";
+      case "team": return "Team Members";
+      case "faq": return "FAQ Section";
+      case "pricing": return "Pricing Section";
+      case "contact": return "Contact Information";
+      case "gallery": return "Image Gallery";
+      default: return type;
+    }
+  };
+  
+  // Get default component name
+  const getDefaultComponentName = (type: string) => {
+    switch (type) {
+      case "heading": return "Heading";
+      case "paragraph": return "Paragraph";
+      case "image": return "Image";
+      case "button": return "Button";
+      case "divider": return "Divider";
+      case "spacer": return "Spacer";
+      case "card": return "Card";
+      case "cta": return "Call to Action";
+      case "form": return "Form";
+      case "video": return "Video";
+      case "carousel": return "Carousel";
+      case "icon": return "Icon";
+      case "quote": return "Quote";
+      default: return type;
+    }
+  };
+  
+  // Get default component content
+  const getDefaultComponentContent = (type: string) => {
+    switch (type) {
+      case "heading":
+        return {
+          text: "Add a Heading",
+          level: "h2"
+        };
+      case "paragraph":
+        return {
+          text: "Add your content here. This is a paragraph component that can be edited to add your custom text."
+        };
+      case "image":
+        return {
+          src: "",
+          alt: "Image description",
+          width: 800,
+          height: 600
+        };
+      case "button":
+        return {
+          text: "Click Me",
+          url: "#",
+          variant: "default"
+        };
+      case "divider":
+        return {
+          style: "solid"
+        };
+      case "spacer":
+        return {
+          height: 40
+        };
+      case "card":
+        return {
+          title: "Card Title",
+          content: "Card content goes here",
+          image: ""
+        };
+      case "cta":
+        return {
+          heading: "Call to Action",
+          text: "Description text",
+          buttonText: "Learn More",
+          buttonUrl: "#"
+        };
+      case "form":
+        return {
+          fields: [
+            { type: "text", label: "Name", required: true },
+            { type: "email", label: "Email", required: true },
+            { type: "textarea", label: "Message", required: false }
+          ],
+          submitText: "Submit"
+        };
+      case "video":
+        return {
+          url: "",
+          poster: "",
+          autoplay: false,
+          controls: true
+        };
+      case "carousel":
+        return {
+          items: [
+            { image: "", caption: "Slide 1" },
+            { image: "", caption: "Slide 2" },
+            { image: "", caption: "Slide 3" }
+          ]
+        };
+      case "icon":
+        return {
+          name: "star",
+          size: 24,
+          color: "currentColor"
+        };
+      case "quote":
+        return {
+          text: "This is a sample quote.",
+          author: "Author Name",
+          position: "Position"
+        };
+      default:
+        return {};
+    }
+  };
+  
   // Handle add section
   const handleAddSection = (sectionType: string) => {
     if (!page) return;
     
-    const newSection: PageBuilderSection = {
+    const newSection = {
       id: Date.now(), // Temporary ID that will be replaced on the server
       name: getDefaultSectionName(sectionType),
       type: sectionType,
@@ -439,10 +528,10 @@ const PageBuilderPage: React.FC = () => {
   };
   
   // Handle update section
-  const handleUpdateSection = (sectionId: number, updatedSection: Partial<PageBuilderSection>) => {
+  const handleUpdateSection = (sectionId: number, updatedSection: any) => {
     if (!page) return;
     
-    const updatedSections = page.sections.map(section => {
+    const updatedSections = page.sections.map((section: any) => {
       if (section.id === sectionId) {
         return {
           ...section,
@@ -464,7 +553,7 @@ const PageBuilderPage: React.FC = () => {
   const handleRemoveSection = (sectionId: number) => {
     if (!page) return;
     
-    const updatedSections = page.sections.filter(section => section.id !== sectionId);
+    const updatedSections = page.sections.filter((section: any) => section.id !== sectionId);
     
     setPage({
       ...page,
@@ -479,7 +568,7 @@ const PageBuilderPage: React.FC = () => {
   };
   
   // Handle reorder sections
-  const handleReorderSections = (newOrder: PageBuilderSection[]) => {
+  const handleReorderSections = (newOrder: any[]) => {
     if (!page) return;
     
     setPage({
@@ -494,10 +583,10 @@ const PageBuilderPage: React.FC = () => {
   const handleAddComponent = (sectionId: number, componentType: string) => {
     if (!page) return;
     
-    const section = page.sections.find(s => s.id === sectionId);
+    const section = page.sections.find((s: any) => s.id === sectionId);
     if (!section) return;
     
-    const newComponent: PageBuilderComponent = {
+    const newComponent = {
       id: Date.now(), // Temporary ID that will be replaced on the server
       name: getDefaultComponentName(componentType),
       type: componentType,
@@ -508,7 +597,7 @@ const PageBuilderPage: React.FC = () => {
       updatedAt: new Date().toISOString()
     };
     
-    const updatedSections = page.sections.map(s => {
+    const updatedSections = page.sections.map((s: any) => {
       if (s.id === sectionId) {
         return {
           ...s,
@@ -527,12 +616,12 @@ const PageBuilderPage: React.FC = () => {
   };
   
   // Handle update component
-  const handleUpdateComponent = (sectionId: number, componentId: number, updatedComponent: Partial<PageBuilderComponent>) => {
+  const handleUpdateComponent = (sectionId: number, componentId: number, updatedComponent: any) => {
     if (!page) return;
     
-    const updatedSections = page.sections.map(section => {
+    const updatedSections = page.sections.map((section: any) => {
       if (section.id === sectionId) {
-        const updatedComponents = section.components.map(component => {
+        const updatedComponents = section.components.map((component: any) => {
           if (component.id === componentId) {
             return {
               ...component,
@@ -562,11 +651,11 @@ const PageBuilderPage: React.FC = () => {
   const handleRemoveComponent = (sectionId: number, componentId: number) => {
     if (!page) return;
     
-    const updatedSections = page.sections.map(section => {
+    const updatedSections = page.sections.map((section: any) => {
       if (section.id === sectionId) {
         return {
           ...section,
-          components: section.components.filter(component => component.id !== componentId)
+          components: section.components.filter((component: any) => component.id !== componentId)
         };
       }
       return section;
@@ -581,10 +670,10 @@ const PageBuilderPage: React.FC = () => {
   };
   
   // Handle reorder components
-  const handleReorderComponents = (sectionId: number, newOrder: PageBuilderComponent[]) => {
+  const handleReorderComponents = (sectionId: number, newOrder: any[]) => {
     if (!page) return;
     
-    const updatedSections = page.sections.map(section => {
+    const updatedSections = page.sections.map((section: any) => {
       if (section.id === sectionId) {
         return {
           ...section,
@@ -602,188 +691,55 @@ const PageBuilderPage: React.FC = () => {
     setPageUnsaved(true);
   };
   
-  // Get default section name based on type
-  const getDefaultSectionName = (type: string): string => {
-    switch (type) {
-      case 'hero': return 'Hero Section';
-      case 'content': return 'Content Section';
-      case 'feature-grid': return 'Features Grid';
-      case 'two-column': return 'Two Column Section';
-      case 'sidebar-left': return 'Section with Left Sidebar';
-      case 'sidebar-right': return 'Section with Right Sidebar';
-      case 'cta-section': return 'Call to Action Section';
-      case 'nav-header': return 'Navigation Header';
-      case 'simple-footer': return 'Simple Footer';
-      case 'multi-column-footer': return 'Multi-Column Footer';
-      case 'testimonials': return 'Testimonials Section';
-      default: return `Section ${type}`;
-    }
-  };
-  
-  // Get default component name based on type
-  const getDefaultComponentName = (type: string): string => {
-    switch (type) {
-      case 'heading': return 'Heading';
-      case 'paragraph': return 'Paragraph';
-      case 'image': return 'Image';
-      case 'button': return 'Button';
-      case 'list': return 'List';
-      case 'divider': return 'Divider';
-      case 'spacer': return 'Spacer';
-      case 'card': return 'Card';
-      case 'grid': return 'Grid';
-      case 'container': return 'Container';
-      case 'columns': return 'Columns';
-      case 'rows': return 'Rows';
-      case 'gallery': return 'Gallery';
-      case 'video': return 'Video';
-      case 'icon': return 'Icon';
-      case 'form': return 'Form';
-      case 'map': return 'Map';
-      case 'accordion': return 'Accordion';
-      case 'cta': return 'Call to Action';
-      case 'testimonial': return 'Testimonial';
-      default: return `Component ${type}`;
-    }
-  };
-  
-  // Get default component content based on type
-  const getDefaultComponentContent = (type: string): any => {
-    switch (type) {
-      case 'heading':
-        return {
-          text: 'New Heading',
-          level: 'h2'
-        };
-      case 'paragraph':
-        return {
-          text: 'This is a paragraph of text. You can edit this text to add your own content.'
-        };
-      case 'image':
-        return {
-          src: '',
-          alt: 'Image description',
-          width: 400,
-          height: 300
-        };
-      case 'button':
-        return {
-          text: 'Button',
-          url: '#',
-          variant: 'default'
-        };
-      case 'list':
-        return {
-          listType: 'bullet',
-          items: ['Item 1', 'Item 2', 'Item 3']
-        };
-      case 'divider':
-        return {
-          style: 'solid',
-          color: '#e0e0e0'
-        };
-      case 'spacer':
-        return {
-          height: 40
-        };
-      case 'card':
-        return {
-          title: 'Card Title',
-          content: 'Card content goes here.',
-          image: ''
-        };
-      case 'cta':
-        return {
-          heading: 'Call to Action',
-          text: 'Take action now with our amazing offer!',
-          buttonText: 'Get Started',
-          buttonUrl: '#'
-        };
-      default:
-        return {};
-    }
-  };
-  
-  // Handle browser navigation attempt when there are unsaved changes
-  useEffect(() => {
-    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
-      if (pageUnsaved) {
-        e.preventDefault();
-        e.returnValue = '';
-        return '';
-      }
-    };
-    
-    window.addEventListener('beforeunload', handleBeforeUnload);
-    
-    return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload);
-    };
-  }, [pageUnsaved]);
-  
-  // UI helpers
-  const getPageTypeLabel = (type: string) => {
-    switch (type) {
-      case 'core': return 'Core Page';
-      case 'custom': return 'Custom Page';
-      case 'automation': return 'Automation Page';
-      default: return type;
-    }
-  };
-  
   // Loading skeleton
   if (isLoading) {
     return (
-      <AdminLayout>
-        <div className="container px-8 py-6">
-          <div className="flex items-center mb-8">
-            <Skeleton className="h-4 w-6 mr-2" />
-            <Skeleton className="h-4 w-32" />
+      <div className="container px-8 py-6">
+        <div className="flex items-center mb-8">
+          <Skeleton className="h-4 w-6 mr-2" />
+          <Skeleton className="h-4 w-32" />
+        </div>
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+          <div>
+            <Skeleton className="h-8 w-64 mb-2" />
+            <Skeleton className="h-4 w-96" />
           </div>
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
-            <div>
-              <Skeleton className="h-8 w-64 mb-2" />
-              <Skeleton className="h-4 w-96" />
-            </div>
-            <div className="flex items-center gap-2">
-              <Skeleton className="h-10 w-28" />
-              <Skeleton className="h-10 w-28" />
-            </div>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-            <div className="md:col-span-3">
-              <Skeleton className="h-12 w-full mb-6" />
-              <Skeleton className="h-64 w-full" />
-            </div>
-            <div>
-              <Skeleton className="h-64 w-full" />
-            </div>
+          <div className="flex items-center gap-2">
+            <Skeleton className="h-10 w-28" />
+            <Skeleton className="h-10 w-28" />
           </div>
         </div>
-      </AdminLayout>
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+          <div className="md:col-span-3">
+            <Skeleton className="h-12 w-full mb-6" />
+            <Skeleton className="h-64 w-full" />
+          </div>
+          <div>
+            <Skeleton className="h-64 w-full" />
+          </div>
+        </div>
+      </div>
     );
   }
   
   // Error state
   if (error) {
     return (
-      <AdminLayout>
-        <div className="container px-8 py-6">
-          <div className="flex flex-col items-center justify-center h-96">
-            <h2 className="text-2xl font-bold text-destructive mb-4">Error</h2>
-            <p className="text-muted-foreground mb-6">{(error as Error).message}</p>
-            <div className="flex gap-4">
-              <Button onClick={() => navigate("/admin/page-builder")}>
-                <ChevronLeft className="h-4 w-4 mr-2" />
-                Back to Pages
-              </Button>
-              <Button variant="outline" onClick={() => window.location.reload()}>
-                Reload Page
-              </Button>
-            </div>
+      <div className="container px-8 py-6">
+        <div className="flex flex-col items-center justify-center h-96">
+          <h2 className="text-2xl font-bold text-destructive mb-4">Error</h2>
+          <p className="text-muted-foreground mb-6">{(error as Error).message}</p>
+          <div className="flex gap-4">
+            <Button onClick={() => navigate("/admin/page-builder")}>
+              <ChevronLeft className="h-4 w-4 mr-2" />
+              Back to Pages
+            </Button>
+            <Button variant="outline" onClick={() => window.location.reload()}>
+              Reload Page
+            </Button>
           </div>
         </div>
-      </AdminLayout>
+      </div>
     );
   }
   
@@ -792,263 +748,270 @@ const PageBuilderPage: React.FC = () => {
   }
   
   return (
-    <AdminLayout>
-      <div className="container px-8 py-6">
-        {/* Back link */}
-        <Button 
-          variant="ghost" 
-          className="p-0 mb-6 hover:bg-transparent"
-          onClick={() => navigate("/admin/page-builder")}
-        >
-          <ChevronLeft className="h-4 w-4 mr-1" />
-          <span>Back to Pages</span>
-        </Button>
-        
-        {/* Page header */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
-          <div>
-            <h1 className="text-3xl font-bold tracking-tight">{isNewPage ? "Create New Page" : "Edit Page"}</h1>
-            <p className="text-muted-foreground mt-1">
-              {isNewPage ? "Create a new page with the Advanced Page Builder" : `Editing ${getPageTypeLabel(page.pageType)} - ${page.title}`}
-            </p>
-          </div>
-          <div className="flex items-center gap-2">
-            <Button 
-              variant="outline" 
-              onClick={handlePublishToggle}
-              disabled={isNewPage || saveMutation.isPending}
-            >
-              <Eye className="h-4 w-4 mr-2" />
-              {page.isPublished ? "Unpublish" : "Publish"}
-            </Button>
-            <Button 
-              onClick={handleSavePage}
-              disabled={saveMutation.isPending}
-            >
-              {saveMutation.isPending ? (
-                <>Saving...</>
-              ) : (
-                <>
-                  <Save className="h-4 w-4 mr-2" />
-                  Save
-                </>
-              )}
-            </Button>
-          </div>
+    <div className="container px-8 py-6">
+      {/* Back link */}
+      <Button 
+        variant="ghost" 
+        className="p-0 mb-6 hover:bg-transparent"
+        onClick={() => navigate("/admin/page-builder")}
+      >
+        <ChevronLeft className="h-4 w-4 mr-1" />
+        <span>Back to Pages</span>
+      </Button>
+      
+      {/* Page header */}
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight">{isNewPage ? "Create New Page" : "Edit Page"}</h1>
+          <p className="text-muted-foreground mt-1">
+            {isNewPage ? "Create a new page with the Advanced Page Builder" : `Editing ${getPageTypeLabel(page.pageType)} - ${page.title}`}
+          </p>
         </div>
-        
-        {/* Page settings card */}
-        <Card className="mb-8">
-          <CardHeader>
-            <CardTitle>Page Settings</CardTitle>
-            <CardDescription>Configure basic page settings</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="space-y-2">
-                <Label htmlFor="page-title">Page Title</Label>
-                <Input
-                  id="page-title"
-                  value={page.title}
-                  onChange={handleTitleChange}
-                  placeholder="Enter page title"
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="page-path">Page Path</Label>
-                <Input
-                  id="page-path"
-                  value={page.path}
-                  onChange={handlePathChange}
-                  placeholder="Enter page path, e.g. /about"
-                />
-                <p className="text-xs text-muted-foreground">This will be the URL path for the page</p>
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="page-description">Page Description</Label>
-                <Textarea
-                  id="page-description"
-                  value={page.description}
-                  onChange={handleDescriptionChange}
-                  placeholder="Enter page description"
-                  rows={3}
-                />
-                <p className="text-xs text-muted-foreground">A brief description of the page content</p>
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="page-type">Page Type</Label>
-                <Select
-                  value={page.pageType}
-                  onValueChange={handlePageTypeChange}
-                >
-                  <SelectTrigger id="page-type">
-                    <SelectValue placeholder="Select page type" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="core">Core Page</SelectItem>
-                    <SelectItem value="custom">Custom Page</SelectItem>
-                    <SelectItem value="automation">Automation Page</SelectItem>
-                  </SelectContent>
-                </Select>
-                <p className="text-xs text-muted-foreground">
-                  Core: Essential website pages. Custom: Unique pages. Automation: Generated pages.
-                </p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-        
-        {/* Page builder interface - Tabs and content panel */}
-        <Tabs defaultValue="content" value={activeTab} onValueChange={setActiveTab}>
-          <div className="flex justify-between items-center mb-6">
-            <TabsList>
-              <TabsTrigger value="content">Content</TabsTrigger>
-              <TabsTrigger value="seo">SEO</TabsTrigger>
-              <TabsTrigger value="preview">Preview</TabsTrigger>
-            </TabsList>
-            <div className="flex items-center gap-2">
-              {activeTab === "preview" && (
-                <div className="flex items-center mr-2">
-                  <Button
-                    variant={deviceType === "desktop" ? "default" : "outline"}
-                    size="sm"
-                    className="h-8 w-8 p-0"
-                    onClick={() => setDeviceType("desktop")}
-                    title="Desktop Preview"
-                  >
-                    <Monitor className="h-4 w-4" />
-                  </Button>
-                  <Button
-                    variant={deviceType === "tablet" ? "default" : "outline"}
-                    size="sm"
-                    className="h-8 w-8 p-0"
-                    onClick={() => setDeviceType("tablet")}
-                    title="Tablet Preview"
-                  >
-                    <Tablet className="h-4 w-4" />
-                  </Button>
-                  <Button
-                    variant={deviceType === "mobile" ? "default" : "outline"}
-                    size="sm"
-                    className="h-8 w-8 p-0"
-                    onClick={() => setDeviceType("mobile")}
-                    title="Mobile Preview"
-                  >
-                    <Smartphone className="h-4 w-4" />
-                  </Button>
-                </div>
-              )}
-              <Button variant="outline" size="sm" disabled={isNewPage} title="Duplicate Page">
-                <Copy className="h-4 w-4" />
-              </Button>
-              <Button 
-                variant="outline" 
-                size="sm" 
-                className="text-destructive hover:text-destructive"
-                onClick={handleDeletePage}
-                disabled={isNewPage}
-                title="Delete Page"
-              >
-                <Trash2 className="h-4 w-4" />
-              </Button>
-              <Button 
-                variant="outline" 
-                size="sm"
-                disabled={isNewPage}
-                title="Generate Content with AI"
-              >
-                <Sparkles className="h-4 w-4" />
-              </Button>
-            </div>
-          </div>
-          
-          <TabsContent value="content">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-              <div className="md:col-span-3">
-                <PageBuilderSections 
-                  sections={page.sections}
-                  onUpdateSection={handleUpdateSection}
-                  onRemoveSection={handleRemoveSection}
-                  onReorderSections={handleReorderSections}
-                  onAddComponent={handleAddComponent}
-                  onUpdateComponent={handleUpdateComponent}
-                  onRemoveComponent={handleRemoveComponent}
-                  onReorderComponents={handleReorderComponents}
-                />
-              </div>
-              <div>
-                <PageBuilderComponentPanel 
-                  onAddSection={handleAddSection}
-                  onAddComponent={handleAddComponent}
-                  currentSectionId={selectedSectionId}
-                />
-              </div>
-            </div>
-          </TabsContent>
-          
-          <TabsContent value="seo">
-            <PageBuilderSeoPanel 
-              seoSettings={page.seoSettings}
-              onChange={handleSeoSettingsChange}
-              pageType={page.pageType}
-              pageId={isNewPage ? null : page.id}
-              title={page.title}
-              description={page.description}
-            />
-          </TabsContent>
-          
-          <TabsContent value="preview">
-            <div className="flex justify-center py-6 overflow-x-auto">
-              <PageBuilderPreview 
-                page={page}
-                deviceType={deviceType}
-              />
-            </div>
-          </TabsContent>
-        </Tabs>
-        
-        {/* Action button row */}
-        <div className="flex items-center justify-between mt-8">
-          <div className="flex items-center">
-            <Button 
-              variant="outline" 
-              className="mr-2"
-              disabled={!pageUnsaved}
-              onClick={() => {
-                // Reload the page to discard changes
-                if (window.confirm("Are you sure you want to discard all changes?")) {
-                  window.location.reload();
-                }
-              }}
-            >
-              <Undo2 className="h-4 w-4 mr-2" />
-              Discard Changes
-            </Button>
-          </div>
-          <div className="flex items-center gap-2">
-            <Button 
-              variant="outline" 
-              onClick={() => navigate("/admin/page-builder")}
-            >
-              <CornerUpLeft className="h-4 w-4 mr-2" />
-              Cancel
-            </Button>
-            <Button 
-              onClick={handleSavePage}
-              disabled={saveMutation.isPending}
-            >
-              {saveMutation.isPending ? (
-                <>Saving...</>
-              ) : (
-                <>
-                  <Save className="h-4 w-4 mr-2" />
-                  Save Page
-                </>
-              )}
-            </Button>
-          </div>
+        <div className="flex items-center gap-2">
+          <Button 
+            variant="outline" 
+            onClick={handlePublishToggle}
+            disabled={isNewPage || saveMutation.isPending}
+          >
+            <Eye className="h-4 w-4 mr-2" />
+            {page.isPublished ? "Unpublish" : "Publish"}
+          </Button>
+          <Button 
+            onClick={handleSavePage}
+            disabled={saveMutation.isPending}
+          >
+            {saveMutation.isPending ? (
+              <>Saving...</>
+            ) : (
+              <>
+                <Save className="h-4 w-4 mr-2" />
+                Save
+              </>
+            )}
+          </Button>
         </div>
       </div>
+      
+      {/* Page settings card */}
+      <Card className="mb-8">
+        <CardHeader>
+          <CardTitle>Page Settings</CardTitle>
+          <CardDescription>Configure basic page settings</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-2">
+              <Label htmlFor="page-title">Page Title</Label>
+              <Input
+                id="page-title"
+                value={page.title}
+                onChange={handleTitleChange}
+                placeholder="Enter page title"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="page-path">Page Path</Label>
+              <Input
+                id="page-path"
+                value={page.path}
+                onChange={handlePathChange}
+                placeholder="Enter page path, e.g. /about"
+              />
+              <p className="text-xs text-muted-foreground">This will be the URL path for the page</p>
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="page-description">Page Description</Label>
+              <Textarea
+                id="page-description"
+                value={page.description}
+                onChange={handleDescriptionChange}
+                placeholder="Enter page description"
+                rows={3}
+              />
+              <p className="text-xs text-muted-foreground">A brief description of the page content</p>
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="page-type">Page Type</Label>
+              <Select
+                value={page.pageType}
+                onValueChange={handlePageTypeChange}
+              >
+                <SelectTrigger id="page-type">
+                  <SelectValue placeholder="Select page type" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="core">Core Page</SelectItem>
+                  <SelectItem value="custom">Custom Page</SelectItem>
+                  <SelectItem value="automation">Automation Page</SelectItem>
+                </SelectContent>
+              </Select>
+              <p className="text-xs text-muted-foreground">
+                Core: Essential website pages. Custom: Unique pages. Automation: Generated pages.
+              </p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+      
+      {/* Page builder interface - Tabs and content panel */}
+      <Tabs defaultValue="content" value={activeTab} onValueChange={setActiveTab}>
+        <div className="flex justify-between items-center mb-6">
+          <TabsList>
+            <TabsTrigger value="content">Content</TabsTrigger>
+            <TabsTrigger value="seo">SEO</TabsTrigger>
+            <TabsTrigger value="preview">Preview</TabsTrigger>
+          </TabsList>
+          <div className="flex items-center gap-2">
+            {activeTab === "preview" && (
+              <div className="flex items-center mr-2">
+                <Button
+                  variant={deviceType === "desktop" ? "default" : "outline"}
+                  size="sm"
+                  className="h-8 w-8 p-0"
+                  onClick={() => setDeviceType("desktop")}
+                  title="Desktop Preview"
+                >
+                  <Monitor className="h-4 w-4" />
+                </Button>
+                <Button
+                  variant={deviceType === "tablet" ? "default" : "outline"}
+                  size="sm"
+                  className="h-8 w-8 p-0"
+                  onClick={() => setDeviceType("tablet")}
+                  title="Tablet Preview"
+                >
+                  <Tablet className="h-4 w-4" />
+                </Button>
+                <Button
+                  variant={deviceType === "mobile" ? "default" : "outline"}
+                  size="sm"
+                  className="h-8 w-8 p-0"
+                  onClick={() => setDeviceType("mobile")}
+                  title="Mobile Preview"
+                >
+                  <Smartphone className="h-4 w-4" />
+                </Button>
+              </div>
+            )}
+            <Button variant="outline" size="sm" disabled={isNewPage} title="Duplicate Page">
+              <Copy className="h-4 w-4" />
+            </Button>
+            <Button 
+              variant="outline" 
+              size="sm" 
+              className="text-destructive hover:text-destructive"
+              onClick={handleDeletePage}
+              disabled={isNewPage}
+              title="Delete Page"
+            >
+              <Trash2 className="h-4 w-4" />
+            </Button>
+            <Button 
+              variant="outline" 
+              size="sm"
+              disabled={isNewPage}
+              title="Generate Content with AI"
+            >
+              <Sparkles className="h-4 w-4" />
+            </Button>
+          </div>
+        </div>
+        
+        <TabsContent value="content">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <div className="md:col-span-3">
+              <PageBuilderSections 
+                sections={page.sections}
+                onUpdateSection={handleUpdateSection}
+                onRemoveSection={handleRemoveSection}
+                onReorderSections={handleReorderSections}
+                onAddComponent={handleAddComponent}
+                onUpdateComponent={handleUpdateComponent}
+                onRemoveComponent={handleRemoveComponent}
+                onReorderComponents={handleReorderComponents}
+              />
+            </div>
+            <div>
+              <PageBuilderComponentPanel 
+                onAddSection={handleAddSection}
+                onAddComponent={handleAddComponent}
+                currentSectionId={selectedSectionId}
+              />
+            </div>
+          </div>
+        </TabsContent>
+        
+        <TabsContent value="seo">
+          <PageBuilderSeoPanel 
+            seoSettings={page.seoSettings}
+            onChange={handleSeoSettingsChange}
+            pageType={page.pageType}
+            pageId={isNewPage ? null : page.id}
+            title={page.title}
+            description={page.description}
+          />
+        </TabsContent>
+        
+        <TabsContent value="preview">
+          <div className="flex justify-center py-6 overflow-x-auto">
+            <PageBuilderPreview 
+              page={page}
+              deviceType={deviceType}
+            />
+          </div>
+        </TabsContent>
+      </Tabs>
+      
+      {/* Action button row */}
+      <div className="flex items-center justify-between mt-8">
+        <div className="flex items-center">
+          <Button 
+            variant="outline" 
+            className="mr-2"
+            disabled={!pageUnsaved}
+            onClick={() => {
+              // Reload the page to discard changes
+              if (window.confirm("Are you sure you want to discard all changes?")) {
+                window.location.reload();
+              }
+            }}
+          >
+            <Undo2 className="h-4 w-4 mr-2" />
+            Discard Changes
+          </Button>
+        </div>
+        <div className="flex items-center gap-2">
+          <Button 
+            variant="outline" 
+            onClick={() => navigate("/admin/page-builder")}
+          >
+            <CornerUpLeft className="h-4 w-4 mr-2" />
+            Cancel
+          </Button>
+          <Button 
+            onClick={handleSavePage}
+            disabled={saveMutation.isPending}
+          >
+            {saveMutation.isPending ? (
+              <>Saving...</>
+            ) : (
+              <>
+                <Save className="h-4 w-4 mr-2" />
+                Save
+              </>
+            )}
+          </Button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Wrapper component that includes AdminLayout
+const PageBuilderPage: React.FC = () => {
+  return (
+    <AdminLayout>
+      <PageBuilderContent />
     </AdminLayout>
   );
 };
