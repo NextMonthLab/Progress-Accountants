@@ -61,6 +61,9 @@ import CreateNewPagePage from "@/pages/CreateNewPagePage";
 // Admin settings pages
 import TenantCustomizationPage from "@/pages/admin/TenantCustomizationPage";
 import ThemeManagementPage from "@/pages/admin/ThemeManagementPage";
+// Page Builder pages
+import PageBuilderListPage from "@/pages/PageBuilderListPage";
+import PageBuilderPage from "@/pages/PageBuilderPage";
 // Import wizard components
 import CreateFormWizard from "@/pages/tools/wizards/CreateFormWizard";
 import CreateCalculatorWizard from "@/pages/tools/wizards/CreateCalculatorWizard";
