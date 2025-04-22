@@ -1,9 +1,10 @@
-import { pgTable, text, serial, integer, boolean, timestamp, varchar, jsonb, real, uuid } from "drizzle-orm/pg-core";
+import { pgTable, text, serial, integer, boolean, timestamp, varchar, jsonb, real, uuid, index, unique } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 import { relations } from "drizzle-orm";
 import { PageMetadata, PageComplexityAssessment, ComplexityLevel } from "./page_metadata";
 import { ComponentType, SeoImpactLevel, ComponentContext } from "./advanced_page_builder";
+import { VersionableEntityType, VersionStatus, ChangeType } from "./version_control";
 
 // Tenants table to track all client instances
 // Define the table without self-reference first to fix circular reference
@@ -711,6 +712,83 @@ export type BlogPage = typeof blogPages.$inferSelect;
 
 export type InsertIntegrationRequest = z.infer<typeof insertIntegrationRequestSchema>;
 export type IntegrationRequest = typeof integrationRequests.$inferSelect;
+
+// Content Version Control System tables
+export const contentVersions = pgTable("content_versions", {
+  id: serial("id").primaryKey(),
+  entityId: integer("entity_id").notNull(),
+  entityType: varchar("entity_type", { length: 50 }).notNull().$type<VersionableEntityType>(),
+  versionNumber: integer("version_number").notNull(),
+  createdBy: integer("created_by").references(() => users.id).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  status: varchar("status", { length: 20 }).notNull().$type<VersionStatus>(),
+  changeType: varchar("change_type", { length: 20 }).notNull().$type<ChangeType>(),
+  changeDescription: text("change_description"),
+  snapshot: jsonb("snapshot").notNull(),
+  diff: jsonb("diff"),
+}, (table) => {
+  return {
+    entityIdx: index("idx_content_versions_entity").on(table.entityId, table.entityType),
+    statusIdx: index("idx_content_versions_status").on(table.status),
+    createdAtIdx: index("idx_content_versions_created_at").on(table.createdAt),
+    uniqueVersion: unique("unique_content_version").on(table.entityId, table.entityType, table.versionNumber)
+  };
+});
+
+export const insertContentVersionSchema = createInsertSchema(contentVersions).omit({
+  id: true,
+  createdAt: true
+});
+
+export const changeLogs = pgTable("change_logs", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id").references(() => users.id).notNull(),
+  timestamp: timestamp("timestamp").defaultNow().notNull(),
+  action: varchar("action", { length: 50 }).notNull(),
+  entityType: varchar("entity_type", { length: 50 }).notNull(),
+  entityId: integer("entity_id").notNull(),
+  versionId: integer("version_id").references(() => contentVersions.id),
+  details: jsonb("details"),
+  ipAddress: varchar("ip_address", { length: 45 }),
+  userAgent: text("user_agent"),
+}, (table) => {
+  return {
+    userIdIdx: index("idx_change_logs_user_id").on(table.userId),
+    timestampIdx: index("idx_change_logs_timestamp").on(table.timestamp),
+    entityIdx: index("idx_change_logs_entity").on(table.entityType, table.entityId)
+  };
+});
+
+export const insertChangeLogSchema = createInsertSchema(changeLogs).omit({
+  id: true,
+  timestamp: true
+});
+
+// Version Control Relationships
+export const contentVersionsRelations = relations(contentVersions, ({ one, many }) => ({
+  creator: one(users, {
+    fields: [contentVersions.createdBy],
+    references: [users.id]
+  }),
+  changeLogs: many(changeLogs)
+}));
+
+export const changeLogsRelations = relations(changeLogs, ({ one }) => ({
+  user: one(users, {
+    fields: [changeLogs.userId],
+    references: [users.id]
+  }),
+  version: one(contentVersions, {
+    fields: [changeLogs.versionId],
+    references: [contentVersions.id]
+  })
+}));
+
+export type InsertContentVersion = z.infer<typeof insertContentVersionSchema>;
+export type ContentVersion = typeof contentVersions.$inferSelect;
+
+export type InsertChangeLog = z.infer<typeof insertChangeLogSchema>;
+export type ChangeLog = typeof changeLogs.$inferSelect;
 
 export type InsertProjectContext = z.infer<typeof insertProjectContextSchema>;
 export type ProjectContext = typeof projectContext.$inferSelect;
