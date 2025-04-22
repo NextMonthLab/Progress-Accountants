@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useLocation } from "wouter";
+import AdminLayout from "@/layouts/AdminLayout";
 import { Button } from "@/components/ui/button";
 import {
   Table,
@@ -791,12 +792,28 @@ const PageBuilderListPage: React.FC = () => {
 };
 
 // Create a wrapper component for AdminLayout
-const PageBuilderListPageWithAdmin: React.FC = () => {
+const PageBuilderListPageWrapper: React.FC = () => {
   return (
     <AdminLayout>
-      <PageBuilderListPage />
+      <div className="container px-8 py-6">
+        <h1 className="text-3xl font-bold tracking-tight mb-6">Page Builder</h1>
+        <p className="text-muted-foreground mb-8">Create and manage your pages with the Advanced Page Builder</p>
+        <div className="flex justify-end mb-6">
+          <Button>
+            <Plus className="h-4 w-4 mr-2" />
+            Create New Page
+          </Button>
+        </div>
+        <Card>
+          <CardContent className="p-6">
+            <p>The page builder tables are not yet initialized in the database.</p>
+            <p className="mt-2 mb-4 text-muted-foreground">To use this feature, the required database tables need to be created first.</p>
+            <Button variant="outline">Initialize Page Builder</Button>
+          </CardContent>
+        </Card>
+      </div>
     </AdminLayout>
   );
 };
 
-export default PageBuilderListPageWithAdmin;
+export default PageBuilderListPageWrapper;
