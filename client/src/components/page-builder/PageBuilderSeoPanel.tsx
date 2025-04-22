@@ -566,8 +566,7 @@ const PageBuilderSeoPanel: React.FC<PageBuilderSeoPanelProps> = ({
                       <Progress 
                         value={seoScore.data.overallScore} 
                         max={100} 
-                        className="absolute h-full w-full" 
-                        indicatorColor={getSeoScoreColor(seoScore.data.overallScore)}
+                        className={`absolute h-full w-full ${getSeoScoreColor(seoScore.data.overallScore)}`}
                       />
                       <div className="z-10 text-center">
                         <span className="text-4xl font-bold">{seoScore.data.overallScore}</span>
@@ -601,8 +600,7 @@ const PageBuilderSeoPanel: React.FC<PageBuilderSeoPanelProps> = ({
                         <Progress 
                           value={score * 5} // Convert to percentage
                           max={100}
-                          className="h-2"
-                          indicatorColor={getSeoScoreColor(score * 5)}
+                          className={`h-2 ${getSeoScoreColor(score * 5)}`}
                         />
                         <p className="text-xs text-muted-foreground">
                           {seoScore.data.analysis[category as keyof typeof seoScore.data.analysis]}

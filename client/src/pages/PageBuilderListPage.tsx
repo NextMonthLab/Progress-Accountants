@@ -1,21 +1,40 @@
 import React, { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Link, useLocation } from "wouter";
+import { useLocation } from "wouter";
+import AdminLayout from "@/layouts/AdminLayout";
 import { Button } from "@/components/ui/button";
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Label } from "@/components/ui/label";
+import { apiRequest } from "@/lib/queryClient";
+import { toast } from "@/hooks/use-toast";
 import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "@/components/ui/tabs";
+  Search,
+  Plus,
+  Trash2,
+  Edit,
+  Eye,
+  Sparkles,
+  Copy,
+  MoreVertical,
+  CheckCircle,
+  XCircle,
+  FileText,
+  Clock,
+  ArrowUpDown,
+} from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -24,57 +43,35 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
-import { Skeleton } from "@/components/ui/skeleton";
-import { toast } from "@/hooks/use-toast";
-import AdminLayout from "@/layouts/AdminLayout";
-import { apiRequest, queryClient } from "@/lib/queryClient";
-import {
-  LayoutGrid,
-  List,
-  Plus,
-  Search,
-  Filter,
-  MoreHorizontal,
-  FileEdit,
-  Eye,
-  Trash2,
-  Copy,
-  ChevronDown,
-  Sparkles,
-} from "lucide-react";
 
-interface PageBuilderPage {
+interface PageInfo {
   id: number;
-  tenantId: string;
   title: string;
   path: string;
+  pageType: string;
   description: string;
-  pageType: 'core' | 'custom' | 'automation';
   isPublished: boolean;
-  publishedAt?: string;
-  seoScore?: number;
+  seoScore: number | null;
   createdAt: string;
   updatedAt: string;
 }
 
-const PageBuilderListPage = () => {
+const PageBuilderListPage: React.FC = () => {
   const [, navigate] = useLocation();
   const queryClient = useQueryClient();
-  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [searchQuery, setSearchQuery] = useState("");
-  const [pageTypeFilter, setPageTypeFilter] = useState<string | null>(null);
-  const [publishStatusFilter, setPublishStatusFilter] = useState<string | null>(null);
+  const [pageTypeFilter, setPageTypeFilter] = useState<string>("all");
+  const [sortField, setSortField] = useState<string>("updatedAt");
+  const [sortDirection, setSortDirection] = useState<"asc" | "desc">("desc");
   
-  // Fetch all pages
-  const { data: pages, isLoading, error } = useQuery({
+  // Fetch pages list
+  const { isLoading, error, data } = useQuery({
     queryKey: ['/api/page-builder/pages'],
     queryFn: async () => {
       const res = await apiRequest("GET", "/api/page-builder/pages");
       if (!res.ok) throw new Error('Failed to fetch pages');
       const data = await res.json();
-      return data.data as PageBuilderPage[];
+      return data.data as PageInfo[];
     }
   });
   
@@ -101,19 +98,43 @@ const PageBuilderListPage = () => {
     }
   });
   
-  // Duplicate page mutation (logic would need to be implemented on the server)
+  // Toggle page publish status mutation
+  const togglePublishMutation = useMutation({
+    mutationFn: async ({ id, isPublished }: { id: number; isPublished: boolean }) => {
+      const res = await apiRequest("PATCH", `/api/page-builder/pages/${id}`, {
+        isPublished: !isPublished
+      });
+      if (!res.ok) throw new Error('Failed to update publish status');
+      return await res.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/page-builder/pages'] });
+    },
+    onError: (error) => {
+      toast({
+        title: "Error",
+        description: `Failed to update page status: ${(error as Error).message}`,
+        variant: "destructive"
+      });
+    }
+  });
+  
+  // Duplicate page mutation
   const duplicateMutation = useMutation({
     mutationFn: async (pageId: number) => {
       const res = await apiRequest("POST", `/api/page-builder/pages/${pageId}/duplicate`);
       if (!res.ok) throw new Error('Failed to duplicate page');
       return await res.json();
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ['/api/page-builder/pages'] });
       toast({
         title: "Page duplicated",
         description: "The page has been duplicated successfully."
       });
+      
+      // Navigate to the new page
+      navigate(`/admin/page-builder/${data.data.id}`);
     },
     onError: (error) => {
       toast({
@@ -124,641 +145,653 @@ const PageBuilderListPage = () => {
     }
   });
   
-  // Toggle publish status mutation
-  const togglePublishMutation = useMutation({
-    mutationFn: async (pageId: number) => {
-      const res = await apiRequest("POST", `/api/page-builder/pages/${pageId}/publish`);
-      if (!res.ok) throw new Error('Failed to toggle publish status');
-      return await res.json();
-    },
-    onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: ['/api/page-builder/pages'] });
-      toast({
-        title: data.data.isPublished ? "Page published" : "Page unpublished",
-        description: `The page has been ${data.data.isPublished ? "published" : "unpublished"} successfully.`
-      });
-    },
-    onError: (error) => {
-      toast({
-        title: "Error",
-        description: `Failed to update publish status: ${(error as Error).message}`,
-        variant: "destructive"
-      });
+  // Handle page delete
+  const handleDeletePage = (id: number) => {
+    if (window.confirm("Are you sure you want to delete this page? This action cannot be undone.")) {
+      deleteMutation.mutate(id);
     }
-  });
+  };
   
-  // Filter pages based on search query and filters
-  const filteredPages = pages?.filter(page => {
-    // Apply search filter
-    const matchesSearch = searchQuery === "" || 
-      page.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      page.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      page.path.toLowerCase().includes(searchQuery.toLowerCase());
-      
-    // Apply page type filter
-    const matchesPageType = pageTypeFilter === null || page.pageType === pageTypeFilter;
-    
-    // Apply publish status filter
-    const matchesPublishStatus = publishStatusFilter === null || 
-      (publishStatusFilter === "published" && page.isPublished) ||
-      (publishStatusFilter === "draft" && !page.isPublished);
-    
-    return matchesSearch && matchesPageType && matchesPublishStatus;
-  });
+  // Handle page publish/unpublish
+  const handleTogglePublish = (id: number, isPublished: boolean) => {
+    togglePublishMutation.mutate({ id, isPublished });
+  };
   
-  // Get page type display name
-  const getPageTypeDisplay = (type: string) => {
+  // Handle page duplicate
+  const handleDuplicatePage = (id: number) => {
+    duplicateMutation.mutate(id);
+  };
+  
+  // Handle sort change
+  const handleSortChange = (field: string) => {
+    if (sortField === field) {
+      setSortDirection(sortDirection === "asc" ? "desc" : "asc");
+    } else {
+      setSortField(field);
+      setSortDirection("asc");
+    }
+  };
+  
+  // Filter and sort pages
+  const filteredPages = React.useMemo(() => {
+    if (!data) return [];
+    
+    return data
+      .filter(page => {
+        // Search filter
+        const matchesSearch = 
+          page.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          page.description?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          page.path.toLowerCase().includes(searchQuery.toLowerCase());
+        
+        // Page type filter
+        const matchesType = 
+          pageTypeFilter === "all" || 
+          page.pageType === pageTypeFilter;
+        
+        return matchesSearch && matchesType;
+      })
+      .sort((a, b) => {
+        let aValue = a[sortField as keyof PageInfo];
+        let bValue = b[sortField as keyof PageInfo];
+        
+        if (aValue === null) return 1;
+        if (bValue === null) return -1;
+        
+        if (typeof aValue === "string" && typeof bValue === "string") {
+          const result = aValue.localeCompare(bValue);
+          return sortDirection === "asc" ? result : -result;
+        } else {
+          const result = (aValue as any) > (bValue as any) ? 1 : -1;
+          return sortDirection === "asc" ? result : -result;
+        }
+      });
+  }, [data, searchQuery, pageTypeFilter, sortField, sortDirection]);
+  
+  // Format relative time
+  const formatRelativeTime = (dateString: string) => {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffInMs = now.getTime() - date.getTime();
+    const diffInSecs = Math.floor(diffInMs / 1000);
+    const diffInMins = Math.floor(diffInSecs / 60);
+    const diffInHours = Math.floor(diffInMins / 60);
+    const diffInDays = Math.floor(diffInHours / 24);
+    
+    if (diffInSecs < 60) return "just now";
+    if (diffInMins < 60) return `${diffInMins} ${diffInMins === 1 ? "minute" : "minutes"} ago`;
+    if (diffInHours < 24) return `${diffInHours} ${diffInHours === 1 ? "hour" : "hours"} ago`;
+    if (diffInDays < 30) return `${diffInDays} ${diffInDays === 1 ? "day" : "days"} ago`;
+    
+    return date.toLocaleDateString();
+  };
+  
+  // Get page type badge
+  const getPageTypeBadge = (type: string) => {
     switch (type) {
-      case 'core': return 'Core Page';
-      case 'custom': return 'Custom Page';
-      case 'automation': return 'Automation Page';
-      default: return type;
+      case "core":
+        return <Badge variant="secondary">Core</Badge>;
+      case "custom":
+        return <Badge variant="default">Custom</Badge>;
+      case "automation":
+        return <Badge variant="outline">Automation</Badge>;
+      default:
+        return <Badge variant="outline">{type}</Badge>;
     }
   };
   
-  // Get SEO score badge color
-  const getSeoScoreBadgeColor = (score?: number) => {
-    if (score === undefined) return "bg-muted";
-    if (score >= 80) return "bg-green-500 hover:bg-green-600";
-    if (score >= 60) return "bg-amber-500 hover:bg-amber-600";
-    return "bg-red-500 hover:bg-red-600";
+  // Get SEO score
+  const getSeoScoreBadge = (score: number | null) => {
+    if (score === null) return <Badge className="bg-slate-200 text-slate-700">Not analyzed</Badge>;
+    
+    if (score >= 80) return <Badge className="bg-green-500">Excellent</Badge>;
+    if (score >= 60) return <Badge className="bg-blue-500">Good</Badge>;
+    if (score >= 40) return <Badge className="bg-yellow-500">Needs Improvement</Badge>;
+    return <Badge className="bg-red-500">Poor</Badge>;
   };
   
-  // Render pages in grid view
-  const renderGridView = () => (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {filteredPages?.map(page => (
-        <Card key={page.id} className="overflow-hidden flex flex-col">
-          <CardHeader className="pb-3">
-            <div className="flex items-start justify-between">
-              <div className="space-y-1">
-                <CardTitle className="text-lg">{page.title}</CardTitle>
-                <CardDescription className="line-clamp-2">
-                  {page.description || "No description provided"}
-                </CardDescription>
-              </div>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                    <MoreHorizontal className="h-4 w-4" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={() => navigate(`/admin/page-builder/${page.id}`)}>
-                    <FileEdit className="h-4 w-4 mr-2" />
-                    Edit
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => togglePublishMutation.mutate(page.id)}>
-                    <Eye className="h-4 w-4 mr-2" />
-                    {page.isPublished ? "Unpublish" : "Publish"}
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => duplicateMutation.mutate(page.id)}>
-                    <Copy className="h-4 w-4 mr-2" />
-                    Duplicate
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem 
-                    className="text-destructive focus:text-destructive"
-                    onClick={() => {
-                      if (window.confirm("Are you sure you want to delete this page? This action cannot be undone.")) {
-                        deleteMutation.mutate(page.id);
-                      }
-                    }}
-                  >
-                    <Trash2 className="h-4 w-4 mr-2" />
-                    Delete
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+  // Loading state
+  if (isLoading) {
+    return (
+      <AdminLayout>
+        <div className="container px-8 py-6">
+          <div className="flex justify-between items-center mb-8">
+            <div>
+              <h1 className="text-3xl font-bold tracking-tight">Page Builder</h1>
+              <p className="text-muted-foreground mt-1">Create and manage your pages</p>
             </div>
-          </CardHeader>
-          <CardContent className="pb-2 flex-grow">
-            <div className="text-sm text-muted-foreground mb-2">
-              <span className="font-mono">{page.path}</span>
+            <Skeleton className="h-10 w-28" />
+          </div>
+          
+          <div className="mb-6">
+            <Skeleton className="h-10 w-full mb-4" />
+            <div className="flex gap-4 mb-4">
+              <Skeleton className="h-10 w-48" />
+              <Skeleton className="h-10 w-48" />
             </div>
-            <div className="flex flex-wrap gap-2 mt-2">
-              <Badge variant="outline">{getPageTypeDisplay(page.pageType)}</Badge>
-              <Badge variant={page.isPublished ? "default" : "secondary"}>
-                {page.isPublished ? "Published" : "Draft"}
-              </Badge>
-              {page.seoScore !== undefined && (
-                <Badge className={getSeoScoreBadgeColor(page.seoScore)}>
-                  SEO: {page.seoScore}
-                </Badge>
-              )}
-            </div>
-          </CardContent>
-          <CardFooter className="pt-2">
-            <Button 
-              variant="default" 
-              className="w-full" 
-              onClick={() => navigate(`/admin/page-builder/${page.id}`)}
-            >
-              <FileEdit className="h-4 w-4 mr-2" />
-              Edit Page
+          </div>
+          
+          <Skeleton className="h-64 w-full" />
+        </div>
+      </AdminLayout>
+    );
+  }
+  
+  // Error state
+  if (error) {
+    return (
+      <AdminLayout>
+        <div className="container px-8 py-6">
+          <div className="flex flex-col items-center justify-center h-96">
+            <h2 className="text-2xl font-bold text-destructive mb-4">Error</h2>
+            <p className="text-muted-foreground mb-6">{(error as Error).message}</p>
+            <Button onClick={() => window.location.reload()}>
+              Reload Page
             </Button>
-          </CardFooter>
-        </Card>
-      ))}
-    </div>
-  );
-  
-  // Render pages in list view
-  const renderListView = () => (
-    <div className="border rounded-md overflow-hidden">
-      <table className="w-full">
-        <thead className="bg-muted">
-          <tr>
-            <th className="text-left py-3 px-4 text-sm font-medium">Page Title</th>
-            <th className="text-left py-3 px-4 text-sm font-medium">Path</th>
-            <th className="text-left py-3 px-4 text-sm font-medium">Type</th>
-            <th className="text-left py-3 px-4 text-sm font-medium">Status</th>
-            <th className="text-left py-3 px-4 text-sm font-medium">SEO</th>
-            <th className="text-left py-3 px-4 text-sm font-medium">Updated</th>
-            <th className="text-right py-3 px-4 text-sm font-medium">Actions</th>
-          </tr>
-        </thead>
-        <tbody className="divide-y">
-          {filteredPages?.map(page => (
-            <tr key={page.id} className="hover:bg-muted/30">
-              <td className="py-3 px-4">
-                <div className="font-medium">{page.title}</div>
-                <div className="text-xs text-muted-foreground line-clamp-1">
-                  {page.description || "No description"}
-                </div>
-              </td>
-              <td className="py-3 px-4 font-mono text-xs">{page.path}</td>
-              <td className="py-3 px-4">
-                <Badge variant="outline">{getPageTypeDisplay(page.pageType)}</Badge>
-              </td>
-              <td className="py-3 px-4">
-                <Badge variant={page.isPublished ? "default" : "secondary"}>
-                  {page.isPublished ? "Published" : "Draft"}
-                </Badge>
-              </td>
-              <td className="py-3 px-4">
-                {page.seoScore !== undefined ? (
-                  <Badge className={getSeoScoreBadgeColor(page.seoScore)}>
-                    {page.seoScore}
-                  </Badge>
-                ) : (
-                  <span className="text-xs text-muted-foreground">N/A</span>
-                )}
-              </td>
-              <td className="py-3 px-4 text-sm text-muted-foreground">
-                {new Date(page.updatedAt).toLocaleDateString()}
-              </td>
-              <td className="py-3 px-4 text-right">
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                      <MoreHorizontal className="h-4 w-4" />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
-                    <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem onClick={() => navigate(`/admin/page-builder/${page.id}`)}>
-                      <FileEdit className="h-4 w-4 mr-2" />
-                      Edit
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => togglePublishMutation.mutate(page.id)}>
-                      <Eye className="h-4 w-4 mr-2" />
-                      {page.isPublished ? "Unpublish" : "Publish"}
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => duplicateMutation.mutate(page.id)}>
-                      <Copy className="h-4 w-4 mr-2" />
-                      Duplicate
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      <Sparkles className="h-4 w-4 mr-2" />
-                      Generate SEO
-                    </DropdownMenuItem>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem 
-                      className="text-destructive focus:text-destructive"
-                      onClick={() => {
-                        if (window.confirm("Are you sure you want to delete this page? This action cannot be undone.")) {
-                          deleteMutation.mutate(page.id);
-                        }
-                      }}
-                    >
-                      <Trash2 className="h-4 w-4 mr-2" />
-                      Delete
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  );
-  
-  // Render loading skeleton for grid view
-  const renderGridSkeleton = () => (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {[1, 2, 3, 4, 5, 6].map(i => (
-        <Card key={i} className="overflow-hidden">
-          <CardHeader className="pb-3">
-            <Skeleton className="h-5 w-2/3 mb-2" />
-            <Skeleton className="h-4 w-full" />
-            <Skeleton className="h-4 w-3/4 mt-1" />
-          </CardHeader>
-          <CardContent className="pb-2">
-            <Skeleton className="h-4 w-1/3 mb-3" />
-            <div className="flex gap-2">
-              <Skeleton className="h-5 w-20" />
-              <Skeleton className="h-5 w-16" />
-            </div>
-          </CardContent>
-          <CardFooter className="pt-2">
-            <Skeleton className="h-9 w-full" />
-          </CardFooter>
-        </Card>
-      ))}
-    </div>
-  );
-  
-  // Render loading skeleton for list view
-  const renderListSkeleton = () => (
-    <div className="border rounded-md overflow-hidden">
-      <table className="w-full">
-        <thead className="bg-muted">
-          <tr>
-            <th className="text-left py-3 px-4 text-sm font-medium">Page Title</th>
-            <th className="text-left py-3 px-4 text-sm font-medium">Path</th>
-            <th className="text-left py-3 px-4 text-sm font-medium">Type</th>
-            <th className="text-left py-3 px-4 text-sm font-medium">Status</th>
-            <th className="text-left py-3 px-4 text-sm font-medium">SEO</th>
-            <th className="text-left py-3 px-4 text-sm font-medium">Updated</th>
-            <th className="text-right py-3 px-4 text-sm font-medium">Actions</th>
-          </tr>
-        </thead>
-        <tbody className="divide-y">
-          {[1, 2, 3, 4, 5].map(i => (
-            <tr key={i}>
-              <td className="py-3 px-4">
-                <Skeleton className="h-5 w-40 mb-1" />
-                <Skeleton className="h-3 w-60" />
-              </td>
-              <td className="py-3 px-4"><Skeleton className="h-4 w-24" /></td>
-              <td className="py-3 px-4"><Skeleton className="h-5 w-20" /></td>
-              <td className="py-3 px-4"><Skeleton className="h-5 w-16" /></td>
-              <td className="py-3 px-4"><Skeleton className="h-5 w-8" /></td>
-              <td className="py-3 px-4"><Skeleton className="h-4 w-20" /></td>
-              <td className="py-3 px-4 text-right"><Skeleton className="h-8 w-8 ml-auto" /></td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  );
-  
-  // Check if filtering results in no pages
-  const hasNoResults = filteredPages && filteredPages.length === 0;
+          </div>
+        </div>
+      </AdminLayout>
+    );
+  }
   
   return (
     <AdminLayout>
       <div className="container px-8 py-6">
-        <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-6 gap-4">
+        <div className="flex justify-between items-center mb-8">
           <div>
             <h1 className="text-3xl font-bold tracking-tight">Page Builder</h1>
-            <p className="text-muted-foreground mt-1">
-              Create and manage pages with the Advanced Page Builder
-            </p>
+            <p className="text-muted-foreground mt-1">Create and manage your pages with the Advanced Page Builder</p>
           </div>
-          <Button onClick={() => navigate("/admin/page-builder/new")}>
+          <Button 
+            onClick={() => navigate("/admin/page-builder/new")}
+          >
             <Plus className="h-4 w-4 mr-2" />
             Create New Page
           </Button>
         </div>
         
-        <div className="mb-6">
-          <Tabs defaultValue="all" className="w-full">
-            <div className="flex items-center justify-between">
-              <TabsList>
-                <TabsTrigger value="all">All Pages</TabsTrigger>
-                <TabsTrigger value="published">Published</TabsTrigger>
-                <TabsTrigger value="drafts">Drafts</TabsTrigger>
-                <TabsTrigger value="templates">Templates</TabsTrigger>
-              </TabsList>
-              <div className="flex items-center space-x-2">
-                <Button
-                  variant={viewMode === "grid" ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => setViewMode("grid")}
-                >
-                  <LayoutGrid className="h-4 w-4" />
-                </Button>
-                <Button
-                  variant={viewMode === "list" ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => setViewMode("list")}
-                >
-                  <List className="h-4 w-4" />
-                </Button>
-              </div>
-            </div>
-            
-            <div className="flex flex-col md:flex-row gap-4 mt-4 mb-6">
-              <div className="relative flex-grow">
-                <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+        <Card className="mb-6">
+          <CardContent className="pt-6">
+            <div className="mb-4">
+              <div className="relative">
+                <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
                 <Input
-                  placeholder="Search pages..."
+                  placeholder="Search pages by title, description or path..."
                   className="pl-8"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
               </div>
-              
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="outline" className="w-full md:w-auto">
-                    <Filter className="h-4 w-4 mr-2" />
-                    Filter
-                    <ChevronDown className="h-4 w-4 ml-2" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-56">
-                  <DropdownMenuLabel>Filter by Page Type</DropdownMenuLabel>
-                  <DropdownMenuItem onClick={() => setPageTypeFilter(null)} className={pageTypeFilter === null ? "bg-muted" : ""}>
-                    All Types
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setPageTypeFilter('core')} className={pageTypeFilter === 'core' ? "bg-muted" : ""}>
-                    Core Pages
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setPageTypeFilter('custom')} className={pageTypeFilter === 'custom' ? "bg-muted" : ""}>
-                    Custom Pages
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setPageTypeFilter('automation')} className={pageTypeFilter === 'automation' ? "bg-muted" : ""}>
-                    Automation Pages
-                  </DropdownMenuItem>
-                  
-                  <DropdownMenuSeparator />
-                  
-                  <DropdownMenuLabel>Filter by Status</DropdownMenuLabel>
-                  <DropdownMenuItem onClick={() => setPublishStatusFilter(null)} className={publishStatusFilter === null ? "bg-muted" : ""}>
-                    All Statuses
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setPublishStatusFilter('published')} className={publishStatusFilter === 'published' ? "bg-muted" : ""}>
-                    Published
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setPublishStatusFilter('draft')} className={publishStatusFilter === 'draft' ? "bg-muted" : ""}>
-                    Draft
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
             </div>
             
-            <TabsContent value="all">
-              {isLoading ? (
-                viewMode === "grid" ? renderGridSkeleton() : renderListSkeleton()
-              ) : error ? (
-                <div className="flex items-center justify-center h-64">
-                  <div className="text-center">
-                    <p className="text-destructive font-medium mb-2">Failed to load pages</p>
-                    <p className="text-muted-foreground mb-4">{(error as Error).message}</p>
-                    <Button onClick={() => queryClient.invalidateQueries({ queryKey: ['/api/page-builder/pages'] })}>
-                      Retry
-                    </Button>
-                  </div>
-                </div>
-              ) : hasNoResults ? (
-                <div className="flex items-center justify-center h-64 border border-dashed rounded-md">
-                  <div className="text-center">
-                    <p className="text-muted-foreground mb-4">No pages match your search criteria</p>
-                    <Button variant="outline" onClick={() => {
-                      setSearchQuery("");
-                      setPageTypeFilter(null);
-                      setPublishStatusFilter(null);
-                    }}>
-                      Clear Filters
-                    </Button>
-                  </div>
-                </div>
-              ) : (
-                viewMode === "grid" ? renderGridView() : renderListView()
-              )}
-            </TabsContent>
-            
-            <TabsContent value="published">
-              {isLoading ? (
-                viewMode === "grid" ? renderGridSkeleton() : renderListSkeleton()
-              ) : (
-                <>
-                  {pages?.filter(page => page.isPublished).length === 0 ? (
-                    <div className="flex items-center justify-center h-64 border border-dashed rounded-md">
-                      <div className="text-center">
-                        <p className="text-muted-foreground mb-4">No published pages found</p>
-                        <Button onClick={() => navigate("/admin/page-builder/new")}>
-                          Create New Page
-                        </Button>
-                      </div>
-                    </div>
-                  ) : (
-                    viewMode === "grid" ? 
-                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {pages?.filter(page => page.isPublished && (searchQuery === "" || 
-                          page.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                          page.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                          page.path.toLowerCase().includes(searchQuery.toLowerCase()))).map(page => (
-                          <Card key={page.id} className="overflow-hidden flex flex-col">
-                            {/* Same card content as in renderGridView but filtered for published pages */}
-                            <CardHeader className="pb-3">
-                              <div className="flex items-start justify-between">
-                                <div className="space-y-1">
-                                  <CardTitle className="text-lg">{page.title}</CardTitle>
-                                  <CardDescription className="line-clamp-2">
-                                    {page.description || "No description provided"}
-                                  </CardDescription>
-                                </div>
-                                <DropdownMenu>
-                                  <DropdownMenuTrigger asChild>
-                                    <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                                      <MoreHorizontal className="h-4 w-4" />
-                                    </Button>
-                                  </DropdownMenuTrigger>
-                                  <DropdownMenuContent align="end">
-                                    <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                                    <DropdownMenuSeparator />
-                                    <DropdownMenuItem onClick={() => navigate(`/admin/page-builder/${page.id}`)}>
-                                      <FileEdit className="h-4 w-4 mr-2" />
-                                      Edit
-                                    </DropdownMenuItem>
-                                    <DropdownMenuItem onClick={() => togglePublishMutation.mutate(page.id)}>
-                                      <Eye className="h-4 w-4 mr-2" />
-                                      Unpublish
-                                    </DropdownMenuItem>
-                                    <DropdownMenuItem onClick={() => duplicateMutation.mutate(page.id)}>
-                                      <Copy className="h-4 w-4 mr-2" />
-                                      Duplicate
-                                    </DropdownMenuItem>
-                                    <DropdownMenuSeparator />
-                                    <DropdownMenuItem 
-                                      className="text-destructive focus:text-destructive"
-                                      onClick={() => {
-                                        if (window.confirm("Are you sure you want to delete this page? This action cannot be undone.")) {
-                                          deleteMutation.mutate(page.id);
-                                        }
-                                      }}
-                                    >
-                                      <Trash2 className="h-4 w-4 mr-2" />
-                                      Delete
-                                    </DropdownMenuItem>
-                                  </DropdownMenuContent>
-                                </DropdownMenu>
-                              </div>
-                            </CardHeader>
-                            <CardContent className="pb-2 flex-grow">
-                              <div className="text-sm text-muted-foreground mb-2">
-                                <span className="font-mono">{page.path}</span>
-                              </div>
-                              <div className="flex flex-wrap gap-2 mt-2">
-                                <Badge variant="outline">{getPageTypeDisplay(page.pageType)}</Badge>
-                                <Badge>Published</Badge>
-                                {page.seoScore !== undefined && (
-                                  <Badge className={getSeoScoreBadgeColor(page.seoScore)}>
-                                    SEO: {page.seoScore}
-                                  </Badge>
-                                )}
-                              </div>
-                            </CardContent>
-                            <CardFooter className="pt-2">
-                              <Button 
-                                variant="default" 
-                                className="w-full" 
-                                onClick={() => navigate(`/admin/page-builder/${page.id}`)}
-                              >
-                                <FileEdit className="h-4 w-4 mr-2" />
-                                Edit Page
-                              </Button>
-                            </CardFooter>
-                          </Card>
-                        ))}
-                      </div>
-                    : renderListView()
-                  )}
-                </>
-              )}
-            </TabsContent>
-            
-            <TabsContent value="drafts">
-              {isLoading ? (
-                viewMode === "grid" ? renderGridSkeleton() : renderListSkeleton()
-              ) : (
-                <>
-                  {pages?.filter(page => !page.isPublished).length === 0 ? (
-                    <div className="flex items-center justify-center h-64 border border-dashed rounded-md">
-                      <div className="text-center">
-                        <p className="text-muted-foreground mb-4">No draft pages found</p>
-                        <Button onClick={() => navigate("/admin/page-builder/new")}>
-                          Create New Page
-                        </Button>
-                      </div>
-                    </div>
-                  ) : (
-                    viewMode === "grid" ? 
-                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {pages?.filter(page => !page.isPublished && (searchQuery === "" || 
-                          page.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                          page.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                          page.path.toLowerCase().includes(searchQuery.toLowerCase()))).map(page => (
-                          <Card key={page.id} className="overflow-hidden flex flex-col">
-                            {/* Same card content as in renderGridView but filtered for draft pages */}
-                            <CardHeader className="pb-3">
-                              <div className="flex items-start justify-between">
-                                <div className="space-y-1">
-                                  <CardTitle className="text-lg">{page.title}</CardTitle>
-                                  <CardDescription className="line-clamp-2">
-                                    {page.description || "No description provided"}
-                                  </CardDescription>
-                                </div>
-                                <DropdownMenu>
-                                  <DropdownMenuTrigger asChild>
-                                    <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                                      <MoreHorizontal className="h-4 w-4" />
-                                    </Button>
-                                  </DropdownMenuTrigger>
-                                  <DropdownMenuContent align="end">
-                                    <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                                    <DropdownMenuSeparator />
-                                    <DropdownMenuItem onClick={() => navigate(`/admin/page-builder/${page.id}`)}>
-                                      <FileEdit className="h-4 w-4 mr-2" />
-                                      Edit
-                                    </DropdownMenuItem>
-                                    <DropdownMenuItem onClick={() => togglePublishMutation.mutate(page.id)}>
-                                      <Eye className="h-4 w-4 mr-2" />
-                                      Publish
-                                    </DropdownMenuItem>
-                                    <DropdownMenuItem onClick={() => duplicateMutation.mutate(page.id)}>
-                                      <Copy className="h-4 w-4 mr-2" />
-                                      Duplicate
-                                    </DropdownMenuItem>
-                                    <DropdownMenuSeparator />
-                                    <DropdownMenuItem 
-                                      className="text-destructive focus:text-destructive"
-                                      onClick={() => {
-                                        if (window.confirm("Are you sure you want to delete this page? This action cannot be undone.")) {
-                                          deleteMutation.mutate(page.id);
-                                        }
-                                      }}
-                                    >
-                                      <Trash2 className="h-4 w-4 mr-2" />
-                                      Delete
-                                    </DropdownMenuItem>
-                                  </DropdownMenuContent>
-                                </DropdownMenu>
-                              </div>
-                            </CardHeader>
-                            <CardContent className="pb-2 flex-grow">
-                              <div className="text-sm text-muted-foreground mb-2">
-                                <span className="font-mono">{page.path}</span>
-                              </div>
-                              <div className="flex flex-wrap gap-2 mt-2">
-                                <Badge variant="outline">{getPageTypeDisplay(page.pageType)}</Badge>
-                                <Badge variant="secondary">Draft</Badge>
-                                {page.seoScore !== undefined && (
-                                  <Badge className={getSeoScoreBadgeColor(page.seoScore)}>
-                                    SEO: {page.seoScore}
-                                  </Badge>
-                                )}
-                              </div>
-                            </CardContent>
-                            <CardFooter className="pt-2">
-                              <Button 
-                                variant="default" 
-                                className="w-full" 
-                                onClick={() => navigate(`/admin/page-builder/${page.id}`)}
-                              >
-                                <FileEdit className="h-4 w-4 mr-2" />
-                                Edit Page
-                              </Button>
-                            </CardFooter>
-                          </Card>
-                        ))}
-                      </div>
-                    : renderListView()
-                  )}
-                </>
-              )}
-            </TabsContent>
-            
-            <TabsContent value="templates">
-              <div className="flex items-center justify-center h-64 border border-dashed rounded-md">
-                <div className="text-center">
-                  <p className="text-muted-foreground mb-4">Page templates feature coming soon</p>
-                  <p className="text-xs text-muted-foreground">
-                    Save your pages as templates to quickly create new pages with the same structure
-                  </p>
-                </div>
+            <div className="flex flex-col sm:flex-row gap-4">
+              <div className="w-full sm:w-48">
+                <Label htmlFor="page-type-filter" className="mb-2 block">Page Type</Label>
+                <Select
+                  value={pageTypeFilter}
+                  onValueChange={setPageTypeFilter}
+                >
+                  <SelectTrigger id="page-type-filter">
+                    <SelectValue placeholder="Filter by type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Types</SelectItem>
+                    <SelectItem value="core">Core Pages</SelectItem>
+                    <SelectItem value="custom">Custom Pages</SelectItem>
+                    <SelectItem value="automation">Automation Pages</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
-            </TabsContent>
-          </Tabs>
-        </div>
+              
+              <div className="w-full sm:w-48">
+                <Label htmlFor="sort-by" className="mb-2 block">Sort By</Label>
+                <Select
+                  value={sortField}
+                  onValueChange={setSortField}
+                >
+                  <SelectTrigger id="sort-by">
+                    <SelectValue placeholder="Sort by" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="title">Title</SelectItem>
+                    <SelectItem value="updatedAt">Last Updated</SelectItem>
+                    <SelectItem value="createdAt">Created Date</SelectItem>
+                    <SelectItem value="seoScore">SEO Score</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              
+              <div className="w-full sm:w-48">
+                <Label htmlFor="sort-direction" className="mb-2 block">Direction</Label>
+                <Select
+                  value={sortDirection}
+                  onValueChange={(value) => setSortDirection(value as "asc" | "desc")}
+                >
+                  <SelectTrigger id="sort-direction">
+                    <SelectValue placeholder="Sort direction" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="asc">Ascending</SelectItem>
+                    <SelectItem value="desc">Descending</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+        
+        <Tabs defaultValue="all" className="mb-6">
+          <TabsList>
+            <TabsTrigger value="all">All Pages</TabsTrigger>
+            <TabsTrigger value="published">Published</TabsTrigger>
+            <TabsTrigger value="draft">Drafts</TabsTrigger>
+          </TabsList>
+          
+          <TabsContent value="all" className="mt-4">
+            <Card>
+              <CardContent className="p-0">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead className="w-[250px]">
+                        <div 
+                          className="flex items-center cursor-pointer"
+                          onClick={() => handleSortChange("title")}
+                        >
+                          Title
+                          {sortField === "title" && (
+                            <ArrowUpDown className="ml-2 h-4 w-4" />
+                          )}
+                        </div>
+                      </TableHead>
+                      <TableHead className="w-[120px]">Type</TableHead>
+                      <TableHead className="w-[150px]">Path</TableHead>
+                      <TableHead className="w-[120px]">
+                        <div 
+                          className="flex items-center cursor-pointer"
+                          onClick={() => handleSortChange("seoScore")}
+                        >
+                          SEO Score
+                          {sortField === "seoScore" && (
+                            <ArrowUpDown className="ml-2 h-4 w-4" />
+                          )}
+                        </div>
+                      </TableHead>
+                      <TableHead className="w-[120px]">Status</TableHead>
+                      <TableHead className="w-[150px]">
+                        <div 
+                          className="flex items-center cursor-pointer"
+                          onClick={() => handleSortChange("updatedAt")}
+                        >
+                          Last Updated
+                          {sortField === "updatedAt" && (
+                            <ArrowUpDown className="ml-2 h-4 w-4" />
+                          )}
+                        </div>
+                      </TableHead>
+                      <TableHead className="text-right">Actions</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {filteredPages.length === 0 ? (
+                      <TableRow>
+                        <TableCell colSpan={7} className="h-24 text-center">
+                          No pages found. Create your first page to get started.
+                        </TableCell>
+                      </TableRow>
+                    ) : (
+                      filteredPages.map((page) => (
+                        <TableRow key={page.id}>
+                          <TableCell className="font-medium">
+                            <div className="flex flex-col">
+                              <span>{page.title}</span>
+                              {page.description && (
+                                <span className="text-xs text-muted-foreground truncate max-w-[230px]">
+                                  {page.description}
+                                </span>
+                              )}
+                            </div>
+                          </TableCell>
+                          <TableCell>{getPageTypeBadge(page.pageType)}</TableCell>
+                          <TableCell className="font-mono text-xs truncate max-w-[150px]">
+                            {page.path}
+                          </TableCell>
+                          <TableCell>{getSeoScoreBadge(page.seoScore)}</TableCell>
+                          <TableCell>
+                            {page.isPublished ? (
+                              <div className="flex items-center">
+                                <CheckCircle className="h-4 w-4 text-green-500 mr-1" />
+                                <span>Published</span>
+                              </div>
+                            ) : (
+                              <div className="flex items-center">
+                                <Clock className="h-4 w-4 text-amber-500 mr-1" />
+                                <span>Draft</span>
+                              </div>
+                            )}
+                          </TableCell>
+                          <TableCell>
+                            <span className="text-muted-foreground">
+                              {formatRelativeTime(page.updatedAt)}
+                            </span>
+                          </TableCell>
+                          <TableCell className="text-right">
+                            <div className="flex items-center justify-end space-x-2">
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                onClick={() => navigate(`/admin/page-builder/${page.id}`)}
+                                title="Edit Page"
+                              >
+                                <Edit className="h-4 w-4" />
+                              </Button>
+                              <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                  <Button
+                                    variant="ghost"
+                                    size="icon"
+                                  >
+                                    <MoreVertical className="h-4 w-4" />
+                                  </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent align="end">
+                                  <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                                  <DropdownMenuItem
+                                    onClick={() => navigate(`/admin/page-builder/${page.id}`)}
+                                  >
+                                    <Edit className="h-4 w-4 mr-2" />
+                                    <span>Edit</span>
+                                  </DropdownMenuItem>
+                                  <DropdownMenuItem
+                                    onClick={() => handleTogglePublish(page.id, page.isPublished)}
+                                  >
+                                    {page.isPublished ? (
+                                      <>
+                                        <XCircle className="h-4 w-4 mr-2" />
+                                        <span>Unpublish</span>
+                                      </>
+                                    ) : (
+                                      <>
+                                        <CheckCircle className="h-4 w-4 mr-2" />
+                                        <span>Publish</span>
+                                      </>
+                                    )}
+                                  </DropdownMenuItem>
+                                  <DropdownMenuItem
+                                    onClick={() => handleDuplicatePage(page.id)}
+                                  >
+                                    <Copy className="h-4 w-4 mr-2" />
+                                    <span>Duplicate</span>
+                                  </DropdownMenuItem>
+                                  <DropdownMenuItem
+                                    onClick={() => window.open(page.path, "_blank")}
+                                  >
+                                    <Eye className="h-4 w-4 mr-2" />
+                                    <span>Preview</span>
+                                  </DropdownMenuItem>
+                                  <DropdownMenuSeparator />
+                                  <DropdownMenuItem
+                                    className="text-destructive focus:text-destructive"
+                                    onClick={() => handleDeletePage(page.id)}
+                                  >
+                                    <Trash2 className="h-4 w-4 mr-2" />
+                                    <span>Delete</span>
+                                  </DropdownMenuItem>
+                                </DropdownMenuContent>
+                              </DropdownMenu>
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      ))
+                    )}
+                  </TableBody>
+                </Table>
+              </CardContent>
+            </Card>
+          </TabsContent>
+          
+          <TabsContent value="published" className="mt-4">
+            <Card>
+              <CardContent className="p-0">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead className="w-[250px]">Title</TableHead>
+                      <TableHead className="w-[120px]">Type</TableHead>
+                      <TableHead className="w-[150px]">Path</TableHead>
+                      <TableHead className="w-[120px]">SEO Score</TableHead>
+                      <TableHead className="w-[150px]">Last Updated</TableHead>
+                      <TableHead className="text-right">Actions</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {filteredPages.filter(page => page.isPublished).length === 0 ? (
+                      <TableRow>
+                        <TableCell colSpan={6} className="h-24 text-center">
+                          No published pages found.
+                        </TableCell>
+                      </TableRow>
+                    ) : (
+                      filteredPages.filter(page => page.isPublished).map((page) => (
+                        <TableRow key={page.id}>
+                          <TableCell className="font-medium">
+                            <div className="flex flex-col">
+                              <span>{page.title}</span>
+                              {page.description && (
+                                <span className="text-xs text-muted-foreground truncate max-w-[230px]">
+                                  {page.description}
+                                </span>
+                              )}
+                            </div>
+                          </TableCell>
+                          <TableCell>{getPageTypeBadge(page.pageType)}</TableCell>
+                          <TableCell className="font-mono text-xs truncate max-w-[150px]">
+                            {page.path}
+                          </TableCell>
+                          <TableCell>{getSeoScoreBadge(page.seoScore)}</TableCell>
+                          <TableCell>
+                            <span className="text-muted-foreground">
+                              {formatRelativeTime(page.updatedAt)}
+                            </span>
+                          </TableCell>
+                          <TableCell className="text-right">
+                            <div className="flex items-center justify-end space-x-2">
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                onClick={() => navigate(`/admin/page-builder/${page.id}`)}
+                                title="Edit Page"
+                              >
+                                <Edit className="h-4 w-4" />
+                              </Button>
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                onClick={() => window.open(page.path, "_blank")}
+                                title="View Page"
+                              >
+                                <Eye className="h-4 w-4" />
+                              </Button>
+                              <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                  <Button
+                                    variant="ghost"
+                                    size="icon"
+                                  >
+                                    <MoreVertical className="h-4 w-4" />
+                                  </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent align="end">
+                                  <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                                  <DropdownMenuItem
+                                    onClick={() => handleTogglePublish(page.id, page.isPublished)}
+                                  >
+                                    <XCircle className="h-4 w-4 mr-2" />
+                                    <span>Unpublish</span>
+                                  </DropdownMenuItem>
+                                  <DropdownMenuItem
+                                    onClick={() => handleDuplicatePage(page.id)}
+                                  >
+                                    <Copy className="h-4 w-4 mr-2" />
+                                    <span>Duplicate</span>
+                                  </DropdownMenuItem>
+                                  <DropdownMenuSeparator />
+                                  <DropdownMenuItem
+                                    className="text-destructive focus:text-destructive"
+                                    onClick={() => handleDeletePage(page.id)}
+                                  >
+                                    <Trash2 className="h-4 w-4 mr-2" />
+                                    <span>Delete</span>
+                                  </DropdownMenuItem>
+                                </DropdownMenuContent>
+                              </DropdownMenu>
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      ))
+                    )}
+                  </TableBody>
+                </Table>
+              </CardContent>
+            </Card>
+          </TabsContent>
+          
+          <TabsContent value="draft" className="mt-4">
+            <Card>
+              <CardContent className="p-0">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead className="w-[250px]">Title</TableHead>
+                      <TableHead className="w-[120px]">Type</TableHead>
+                      <TableHead className="w-[150px]">Path</TableHead>
+                      <TableHead className="w-[120px]">SEO Score</TableHead>
+                      <TableHead className="w-[150px]">Last Updated</TableHead>
+                      <TableHead className="text-right">Actions</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {filteredPages.filter(page => !page.isPublished).length === 0 ? (
+                      <TableRow>
+                        <TableCell colSpan={6} className="h-24 text-center">
+                          No draft pages found.
+                        </TableCell>
+                      </TableRow>
+                    ) : (
+                      filteredPages.filter(page => !page.isPublished).map((page) => (
+                        <TableRow key={page.id}>
+                          <TableCell className="font-medium">
+                            <div className="flex flex-col">
+                              <span>{page.title}</span>
+                              {page.description && (
+                                <span className="text-xs text-muted-foreground truncate max-w-[230px]">
+                                  {page.description}
+                                </span>
+                              )}
+                            </div>
+                          </TableCell>
+                          <TableCell>{getPageTypeBadge(page.pageType)}</TableCell>
+                          <TableCell className="font-mono text-xs truncate max-w-[150px]">
+                            {page.path}
+                          </TableCell>
+                          <TableCell>{getSeoScoreBadge(page.seoScore)}</TableCell>
+                          <TableCell>
+                            <span className="text-muted-foreground">
+                              {formatRelativeTime(page.updatedAt)}
+                            </span>
+                          </TableCell>
+                          <TableCell className="text-right">
+                            <div className="flex items-center justify-end space-x-2">
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                onClick={() => navigate(`/admin/page-builder/${page.id}`)}
+                                title="Edit Page"
+                              >
+                                <Edit className="h-4 w-4" />
+                              </Button>
+                              <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                  <Button
+                                    variant="ghost"
+                                    size="icon"
+                                  >
+                                    <MoreVertical className="h-4 w-4" />
+                                  </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent align="end">
+                                  <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                                  <DropdownMenuItem
+                                    onClick={() => handleTogglePublish(page.id, page.isPublished)}
+                                  >
+                                    <CheckCircle className="h-4 w-4 mr-2" />
+                                    <span>Publish</span>
+                                  </DropdownMenuItem>
+                                  <DropdownMenuItem
+                                    onClick={() => handleDuplicatePage(page.id)}
+                                  >
+                                    <Copy className="h-4 w-4 mr-2" />
+                                    <span>Duplicate</span>
+                                  </DropdownMenuItem>
+                                  <DropdownMenuSeparator />
+                                  <DropdownMenuItem
+                                    className="text-destructive focus:text-destructive"
+                                    onClick={() => handleDeletePage(page.id)}
+                                  >
+                                    <Trash2 className="h-4 w-4 mr-2" />
+                                    <span>Delete</span>
+                                  </DropdownMenuItem>
+                                </DropdownMenuContent>
+                              </DropdownMenu>
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      ))
+                    )}
+                  </TableBody>
+                </Table>
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
+        
+        <Card>
+          <CardHeader>
+            <CardTitle>Quick Tips</CardTitle>
+            <CardDescription>Make the most of the Advanced Page Builder</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="space-y-2">
+                <div className="flex items-center">
+                  <Sparkles className="h-5 w-5 mr-2 text-primary" />
+                  <h3 className="font-medium">AI-Powered Content</h3>
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  Use AI to generate content, headlines, and SEO recommendations based on your brand guidelines.
+                </p>
+              </div>
+              <div className="space-y-2">
+                <div className="flex items-center">
+                  <FileText className="h-5 w-5 mr-2 text-primary" />
+                  <h3 className="font-medium">Reusable Sections</h3>
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  Create sections once and reuse them across multiple pages to maintain consistency.
+                </p>
+              </div>
+              <div className="space-y-2">
+                <div className="flex items-center">
+                  <Eye className="h-5 w-5 mr-2 text-primary" />
+                  <h3 className="font-medium">Device Preview</h3>
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  Preview how your pages look on desktop, tablet, and mobile devices before publishing.
+                </p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </AdminLayout>
   );

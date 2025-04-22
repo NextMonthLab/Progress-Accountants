@@ -213,6 +213,23 @@ function Router() {
       <ProtectedRoute path="/launch-ready" component={LaunchReadyPage} />
       <ProtectedRoute path="/media" component={MediaManagementPage} />
       
+      {/* Page Builder routes */}
+      <ProtectedRoute 
+        path="/admin/page-builder" 
+        component={PageBuilderListPage} 
+        allowedRoles={['admin', 'super_admin', 'editor']} 
+      />
+      <ProtectedRoute 
+        path="/admin/page-builder/new" 
+        component={PageBuilderPage} 
+        allowedRoles={['admin', 'super_admin', 'editor']} 
+      />
+      <ProtectedRoute 
+        path="/admin/page-builder/:id" 
+        component={PageBuilderPage} 
+        allowedRoles={['admin', 'super_admin', 'editor']} 
+      />
+      
       {/* Component demo route */}
       <Route path="/components" component={ComponentDemo} />
       

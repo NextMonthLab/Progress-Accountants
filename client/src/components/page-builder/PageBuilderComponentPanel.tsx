@@ -28,7 +28,7 @@ import {
   Rows3,
   Columns3,
   LayoutPanelLeft,
-  LayoutPanelRight,
+  LayoutPanelTop,
   Plus,
   Mail,
   Play,
@@ -239,7 +239,7 @@ const sectionTypes = [
   {
     name: "Sidebar Right",
     type: "sidebar-right",
-    icon: LayoutPanelRight,
+    icon: LayoutPanelTop,
     description: "Content with right sidebar"
   },
   {
