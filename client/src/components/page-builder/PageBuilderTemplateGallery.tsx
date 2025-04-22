@@ -43,6 +43,43 @@ interface PageTemplate {
   template: any; // The actual template data structure
 }
 
+// Define template previews interface to match what createTemplatePreviews returns
+interface TemplatePreviews {
+  landing: {
+    modern: string;
+    service: string;
+    product: string;
+  };
+  about: {
+    story: string;
+    team: string;
+  };
+  services: {
+    cards: string;
+    detailed: string;
+  };
+  contact: {
+    basic: string;
+    full: string;
+  };
+  blog: {
+    grid: string;
+    article: string;
+  };
+  pricing: {
+    simple: string;
+    detailed: string;
+  };
+  faq: {
+    accordion: string;
+    support: string;
+  };
+  portfolio: {
+    grid: string;
+    case: string;
+  };
+}
+
 interface PageBuilderTemplateGalleryProps {
   onSelectTemplate: (template: any) => void;
 }
@@ -1013,7 +1050,7 @@ const createEnhancedPreview = (type: string, subtype: string): string => {
 };
 
 // Create template previews
-const TEMPLATE_PREVIEWS = createTemplatePreviews();
+const TEMPLATE_PREVIEWS: TemplatePreviews = createTemplatePreviews();
 
 // Create templates for each category
 const sampleTemplates: PageTemplate[] = [
@@ -1054,7 +1091,7 @@ const sampleTemplates: PageTemplate[] = [
     name: "Company Story",
     description: "Tell your brand story with timeline, values, and team section.",
     category: "about",
-    previewImage: TEMPLATE_PREVIEWS.about,
+    previewImage: TEMPLATE_PREVIEWS.about.story,
     tags: ["story", "values", "team"],
     template: createAboutPageTemplate("Company Story")
   },
@@ -1063,7 +1100,7 @@ const sampleTemplates: PageTemplate[] = [
     name: "Team Showcase",
     description: "Highlight your team with detailed profiles and expertise areas.",
     category: "about",
-    previewImage: TEMPLATE_PREVIEWS.about,
+    previewImage: TEMPLATE_PREVIEWS.about.team,
     tags: ["team", "profiles", "expertise"],
     isNew: true,
     template: createAboutPageTemplate("Team Showcase")
@@ -1075,7 +1112,7 @@ const sampleTemplates: PageTemplate[] = [
     name: "Service Cards",
     description: "Present your services in elegant cards with icons, pricing, and benefits.",
     category: "services",
-    previewImage: TEMPLATE_PREVIEWS.services,
+    previewImage: TEMPLATE_PREVIEWS.services.cards,
     tags: ["services", "pricing", "features"],
     template: createServicesPageTemplate("Service Cards")
   },
@@ -1084,7 +1121,7 @@ const sampleTemplates: PageTemplate[] = [
     name: "Detailed Services",
     description: "In-depth service descriptions with process explanation and case studies.",
     category: "services",
-    previewImage: TEMPLATE_PREVIEWS.services,
+    previewImage: TEMPLATE_PREVIEWS.services.detailed,
     tags: ["detailed", "process", "case studies"],
     isFeatured: true,
     template: createServicesPageTemplate("Detailed Services")
@@ -1096,7 +1133,7 @@ const sampleTemplates: PageTemplate[] = [
     name: "Basic Contact",
     description: "Simple contact form with company information and map.",
     category: "contact",
-    previewImage: TEMPLATE_PREVIEWS.contact,
+    previewImage: TEMPLATE_PREVIEWS.contact.basic,
     tags: ["contact", "form", "map"],
     template: createContactPageTemplate("Basic Contact")
   },
@@ -1105,7 +1142,7 @@ const sampleTemplates: PageTemplate[] = [
     name: "Full Contact Center",
     description: "Complete contact center with department routing, FAQ, and multiple office locations.",
     category: "contact",
-    previewImage: TEMPLATE_PREVIEWS.contact,
+    previewImage: TEMPLATE_PREVIEWS.contact.full,
     tags: ["detailed", "departments", "offices"],
     isNew: true,
     template: createContactPageTemplate("Full Contact Center")
@@ -1117,7 +1154,7 @@ const sampleTemplates: PageTemplate[] = [
     name: "Blog Grid",
     description: "Modern blog grid layout with featured posts and category filtering.",
     category: "blog",
-    previewImage: TEMPLATE_PREVIEWS.blog,
+    previewImage: TEMPLATE_PREVIEWS.blog.grid,
     tags: ["blog", "grid", "categories"],
     template: createBlogPageTemplate("Blog Grid")
   },
@@ -1126,7 +1163,7 @@ const sampleTemplates: PageTemplate[] = [
     name: "Article Template",
     description: "Clean, readable article template with related posts and author bio.",
     category: "blog",
-    previewImage: TEMPLATE_PREVIEWS.blog,
+    previewImage: TEMPLATE_PREVIEWS.blog.article,
     tags: ["article", "readability", "sharing"],
     template: createBlogPageTemplate("Article Template")
   },
@@ -1137,7 +1174,7 @@ const sampleTemplates: PageTemplate[] = [
     name: "Simple Pricing",
     description: "Clear, straightforward pricing tables with feature comparison.",
     category: "pricing",
-    previewImage: TEMPLATE_PREVIEWS.pricing,
+    previewImage: TEMPLATE_PREVIEWS.pricing.simple,
     tags: ["pricing", "comparison", "conversion"],
     template: createPricingPageTemplate("Simple Pricing")
   },
@@ -1146,7 +1183,7 @@ const sampleTemplates: PageTemplate[] = [
     name: "Detailed Pricing",
     description: "Comprehensive pricing with FAQ, testimonials, and feature breakdowns.",
     category: "pricing",
-    previewImage: TEMPLATE_PREVIEWS.pricing,
+    previewImage: TEMPLATE_PREVIEWS.pricing.detailed,
     tags: ["detailed", "features", "FAQ"],
     isFeatured: true,
     template: createPricingPageTemplate("Detailed Pricing")
@@ -1158,7 +1195,7 @@ const sampleTemplates: PageTemplate[] = [
     name: "FAQ Accordion",
     description: "Organized FAQ with categorized accordion sections and search.",
     category: "faq",
-    previewImage: TEMPLATE_PREVIEWS.faq,
+    previewImage: TEMPLATE_PREVIEWS.faq.accordion,
     tags: ["FAQ", "accordion", "categories"],
     template: createFaqPageTemplate("FAQ Accordion")
   },
@@ -1167,7 +1204,7 @@ const sampleTemplates: PageTemplate[] = [
     name: "Support Center",
     description: "Comprehensive support center with FAQs, guides, and contact options.",
     category: "faq",
-    previewImage: TEMPLATE_PREVIEWS.faq,
+    previewImage: TEMPLATE_PREVIEWS.faq.support,
     tags: ["support", "guides", "contact"],
     isNew: true,
     template: createFaqPageTemplate("Support Center")
@@ -1179,7 +1216,7 @@ const sampleTemplates: PageTemplate[] = [
     name: "Portfolio Grid",
     description: "Showcase your work with filterable portfolio grid and detailed project pages.",
     category: "portfolio",
-    previewImage: TEMPLATE_PREVIEWS.portfolio,
+    previewImage: TEMPLATE_PREVIEWS.portfolio.grid,
     tags: ["portfolio", "projects", "filtering"],
     template: createPortfolioPageTemplate("Portfolio Grid")
   },
@@ -1188,7 +1225,7 @@ const sampleTemplates: PageTemplate[] = [
     name: "Case Studies",
     description: "In-depth case studies with process, results, and testimonials.",
     category: "portfolio",
-    previewImage: TEMPLATE_PREVIEWS.portfolio,
+    previewImage: TEMPLATE_PREVIEWS.portfolio.case,
     tags: ["case studies", "results", "process"],
     template: createPortfolioPageTemplate("Case Studies")
   },
