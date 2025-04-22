@@ -13,7 +13,38 @@ import {
 } from "../../shared/schema";
 import { desc, eq, and } from "drizzle-orm";
 
+// Helper function to check if a table exists
+export async function checkIfTableExists(tableName: string): Promise<boolean> {
+  const result = await db.execute(sql`
+    SELECT EXISTS (
+      SELECT FROM information_schema.tables 
+      WHERE table_schema = 'public' AND table_name = ${tableName}
+    );
+  `);
+  return result.rows[0].exists;
+}
+
 export const pageBuilderController = {
+  // Check if page builder tables are initialized
+  async checkStatus(req: Request, res: Response) {
+    try {
+      const tableExists = await checkIfTableExists('page_builder_pages');
+      
+      return res.status(200).json({
+        initialized: tableExists,
+        message: tableExists 
+          ? "Page Builder tables are initialized" 
+          : "Page Builder tables are not initialized"
+      });
+    } catch (error) {
+      console.error("Error checking Page Builder status:", error);
+      return res.status(500).json({
+        initialized: false,
+        message: `Failed to check Page Builder status: ${(error as Error).message}`
+      });
+    }
+  },
+  
   // Initialize the page builder database tables
   async initializeTables(req: Request, res: Response) {
     try {
@@ -286,15 +317,4 @@ export const pageBuilderController = {
   }
 };
 
-// Helper function to check if a table exists
-async function checkIfTableExists(tableName: string): Promise<boolean> {
-  const result = await db.execute(sql`
-    SELECT EXISTS (
-      SELECT FROM information_schema.tables 
-      WHERE table_schema = 'public'
-      AND table_name = ${tableName}
-    );
-  `);
-  
-  return result.rows[0] && result.rows[0].exists === true;
-}
+// NOTE: This function is already defined above. Removing duplicate definition.

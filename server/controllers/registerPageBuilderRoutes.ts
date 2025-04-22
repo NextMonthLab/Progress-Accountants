@@ -10,7 +10,8 @@ const isAuthenticated = (req: Request, res: Response, next: NextFunction) => {
 };
 
 export function registerPageBuilderRoutes(app: Express) {
-  // Initialize page builder tables
+  // Status and initialization
+  app.get("/api/page-builder/status", isAuthenticated, pageBuilderController.checkStatus);
   app.post("/api/page-builder/initialize", isAuthenticated, pageBuilderController.initializeTables);
   
   // Page CRUD routes

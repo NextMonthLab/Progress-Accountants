@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { useLocation } from "wouter";
+import { useLocation, useNavigate } from "wouter";
 import AdminLayout from "@/layouts/AdminLayout";
 import { Button } from "@/components/ui/button";
 import {
@@ -842,83 +842,291 @@ const PageBuilderListPageWrapper: React.FC = () => {
     initPageBuilderMutation.mutate();
   };
   
+  // Check if tables exist before rendering content
+  const { isLoading: isCheckingTables, data: tablesExist } = useQuery({
+    queryKey: ['/api/page-builder/status'],
+    queryFn: async () => {
+      try {
+        const res = await apiRequest("GET", "/api/page-builder/status");
+        const data = await res.json();
+        return data.initialized || false;
+      } catch (error) {
+        console.error("Error checking table status:", error);
+        return false;
+      }
+    }
+  });
+
+  // If we're still checking if tables exist, show loading state
+  if (isCheckingTables) {
+    return (
+      <AdminLayout>
+        <div className="container px-8 py-6 flex flex-col items-center justify-center min-h-[60vh]">
+          <div className="flex items-center">
+            <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            <p>Loading Page Builder...</p>
+          </div>
+        </div>
+      </AdminLayout>
+    );
+  }
+  
+  // If tables don't exist, show initialization screen
+  if (!tablesExist) {
+    return (
+      <AdminLayout>
+        <div className="container px-8 py-6">
+          <h1 className="text-3xl font-bold tracking-tight mb-6">Page Builder</h1>
+          <p className="text-muted-foreground mb-8">Create and manage your pages with the Advanced Page Builder</p>
+          
+          <Card className="mb-8">
+            <CardContent className="p-6">
+              <div className="flex flex-col items-center text-center py-10">
+                <FileText className="h-16 w-16 text-muted-foreground mb-6" />
+                <h2 className="text-2xl font-bold mb-2">Set Up Page Builder</h2>
+                <p className="text-muted-foreground mb-6 max-w-md">
+                  The Advanced Page Builder requires database tables to be initialized before you can create and manage pages.
+                </p>
+                
+                {initResult && (
+                  <div className={`p-4 mb-6 rounded-md w-full max-w-md ${
+                    initResult.success ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                  }`}>
+                    <p>{initResult.message}</p>
+                  </div>
+                )}
+                
+                <Button 
+                  onClick={handleInitialize}
+                  disabled={isInitializing}
+                  className="min-w-[200px]"
+                >
+                  {isInitializing ? (
+                    <>
+                      <svg className="animate-spin -ml-1 mr-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                      Initializing...
+                    </>
+                  ) : (
+                    'Initialize Page Builder'
+                  )}
+                </Button>
+                
+                <p className="text-xs text-muted-foreground mt-4">
+                  This action will create all necessary database tables for the Advanced Page Builder feature.
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+          
+          <div className="flex flex-col items-center text-center py-12">
+            <h3 className="text-lg font-medium mb-2">Coming Soon</h3>
+            <p className="text-muted-foreground mb-4">
+              The Advanced Page Builder will allow you to:
+            </p>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mt-4">
+              <Card className="p-4">
+                <CardContent className="pt-4 text-center">
+                  <Sparkles className="h-8 w-8 mx-auto mb-2 text-primary" />
+                  <h4 className="font-medium">AI-Enhanced Content Creation</h4>
+                  <p className="text-sm text-muted-foreground">Create dynamic, SEO-optimized content with AI assistance</p>
+                </CardContent>
+              </Card>
+              <Card className="p-4">
+                <CardContent className="pt-4 text-center">
+                  <LayoutGrid className="h-8 w-8 mx-auto mb-2 text-primary" />
+                  <h4 className="font-medium">Drag-and-Drop Layouts</h4>
+                  <p className="text-sm text-muted-foreground">Build beautiful, responsive page layouts without code</p>
+                </CardContent>
+              </Card>
+              <Card className="p-4">
+                <CardContent className="pt-4 text-center">
+                  <FileText className="h-8 w-8 mx-auto mb-2 text-primary" />
+                  <h4 className="font-medium">SEO Optimization</h4>
+                  <p className="text-sm text-muted-foreground">Get real-time SEO recommendations and scoring</p>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        </div>
+      </AdminLayout>
+    );
+  }
+  
+  // If tables exist, show the actual page builder interface
   return (
     <AdminLayout>
       <div className="container px-8 py-6">
-        <h1 className="text-3xl font-bold tracking-tight mb-6">Page Builder</h1>
-        <p className="text-muted-foreground mb-8">Create and manage your pages with the Advanced Page Builder</p>
+        <div className="flex justify-between items-center mb-8">
+          <div>
+            <h1 className="text-3xl font-bold tracking-tight">Page Builder</h1>
+            <p className="text-muted-foreground mt-1">Create and manage your pages with the Advanced Page Builder</p>
+          </div>
+          <Button 
+            onClick={() => navigate("/page-builder/new")}
+          >
+            <Plus className="h-4 w-4 mr-2" />
+            Create New Page
+          </Button>
+        </div>
         
-        <Card className="mb-8">
-          <CardContent className="p-6">
-            <div className="flex flex-col items-center text-center py-10">
-              <FileText className="h-16 w-16 text-muted-foreground mb-6" />
-              <h2 className="text-2xl font-bold mb-2">Set Up Page Builder</h2>
-              <p className="text-muted-foreground mb-6 max-w-md">
-                The Advanced Page Builder requires database tables to be initialized before you can create and manage pages.
-              </p>
+        <Card className="mb-6">
+          <CardContent className="pt-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+              <div className="p-4 bg-muted rounded-lg text-center">
+                <h3 className="text-2xl font-bold text-primary">0</h3>
+                <p className="text-sm text-muted-foreground">Total Pages</p>
+              </div>
+              <div className="p-4 bg-muted rounded-lg text-center">
+                <h3 className="text-2xl font-bold text-green-500">0</h3>
+                <p className="text-sm text-muted-foreground">Published Pages</p>
+              </div>
+              <div className="p-4 bg-muted rounded-lg text-center">
+                <h3 className="text-2xl font-bold text-yellow-500">0</h3>
+                <p className="text-sm text-muted-foreground">Draft Pages</p>
+              </div>
+            </div>
+            
+            <div className="relative mb-4">
+              <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+              <Input
+                placeholder="Search pages by title, description or path..."
+                className="pl-8"
+              />
+            </div>
               
-              {initResult && (
-                <div className={`p-4 mb-6 rounded-md w-full max-w-md ${
-                  initResult.success ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
-                }`}>
-                  <p>{initResult.message}</p>
-                </div>
-              )}
+            <div className="flex flex-col sm:flex-row gap-4">
+              <div className="w-full sm:w-48">
+                <Label htmlFor="page-type-filter" className="mb-2 block">Page Type</Label>
+                <Select defaultValue="all">
+                  <SelectTrigger id="page-type-filter">
+                    <SelectValue placeholder="Filter by type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Types</SelectItem>
+                    <SelectItem value="core">Core Pages</SelectItem>
+                    <SelectItem value="custom">Custom Pages</SelectItem>
+                    <SelectItem value="automation">Automation Pages</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
               
-              <Button 
-                onClick={handleInitialize}
-                disabled={isInitializing}
-                className="min-w-[200px]"
-              >
-                {isInitializing ? (
-                  <>
-                    <svg className="animate-spin -ml-1 mr-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
-                    Initializing...
-                  </>
-                ) : (
-                  'Initialize Page Builder'
-                )}
-              </Button>
-              
-              <p className="text-xs text-muted-foreground mt-4">
-                This action will create all necessary database tables for the Advanced Page Builder feature.
-              </p>
+              <div className="w-full sm:w-48">
+                <Label htmlFor="sort-by" className="mb-2 block">Sort By</Label>
+                <Select defaultValue="updatedAt">
+                  <SelectTrigger id="sort-by">
+                    <SelectValue placeholder="Sort by" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="title">Title</SelectItem>
+                    <SelectItem value="updatedAt">Last Updated</SelectItem>
+                    <SelectItem value="createdAt">Created Date</SelectItem>
+                    <SelectItem value="seoScore">SEO Score</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
           </CardContent>
         </Card>
         
-        <div className="flex flex-col items-center text-center py-12">
-          <h3 className="text-lg font-medium mb-2">Coming Soon</h3>
-          <p className="text-muted-foreground mb-4">
-            The Advanced Page Builder will allow you to:
-          </p>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mt-4">
-            <Card className="p-4">
-              <CardContent className="pt-4 text-center">
-                <Sparkles className="h-8 w-8 mx-auto mb-2 text-primary" />
-                <h4 className="font-medium">AI-Enhanced Content Creation</h4>
-                <p className="text-sm text-muted-foreground">Create dynamic, SEO-optimized content with AI assistance</p>
+        <Tabs defaultValue="all" className="mb-6">
+          <TabsList>
+            <TabsTrigger value="all">All Pages</TabsTrigger>
+            <TabsTrigger value="published">Published</TabsTrigger>
+            <TabsTrigger value="draft">Drafts</TabsTrigger>
+          </TabsList>
+          
+          <TabsContent value="all" className="mt-4">
+            <Card>
+              <CardContent className="p-6">
+                <div className="flex flex-col items-center text-center py-8">
+                  <FileText className="h-12 w-12 text-muted-foreground mb-4" />
+                  <h3 className="text-xl font-medium mb-2">No Pages Yet</h3>
+                  <p className="text-muted-foreground mb-6 max-w-md">
+                    You haven't created any pages yet. Get started by creating your first page.
+                  </p>
+                  <Button 
+                    onClick={() => navigate("/page-builder/new")}
+                  >
+                    <Plus className="h-4 w-4 mr-2" />
+                    Create First Page
+                  </Button>
+                </div>
               </CardContent>
             </Card>
-            <Card className="p-4">
-              <CardContent className="pt-4 text-center">
-                <LayoutGrid className="h-8 w-8 mx-auto mb-2 text-primary" />
-                <h4 className="font-medium">Drag-and-Drop Layouts</h4>
-                <p className="text-sm text-muted-foreground">Build beautiful, responsive page layouts without code</p>
+          </TabsContent>
+          
+          <TabsContent value="published" className="mt-4">
+            <Card>
+              <CardContent className="p-6">
+                <div className="flex flex-col items-center text-center py-8">
+                  <CheckCircle className="h-12 w-12 text-muted-foreground mb-4" />
+                  <h3 className="text-xl font-medium mb-2">No Published Pages</h3>
+                  <p className="text-muted-foreground mb-6 max-w-md">
+                    You don't have any published pages yet.
+                  </p>
+                </div>
               </CardContent>
             </Card>
-            <Card className="p-4">
-              <CardContent className="pt-4 text-center">
-                <FileText className="h-8 w-8 mx-auto mb-2 text-primary" />
-                <h4 className="font-medium">SEO Optimization</h4>
-                <p className="text-sm text-muted-foreground">Get real-time SEO recommendations and scoring</p>
+          </TabsContent>
+          
+          <TabsContent value="draft" className="mt-4">
+            <Card>
+              <CardContent className="p-6">
+                <div className="flex flex-col items-center text-center py-8">
+                  <Clock className="h-12 w-12 text-muted-foreground mb-4" />
+                  <h3 className="text-xl font-medium mb-2">No Draft Pages</h3>
+                  <p className="text-muted-foreground mb-6 max-w-md">
+                    You don't have any draft pages yet.
+                  </p>
+                </div>
               </CardContent>
             </Card>
-          </div>
-        </div>
+          </TabsContent>
+        </Tabs>
+        
+        <Card>
+          <CardHeader>
+            <CardTitle>Quick Tips</CardTitle>
+            <CardDescription>Make the most of the Advanced Page Builder</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="space-y-2">
+                <div className="flex items-center">
+                  <Sparkles className="h-5 w-5 mr-2 text-primary" />
+                  <h3 className="font-medium">AI-Powered Content</h3>
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  Use AI to generate content, headlines, and SEO recommendations based on your brand guidelines.
+                </p>
+              </div>
+              <div className="space-y-2">
+                <div className="flex items-center">
+                  <FileText className="h-5 w-5 mr-2 text-primary" />
+                  <h3 className="font-medium">Reusable Sections</h3>
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  Create sections once and reuse them across multiple pages to maintain consistency.
+                </p>
+              </div>
+              <div className="space-y-2">
+                <div className="flex items-center">
+                  <Eye className="h-5 w-5 mr-2 text-primary" />
+                  <h3 className="font-medium">Device Preview</h3>
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  Preview how your pages look on desktop, tablet, and mobile devices before publishing.
+                </p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </AdminLayout>
   );
