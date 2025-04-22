@@ -60,10 +60,7 @@ interface PageInfo {
 const PageBuilderListPage: React.FC = () => {
   const [, setLocation] = useLocation();
   
-  // Helper function to navigate to different routes
-  const navigate = (path: string) => {
-    window.location.href = path;
-  };
+  // No navigation helper function, directly using window.location.href
   const queryClient = useQueryClient();
   const [searchQuery, setSearchQuery] = useState("");
   const [pageTypeFilter, setPageTypeFilter] = useState<string>("all");
@@ -140,7 +137,7 @@ const PageBuilderListPage: React.FC = () => {
       });
       
       // Navigate to the new page
-      navigate(`/admin/page-builder/${data.data.id}`);
+      window.location.href = `/admin/page-builder/${data.data.id}`;
     },
     onError: (error) => {
       toast({
@@ -389,73 +386,78 @@ const PageBuilderListPage: React.FC = () => {
           </TabsList>
           
           <TabsContent value="all" className="mt-4">
-            <Card>
-              <CardContent className="p-0">
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead className="w-[250px]">
-                        <div 
-                          className="flex items-center cursor-pointer"
-                          onClick={() => handleSortChange("title")}
-                        >
-                          Title
-                          {sortField === "title" && (
-                            <ArrowUpDown className="ml-2 h-4 w-4" />
-                          )}
-                        </div>
-                      </TableHead>
-                      <TableHead className="w-[120px]">Type</TableHead>
-                      <TableHead className="w-[150px]">Path</TableHead>
-                      <TableHead className="w-[120px]">
-                        <div 
-                          className="flex items-center cursor-pointer"
-                          onClick={() => handleSortChange("seoScore")}
-                        >
-                          SEO Score
-                          {sortField === "seoScore" && (
-                            <ArrowUpDown className="ml-2 h-4 w-4" />
-                          )}
-                        </div>
-                      </TableHead>
-                      <TableHead className="w-[120px]">Status</TableHead>
-                      <TableHead className="w-[150px]">
-                        <div 
-                          className="flex items-center cursor-pointer"
-                          onClick={() => handleSortChange("updatedAt")}
-                        >
-                          Last Updated
-                          {sortField === "updatedAt" && (
-                            <ArrowUpDown className="ml-2 h-4 w-4" />
-                          )}
-                        </div>
-                      </TableHead>
-                      <TableHead className="text-right">Actions</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {filteredPages.length === 0 ? (
+            {filteredPages.length === 0 ? (
+              <Card>
+                <CardContent className="p-6">
+                  <div className="flex flex-col items-center text-center py-8">
+                    <FileText className="h-12 w-12 text-muted-foreground mb-4" />
+                    <h3 className="text-xl font-medium mb-2">No Pages Yet</h3>
+                    <p className="text-muted-foreground mb-6 max-w-md">
+                      You haven't created any pages yet. Get started by creating your first page.
+                    </p>
+                    <Button 
+                      onClick={() => window.location.href = "/admin/page-builder/new"}
+                    >
+                      <Plus className="h-4 w-4 mr-2" />
+                      Create First Page
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            ) : (
+              <Card>
+                <CardContent className="p-0">
+                  <Table>
+                    <TableHeader>
                       <TableRow>
-                        <TableCell colSpan={7} className="h-24 text-center">
-                          No pages found. Create your first page to get started.
-                        </TableCell>
+                        <TableHead className="w-[250px]">
+                          <div 
+                            className="flex items-center cursor-pointer"
+                            onClick={() => handleSortChange("title")}
+                          >
+                            Title
+                            {sortField === "title" && (
+                              <ArrowUpDown className="ml-2 h-4 w-4" />
+                            )}
+                          </div>
+                        </TableHead>
+                        <TableHead className="w-[120px]">Type</TableHead>
+                        <TableHead className="w-[150px]">Path</TableHead>
+                        <TableHead className="w-[120px]">
+                          <div 
+                            className="flex items-center cursor-pointer"
+                            onClick={() => handleSortChange("seoScore")}
+                          >
+                            SEO Score
+                            {sortField === "seoScore" && (
+                              <ArrowUpDown className="ml-2 h-4 w-4" />
+                            )}
+                          </div>
+                        </TableHead>
+                        <TableHead className="w-[120px]">Status</TableHead>
+                        <TableHead className="w-[150px]">
+                          <div 
+                            className="flex items-center cursor-pointer"
+                            onClick={() => handleSortChange("updatedAt")}
+                          >
+                            Last Updated
+                            {sortField === "updatedAt" && (
+                              <ArrowUpDown className="ml-2 h-4 w-4" />
+                            )}
+                          </div>
+                        </TableHead>
+                        <TableHead className="text-right">Actions</TableHead>
                       </TableRow>
-                    ) : (
-                      filteredPages.map((page) => (
+                    </TableHeader>
+                    <TableBody>
+                      {filteredPages.map((page) => (
                         <TableRow key={page.id}>
-                          <TableCell className="font-medium">
-                            <div className="flex flex-col">
-                              <span>{page.title}</span>
-                              {page.description && (
-                                <span className="text-xs text-muted-foreground truncate max-w-[230px]">
-                                  {page.description}
-                                </span>
-                              )}
-                            </div>
-                          </TableCell>
+                          <TableCell className="font-medium">{page.title}</TableCell>
                           <TableCell>{getPageTypeBadge(page.pageType)}</TableCell>
-                          <TableCell className="font-mono text-xs truncate max-w-[150px]">
-                            {page.path}
+                          <TableCell>
+                            <div className="text-sm text-muted-foreground overflow-hidden text-ellipsis">
+                              {page.path}
+                            </div>
                           </TableCell>
                           <TableCell>{getSeoScoreBadge(page.seoScore)}</TableCell>
                           <TableCell>
@@ -471,288 +473,211 @@ const PageBuilderListPage: React.FC = () => {
                               </div>
                             )}
                           </TableCell>
-                          <TableCell>
-                            <span className="text-muted-foreground">
-                              {formatRelativeTime(page.updatedAt)}
-                            </span>
-                          </TableCell>
-                          <TableCell className="text-right">
-                            <div className="flex items-center justify-end space-x-2">
-                              <Button
-                                variant="ghost"
-                                size="icon"
-                                onClick={() => navigate(`/admin/page-builder/${page.id}`)}
-                                title="Edit Page"
-                              >
-                                <Edit className="h-4 w-4" />
-                              </Button>
-                              <DropdownMenu>
-                                <DropdownMenuTrigger asChild>
-                                  <Button
-                                    variant="ghost"
-                                    size="icon"
-                                  >
-                                    <MoreVertical className="h-4 w-4" />
-                                  </Button>
-                                </DropdownMenuTrigger>
-                                <DropdownMenuContent align="end">
-                                  <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                                  <DropdownMenuItem
-                                    onClick={() => navigate(`/admin/page-builder/${page.id}`)}
-                                  >
-                                    <Edit className="h-4 w-4 mr-2" />
-                                    <span>Edit</span>
-                                  </DropdownMenuItem>
-                                  <DropdownMenuItem
-                                    onClick={() => handleTogglePublish(page.id, page.isPublished)}
-                                  >
-                                    {page.isPublished ? (
-                                      <>
-                                        <XCircle className="h-4 w-4 mr-2" />
-                                        <span>Unpublish</span>
-                                      </>
-                                    ) : (
-                                      <>
-                                        <CheckCircle className="h-4 w-4 mr-2" />
-                                        <span>Publish</span>
-                                      </>
-                                    )}
-                                  </DropdownMenuItem>
-                                  <DropdownMenuItem
-                                    onClick={() => handleDuplicatePage(page.id)}
-                                  >
-                                    <Copy className="h-4 w-4 mr-2" />
-                                    <span>Duplicate</span>
-                                  </DropdownMenuItem>
-                                  <DropdownMenuItem
-                                    onClick={() => window.open(page.path, "_blank")}
-                                  >
-                                    <Eye className="h-4 w-4 mr-2" />
-                                    <span>Preview</span>
-                                  </DropdownMenuItem>
-                                  <DropdownMenuSeparator />
-                                  <DropdownMenuItem
-                                    className="text-destructive focus:text-destructive"
-                                    onClick={() => handleDeletePage(page.id)}
-                                  >
-                                    <Trash2 className="h-4 w-4 mr-2" />
-                                    <span>Delete</span>
-                                  </DropdownMenuItem>
-                                </DropdownMenuContent>
-                              </DropdownMenu>
-                            </div>
+                          <TableCell>{formatRelativeTime(page.updatedAt)}</TableCell>
+                          <TableCell className="text-right space-x-2">
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              onClick={() => window.location.href = `/admin/page-builder/${page.id}`}
+                              title="Edit Page"
+                            >
+                              <Edit className="h-4 w-4" />
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              onClick={() => window.location.href = page.path}
+                              title="View Page"
+                            >
+                              <Eye className="h-4 w-4" />
+                            </Button>
+                            <DropdownMenu>
+                              <DropdownMenuTrigger asChild>
+                                <Button variant="ghost" size="icon">
+                                  <MoreVertical className="h-4 w-4" />
+                                </Button>
+                              </DropdownMenuTrigger>
+                              <DropdownMenuContent align="end">
+                                <DropdownMenuLabel>Options</DropdownMenuLabel>
+                                <DropdownMenuItem
+                                  onClick={() => handleTogglePublish(page.id, page.isPublished)}
+                                >
+                                  {page.isPublished ? (
+                                    <>
+                                      <XCircle className="h-4 w-4 mr-2" />
+                                      Unpublish
+                                    </>
+                                  ) : (
+                                    <>
+                                      <CheckCircle className="h-4 w-4 mr-2" />
+                                      Publish
+                                    </>
+                                  )}
+                                </DropdownMenuItem>
+                                <DropdownMenuItem
+                                  onClick={() => handleDuplicatePage(page.id)}
+                                >
+                                  <Copy className="h-4 w-4 mr-2" />
+                                  Duplicate
+                                </DropdownMenuItem>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuItem
+                                  className="text-destructive focus:text-destructive"
+                                  onClick={() => handleDeletePage(page.id)}
+                                >
+                                  <Trash2 className="h-4 w-4 mr-2" />
+                                  Delete
+                                </DropdownMenuItem>
+                              </DropdownMenuContent>
+                            </DropdownMenu>
                           </TableCell>
                         </TableRow>
-                      ))
-                    )}
-                  </TableBody>
-                </Table>
-              </CardContent>
-            </Card>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </CardContent>
+              </Card>
+            )}
           </TabsContent>
           
           <TabsContent value="published" className="mt-4">
-            <Card>
-              <CardContent className="p-0">
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead className="w-[250px]">Title</TableHead>
-                      <TableHead className="w-[120px]">Type</TableHead>
-                      <TableHead className="w-[150px]">Path</TableHead>
-                      <TableHead className="w-[120px]">SEO Score</TableHead>
-                      <TableHead className="w-[150px]">Last Updated</TableHead>
-                      <TableHead className="text-right">Actions</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {filteredPages.filter(page => page.isPublished).length === 0 ? (
+            {filteredPages.filter(p => p.isPublished).length === 0 ? (
+              <Card>
+                <CardContent className="p-6">
+                  <div className="flex flex-col items-center text-center py-8">
+                    <CheckCircle className="h-12 w-12 text-muted-foreground mb-4" />
+                    <h3 className="text-xl font-medium mb-2">No Published Pages</h3>
+                    <p className="text-muted-foreground mb-6 max-w-md">
+                      You don't have any published pages yet.
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+            ) : (
+              <Card>
+                <CardContent className="p-0">
+                  <Table>
+                    <TableHeader>
                       <TableRow>
-                        <TableCell colSpan={6} className="h-24 text-center">
-                          No published pages found.
-                        </TableCell>
+                        <TableHead className="w-[250px]">Title</TableHead>
+                        <TableHead className="w-[120px]">Type</TableHead>
+                        <TableHead className="w-[150px]">Path</TableHead>
+                        <TableHead className="w-[120px]">SEO Score</TableHead>
+                        <TableHead className="w-[150px]">Last Updated</TableHead>
+                        <TableHead className="text-right">Actions</TableHead>
                       </TableRow>
-                    ) : (
-                      filteredPages.filter(page => page.isPublished).map((page) => (
+                    </TableHeader>
+                    <TableBody>
+                      {filteredPages.filter(p => p.isPublished).map((page) => (
                         <TableRow key={page.id}>
-                          <TableCell className="font-medium">
-                            <div className="flex flex-col">
-                              <span>{page.title}</span>
-                              {page.description && (
-                                <span className="text-xs text-muted-foreground truncate max-w-[230px]">
-                                  {page.description}
-                                </span>
-                              )}
-                            </div>
-                          </TableCell>
+                          <TableCell className="font-medium">{page.title}</TableCell>
                           <TableCell>{getPageTypeBadge(page.pageType)}</TableCell>
-                          <TableCell className="font-mono text-xs truncate max-w-[150px]">
-                            {page.path}
+                          <TableCell>
+                            <div className="text-sm text-muted-foreground overflow-hidden text-ellipsis">
+                              {page.path}
+                            </div>
                           </TableCell>
                           <TableCell>{getSeoScoreBadge(page.seoScore)}</TableCell>
-                          <TableCell>
-                            <span className="text-muted-foreground">
-                              {formatRelativeTime(page.updatedAt)}
-                            </span>
-                          </TableCell>
-                          <TableCell className="text-right">
-                            <div className="flex items-center justify-end space-x-2">
-                              <Button
-                                variant="ghost"
-                                size="icon"
-                                onClick={() => navigate(`/admin/page-builder/${page.id}`)}
-                                title="Edit Page"
-                              >
-                                <Edit className="h-4 w-4" />
-                              </Button>
-                              <Button
-                                variant="ghost"
-                                size="icon"
-                                onClick={() => window.open(page.path, "_blank")}
-                                title="View Page"
-                              >
-                                <Eye className="h-4 w-4" />
-                              </Button>
-                              <DropdownMenu>
-                                <DropdownMenuTrigger asChild>
-                                  <Button
-                                    variant="ghost"
-                                    size="icon"
-                                  >
-                                    <MoreVertical className="h-4 w-4" />
-                                  </Button>
-                                </DropdownMenuTrigger>
-                                <DropdownMenuContent align="end">
-                                  <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                                  <DropdownMenuItem
-                                    onClick={() => handleTogglePublish(page.id, page.isPublished)}
-                                  >
-                                    <XCircle className="h-4 w-4 mr-2" />
-                                    <span>Unpublish</span>
-                                  </DropdownMenuItem>
-                                  <DropdownMenuItem
-                                    onClick={() => handleDuplicatePage(page.id)}
-                                  >
-                                    <Copy className="h-4 w-4 mr-2" />
-                                    <span>Duplicate</span>
-                                  </DropdownMenuItem>
-                                  <DropdownMenuSeparator />
-                                  <DropdownMenuItem
-                                    className="text-destructive focus:text-destructive"
-                                    onClick={() => handleDeletePage(page.id)}
-                                  >
-                                    <Trash2 className="h-4 w-4 mr-2" />
-                                    <span>Delete</span>
-                                  </DropdownMenuItem>
-                                </DropdownMenuContent>
-                              </DropdownMenu>
-                            </div>
+                          <TableCell>{formatRelativeTime(page.updatedAt)}</TableCell>
+                          <TableCell className="text-right space-x-2">
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              onClick={() => window.location.href = `/admin/page-builder/${page.id}`}
+                              title="Edit Page"
+                            >
+                              <Edit className="h-4 w-4" />
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              onClick={() => window.location.href = page.path}
+                              title="View Page"
+                            >
+                              <Eye className="h-4 w-4" />
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              onClick={() => handleTogglePublish(page.id, page.isPublished)}
+                              title="Unpublish"
+                            >
+                              <XCircle className="h-4 w-4" />
+                            </Button>
                           </TableCell>
                         </TableRow>
-                      ))
-                    )}
-                  </TableBody>
-                </Table>
-              </CardContent>
-            </Card>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </CardContent>
+              </Card>
+            )}
           </TabsContent>
           
           <TabsContent value="draft" className="mt-4">
-            <Card>
-              <CardContent className="p-0">
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead className="w-[250px]">Title</TableHead>
-                      <TableHead className="w-[120px]">Type</TableHead>
-                      <TableHead className="w-[150px]">Path</TableHead>
-                      <TableHead className="w-[120px]">SEO Score</TableHead>
-                      <TableHead className="w-[150px]">Last Updated</TableHead>
-                      <TableHead className="text-right">Actions</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {filteredPages.filter(page => !page.isPublished).length === 0 ? (
+            {filteredPages.filter(p => !p.isPublished).length === 0 ? (
+              <Card>
+                <CardContent className="p-6">
+                  <div className="flex flex-col items-center text-center py-8">
+                    <Clock className="h-12 w-12 text-muted-foreground mb-4" />
+                    <h3 className="text-xl font-medium mb-2">No Draft Pages</h3>
+                    <p className="text-muted-foreground mb-6 max-w-md">
+                      You don't have any draft pages yet.
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+            ) : (
+              <Card>
+                <CardContent className="p-0">
+                  <Table>
+                    <TableHeader>
                       <TableRow>
-                        <TableCell colSpan={6} className="h-24 text-center">
-                          No draft pages found.
-                        </TableCell>
+                        <TableHead className="w-[250px]">Title</TableHead>
+                        <TableHead className="w-[120px]">Type</TableHead>
+                        <TableHead className="w-[150px]">Path</TableHead>
+                        <TableHead className="w-[120px]">SEO Score</TableHead>
+                        <TableHead className="w-[150px]">Last Updated</TableHead>
+                        <TableHead className="text-right">Actions</TableHead>
                       </TableRow>
-                    ) : (
-                      filteredPages.filter(page => !page.isPublished).map((page) => (
+                    </TableHeader>
+                    <TableBody>
+                      {filteredPages.filter(p => !p.isPublished).map((page) => (
                         <TableRow key={page.id}>
-                          <TableCell className="font-medium">
-                            <div className="flex flex-col">
-                              <span>{page.title}</span>
-                              {page.description && (
-                                <span className="text-xs text-muted-foreground truncate max-w-[230px]">
-                                  {page.description}
-                                </span>
-                              )}
-                            </div>
-                          </TableCell>
+                          <TableCell className="font-medium">{page.title}</TableCell>
                           <TableCell>{getPageTypeBadge(page.pageType)}</TableCell>
-                          <TableCell className="font-mono text-xs truncate max-w-[150px]">
-                            {page.path}
+                          <TableCell>
+                            <div className="text-sm text-muted-foreground overflow-hidden text-ellipsis">
+                              {page.path}
+                            </div>
                           </TableCell>
                           <TableCell>{getSeoScoreBadge(page.seoScore)}</TableCell>
-                          <TableCell>
-                            <span className="text-muted-foreground">
-                              {formatRelativeTime(page.updatedAt)}
-                            </span>
-                          </TableCell>
-                          <TableCell className="text-right">
-                            <div className="flex items-center justify-end space-x-2">
-                              <Button
-                                variant="ghost"
-                                size="icon"
-                                onClick={() => navigate(`/admin/page-builder/${page.id}`)}
-                                title="Edit Page"
-                              >
-                                <Edit className="h-4 w-4" />
-                              </Button>
-                              <DropdownMenu>
-                                <DropdownMenuTrigger asChild>
-                                  <Button
-                                    variant="ghost"
-                                    size="icon"
-                                  >
-                                    <MoreVertical className="h-4 w-4" />
-                                  </Button>
-                                </DropdownMenuTrigger>
-                                <DropdownMenuContent align="end">
-                                  <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                                  <DropdownMenuItem
-                                    onClick={() => handleTogglePublish(page.id, page.isPublished)}
-                                  >
-                                    <CheckCircle className="h-4 w-4 mr-2" />
-                                    <span>Publish</span>
-                                  </DropdownMenuItem>
-                                  <DropdownMenuItem
-                                    onClick={() => handleDuplicatePage(page.id)}
-                                  >
-                                    <Copy className="h-4 w-4 mr-2" />
-                                    <span>Duplicate</span>
-                                  </DropdownMenuItem>
-                                  <DropdownMenuSeparator />
-                                  <DropdownMenuItem
-                                    className="text-destructive focus:text-destructive"
-                                    onClick={() => handleDeletePage(page.id)}
-                                  >
-                                    <Trash2 className="h-4 w-4 mr-2" />
-                                    <span>Delete</span>
-                                  </DropdownMenuItem>
-                                </DropdownMenuContent>
-                              </DropdownMenu>
-                            </div>
+                          <TableCell>{formatRelativeTime(page.updatedAt)}</TableCell>
+                          <TableCell className="text-right space-x-2">
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              onClick={() => window.location.href = `/admin/page-builder/${page.id}`}
+                              title="Edit Page"
+                            >
+                              <Edit className="h-4 w-4" />
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              onClick={() => handleTogglePublish(page.id, page.isPublished)}
+                              title="Publish"
+                            >
+                              <CheckCircle className="h-4 w-4" />
+                            </Button>
                           </TableCell>
                         </TableRow>
-                      ))
-                    )}
-                  </TableBody>
-                </Table>
-              </CardContent>
-            </Card>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </CardContent>
+              </Card>
+            )}
           </TabsContent>
         </Tabs>
         
@@ -797,342 +722,11 @@ const PageBuilderListPage: React.FC = () => {
   );
 };
 
-// Create a wrapper component for AdminLayout
+// Wrapper component to ensure AdminLayout is used
 const PageBuilderListPageWrapper: React.FC = () => {
-  const [isInitializing, setIsInitializing] = useState(false);
-  const [initResult, setInitResult] = useState<{success: boolean; message: string} | null>(null);
-  
-  const initPageBuilderMutation = useMutation({
-    mutationFn: async () => {
-      setIsInitializing(true);
-      const res = await apiRequest("POST", "/api/page-builder/initialize");
-      if (!res.ok) {
-        const errorData = await res.json();
-        throw new Error(errorData.message || "Failed to initialize page builder tables");
-      }
-      return await res.json();
-    },
-    onSuccess: (data) => {
-      setInitResult({
-        success: true,
-        message: data.message || "Page Builder tables initialized successfully!"
-      });
-      toast({
-        title: "Success",
-        description: "Page Builder tables have been initialized. You can now create pages.",
-        variant: "default"
-      });
-      // Refresh the page after a short delay to show updated UI
-      setTimeout(() => {
-        window.location.reload();
-      }, 2000);
-    },
-    onError: (error) => {
-      setInitResult({
-        success: false,
-        message: (error as Error).message
-      });
-      toast({
-        title: "Error",
-        description: `Failed to initialize Page Builder: ${(error as Error).message}`,
-        variant: "destructive"
-      });
-    },
-    onSettled: () => {
-      setIsInitializing(false);
-    }
-  });
-  
-  const handleInitialize = () => {
-    initPageBuilderMutation.mutate();
-  };
-  
-  // Check if tables exist before rendering content
-  const { isLoading: isCheckingTables, data: tablesExist } = useQuery({
-    queryKey: ['/api/page-builder/status'],
-    queryFn: async () => {
-      try {
-        const res = await apiRequest("GET", "/api/page-builder/status");
-        const data = await res.json();
-        return data.initialized || false;
-      } catch (error) {
-        console.error("Error checking table status:", error);
-        return false;
-      }
-    }
-  });
-
-  // If we're still checking if tables exist, show loading state
-  if (isCheckingTables) {
-    return (
-      <AdminLayout>
-        <div className="container px-8 py-6 flex flex-col items-center justify-center min-h-[60vh]">
-          <div className="flex items-center">
-            <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-            </svg>
-            <p>Loading Page Builder...</p>
-          </div>
-        </div>
-      </AdminLayout>
-    );
-  }
-  
-  // If tables don't exist, show initialization screen
-  if (!tablesExist) {
-    return (
-      <AdminLayout>
-        <div className="container px-8 py-6">
-          <h1 className="text-3xl font-bold tracking-tight mb-6">Page Builder</h1>
-          <p className="text-muted-foreground mb-8">Create and manage your pages with the Advanced Page Builder</p>
-          
-          <Card className="mb-8">
-            <CardContent className="p-6">
-              <div className="flex flex-col items-center text-center py-10">
-                <FileText className="h-16 w-16 text-muted-foreground mb-6" />
-                <h2 className="text-2xl font-bold mb-2">Set Up Page Builder</h2>
-                <p className="text-muted-foreground mb-6 max-w-md">
-                  The Advanced Page Builder requires database tables to be initialized before you can create and manage pages.
-                </p>
-                
-                {initResult && (
-                  <div className={`p-4 mb-6 rounded-md w-full max-w-md ${
-                    initResult.success ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
-                  }`}>
-                    <p>{initResult.message}</p>
-                  </div>
-                )}
-                
-                <Button 
-                  onClick={handleInitialize}
-                  disabled={isInitializing}
-                  className="min-w-[200px]"
-                >
-                  {isInitializing ? (
-                    <>
-                      <svg className="animate-spin -ml-1 mr-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                      </svg>
-                      Initializing...
-                    </>
-                  ) : (
-                    'Initialize Page Builder'
-                  )}
-                </Button>
-                
-                <p className="text-xs text-muted-foreground mt-4">
-                  This action will create all necessary database tables for the Advanced Page Builder feature.
-                </p>
-              </div>
-            </CardContent>
-          </Card>
-          
-          <div className="flex flex-col items-center text-center py-12">
-            <h3 className="text-lg font-medium mb-2">Coming Soon</h3>
-            <p className="text-muted-foreground mb-4">
-              The Advanced Page Builder will allow you to:
-            </p>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mt-4">
-              <Card className="p-4">
-                <CardContent className="pt-4 text-center">
-                  <Sparkles className="h-8 w-8 mx-auto mb-2 text-primary" />
-                  <h4 className="font-medium">AI-Enhanced Content Creation</h4>
-                  <p className="text-sm text-muted-foreground">Create dynamic, SEO-optimized content with AI assistance</p>
-                </CardContent>
-              </Card>
-              <Card className="p-4">
-                <CardContent className="pt-4 text-center">
-                  <LayoutGrid className="h-8 w-8 mx-auto mb-2 text-primary" />
-                  <h4 className="font-medium">Drag-and-Drop Layouts</h4>
-                  <p className="text-sm text-muted-foreground">Build beautiful, responsive page layouts without code</p>
-                </CardContent>
-              </Card>
-              <Card className="p-4">
-                <CardContent className="pt-4 text-center">
-                  <FileText className="h-8 w-8 mx-auto mb-2 text-primary" />
-                  <h4 className="font-medium">SEO Optimization</h4>
-                  <p className="text-sm text-muted-foreground">Get real-time SEO recommendations and scoring</p>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
-        </div>
-      </AdminLayout>
-    );
-  }
-  
-  // If tables exist, show the actual page builder interface
   return (
     <AdminLayout>
-      <div className="container px-8 py-6">
-        <div className="flex justify-between items-center mb-8">
-          <div>
-            <h1 className="text-3xl font-bold tracking-tight">Page Builder</h1>
-            <p className="text-muted-foreground mt-1">Create and manage your pages with the Advanced Page Builder</p>
-          </div>
-          <Button 
-            onClick={() => navigate("/admin/page-builder/new")}
-          >
-            <Plus className="h-4 w-4 mr-2" />
-            Create New Page
-          </Button>
-        </div>
-        
-        <Card className="mb-6">
-          <CardContent className="pt-6">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-              <div className="p-4 bg-muted rounded-lg text-center">
-                <h3 className="text-2xl font-bold text-primary">0</h3>
-                <p className="text-sm text-muted-foreground">Total Pages</p>
-              </div>
-              <div className="p-4 bg-muted rounded-lg text-center">
-                <h3 className="text-2xl font-bold text-green-500">0</h3>
-                <p className="text-sm text-muted-foreground">Published Pages</p>
-              </div>
-              <div className="p-4 bg-muted rounded-lg text-center">
-                <h3 className="text-2xl font-bold text-yellow-500">0</h3>
-                <p className="text-sm text-muted-foreground">Draft Pages</p>
-              </div>
-            </div>
-            
-            <div className="relative mb-4">
-              <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-              <Input
-                placeholder="Search pages by title, description or path..."
-                className="pl-8"
-              />
-            </div>
-              
-            <div className="flex flex-col sm:flex-row gap-4">
-              <div className="w-full sm:w-48">
-                <Label htmlFor="page-type-filter" className="mb-2 block">Page Type</Label>
-                <Select defaultValue="all">
-                  <SelectTrigger id="page-type-filter">
-                    <SelectValue placeholder="Filter by type" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All Types</SelectItem>
-                    <SelectItem value="core">Core Pages</SelectItem>
-                    <SelectItem value="custom">Custom Pages</SelectItem>
-                    <SelectItem value="automation">Automation Pages</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              
-              <div className="w-full sm:w-48">
-                <Label htmlFor="sort-by" className="mb-2 block">Sort By</Label>
-                <Select defaultValue="updatedAt">
-                  <SelectTrigger id="sort-by">
-                    <SelectValue placeholder="Sort by" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="title">Title</SelectItem>
-                    <SelectItem value="updatedAt">Last Updated</SelectItem>
-                    <SelectItem value="createdAt">Created Date</SelectItem>
-                    <SelectItem value="seoScore">SEO Score</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-        
-        <Tabs defaultValue="all" className="mb-6">
-          <TabsList>
-            <TabsTrigger value="all">All Pages</TabsTrigger>
-            <TabsTrigger value="published">Published</TabsTrigger>
-            <TabsTrigger value="draft">Drafts</TabsTrigger>
-          </TabsList>
-          
-          <TabsContent value="all" className="mt-4">
-            <Card>
-              <CardContent className="p-6">
-                <div className="flex flex-col items-center text-center py-8">
-                  <FileText className="h-12 w-12 text-muted-foreground mb-4" />
-                  <h3 className="text-xl font-medium mb-2">No Pages Yet</h3>
-                  <p className="text-muted-foreground mb-6 max-w-md">
-                    You haven't created any pages yet. Get started by creating your first page.
-                  </p>
-                  <Button 
-                    onClick={() => navigate("/admin/page-builder/new")}
-                  >
-                    <Plus className="h-4 w-4 mr-2" />
-                    Create First Page
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-          
-          <TabsContent value="published" className="mt-4">
-            <Card>
-              <CardContent className="p-6">
-                <div className="flex flex-col items-center text-center py-8">
-                  <CheckCircle className="h-12 w-12 text-muted-foreground mb-4" />
-                  <h3 className="text-xl font-medium mb-2">No Published Pages</h3>
-                  <p className="text-muted-foreground mb-6 max-w-md">
-                    You don't have any published pages yet.
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-          
-          <TabsContent value="draft" className="mt-4">
-            <Card>
-              <CardContent className="p-6">
-                <div className="flex flex-col items-center text-center py-8">
-                  <Clock className="h-12 w-12 text-muted-foreground mb-4" />
-                  <h3 className="text-xl font-medium mb-2">No Draft Pages</h3>
-                  <p className="text-muted-foreground mb-6 max-w-md">
-                    You don't have any draft pages yet.
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-        </Tabs>
-        
-        <Card>
-          <CardHeader>
-            <CardTitle>Quick Tips</CardTitle>
-            <CardDescription>Make the most of the Advanced Page Builder</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="space-y-2">
-                <div className="flex items-center">
-                  <Sparkles className="h-5 w-5 mr-2 text-primary" />
-                  <h3 className="font-medium">AI-Powered Content</h3>
-                </div>
-                <p className="text-sm text-muted-foreground">
-                  Use AI to generate content, headlines, and SEO recommendations based on your brand guidelines.
-                </p>
-              </div>
-              <div className="space-y-2">
-                <div className="flex items-center">
-                  <FileText className="h-5 w-5 mr-2 text-primary" />
-                  <h3 className="font-medium">Reusable Sections</h3>
-                </div>
-                <p className="text-sm text-muted-foreground">
-                  Create sections once and reuse them across multiple pages to maintain consistency.
-                </p>
-              </div>
-              <div className="space-y-2">
-                <div className="flex items-center">
-                  <Eye className="h-5 w-5 mr-2 text-primary" />
-                  <h3 className="font-medium">Device Preview</h3>
-                </div>
-                <p className="text-sm text-muted-foreground">
-                  Preview how your pages look on desktop, tablet, and mobile devices before publishing.
-                </p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+      <PageBuilderListPage />
     </AdminLayout>
   );
 };
