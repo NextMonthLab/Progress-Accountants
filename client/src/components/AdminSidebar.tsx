@@ -117,7 +117,7 @@ export default function AdminSidebar() {
         },
         { 
           title: "Page Builder", 
-          href: "/page-builder", 
+          href: "/admin/page-builder", 
           icon: <Layers className="h-5 w-5" />,
           requiresStaff: true 
         },
