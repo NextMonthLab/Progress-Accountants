@@ -80,12 +80,12 @@ function AdminSidebarLogo({ collapsed }: { collapsed: boolean }) {
           alt={siteBranding.logo.altText} 
           className="max-h-8 object-contain"
         />
-        <span className="ml-2 font-bold text-[var(--orange)]">Admin</span>
+        <span className="ml-2 font-bold text-[var(--orange)]">Builder</span>
       </Link>
     );
   }
 
-  // Default text logo with "Admin" suffix
+  // Default text logo with "Builder" suffix
   const logoText = siteBranding.logo.text;
   const words = logoText.split(" ");
   
@@ -99,7 +99,7 @@ function AdminSidebarLogo({ collapsed }: { collapsed: boolean }) {
       ) : (
         <span>{logoText} </span>
       )}
-      <span style={{ color: 'var(--orange)' }}>Admin</span>
+      <span style={{ color: 'var(--orange)' }}>Builder</span>
     </Link>
   );
 }
@@ -171,10 +171,16 @@ export default function AdminSidebar() {
       isExpandable: true,
       items: [
         { 
-          title: "Dashboard", 
+          title: "Website Builder", 
           href: "/client-dashboard", 
           icon: <LayoutDashboard className="h-5 w-5" />,
-          description: "Overview of website performance and activity"
+          description: "Quick access to website building tools"
+        },
+        { 
+          title: "Site Overview", 
+          href: "/site-overview", 
+          icon: <Lightbulb className="h-5 w-5" />,
+          description: "At-a-glance site tools and metrics"
         },
         { 
           title: "Client CRM", 
