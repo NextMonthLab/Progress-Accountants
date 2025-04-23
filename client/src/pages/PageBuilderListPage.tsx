@@ -47,6 +47,30 @@ const PageBuilderListPage: React.FC = () => {
   const [currentFilter, setCurrentFilter] = useState("all");
   const [versionHistoryOpen, setVersionHistoryOpen] = useState(false);
   const [selectedPageId, setSelectedPageId] = useState<number | null>(null);
+  const { tenant } = useTenant();
+  const [tenantStarterType, setTenantStarterType] = useState<'blank' | 'pro' | null>(null);
+
+  // Fetch tenant starter type
+  useEffect(() => {
+    if (tenant?.id) {
+      fetch(`/api/page-builder/tenant-starter?tenantId=${tenant.id}`)
+        .then(res => {
+          if (!res.ok) throw new Error("Failed to fetch tenant starter type");
+          return res.json();
+        })
+        .then(data => {
+          if (data.success && data.data) {
+            setTenantStarterType(data.data.starterType || 'blank');
+          } else {
+            setTenantStarterType('blank'); // Default to blank if not set
+          }
+        })
+        .catch(error => {
+          console.error("Error fetching tenant starter type:", error);
+          setTenantStarterType('blank'); // Default to blank on error
+        });
+    }
+  }, [tenant]);
 
   // Fetch pages data
   const { data: pagesData, isLoading } = useQuery({
@@ -146,6 +170,22 @@ const PageBuilderListPage: React.FC = () => {
           </Button>
         </div>
         
+        {/* Site tier banner */}
+        {tenantStarterType === 'pro' && (
+          <Alert className="mb-6 border-blue-500 bg-blue-50 dark:bg-blue-950/30">
+            <Sparkles className="h-4 w-4 text-blue-600" />
+            <AlertTitle className="text-blue-800 dark:text-blue-400">
+              Professional Design Site
+            </AlertTitle>
+            <AlertDescription className="text-blue-700 dark:text-blue-300">
+              <p className="mb-2">
+                This site includes professional pre-designed page templates. Some pages are locked to maintain design quality.
+                When editing a locked page, you'll need to create an editable copy.
+              </p>
+            </AlertDescription>
+          </Alert>
+        )}
+        
         <Card>
           <CardHeader>
             <Tabs defaultValue="all" onValueChange={setCurrentFilter}>
@@ -200,6 +240,7 @@ const PageBuilderListPage: React.FC = () => {
                       <TableHead>Type</TableHead>
                       <TableHead>Status</TableHead>
                       <TableHead>Last Updated</TableHead>
+                      <TableHead className="w-32">Locked</TableHead>
                       <TableHead className="text-right">Actions</TableHead>
                     </TableRow>
                   </TableHeader>
@@ -223,6 +264,18 @@ const PageBuilderListPage: React.FC = () => {
                         </TableCell>
                         <TableCell>
                           {page.updatedAt ? format(new Date(page.updatedAt), "MMM d, yyyy") : 'Just now'}
+                        </TableCell>
+                        <TableCell>
+                          {page.isLocked ? (
+                            <div className="flex items-center gap-1.5">
+                              <Lock className="h-4 w-4 text-amber-500" />
+                              <span className="text-sm font-medium text-amber-600">
+                                {page.origin === 'pro' ? 'Pro Design' : 'Template'}
+                              </span>
+                            </div>
+                          ) : (
+                            <span className="text-sm text-muted-foreground">—</span>
+                          )}
                         </TableCell>
                         <TableCell className="text-right">
                           <div className="flex justify-end items-center space-x-2">
@@ -252,6 +305,42 @@ const PageBuilderListPage: React.FC = () => {
                             >
                               <History className="h-4 w-4" />
                             </Button>
+                            {page.isLocked && (
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                onClick={() => {
+                                  // Clone the locked page
+                                  fetch(`/api/page-builder/pages/${page.id}/clone`, {
+                                    method: 'POST'
+                                  })
+                                    .then(res => res.json())
+                                    .then(data => {
+                                      if (data.success) {
+                                        toast({
+                                          title: "Page cloned successfully",
+                                          description: "You can now edit your copy of this page.",
+                                          duration: 5000
+                                        });
+                                        // Navigate to the new page
+                                        navigate(`/page-builder/${data.data.id}`);
+                                      } else {
+                                        throw new Error(data.message || "Failed to clone page");
+                                      }
+                                    })
+                                    .catch(error => {
+                                      toast({
+                                        title: "Error",
+                                        description: `Failed to clone page: ${error.message}`,
+                                        variant: "destructive"
+                                      });
+                                    });
+                                }}
+                                title="Create Editable Copy"
+                              >
+                                <Copy className="h-4 w-4" />
+                              </Button>
+                            )}
                           </div>
                         </TableCell>
                       </TableRow>
