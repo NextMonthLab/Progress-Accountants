@@ -27,7 +27,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Loader2, History, RotateCcw, Eye, Clock, AlertCircle } from 'lucide-react';
+import { Loader2, History, RotateCcw, Eye, Clock, AlertCircle, FileText } from 'lucide-react';
 import { format } from 'date-fns';
 import { toast } from '@/hooks/use-toast';
 
@@ -40,6 +40,8 @@ interface Version {
   createdAt: string;
   createdBy: string;
   creatorId: number;
+  title?: string;
+  versionLabel?: string;
 }
 
 interface VersionHistoryProps {
@@ -208,7 +210,9 @@ export function PageVersionHistory({
   // Prepare versions for dropdowns
   const versionOptions = versions?.map((v: Version) => ({
     value: v.id.toString(),
-    label: `v${v.versionNumber} (${format(new Date(v.createdAt), 'MMM d, yyyy h:mm a')})`,
+    label: v.title
+      ? `v${v.versionNumber} - ${v.title} (${format(new Date(v.createdAt), 'MMM d, yyyy h:mm a')})`
+      : `v${v.versionNumber} (${format(new Date(v.createdAt), 'MMM d, yyyy h:mm a')})`,
   })) || [];
 
   // Format JSON for display
@@ -275,6 +279,7 @@ export function PageVersionHistory({
                 <TableHeader>
                   <TableRow>
                     <TableHead>Version</TableHead>
+                    <TableHead>Title</TableHead>
                     <TableHead>Date</TableHead>
                     <TableHead>Author</TableHead>
                     <TableHead>Change Type</TableHead>
@@ -286,6 +291,12 @@ export function PageVersionHistory({
                   {versions.map((version: Version) => (
                     <TableRow key={version.id}>
                       <TableCell>v{version.versionNumber}</TableCell>
+                      <TableCell>
+                        <div className="flex items-center">
+                          <FileText className="mr-1 h-3 w-3 text-muted-foreground" />
+                          {version.title || 'Untitled Page'}
+                        </div>
+                      </TableCell>
                       <TableCell>
                         <div className="flex items-center">
                           <Clock className="mr-1 h-3 w-3 text-muted-foreground" />
@@ -352,7 +363,7 @@ export function PageVersionHistory({
                     <SelectValue placeholder="Select a version" />
                   </SelectTrigger>
                   <SelectContent>
-                    {versionOptions.map((option) => (
+                    {versionOptions.map((option: { value: string; label: string }) => (
                       <SelectItem key={option.value} value={option.value}>
                         {option.label}
                       </SelectItem>
