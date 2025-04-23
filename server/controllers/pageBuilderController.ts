@@ -7,11 +7,13 @@ import {
   pageBuilderSections,
   pageBuilderComponents,
   pageBuilderTemplates,
+  contentVersions,
   insertPageBuilderPageSchema,
   insertPageBuilderSectionSchema,
   insertPageBuilderComponentSchema,
 } from "../../shared/schema";
 import { desc, eq, and } from "drizzle-orm";
+import { VersionableEntityType, ChangeType } from "@shared/version_control";
 
 // Helper function to check if a table exists
 export async function checkIfTableExists(tableName: string): Promise<boolean> {
@@ -33,6 +35,51 @@ export async function checkIfTableExists(tableName: string): Promise<boolean> {
   } catch (error) {
     console.error('Error checking if table exists:', error);
     return false;
+  }
+}
+
+// Helper function to create a version record for a page
+async function createPageVersion(pageId: number, snapshot: any, changeType: ChangeType, userId?: number, description?: string) {
+  try {
+    // Get the latest version number for this page
+    const existingVersions = await db
+      .select({ versionNumber: contentVersions.versionNumber })
+      .from(contentVersions)
+      .where(
+        and(
+          eq(contentVersions.entityType, 'page'),
+          eq(contentVersions.entityId, pageId)
+        )
+      )
+      .orderBy(desc(contentVersions.versionNumber))
+      .limit(1);
+    
+    const nextVersionNumber = existingVersions.length > 0 
+      ? existingVersions[0].versionNumber + 1 
+      : 1;
+    
+    // Use a default creator ID if none is provided
+    const createdById = userId || 1; // Default to admin user (ID 1)
+    
+    // Create the version record
+    const [version] = await db
+      .insert(contentVersions)
+      .values({
+        entityId: pageId,
+        entityType: 'page' as VersionableEntityType,
+        versionNumber: nextVersionNumber,
+        status: nextVersionNumber === 1 ? 'published' : 'draft',
+        changeType: changeType,
+        changeDescription: description || `Page ${changeType === 'create' ? 'created' : 'updated'}`,
+        snapshot: snapshot,
+        createdBy: createdById,  // This matches the schema expecting an integer
+      })
+      .returning();
+    
+    return version;
+  } catch (error) {
+    console.error('Error creating page version:', error);
+    return null;
   }
 }
 
@@ -192,6 +239,16 @@ export const pageBuilderController = {
         .values(pageData)
         .returning();
       
+      // Create the initial version record
+      const userId = req.user && 'id' in req.user ? (req.user.id as number) : undefined;
+      await createPageVersion(
+        page.id,
+        page,
+        'create' as ChangeType,
+        userId,
+        'Initial page creation'
+      );
+      
       return res.status(201).json({
         message: "Page created successfully",
         success: true,
@@ -255,6 +312,18 @@ export const pageBuilderController = {
         })
         .where(eq(pageBuilderPages.id, parseInt(id)))
         .returning();
+      
+      // Create a new version record
+      const userId = req.user?.id;
+      const changeType = req.body.changeType || 'update';
+      const changeDescription = req.body.changeDescription || 'Page updated';
+      await createPageVersion(
+        updatedPage.id,
+        updatedPage,
+        changeType as ChangeType,
+        userId,
+        changeDescription
+      );
       
       return res.status(200).json({
         message: "Page updated successfully",
