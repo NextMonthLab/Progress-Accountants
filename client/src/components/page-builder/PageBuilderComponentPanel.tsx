@@ -1,415 +1,476 @@
-import React from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import React, { useState } from 'react';
+import { 
+  Card, 
+  CardContent, 
+  CardHeader, 
+  CardTitle, 
+  CardDescription 
+} from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { 
+  Select, 
+  SelectContent, 
+  SelectItem, 
+  SelectTrigger, 
+  SelectValue 
+} from '@/components/ui/select';
 import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
+  DragDropContext,
+  Droppable,
+  Draggable,
+  DropResult
+} from 'react-beautiful-dnd';
 import {
-  Heading1,
-  TextIcon,
-  Image,
-  List,
-  ListOrdered,
-  Divide,
-  PanelBottomOpen,
-  Square,
-  Layout,
-  CreditCard,
-  MousePointerClick,
-  AlignCenter,
-  AlignLeft,
-  AlignRight,
-  LayoutGrid,
-  Rows3,
-  Columns3,
-  LayoutPanelLeft,
-  LayoutPanelTop,
   Plus,
-  Mail,
-  Play,
+  Edit,
+  Trash2,
+  GripVertical,
+  MoveUp,
+  MoveDown,
+  Copy,
+  Type,
+  Image as ImageIcon,
   FileText,
-  MapPin,
-  Users,
-  Star,
-  LucideIcon
-} from "lucide-react";
-
-interface ComponentType {
-  name: string;
-  type: string;
-  icon: LucideIcon;
-  description: string;
-  category: 'basic' | 'layout' | 'media' | 'interactive' | 'advanced';
-}
+  ExternalLink,
+  Video,
+  Mail,
+  Layout,
+  Grid
+} from 'lucide-react';
+import PageBuilderComponentEditor from './PageBuilderComponentEditor';
 
 interface PageBuilderComponentPanelProps {
-  onAddSection: (sectionType: string) => void;
-  onAddComponent: (sectionId: number, componentType: string) => void;
-  currentSectionId: number | undefined;
+  section: any;
+  onUpdateSection: (sectionId: number, updatedSection: any) => void;
+  onRemoveSection: (sectionId: number) => void;
 }
 
-const componentTypes: ComponentType[] = [
-  // Basic components
-  {
-    name: "Heading",
-    type: "heading",
-    icon: Heading1,
-    description: "Add a heading to your page",
-    category: "basic"
-  },
-  {
-    name: "Paragraph",
-    type: "paragraph",
-    icon: TextIcon,
-    description: "Add a paragraph of text",
-    category: "basic"
-  },
-  {
-    name: "Image",
-    type: "image",
-    icon: Image,
-    description: "Add an image",
-    category: "basic"
-  },
-  {
-    name: "Button",
-    type: "button",
-    icon: MousePointerClick,
-    description: "Add a clickable button",
-    category: "basic"
-  },
-  {
-    name: "List",
-    type: "list",
-    icon: List,
-    description: "Add a bulleted or numbered list",
-    category: "basic"
-  },
-  {
-    name: "Divider",
-    type: "divider",
-    icon: Divide,
-    description: "Add a horizontal line",
-    category: "basic"
-  },
-  {
-    name: "Spacer",
-    type: "spacer",
-    icon: PanelBottomOpen,
-    description: "Add empty space",
-    category: "basic"
-  },
-  
-  // Layout components
-  {
-    name: "Card",
-    type: "card",
-    icon: CreditCard,
-    description: "Add a card with title and content",
-    category: "layout"
-  },
-  {
-    name: "Grid",
-    type: "grid",
-    icon: LayoutGrid,
-    description: "Add a responsive grid layout",
-    category: "layout"
-  },
-  {
-    name: "Container",
-    type: "container",
-    icon: Square,
-    description: "Add a container for components",
-    category: "layout"
-  },
-  {
-    name: "Columns",
-    type: "columns",
-    icon: Columns3,
-    description: "Add a multi-column layout",
-    category: "layout"
-  },
-  {
-    name: "Rows",
-    type: "rows",
-    icon: Rows3,
-    description: "Add a multi-row layout",
-    category: "layout"
-  },
-  
-  // Media components
-  {
-    name: "Gallery",
-    type: "gallery",
-    icon: Layout,
-    description: "Add an image gallery",
-    category: "media"
-  },
-  {
-    name: "Video",
-    type: "video",
-    icon: Play,
-    description: "Add a video player",
-    category: "media"
-  },
-  {
-    name: "Icon",
-    type: "icon",
-    icon: Star,
-    description: "Add an icon",
-    category: "media"
-  },
-  
-  // Interactive components
-  {
-    name: "Form",
-    type: "form",
-    icon: FileText,
-    description: "Add a contact form",
-    category: "interactive"
-  },
-  {
-    name: "Map",
-    type: "map",
-    icon: MapPin,
-    description: "Add a location map",
-    category: "interactive"
-  },
-  {
-    name: "Accordion",
-    type: "accordion",
-    icon: AlignLeft,
-    description: "Add expandable content sections",
-    category: "interactive"
-  },
-  
-  // Advanced components
-  {
-    name: "Call to Action",
-    type: "cta",
-    icon: Mail,
-    description: "Add a call to action section",
-    category: "advanced"
-  },
-  {
-    name: "Testimonial",
-    type: "testimonial",
-    icon: Users,
-    description: "Add a customer testimonial",
-    category: "advanced"
-  }
-];
-
-const sectionTypes = [
-  {
-    name: "Content Section",
-    type: "content",
-    icon: Layout,
-    description: "Basic content section with customizable components"
-  },
-  {
-    name: "Hero Section",
-    type: "hero",
-    icon: AlignCenter,
-    description: "Large hero banner for page intros"
-  },
-  {
-    name: "Feature Grid",
-    type: "feature-grid",
-    icon: LayoutGrid,
-    description: "Display features in a grid layout"
-  },
-  {
-    name: "Two Column",
-    type: "two-column",
-    icon: Columns3,
-    description: "Two column layout for content"
-  },
-  {
-    name: "Sidebar Left",
-    type: "sidebar-left",
-    icon: LayoutPanelLeft,
-    description: "Content with left sidebar"
-  },
-  {
-    name: "Sidebar Right",
-    type: "sidebar-right",
-    icon: LayoutPanelTop,
-    description: "Content with right sidebar"
-  },
-  {
-    name: "CTA Section",
-    type: "cta-section",
-    icon: Mail,
-    description: "Call to action section with button"
-  }
-];
-
 const PageBuilderComponentPanel: React.FC<PageBuilderComponentPanelProps> = ({
-  onAddSection,
-  onAddComponent,
-  currentSectionId
+  section,
+  onUpdateSection,
+  onRemoveSection
 }) => {
-  return (
-    <div className="space-y-6">
-      <Card>
-        <CardHeader className="pb-3">
-          <CardTitle>Add Section</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <ScrollArea className="h-60 pr-4">
-            <div className="space-y-2">
-              {sectionTypes.map((section) => (
-                <Button
-                  key={section.type}
-                  variant="outline"
-                  className="w-full justify-start h-auto py-3 px-4"
-                  onClick={() => onAddSection(section.type)}
-                >
-                  <div className="flex items-start">
-                    <section.icon className="h-5 w-5 mr-3 text-primary" />
-                    <div className="text-left">
-                      <div className="font-medium">{section.name}</div>
-                      <div className="text-xs text-muted-foreground mt-1">
-                        {section.description}
-                      </div>
-                    </div>
-                  </div>
-                </Button>
-              ))}
-            </div>
-          </ScrollArea>
-        </CardContent>
-      </Card>
+  const [editComponentId, setEditComponentId] = useState<number | null>(null);
+  const [isEditorOpen, setIsEditorOpen] = useState(false);
+  const [componentToEdit, setComponentToEdit] = useState<any>(null);
 
-      <Card>
-        <CardHeader className="pb-3">
-          <CardTitle>Add Component</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <Tabs defaultValue="basic">
-            <div className="overflow-x-auto pb-2">
-              <TabsList className="w-full mb-4">
-                <TabsTrigger value="basic" className="flex-1 px-3">Basic</TabsTrigger>
-                <TabsTrigger value="layout" className="flex-1 px-3">Layout</TabsTrigger>
-                <TabsTrigger value="media" className="flex-1 px-3">Media</TabsTrigger>
-                <TabsTrigger value="interactive" className="flex-1 px-3">Forms</TabsTrigger>
-                <TabsTrigger value="advanced" className="flex-1 px-3">Advanced</TabsTrigger>
-              </TabsList>
-            </div>
-            
-            {['basic', 'layout', 'media', 'interactive', 'advanced'].map((category) => (
-              <TabsContent key={category} value={category} className="space-y-4">
-                <ScrollArea className="h-96 pr-4">
-                  <div className="space-y-2">
-                    {componentTypes
-                      .filter((comp) => comp.category === category)
-                      .map((component) => (
-                        <Button
-                          key={component.type}
-                          variant="outline"
-                          className="w-full justify-start h-auto py-3 px-4"
-                          onClick={() => {
-                            if (currentSectionId !== undefined) {
-                              onAddComponent(currentSectionId, component.type);
-                            } else {
-                              // If no section is selected, show a message or create a new section first
-                              alert("Please select or create a section first");
-                            }
-                          }}
-                          disabled={currentSectionId === undefined}
+  // Handle opening the editor for a component
+  const handleEditComponent = (component: any) => {
+    setComponentToEdit(component);
+    setEditComponentId(component.id);
+    setIsEditorOpen(true);
+  };
+
+  // Handle saving the edited component
+  const handleSaveComponent = (updatedComponent: any) => {
+    const updatedComponents = section.components.map((comp: any) => {
+      if (comp.id === updatedComponent.id) {
+        return updatedComponent;
+      }
+      return comp;
+    });
+
+    onUpdateSection(section.id, {
+      ...section,
+      components: updatedComponents
+    });
+
+    setIsEditorOpen(false);
+    setEditComponentId(null);
+  };
+
+  // Handle adding a new component
+  const handleAddComponent = (componentType: string) => {
+    const newComponent = {
+      id: Date.now(),
+      name: `New ${componentType.charAt(0).toUpperCase() + componentType.slice(1)}`,
+      type: componentType,
+      sectionId: section.id,
+      order: section.components.length,
+      content: {},
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+
+    // Set default content based on component type
+    switch (componentType) {
+      case 'heading':
+        newComponent.content = { text: 'New Heading', level: 'h2' };
+        break;
+      case 'paragraph':
+        newComponent.content = { text: 'New paragraph text goes here.' };
+        break;
+      case 'image':
+        newComponent.content = { src: '', alt: 'Image description', width: 800, height: 600 };
+        break;
+      case 'button':
+        newComponent.content = { text: 'Click Me', url: '#', variant: 'default' };
+        break;
+      case 'feature':
+        newComponent.content = { title: 'Feature', content: 'Feature description' };
+        break;
+      case 'video':
+        newComponent.content = { videoUrl: '', posterUrl: '', autoplay: false };
+        break;
+      case 'cta':
+        newComponent.content = { 
+          heading: 'Ready to Get Started?', 
+          text: 'Join thousands of satisfied customers who have already made the smart choice.',
+          buttonText: 'Contact Us',
+          buttonUrl: '/contact'
+        };
+        break;
+    }
+
+    onUpdateSection(section.id, {
+      ...section,
+      components: [...section.components, newComponent]
+    });
+
+    // Open the editor for the new component
+    handleEditComponent(newComponent);
+  };
+
+  // Handle removing a component
+  const handleRemoveComponent = (componentId: number) => {
+    if (window.confirm('Are you sure you want to delete this component? This action cannot be undone.')) {
+      const updatedComponents = section.components.filter((comp: any) => comp.id !== componentId);
+      
+      onUpdateSection(section.id, {
+        ...section,
+        components: updatedComponents
+      });
+    }
+  };
+
+  // Handle duplicating a component
+  const handleDuplicateComponent = (component: any) => {
+    const duplicatedComponent = {
+      ...component,
+      id: Date.now(),
+      name: `${component.name} (Copy)`,
+      order: section.components.length
+    };
+
+    onUpdateSection(section.id, {
+      ...section,
+      components: [...section.components, duplicatedComponent]
+    });
+  };
+
+  // Handle reordering components
+  const handleDragEnd = (result: DropResult) => {
+    if (!result.destination) return;
+
+    const items = Array.from(section.components);
+    const [reorderedItem] = items.splice(result.source.index, 1);
+    items.splice(result.destination.index, 0, reorderedItem);
+
+    // Update orders
+    const updatedComponents = items.map((comp: any, index) => ({
+      ...comp,
+      order: index
+    }));
+
+    onUpdateSection(section.id, {
+      ...section,
+      components: updatedComponents
+    });
+  };
+
+  // Handle moving a component up
+  const handleMoveUp = (index: number) => {
+    if (index === 0) return;
+
+    const components = [...section.components];
+    [components[index - 1], components[index]] = [components[index], components[index - 1]];
+
+    // Update orders
+    const updatedComponents = components.map((comp: any, idx) => ({
+      ...comp,
+      order: idx
+    }));
+
+    onUpdateSection(section.id, {
+      ...section,
+      components: updatedComponents
+    });
+  };
+
+  // Handle moving a component down
+  const handleMoveDown = (index: number) => {
+    if (index === section.components.length - 1) return;
+
+    const components = [...section.components];
+    [components[index], components[index + 1]] = [components[index + 1], components[index]];
+
+    // Update orders
+    const updatedComponents = components.map((comp: any, idx) => ({
+      ...comp,
+      order: idx
+    }));
+
+    onUpdateSection(section.id, {
+      ...section,
+      components: updatedComponents
+    });
+  };
+
+  const getComponentTypeIcon = (type: string) => {
+    switch (type) {
+      case 'heading':
+        return <Type className="h-4 w-4" />;
+      case 'paragraph':
+        return <FileText className="h-4 w-4" />;
+      case 'image':
+        return <ImageIcon className="h-4 w-4" />;
+      case 'button':
+        return <ExternalLink className="h-4 w-4" />;
+      case 'video':
+        return <Video className="h-4 w-4" />;
+      case 'form':
+        return <Mail className="h-4 w-4" />;
+      case 'feature':
+        return <Grid className="h-4 w-4" />;
+      case 'cta':
+        return <Layout className="h-4 w-4" />;
+      default:
+        return <FileText className="h-4 w-4" />;
+    }
+  };
+
+  return (
+    <Card className="mb-6">
+      <CardHeader className="pb-3">
+        <CardTitle className="text-xl">
+          {section.name || 'Section Content'}
+        </CardTitle>
+        <CardDescription>
+          Manage the components in this section
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div className="mb-4">
+          <Label htmlFor="section-name">Section Name</Label>
+          <Input
+            id="section-name"
+            value={section.name || ''}
+            onChange={(e) => onUpdateSection(section.id, { ...section, name: e.target.value })}
+            className="mt-1"
+          />
+        </div>
+
+        <div className="mb-4">
+          <Label htmlFor="section-type">Section Type</Label>
+          <Select
+            value={section.type || 'standard'}
+            onValueChange={(value) => onUpdateSection(section.id, { ...section, type: value })}
+          >
+            <SelectTrigger className="mt-1">
+              <SelectValue placeholder="Select section type" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="standard">Standard</SelectItem>
+              <SelectItem value="hero">Hero</SelectItem>
+              <SelectItem value="features">Features</SelectItem>
+              <SelectItem value="cta">Call to Action</SelectItem>
+              <SelectItem value="testimonials">Testimonials</SelectItem>
+              <SelectItem value="gallery">Gallery</SelectItem>
+              <SelectItem value="contact">Contact</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+
+        <div className="mb-4">
+          <Label>Components</Label>
+          {section.components && section.components.length > 0 ? (
+            <DragDropContext onDragEnd={handleDragEnd}>
+              <Droppable droppableId="components">
+                {(provided) => (
+                  <div
+                    className="space-y-2 mt-2"
+                    {...provided.droppableProps}
+                    ref={provided.innerRef}
+                  >
+                    {section.components
+                      .sort((a: any, b: any) => a.order - b.order)
+                      .map((component: any, index: number) => (
+                        <Draggable
+                          key={component.id}
+                          draggableId={component.id.toString()}
+                          index={index}
                         >
-                          <div className="flex items-start">
-                            <component.icon className="h-5 w-5 mr-3 text-primary" />
-                            <div className="text-left">
-                              <div className="font-medium">{component.name}</div>
-                              <div className="text-xs text-muted-foreground mt-1">
-                                {component.description}
+                          {(provided) => (
+                            <div
+                              ref={provided.innerRef}
+                              {...provided.draggableProps}
+                              className="flex items-center space-x-2 border rounded-md p-3 bg-card"
+                            >
+                              <div {...provided.dragHandleProps} className="cursor-grab">
+                                <GripVertical className="h-4 w-4 text-muted-foreground" />
+                              </div>
+
+                              <div className="flex-1 flex items-center">
+                                <span className="mr-2">
+                                  {getComponentTypeIcon(component.type)}
+                                </span>
+                                <span className="font-medium truncate">
+                                  {component.name}
+                                </span>
+                              </div>
+
+                              <div className="flex space-x-1">
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
+                                  onClick={() => handleMoveUp(index)}
+                                  disabled={index === 0}
+                                  title="Move Up"
+                                >
+                                  <MoveUp className="h-4 w-4" />
+                                </Button>
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
+                                  onClick={() => handleMoveDown(index)}
+                                  disabled={index === section.components.length - 1}
+                                  title="Move Down"
+                                >
+                                  <MoveDown className="h-4 w-4" />
+                                </Button>
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
+                                  onClick={() => handleDuplicateComponent(component)}
+                                  title="Duplicate"
+                                >
+                                  <Copy className="h-4 w-4" />
+                                </Button>
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
+                                  onClick={() => handleEditComponent(component)}
+                                  title="Edit"
+                                >
+                                  <Edit className="h-4 w-4" />
+                                </Button>
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
+                                  onClick={() => handleRemoveComponent(component.id)}
+                                  title="Delete"
+                                >
+                                  <Trash2 className="h-4 w-4" />
+                                </Button>
                               </div>
                             </div>
-                          </div>
-                        </Button>
+                          )}
+                        </Draggable>
                       ))}
+                    {provided.placeholder}
                   </div>
-                </ScrollArea>
-              </TabsContent>
-            ))}
-          </Tabs>
-        </CardContent>
-      </Card>
-      
-      <Card>
-        <CardHeader className="pb-3">
-          <CardTitle>Templates</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <Accordion type="single" collapsible className="w-full">
-            <AccordionItem value="headers">
-              <AccordionTrigger>Header Templates</AccordionTrigger>
-              <AccordionContent>
-                <div className="space-y-2">
-                  <Button variant="outline" className="w-full justify-start" onClick={() => onAddSection('hero')}>
-                    <div className="flex items-center">
-                      <AlignCenter className="h-4 w-4 mr-2" />
-                      <span>Hero Banner</span>
-                    </div>
-                  </Button>
-                  <Button variant="outline" className="w-full justify-start" onClick={() => onAddSection('nav-header')}>
-                    <div className="flex items-center">
-                      <AlignRight className="h-4 w-4 mr-2" />
-                      <span>Navigation Header</span>
-                    </div>
-                  </Button>
-                </div>
-              </AccordionContent>
-            </AccordionItem>
-            <AccordionItem value="content">
-              <AccordionTrigger>Content Templates</AccordionTrigger>
-              <AccordionContent>
-                <div className="space-y-2">
-                  <Button variant="outline" className="w-full justify-start" onClick={() => onAddSection('feature-grid')}>
-                    <div className="flex items-center">
-                      <LayoutGrid className="h-4 w-4 mr-2" />
-                      <span>Feature Grid</span>
-                    </div>
-                  </Button>
-                  <Button variant="outline" className="w-full justify-start" onClick={() => onAddSection('testimonials')}>
-                    <div className="flex items-center">
-                      <Users className="h-4 w-4 mr-2" />
-                      <span>Testimonials</span>
-                    </div>
-                  </Button>
-                </div>
-              </AccordionContent>
-            </AccordionItem>
-            <AccordionItem value="footers">
-              <AccordionTrigger>Footer Templates</AccordionTrigger>
-              <AccordionContent>
-                <div className="space-y-2">
-                  <Button variant="outline" className="w-full justify-start" onClick={() => onAddSection('simple-footer')}>
-                    <div className="flex items-center">
-                      <AlignLeft className="h-4 w-4 mr-2" />
-                      <span>Simple Footer</span>
-                    </div>
-                  </Button>
-                  <Button variant="outline" className="w-full justify-start" onClick={() => onAddSection('multi-column-footer')}>
-                    <div className="flex items-center">
-                      <Columns3 className="h-4 w-4 mr-2" />
-                      <span>Multi-Column Footer</span>
-                    </div>
-                  </Button>
-                </div>
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
-        </CardContent>
-      </Card>
-    </div>
+                )}
+              </Droppable>
+            </DragDropContext>
+          ) : (
+            <div className="text-center py-8 border rounded-md bg-muted/50 mt-2">
+              <p className="text-muted-foreground mb-2">No components added yet</p>
+              <p className="text-sm text-muted-foreground mb-4">Add components to build your section</p>
+            </div>
+          )}
+        </div>
+
+        <div className="mt-4">
+          <Label>Add New Component</Label>
+          <div className="grid grid-cols-2 gap-2 mt-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => handleAddComponent('heading')}
+              className="justify-start"
+            >
+              <Type className="h-4 w-4 mr-2" />
+              Heading
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => handleAddComponent('paragraph')}
+              className="justify-start"
+            >
+              <FileText className="h-4 w-4 mr-2" />
+              Paragraph
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => handleAddComponent('image')}
+              className="justify-start"
+            >
+              <ImageIcon className="h-4 w-4 mr-2" />
+              Image
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => handleAddComponent('button')}
+              className="justify-start"
+            >
+              <ExternalLink className="h-4 w-4 mr-2" />
+              Button
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => handleAddComponent('video')}
+              className="justify-start"
+            >
+              <Video className="h-4 w-4 mr-2" />
+              Video
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => handleAddComponent('feature')}
+              className="justify-start"
+            >
+              <Grid className="h-4 w-4 mr-2" />
+              Feature
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => handleAddComponent('cta')}
+              className="justify-start"
+            >
+              <Layout className="h-4 w-4 mr-2" />
+              Call to Action
+            </Button>
+          </div>
+        </div>
+
+        <div className="mt-6 flex justify-end">
+          <Button 
+            variant="destructive" 
+            onClick={() => onRemoveSection(section.id)}
+          >
+            <Trash2 className="h-4 w-4 mr-2" />
+            Delete Section
+          </Button>
+        </div>
+
+        {componentToEdit && (
+          <PageBuilderComponentEditor
+            isOpen={isEditorOpen}
+            onClose={() => setIsEditorOpen(false)}
+            component={componentToEdit}
+            onSave={handleSaveComponent}
+          />
+        )}
+      </CardContent>
+    </Card>
   );
 };
 
