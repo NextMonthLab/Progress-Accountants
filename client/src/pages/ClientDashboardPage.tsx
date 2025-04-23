@@ -100,9 +100,9 @@ const StatCard: React.FC<StatCardProps> = ({
       bg: "from-blue-500 to-blue-600",
       iconBg: "bg-white/10",
       textColor: "text-white",
-      subTextColor: "text-blue-100",
-      trendUp: "text-emerald-300",
-      trendDown: "text-red-300"
+      subTextColor: "text-white",
+      trendUp: "text-white font-semibold",
+      trendDown: "text-white font-semibold"
     },
     default: {
       bg: "bg-white",
@@ -760,7 +760,7 @@ export default function ClientDashboardPage() {
                   <Badge className="bg-emerald-500 hover:bg-emerald-600">Online</Badge>
                 </div>
                 <div className="flex items-center gap-2">
-                  <ShieldCheck className="h-5 w-5 text-emerald-300" />
+                  <ShieldCheck className="h-5 w-5 text-white" />
                   <span className="font-medium">All systems operational</span>
                 </div>
               </div>
