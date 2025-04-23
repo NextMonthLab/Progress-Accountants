@@ -1,24 +1,52 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
+import { Label } from '@/components/ui/label';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 
-interface ColorPickerProps {
+const PRESET_COLORS = [
+  '#000000', // Black
+  '#ffffff', // White
+  '#f44336', // Red
+  '#e91e63', // Pink
+  '#9c27b0', // Purple
+  '#673ab7', // Deep Purple
+  '#3f51b5', // Indigo
+  '#2196f3', // Blue
+  '#03a9f4', // Light Blue
+  '#00bcd4', // Cyan
+  '#009688', // Teal
+  '#4caf50', // Green
+  '#8bc34a', // Light Green
+  '#cddc39', // Lime
+  '#ffeb3b', // Yellow
+  '#ffc107', // Amber
+  '#ff9800', // Orange
+  '#ff5722', // Deep Orange
+  '#795548', // Brown
+  '#607d8b', // Blue Grey
+  // Add your brand colors
+  '#0c2340', // Navy Blue (Progress Accountants main color)
+  '#ff6b35', // Burnt Orange (Progress Accountants accent color)
+];
+
+export interface ColorPickerProps {
   value: string;
   onChange: (color: string) => void;
+  presetColors?: string[];
 }
 
-export function ColorPicker({ value, onChange }: ColorPickerProps) {
-  const [color, setColor] = useState(value || '#000000');
-  const [isOpen, setIsOpen] = useState(false);
-  const presetColors = [
-    '#000000', '#1F2937', '#374151', '#4B5563', '#6B7280', '#9CA3AF', '#D1D5DB', '#F3F4F6', '#FFFFFF',
-    '#EF4444', '#F97316', '#F59E0B', '#EAB308', '#84CC16', '#22C55E', '#10B981', '#14B8A6', '#06B6D4',
-    '#0EA5E9', '#3B82F6', '#6366F1', '#8B5CF6', '#A855F7', '#D946EF', '#EC4899', '#F43F5E',
-  ];
+export function ColorPicker({ 
+  value = '#000000', 
+  onChange, 
+  presetColors = PRESET_COLORS 
+}: ColorPickerProps) {
+  const [color, setColor] = useState(value);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    setColor(value || '#000000');
+    setColor(value);
   }, [value]);
 
   const handleColorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -33,58 +61,57 @@ export function ColorPicker({ value, onChange }: ColorPickerProps) {
   };
 
   return (
-    <Popover open={isOpen} onOpenChange={setIsOpen}>
+    <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <button
-          type="button"
-          className="w-full flex items-center justify-between px-3 py-2 border rounded-md text-sm"
-          onClick={() => setIsOpen(true)}
+        <Button
+          variant="outline"
+          className="w-full justify-start text-left font-normal h-10"
         >
           <div className="flex items-center gap-2">
             <div
-              className="w-5 h-5 rounded-sm border"
+              className="h-5 w-5 rounded border border-input"
               style={{ backgroundColor: color }}
             />
             <span>{color}</span>
           </div>
-        </button>
+        </Button>
       </PopoverTrigger>
       <PopoverContent className="w-64">
-        <div className="space-y-3">
-          <div>
-            <Label htmlFor="color-input">Color</Label>
+        <div className="grid gap-4">
+          <div className="space-y-2">
+            <Label htmlFor="color-picker">Color</Label>
             <Input
-              id="color-input"
+              id="color-picker"
               type="color"
               value={color}
               onChange={handleColorChange}
-              className="w-full h-10 p-1"
+              className="h-10"
             />
           </div>
-          <div>
-            <Label htmlFor="hex-input">Hex</Label>
-            <Input
-              id="hex-input"
-              type="text"
-              value={color}
-              onChange={handleColorChange}
-              className="font-mono"
-            />
-          </div>
-          <div className="pt-2">
+          <div className="space-y-2">
             <Label>Presets</Label>
-            <div className="grid grid-cols-8 gap-1 mt-1.5">
+            <div className="grid grid-cols-6 gap-2">
               {presetColors.map((presetColor) => (
-                <button
+                <div
                   key={presetColor}
-                  type="button"
-                  className="w-5 h-5 rounded-sm border"
+                  className={cn(
+                    "h-6 w-6 cursor-pointer rounded-md border border-input",
+                    color === presetColor && "ring-2 ring-offset-2 ring-ring"
+                  )}
                   style={{ backgroundColor: presetColor }}
                   onClick={() => handlePresetClick(presetColor)}
-                  title={presetColor}
                 />
               ))}
             </div>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="hex">Hex</Label>
+            <Input
+              id="hex"
+              value={color}
+              onChange={handleColorChange}
+              className="h-8"
+            />
           </div>
         </div>
       </PopoverContent>

@@ -137,7 +137,7 @@ const PageBuilderComponentPanel: React.FC<PageBuilderComponentPanelProps> = ({
   // Handle removing a component
   const handleRemoveComponent = (componentId: number) => {
     if (window.confirm('Are you sure you want to delete this component? This action cannot be undone.')) {
-      const updatedComponents = section.components.filter((comp: any) => comp.id !== componentId);
+      const updatedComponents = section.components.filter((comp) => comp.id !== componentId);
       
       onUpdateSection(section.id, {
         ...section,
@@ -147,7 +147,7 @@ const PageBuilderComponentPanel: React.FC<PageBuilderComponentPanelProps> = ({
   };
 
   // Handle duplicating a component
-  const handleDuplicateComponent = (component: any) => {
+  const handleDuplicateComponent = (component: PageBuilderComponent) => {
     const duplicatedComponent = {
       ...component,
       id: Date.now(),
@@ -170,7 +170,7 @@ const PageBuilderComponentPanel: React.FC<PageBuilderComponentPanelProps> = ({
     items.splice(result.destination.index, 0, reorderedItem);
 
     // Update orders
-    const updatedComponents = items.map((comp: any, index) => ({
+    const updatedComponents = items.map((comp: PageBuilderComponent, index) => ({
       ...comp,
       order: index
     }));
@@ -189,7 +189,7 @@ const PageBuilderComponentPanel: React.FC<PageBuilderComponentPanelProps> = ({
     [components[index - 1], components[index]] = [components[index], components[index - 1]];
 
     // Update orders
-    const updatedComponents = components.map((comp: any, idx) => ({
+    const updatedComponents = components.map((comp: PageBuilderComponent, idx) => ({
       ...comp,
       order: idx
     }));
@@ -208,7 +208,7 @@ const PageBuilderComponentPanel: React.FC<PageBuilderComponentPanelProps> = ({
     [components[index], components[index + 1]] = [components[index + 1], components[index]];
 
     // Update orders
-    const updatedComponents = components.map((comp: any, idx) => ({
+    const updatedComponents = components.map((comp: PageBuilderComponent, idx) => ({
       ...comp,
       order: idx
     }));
@@ -296,8 +296,8 @@ const PageBuilderComponentPanel: React.FC<PageBuilderComponentPanelProps> = ({
                     ref={provided.innerRef}
                   >
                     {section.components
-                      .sort((a: any, b: any) => a.order - b.order)
-                      .map((component: any, index: number) => (
+                      .sort((a: PageBuilderComponent, b: PageBuilderComponent) => a.order - b.order)
+                      .map((component: PageBuilderComponent, index: number) => (
                         <Draggable
                           key={component.id}
                           draggableId={component.id.toString()}
