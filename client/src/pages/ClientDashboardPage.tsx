@@ -105,12 +105,12 @@ const StatCard: React.FC<StatCardProps> = ({
       trendDown: "text-white font-semibold"
     },
     default: {
-      bg: "bg-white",
+      bg: "bg-gray-50",
       iconBg: "bg-navy/10",
       textColor: "text-navy",
       subTextColor: "text-gray-500",
-      trendUp: "text-emerald-800 font-semibold",
-      trendDown: "text-red-800 font-semibold"
+      trendUp: "text-emerald-800 font-bold",
+      trendDown: "text-red-800 font-bold"
     }
   };
 
@@ -118,7 +118,7 @@ const StatCard: React.FC<StatCardProps> = ({
   const isGradient = color !== 'default';
 
   return (
-    <Card className={`overflow-hidden border-0 ${isGradient ? 'shadow-lg shadow-' + color + '/10' : 'shadow-sm border'}`}>
+    <Card className={`overflow-hidden border-0 ${isGradient ? 'shadow-lg shadow-' + color + '/10' : 'shadow-md border-2 border-gray-200'}`}>
       <div className={`${isGradient ? 'bg-gradient-to-br ' + scheme.bg : scheme.bg} p-6`}>
         <div className="flex justify-between items-start">
           <div>
@@ -879,7 +879,7 @@ export default function ClientDashboardPage() {
                 description="Last 7 days website traffic"
                 action={{ label: "Full analytics", href: "/admin/analytics" }}
               >
-                <Card>
+                <Card className="border-2 border-gray-200 shadow-md bg-gray-50">
                   <CardContent className="pt-6">
                     <AnalyticsChart isLoading={isOverviewLoading} height={220} />
                     
@@ -962,7 +962,7 @@ export default function ClientDashboardPage() {
                 title="Industry News" 
                 action={{ label: "All news", href: "/admin/news" }}
               >
-                <Card>
+                <Card className="border-2 border-gray-200 shadow-md bg-gray-50">
                   <CardContent className="p-6">
                     {isNewsLoading ? (
                       <div className="space-y-6">
@@ -1007,7 +1007,7 @@ export default function ClientDashboardPage() {
                 description="Most visited pages in the last 30 days"
                 action={{ label: "View all pages", href: "/admin/content/pages" }}
               >
-                <Card>
+                <Card className="border-2 border-gray-200 shadow-md bg-gray-50">
                   <CardContent className="p-0">
                     <div className="overflow-x-auto">
                       <table className="w-full">
@@ -1117,7 +1117,7 @@ export default function ClientDashboardPage() {
                 title="Content Creation Activity" 
                 description="Page creation and updates over time"
               >
-                <Card>
+                <Card className="border-2 border-gray-200 shadow-md bg-gray-50">
                   <CardContent className="p-6">
                     <AnalyticsChart height={200} />
                     
