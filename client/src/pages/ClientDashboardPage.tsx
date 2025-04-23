@@ -105,12 +105,12 @@ const StatCard: React.FC<StatCardProps> = ({
       trendDown: "text-white font-semibold"
     },
     default: {
-      bg: "bg-gray-50",
-      iconBg: "bg-navy/10",
-      textColor: "text-navy",
-      subTextColor: "text-gray-500",
-      trendUp: "text-emerald-800 font-bold",
-      trendDown: "text-red-800 font-bold"
+      bg: "bg-navy-800",
+      iconBg: "bg-white/20",
+      textColor: "text-white",
+      subTextColor: "text-gray-300",
+      trendUp: "text-emerald-400 font-bold",
+      trendDown: "text-red-400 font-bold"
     }
   };
 
@@ -420,10 +420,10 @@ const NewsCard: React.FC<NewsCardProps> = ({
         </div>
       ) : (
         <>
-          <h3 className="font-semibold text-navy">{title}</h3>
-          <p className="text-sm text-gray-600 mt-1 mb-2 line-clamp-2">{excerpt}</p>
+          <h3 className="font-semibold text-white">{title}</h3>
+          <p className="text-sm text-gray-300 mt-1 mb-2 line-clamp-2">{excerpt}</p>
           <div className="flex items-center gap-3 text-xs">
-            <span className="text-gray-500">{date}</span>
+            <span className="text-gray-300">{date}</span>
             {category && (
               <Badge variant="outline" className="px-1.5 py-0 h-5 font-normal">
                 {category}
@@ -433,7 +433,7 @@ const NewsCard: React.FC<NewsCardProps> = ({
           {link && (
             <div className="mt-3">
               <Link href={link}>
-                <Button variant="ghost" size="sm" className="h-7 px-0 text-navy font-medium">
+                <Button variant="ghost" size="sm" className="h-7 px-0 text-white font-medium">
                   Read more
                   <ArrowRight className="ml-1 h-3.5 w-3.5" />
                 </Button>
@@ -879,35 +879,35 @@ export default function ClientDashboardPage() {
                 description="Last 7 days website traffic"
                 action={{ label: "Full analytics", href: "/admin/analytics" }}
               >
-                <Card className="border-2 border-gray-200 shadow-md bg-gray-50">
-                  <CardContent className="pt-6">
+                <Card className="border-0 shadow-md bg-navy-900">
+                  <CardContent className="pt-6 text-white">
                     <AnalyticsChart isLoading={isOverviewLoading} height={220} />
                     
                     <div className="grid grid-cols-3 gap-4 mt-6">
                       <div className="text-center">
-                        <p className="text-sm text-gray-500">Avg. Time on Site</p>
-                        <p className="text-2xl font-bold text-navy mt-1">
+                        <p className="text-sm text-gray-300">Avg. Time on Site</p>
+                        <p className="text-2xl font-bold text-white mt-1">
                           {isOverviewLoading ? '--' : siteOverview?.avgTimeOnSite}
                         </p>
-                        <p className="text-xs text-red-800 font-semibold flex items-center justify-center mt-1">
+                        <p className="text-xs text-red-400 font-semibold flex items-center justify-center mt-1">
                           <TrendingUp className="h-3 w-3 mr-1 rotate-180" />
                           {Math.abs(siteOverview?.timeOnSiteTrend || 0)}%
                         </p>
                       </div>
                       
                       <div className="text-center">
-                        <p className="text-sm text-gray-500">Bounce Rate</p>
-                        <p className="text-2xl font-bold text-navy mt-1">32%</p>
-                        <p className="text-xs text-emerald-800 font-semibold flex items-center justify-center mt-1">
+                        <p className="text-sm text-gray-300">Bounce Rate</p>
+                        <p className="text-2xl font-bold text-white mt-1">32%</p>
+                        <p className="text-xs text-emerald-400 font-semibold flex items-center justify-center mt-1">
                           <TrendingUp className="h-3 w-3 mr-1" />
                           2.5%
                         </p>
                       </div>
                       
                       <div className="text-center">
-                        <p className="text-sm text-gray-500">Pages Per Visit</p>
-                        <p className="text-2xl font-bold text-navy mt-1">3.2</p>
-                        <p className="text-xs text-emerald-800 font-semibold flex items-center justify-center mt-1">
+                        <p className="text-sm text-gray-300">Pages Per Visit</p>
+                        <p className="text-2xl font-bold text-white mt-1">3.2</p>
+                        <p className="text-xs text-emerald-400 font-semibold flex items-center justify-center mt-1">
                           <TrendingUp className="h-3 w-3 mr-1" />
                           0.8%
                         </p>
@@ -962,8 +962,8 @@ export default function ClientDashboardPage() {
                 title="Industry News" 
                 action={{ label: "All news", href: "/admin/news" }}
               >
-                <Card className="border-2 border-gray-200 shadow-md bg-gray-50">
-                  <CardContent className="p-6">
+                <Card className="border-0 shadow-md bg-navy-900">
+                  <CardContent className="p-6 text-white">
                     {isNewsLoading ? (
                       <div className="space-y-6">
                         {[1, 2].map(i => (
