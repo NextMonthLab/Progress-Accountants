@@ -1020,7 +1020,7 @@ const MenuManagementPage = () => {
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setIsEditMenuItemDialogOpen(false)}>Cancel</Button>
-            <Button onClick={handleEditMenuItem} disabled={updateMenuItemMutation.isPending}>
+            <Button onClick={handleSaveMenuItem} disabled={updateMenuItemMutation.isPending}>
               {updateMenuItemMutation.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               Save Changes
             </Button>
