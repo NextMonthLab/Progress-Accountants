@@ -215,6 +215,12 @@ export default function AdminSidebar() {
           requiresStaff: true 
         },
         { 
+          title: "Menu Management", 
+          href: "/admin/menu-management", 
+          icon: <ListOrdered className="h-5 w-5" />,
+          requiresStaff: true 
+        },
+        { 
           title: "SEO Manager", 
           href: "/admin/seo", 
           icon: <Globe className="h-5 w-5" />,
@@ -281,7 +287,7 @@ export default function AdminSidebar() {
           {collapsed ? (
             <ChevronRight className="h-5 w-5 text-gray-600" />
           ) : (
-            <Menu className="h-5 w-5 text-gray-600" />
+            <MenuIcon className="h-5 w-5 text-gray-600" />
           )}
         </button>
       </div>

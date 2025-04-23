@@ -62,6 +62,7 @@ import CreateNewPagePage from "@/pages/CreateNewPagePage";
 import TenantCustomizationPage from "@/pages/admin/TenantCustomizationPage";
 import ThemeManagementPage from "@/pages/admin/ThemeManagementPage";
 import SiteBrandingPage from "@/pages/admin/SiteBrandingPage";
+import MenuManagementPage from "@/pages/admin/MenuManagementPage";
 // Page Builder pages
 import PageBuilderListPage from "@/pages/PageBuilderListPage";
 import PageBuilderPage from "@/pages/PageBuilderPage";
@@ -162,6 +163,11 @@ function Router() {
         path="/admin/companion-settings" 
         component={CompanionSettingsPage} 
         allowedRoles={['admin', 'super_admin']} 
+      />
+      <ProtectedRoute 
+        path="/admin/menu-management" 
+        component={MenuManagementPage} 
+        allowedRoles={['admin', 'super_admin', 'editor']} 
       />
       <ProtectedRoute 
         path="/admin/new-request" 

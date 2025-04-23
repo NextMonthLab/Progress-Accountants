@@ -314,7 +314,7 @@ const MenuManagementPage = () => {
     });
   };
   
-  const handleEditMenu = () => {
+  const handleSaveMenu = () => {
     if (!selectedMenu) return;
     
     if (!editMenuForm.name) {
@@ -367,7 +367,7 @@ const MenuManagementPage = () => {
     });
   };
   
-  const handleEditMenuItem = () => {
+  const handleSaveMenuItem = () => {
     if (!selectedMenuItem) return;
     
     if (!editMenuItemForm.label) {
@@ -459,7 +459,7 @@ const MenuManagementPage = () => {
     }));
   };
   
-  const handleEditMenu = (menu: NavigationMenu) => {
+  const handleOpenEditMenuDialog = (menu: NavigationMenu) => {
     setEditMenuForm({
       name: menu.name,
       slug: menu.slug,
@@ -470,7 +470,7 @@ const MenuManagementPage = () => {
     setIsEditMenuDialogOpen(true);
   };
   
-  const handleEditMenuItem = (item: MenuItem) => {
+  const handleOpenEditMenuItemDialog = (item: MenuItem) => {
     setSelectedMenuItem(item);
     setEditMenuItemForm({
       label: item.label,
@@ -512,7 +512,7 @@ const MenuManagementPage = () => {
                 <Button 
                   variant="ghost" 
                   size="icon"
-                  onClick={() => handleEditMenuItem(item)}
+                  onClick={() => handleOpenEditMenuItemDialog(item)}
                 >
                   <Edit className="h-4 w-4" />
                 </Button>
@@ -666,7 +666,7 @@ const MenuManagementPage = () => {
                         Manage Items
                       </Button>
                       <div className="flex gap-2">
-                        <Button variant="ghost" size="icon" onClick={() => handleEditMenu(menu)}>
+                        <Button variant="ghost" size="icon" onClick={() => handleOpenEditMenuDialog(menu)}>
                           <Edit className="h-4 w-4" />
                         </Button>
                         <Button variant="ghost" size="icon" onClick={() => handleDeleteMenu(menu.id)}>
@@ -910,7 +910,7 @@ const MenuManagementPage = () => {
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setIsEditMenuDialogOpen(false)}>Cancel</Button>
-            <Button onClick={handleEditMenu} disabled={updateMenuMutation.isPending}>
+            <Button onClick={handleSaveMenu} disabled={updateMenuMutation.isPending}>
               {updateMenuMutation.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               Save Changes
             </Button>
