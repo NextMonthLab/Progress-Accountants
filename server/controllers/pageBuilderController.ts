@@ -58,8 +58,23 @@ async function createPageVersion(pageId: number, snapshot: any, changeType: Chan
       ? existingVersions[0].versionNumber + 1 
       : 1;
     
-    // Use a default creator ID if none is provided
-    const createdById = userId || 1; // Default to admin user (ID 1)
+    // Use a default creator ID if none is provided - must be a valid user ID
+    // First check if the user exists
+    let createdById = userId;
+    if (!createdById) {
+      // Get the first available user - typically the admin user
+      const adminUsers = await db
+        .select({ id: users.id })
+        .from(users)
+        .limit(1);
+      
+      if (adminUsers.length > 0) {
+        createdById = adminUsers[0].id;
+      } else {
+        // If no users exist, insert a system record (this shouldn't happen in practice)
+        createdById = 1; // Default admin ID
+      }
+    }
     
     // Create the version record
     const [version] = await db
@@ -72,7 +87,7 @@ async function createPageVersion(pageId: number, snapshot: any, changeType: Chan
         changeType: changeType,
         changeDescription: description || `Page ${changeType === 'create' ? 'created' : 'updated'}`,
         snapshot: snapshot,
-        createdBy: createdById,  // This matches the schema expecting an integer
+        createdBy: createdById,  // Valid user ID that exists in the database
       })
       .returning();
     
@@ -314,7 +329,7 @@ export const pageBuilderController = {
         .returning();
       
       // Create a new version record
-      const userId = req.user?.id;
+      const userId = req.user && 'id' in req.user ? (req.user.id as number) : undefined;
       const changeType = req.body.changeType || 'update';
       const changeDescription = req.body.changeDescription || 'Page updated';
       await createPageVersion(
