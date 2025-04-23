@@ -19,7 +19,8 @@ import {
   PlusCircle,
   Layers,
   Image,
-  ListOrdered
+  ListOrdered,
+  Link as LinkIcon
 } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import { useState, useEffect } from "react";
@@ -242,6 +243,12 @@ export default function AdminSidebar() {
           title: "Companion Settings", 
           href: "/admin/companion-settings", 
           icon: <MessageCircle className="h-5 w-5" />,
+          requiresStaff: true 
+        },
+        { 
+          title: "Domain Mapping", 
+          href: "/admin/domain-mapping", 
+          icon: <LinkIcon className="h-5 w-5" />,
           requiresStaff: true 
         },
       ]

@@ -323,7 +323,9 @@ async function verifyCnameRecord(domain: string): Promise<boolean> {
     const record = await resolveCnamePromise(verificationDomain);
     
     // Check if CNAME points to our domain
-    return record === 'progress.nextmonth.site';
+    // The record might be returned as a string array from some DNS providers
+    const recordStr = Array.isArray(record) ? record[0] : record;
+    return recordStr === 'progress.nextmonth.site';
   } catch (error: any) {
     console.warn(`CNAME record verification failed for ${domain}:`, error.message || 'Unknown error');
     return false;
