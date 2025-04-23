@@ -18,6 +18,7 @@ import PageBuilderSeoPanel from "@/components/page-builder/PageBuilderSeoPanel";
 import PageBuilderPreview from "@/components/page-builder/PageBuilderPreview";
 import PageBuilderTemplateGallery from "@/components/page-builder/PageBuilderTemplateGallery";
 import { PageVersionHistory } from "@/components/page-builder/PageVersionHistory";
+import PageLockIndicator from "@/components/page-builder/PageLockIndicator";
 import { PageBuilderComponent } from "@shared/advanced_page_builder";
 import {
   Save,
@@ -814,6 +815,14 @@ const PageBuilderContent: React.FC = () => {
           <CardDescription>Configure basic page settings</CardDescription>
         </CardHeader>
         <CardContent>
+          {page && page.isLocked && (
+            <PageLockIndicator 
+              isLocked={page.isLocked} 
+              origin={page.origin || 'builder'} 
+              pageId={page.id} 
+              pageName={page.title || page.name} 
+            />
+          )}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
               <Label htmlFor="page-title">Page Title</Label>
@@ -909,7 +918,35 @@ const PageBuilderContent: React.FC = () => {
                 </Button>
               </div>
             )}
-            <Button variant="outline" size="sm" disabled={isNewPage} title="Duplicate Page">
+            <Button 
+              variant="outline" 
+              size="sm" 
+              disabled={isNewPage || (page && page.isLocked)} 
+              title="Duplicate Page"
+              onClick={() => {
+                // Clone the current page
+                if (!isNewPage && page && !page.isLocked) {
+                  apiRequest("POST", `/api/page-builder/pages/${id}/clone`)
+                    .then(res => res.json())
+                    .then(data => {
+                      queryClient.invalidateQueries({ queryKey: ['/api/page-builder/pages'] });
+                      toast({
+                        title: "Page duplicated",
+                        description: "A copy of this page has been created successfully."
+                      });
+                      // Navigate to the new page
+                      navigate(`/page-builder/${data.data.id}`);
+                    })
+                    .catch(error => {
+                      toast({
+                        title: "Error",
+                        description: `Failed to duplicate page: ${error.message}`,
+                        variant: "destructive"
+                      });
+                    });
+                }
+              }}
+            >
               <Copy className="h-4 w-4" />
             </Button>
             <Button 

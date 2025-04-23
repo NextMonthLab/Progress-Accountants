@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 import { useQuery } from "@tanstack/react-query";
 import AdminLayout from "@/layouts/AdminLayout";
@@ -31,9 +31,15 @@ import {
   History,
   ExternalLink,
   Filter,
+  Lock,
+  Copy,
+  Sparkles,
+  AlertCircle,
 } from "lucide-react";
 import { format } from "date-fns";
 import { PageVersionHistory } from "@/components/page-builder/PageVersionHistory";
+import { useTenant } from "@/hooks/use-tenant";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 const PageBuilderListPage: React.FC = () => {
   const [, navigate] = useLocation();

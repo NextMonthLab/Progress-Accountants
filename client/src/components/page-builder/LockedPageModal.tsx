@@ -1,90 +1,132 @@
-import { useState } from "react";
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
-import { Button } from "@/components/ui/button";
-import { useToast } from "@/hooks/use-toast";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { apiRequest } from "@/lib/queryClient";
-import { useNavigate } from "wouter";
+import React from 'react';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle
+} from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
+import { Copy, Lock, Lightbulb, Layers, PencilRuler, Paintbrush } from 'lucide-react';
 
 interface LockedPageModalProps {
   isOpen: boolean;
-  setIsOpen: (open: boolean) => void;
-  pageId: number;
-  pageName: string;
+  onClose: () => void;
+  origin: 'builder' | 'template' | 'pro';
+  onClone: () => void;
+  isPending: boolean;
 }
 
-export default function LockedPageModal({ isOpen, setIsOpen, pageId, pageName }: LockedPageModalProps) {
-  const [isLoading, setIsLoading] = useState(false);
-  const { toast } = useToast();
-  const queryClient = useQueryClient();
-  const navigate = useNavigate();
-
-  // Mutation for cloning a locked page to an editable one
-  const clonePageMutation = useMutation({
-    mutationFn: async () => {
-      setIsLoading(true);
-      const res = await apiRequest("POST", `/api/page-builder/pages/${pageId}/clone`, {});
-      return await res.json();
-    },
-    onSuccess: (data) => {
-      setIsLoading(false);
-      toast({
-        title: "Page cloned successfully",
-        description: "You can now edit this new copy of the page.",
-        variant: "default"
-      });
-      queryClient.invalidateQueries({ queryKey: ["/api/page-builder/pages"] });
-      navigate(`/page-builder/edit/${data.id}`);
-    },
-    onError: (error: any) => {
-      setIsLoading(false);
-      toast({
-        title: "Failed to clone page",
-        description: error.message || "An error occurred while cloning the page.",
-        variant: "destructive"
-      });
+const LockedPageModal: React.FC<LockedPageModalProps> = ({
+  isOpen,
+  onClose,
+  origin,
+  onClone,
+  isPending
+}) => {
+  const getTitle = () => {
+    switch (origin) {
+      case 'template':
+        return 'About Templates';
+      case 'pro':
+        return 'About Professional Designs';
+      default:
+        return 'About Locked Pages';
     }
-  });
+  };
+
+  const getDescription = () => {
+    switch (origin) {
+      case 'template':
+        return 'Templates provide a starting point for your pages.';
+      case 'pro':
+        return 'Professional designs are expertly crafted pages included with the Pro tier.';
+      default:
+        return 'This page has been locked to preserve its design.';
+    }
+  };
 
   return (
-    <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
-      <AlertDialogContent className="max-w-md">
-        <AlertDialogHeader>
-          <div className="flex items-center mb-2">
-            <span className="bg-amber-100 text-amber-800 font-medium text-xs py-1 px-2 rounded mr-2">PRO DESIGN</span>
-            <AlertDialogTitle>Professional Design - Not Editable</AlertDialogTitle>
-          </div>
-          <AlertDialogDescription>
-            <p className="mb-4">
-              This page was custom-built by our design team and can't be edited directly in the builder. 
-            </p>
-            <p className="mb-4 text-sm font-medium">
-              "{pageName}" is part of your professional starter package.
-            </p>
-            <div className="border-t border-b border-border py-3 my-4">
-              <h4 className="font-medium mb-2">Options:</h4>
-              <ul className="list-disc pl-5 text-sm space-y-1.5">
-                <li>View this page but keep it as-is</li>
-                <li>Create an editable copy in the page builder</li>
-                <li>Request a custom layout from our team</li>
-              </ul>
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent className="sm:max-w-[500px]">
+        <DialogHeader>
+          <DialogTitle className="flex items-center gap-2">
+            <Lock className="h-5 w-5 text-amber-500" /> {getTitle()}
+          </DialogTitle>
+          <DialogDescription>
+            {getDescription()}
+          </DialogDescription>
+        </DialogHeader>
+
+        <div className="py-4">
+          <h3 className="text-lg font-medium mb-3">About {origin === 'pro' ? 'Professional Designs' : 'Templates'}</h3>
+          
+          <div className="space-y-4">
+            <div className="flex gap-3">
+              <div className="mt-0.5">
+                <PencilRuler className="h-5 w-5 text-primary" />
+              </div>
+              <div>
+                <h4 className="font-medium">Expertly Designed</h4>
+                <p className="text-sm text-muted-foreground">
+                  {origin === 'pro' 
+                    ? 'Our professional designs are created by experienced designers following best practices.'
+                    : 'Templates are designed to provide a solid foundation for your pages.'}
+                </p>
+              </div>
             </div>
-          </AlertDialogDescription>
-        </AlertDialogHeader>
-        <AlertDialogFooter>
-          <AlertDialogCancel>View Only</AlertDialogCancel>
-          <AlertDialogAction
-            onClick={(e) => {
-              e.preventDefault();
-              clonePageMutation.mutate();
-            }}
-            disabled={isLoading}
-            className="bg-primary hover:bg-primary/90"
-          >
-            {isLoading ? "Creating..." : "Create Editable Copy"}
-          </AlertDialogAction>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
+            
+            <div className="flex gap-3">
+              <div className="mt-0.5">
+                <Layers className="h-5 w-5 text-primary" />
+              </div>
+              <div>
+                <h4 className="font-medium">Optimized Structure</h4>
+                <p className="text-sm text-muted-foreground">
+                  The layout is structured for optimal user experience and SEO performance.
+                </p>
+              </div>
+            </div>
+            
+            <div className="flex gap-3">
+              <div className="mt-0.5">
+                <Paintbrush className="h-5 w-5 text-primary" />
+              </div>
+              <div>
+                <h4 className="font-medium">Customizable Copies</h4>
+                <p className="text-sm text-muted-foreground">
+                  Create a copy to customize the design while maintaining the original template.
+                </p>
+              </div>
+            </div>
+            
+            <div className="flex gap-3">
+              <div className="mt-0.5">
+                <Lightbulb className="h-5 w-5 text-primary" />
+              </div>
+              <div>
+                <h4 className="font-medium">Recommended Approach</h4>
+                <p className="text-sm text-muted-foreground">
+                  We recommend creating a copy rather than building from scratch to maintain design quality.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <DialogFooter>
+          <Button variant="outline" onClick={onClose}>
+            Close
+          </Button>
+          <Button onClick={onClone} disabled={isPending}>
+            <Copy className="h-4 w-4 mr-2" />
+            {isPending ? "Creating Copy..." : "Create Editable Copy"}
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
-}
+};
+
+export default LockedPageModal;

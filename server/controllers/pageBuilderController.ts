@@ -9,6 +9,7 @@ import {
   pageBuilderTemplates,
   contentVersions,
   users,
+  tenants,
   insertPageBuilderPageSchema,
   insertPageBuilderSectionSchema,
   insertPageBuilderComponentSchema,
@@ -452,6 +453,205 @@ export const pageBuilderController = {
       console.error("Error retrieving templates:", error);
       return res.status(500).json({
         message: `Failed to retrieve templates: ${(error as Error).message}`,
+        success: false
+      });
+    }
+  },
+  
+  // Clone a page (used for creating editable copies of locked pages)
+  async clonePage(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+      
+      // Get the source page with all its data
+      const [sourcePage] = await db
+        .select()
+        .from(pageBuilderPages)
+        .where(eq(pageBuilderPages.id, parseInt(id)));
+      
+      if (!sourcePage) {
+        return res.status(404).json({
+          message: "Source page not found",
+          success: false
+        });
+      }
+      
+      // Get the page's sections
+      const sections = await db
+        .select()
+        .from(pageBuilderSections)
+        .where(eq(pageBuilderSections.pageId, sourcePage.id))
+        .orderBy(pageBuilderSections.order);
+      
+      // Get components for each section
+      const sectionsWithComponents = await Promise.all(
+        sections.map(async (section) => {
+          const components = await db
+            .select()
+            .from(pageBuilderComponents)
+            .where(eq(pageBuilderComponents.sectionId, section.id))
+            .orderBy(pageBuilderComponents.order);
+          
+          return {
+            ...section,
+            components
+          };
+        })
+      );
+      
+      // Create a modified copy of the page's data
+      const newPageData = {
+        ...sourcePage,
+        id: undefined, // Remove ID to create a new record
+        name: `${sourcePage.name} (Copy)`,
+        slug: `${sourcePage.slug}-copy`,
+        isLocked: false, // Ensure the new page is not locked
+        origin: 'builder', // Mark as builder-generated
+        clonedFromId: sourcePage.id, // Reference the original page
+        createdAt: undefined, // Let the database set these
+        updatedAt: undefined,
+        publishedAt: undefined,
+        published: false, // Start as unpublished
+      };
+      
+      // Check if the slug already exists and modify if needed
+      let newSlug = newPageData.slug;
+      let slugCounter = 1;
+      
+      while (true) {
+        const [slugExists] = await db
+          .select()
+          .from(pageBuilderPages)
+          .where(
+            and(
+              eq(pageBuilderPages.slug, newSlug),
+              eq(pageBuilderPages.tenantId, sourcePage.tenantId)
+            )
+          );
+        
+        if (!slugExists) break;
+        
+        // Increment counter and try a new slug
+        slugCounter++;
+        newSlug = `${sourcePage.slug}-copy-${slugCounter}`;
+      }
+      
+      newPageData.slug = newSlug;
+      
+      // Insert the new page
+      const [newPage] = await db
+        .insert(pageBuilderPages)
+        .values(newPageData)
+        .returning();
+      
+      // Clone sections and their components
+      for (const section of sectionsWithComponents) {
+        // Create new section
+        const [newSection] = await db
+          .insert(pageBuilderSections)
+          .values({
+            ...section,
+            id: undefined,
+            pageId: newPage.id,
+            createdAt: undefined,
+            updatedAt: undefined
+          })
+          .returning();
+        
+        // Clone components for this section
+        if (section.components && section.components.length > 0) {
+          for (const component of section.components) {
+            await db
+              .insert(pageBuilderComponents)
+              .values({
+                ...component,
+                id: undefined,
+                sectionId: newSection.id,
+                createdAt: undefined,
+                updatedAt: undefined
+              });
+          }
+        }
+      }
+      
+      // Create initial version for the cloned page
+      const userId = req.user && 'id' in req.user ? (req.user.id as number) : undefined;
+      
+      const pageSnapshot = {
+        ...newPage,
+        sections: sectionsWithComponents.map(section => ({
+          ...section,
+          pageId: newPage.id,
+          id: undefined // We don't know the new IDs yet
+        })),
+        clonedFrom: sourcePage.id,
+        versionNumber: 1.0
+      };
+      
+      await createPageVersion(
+        newPage.id,
+        pageSnapshot,
+        'create' as ChangeType,
+        userId,
+        `Cloned from ${sourcePage.name} (ID: ${sourcePage.id})`
+      );
+      
+      return res.status(200).json({
+        message: "Page cloned successfully",
+        success: true,
+        data: newPage
+      });
+    } catch (error) {
+      console.error("Error cloning page:", error);
+      return res.status(500).json({
+        message: `Failed to clone page: ${(error as Error).message}`,
+        success: false
+      });
+    }
+  },
+  
+  // Get tenant starter type
+  async getTenantStarterType(req: Request, res: Response) {
+    try {
+      const { tenantId } = req.query;
+      
+      if (!tenantId) {
+        return res.status(400).json({
+          message: "Tenant ID is required",
+          success: false
+        });
+      }
+      
+      // Get the tenant information
+      const [tenant] = await db
+        .select({
+          id: tenants.id,
+          name: tenants.name,
+          starterType: tenants.starterType
+        })
+        .from(tenants)
+        .where(eq(tenants.id, tenantId as string));
+      
+      if (!tenant) {
+        return res.status(404).json({
+          message: "Tenant not found",
+          success: false
+        });
+      }
+      
+      return res.status(200).json({
+        message: "Tenant starter type retrieved successfully",
+        success: true,
+        data: {
+          tenantId: tenant.id,
+          name: tenant.name,
+          starterType: tenant.starterType || 'blank' // Default to blank if not set
+        }
+      });
+    } catch (error) {
+      console.error("Error retrieving tenant starter type:", error);
+      return res.status(500).json({
+        message: `Failed to retrieve tenant starter type: ${(error as Error).message}`,
         success: false
       });
     }

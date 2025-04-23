@@ -24,5 +24,9 @@ export function registerPageBuilderRoutes(app: Express) {
   // Template routes
   app.get("/api/page-builder/templates", isAuthenticated, pageBuilderController.getTemplates);
   
+  // Starter Site Tier System routes
+  app.post("/api/page-builder/pages/:id/clone", isAuthenticated, pageBuilderController.clonePage);
+  app.get("/api/page-builder/tenant-starter", isAuthenticated, pageBuilderController.getTenantStarterType);
+  
   console.log("[PageBuilder] Routes registered");
 }

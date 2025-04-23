@@ -17,6 +17,7 @@ interface Tenant {
   updatedAt: Date;
   parentTemplate: string | null;
   isTemplate: boolean | null;
+  starterType?: 'blank' | 'pro';
 }
 
 type TenantContextType = {
