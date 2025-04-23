@@ -47,7 +47,7 @@ const MenuManagementPage = () => {
     isActive: true
   });
   
-  const [editMenuForm, setEditMenuForm] = useState<Partial<NavigationMenu>>({
+  const [editMenuForm, setEditMenuForm] = useState<Partial<NavigationMenu> & { isActive: boolean }>({
     id: 0,
     name: "",
     slug: "",
@@ -352,7 +352,7 @@ const MenuManagementPage = () => {
   
   const handleEditMenuFormChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setEditMenuForm((prev: Partial<NavigationMenu>) => ({ ...prev, [name]: value }));
+    setEditMenuForm((prev: Partial<NavigationMenu> & { isActive: boolean }) => ({ ...prev, [name]: value }));
   };
   
   const handleNewMenuItemFormChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -413,7 +413,10 @@ const MenuManagementPage = () => {
   };
   
   const handleOpenEditMenuDialog = (menu: NavigationMenu) => {
-    setEditMenuForm(menu);
+    setEditMenuForm({
+      ...menu,
+      isActive: !!menu.isActive // Convert to boolean to ensure it's never null
+    });
     setIsEditMenuDialogOpen(true);
   };
   
@@ -832,8 +835,8 @@ const MenuManagementPage = () => {
             <div className="flex items-center gap-2">
               <Switch 
                 id="edit-isActive"
-                checked={editMenuForm.isActive}
-                onCheckedChange={(checked) => setEditMenuForm((prev: Partial<NavigationMenu>) => ({ ...prev, isActive: checked }))}
+                checked={!!editMenuForm.isActive}
+                onCheckedChange={(checked) => setEditMenuForm((prev: Partial<NavigationMenu> & { isActive: boolean }) => ({ ...prev, isActive: checked }))}
               />
               <Label htmlFor="edit-isActive">Active</Label>
             </div>
@@ -914,7 +917,7 @@ const MenuManagementPage = () => {
               <Switch 
                 id="edit-item-isExternal"
                 checked={editMenuItemForm.isExternal}
-                onCheckedChange={(checked) => setEditMenuItemForm(prev => ({ ...prev, isExternal: checked }))}
+                onCheckedChange={(checked) => setEditMenuItemForm((prev: MenuItem) => ({ ...prev, isExternal: checked }))}
               />
               <Label htmlFor="edit-item-isExternal">External Link</Label>
             </div>
@@ -922,7 +925,7 @@ const MenuManagementPage = () => {
               <Switch 
                 id="edit-item-isVisible"
                 checked={editMenuItemForm.isVisible}
-                onCheckedChange={(checked) => setEditMenuItemForm(prev => ({ ...prev, isVisible: checked }))}
+                onCheckedChange={(checked) => setEditMenuItemForm((prev: MenuItem) => ({ ...prev, isVisible: checked }))}
               />
               <Label htmlFor="edit-item-isVisible">Visible</Label>
             </div>
@@ -930,7 +933,7 @@ const MenuManagementPage = () => {
               <Label htmlFor="edit-item-requiredRole">Required Role (Optional)</Label>
               <Select 
                 value={editMenuItemForm.requiredRole || ''}
-                onValueChange={(value) => setEditMenuItemForm(prev => ({ 
+                onValueChange={(value) => setEditMenuItemForm((prev: MenuItem) => ({ 
                   ...prev, 
                   requiredRole: value || null
                 }))}
