@@ -3,6 +3,8 @@ import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
 import cron from 'node-cron';
 import { triggerBackup } from './backup';
+import { migratePageBuilderTables } from './db-migrate-page-builder';
+import { migrateVersionControlTables } from './db-migrate-version-control';
 
 const app = express();
 app.use(express.json());
