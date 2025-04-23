@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useContext, useState } from "react";
+import { createContext, ReactNode, useContext, useState, useEffect } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { getQueryFn, apiRequest, queryClient } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
@@ -32,8 +32,19 @@ export const TenantContext = createContext<TenantContextType | null>(null);
 export function TenantProvider({ children }: { children: ReactNode }) {
   const { user } = useAuth();
   const { toast } = useToast();
+  
+  // Default tenant ID for Progress Accountants
+  const DEFAULT_TENANT_ID = '00000000-0000-0000-0000-000000000000';
+  
+  // Store the default tenant ID in localStorage for other components to use
+  useEffect(() => {
+    if (!localStorage.getItem('currentTenantId')) {
+      localStorage.setItem('currentTenantId', DEFAULT_TENANT_ID);
+    }
+  }, []);
+  
   const [selectedTenantId, setSelectedTenantId] = useState<string | null>(
-    user?.tenantId || null
+    user?.tenantId || localStorage.getItem('currentTenantId') || DEFAULT_TENANT_ID
   );
 
   // Fetch current tenant data

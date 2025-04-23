@@ -62,12 +62,12 @@ const PageBuilderContent: React.FC = () => {
   
   // Create a new blank page with default values
   const createNewPage = () => {
-    // Get the first tenant ID from the logged-in user
-    // In a real multi-tenant system, this would be determined by the current context
-    const defaultTenantId = localStorage.getItem('currentTenantId') || '00000000-0000-0000-0000-000000000000';
+    // Use the default tenant ID for Progress Accountants
+    // This is a fixed UUID for simplicity and consistency
+    const DEFAULT_TENANT_ID = '00000000-0000-0000-0000-000000000000';
     
     return {
-      tenantId: defaultTenantId,
+      tenantId: DEFAULT_TENANT_ID,
       name: "New Page",
       slug: "new-page",
       description: "",
