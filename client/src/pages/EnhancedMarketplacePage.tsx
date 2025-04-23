@@ -10,7 +10,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/use-auth";
@@ -20,16 +20,44 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { 
   CheckCircle2, 
-  Download
+  Download,
+  Lock,
+  Copy,
+  Sparkles,
+  Edit,
+  AlertCircle
 } from 'lucide-react';
 
 type ToolCategory = 'page_templates' | 'tools' | 'calculators' | 'dashboards' | string;
+type ToolDesignTier = 'blank' | 'pro';
+
+interface Tool {
+  id: number;
+  name: string;
+  description: string;
+  toolType: string;
+  toolCategory: string;
+  mediaUrl?: string;
+  toolVersion?: string;
+  designTier: ToolDesignTier;
+  isLocked: boolean;
+}
+
+interface ToolInstallation {
+  id: number;
+  toolId: number;
+  tool?: Tool;
+  installation?: {
+    id: number;
+  };
+}
 
 export default function EnhancedMarketplacePage() {
   const { toast } = useToast();
   const { user } = useAuth();
   const [, setLocation] = useLocation();
   const [activeTab, setActiveTab] = useState<string>('all');
+  const [tierFilter, setTierFilter] = useState<string>('all');
   
   // Fetch marketplace tools
   const { 
@@ -37,7 +65,7 @@ export default function EnhancedMarketplacePage() {
     isLoading: isLoadingMarketplace, 
     error: marketplaceError 
   } = useQuery({
-    queryKey: ['/api/nextmonth/marketplace/tools'],
+    queryKey: ['/api/tools/marketplace'],
     enabled: !!user,
   });
   
@@ -46,7 +74,7 @@ export default function EnhancedMarketplacePage() {
     data: installedTools = [], 
     isLoading: isLoadingInstalled,
   } = useQuery({
-    queryKey: ['/api/nextmonth/marketplace/installed'],
+    queryKey: ['/api/tools/installed'],
     enabled: !!user,
   });
   
@@ -55,7 +83,7 @@ export default function EnhancedMarketplacePage() {
     data: toolCategories = [],
     isLoading: isLoadingCategories,
   } = useQuery({
-    queryKey: ['/api/nextmonth/marketplace/categories'],
+    queryKey: ['/api/tools/categories'],
     enabled: !!user,
   });
   
@@ -118,14 +146,50 @@ export default function EnhancedMarketplacePage() {
     }
   });
   
-  // Filter marketplace tools based on category
+  // Filter marketplace tools based on category and tier
   const getFilteredMarketplaceTools = () => {
     if (!Array.isArray(marketplaceTools) || marketplaceTools.length === 0) return [];
     
     return marketplaceTools.filter((tool: any) => {
-      if (activeTab === 'all') return true;
-      return tool.toolCategory === activeTab;
+      // Category filter
+      const matchesCategory = activeTab === 'all' || tool.toolCategory === activeTab;
+      
+      // Tier filter
+      const matchesTier = 
+        tierFilter === 'all' || 
+        (tierFilter === 'blank' && (!tool.designTier || tool.designTier === 'blank')) || 
+        (tierFilter === 'pro' && tool.designTier === 'pro');
+      
+      return matchesCategory && matchesTier;
     });
+  };
+  
+  // Clone a tool (for pro tools)
+  const cloneTool = async (toolId: number) => {
+    try {
+      const response = await apiRequest("POST", `/api/tools/marketplace/clone/${toolId}`, {});
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Failed to clone tool");
+      }
+      
+      queryClient.invalidateQueries({ queryKey: ['/api/tools/installed'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/tools/marketplace'] });
+      
+      toast({
+        title: "Tool cloned",
+        description: "The pro tool has been cloned successfully. You can now customize it.",
+        variant: "default"
+      });
+      
+      return await response.json();
+    } catch (error: any) {
+      toast({
+        title: "Clone failed",
+        description: error.message || "An error occurred while cloning the tool",
+        variant: "destructive"
+      });
+    }
   };
   
   // Check if a tool is installed
@@ -220,6 +284,22 @@ export default function EnhancedMarketplacePage() {
           </p>
         </div>
         
+        {/* Tool Tier Filter Tabs */}
+        <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mb-8">
+          <div className="text-xl font-semibold text-gray-800">Tool Categories</div>
+          <Tabs defaultValue="all" value={tierFilter} onValueChange={setTierFilter} className="flex-shrink-0">
+            <TabsList>
+              <TabsTrigger value="all">All Tools</TabsTrigger>
+              <TabsTrigger value="blank" className="flex items-center">
+                <Edit className="h-4 w-4 mr-1.5" /> Blank Canvas
+              </TabsTrigger>
+              <TabsTrigger value="pro" className="flex items-center">
+                <Sparkles className="h-4 w-4 mr-1.5" /> Pre-Built
+              </TabsTrigger>
+            </TabsList>
+          </Tabs>
+        </div>
+        
         {/* Category Tabs */}
         <div className="mb-8 overflow-hidden">
           <Tabs defaultValue="all" value={activeTab} onValueChange={setActiveTab}>
@@ -242,6 +322,27 @@ export default function EnhancedMarketplacePage() {
             </div>
           </Tabs>
         </div>
+        
+        {/* Tier Information Alert */}
+        {tierFilter === 'blank' && (
+          <Alert className="mb-6 bg-blue-50 border-blue-200">
+            <Edit className="h-4 w-4 stroke-blue-500" />
+            <AlertTitle className="text-blue-700">Blank Canvas Tools</AlertTitle>
+            <AlertDescription className="text-blue-600">
+              Start with a clean slate. Blank Canvas tools are fully customizable templates you can modify to match your exact requirements.
+            </AlertDescription>
+          </Alert>
+        )}
+        
+        {tierFilter === 'pro' && (
+          <Alert className="mb-6 bg-amber-50 border-amber-200">
+            <Sparkles className="h-4 w-4 stroke-amber-500" />
+            <AlertTitle className="text-amber-700">Pre-Built Professional Tools</AlertTitle>
+            <AlertDescription className="text-amber-600">
+              Premium tools with professional design and functionality. While core elements are locked to maintain quality, you can clone them to create customized versions.
+            </AlertDescription>
+          </Alert>
+        )}
         
         {/* Custom scrollbar styling is added to the global CSS */}
         
@@ -282,19 +383,48 @@ export default function EnhancedMarketplacePage() {
           ) : (
             // Display tools from API
             getFilteredMarketplaceTools().map((tool: any) => (
-              <Card key={tool.id} className={`overflow-hidden transition-all hover:shadow-md ${
-                isToolInstalled(tool.id) ? 'border-green-300 bg-green-50/30' : 'border-gray-200'
-              }`}>
+              <Card 
+                key={tool.id} 
+                className={`overflow-hidden transition-all hover:shadow-md ${
+                  isToolInstalled(tool.id) ? 'border-green-300 bg-green-50/30' : 
+                  tool.designTier === 'pro' ? 'border-amber-200 bg-amber-50/20' : 'border-gray-200'
+                }`}
+              >
                 <CardHeader className="p-4 sm:p-6">
                   <div className="flex justify-between items-start">
-                    <CardTitle className="text-lg sm:text-xl">{tool.name}</CardTitle>
-                    {tool.toolVersion && (
-                      <Badge variant="outline" className="bg-blue-100 text-blue-700 text-xs sm:text-sm ml-2">
-                        {tool.toolVersion}
-                      </Badge>
-                    )}
+                    <div className="flex flex-col">
+                      <CardTitle className="text-lg sm:text-xl group flex items-center gap-2">
+                        {tool.name}
+                        {tool.isLocked && tool.designTier === 'pro' && (
+                          <div className="relative group">
+                            <Lock className="h-4 w-4 text-amber-600" />
+                            <div className="absolute left-0 top-full mt-2 w-48 p-2 bg-white shadow-lg rounded text-xs hidden group-hover:block z-10">
+                              This is a Pro tool with locked functionality.
+                            </div>
+                          </div>
+                        )}
+                      </CardTitle>
+                      
+                      <div className="flex gap-2 mt-1">
+                        {tool.designTier === 'pro' && (
+                          <Badge className="bg-amber-100 border-amber-200 text-amber-800 flex items-center gap-1 text-xs">
+                            <Sparkles className="h-3 w-3" /> Pre-Built Pro
+                          </Badge>
+                        )}
+                        {(!tool.designTier || tool.designTier === 'blank') && (
+                          <Badge className="bg-blue-100 border-blue-200 text-blue-800 flex items-center gap-1 text-xs">
+                            <Edit className="h-3 w-3" /> Blank Canvas
+                          </Badge>
+                        )}
+                        {tool.toolVersion && (
+                          <Badge variant="outline" className="bg-gray-100 text-gray-700 text-xs">
+                            v{tool.toolVersion}
+                          </Badge>
+                        )}
+                      </div>
+                    </div>
                   </div>
-                  <CardDescription className="line-clamp-2 text-sm sm:text-base mt-1">{tool.description}</CardDescription>
+                  <CardDescription className="line-clamp-2 text-sm sm:text-base mt-2">{tool.description}</CardDescription>
                 </CardHeader>
                 
                 <CardContent className="p-4 sm:p-6 pt-0 sm:pt-0 pb-0 sm:pb-0 flex-grow">
@@ -319,6 +449,7 @@ export default function EnhancedMarketplacePage() {
                 </CardContent>
                 
                 <CardFooter className="p-4 sm:p-6 pt-3 sm:pt-4">
+                  {/* If tool is installed, show Uninstall button */}
                   {isToolInstalled(tool.id) ? (
                     <Button 
                       variant="outline" 
@@ -329,13 +460,34 @@ export default function EnhancedMarketplacePage() {
                       Uninstall
                     </Button>
                   ) : (
-                    <Button 
-                      className="w-full text-xs sm:text-sm py-1.5 sm:py-2 h-auto"
-                      variant="default"
-                      onClick={() => handleInstallTool(tool.id)}
-                    >
-                      <Download className="h-3 w-3 sm:h-4 sm:w-4 mr-1.5 sm:mr-2" /> Install Tool
-                    </Button>
+                    // If tool is not installed, show appropriate action buttons based on tier
+                    <>
+                      {tool.designTier === 'pro' && tool.isLocked ? (
+                        <div className="w-full flex gap-2">
+                          <Button 
+                            className="flex-1 text-xs sm:text-sm py-1.5 sm:py-2 h-auto"
+                            variant="default"
+                            onClick={() => handleInstallTool(tool.id)}
+                          >
+                            <Download className="h-3 w-3 sm:h-4 sm:w-4 mr-1.5 sm:mr-2" /> Install
+                          </Button>
+                          <Button 
+                            className="flex-1 text-xs sm:text-sm py-1.5 sm:py-2 h-auto bg-amber-600 hover:bg-amber-700"
+                            onClick={() => cloneTool(tool.id)}
+                          >
+                            <Copy className="h-3 w-3 sm:h-4 sm:w-4 mr-1.5 sm:mr-2" /> Clone & Edit
+                          </Button>
+                        </div>
+                      ) : (
+                        <Button 
+                          className="w-full text-xs sm:text-sm py-1.5 sm:py-2 h-auto"
+                          variant="default"
+                          onClick={() => handleInstallTool(tool.id)}
+                        >
+                          <Download className="h-3 w-3 sm:h-4 sm:w-4 mr-1.5 sm:mr-2" /> Install Tool
+                        </Button>
+                      )}
+                    </>
                   )}
                 </CardFooter>
               </Card>

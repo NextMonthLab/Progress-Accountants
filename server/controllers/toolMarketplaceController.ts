@@ -267,6 +267,84 @@ export async function getToolPublishingLogs(req: Request, res: Response) {
 }
 
 /**
+ * Clone a tool (particularly for Pro tools)
+ * Creates an editable copy of a Pro tool for a tenant
+ */
+export async function cloneTool(req: Request, res: Response) {
+  try {
+    const { toolId } = req.params;
+    
+    // Check authentication
+    if (!req.user) {
+      return res.status(401).json({ error: "Unauthorized" });
+    }
+
+    // Validate tenant ID is provided
+    if (!req.user.tenantId) {
+      return res.status(400).json({ error: "Tenant ID is required" });
+    }
+
+    // Get the source tool
+    const [sourceTool] = await db.select().from(tools)
+      .where(and(
+        eq(tools.id, parseInt(toolId)),
+        eq(tools.publishStatus, "published_in_marketplace")
+      ));
+    
+    if (!sourceTool) {
+      return res.status(404).json({ error: "Tool not found in marketplace" });
+    }
+
+    // Create a cloned version of the tool
+    const clonedToolData = {
+      tenantId: req.user.tenantId,
+      name: `${sourceTool.name} (Clone)`,
+      description: sourceTool.description,
+      toolType: sourceTool.toolType,
+      displayStyle: sourceTool.displayStyle,
+      mediaUrl: sourceTool.mediaUrl,
+      mediaId: sourceTool.mediaId,
+      configuration: sourceTool.configuration,
+      createdBy: req.user.id,
+      status: "draft",
+      publishStatus: "unpublished",
+      toolCategory: sourceTool.toolCategory,
+      toolVersion: sourceTool.toolVersion ? `${sourceTool.toolVersion}-clone` : "v1.0.0-clone",
+      designTier: "blank", // Cloned tools become blank/editable
+      isLocked: false, // Cloned tools are never locked
+      origin: "cloned",
+      clonedFromId: sourceTool.id
+    };
+
+    // Insert the cloned tool
+    const [clonedTool] = await db.insert(tools)
+      .values(clonedToolData)
+      .returning();
+
+    // Log the action
+    await logToolActivity(
+      parseInt(toolId),
+      req.user.username || "unknown",
+      "tool_cloned",
+      { 
+        tenantId: req.user.tenantId,
+        clonedToolId: clonedTool.id
+      },
+      true
+    );
+
+    res.status(200).json({
+      success: true,
+      message: "Tool cloned successfully",
+      clonedTool
+    });
+  } catch (error) {
+    console.error("Error cloning tool:", error);
+    res.status(500).json({ error: "Failed to clone tool" });
+  }
+}
+
+/**
  * Register tool marketplace routes
  */
 export function registerToolMarketplaceRoutes(app: any) {
@@ -278,6 +356,7 @@ export function registerToolMarketplaceRoutes(app: any) {
   app.post("/api/tools/marketplace/install/:toolId", installMarketplaceTool);
   app.get("/api/tools/installed", getInstalledTools);
   app.post("/api/tools/uninstall/:installationId", uninstallTool);
+  app.post("/api/tools/marketplace/clone/:toolId", cloneTool);
   
   // Logs (for admins)
   app.get("/api/tools/logs/:toolId", getToolPublishingLogs);
