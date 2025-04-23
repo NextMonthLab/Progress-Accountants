@@ -107,7 +107,8 @@ export async function getVersionHistory(req: Request, res: Response) {
       changeDescription: contentVersions.changeDescription,
       createdAt: contentVersions.createdAt,
       createdBy: users.username,
-      creatorId: users.id
+      creatorId: users.id,
+      snapshot: contentVersions.snapshot
     })
       .from(contentVersions)
       .leftJoin(users, eq(contentVersions.createdBy, users.id))
@@ -117,7 +118,45 @@ export async function getVersionHistory(req: Request, res: Response) {
       ))
       .orderBy(desc(contentVersions.versionNumber));
     
-    return res.json(versions);
+    // Extract title/name from snapshot for page versions
+    const enrichedVersions = versions.map(version => {
+      // Create a base version object without the full snapshot
+      const baseVersion = {
+        id: version.id,
+        versionNumber: version.versionNumber,
+        status: version.status,
+        changeType: version.changeType,
+        changeDescription: version.changeDescription,
+        createdAt: version.createdAt,
+        createdBy: version.createdBy,
+        creatorId: version.creatorId
+      };
+
+      // For page types, extract the name (title) from the snapshot
+      if (entityType === 'page' && version.snapshot) {
+        try {
+          const pageData = typeof version.snapshot === 'string' 
+            ? JSON.parse(version.snapshot) 
+            : version.snapshot;
+            
+          return {
+            ...baseVersion,
+            title: pageData.name || 'Untitled Page', // Get page name from snapshot
+            versionLabel: `v${version.versionNumber.toFixed(1)}`
+          };
+        } catch (error) {
+          console.error('Error parsing snapshot:', error);
+        }
+      }
+      
+      return {
+        ...baseVersion,
+        title: 'Unknown',
+        versionLabel: `v${version.versionNumber.toFixed(1)}`
+      };
+    });
+    
+    return res.json(enrichedVersions);
   } catch (error) {
     console.error('Error fetching version history:', error);
     return res.status(500).json({ error: 'Failed to fetch version history' });

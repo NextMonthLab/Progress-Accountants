@@ -8,6 +8,7 @@ import {
   pageBuilderComponents,
   pageBuilderTemplates,
   contentVersions,
+  users,
   insertPageBuilderPageSchema,
   insertPageBuilderSectionSchema,
   insertPageBuilderComponentSchema,
@@ -230,9 +231,9 @@ export const pageBuilderController = {
     try {
       const pageData = insertPageBuilderPageSchema.parse(req.body);
       
-      // Make sure title is set (provide a default if not)
-      if (!pageData.title) {
-        pageData.title = pageData.pageType === 'core' ? 'Core Page' : 'New Page';
+      // Make sure name (title) is set (provide a default if not)
+      if (!pageData.name) {
+        pageData.name = pageData.pageType === 'core' ? 'Core Page' : 'New Page';
       }
       
       // Check if slug is already in use
@@ -265,7 +266,7 @@ export const pageBuilderController = {
       // Include snapshot with complete page data
       const pageSnapshot = {
         ...page,
-        title: page.title, // Ensure title is included in snapshot
+        name: page.name, // Ensure name field (title) is included in snapshot
         versionNumber: 1.0, // Explicitly include version number for v1.0
         status: 'published' // First version should be published by default
       };
@@ -311,9 +312,9 @@ export const pageBuilderController = {
         });
       }
       
-      // Make sure title is preserved or updated, not deleted
-      if (!pageData.title) {
-        pageData.title = existingPage.title || 'Untitled Page';
+      // Make sure name (title) is preserved or updated, not deleted
+      if (!pageData.name) {
+        pageData.name = existingPage.name || 'Untitled Page';
       }
       
       // If updating slug, check if it's already in use by another page
@@ -370,7 +371,7 @@ export const pageBuilderController = {
       // Include snapshot with complete page data
       const pageSnapshot = {
         ...updatedPage,
-        title: updatedPage.title, // Ensure title is included in snapshot
+        name: updatedPage.name, // Ensure name (title) is included in snapshot
         versionNumber: nextVersionNumber,
       };
       
