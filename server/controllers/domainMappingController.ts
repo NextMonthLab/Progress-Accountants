@@ -80,7 +80,7 @@ export async function createDomainMapping(req: Request, res: Response) {
       mapping,
       dns_instructions: generateDnsInstructions(mapping.customDomain, verificationToken)
     });
-  } catch (error) {
+  } catch (error: any) {
     console.error("Error creating domain mapping:", error);
     
     // Handle unique constraint violation
@@ -114,7 +114,7 @@ export async function getDnsInstructions(req: Request, res: Response) {
       domain,
       instructions
     });
-  } catch (error) {
+  } catch (error: any) {
     console.error("Error generating DNS instructions:", error);
     res.status(500).json({ error: "Failed to generate DNS instructions" });
   }
@@ -142,7 +142,7 @@ export async function verifyDomainMapping(req: Request, res: Response) {
     // Increment verification attempts
     await db.update(domainMappings)
       .set({ 
-        verificationAttempts: mapping.verificationAttempts + 1,
+        verificationAttempts: (mapping.verificationAttempts || 0) + 1,
         lastVerificationCheck: new Date()
       })
       .where(eq(domainMappings.id, mapping.id));
@@ -178,7 +178,7 @@ export async function verifyDomainMapping(req: Request, res: Response) {
       verified: false,
       message: "Domain verification failed. DNS records may not have propagated yet."
     });
-  } catch (error) {
+  } catch (error: any) {
     console.error("Error verifying domain:", error);
     res.status(500).json({ error: "Failed to verify domain" });
   }
@@ -229,7 +229,7 @@ export async function checkPendingVerifications() {
     }
     
     return { success: true, checked: pendingMappings.length };
-  } catch (error) {
+  } catch (error: any) {
     console.error("Error checking pending verifications:", error);
     return { success: false, error: "Failed to check pending verifications" };
   }

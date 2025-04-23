@@ -6,7 +6,9 @@ import { triggerBackup } from './backup';
 import { migratePageBuilderTables } from './db-migrate-page-builder';
 import { migrateVersionControlTables } from './db-migrate-version-control';
 import migrateNavigationTables from './db-migrate-navigation';
+import { migrateDomainMappingsTables } from './db-migrate-domain-mappings';
 import { registerNavigationRoutes } from './controllers/navigationController';
+import { registerDomainMappingRoutes } from './controllers/domainMappingController';
 
 const app = express();
 app.use(express.json());
@@ -51,6 +53,8 @@ app.use((req, res, next) => {
     await migrateVersionControlTables();
     console.log('Running Navigation Menu migrations...');
     await migrateNavigationTables();
+    console.log('Running Domain Mappings migrations...');
+    await migrateDomainMappingsTables();
   } catch (error) {
     console.error('Error running migrations:', error);
   }
@@ -60,6 +64,9 @@ app.use((req, res, next) => {
   
   // Register navigation routes
   registerNavigationRoutes(app);
+  
+  // Register domain mapping routes
+  registerDomainMappingRoutes(app);
 
   app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
     const status = err.status || err.statusCode || 500;
