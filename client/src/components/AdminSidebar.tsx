@@ -74,7 +74,7 @@ function AdminSidebarLogo({ collapsed }: { collapsed: boolean }) {
   // Display image logo if available, otherwise use text logo
   if (siteBranding.logo.imageUrl) {
     return (
-      <Link href="/client-dashboard" className="no-underline flex items-center">
+      <Link href="/admin/dashboard" className="no-underline flex items-center">
         <img 
           src={siteBranding.logo.imageUrl} 
           alt={siteBranding.logo.altText} 
@@ -90,7 +90,7 @@ function AdminSidebarLogo({ collapsed }: { collapsed: boolean }) {
   const words = logoText.split(" ");
   
   return (
-    <Link href="/client-dashboard" className="font-poppins font-bold text-xl no-underline" style={{ color: 'var(--navy)' }}>
+    <Link href="/admin/dashboard" className="font-poppins font-bold text-xl no-underline" style={{ color: 'var(--navy)' }}>
       {words.length > 1 ? (
         <>
           <span>{words.slice(0, -1).join(" ")} </span>
@@ -172,7 +172,7 @@ export default function AdminSidebar() {
       items: [
         { 
           title: "Dashboard", 
-          href: "/client-dashboard", 
+          href: "/admin/dashboard", 
           icon: <LayoutDashboard className="h-5 w-5" />,
           description: "Quick access to website building tools"
         },
