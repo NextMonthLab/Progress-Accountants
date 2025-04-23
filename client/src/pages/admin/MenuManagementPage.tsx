@@ -12,6 +12,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { queryClient } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
+import { useTenant } from "@/hooks/use-tenant";
 import { 
   Edit, Loader2, PlusCircle, Trash2, 
   ChevronRight, ChevronDown, GripVertical, ExternalLink
@@ -81,19 +82,25 @@ const MenuManagementPage = () => {
     requiredRole: null
   });
   
+  // Get tenant context for tenant ID
+  const { tenant } = useTenant();
+
   // Queries
   const { 
     data: menus, 
     isLoading: isLoadingMenus 
   } = useQuery({
-    queryKey: ["/api/navigation/menus"],
+    queryKey: ["/api/navigation/menus", tenant?.id],
     queryFn: async () => {
-      const response = await fetch("/api/navigation/menus");
+      if (!tenant?.id) return [];
+      const response = await fetch(`/api/navigation/menus?tenantId=${tenant.id}`);
       if (!response.ok) {
         throw new Error("Failed to fetch menus");
       }
-      return response.json() as Promise<NavigationMenu[]>;
-    }
+      const responseData = await response.json();
+      return responseData.data || [];
+    },
+    enabled: !!tenant?.id
   });
   
   const { 
@@ -103,11 +110,12 @@ const MenuManagementPage = () => {
     queryKey: ["/api/navigation/menu-items", selectedMenu?.id],
     queryFn: async () => {
       if (!selectedMenu) return [];
-      const response = await fetch(`/api/navigation/menu-items/${selectedMenu.id}`);
+      const response = await fetch(`/api/navigation/menus/${selectedMenu.id}/items`);
       if (!response.ok) {
         throw new Error("Failed to fetch menu items");
       }
-      return response.json() as Promise<MenuItem[]>;
+      const responseData = await response.json();
+      return responseData.data || [];
     },
     enabled: !!selectedMenu
   });
@@ -120,7 +128,10 @@ const MenuManagementPage = () => {
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify(newMenu)
+        body: JSON.stringify({
+          ...newMenu,
+          tenantId: tenant?.id
+        })
       });
       
       if (!response.ok) {
@@ -226,7 +237,7 @@ const MenuManagementPage = () => {
   
   const createMenuItemMutation = useMutation({
     mutationFn: async (newMenuItem: typeof newMenuItemForm) => {
-      const response = await fetch("/api/navigation/menu-items", {
+      const response = await fetch("/api/navigation/items", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -242,7 +253,7 @@ const MenuManagementPage = () => {
       return response.json() as Promise<MenuItem>;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/navigation/menu-items", selectedMenu?.id] });
+      queryClient.invalidateQueries({ queryKey: ["/api/navigation/menus", selectedMenu?.id, "items"] });
       setIsCreateMenuItemDialogOpen(false);
       setNewMenuItemForm({
         label: "",
@@ -271,8 +282,8 @@ const MenuManagementPage = () => {
   
   const updateMenuItemMutation = useMutation({
     mutationFn: async (updatedMenuItem: MenuItem) => {
-      const response = await fetch(`/api/navigation/menu-items/${updatedMenuItem.id}`, {
-        method: "PATCH",
+      const response = await fetch(`/api/navigation/items/${updatedMenuItem.id}`, {
+        method: "PUT",
         headers: {
           "Content-Type": "application/json"
         },
@@ -305,7 +316,7 @@ const MenuManagementPage = () => {
   
   const deleteMenuItemMutation = useMutation({
     mutationFn: async (menuItemId: number) => {
-      const response = await fetch(`/api/navigation/menu-items/${menuItemId}`, {
+      const response = await fetch(`/api/navigation/items/${menuItemId}`, {
         method: "DELETE"
       });
       
