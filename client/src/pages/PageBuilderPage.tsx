@@ -279,12 +279,51 @@ const PageBuilderContent: React.FC = () => {
   const handlePublishToggle = () => {
     if (!page) return;
     
-    setPage({
+    // Set the new state with updated publish status
+    const updatedPage = {
       ...page,
-      isPublished: !page.isPublished
-    });
+      isPublished: !page.isPublished,
+      published: !page.isPublished // Make sure both properties are updated
+    };
     
-    setPageUnsaved(true);
+    setPage(updatedPage);
+    
+    // Save the page immediately when publish status changes
+    const pageData = {
+      // Required fields for server validation
+      tenantId: updatedPage.tenantId,
+      name: updatedPage.title || updatedPage.name,
+      slug: updatedPage.path?.replace(/^\//, '') || updatedPage.slug,
+      description: updatedPage.description,
+      pageType: updatedPage.pageType || 'standard',
+      status: updatedPage.status || 'draft',
+      version: updatedPage.version || 1,
+      published: updatedPage.isPublished,
+      
+      // Additional fields
+      template: updatedPage.template,
+      seo: updatedPage.seo || updatedPage.seoSettings,
+      metadata: updatedPage.metadata || {},
+      businessContext: updatedPage.businessContext || {},
+      analytics: updatedPage.analytics || {},
+      
+      // If editing, include these fields
+      ...(updatedPage.id && {
+        lastEditedBy: updatedPage.lastEditedBy || 1,
+      }),
+      
+      // UI specific data
+      title: updatedPage.title,
+      path: updatedPage.path,
+      isPublished: updatedPage.isPublished,
+      seoSettings: updatedPage.seoSettings,
+      
+      // Sections data
+      sections: updatedPage.sections
+    };
+    
+    // Save the page with updated publish status
+    saveMutation.mutate(pageData);
   };
   
   // Handle title change
