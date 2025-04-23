@@ -200,7 +200,7 @@ export async function checkPendingVerifications() {
       await db.update(domainMappings)
         .set({ 
           lastVerificationCheck: new Date(),
-          verificationAttempts: mapping.verificationAttempts + 1
+          verificationAttempts: (mapping.verificationAttempts || 0) + 1
         })
         .where(eq(domainMappings.id, mapping.id));
       
@@ -305,8 +305,8 @@ async function verifyTxtRecord(domain: string, token: string): Promise<boolean> 
     }
     
     return false;
-  } catch (error) {
-    console.warn(`TXT record verification failed for ${domain}:`, error.message);
+  } catch (error: any) {
+    console.warn(`TXT record verification failed for ${domain}:`, error.message || 'Unknown error');
     return false;
   }
 }
@@ -324,8 +324,8 @@ async function verifyCnameRecord(domain: string): Promise<boolean> {
     
     // Check if CNAME points to our domain
     return record === 'progress.nextmonth.site';
-  } catch (error) {
-    console.warn(`CNAME record verification failed for ${domain}:`, error.message);
+  } catch (error: any) {
+    console.warn(`CNAME record verification failed for ${domain}:`, error.message || 'Unknown error');
     return false;
   }
 }
