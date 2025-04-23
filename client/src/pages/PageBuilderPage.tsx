@@ -163,11 +163,35 @@ const PageBuilderContent: React.FC = () => {
       setPageUnsaved(false);
     },
     onError: (error) => {
-      toast({
-        title: "Error",
-        description: `Failed to save page: ${(error as Error).message}`,
-        variant: "destructive"
-      });
+      // Check if it's a duplicate slug error
+      let errorMessage = (error as Error).message;
+      
+      if (errorMessage.includes("slug already exists") || errorMessage.includes("URL path")) {
+        // Extract the path from the error message if possible
+        const pathMatch = errorMessage.match(/\'\/([^']+)\'/);
+        const path = pathMatch ? `/${pathMatch[1]}` : page?.path || '';
+        
+        toast({
+          title: "URL Path Already Exists",
+          description: `The URL path "${path}" is already being used by another page. Please choose a different path.`,
+          variant: "destructive"
+        });
+        
+        // Focus the path field to prompt the user to change it
+        const pathInput = document.getElementById('page-path');
+        if (pathInput) {
+          setTimeout(() => {
+            (pathInput as HTMLInputElement).focus();
+            (pathInput as HTMLInputElement).select();
+          }, 100);
+        }
+      } else {
+        toast({
+          title: "Error Saving Page",
+          description: errorMessage,
+          variant: "destructive"
+        });
+      }
     }
   });
   

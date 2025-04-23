@@ -249,8 +249,9 @@ export const pageBuilderController = {
       
       if (existingPage) {
         return res.status(400).json({
-          message: "A page with this slug already exists",
-          success: false
+          message: `A page with the URL path '/${pageData.slug}' already exists. Please choose a different URL path.`,
+          success: false,
+          errorCode: 'DUPLICATE_SLUG'
         });
       }
       
@@ -332,8 +333,9 @@ export const pageBuilderController = {
         
         if (slugExists) {
           return res.status(400).json({
-            message: "A page with this slug already exists",
-            success: false
+            message: `A page with the URL path '/${pageData.slug}' already exists. Please choose a different URL path.`,
+            success: false,
+            errorCode: 'DUPLICATE_SLUG'
           });
         }
       }
