@@ -10,23 +10,7 @@ import { Switch } from '@/components/ui/switch';
 import { ColorPicker } from '@/components/ui/color-picker';
 import { Card, CardContent } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
-
-// Define component types
-interface PageBuilderComponent {
-  id: number;
-  name: string;
-  type: string;
-  sectionId: number;
-  order: number;
-  content: Record<string, any>;
-  style?: Record<string, any>;
-  customCSS?: string;
-  customId?: string;
-  customClass?: string;
-  hidden?: boolean;
-  createdAt: string;
-  updatedAt: string;
-}
+import { PageBuilderComponent } from '@shared/advanced_page_builder';
 import { Slider } from '@/components/ui/slider';
 import { 
   Type, 

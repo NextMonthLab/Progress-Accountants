@@ -40,10 +40,11 @@ import {
   Grid
 } from 'lucide-react';
 import PageBuilderComponentEditor from './PageBuilderComponentEditor';
+import { PageBuilderComponent, PageBuilderSection } from '@shared/advanced_page_builder';
 
 interface PageBuilderComponentPanelProps {
-  section: any;
-  onUpdateSection: (sectionId: number, updatedSection: any) => void;
+  section: PageBuilderSection;
+  onUpdateSection: (sectionId: number, updatedSection: PageBuilderSection) => void;
   onRemoveSection: (sectionId: number) => void;
 }
 
@@ -54,18 +55,18 @@ const PageBuilderComponentPanel: React.FC<PageBuilderComponentPanelProps> = ({
 }) => {
   const [editComponentId, setEditComponentId] = useState<number | null>(null);
   const [isEditorOpen, setIsEditorOpen] = useState(false);
-  const [componentToEdit, setComponentToEdit] = useState<any>(null);
+  const [componentToEdit, setComponentToEdit] = useState<PageBuilderComponent | null>(null);
 
   // Handle opening the editor for a component
-  const handleEditComponent = (component: any) => {
+  const handleEditComponent = (component: PageBuilderComponent) => {
     setComponentToEdit(component);
     setEditComponentId(component.id);
     setIsEditorOpen(true);
   };
 
   // Handle saving the edited component
-  const handleSaveComponent = (updatedComponent: any) => {
-    const updatedComponents = section.components.map((comp: any) => {
+  const handleSaveComponent = (updatedComponent: PageBuilderComponent) => {
+    const updatedComponents = section.components.map((comp) => {
       if (comp.id === updatedComponent.id) {
         return updatedComponent;
       }
