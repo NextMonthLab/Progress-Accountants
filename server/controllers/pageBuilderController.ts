@@ -230,6 +230,11 @@ export const pageBuilderController = {
     try {
       const pageData = insertPageBuilderPageSchema.parse(req.body);
       
+      // Make sure title is set (provide a default if not)
+      if (!pageData.title) {
+        pageData.title = pageData.pageType === 'core' ? 'Core Page' : 'New Page';
+      }
+      
       // Check if slug is already in use
       const [existingPage] = await db
         .select()
@@ -256,12 +261,21 @@ export const pageBuilderController = {
       
       // Create the initial version record
       const userId = req.user && 'id' in req.user ? (req.user.id as number) : undefined;
+      
+      // Include snapshot with complete page data
+      const pageSnapshot = {
+        ...page,
+        title: page.title, // Ensure title is included in snapshot
+        versionNumber: 1.0, // Explicitly include version number for v1.0
+        status: 'published' // First version should be published by default
+      };
+      
       await createPageVersion(
         page.id,
-        page,
+        pageSnapshot,
         'create' as ChangeType,
         userId,
-        'Initial page creation'
+        'Initial page creation (v1.0)'
       );
       
       return res.status(201).json({
@@ -297,6 +311,11 @@ export const pageBuilderController = {
         });
       }
       
+      // Make sure title is preserved or updated, not deleted
+      if (!pageData.title) {
+        pageData.title = existingPage.title || 'Untitled Page';
+      }
+      
       // If updating slug, check if it's already in use by another page
       if (pageData.slug && pageData.slug !== existingPage.slug) {
         const [slugExists] = await db
@@ -328,13 +347,36 @@ export const pageBuilderController = {
         .where(eq(pageBuilderPages.id, parseInt(id)))
         .returning();
       
+      // Get latest version to determine next version number
+      const [latestVersion] = await db
+        .select({ versionNumber: contentVersions.versionNumber })
+        .from(contentVersions)
+        .where(
+          and(
+            eq(contentVersions.entityType, 'page'),
+            eq(contentVersions.entityId, updatedPage.id)
+          )
+        )
+        .orderBy(desc(contentVersions.versionNumber))
+        .limit(1);
+        
+      const nextVersionNumber = latestVersion ? latestVersion.versionNumber + 0.1 : 1.0;
+      
       // Create a new version record
       const userId = req.user && 'id' in req.user ? (req.user.id as number) : undefined;
       const changeType = req.body.changeType || 'update';
-      const changeDescription = req.body.changeDescription || 'Page updated';
+      const changeDescription = req.body.changeDescription || `Page updated (v${nextVersionNumber.toFixed(1)})`;
+      
+      // Include snapshot with complete page data
+      const pageSnapshot = {
+        ...updatedPage,
+        title: updatedPage.title, // Ensure title is included in snapshot
+        versionNumber: nextVersionNumber,
+      };
+      
       await createPageVersion(
         updatedPage.id,
-        updatedPage,
+        pageSnapshot,
         changeType as ChangeType,
         userId,
         changeDescription
