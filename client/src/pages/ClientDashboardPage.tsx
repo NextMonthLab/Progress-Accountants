@@ -749,14 +749,14 @@ export default function ClientDashboardPage() {
         <div className="flex flex-col md:flex-row justify-between gap-6">
           <div className="md:max-w-lg">
             <h1 className="text-3xl font-bold mb-2">Welcome back, {user?.name || 'Admin'}</h1>
-            <p className="text-blue-100 mb-6">
+            <p className="text-white mb-6">
               Here's what's happening with {tenant?.name || 'your website'} today.
             </p>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="bg-white/10 rounded-xl p-4">
                 <div className="flex justify-between items-start mb-2">
-                  <span className="text-sm font-medium text-blue-100">Website Status</span>
+                  <span className="text-sm font-medium text-white">Website Status</span>
                   <Badge className="bg-emerald-500 hover:bg-emerald-600">Online</Badge>
                 </div>
                 <div className="flex items-center gap-2">
@@ -766,14 +766,14 @@ export default function ClientDashboardPage() {
               </div>
               
               <div className="bg-white/10 rounded-xl p-4">
-                <p className="text-sm font-medium text-blue-100 mb-2">Website Completeness</p>
+                <p className="text-sm font-medium text-white mb-2">Website Completeness</p>
                 <div className="mb-2">
-                  <Progress value={pageProgress} className="h-2 bg-white/20" indicatorClassName="bg-emerald-500" />
+                  <Progress value={pageProgress} className="h-2 bg-white/20" />
                 </div>
                 <div className="flex justify-between text-sm">
                   <span>{pageProgress}% complete</span>
                   <Link href="/admin/setup-checklist">
-                    <span className="text-blue-200 hover:text-white flex items-center gap-1">
+                    <span className="text-white hover:text-white/90 flex items-center gap-1">
                       Setup checklist
                       <ArrowRight className="h-3 w-3" />
                     </span>
