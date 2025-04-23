@@ -109,8 +109,8 @@ const StatCard: React.FC<StatCardProps> = ({
       iconBg: "bg-navy/10",
       textColor: "text-navy",
       subTextColor: "text-gray-500",
-      trendUp: "text-emerald-600",
-      trendDown: "text-red-600"
+      trendUp: "text-emerald-700 font-medium",
+      trendDown: "text-red-700 font-medium"
     }
   };
 
@@ -889,7 +889,7 @@ export default function ClientDashboardPage() {
                         <p className="text-2xl font-bold text-navy mt-1">
                           {isOverviewLoading ? '--' : siteOverview?.avgTimeOnSite}
                         </p>
-                        <p className="text-xs text-red-500 flex items-center justify-center mt-1">
+                        <p className="text-xs text-red-700 font-medium flex items-center justify-center mt-1">
                           <TrendingUp className="h-3 w-3 mr-1 rotate-180" />
                           {Math.abs(siteOverview?.timeOnSiteTrend || 0)}%
                         </p>
@@ -898,7 +898,7 @@ export default function ClientDashboardPage() {
                       <div className="text-center">
                         <p className="text-sm text-gray-500">Bounce Rate</p>
                         <p className="text-2xl font-bold text-navy mt-1">32%</p>
-                        <p className="text-xs text-emerald-500 flex items-center justify-center mt-1">
+                        <p className="text-xs text-emerald-700 font-medium flex items-center justify-center mt-1">
                           <TrendingUp className="h-3 w-3 mr-1" />
                           2.5%
                         </p>
@@ -907,7 +907,7 @@ export default function ClientDashboardPage() {
                       <div className="text-center">
                         <p className="text-sm text-gray-500">Pages Per Visit</p>
                         <p className="text-2xl font-bold text-navy mt-1">3.2</p>
-                        <p className="text-xs text-emerald-500 flex items-center justify-center mt-1">
+                        <p className="text-xs text-emerald-700 font-medium flex items-center justify-center mt-1">
                           <TrendingUp className="h-3 w-3 mr-1" />
                           0.8%
                         </p>
