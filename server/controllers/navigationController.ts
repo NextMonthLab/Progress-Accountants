@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { sql, eq, and, isNull, desc } from 'drizzle-orm';
 import { db } from '../db';
-import { navigationMenus, menuItems, type NavigationMenu, type MenuItem, insertNavigationMenuSchema, insertMenuItemSchema } from '@shared/navigation_menu';
+import { navigationMenus, menuItems, type NavigationMenu, type MenuItem, type MenuTreeItem, insertNavigationMenuSchema, insertMenuItemSchema, menuLocations } from '@shared/navigation_menu';
 
 /**
  * Get all navigation menus for a tenant
