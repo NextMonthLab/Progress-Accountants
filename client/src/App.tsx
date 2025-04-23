@@ -176,6 +176,11 @@ function Router() {
         allowedRoles={['admin', 'super_admin']} 
       />
       <ProtectedRoute 
+        path="/admin/dashboard" 
+        component={ClientDashboardPage} 
+        allowedRoles={['admin', 'super_admin', 'editor']} 
+      />
+      <ProtectedRoute 
         path="/admin/new-request" 
         component={ScopeRequestPage} 
         allowedRoles={['admin', 'super_admin', 'editor']} 
