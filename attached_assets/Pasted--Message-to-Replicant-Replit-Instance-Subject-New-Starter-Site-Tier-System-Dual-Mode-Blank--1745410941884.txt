@@ -1,0 +1,74 @@
+🛰️ Message to Replicant (Replit Instance)
+Subject: New Starter Site Tier System — Dual Mode (Blank vs. Pro Design)
+
+Hey Replicant 👋
+
+We've just finalized a key strategy for how we deliver client sites moving forward, and we’d love your help integrating it.
+
+🎯 Objective
+Support two types of starter sites for each client instance:
+
+Blank Canvas
+
+No pre-built pages
+
+All pages created via the Smart Page Builder
+
+Fully editable
+
+Professionally Designed Starter
+
+Ships with ~5–7 beautifully crafted pages (built by you via Reploat-style design)
+
+Pages are not editable in the builder
+
+Builder still enabled for creating new pages
+
+This creates a tiered system: clients can start from scratch or pay for a pro-designed head start.
+
+🔧 What Needs to Happen
+1. Tagging & Detection
+Each instance should store a value like:
+
+json
+Copy
+Edit
+{
+  "starter_type": "pro" // or "blank"
+}
+Pages that are pre-designed should be flagged:
+
+json
+Copy
+Edit
+{
+  "page_id": "about-us",
+  "is_locked": true,
+  "origin": "pro-design"
+}
+2. Display Logic
+When a user opens a locked page:
+
+Show a badge or label: 🛠 Pro Design – Not Editable
+
+Clicking the “Edit” button shows a modal like:
+
+“This page was custom-built by our design team. It can’t be edited in the builder. Want a new version you can edit? Clone it into the builder or request a custom layout.”
+
+3. Marketplace Support
+Both starter types should be available as purchase options
+
+Designed pages should be bundled and tagged as locked
+
+Blank canvas template should stay 100% builder-driven
+
+✅ Optional Nice-to-Haves
+Ability to duplicate a locked design into a builder-compatible layout (with limitations)
+
+Upgrade path for adding more designed pages later (as paid add-ons)
+
+Let us know what part you’d like to start with. We're happy for you to lead with structuring the tagging system or the modal UI logic. Most of this logic will eventually sit in NextMonth Core, but Replit needs to support the data flags and front-end experience from day one.
+
+Thanks again — this will be a game-changer for launch tiers.
+—Rob + Echo
+

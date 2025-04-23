@@ -21,6 +21,7 @@ export const tenants = pgTable("tenants", {
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
   parentTemplate: uuid("parent_template"), // Will add the reference constraint later
   isTemplate: boolean("is_template").default(false),
+  starterType: varchar("starter_type", { length: 20 }).default("blank").notNull(), // blank or pro
 });
 
 export const insertTenantSchema = createInsertSchema(tenants).omit({
@@ -416,6 +417,9 @@ export const pageBuilderPages = pgTable("page_builder_pages", {
   version: integer("version").default(1).notNull(),
   published: boolean("published").default(false),
   publishedAt: timestamp("published_at"),
+  isLocked: boolean("is_locked").default(false), // Indicates if page is locked (pro design)
+  origin: varchar("origin", { length: 50 }).default("builder"), // builder or pro-design
+  clonedFromId: integer("cloned_from_id"), // Reference to original page if cloned
   createdBy: integer("created_by").references(() => users.id),
   lastEditedBy: integer("last_edited_by").references(() => users.id),
   createdAt: timestamp("created_at").defaultNow().notNull(),
@@ -575,6 +579,11 @@ export const pageBuilderPagesRelations = relations(pageBuilderPages, ({ one, man
     fields: [pageBuilderPages.lastEditedBy],
     references: [users.id],
   }),
+  clonedFromPage: one(pageBuilderPages, {
+    fields: [pageBuilderPages.clonedFromId],
+    references: [pageBuilderPages.id],
+  }),
+  clones: many(pageBuilderPages, { relationName: "page_clones" }),
   sections: many(pageBuilderSections),
   recommendations: many(pageBuilderRecommendations),
   versionHistory: many(pageBuilderVersionHistory),
