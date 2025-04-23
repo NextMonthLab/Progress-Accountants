@@ -919,7 +919,7 @@ export type InsertCompanionConfig = z.infer<typeof insertCompanionConfigSchema>;
 export type CompanionConfig = typeof companionConfig.$inferSelect;
 
 // Tools table for interactive tools created by users
-export const tools = pgTable("tools", {
+export const tools: any = pgTable("tools", {
   id: serial("id").primaryKey(),
   tenantId: uuid("tenant_id").references(() => tenants.id), // Tenant reference
   name: varchar("name", { length: 255 }).notNull(),
