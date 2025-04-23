@@ -130,20 +130,17 @@ const PageBuilderContent: React.FC = () => {
   // Create or update page mutation
   const saveMutation = useMutation({
     mutationFn: async (pageData: any) => {
-      if (isNewPage) {
-        const res = await apiRequest("POST", "/api/page-builder/pages", pageData);
-        if (!res.ok) {
-          const errorText = await res.text();
-          throw new Error(`Failed to create page: ${errorText}`);
+      try {
+        if (isNewPage) {
+          const res = await apiRequest("POST", "/api/page-builder/pages", pageData);
+          return await res.json();
+        } else {
+          const res = await apiRequest("PUT", `/api/page-builder/pages/${id}`, pageData);
+          return await res.json();
         }
-        return await res.json();
-      } else {
-        const res = await apiRequest("PUT", `/api/page-builder/pages/${id}`, pageData);
-        if (!res.ok) {
-          const errorText = await res.text();
-          throw new Error(`Failed to update page: ${errorText}`);
-        }
-        return await res.json();
+      } catch (error) {
+        // The error is already handled by apiRequest
+        throw error;
       }
     },
     onSuccess: (data) => {
@@ -177,12 +174,13 @@ const PageBuilderContent: React.FC = () => {
   // Delete page mutation
   const deleteMutation = useMutation({
     mutationFn: async () => {
-      const res = await apiRequest("DELETE", `/api/page-builder/pages/${id}`);
-      if (!res.ok) {
-        const errorText = await res.text();
-        throw new Error(`Failed to delete page: ${errorText}`);
+      try {
+        const res = await apiRequest("DELETE", `/api/page-builder/pages/${id}`);
+        return await res.json();
+      } catch (error) {
+        // The error is already handled by apiRequest
+        throw error;
       }
-      return await res.json();
     },
     onSuccess: () => {
       navigate("/page-builder");
