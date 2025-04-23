@@ -107,7 +107,7 @@ const MenuManagementPage = () => {
     data: menuItems, 
     isLoading: isLoadingMenuItems 
   } = useQuery({
-    queryKey: ["/api/navigation/menu-items", selectedMenu?.id],
+    queryKey: ["/api/navigation/menus", selectedMenu?.id, "items"],
     queryFn: async () => {
       if (!selectedMenu) return [];
       const response = await fetch(`/api/navigation/menus/${selectedMenu.id}/items`);
@@ -298,7 +298,7 @@ const MenuManagementPage = () => {
       return response.json() as Promise<MenuItem>;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/navigation/menu-items", selectedMenu?.id] });
+      queryClient.invalidateQueries({ queryKey: ["/api/navigation/menus", selectedMenu?.id, "items"] });
       setIsEditMenuItemDialogOpen(false);
       toast({
         title: "Menu Item Updated",
@@ -328,7 +328,7 @@ const MenuManagementPage = () => {
       return true;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/navigation/menu-items", selectedMenu?.id] });
+      queryClient.invalidateQueries({ queryKey: ["/api/navigation/menus", selectedMenu?.id, "items"] });
       setSelectedMenuItem(null);
       toast({
         title: "Menu Item Deleted",
@@ -347,22 +347,22 @@ const MenuManagementPage = () => {
   // Event handlers
   const handleNewMenuFormChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setNewMenuForm(prev => ({ ...prev, [name]: value }));
+    setNewMenuForm((prev: typeof newMenuForm) => ({ ...prev, [name]: value }));
   };
   
   const handleEditMenuFormChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setEditMenuForm(prev => ({ ...prev, [name]: value }));
+    setEditMenuForm((prev: Partial<NavigationMenu>) => ({ ...prev, [name]: value }));
   };
   
   const handleNewMenuItemFormChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setNewMenuItemForm(prev => ({ ...prev, [name]: value }));
+    setNewMenuItemForm((prev: typeof newMenuItemForm) => ({ ...prev, [name]: value }));
   };
   
   const handleEditMenuItemFormChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setEditMenuItemForm(prev => ({ ...prev, [name]: value }));
+    setEditMenuItemForm((prev: MenuItem) => ({ ...prev, [name]: value }));
   };
   
   const handleCreateMenu = () => {
@@ -406,7 +406,7 @@ const MenuManagementPage = () => {
     setActiveTab("items");
     
     // Set default form for new menu items in this menu
-    setNewMenuItemForm(prev => ({
+    setNewMenuItemForm((prev: typeof newMenuItemForm) => ({
       ...prev,
       menuId: menu.id
     }));
@@ -575,7 +575,7 @@ const MenuManagementPage = () => {
             </div>
           ) : menus && menus.length > 0 ? (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {menus.map(menu => (
+              {menus.map((menu: NavigationMenu) => (
                 <Card key={menu.id} className={selectedMenu?.id === menu.id ? 'border-primary' : ''}>
                   <CardHeader>
                     <CardTitle className="flex justify-between items-center">
@@ -690,7 +690,7 @@ const MenuManagementPage = () => {
                             </SelectTrigger>
                             <SelectContent>
                               <SelectItem value="">No parent (top level)</SelectItem>
-                              {menuItems.map(item => (
+                              {menuItems.map((item: MenuItem) => (
                                 <SelectItem key={item.id} value={item.id.toString()}>
                                   {item.label}
                                 </SelectItem>
@@ -833,7 +833,7 @@ const MenuManagementPage = () => {
               <Switch 
                 id="edit-isActive"
                 checked={editMenuForm.isActive}
-                onCheckedChange={(checked) => setEditMenuForm(prev => ({ ...prev, isActive: checked }))}
+                onCheckedChange={(checked) => setEditMenuForm((prev: Partial<NavigationMenu>) => ({ ...prev, isActive: checked }))}
               />
               <Label htmlFor="edit-isActive">Active</Label>
             </div>
@@ -891,7 +891,7 @@ const MenuManagementPage = () => {
                 <Label htmlFor="edit-item-parentId">Parent Item (Optional)</Label>
                 <Select 
                   value={editMenuItemForm.parentId?.toString() || ''}
-                  onValueChange={(value) => setEditMenuItemForm(prev => ({ 
+                  onValueChange={(value) => setEditMenuItemForm((prev: MenuItem) => ({ 
                     ...prev, 
                     parentId: value ? parseInt(value) : null 
                   }))}
@@ -901,7 +901,7 @@ const MenuManagementPage = () => {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="">No parent (top level)</SelectItem>
-                    {menuItems.filter(item => item.id !== selectedMenuItem.id).map(item => (
+                    {menuItems.filter((item: MenuItem) => item.id !== selectedMenuItem.id).map((item: MenuItem) => (
                       <SelectItem key={item.id} value={item.id.toString()}>
                         {item.label}
                       </SelectItem>
