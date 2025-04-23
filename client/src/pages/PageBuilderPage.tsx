@@ -941,11 +941,13 @@ const PageBuilderContent: React.FC = () => {
                 )}
               </div>
               <div>
-                <PageBuilderComponentPanel 
-                  onAddSection={handleAddSection}
-                  onAddComponent={handleAddComponent}
-                  currentSectionId={selectedSectionId}
-                />
+                {selectedSectionId && (
+                  <PageBuilderComponentPanel 
+                    section={page.sections.find((section: any) => section.id === selectedSectionId)}
+                    onUpdateSection={handleUpdateSection}
+                    onRemoveSection={handleRemoveSection}
+                  />
+                )}
               </div>
             </div>
           )}

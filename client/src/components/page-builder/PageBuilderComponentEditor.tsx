@@ -9,6 +9,24 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Switch } from '@/components/ui/switch';
 import { ColorPicker } from '@/components/ui/color-picker';
 import { Card, CardContent } from '@/components/ui/card';
+import { Checkbox } from '@/components/ui/checkbox';
+
+// Define component types
+interface PageBuilderComponent {
+  id: number;
+  name: string;
+  type: string;
+  sectionId: number;
+  order: number;
+  content: Record<string, any>;
+  style?: Record<string, any>;
+  customCSS?: string;
+  customId?: string;
+  customClass?: string;
+  hidden?: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
 import { Slider } from '@/components/ui/slider';
 import { 
   Type, 
@@ -31,8 +49,8 @@ import {
 interface PageBuilderComponentEditorProps {
   isOpen: boolean;
   onClose: () => void;
-  component: any;
-  onSave: (updatedComponent: any) => void;
+  component: PageBuilderComponent;
+  onSave: (updatedComponent: PageBuilderComponent) => void;
 }
 
 const PageBuilderComponentEditor: React.FC<PageBuilderComponentEditorProps> = ({
@@ -70,7 +88,7 @@ const PageBuilderComponentEditor: React.FC<PageBuilderComponentEditorProps> = ({
     }
   };
 
-  const handleContentChange = (key: string, value: any) => {
+  const handleContentChange = (key: string, value: string | number | boolean) => {
     setEditedComponent({
       ...editedComponent,
       content: {
@@ -899,20 +917,6 @@ const PageBuilderComponentEditor: React.FC<PageBuilderComponentEditorProps> = ({
 
 export default PageBuilderComponentEditor;
 
-// Import the missing components
-function Checkbox({ id, checked, onCheckedChange }: { id: string, checked: boolean, onCheckedChange: (checked: boolean) => void }) {
-  return (
-    <div
-      className={`h-4 w-4 rounded border flex items-center justify-center ${checked ? 'bg-primary border-primary' : 'border-gray-300'}`}
-      onClick={() => onCheckedChange(!checked)}
-    >
-      {checked && (
-        <svg className="h-3 w-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-        </svg>
-      )}
-    </div>
-  );
-}
+// We now import Checkbox from UI components instead of defining it here
 
 // ColorPicker component is now imported from @/components/ui/color-picker
