@@ -76,25 +76,25 @@ const StatCard: React.FC<StatCardProps> = ({
       bg: "from-navy to-blue-900",
       iconBg: "bg-white/10",
       textColor: "text-white",
-      subTextColor: "text-blue-100",
-      trendUp: "text-emerald-300",
-      trendDown: "text-red-300"
+      subTextColor: "text-white",
+      trendUp: "text-white font-semibold",
+      trendDown: "text-white font-semibold"
     },
     success: {
       bg: "from-emerald-600 to-emerald-700",
       iconBg: "bg-white/10",
       textColor: "text-white",
-      subTextColor: "text-emerald-100",
-      trendUp: "text-emerald-300",
-      trendDown: "text-red-300"
+      subTextColor: "text-white",
+      trendUp: "text-white font-semibold",
+      trendDown: "text-white font-semibold"
     },
     warning: {
       bg: "from-amber-500 to-orange-600",
       iconBg: "bg-white/10",
       textColor: "text-white",
-      subTextColor: "text-amber-100",
-      trendUp: "text-white",
-      trendDown: "text-red-300"
+      subTextColor: "text-white",
+      trendUp: "text-white font-semibold",
+      trendDown: "text-white font-semibold"
     },
     info: {
       bg: "from-blue-500 to-blue-600",
@@ -122,7 +122,7 @@ const StatCard: React.FC<StatCardProps> = ({
       <div className={`${isGradient ? 'bg-gradient-to-br ' + scheme.bg : scheme.bg} p-6`}>
         <div className="flex justify-between items-start">
           <div>
-            <p className={`text-sm font-medium ${isGradient ? 'text-white/70' : 'text-gray-500'}`}>{label}</p>
+            <p className={`text-sm font-medium ${isGradient ? 'text-white' : 'text-gray-500'}`}>{label}</p>
             {isLoading ? (
               <div className="h-7 w-28 bg-gray-200/30 animate-pulse rounded mt-1"></div>
             ) : (
