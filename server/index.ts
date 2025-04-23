@@ -5,6 +5,8 @@ import cron from 'node-cron';
 import { triggerBackup } from './backup';
 import { migratePageBuilderTables } from './db-migrate-page-builder';
 import { migrateVersionControlTables } from './db-migrate-version-control';
+import migrateNavigationTables from './db-migrate-navigation';
+import { registerNavigationRoutes } from './controllers/navigationController';
 
 const app = express();
 app.use(express.json());
@@ -47,11 +49,17 @@ app.use((req, res, next) => {
     await migratePageBuilderTables();
     console.log('Running Version Control migrations...');
     await migrateVersionControlTables();
+    console.log('Running Navigation Menu migrations...');
+    await migrateNavigationTables();
   } catch (error) {
     console.error('Error running migrations:', error);
   }
 
+  // Register API routes
   const server = await registerRoutes(app);
+  
+  // Register navigation routes
+  registerNavigationRoutes(app);
 
   app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
     const status = err.status || err.statusCode || 500;
