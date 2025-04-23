@@ -9,7 +9,7 @@ export const navigationMenus = pgTable('navigation_menus', {
   slug: varchar('slug', { length: 100 }).notNull().unique(),
   description: text('description'),
   location: varchar('location', { length: 50 }).notNull().default('header'),
-  isActive: boolean('is_active').default(true),
+  isActive: boolean('is_active').notNull().default(true),
   tenantId: uuid('tenant_id').notNull(),
   createdAt: timestamp('created_at').defaultNow(),
   updatedAt: timestamp('updated_at').defaultNow(),

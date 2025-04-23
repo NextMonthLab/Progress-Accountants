@@ -160,8 +160,14 @@ export async function createNavigationMenu(req: Request, res: Response) {
     }
     
     // Create the menu
+    const insertData = {
+      ...parseResult.data,
+      // Ensure isActive is always a boolean
+      isActive: parseResult.data.isActive === undefined ? true : !!parseResult.data.isActive
+    };
+    
     const [newMenu] = await db.insert(navigationMenus)
-      .values(parseResult.data)
+      .values(insertData)
       .returning();
     
     return res.status(201).json({ 
@@ -220,11 +226,15 @@ export async function updateNavigationMenu(req: Request, res: Response) {
     }
     
     // Update the menu
+    const updateData = {
+      ...parseResult.data,
+      // Ensure isActive is always a boolean if it's included in the update
+      ...(parseResult.data.isActive !== undefined ? { isActive: !!parseResult.data.isActive } : {}),
+      updatedAt: new Date()
+    };
+    
     const [updatedMenu] = await db.update(navigationMenus)
-      .set({
-        ...parseResult.data,
-        updatedAt: new Date()
-      })
+      .set(updateData)
       .where(eq(navigationMenus.id, menuId))
       .returning();
     
@@ -387,11 +397,16 @@ export async function updateMenuItem(req: Request, res: Response) {
     }
     
     // Update the item
+    const updateItemData = {
+      ...parseResult.data,
+      // Ensure boolean fields are always booleans if included
+      ...(parseResult.data.isVisible !== undefined ? { isVisible: !!parseResult.data.isVisible } : {}),
+      ...(parseResult.data.isExternal !== undefined ? { isExternal: !!parseResult.data.isExternal } : {}),
+      updatedAt: new Date()
+    };
+    
     const [updatedItem] = await db.update(menuItems)
-      .set({
-        ...parseResult.data,
-        updatedAt: new Date()
-      })
+      .set(updateItemData)
       .where(eq(menuItems.id, itemId))
       .returning();
     
