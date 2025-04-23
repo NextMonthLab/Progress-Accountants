@@ -11,14 +11,15 @@ import {
   Layout, 
   FastForward, 
   Globe,
-  Menu,
+  Menu as MenuIcon,
   X,
   ChevronRight,
   MessageCircle,
   FileText,
   PlusCircle,
   Layers,
-  Image
+  Image,
+  ListOrdered
 } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import { useState, useEffect } from "react";
