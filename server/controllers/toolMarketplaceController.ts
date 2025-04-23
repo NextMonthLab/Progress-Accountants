@@ -345,12 +345,35 @@ export async function cloneTool(req: Request, res: Response) {
 }
 
 /**
+ * Get all available tool categories
+ */
+export async function getToolCategories(req: Request, res: Response) {
+  try {
+    // Query all unique tool categories
+    const categories = await db.selectDistinct({
+      id: tools.toolCategory
+    })
+    .from(tools)
+    .where(eq(tools.publishStatus, "published_in_marketplace"));
+    
+    // Filter out nulls and undefined
+    const validCategories = categories.filter(cat => cat.id !== null && cat.id !== undefined);
+    
+    res.status(200).json(validCategories);
+  } catch (error) {
+    console.error("Error getting tool categories:", error);
+    res.status(500).json({ error: "Failed to get tool categories" });
+  }
+}
+
+/**
  * Register tool marketplace routes
  */
 export function registerToolMarketplaceRoutes(app: any) {
   // Marketplace browsing endpoints
   app.get("/api/tools/marketplace", getMarketplaceTools);
   app.get("/api/tools/marketplace/:toolId", getMarketplaceTool);
+  app.get("/api/tools/categories", getToolCategories);
   
   // Client instance endpoints
   app.post("/api/tools/marketplace/install/:toolId", installMarketplaceTool);
