@@ -132,11 +132,17 @@ const PageBuilderContent: React.FC = () => {
     mutationFn: async (pageData: any) => {
       if (isNewPage) {
         const res = await apiRequest("POST", "/api/page-builder/pages", pageData);
-        if (!res.ok) throw new Error('Failed to create page');
+        if (!res.ok) {
+          const errorText = await res.text();
+          throw new Error(`Failed to create page: ${errorText}`);
+        }
         return await res.json();
       } else {
         const res = await apiRequest("PUT", `/api/page-builder/pages/${id}`, pageData);
-        if (!res.ok) throw new Error('Failed to update page');
+        if (!res.ok) {
+          const errorText = await res.text();
+          throw new Error(`Failed to update page: ${errorText}`);
+        }
         return await res.json();
       }
     },
@@ -172,7 +178,10 @@ const PageBuilderContent: React.FC = () => {
   const deleteMutation = useMutation({
     mutationFn: async () => {
       const res = await apiRequest("DELETE", `/api/page-builder/pages/${id}`);
-      if (!res.ok) throw new Error('Failed to delete page');
+      if (!res.ok) {
+        const errorText = await res.text();
+        throw new Error(`Failed to delete page: ${errorText}`);
+      }
       return await res.json();
     },
     onSuccess: () => {
