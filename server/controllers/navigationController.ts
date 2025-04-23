@@ -107,7 +107,7 @@ export async function getMenuItemsHierarchy(req: Request, res: Response) {
     });
     
     // Build the tree
-    function buildTree(items: MenuItem[]) {
+    function buildTree(items: MenuItem[]): MenuTreeItem[] {
       return items.map(item => {
         const children = allItems.filter(childItem => childItem.parentId === item.id)
           .sort((a, b) => a.order - b.order);
@@ -326,6 +326,9 @@ export async function createMenuItem(req: Request, res: Response) {
     // Create the menu item
     const newItemData = {
       ...parseResult.data,
+      // Ensure boolean fields are always booleans
+      isExternal: parseResult.data.isExternal === undefined ? false : !!parseResult.data.isExternal,
+      isVisible: parseResult.data.isVisible === undefined ? true : !!parseResult.data.isVisible,
       order: parseResult.data.order ?? maxOrder.maxOrder
     };
     
@@ -526,8 +529,8 @@ export async function getNavigationMenusByLocation(req: Request, res: Response) 
       // Build the hierarchy
       const rootItems = allItems.filter(item => !item.parentId);
       
-      // Build the tree
-      function buildTree(items: MenuItem[]) {
+      // Build the tree with proper return type
+      function buildTree(items: MenuItem[]): MenuTreeItem[] {
         return items.map(item => {
           const children = allItems.filter(childItem => childItem.parentId === item.id)
             .sort((a, b) => a.order - b.order);

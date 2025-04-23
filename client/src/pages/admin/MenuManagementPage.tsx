@@ -382,17 +382,27 @@ const MenuManagementPage = () => {
   const handleCreateMenuItem = () => {
     if (!selectedMenu) return;
     
+    // Ensure boolean values are properly set
     const menuItem = {
       ...newMenuItemForm,
       menuId: selectedMenu.id,
-      order: menuItems && menuItems.length > 0 ? menuItems.length : 0
+      order: menuItems && menuItems.length > 0 ? menuItems.length : 0,
+      isExternal: !!newMenuItemForm.isExternal,
+      isVisible: !!newMenuItemForm.isVisible
     };
     
     createMenuItemMutation.mutate(menuItem);
   };
   
   const handleSaveMenuItem = () => {
-    updateMenuItemMutation.mutate(editMenuItemForm);
+    // Ensure boolean values are properly set before submitting
+    const updatedMenuItem = {
+      ...editMenuItemForm,
+      isExternal: !!editMenuItemForm.isExternal,
+      isVisible: !!editMenuItemForm.isVisible
+    };
+    
+    updateMenuItemMutation.mutate(updatedMenuItem);
   };
   
   const handleDeleteMenuItem = (menuItemId: number) => {
@@ -422,7 +432,12 @@ const MenuManagementPage = () => {
   
   const handleOpenEditMenuItemDialog = (item: MenuItem) => {
     setSelectedMenuItem(item);
-    setEditMenuItemForm(item);
+    // Ensure boolean values are properly set
+    setEditMenuItemForm({
+      ...item,
+      isExternal: !!item.isExternal,
+      isVisible: !!item.isVisible
+    });
     setIsEditMenuItemDialogOpen(true);
   };
   
