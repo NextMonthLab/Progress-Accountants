@@ -60,15 +60,15 @@ const PageBuilderListPage: React.FC = () => {
     
     if (searchTerm) {
       filtered = filtered.filter((page: any) => 
-        page.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        page.path.toLowerCase().includes(searchTerm.toLowerCase())
+        (page.title || page.name || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (page.path || page.slug || '').toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
     
     if (currentFilter === "published") {
-      filtered = filtered.filter((page: any) => page.isPublished);
+      filtered = filtered.filter((page: any) => page.isPublished || page.published);
     } else if (currentFilter === "draft") {
-      filtered = filtered.filter((page: any) => !page.isPublished);
+      filtered = filtered.filter((page: any) => !page.isPublished && !page.published);
     }
     
     return filtered;
@@ -200,22 +200,23 @@ const PageBuilderListPage: React.FC = () => {
                   <TableBody>
                     {filteredPages.map((page: any) => (
                       <TableRow key={page.id}>
-                        <TableCell className="font-medium">{page.title}</TableCell>
-                        <TableCell className="text-muted-foreground">{page.path}</TableCell>
+                        <TableCell className="font-medium">{page.title || page.name || 'Untitled Page'}</TableCell>
+                        <TableCell className="text-muted-foreground">{page.path || `/${page.slug}` || '/'}</TableCell>
                         <TableCell>
                           {page.pageType === 'core' && 'Core Page'}
                           {page.pageType === 'custom' && 'Custom Page'}
                           {page.pageType === 'automation' && 'Automation Page'}
+                          {!page.pageType && 'Standard Page'}
                         </TableCell>
                         <TableCell>
-                          {page.isPublished ? (
+                          {(page.isPublished || page.published) ? (
                             <Badge variant="default">Published</Badge>
                           ) : (
                             <Badge variant="secondary">Draft</Badge>
                           )}
                         </TableCell>
                         <TableCell>
-                          {format(new Date(page.updatedAt), "MMM d, yyyy")}
+                          {page.updatedAt ? format(new Date(page.updatedAt), "MMM d, yyyy") : 'Just now'}
                         </TableCell>
                         <TableCell className="text-right">
                           <div className="flex justify-end items-center space-x-2">
@@ -227,11 +228,11 @@ const PageBuilderListPage: React.FC = () => {
                             >
                               <Edit className="h-4 w-4" />
                             </Button>
-                            {page.isPublished && (
+                            {(page.isPublished || page.published) && (
                               <Button
                                 variant="ghost"
                                 size="icon"
-                                onClick={() => handleViewPage(page.path)}
+                                onClick={() => handleViewPage(page.path || `/${page.slug}`)}
                                 title="View Published Page"
                               >
                                 <ExternalLink className="h-4 w-4" />
