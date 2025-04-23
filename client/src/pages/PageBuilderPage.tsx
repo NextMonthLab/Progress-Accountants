@@ -547,7 +547,7 @@ const PageBuilderContent: React.FC = () => {
   const handleAddComponent = (sectionId: number, componentType: string) => {
     if (!page) return;
     
-    const newComponent = {
+    const newComponent: PageBuilderComponent = {
       id: Date.now(), // Temporary ID
       name: `New ${componentType.charAt(0).toUpperCase() + componentType.slice(1)}`,
       type: componentType,
