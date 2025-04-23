@@ -5,6 +5,7 @@ import { relations } from "drizzle-orm";
 import { PageMetadata, PageComplexityAssessment, ComplexityLevel } from "./page_metadata";
 import { ComponentType, SeoImpactLevel, ComponentContext } from "./advanced_page_builder";
 import { VersionableEntityType, VersionStatus, ChangeType } from "./version_control";
+import { DomainStatus, VerificationMethod } from "./domain_mapping";
 
 // Tenants table to track all client instances
 // Define the table without self-reference first to fix circular reference
@@ -1141,3 +1142,38 @@ export const toolRelationsExtended = relations(tools, ({ one, many }) => ({
   }),
   clones: many(tools, { relationName: "tool_clones" }),
 }));
+
+// Domain mappings table
+export const domainMappings = pgTable("domain_mappings", {
+  id: serial("id").primaryKey(),
+  tenantId: uuid("tenant_id").references(() => tenants.id).notNull(),
+  customDomain: varchar("custom_domain", { length: 255 }).unique().notNull(),
+  status: varchar("status", { length: 20 }).default("pending").notNull(), // pending, verified, active, inactive, failed
+  verificationMethod: varchar("verification_method", { length: 20 }).default("txt").notNull(), // txt, cname
+  verificationToken: varchar("verification_token", { length: 255 }).notNull(),
+  verificationCompletedAt: timestamp("verification_completed_at"),
+  verificationAttempts: integer("verification_attempts").default(0),
+  lastVerificationCheck: timestamp("last_verification_check"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export const insertDomainMappingSchema = createInsertSchema(domainMappings).omit({
+  id: true,
+  verificationCompletedAt: true,
+  verificationAttempts: true,
+  lastVerificationCheck: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+// Define relationships for domain mappings
+export const domainMappingsRelations = relations(domainMappings, ({ one }) => ({
+  tenant: one(tenants, {
+    fields: [domainMappings.tenantId],
+    references: [tenants.id],
+  }),
+}));
+
+export type InsertDomainMapping = z.infer<typeof insertDomainMappingSchema>;
+export type DomainMapping = typeof domainMappings.$inferSelect;
