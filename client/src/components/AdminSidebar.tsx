@@ -174,12 +174,6 @@ export default function AdminSidebar() {
           requiresStaff: true 
         },
         { 
-          title: "Create New Page", 
-          href: "/create-new-page", 
-          icon: <PlusCircle className="h-5 w-5" />,
-          requiresStaff: true 
-        },
-        { 
           title: "Page Builder", 
           href: "/page-builder", 
           icon: <Layers className="h-5 w-5" />,
@@ -195,12 +189,6 @@ export default function AdminSidebar() {
           title: "Media Manager", 
           href: "/media", 
           icon: <FileImage className="h-5 w-5" />,
-          requiresStaff: true 
-        },
-        { 
-          title: "Resources Setup", 
-          href: "/admin/resources-setup", 
-          icon: <FileText className="h-5 w-5" />,
           requiresStaff: true 
         },
       ]

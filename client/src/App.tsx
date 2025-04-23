@@ -215,12 +215,14 @@ function Router() {
       <ProtectedRoute path="/business-identity" component={BusinessIdentityPage} />
       <ProtectedRoute path="/homepage-setup" component={HomepageSetupPage} />
       <ProtectedRoute path="/foundation-pages" component={FoundationPagesOverviewPage} />
-      <ProtectedRoute path="/create-new-page" component={CreateNewPagePage} allowedRoles={['admin', 'super_admin', 'editor']} />
+      {/* Removed standalone page creation in favor of the Page Builder */}
+      {/* <ProtectedRoute path="/create-new-page" component={CreateNewPagePage} allowedRoles={['admin', 'super_admin', 'editor']} /> */}
       <ProtectedRoute path="/about-setup" component={AboutSetupPage} />
       <ProtectedRoute path="/services-setup" component={ServicesSetupPage} />
       <ProtectedRoute path="/contact-setup" component={ContactSetupPage} />
       <ProtectedRoute path="/testimonials-setup" component={TestimonialsSetupPage} />
-      <ProtectedRoute path="/admin/resources-setup" component={ResourcesSetupPage} />
+      {/* Resources setup now handled through the Page Builder */}
+      {/* <ProtectedRoute path="/admin/resources-setup" component={ResourcesSetupPage} /> */}
       <ProtectedRoute path="/faq-setup" component={FAQSetupPage} />
       <ProtectedRoute path="/launch-ready" component={LaunchReadyPage} />
       <ProtectedRoute path="/media" component={MediaManagementPage} />
@@ -344,7 +346,7 @@ function FirstTimeUserDetector({ children }: { children: React.ReactNode }) {
       location.startsWith('/foundation-pages') || 
       location.startsWith('/launch-ready') ||
       location.startsWith('/marketplace') ||
-      location.startsWith('/admin/resources-setup');
+      location.startsWith('/page-builder');
     
     // If we need to redirect to onboarding
     if (!onboardingComplete && !isAllowedPath) {
