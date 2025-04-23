@@ -36,7 +36,6 @@ import { useAuth } from '@/hooks/use-auth';
 import { useTenant } from '@/hooks/use-tenant';
 import { useQuery } from '@tanstack/react-query';
 import { Link } from 'wouter';
-import AdminLayout from '@/layouts/AdminLayout';
 
 // Stat Item Component
 interface StatItemProps {
@@ -153,6 +152,16 @@ const NewsItem: React.FC<NewsItemProps> = ({ title, date, isLoading = false }) =
   );
 };
 
+// Reusable component for user icon
+const Users = ({ className }: { className?: string }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+    <circle cx="9" cy="7" r="4"></circle>
+    <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+  </svg>
+);
+
 export default function ClientDashboardPage() {
   const { user } = useAuth();
   const { tenant } = useTenant();
@@ -240,242 +249,230 @@ export default function ClientDashboardPage() {
   };
 
   return (
-    <AdminLayout>
-      <div className="container mx-auto py-8">
-        {/* Welcome Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-navy mb-2">Website Dashboard</h1>
-          <p className="text-muted-foreground">
-            A central admin dashboard to manage and monitor your website health, growth, and structure.
-          </p>
+    <div className="container mx-auto py-8">
+      {/* Welcome Header */}
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold text-navy mb-2">Website Dashboard</h1>
+        <p className="text-muted-foreground">
+          A central admin dashboard to manage and monitor your website health, growth, and structure.
+        </p>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Main content - left 2/3 */}
+        <div className="lg:col-span-2 space-y-8">
+          {/* Site Overview */}
+          <Section title="Site Overview">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <StatItem 
+                label="Total Pages" 
+                value={isOverviewLoading ? '...' : siteOverview?.totalPages}
+                icon={<FileText className="h-5 w-5" />}
+                isLoading={isOverviewLoading}
+              />
+              <StatItem 
+                label="Total Tools Installed" 
+                value={isOverviewLoading ? '...' : siteOverview?.totalToolsInstalled}
+                icon={<Cpu className="h-5 w-5" />}
+                isLoading={isOverviewLoading}
+              />
+              <StatItem 
+                label="Latest Page Created" 
+                value={isOverviewLoading ? '...' : (
+                  <div className="flex items-center">
+                    <span>{siteOverview?.latestPage.title}</span>
+                    <Link href={siteOverview?.latestPage.url || '#'}>
+                      <Button variant="ghost" size="sm" className="ml-2 h-6 px-2">
+                        <ExternalLink className="h-3 w-3" />
+                      </Button>
+                    </Link>
+                  </div>
+                )}
+                icon={<Calendar className="h-5 w-5" />}
+                isLoading={isOverviewLoading}
+              />
+              <StatItem 
+                label="Last Updated" 
+                value={isOverviewLoading ? '...' : formatDateTime(siteOverview?.lastUpdated || '')}
+                icon={<Clock className="h-5 w-5" />}
+                isLoading={isOverviewLoading}
+              />
+            </div>
+          </Section>
+
+          {/* Visitor Insights */}
+          <Section title="Visitor Insights">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <StatItem 
+                label="Visitors Today" 
+                value={isInsightsLoading ? '...' : visitorInsights?.visitorsToday}
+                icon={<Users className="h-5 w-5" />}
+                isLoading={isInsightsLoading}
+              />
+              <StatItem 
+                label="Most Visited Page" 
+                value={isInsightsLoading ? '...' : (
+                  <div className="flex items-center">
+                    <span>{visitorInsights?.mostVisitedPage.title}</span>
+                    <Badge className="ml-2 bg-green-100 text-green-800 text-xs">
+                      {visitorInsights?.mostVisitedPage.visits} views
+                    </Badge>
+                  </div>
+                )}
+                icon={<BarChart className="h-5 w-5" />}
+                isLoading={isInsightsLoading}
+              />
+              <StatItem 
+                label="Bounce Rate" 
+                value={isInsightsLoading ? '...' : visitorInsights?.bounceRate}
+                icon={<Gauge className="h-5 w-5" />}
+                isLoading={isInsightsLoading}
+              />
+            </div>
+          </Section>
+
+          {/* Tool Status */}
+          <Section title="Tool Status">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              {isToolStatusLoading ? (
+                Array(3).fill(0).map((_, index) => (
+                  <div key={index} className="flex items-center p-4 rounded-lg bg-white border border-gray-100 shadow-sm">
+                    <div className="rounded-full w-3 h-3 bg-gray-200 mr-3 animate-pulse"></div>
+                    <div className="w-full">
+                      <div className="h-4 bg-gray-200 rounded w-3/4 animate-pulse mb-2"></div>
+                      <div className="h-3 bg-gray-100 rounded w-1/2 animate-pulse"></div>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <>
+                  <div className="flex items-center p-4 rounded-lg bg-white border border-gray-100 shadow-sm">
+                    <div className={`rounded-full w-3 h-3 ${toolStatus && toolStatus.leadTrackerInstalled ? 'bg-green-500' : 'bg-gray-300'} mr-3`}></div>
+                    <div>
+                      <h3 className="text-sm font-medium text-gray-700">Lead Tracker</h3>
+                      <p className="text-xs text-gray-500 mt-1">
+                        {toolStatus && toolStatus.leadTrackerInstalled ? 'Installed & Active' : 'Not Installed'}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-center p-4 rounded-lg bg-white border border-gray-100 shadow-sm">
+                    <div className={`rounded-full w-3 h-3 ${toolStatus && toolStatus.pluginGeneratorInstalled ? 'bg-green-500' : 'bg-gray-300'} mr-3`}></div>
+                    <div>
+                      <h3 className="text-sm font-medium text-gray-700">Plugin Generator</h3>
+                      <p className="text-xs text-gray-500 mt-1">
+                        {toolStatus && toolStatus.pluginGeneratorInstalled ? 'Installed & Active' : 'Not Installed'}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-center p-4 rounded-lg bg-white border border-gray-100 shadow-sm">
+                    <div className={`rounded-full w-3 h-3 ${toolStatus && toolStatus.otherToolsActive > 0 ? 'bg-green-500' : 'bg-gray-300'} mr-3`}></div>
+                    <div>
+                      <h3 className="text-sm font-medium text-gray-700">Other Tools Active</h3>
+                      <p className="text-xs text-gray-500 mt-1">
+                        {toolStatus ? toolStatus.otherToolsActive : 0} tools active
+                      </p>
+                    </div>
+                  </div>
+                </>
+              )}
+            </div>
+          </Section>
+
+          {/* System Health */}
+          <Section title="System Health">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <StatItem 
+                label="Blueprint Version" 
+                value={isHealthLoading ? '...' : systemHealth?.blueprintVersion}
+                icon={<Database className="h-5 w-5" />}
+                isLoading={isHealthLoading}
+              />
+              <StatItem 
+                label="Storage Used" 
+                value={isHealthLoading ? '...' : systemHealth?.storageUsed}
+                icon={<HardDrive className="h-5 w-5" />}
+                isLoading={isHealthLoading}
+              />
+              <StatItem 
+                label="Last Backup" 
+                value={isHealthLoading ? '...' : formatDateTime(systemHealth?.lastBackup || '')}
+                icon={<ShieldCheck className="h-5 w-5" />}
+                isLoading={isHealthLoading}
+              />
+            </div>
+          </Section>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Main content - left 2/3 */}
-          <div className="lg:col-span-2 space-y-8">
-            {/* Site Overview */}
-            <Section title="Site Overview">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <StatItem 
-                  label="Total Pages" 
-                  value={isOverviewLoading ? '...' : siteOverview?.totalPages}
-                  icon={<FileText className="h-5 w-5" />}
-                  isLoading={isOverviewLoading}
+        {/* Sidebar - right 1/3 */}
+        <div className="space-y-8">
+          {/* Quick Actions */}
+          <Section title="Quick Actions">
+            <Card>
+              <CardContent className="p-4 grid gap-3">
+                <QuickActionButton 
+                  label="Create New Page" 
+                  link="/admin/pages/create"
+                  icon={<Plus className="h-4 w-4" />}
                 />
-                <StatItem 
-                  label="Total Tools Installed" 
-                  value={isOverviewLoading ? '...' : siteOverview?.totalToolsInstalled}
-                  icon={<Cpu className="h-5 w-5" />}
-                  isLoading={isOverviewLoading}
+                <QuickActionButton 
+                  label="Install Tool from Marketplace" 
+                  link="/admin/tools/marketplace"
+                  icon={<Cpu className="h-4 w-4" />}
                 />
-                <StatItem 
-                  label="Latest Page Created" 
-                  value={isOverviewLoading ? '...' : (
-                    <div className="flex items-center">
-                      <span>{siteOverview?.latestPage.title}</span>
-                      <Link href={siteOverview?.latestPage.url || '#'}>
-                        <Button variant="ghost" size="sm" className="ml-2 h-6 px-2">
-                          <ExternalLink className="h-3 w-3" />
-                        </Button>
-                      </Link>
-                    </div>
-                  )}
-                  icon={<Calendar className="h-5 w-5" />}
-                  isLoading={isOverviewLoading}
+                <QuickActionButton 
+                  label="Connect Custom Domain" 
+                  link="/admin/setup/domain-mapping"
+                  icon={<Globe className="h-4 w-4" />}
                 />
-                <StatItem 
-                  label="Last Updated" 
-                  value={isOverviewLoading ? '...' : formatDateTime(siteOverview?.lastUpdated || '')}
-                  icon={<Clock className="h-5 w-5" />}
-                  isLoading={isOverviewLoading}
+                <QuickActionButton 
+                  label="View Site" 
+                  link="/"
+                  target="_blank"
+                  icon={<ExternalLink className="h-4 w-4" />}
+                  variant="outline"
                 />
-              </div>
-            </Section>
+              </CardContent>
+            </Card>
+          </Section>
 
-            {/* Visitor Insights */}
-            <Section title="Visitor Insights">
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <StatItem 
-                  label="Visitors Today" 
-                  value={isInsightsLoading ? '...' : visitorInsights?.visitorsToday}
-                  icon={<Users className="h-5 w-5" />}
-                  isLoading={isInsightsLoading}
-                />
-                <StatItem 
-                  label="Most Visited Page" 
-                  value={isInsightsLoading ? '...' : (
-                    <div className="flex items-center">
-                      <span>{visitorInsights?.mostVisitedPage.title}</span>
-                      <Badge className="ml-2 bg-green-100 text-green-800 text-xs">
-                        {visitorInsights?.mostVisitedPage.visits} views
-                      </Badge>
-                    </div>
-                  )}
-                  icon={<BarChart className="h-5 w-5" />}
-                  isLoading={isInsightsLoading}
-                />
-                <StatItem 
-                  label="Bounce Rate" 
-                  value={isInsightsLoading ? '...' : visitorInsights?.bounceRate}
-                  icon={<Gauge className="h-5 w-5" />}
-                  isLoading={isInsightsLoading}
-                />
-              </div>
-            </Section>
-
-            {/* Tool Status */}
-            <Section title="Tool Status">
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                {isToolStatusLoading ? (
-                  Array(3).fill(0).map((_, index) => (
-                    <div key={index} className="flex items-center p-4 rounded-lg bg-white border border-gray-100 shadow-sm">
-                      <div className="rounded-full w-3 h-3 bg-gray-200 mr-3 animate-pulse"></div>
-                      <div className="w-full">
-                        <div className="h-4 bg-gray-200 rounded w-3/4 animate-pulse mb-2"></div>
-                        <div className="h-3 bg-gray-100 rounded w-1/2 animate-pulse"></div>
-                      </div>
-                    </div>
-                  ))
+          {/* Industry News */}
+          <Section title="Industry News">
+            <Card>
+              <CardHeader className="pb-0">
+                <CardDescription className="text-xs">
+                  Latest headlines from your industry
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="p-0 mt-4">
+                {isNewsLoading ? (
+                  <div className="p-4 space-y-4">
+                    {[1, 2, 3].map(i => (
+                      <NewsItem key={i} title="" isLoading={true} />
+                    ))}
+                  </div>
                 ) : (
-                  <>
-                    <div className="flex items-center p-4 rounded-lg bg-white border border-gray-100 shadow-sm">
-                      <div className={`rounded-full w-3 h-3 ${toolStatus && toolStatus.leadTrackerInstalled ? 'bg-green-500' : 'bg-gray-300'} mr-3`}></div>
-                      <div>
-                        <h3 className="text-sm font-medium text-gray-700">Lead Tracker</h3>
-                        <p className="text-xs text-gray-500 mt-1">
-                          {toolStatus && toolStatus.leadTrackerInstalled ? 'Installed & Active' : 'Not Installed'}
-                        </p>
-                      </div>
-                    </div>
-                    <div className="flex items-center p-4 rounded-lg bg-white border border-gray-100 shadow-sm">
-                      <div className={`rounded-full w-3 h-3 ${toolStatus && toolStatus.pluginGeneratorInstalled ? 'bg-green-500' : 'bg-gray-300'} mr-3`}></div>
-                      <div>
-                        <h3 className="text-sm font-medium text-gray-700">Plugin Generator</h3>
-                        <p className="text-xs text-gray-500 mt-1">
-                          {toolStatus && toolStatus.pluginGeneratorInstalled ? 'Installed & Active' : 'Not Installed'}
-                        </p>
-                      </div>
-                    </div>
-                    <div className="flex items-center p-4 rounded-lg bg-white border border-gray-100 shadow-sm">
-                      <div className={`rounded-full w-3 h-3 ${toolStatus && toolStatus.otherToolsActive > 0 ? 'bg-green-500' : 'bg-gray-300'} mr-3`}></div>
-                      <div>
-                        <h3 className="text-sm font-medium text-gray-700">Other Tools Active</h3>
-                        <p className="text-xs text-gray-500 mt-1">
-                          {toolStatus ? toolStatus.otherToolsActive : 0} tools active
-                        </p>
-                      </div>
-                    </div>
-                  </>
+                  <div>
+                    {industryNews?.map(news => (
+                      <NewsItem 
+                        key={news.id} 
+                        title={news.title} 
+                        date={formatDate(news.date)}
+                      />
+                    ))}
+                  </div>
                 )}
-              </div>
-            </Section>
-
-            {/* System Health */}
-            <Section title="System Health">
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <StatItem 
-                  label="Blueprint Version" 
-                  value={isHealthLoading ? '...' : systemHealth?.blueprintVersion}
-                  icon={<Database className="h-5 w-5" />}
-                  isLoading={isHealthLoading}
-                />
-                <StatItem 
-                  label="Storage Used" 
-                  value={isHealthLoading ? '...' : systemHealth?.storageUsed}
-                  icon={<HardDrive className="h-5 w-5" />}
-                  isLoading={isHealthLoading}
-                />
-                <StatItem 
-                  label="Last Backup" 
-                  value={isHealthLoading ? '...' : formatDateTime(systemHealth?.lastBackup || '')}
-                  icon={<ShieldCheck className="h-5 w-5" />}
-                  isLoading={isHealthLoading}
-                />
-              </div>
-            </Section>
-          </div>
-
-          {/* Sidebar - right 1/3 */}
-          <div className="space-y-8">
-            {/* Quick Actions */}
-            <Section title="Quick Actions">
-              <Card>
-                <CardContent className="p-4 grid gap-3">
-                  <QuickActionButton 
-                    label="Create New Page" 
-                    link="/admin/pages/create"
-                    icon={<Plus className="h-4 w-4" />}
-                  />
-                  <QuickActionButton 
-                    label="Install Tool from Marketplace" 
-                    link="/admin/tools/marketplace"
-                    icon={<Cpu className="h-4 w-4" />}
-                  />
-                  <QuickActionButton 
-                    label="Connect Custom Domain" 
-                    link="/admin/setup/domain-mapping"
-                    icon={<Globe className="h-4 w-4" />}
-                  />
-                  <QuickActionButton 
-                    label="View Site" 
-                    link="/"
-                    target="_blank"
-                    icon={<ExternalLink className="h-4 w-4" />}
-                    variant="outline"
-                  />
-                </CardContent>
-              </Card>
-            </Section>
-
-            {/* Industry News */}
-            <Section title="Industry News">
-              <Card>
-                <CardHeader className="pb-0">
-                  <CardDescription className="text-xs">
-                    Latest headlines from your industry
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="p-0 mt-4">
-                  {isNewsLoading ? (
-                    <div className="p-4 space-y-4">
-                      {[1, 2, 3].map(i => (
-                        <NewsItem key={i} title="" isLoading={true} />
-                      ))}
-                    </div>
-                  ) : (
-                    <div>
-                      {industryNews?.map(news => (
-                        <NewsItem 
-                          key={news.id} 
-                          title={news.title} 
-                          date={formatDate(news.date)}
-                        />
-                      ))}
-                    </div>
-                  )}
-                </CardContent>
-                <CardFooter className="pt-2 pb-4">
-                  <Link href="/admin/news">
-                    <Button variant="outline" size="sm" className="w-full">
-                      View All News
-                    </Button>
-                  </Link>
-                </CardFooter>
-              </Card>
-            </Section>
-          </div>
+              </CardContent>
+              <CardFooter className="pt-2 pb-4">
+                <Link href="/admin/news">
+                  <Button variant="outline" size="sm" className="w-full">
+                    View All News
+                  </Button>
+                </Link>
+              </CardFooter>
+            </Card>
+          </Section>
         </div>
       </div>
-    </AdminLayout>
+    </div>
   );
 }
-
-// Reusable component for user icon
-const Users = ({ className }: { className?: string }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
-    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
-    <circle cx="9" cy="7" r="4"></circle>
-    <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
-    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-  </svg>
-);
