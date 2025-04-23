@@ -18,6 +18,7 @@ import PageBuilderSeoPanel from "@/components/page-builder/PageBuilderSeoPanel";
 import PageBuilderPreview from "@/components/page-builder/PageBuilderPreview";
 import PageBuilderTemplateGallery from "@/components/page-builder/PageBuilderTemplateGallery";
 import { PageVersionHistory } from "@/components/page-builder/PageVersionHistory";
+import { PageBuilderComponent } from "@shared/advanced_page_builder";
 import {
   Save,
   Eye,
@@ -547,7 +548,7 @@ const PageBuilderContent: React.FC = () => {
   const handleAddComponent = (sectionId: number, componentType: string) => {
     if (!page) return;
     
-    const newComponent: PageBuilderComponent = {
+    const newComponent = {
       id: Date.now(), // Temporary ID
       name: `New ${componentType.charAt(0).toUpperCase() + componentType.slice(1)}`,
       type: componentType,
