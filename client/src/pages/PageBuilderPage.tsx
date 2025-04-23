@@ -62,19 +62,32 @@ const PageBuilderContent: React.FC = () => {
   
   // Create a new blank page with default values
   const createNewPage = () => {
+    // Get the first tenant ID from the logged-in user
+    // In a real multi-tenant system, this would be determined by the current context
+    const defaultTenantId = localStorage.getItem('currentTenantId') || '00000000-0000-0000-0000-000000000000';
+    
     return {
-      title: "New Page",
-      path: "/new-page",
+      tenantId: defaultTenantId,
+      name: "New Page",
+      slug: "new-page",
       description: "",
-      pageType: "custom",
-      isPublished: false,
-      seoSettings: {
+      pageType: "standard", // Matching the schema values: standard, landing, specialized
+      status: "draft",
+      version: 1,
+      published: false,
+      // Map UI fields to match the database schema
+      title: "New Page", // UI field, maps to name
+      path: "/new-page", // UI field, maps to slug
+      isPublished: false, // UI field, maps to published
+      seo: {
         title: "",
         description: "",
         keywords: [],
         primaryKeyword: "",
-        seoGoal: "conversion",
+        goal: "conversion",
       },
+      metadata: {},
+      businessContext: {},
       sections: []
     };
   };
@@ -181,7 +194,44 @@ const PageBuilderContent: React.FC = () => {
   // Handle save page
   const handleSavePage = () => {
     if (!page) return;
-    saveMutation.mutate(page);
+    
+    // Prepare the data to match the expected schema on the server
+    const pageData = {
+      // Required fields for server validation
+      tenantId: page.tenantId,
+      name: page.title || page.name, // Use title if available, fallback to name
+      slug: page.path?.replace(/^\//, '') || page.slug, // Remove leading slash from path
+      description: page.description,
+      pageType: page.pageType || 'standard',
+      status: page.status || 'draft',
+      version: page.version || 1,
+      published: page.isPublished || page.published || false,
+      
+      // Additional fields
+      template: page.template,
+      seo: page.seo || page.seoSettings,
+      metadata: page.metadata || {},
+      businessContext: page.businessContext || {},
+      analytics: page.analytics || {},
+      
+      // If editing, include these fields
+      ...(page.id && {
+        lastEditedBy: page.lastEditedBy || 1, // Default to admin user if not set
+      }),
+      
+      // UI specific data that might be useful when edited later
+      title: page.title,
+      path: page.path,
+      isPublished: page.isPublished,
+      seoSettings: page.seoSettings,
+      
+      // Sections data (will be saved separately in a transaction on the server)
+      sections: page.sections
+    };
+    
+    console.log("Saving page data:", pageData);
+    
+    saveMutation.mutate(pageData);
   };
   
   // Handle delete page
