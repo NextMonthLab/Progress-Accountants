@@ -81,6 +81,11 @@ const PageBuilderComponentEditor: React.FC<PageBuilderComponentEditorProps> = ({
       }
     });
   };
+  
+  // Helper function for handling color changes with proper TypeScript typing
+  const handleColorChange = (key: string, color: string) => {
+    handleContentChange(key, color);
+  };
 
   const handleSelectChange = (name: string, value: string) => {
     if (name.includes('.')) {
@@ -177,7 +182,7 @@ const PageBuilderComponentEditor: React.FC<PageBuilderComponentEditorProps> = ({
               <div className="mt-2">
                 <ColorPicker
                   value={editedComponent.content?.color || '#000000'}
-                  onChange={(color) => handleContentChange('color', color)}
+                  onChange={(color: string) => handleColorChange('color', color)}
                 />
               </div>
             </div>
@@ -259,7 +264,7 @@ const PageBuilderComponentEditor: React.FC<PageBuilderComponentEditorProps> = ({
               <div className="mt-2">
                 <ColorPicker
                   value={editedComponent.content?.color || '#000000'}
-                  onChange={(color) => handleContentChange('color', color)}
+                  onChange={(color: string) => handleColorChange('color', color)}
                 />
               </div>
             </div>
@@ -612,7 +617,7 @@ const PageBuilderComponentEditor: React.FC<PageBuilderComponentEditorProps> = ({
                 <div className="mt-2">
                   <ColorPicker
                     value={editedComponent.content?.backgroundColor || '#f5f5f5'}
-                    onChange={(color) => handleContentChange('backgroundColor', color)}
+                    onChange={(color: string) => handleColorChange('backgroundColor', color)}
                   />
                 </div>
               </div>
@@ -726,7 +731,7 @@ const PageBuilderComponentEditor: React.FC<PageBuilderComponentEditorProps> = ({
               <div className="mt-2">
                 <ColorPicker
                   value={editedComponent.style?.backgroundColor || 'transparent'}
-                  onChange={(color) => {
+                  onChange={(color: string) => {
                     setEditedComponent({
                       ...editedComponent,
                       style: {
