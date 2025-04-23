@@ -100,14 +100,5 @@ async function createChangeLogsTable() {
   `);
 }
 
-// Run migration when script is executed directly
-if (require.main === module) {
-  migrateVersionControlTables()
-    .then(() => process.exit(0))
-    .catch(err => {
-      console.error(err);
-      process.exit(1);
-    });
-}
-
+// Export for use in other files
 export { migrateVersionControlTables };

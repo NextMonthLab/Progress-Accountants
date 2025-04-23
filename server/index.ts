@@ -41,6 +41,16 @@ app.use((req, res, next) => {
 });
 
 (async () => {
+  // Run database migrations
+  try {
+    console.log('Running Page Builder migrations...');
+    await migratePageBuilderTables();
+    console.log('Running Version Control migrations...');
+    await migrateVersionControlTables();
+  } catch (error) {
+    console.error('Error running migrations:', error);
+  }
+
   const server = await registerRoutes(app);
 
   app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
