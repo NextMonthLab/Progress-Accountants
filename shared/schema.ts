@@ -939,6 +939,10 @@ export const tools = pgTable("tools", {
   publishStatus: varchar("publish_status", { length: 50 }).default("unpublished").notNull(), // unpublished, draft_for_marketplace, published_in_marketplace
   toolVersion: varchar("tool_version", { length: 20 }), // Semantic versioning format (e.g., v1.0.0)
   toolCategory: varchar("tool_category", { length: 50 }), // CRM, Analytics, SEO, etc.
+  designTier: varchar("design_tier", { length: 20 }).default("blank"), // blank, pro
+  isLocked: boolean("is_locked").default(false), // For pro tools that can't be edited directly
+  origin: varchar("origin", { length: 20 }), // Identifies the source (template, custom, marketplace)
+  clonedFromId: integer("cloned_from_id").references(() => tools.id), // Reference to the original tool if this is a clone
   sourceInstance: varchar("source_instance", { length: 20 }), // lab, dev, client
   publishedAt: timestamp("published_at"),  // When the tool was published to the marketplace
   installationCount: integer("installation_count").default(0), // Number of tenant installations
@@ -1131,4 +1135,9 @@ export const toolRelationsExtended = relations(tools, ({ one, many }) => ({
   pageIntegrations: many(pageToolIntegrations),
   installations: many(toolInstallations),
   publishingLogs: many(toolPublishingLogs),
+  clonedFromTool: one(tools, {
+    fields: [tools.clonedFromId],
+    references: [tools.id],
+  }),
+  clones: many(tools, { relationName: "tool_clones" }),
 }));
