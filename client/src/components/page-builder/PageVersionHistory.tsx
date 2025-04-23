@@ -104,18 +104,41 @@ export function PageVersionHistory({
     error,
   } = useQuery({
     queryKey: [`/api/versions/${entityType}/${entityId}`],
+    queryFn: async () => {
+      const response = await apiRequest('GET', `/api/versions/${entityType}/${entityId}`);
+      if (!response.ok) {
+        throw new Error(`Failed to fetch version history: ${response.statusText}`);
+      }
+      return await response.json();
+    },
     enabled: isOpen,
   });
 
   // Fetch version details
   const { data: versionDetails, isLoading: isLoadingDetails } = useQuery({
     queryKey: [`/api/versions/version/${selectedVersionId}`],
+    queryFn: async () => {
+      if (!selectedVersionId) return null;
+      const response = await apiRequest('GET', `/api/versions/version/${selectedVersionId}`);
+      if (!response.ok) {
+        throw new Error(`Failed to fetch version details: ${response.statusText}`);
+      }
+      return await response.json();
+    },
     enabled: !!selectedVersionId && isOpen,
   });
 
   // Fetch comparison between two versions
   const { data: comparisonData, isLoading: isLoadingComparison } = useQuery({
     queryKey: [`/api/versions/compare/${compareFromId}/${compareToId}`],
+    queryFn: async () => {
+      if (!compareFromId || !compareToId) return null;
+      const response = await apiRequest('GET', `/api/versions/compare/${compareFromId}/${compareToId}`);
+      if (!response.ok) {
+        throw new Error(`Failed to fetch version comparison: ${response.statusText}`);
+      }
+      return await response.json();
+    },
     enabled: !!compareFromId && !!compareToId && isOpen,
   });
 
