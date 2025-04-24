@@ -1,6 +1,21 @@
-import { useState, useEffect } from 'react';
-import { 
-  DndContext, 
+import { useState } from 'react';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Loader2, GripVertical, ArrowUp, ArrowDown } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { toast } from "@/hooks/use-toast";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+
+// Import drag-and-drop library components
+import {
+  DndContext,
   closestCenter,
   KeyboardSensor,
   PointerSensor,
@@ -16,31 +31,52 @@ import {
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { fetchAllSeoConfigs, updateSeoConfigPriorities } from '@/lib/api';
-import { GripVertical, RefreshCw, Save } from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
-import { Badge } from '@/components/ui/badge';
 
-// Type for SEO Config items
-type SEOConfigItem = {
+type SeoConfig = {
   id: number;
-  routePath: string;
   title: string;
+  routePath: string;
   priority: number | null;
-  changeFrequency: string | null;
+  indexable: boolean;
 };
 
-// Sortable item component with drag handle
-function SortableItem({ id, routePath, title, priority }: SEOConfigItem) {
+type SortableItemProps = {
+  config: SeoConfig;
+  index: number;
+  totalItems: number;
+};
+
+// Individual sortable item component
+function SortableItem({ config, index, totalItems }: SortableItemProps) {
   const {
     attributes,
     listeners,
     setNodeRef,
     transform,
     transition,
-  } = useSortable({ id });
+  } = useSortable({ id: config.id });
+
+  // Calculate normalized priority for visual display
+  const priorityValue = config.priority !== null ? config.priority : 0.5;
+
+  // Determine badge color based on priority
+  let badgeVariant: 
+    | "default"
+    | "destructive"
+    | "outline"
+    | "secondary"
+    | "success"
+    | "warning" = "default";
+
+  if (priorityValue >= 0.8) {
+    badgeVariant = "success"; // Highest priority
+  } else if (priorityValue >= 0.5) {
+    badgeVariant = "default"; // Medium-high priority
+  } else if (priorityValue >= 0.3) {
+    badgeVariant = "secondary"; // Medium-low priority
+  } else {
+    badgeVariant = "outline"; // Lowest priority
+  }
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -50,187 +86,230 @@ function SortableItem({ id, routePath, title, priority }: SEOConfigItem) {
   return (
     <div 
       ref={setNodeRef} 
-      style={style} 
-      className="bg-white dark:bg-gray-800 rounded-lg border p-3 mb-2 flex items-center gap-2"
+      style={style}
+      className="flex items-center justify-between p-3 bg-white border rounded-md mb-2 group hover:border-primary/50 transition-colors"
     >
-      <div 
-        {...attributes} 
-        {...listeners}
-        className="cursor-grab active:cursor-grabbing p-1 text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
-      >
-        <GripVertical size={16} />
+      <div className="flex items-center gap-3 flex-1 overflow-hidden">
+        <div
+          {...attributes}
+          {...listeners}
+          className="flex items-center justify-center p-1 cursor-grab active:cursor-grabbing text-gray-400 hover:text-gray-600 touch-manipulation"
+        >
+          <GripVertical size={20} />
+        </div>
+        
+        <div className="flex-1 min-w-0">
+          <h4 className="font-medium text-sm truncate">{config.title}</h4>
+          <p className="text-xs text-muted-foreground truncate">{config.routePath}</p>
+        </div>
       </div>
-      <div className="flex-1 flex flex-col">
-        <div className="font-medium">{title}</div>
-        <div className="text-xs text-muted-foreground">{routePath}</div>
+      
+      <div className="flex items-center gap-2">
+        <Badge variant={badgeVariant}>
+          {index === 0 ? "Top" : index === totalItems - 1 ? "Last" : `#${index + 1}`}
+        </Badge>
+        <div className="text-xs text-muted-foreground w-14 text-right">
+          Priority: {priorityValue.toFixed(1)}
+        </div>
       </div>
-      <Badge variant={getPriorityBadgeVariant(priority)}>
-        {formatPriority(priority)}
-      </Badge>
     </div>
   );
 }
 
-// Helper functions for display
-function formatPriority(priority: number | null): string {
-  if (priority === null) return 'Not set';
-  return priority.toString();
-}
+type SEOPriorityManagerProps = {
+  isOpen: boolean;
+  onClose: () => void;
+  configs: SeoConfig[];
+};
 
-function getPriorityBadgeVariant(priority: number | null): "default" | "secondary" | "destructive" | "outline" {
-  if (priority === null) return "outline";
-  if (priority >= 0.8) return "default";
-  if (priority >= 0.5) return "secondary";
-  return "outline";
-}
-
-export default function SEOPriorityManager({ onClose }: { onClose: () => void }) {
-  const [configs, setConfigs] = useState<SEOConfigItem[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(false);
-  const { toast } = useToast();
-
-  // Set up DnD sensors
+export function SEOPriorityManager({ isOpen, onClose, configs }: SEOPriorityManagerProps) {
+  const queryClient = useQueryClient();
+  
+  // Initial sort by priority
+  const [items, setItems] = useState(() => {
+    return [...configs].sort((a, b) => {
+      // Handle null priorities (place at end)
+      const priorityA = a.priority ?? 0;
+      const priorityB = b.priority ?? 0;
+      return priorityB - priorityA; // Higher priority first
+    });
+  });
+  
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  
+  // Set up sensors for drag and drop
   const sensors = useSensors(
-    useSensor(PointerSensor),
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8,
+      },
+    }),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
     })
   );
 
-  // Load SEO configs on mount
-  useEffect(() => {
-    loadConfigs();
-  }, []);
-
-  const loadConfigs = async () => {
-    setLoading(true);
-    try {
-      const data = await fetchAllSeoConfigs();
-      
-      // Sort by priority (highest first) then by path
-      const sortedData = [...data].sort((a, b) => {
-        if (a.priority === null && b.priority === null) return a.routePath.localeCompare(b.routePath);
-        if (a.priority === null) return 1;
-        if (b.priority === null) return -1;
-        return b.priority - a.priority;
-      });
-      
-      setConfigs(sortedData);
-    } catch (error) {
-      console.error('Failed to load SEO configs:', error);
-      toast({
-        title: 'Error',
-        description: 'Failed to load SEO configurations',
-        variant: 'destructive',
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleDragEnd = (event: DragEndEvent) => {
+  // Handler for drag end
+  function handleDragEnd(event: DragEndEvent) {
     const { active, over } = event;
     
-    if (!over || active.id === over.id) {
-      return;
+    if (over && active.id !== over.id) {
+      setItems((items) => {
+        const oldIndex = items.findIndex((item) => item.id === active.id);
+        const newIndex = items.findIndex((item) => item.id === over.id);
+        
+        return arrayMove(items, oldIndex, newIndex);
+      });
     }
+  }
 
-    setConfigs((configs) => {
-      const oldIndex = configs.findIndex((config) => config.id === active.id);
-      const newIndex = configs.findIndex((config) => config.id === over.id);
+  // Move an item up in priority
+  const moveUp = (id: number) => {
+    setItems((items) => {
+      const index = items.findIndex((item) => item.id === id);
+      if (index <= 0) return items; // Already at the top
       
-      return arrayMove(configs, oldIndex, newIndex);
+      return arrayMove(items, index, index - 1);
     });
   };
 
-  const savePriorities = async () => {
-    setSaving(true);
+  // Move an item down in priority
+  const moveDown = (id: number) => {
+    setItems((items) => {
+      const index = items.findIndex((item) => item.id === id);
+      if (index === -1 || index >= items.length - 1) return items; // Already at the bottom
+      
+      return arrayMove(items, index, index + 1);
+    });
+  };
+
+  // Calculate new priority values based on position
+  const calculatePriorities = () => {
+    const totalItems = items.length;
+    
+    // If there are no items, return an empty array
+    if (totalItems === 0) return [];
+    
+    // Calculate a linear scale for priorities based on position
+    return items.map((item, index) => {
+      // Higher index means lower priority (we want higher priority at the top)
+      // Priority ranges from 1.0 (highest) to 0.1 (lowest) spread across all items
+      const priority = index === 0 
+        ? 1.0 // Top item is always 1.0
+        : index === totalItems - 1
+          ? 0.1 // Bottom item is always 0.1
+          : 1.0 - (index / (totalItems - 1)) * 0.9; // Linear scale between 1.0 and 0.1
+      
+      return {
+        id: item.id,
+        priority: Number(priority.toFixed(1))
+      };
+    });
+  };
+
+  // Save priorities mutation
+  const savePrioritiesMutation = useMutation({
+    mutationFn: async (priorities: { id: number; priority: number }[]) => {
+      const response = await fetch('/api/seo/configs/batch-update-priority', {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ priorities })
+      });
+      return response.json();
+    },
+    onSuccess: () => {
+      // Invalidate queries to refetch SEO data
+      queryClient.invalidateQueries({ queryKey: ['/api/seo/configs'] });
+      
+      toast({
+        title: "Priorities Updated",
+        description: "Page priorities have been successfully updated.",
+      });
+      
+      onClose();
+    },
+    onError: (error) => {
+      console.error('Failed to update priorities:', error);
+      toast({
+        title: "Failed to Update Priorities",
+        description: "There was an error updating the page priorities. Please try again.",
+        variant: "destructive",
+      });
+    }
+  });
+
+  // Handle saving priorities
+  const handleSave = async () => {
+    setIsSubmitting(true);
+    
     try {
-      // Assign priorities based on position - higher items get higher priority
-      const totalItems = configs.length;
-      const priorities = configs.map((config, index) => {
-        // Calculate priority: 1.0 for first item, decreasing by 0.1 down to 0.1
-        // Ensure no priority goes below 0.1 or above 1.0
-        const calculatedPriority = Math.max(0.1, Math.min(1.0, 1.0 - (index * (0.9 / (totalItems - 1 || 1)))));
-        // Round to one decimal place
-        const priority = Math.round(calculatedPriority * 10) / 10;
-        
-        return {
-          id: config.id,
-          priority
-        };
-      });
-      
-      await updateSeoConfigPriorities(priorities);
-      
-      toast({
-        title: 'Success',
-        description: 'Page priorities have been updated',
-        variant: 'default',
-      });
-      
-      loadConfigs(); // Reload to show updated values
+      const priorities = calculatePriorities();
+      await savePrioritiesMutation.mutateAsync(priorities);
     } catch (error) {
-      console.error('Failed to save priorities:', error);
-      toast({
-        title: 'Error',
-        description: 'Failed to update page priorities',
-        variant: 'destructive',
-      });
+      console.error('Error saving priorities:', error);
+      // Error is handled by the mutation
     } finally {
-      setSaving(false);
+      setIsSubmitting(false);
     }
   };
 
   return (
-    <Card className="w-full max-w-md mx-auto">
-      <CardHeader>
-        <CardTitle>Manage Page Priorities</CardTitle>
-        <CardDescription>
-          Drag and drop pages to set their relative importance. Pages at the top will have higher priority.
-        </CardDescription>
-      </CardHeader>
-      
-      <CardContent>
-        {loading ? (
-          <div className="flex justify-center p-8">
-            <RefreshCw className="h-6 w-6 animate-spin text-muted-foreground" />
-          </div>
-        ) : configs.length === 0 ? (
-          <div className="text-center py-6 text-muted-foreground">
-            No SEO configurations found
-          </div>
-        ) : (
-          <DndContext 
-            sensors={sensors}
-            collisionDetection={closestCenter}
-            onDragEnd={handleDragEnd}
-          >
-            <SortableContext 
-              items={configs.map(c => c.id)}
-              strategy={verticalListSortingStrategy}
+    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
+      <DialogContent className="max-w-2xl max-h-[80vh] overflow-hidden flex flex-col">
+        <DialogHeader>
+          <DialogTitle>Manage Page Priorities</DialogTitle>
+          <DialogDescription>
+            Drag and drop pages to set their relative importance for search engines.
+            Higher items have higher priority in sitemaps and search results.
+          </DialogDescription>
+        </DialogHeader>
+
+        <div className="flex-1 overflow-y-auto py-4 min-h-[300px]">
+          {items.length === 0 ? (
+            <div className="text-center py-8 text-muted-foreground">
+              No SEO configurations found. Create some configurations first.
+            </div>
+          ) : (
+            <DndContext 
+              sensors={sensors}
+              collisionDetection={closestCenter}
+              onDragEnd={handleDragEnd}
             >
-              <div className="max-h-[400px] overflow-y-auto">
-                {configs.map((config) => (
-                  <SortableItem key={config.id} {...config} />
+              <SortableContext 
+                items={items.map(item => item.id)}
+                strategy={verticalListSortingStrategy}
+              >
+                {items.map((config, index) => (
+                  <SortableItem 
+                    key={config.id} 
+                    config={config} 
+                    index={index}
+                    totalItems={items.length}
+                  />
                 ))}
-              </div>
-            </SortableContext>
-          </DndContext>
-        )}
-      </CardContent>
-      
-      <CardFooter className="flex gap-2 justify-end">
-        <Button variant="outline" onClick={onClose}>
-          Cancel
-        </Button>
-        <Button onClick={savePriorities} disabled={saving || loading || configs.length === 0}>
-          {saving && <RefreshCw className="mr-2 h-4 w-4 animate-spin" />}
-          <Save className="mr-2 h-4 w-4" />
-          Save Priorities
-        </Button>
-      </CardFooter>
-    </Card>
+              </SortableContext>
+            </DndContext>
+          )}
+        </div>
+
+        <DialogFooter className="pt-2">
+          <div className="flex justify-between w-full">
+            <Button variant="outline" onClick={onClose}>
+              Cancel
+            </Button>
+            <Button 
+              type="button" 
+              onClick={handleSave} 
+              disabled={isSubmitting || items.length === 0}
+            >
+              {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              Save Priorities
+            </Button>
+          </div>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }

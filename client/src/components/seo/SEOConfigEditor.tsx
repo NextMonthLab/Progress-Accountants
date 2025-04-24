@@ -318,43 +318,7 @@ export function SEOConfigEditor({ isOpen, onClose, config, onSaved }: SEOConfigE
                     )}
                   />
 
-                  <FormField
-                    control={form.control}
-                    name="priority"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Priority</FormLabel>
-                        <FormControl>
-                          <Select
-                            value={field.value?.toString() || 'null'}
-                            onValueChange={(value) => {
-                              if (value === 'null') {
-                                field.onChange(null);
-                              } else {
-                                field.onChange(parseFloat(value));
-                              }
-                            }}
-                          >
-                            <SelectTrigger>
-                              <SelectValue placeholder="Select priority" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectItem value="null">Not specified</SelectItem>
-                              <SelectItem value="1.0">1.0 - Highest</SelectItem>
-                              <SelectItem value="0.8">0.8 - High</SelectItem>
-                              <SelectItem value="0.5">0.5 - Medium</SelectItem>
-                              <SelectItem value="0.3">0.3 - Low</SelectItem>
-                              <SelectItem value="0.1">0.1 - Lowest</SelectItem>
-                            </SelectContent>
-                          </Select>
-                        </FormControl>
-                        <FormDescription>
-                          The priority of this URL relative to other URLs on your site
-                        </FormDescription>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                  {/* Priority field removed - now managed through drag-and-drop interface */}
 
                   <FormField
                     control={form.control}

@@ -1,8 +1,9 @@
 import { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { SEOConfigList } from '@/components/seo/SEOConfigList';
 import { SEOConfigEditor } from '@/components/seo/SEOConfigEditor';
 import { SEOPreview } from '@/components/seo/SEOPreview';
-import SEOPriorityManager from '@/components/seo/SEOPriorityManager';
+import { SEOPriorityManager } from '@/components/seo/SEOPriorityManager';
 import { DocumentHead } from '@/components/DocumentHead';
 import { Button } from '@/components/ui/button';
 import { ListFilter } from 'lucide-react';
