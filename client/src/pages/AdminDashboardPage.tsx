@@ -9,11 +9,11 @@ import { useAuth } from '@/hooks/use-auth';
 import { useTenant } from '@/hooks/use-tenant';
 import { useQuery } from '@tanstack/react-query';
 import { 
+  AlertTriangle,
   ArrowRight, 
   ArrowUpRight,
   BarChart3,
   BookOpen,
-  Check,
   CheckCircle2,
   Clock,
   Cpu,
@@ -33,6 +33,7 @@ import {
   Settings,
   ShieldCheck,
   Sparkles,
+  XCircle,
   Zap
 } from "lucide-react";
 import AdminLayout from '@/layouts/AdminLayout';
@@ -45,7 +46,7 @@ interface StatCardProps {
   icon: React.ReactNode;
   change?: string;
   isPositive?: boolean;
-  color?: string;
+  color: 'navy' | 'orange' | 'emerald' | 'indigo';
   isGradient?: boolean;
   className?: string;
 }
@@ -61,14 +62,7 @@ function StatCard({
   className = ''
 }: StatCardProps) {
   // Define the color scheme with proper type
-  type ColorScheme = {
-    [key: string]: {
-      bg: string;
-      icon: string;
-    }
-  };
-
-  const scheme: ColorScheme = {
+  const scheme = {
     navy: {
       bg: isGradient ? 'from-navy to-blue-900' : 'bg-white',
       icon: isGradient ? 'bg-white/20 text-white' : 'bg-navy/10 text-navy',
@@ -268,6 +262,69 @@ function NewsItem({ title, excerpt, category, link = '#', isLoading = false }: N
   );
 }
 
+// System Health Component
+interface SystemComponentType {
+  name: string;
+  status: 'good' | 'warning' | 'error';
+  details?: string;
+  lastChecked: string;
+}
+
+interface SystemHealthProps {
+  components?: SystemComponentType[];
+  isLoading?: boolean;
+}
+
+function SystemHealth({ components = [], isLoading = false }: SystemHealthProps) {
+  if (isLoading) {
+    return (
+      <div className="space-y-4">
+        {[1, 2, 3, 4].map((_, i) => (
+          <div key={i} className="flex items-center justify-between p-3 bg-gray-50 rounded-md animate-pulse">
+            <div className="h-4 bg-gray-200 rounded w-1/3"></div>
+            <div className="h-4 bg-gray-200 rounded w-1/4"></div>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-4">
+      {components.map((component, index) => (
+        <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-md">
+          <div className="flex items-center gap-2">
+            {component.status === 'good' ? (
+              <CheckCircle2 className="h-4 w-4 text-emerald-600" />
+            ) : component.status === 'warning' ? (
+              <AlertTriangle className="h-4 w-4 text-amber-600" />
+            ) : (
+              <XCircle className="h-4 w-4 text-red-600" />
+            )}
+            <div>
+              <p className="font-medium">{component.name}</p>
+              {component.details && <p className="text-xs text-gray-500">{component.details}</p>}
+            </div>
+          </div>
+          <div className="flex items-center gap-2">
+            <Badge variant="outline" className={
+              component.status === 'good' 
+                ? 'bg-emerald-50 text-emerald-700 hover:bg-emerald-50 border-0'
+                : component.status === 'warning'
+                ? 'bg-amber-50 text-amber-700 hover:bg-amber-50 border-0'
+                : 'bg-red-50 text-red-700 hover:bg-red-50 border-0'
+            }>
+              {component.status === 'good' ? 'Good' : 
+                component.status === 'warning' ? 'Warning' : 'Error'}
+            </Badge>
+            <span className="text-xs text-gray-500">{component.lastChecked}</span>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 export default function AdminDashboardPage() {
   const { user } = useAuth();
   const { tenant } = useTenant();
@@ -403,11 +460,11 @@ export default function AdminDashboardPage() {
       // In production, this would fetch data from the backend
       return {
         components: [
-          { name: 'Database', status: 'good', lastChecked: '5m ago' },
-          { name: 'API Services', status: 'good', lastChecked: '5m ago' },
-          { name: 'Storage', status: 'warning', details: '78% used', lastChecked: '5m ago' },
-          { name: 'Backup System', status: 'good', lastChecked: '5m ago' },
-          { name: 'Email Services', status: 'good', lastChecked: '5m ago' }
+          { name: 'Database', status: 'good' as const, lastChecked: '5m ago' },
+          { name: 'API Services', status: 'good' as const, lastChecked: '5m ago' },
+          { name: 'Storage', status: 'warning' as const, details: '78% used', lastChecked: '5m ago' },
+          { name: 'Backup System', status: 'good' as const, lastChecked: '5m ago' },
+          { name: 'Email Services', status: 'good' as const, lastChecked: '5m ago' }
         ],
         lastFullCheck: '2025-04-22T08:00:00'
       };
@@ -705,7 +762,10 @@ export default function AdminDashboardPage() {
                     <CardDescription>Current system status</CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <SystemHealth components={systemHealth?.components} isLoading={isLoadingSystemHealth} />
+                    <SystemHealth 
+                      components={systemHealth?.components} 
+                      isLoading={isLoadingSystemHealth} 
+                    />
                   </CardContent>
                 </Card>
               </div>
@@ -1060,7 +1120,10 @@ export default function AdminDashboardPage() {
                     <CardDescription>Status of system components</CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <SystemHealth components={systemHealth?.components} isLoading={isLoadingSystemHealth} />
+                    <SystemHealth 
+                      components={systemHealth?.components} 
+                      isLoading={isLoadingSystemHealth} 
+                    />
                   </CardContent>
                 </Card>
                 
