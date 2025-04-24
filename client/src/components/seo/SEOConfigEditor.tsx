@@ -42,7 +42,7 @@ const seoConfigSchema = z.object({
   canonical: z.string().url("Must be a valid URL").nullable().optional(),
   image: z.string().url("Must be a valid URL").nullable().optional(),
   indexable: z.boolean().default(true),
-  priority: z.string().nullable().optional().transform(val => val ? parseFloat(val) : null),
+  priority: z.number().nullable().optional(),
   changeFrequency: z.enum(['always', 'hourly', 'daily', 'weekly', 'monthly', 'yearly', 'never']).nullable().optional(),
 });
 
@@ -278,14 +278,20 @@ export function SEOConfigEditor({ isOpen, onClose, config, onSaved }: SEOConfigE
                         <FormLabel>Priority</FormLabel>
                         <FormControl>
                           <Select
-                            value={field.value || ''}
-                            onValueChange={(value) => field.onChange(value || null)}
+                            value={field.value?.toString() || 'null'}
+                            onValueChange={(value) => {
+                              if (value === 'null') {
+                                field.onChange(null);
+                              } else {
+                                field.onChange(parseFloat(value));
+                              }
+                            }}
                           >
                             <SelectTrigger>
                               <SelectValue placeholder="Select priority" />
                             </SelectTrigger>
                             <SelectContent>
-                              <SelectItem value="">Not specified</SelectItem>
+                              <SelectItem value="null">Not specified</SelectItem>
                               <SelectItem value="1.0">1.0 - Highest</SelectItem>
                               <SelectItem value="0.8">0.8 - High</SelectItem>
                               <SelectItem value="0.5">0.5 - Medium</SelectItem>
@@ -310,14 +316,14 @@ export function SEOConfigEditor({ isOpen, onClose, config, onSaved }: SEOConfigE
                         <FormLabel>Change Frequency</FormLabel>
                         <FormControl>
                           <Select
-                            value={field.value || ''}
-                            onValueChange={(value) => field.onChange(value || null)}
+                            value={field.value || 'null'}
+                            onValueChange={(value) => field.onChange(value === 'null' ? null : value)}
                           >
                             <SelectTrigger>
                               <SelectValue placeholder="Select frequency" />
                             </SelectTrigger>
                             <SelectContent>
-                              <SelectItem value="">Not specified</SelectItem>
+                              <SelectItem value="null">Not specified</SelectItem>
                               <SelectItem value="always">Always</SelectItem>
                               <SelectItem value="hourly">Hourly</SelectItem>
                               <SelectItem value="daily">Daily</SelectItem>
