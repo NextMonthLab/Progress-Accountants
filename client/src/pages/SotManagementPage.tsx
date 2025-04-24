@@ -165,6 +165,63 @@ export default function SotManagementPage() {
       [key]: !prev[key],
     }));
   };
+  
+  const [validateLoading, setValidateLoading] = useState(false);
+  
+  const handleValidateBlueprint = async () => {
+    setValidateLoading(true);
+    try {
+      // First, extract the blueprint
+      const extractResponse = await fetch('/api/sot/extract-blueprint', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          clientId: '00000000-0000-0000-0000-000000000000',
+          version: '1.1.1',
+          settings: extractionSettings,
+        }),
+      });
+      
+      if (!extractResponse.ok) {
+        const errorData = await extractResponse.json().catch(() => ({}));
+        throw new Error(errorData.message || 'Blueprint extraction failed');
+      }
+      
+      const blueprint = await extractResponse.json();
+      
+      // Now validate the blueprint
+      const validateResponse = await fetch('/api/sot/import-blueprint', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(blueprint),
+      });
+      
+      const validationResult = await validateResponse.json();
+      
+      if (validateResponse.ok) {
+        toast({
+          title: 'Blueprint Validation Successful',
+          description: `Blueprint is valid with ${validationResult.modules_found?.length || 0} modules, ${validationResult.tools_count || 0} tools, and ${validationResult.pages_count || 0} pages.`,
+          variant: 'default',
+        });
+      } else {
+        throw new Error(validationResult.message || 'Blueprint validation failed');
+      }
+    } catch (error: any) {
+      console.error('Error validating blueprint:', error);
+      toast({
+        title: 'Validation Failed',
+        description: error.message || 'Failed to validate blueprint',
+        variant: 'destructive',
+      });
+    } finally {
+      setValidateLoading(false);
+    }
+  };
 
   return (
     <AdminLayout>
@@ -394,27 +451,46 @@ export default function SotManagementPage() {
                       <Download className="h-6 w-6 text-primary" />
                     </div>
                     <div className="flex-1">
-                      <h3 className="font-semibold">Extract Blueprint</h3>
+                      <h3 className="font-semibold">Blueprint Actions</h3>
                       <p className="text-sm text-muted-foreground">
-                        Download a portable blueprint containing your configurations and templates
+                        Extract, validate, or import a blueprint based on the current settings
                       </p>
                     </div>
-                    <Button 
-                      onClick={handleExtractBlueprint}
-                      disabled={extractLoading}
-                    >
-                      {extractLoading ? (
-                        <>
-                          <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
-                          Extracting...
-                        </>
-                      ) : (
-                        <>
-                          <Download className="h-4 w-4 mr-2" />
-                          Extract Blueprint
-                        </>
-                      )}
-                    </Button>
+                    <div className="flex gap-2">
+                      <Button 
+                        variant="outline" 
+                        onClick={handleValidateBlueprint}
+                        disabled={validateLoading || extractLoading}
+                      >
+                        {validateLoading ? (
+                          <>
+                            <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
+                            Validating...
+                          </>
+                        ) : (
+                          <>
+                            <FileCheck className="h-4 w-4 mr-2" />
+                            Validate
+                          </>
+                        )}
+                      </Button>
+                      <Button 
+                        onClick={handleExtractBlueprint}
+                        disabled={extractLoading || validateLoading}
+                      >
+                        {extractLoading ? (
+                          <>
+                            <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
+                            Extracting...
+                          </>
+                        ) : (
+                          <>
+                            <Download className="h-4 w-4 mr-2" />
+                            Extract
+                          </>
+                        )}
+                      </Button>
+                    </div>
                   </div>
                 </div>
                 

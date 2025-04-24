@@ -514,7 +514,10 @@ export async function extractBlueprint(req: Request, res: Response) {
     // Get brand guidelines if requested
     if (extractionSettings.includeBrandGuidelines) {
       try {
-        const brandGuidelines = await storage.getBrandGuidelines();
+        // Use business identity's brand information as brand guidelines
+        const businessIdentity = await storage.getBusinessIdentity();
+        const brandGuidelines = businessIdentity?.brand || {};
+        
         if (brandGuidelines) {
           blueprint.modules.brandGuidelines = extractionSettings.tenantAgnostic ? 
             sanitizeBrandGuidelines(brandGuidelines) : 
@@ -542,13 +545,44 @@ export async function extractBlueprint(req: Request, res: Response) {
     // Include pages if requested
     if (extractionSettings.exportPages) {
       try {
-        // This is a placeholder - actual implementation would fetch pages from storage
-        const pages = await storage.getPublicPages();
-        blueprint.pages = extractionSettings.tenantAgnostic ? 
-          pages.map((page: any) => sanitizePage(page)) : 
-          pages;
+        // Use existing page builder API to get pages
+        const response = await fetch('http://localhost:5000/api/pages/public', {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' }
+        });
+        
+        if (response.ok) {
+          const pageRoutes = await response.json();
+          // Get detailed information for each page
+          const pagePromises = pageRoutes.map(async (route: string) => {
+            try {
+              const pageResponse = await fetch(`http://localhost:5000/api/pages/route${route}`, {
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json' }
+              });
+              
+              if (pageResponse.ok) {
+                const pageData = await pageResponse.json();
+                return pageData;
+              }
+              return null;
+            } catch (err) {
+              console.error(`Failed to fetch page data for route ${route}:`, err);
+              return null;
+            }
+          });
+          
+          const pages = (await Promise.all(pagePromises)).filter(Boolean);
+          blueprint.pages = extractionSettings.tenantAgnostic ? 
+            pages.map((page: any) => sanitizePage(page)) : 
+            pages;
+        } else {
+          console.error('Failed to fetch public pages');
+          blueprint.pages = [];
+        }
       } catch (error) {
         console.error('Error fetching pages:', error);
+        blueprint.pages = [];
       }
     }
     
