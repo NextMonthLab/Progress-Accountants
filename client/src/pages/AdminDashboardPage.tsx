@@ -732,7 +732,7 @@ export default function AdminDashboardPage() {
                         Healthy
                       </Badge>
                     </CardTitle>
-                    <CardDescription>Current system status</CardDescription>
+                    <CardDescription className="text-gray-700">Current system status</CardDescription>
                   </CardHeader>
                   <CardContent>
                     <SystemHealth 
@@ -773,7 +773,7 @@ export default function AdminDashboardPage() {
                 <Card>
                   <CardHeader>
                     <CardTitle>Pages Overview</CardTitle>
-                    <CardDescription>Status of your website pages</CardDescription>
+                    <CardDescription className="text-gray-700">Status of your website pages</CardDescription>
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-4">
@@ -836,7 +836,7 @@ export default function AdminDashboardPage() {
                 <Card>
                   <CardHeader>
                     <CardTitle>Content Stats</CardTitle>
-                    <CardDescription>Content performance metrics</CardDescription>
+                    <CardDescription className="text-gray-700">Content performance metrics</CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div>
@@ -921,7 +921,7 @@ export default function AdminDashboardPage() {
                   <CardHeader className="flex flex-row items-center justify-between pb-2">
                     <div>
                       <CardTitle>Installed Tools</CardTitle>
-                      <CardDescription>Your active tools and applications</CardDescription>
+                      <CardDescription className="text-gray-700">Your active tools and applications</CardDescription>
                     </div>
                     <Link href="/tool-marketplace">
                       <Button variant="ghost" size="sm" className="gap-1">
@@ -1028,7 +1028,7 @@ export default function AdminDashboardPage() {
                 <Card>
                   <CardHeader>
                     <CardTitle>Tool Updates</CardTitle>
-                    <CardDescription>Available updates for your tools</CardDescription>
+                    <CardDescription className="text-gray-700">Available updates for your tools</CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div className="flex items-center justify-between p-3 bg-gray-50 rounded-md">
@@ -1090,7 +1090,7 @@ export default function AdminDashboardPage() {
                 <Card>
                   <CardHeader>
                     <CardTitle>System Health</CardTitle>
-                    <CardDescription>Status of system components</CardDescription>
+                    <CardDescription className="text-gray-700">Status of system components</CardDescription>
                   </CardHeader>
                   <CardContent>
                     <SystemHealth 
@@ -1103,7 +1103,7 @@ export default function AdminDashboardPage() {
                 <Card className="mt-6">
                   <CardHeader>
                     <CardTitle>Recent Backups</CardTitle>
-                    <CardDescription>Latest system backups</CardDescription>
+                    <CardDescription className="text-gray-700">Latest system backups</CardDescription>
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-4">
@@ -1154,7 +1154,7 @@ export default function AdminDashboardPage() {
                 <Card>
                   <CardHeader>
                     <CardTitle>System Actions</CardTitle>
-                    <CardDescription>Maintenance and system operations</CardDescription>
+                    <CardDescription className="text-gray-700">Maintenance and system operations</CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-3">
                     <Button variant="outline" className="w-full justify-start">
@@ -1179,7 +1179,7 @@ export default function AdminDashboardPage() {
                 <Card>
                   <CardHeader>
                     <CardTitle>Storage Usage</CardTitle>
-                    <CardDescription>Distribution of system storage</CardDescription>
+                    <CardDescription className="text-gray-700">Distribution of system storage</CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div>
