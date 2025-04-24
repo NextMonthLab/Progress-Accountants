@@ -227,39 +227,7 @@ function QuickAction({
   );
 }
 
-// News Item Component
-interface NewsItemProps {
-  title: string;
-  excerpt: string;
-  category: string;
-  link?: string;
-  isLoading?: boolean;
-}
 
-function NewsItem({ title, excerpt, category, link = '#', isLoading = false }: NewsItemProps) {
-  return (
-    <div className="border-b border-white/10 pb-4 mb-4 last:mb-0 last:pb-0 last:border-0">
-      {isLoading ? (
-        <div className="space-y-3">
-          <div className="h-4 bg-white/20 rounded w-3/4 animate-pulse"></div>
-          <div className="h-3 bg-white/10 rounded w-full animate-pulse"></div>
-        </div>
-      ) : (
-        <>
-          <div className="flex items-center gap-2 mb-2">
-            <Badge variant="outline" className="bg-white/20 text-white hover:bg-white/30 border-0">
-              {category}
-            </Badge>
-          </div>
-          <Link href={link}>
-            <h3 className="font-medium text-white hover:text-orange-200 transition-colors">{title}</h3>
-          </Link>
-          <p className="text-sm text-white/80 mt-1 line-clamp-2">{excerpt}</p>
-        </>
-      )}
-    </div>
-  );
-}
 
 // System Health Component
 interface SystemComponentType {
@@ -705,43 +673,49 @@ export default function AdminDashboardPage() {
                 </Card>
 
                 {/* Industry News */}
-                <Card className="bg-navy text-white">
-                  <CardHeader>
+                <Card className="border-navy border-2">
+                  <CardHeader className="bg-navy text-white pb-3">
                     <CardTitle className="text-white">Industry News</CardTitle>
-                    <CardDescription className="text-white/70">Latest updates from your sector</CardDescription>
+                    <CardDescription className="text-white/80">Latest updates from your sector</CardDescription>
                   </CardHeader>
-                  <CardContent>
+                  <CardContent className="pt-4">
                     {isLoadingNews ? (
                       // Loading skeleton
                       <>
-                        <NewsItem
-                          title=""
-                          excerpt=""
-                          category=""
-                          isLoading={true}
-                        />
-                        <NewsItem
-                          title=""
-                          excerpt=""
-                          category=""
-                          isLoading={true}
-                        />
+                        <div className="border-b border-gray-200 pb-3 mb-3 last:mb-0 last:pb-0 last:border-0">
+                          <div className="flex items-center gap-2 mb-2">
+                            <div className="h-6 w-16 bg-gray-200 rounded animate-pulse"></div>
+                          </div>
+                          <div className="h-5 bg-gray-200 rounded w-3/4 mb-2 animate-pulse"></div>
+                          <div className="h-4 bg-gray-100 rounded w-full animate-pulse"></div>
+                        </div>
+                        <div className="border-b border-gray-200 pb-3 mb-3 last:mb-0 last:pb-0 last:border-0">
+                          <div className="flex items-center gap-2 mb-2">
+                            <div className="h-6 w-20 bg-gray-200 rounded animate-pulse"></div>
+                          </div>
+                          <div className="h-5 bg-gray-200 rounded w-3/4 mb-2 animate-pulse"></div>
+                          <div className="h-4 bg-gray-100 rounded w-full animate-pulse"></div>
+                        </div>
                       </>
                     ) : (
                       // Actual news items
                       news?.map(item => (
-                        <NewsItem
-                          key={item.id}
-                          title={item.title}
-                          excerpt={item.excerpt}
-                          category={item.category}
-                          link={item.link}
-                        />
+                        <div key={item.id} className="border-b border-gray-200 pb-3 mb-3 last:mb-0 last:pb-0 last:border-0">
+                          <div className="flex items-center gap-2 mb-2">
+                            <Badge variant="outline" className="bg-gray-100 text-gray-800 hover:bg-gray-200 border-0">
+                              {item.category}
+                            </Badge>
+                          </div>
+                          <Link href={item.link || '#'}>
+                            <h3 className="font-medium text-navy hover:text-blue-600 transition-colors">{item.title}</h3>
+                          </Link>
+                          <p className="text-sm text-gray-600 mt-1 line-clamp-2">{item.excerpt}</p>
+                        </div>
                       ))
                     )}
                   </CardContent>
                   <CardFooter className="pt-0">
-                    <Button variant="ghost" className="w-full text-white hover:bg-white/10">
+                    <Button variant="outline" className="w-full text-navy hover:bg-navy/5">
                       Read more
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Button>
