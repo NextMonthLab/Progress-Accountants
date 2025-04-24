@@ -992,32 +992,32 @@ export default function AdminDashboardPage() {
               </div>
               
               <div className="space-y-6">
-                <Card className="bg-gradient-to-br from-navy to-blue-900 text-white">
-                  <CardHeader>
+                <Card className="border-navy border-2">
+                  <CardHeader className="bg-navy">
                     <CardTitle className="text-white">Tool Marketplace</CardTitle>
-                    <CardDescription className="text-white/70">Discover new tools to enhance your business</CardDescription>
+                    <CardDescription className="text-white/90">Discover new tools to enhance your business</CardDescription>
                   </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="bg-white/10 rounded-lg p-4">
-                      <h3 className="font-medium text-white mb-1">Featured Tool</h3>
-                      <p className="text-white/80 text-sm mb-3">Advanced Analytics Dashboard</p>
-                      <Button variant="secondary" className="w-full bg-white text-navy hover:bg-white/90">
+                  <CardContent className="space-y-4 pt-4">
+                    <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+                      <h3 className="font-medium text-navy mb-1">Featured Tool</h3>
+                      <p className="text-gray-700 text-sm mb-3">Advanced Analytics Dashboard</p>
+                      <Button className="w-full bg-navy text-white hover:bg-navy/90">
                         Learn More
                       </Button>
                     </div>
                     
-                    <div className="bg-white/10 rounded-lg p-4">
-                      <h3 className="font-medium text-white mb-1">Popular Categories</h3>
+                    <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+                      <h3 className="font-medium text-navy mb-1">Popular Categories</h3>
                       <div className="flex flex-wrap gap-2 mt-2">
-                        <Badge variant="secondary" className="bg-white/20 hover:bg-white/30 text-white border-0">Analytics</Badge>
-                        <Badge variant="secondary" className="bg-white/20 hover:bg-white/30 text-white border-0">Marketing</Badge>
-                        <Badge variant="secondary" className="bg-white/20 hover:bg-white/30 text-white border-0">Finance</Badge>
-                        <Badge variant="secondary" className="bg-white/20 hover:bg-white/30 text-white border-0">Productivity</Badge>
+                        <Badge variant="outline" className="bg-navy/10 text-navy hover:bg-navy/20 border-0">Analytics</Badge>
+                        <Badge variant="outline" className="bg-navy/10 text-navy hover:bg-navy/20 border-0">Marketing</Badge>
+                        <Badge variant="outline" className="bg-navy/10 text-navy hover:bg-navy/20 border-0">Finance</Badge>
+                        <Badge variant="outline" className="bg-navy/10 text-navy hover:bg-navy/20 border-0">Productivity</Badge>
                       </div>
                     </div>
                   </CardContent>
                   <CardFooter>
-                    <Button variant="ghost" className="w-full text-white hover:bg-white/10">
+                    <Button variant="outline" className="w-full text-navy hover:bg-navy/5">
                       Explore Marketplace
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Button>
