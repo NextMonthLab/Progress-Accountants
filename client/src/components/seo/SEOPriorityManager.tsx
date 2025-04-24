@@ -81,11 +81,16 @@ function SortableItem({ config, index, totalItems }: SortableItemProps) {
     transition,
   };
 
+  // Determine if this is a high priority item (top 3)
+  const isHighPriority = index < 3;
+  
   return (
     <div 
       ref={setNodeRef} 
       style={style}
-      className="flex items-center justify-between p-3 bg-white border rounded-md mb-2 group hover:border-primary/50 transition-colors"
+      className={`flex items-center justify-between p-3 border rounded-md mb-2 group hover:border-primary/50 transition-colors ${
+        isHighPriority ? 'bg-primary/5 border-primary/20' : 'bg-white'
+      }`}
     >
       <div className="flex items-center gap-3 flex-1 overflow-hidden">
         <div
@@ -97,7 +102,9 @@ function SortableItem({ config, index, totalItems }: SortableItemProps) {
         </div>
         
         <div className="flex-1 min-w-0">
-          <h4 className="font-medium text-sm truncate">{config.title}</h4>
+          <h4 className={`font-medium text-sm truncate ${isHighPriority ? 'text-primary' : ''}`}>
+            {config.title}
+          </h4>
           <p className="text-xs text-muted-foreground truncate">{config.routePath}</p>
         </div>
       </div>
@@ -262,6 +269,16 @@ export function SEOPriorityManager({ isOpen, onClose, configs }: SEOPriorityMana
             Drag and drop pages to set their relative importance for search engines.
             Higher items have higher priority in sitemaps and search results.
           </DialogDescription>
+          
+          <div className="bg-blue-50 text-blue-700 rounded-md p-3 text-sm mt-2">
+            <h3 className="font-medium mb-1">How priorities work:</h3>
+            <ul className="list-disc pl-5 space-y-1 text-xs">
+              <li>Pages at the top have higher priority (1.0) in search engines</li>
+              <li>Pages at the bottom have lower priority (0.1)</li>
+              <li>The top 3 pages are highlighted as high-priority</li>
+              <li>Drag items up and down to change their priority</li>
+            </ul>
+          </div>
         </DialogHeader>
 
         <div className="flex-1 overflow-y-auto py-4 min-h-[300px]">

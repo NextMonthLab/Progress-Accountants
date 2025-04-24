@@ -43,6 +43,7 @@ const seoConfigSchema = z.object({
   canonical: z.string().url("Must be a valid URL").nullable().optional(),
   image: z.string().url("Must be a valid URL").nullable().optional(),
   indexable: z.boolean().default(true),
+  // Priority is now handled by the SEOPriorityManager component
   priority: z.number().nullable().optional(),
   changeFrequency: z.enum(['always', 'hourly', 'daily', 'weekly', 'monthly', 'yearly', 'never']).nullable().optional(),
 });
