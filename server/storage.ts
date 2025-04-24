@@ -522,7 +522,7 @@ export class DatabaseStorage implements IStorage {
     const [updated] = await db
       .update(moduleActivations)
       .set({ 
-        syncedWithGuardian: synced,
+        syncedWithSot: synced,
         updatedAt: new Date()
       })
       .where(eq(moduleActivations.id, id))
@@ -615,11 +615,11 @@ export class DatabaseStorage implements IStorage {
     return states[0];
   }
 
-  async markGuardianSynced(id: number, synced: boolean): Promise<OnboardingState | undefined> {
+  async markSotSynced(id: number, synced: boolean): Promise<OnboardingState | undefined> {
     const [updated] = await db
       .update(onboardingState)
       .set({ 
-        guardianSynced: synced,
+        sotSynced: synced,
         updatedAt: new Date()
       })
       .where(eq(onboardingState.id, id))
@@ -1432,6 +1432,92 @@ export class DatabaseStorage implements IStorage {
       console.error(`Error updating handoff status for client ${clientId}:`, error);
       return undefined;
     }
+  }
+
+  // SOT (Single Source of Truth) operations
+  async getSotDeclaration(): Promise<SotDeclaration | undefined> {
+    const [declaration] = await db
+      .select()
+      .from(sotDeclarations)
+      .orderBy(desc(sotDeclarations.createdAt))
+      .limit(1);
+    
+    return declaration;
+  }
+  
+  async saveSotDeclaration(data: InsertSotDeclaration): Promise<SotDeclaration> {
+    const [declaration] = await db
+      .insert(sotDeclarations)
+      .values(data)
+      .returning();
+    
+    return declaration;
+  }
+  
+  async updateSotDeclaration(id: number, data: Partial<InsertSotDeclaration>): Promise<SotDeclaration | undefined> {
+    const [updated] = await db
+      .update(sotDeclarations)
+      .set({
+        ...data,
+        updatedAt: new Date()
+      })
+      .where(eq(sotDeclarations.id, id))
+      .returning();
+    
+    return updated;
+  }
+  
+  async getSotMetrics(): Promise<SotMetric | undefined> {
+    const [metrics] = await db
+      .select()
+      .from(sotMetrics)
+      .orderBy(desc(sotMetrics.createdAt))
+      .limit(1);
+    
+    return metrics;
+  }
+  
+  async saveSotMetrics(data: InsertSotMetric): Promise<SotMetric> {
+    const [metrics] = await db
+      .insert(sotMetrics)
+      .values(data)
+      .returning();
+    
+    return metrics;
+  }
+  
+  async updateSotMetrics(id: number, data: Partial<InsertSotMetric>): Promise<SotMetric | undefined> {
+    const [updated] = await db
+      .update(sotMetrics)
+      .set({
+        ...data,
+        updatedAt: new Date()
+      })
+      .where(eq(sotMetrics.id, id))
+      .returning();
+    
+    return updated;
+  }
+  
+  async logSotSync(eventType: string, status: string, details?: string): Promise<SotSyncLog> {
+    const [log] = await db
+      .insert(sotSyncLogs)
+      .values({
+        eventType,
+        status,
+        details
+      })
+      .returning();
+    
+    return log;
+  }
+  
+  async getSotSyncLogs(limit: number = 10): Promise<SotSyncLog[]> {
+    return db
+      .select()
+      .from(sotSyncLogs)
+      .orderBy(desc(sotSyncLogs.createdAt))
+      .limit(limit);
   }
 }
 
