@@ -69,6 +69,7 @@ import ThemeManagementPage from "@/pages/admin/ThemeManagementPage";
 import SiteBrandingPage from "@/pages/admin/SiteBrandingPage";
 import MenuManagementPage from "@/pages/admin/MenuManagementPage";
 import DomainMappingPage from "@/pages/DomainMappingPage";
+import SotManagementPage from "@/pages/SotManagementPage";
 // Page Builder pages
 import PageBuilderListPage from "@/pages/PageBuilderListPage";
 import PageBuilderPage from "@/pages/PageBuilderPage";
@@ -180,6 +181,11 @@ function Router() {
       <ProtectedRoute 
         path="/admin/domain-mapping" 
         component={DomainMappingPage} 
+        allowedRoles={['admin', 'super_admin']} 
+      />
+      <ProtectedRoute 
+        path="/admin/sot-management" 
+        component={SotManagementPage} 
         allowedRoles={['admin', 'super_admin']} 
       />
       <ProtectedRoute 
