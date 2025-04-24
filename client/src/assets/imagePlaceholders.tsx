@@ -2,6 +2,9 @@ import React from 'react';
 import strategySessionImage from './images/strategy_session.jpg';
 import podcastStudioImage from './images/podcast_studio.jpg';
 import teamPhotoImage from './images/team_photo.jpg';
+import filmIndustryImage from './images/film_industry.png';
+import musicIndustryImage from './images/music_industry.png';
+import constructionIndustryImage from './images/construction_industry.png';
 
 // SVG Placeholder Template
 interface PlaceholderProps {
@@ -86,15 +89,42 @@ export const toolsStrategySession = () => (
 );
 
 export const industryFilm = () => (
-  <ImagePlaceholder height="160px" text="Film Industry" />
+  <img 
+    src={filmIndustryImage} 
+    alt="Film Industry"
+    style={{ 
+      height: "160px",
+      width: "100%",
+      objectFit: "cover",
+      borderRadius: "4px"
+    }}
+  />
 );
 
 export const industryMusic = () => (
-  <ImagePlaceholder height="160px" text="Music Industry" bgColor="#f27030" /> // Burnt orange
+  <img 
+    src={musicIndustryImage} 
+    alt="Music Industry"
+    style={{ 
+      height: "160px",
+      width: "100%",
+      objectFit: "cover",
+      borderRadius: "4px"
+    }}
+  />
 );
 
 export const industryConstruction = () => (
-  <ImagePlaceholder height="160px" text="Construction Industry" />
+  <img 
+    src={constructionIndustryImage} 
+    alt="Construction Industry"
+    style={{ 
+      height: "160px",
+      width: "100%",
+      objectFit: "cover",
+      borderRadius: "4px"
+    }}
+  />
 );
 
 export const testimonialClient = () => (
