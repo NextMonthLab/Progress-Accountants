@@ -179,16 +179,6 @@ function Router() {
       />
       <ProtectedRoute 
         path="/admin/dashboard" 
-        component={ClientDashboardPage} 
-        allowedRoles={['admin', 'super_admin', 'editor']} 
-      />
-      <ProtectedRoute 
-        path="/admin/dashboard-v2" 
-        component={ClientDashboardPage2} 
-        allowedRoles={['admin', 'super_admin', 'editor']} 
-      />
-      <ProtectedRoute 
-        path="/admin/dashboard-redesigned" 
         component={RedesignedDashboardPage} 
         allowedRoles={['admin', 'super_admin', 'editor']} 
       />

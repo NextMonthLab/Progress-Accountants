@@ -174,22 +174,8 @@ export default function AdminSidebar() {
           title: "Dashboard", 
           href: "/admin/dashboard", 
           icon: <LayoutDashboard className="h-5 w-5" />,
-          description: "Quick access to website building tools"
-        },
-        { 
-          title: "Dashboard v2", 
-          href: "/admin/dashboard-v2", 
-          icon: <LayoutDashboard className="h-5 w-5" />,
-          description: "High contrast dashboard with better visibility",
-          badge: { text: "Fixed", variant: "updated" }
-        },
-        { 
-          title: "Redesigned Dashboard", 
-          href: "/admin/dashboard-redesigned", 
-          icon: <LayoutDashboard className="h-5 w-5" />,
-          description: "New modern dashboard with enhanced UI",
-          badge: { text: "New", variant: "new" },
-          isNew: true
+          description: "Modern dashboard with enhanced UI and improved contrast",
+          badge: { text: "Upgraded", variant: "updated" }
         },
         { 
           title: "Client CRM", 
