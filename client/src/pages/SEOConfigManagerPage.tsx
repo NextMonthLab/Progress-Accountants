@@ -2,7 +2,11 @@ import { useState } from 'react';
 import { SEOConfigList } from '@/components/seo/SEOConfigList';
 import { SEOConfigEditor } from '@/components/seo/SEOConfigEditor';
 import { SEOPreview } from '@/components/seo/SEOPreview';
+import SEOPriorityManager from '@/components/seo/SEOPriorityManager';
 import { DocumentHead } from '@/components/DocumentHead';
+import { Button } from '@/components/ui/button';
+import { ListFilter } from 'lucide-react';
+import { Dialog, DialogContent } from '@/components/ui/dialog';
 
 type SEOConfig = {
   id: number;
@@ -23,6 +27,7 @@ type SEOConfig = {
 export default function SEOConfigManagerPage() {
   const [isEditorOpen, setIsEditorOpen] = useState(false);
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
+  const [isPriorityManagerOpen, setIsPriorityManagerOpen] = useState(false);
   const [selectedConfig, setSelectedConfig] = useState<SEOConfig | null>(null);
   const [refreshTrigger, setRefreshTrigger] = useState(0);
 
@@ -55,11 +60,21 @@ export default function SEOConfigManagerPage() {
       
       <div className="min-h-screen overflow-y-auto">
         <main className="p-6">
-          <div className="mb-6">
-            <h1 className="text-2xl font-bold mb-2">SEO Configuration Manager</h1>
-            <p className="text-muted-foreground">
-              Manage your website's SEO settings for each page
-            </p>
+          <div className="mb-6 flex justify-between items-center">
+            <div>
+              <h1 className="text-2xl font-bold mb-2">SEO Configuration Manager</h1>
+              <p className="text-muted-foreground">
+                Manage your website's SEO settings for each page
+              </p>
+            </div>
+            <Button 
+              onClick={() => setIsPriorityManagerOpen(true)}
+              variant="outline"
+              className="flex items-center gap-2"
+            >
+              <ListFilter className="h-4 w-4" />
+              Manage Page Priorities
+            </Button>
           </div>
 
           <SEOConfigList
@@ -86,6 +101,20 @@ export default function SEOConfigManagerPage() {
               config={selectedConfig}
             />
           )}
+          
+          <Dialog 
+            open={isPriorityManagerOpen} 
+            onOpenChange={setIsPriorityManagerOpen}
+          >
+            <DialogContent className="max-w-md p-0">
+              <SEOPriorityManager 
+                onClose={() => {
+                  setIsPriorityManagerOpen(false);
+                  handleRefresh(); // Refresh the list after managing priorities
+                }}
+              />
+            </DialogContent>
+          </Dialog>
         </main>
       </div>
     </>

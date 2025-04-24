@@ -174,6 +174,7 @@ export interface IStorage {
   deleteSeoConfiguration(id: number): Promise<boolean>;
   getSeoConfigurationsByStatus(indexable: boolean): Promise<SeoConfiguration[]>;
   updateSeoSyncStatus(id: number, vaultSynced?: boolean, guardianSynced?: boolean): Promise<SeoConfiguration | undefined>;
+  updateSeoConfigPriorities(priorities: { id: number, priority: number }[]): Promise<SeoConfiguration[]>;
   
   // Brand Versioning operations
   getBrandVersion(id: number): Promise<BrandVersion | undefined>;
