@@ -43,6 +43,11 @@ interface BusinessIdentity {
     targetAudience: string;
     geographicFocus: string;
   };
+  products: {
+    services: string[]; // List of services offered
+    priceRange: string; // General price range indicator
+    deliveryMethod: string; // How services are delivered
+  };
   personality: {
     toneOfVoice: string[];
     usps: string[];
@@ -68,6 +73,11 @@ const defaultBusinessIdentity: BusinessIdentity = {
     primaryIndustry: "Accounting & Tax Planning",
     targetAudience: "Small businesses, Startups, Contractors",
     geographicFocus: "UK, Oxfordshire",
+  },
+  products: {
+    services: ["Tax Planning & Preparation", "Bookkeeping", "Business Advisory", "Financial Reporting", "Cloud Accounting"],
+    priceRange: "Mid-range to Premium",
+    deliveryMethod: "Online and In-person",
   },
   personality: {
     toneOfVoice: ["Professional", "Approachable", "Clear", "Helpful"],
@@ -134,15 +144,34 @@ const toneOptions = [
   "Enthusiastic"
 ];
 
+// Delivery method options for dropdown
+const deliveryMethodOptions = [
+  "In-person only",
+  "Online only",
+  "Online and In-person",
+  "On-site at client location",
+  "Hybrid approach"
+];
+
+// Price range options for dropdown
+const priceRangeOptions = [
+  "Budget",
+  "Mid-range",
+  "Mid-range to Premium",
+  "Premium",
+  "Custom / Quote-based"
+];
+
 export default function BusinessIdentityPage() {
   const { toast } = useToast();
   
   // State for business identity
   const [businessIdentity, setBusinessIdentity] = useState<BusinessIdentity>(defaultBusinessIdentity);
   
-  // State for new USP and tone inputs
+  // State for new USP, tone and service inputs
   const [newUsp, setNewUsp] = useState('');
   const [newTone, setNewTone] = useState('');
+  const [newService, setNewService] = useState('');
   
   // State for save success
   const [savedSuccessfully, setSavedSuccessfully] = useState(false);
@@ -228,6 +257,30 @@ export default function BusinessIdentityPage() {
       const newBusinessIdentity = JSON.parse(JSON.stringify(prev));
       newBusinessIdentity.personality.usps = newBusinessIdentity.personality.usps.filter(
         (usp: string) => usp !== uspToRemove
+      );
+      return newBusinessIdentity;
+    });
+  };
+  
+  // Add service
+  const addService = () => {
+    if (newService.trim() && !businessIdentity.products.services.includes(newService.trim())) {
+      setBusinessIdentity(prev => {
+        const newBusinessIdentity = JSON.parse(JSON.stringify(prev));
+        newBusinessIdentity.products.services.push(newService.trim());
+        return newBusinessIdentity;
+      });
+      
+      setNewService('');
+    }
+  };
+  
+  // Remove service
+  const removeService = (serviceToRemove: string) => {
+    setBusinessIdentity(prev => {
+      const newBusinessIdentity = JSON.parse(JSON.stringify(prev));
+      newBusinessIdentity.products.services = newBusinessIdentity.products.services.filter(
+        (service: string) => service !== serviceToRemove
       );
       return newBusinessIdentity;
     });
@@ -444,6 +497,92 @@ export default function BusinessIdentityPage() {
               </AccordionContent>
             </AccordionItem>
             
+            {/* Products & Services Section */}
+            <AccordionItem value="products">
+              <AccordionTrigger className="text-lg font-medium">
+                Products & Services
+              </AccordionTrigger>
+              <AccordionContent className="pt-4 pb-2">
+                <Card>
+                  <CardContent className="space-y-4 pt-6">
+                    <div className="space-y-2">
+                      <Label>Services Offered</Label>
+                      <div className="flex flex-wrap gap-2 mb-3">
+                        {businessIdentity.products.services.map(service => (
+                          <Badge
+                            key={service}
+                            variant="secondary"
+                            className="bg-green-50 text-green-700 hover:bg-green-100"
+                          >
+                            {service}
+                            <X 
+                              className="ml-1 h-3 w-3 cursor-pointer" 
+                              onClick={() => removeService(service)}
+                            />
+                          </Badge>
+                        ))}
+                      </div>
+                      
+                      <div className="flex items-center gap-2">
+                        <Input 
+                          placeholder="Add service..." 
+                          value={newService}
+                          onChange={(e) => setNewService(e.target.value)}
+                          onKeyDown={(e) => e.key === 'Enter' && addService()}
+                        />
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          onClick={addService}
+                          disabled={!newService.trim()}
+                        >
+                          <Plus className="h-4 w-4" />
+                        </Button>
+                      </div>
+                      <p className="text-sm text-gray-500">The main services or products your business offers.</p>
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="priceRange">Price Range</Label>
+                      <Select 
+                        value={businessIdentity.products.priceRange}
+                        onValueChange={(value) => handleInputChange('products', 'priceRange', value)}
+                      >
+                        <SelectTrigger id="priceRange">
+                          <SelectValue placeholder="Select price range" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {priceRangeOptions.map(range => (
+                            <SelectItem key={range} value={range}>{range}</SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <p className="text-sm text-gray-500">General price positioning in the market.</p>
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="deliveryMethod">Service Delivery Method</Label>
+                      <Select 
+                        value={businessIdentity.products.deliveryMethod}
+                        onValueChange={(value) => handleInputChange('products', 'deliveryMethod', value)}
+                      >
+                        <SelectTrigger id="deliveryMethod">
+                          <SelectValue placeholder="Select delivery method" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {deliveryMethodOptions.map(method => (
+                            <SelectItem key={method} value={method}>{method}</SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <p className="text-sm text-gray-500">How you typically deliver your services to clients.</p>
+                    </div>
+                  </CardContent>
+                </Card>
+              </AccordionContent>
+            </AccordionItem>
+            
             {/* Personality & Positioning Section */}
             <AccordionItem value="personality">
               <AccordionTrigger className="text-lg font-medium">
@@ -479,7 +618,7 @@ export default function BusinessIdentityPage() {
                           placeholder="Add custom tone..." 
                           value={newTone}
                           onChange={(e) => setNewTone(e.target.value)}
-                          onKeyPress={(e) => e.key === 'Enter' && addCustomTone()}
+                          onKeyDown={(e) => e.key === 'Enter' && addCustomTone()}
                         />
                         <Button
                           type="button"
@@ -517,7 +656,7 @@ export default function BusinessIdentityPage() {
                           placeholder="Add unique selling point..." 
                           value={newUsp}
                           onChange={(e) => setNewUsp(e.target.value)}
-                          onKeyPress={(e) => e.key === 'Enter' && addUsp()}
+                          onKeyDown={(e) => e.key === 'Enter' && addUsp()}
                         />
                         <Button
                           type="button"
