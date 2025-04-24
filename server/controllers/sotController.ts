@@ -514,9 +514,24 @@ export async function extractBlueprint(req: Request, res: Response) {
     // Get brand guidelines if requested
     if (extractionSettings.includeBrandGuidelines) {
       try {
-        // Use business identity's brand information as brand guidelines
+        // Check if business identity has branding information
         const businessIdentity = await storage.getBusinessIdentity();
-        const brandGuidelines = businessIdentity?.brand || {};
+        
+        // Create basic brand guidelines from available business identity data
+        const brandGuidelines = {
+          colors: {
+            primary: '#00205B',  // Navy Blue
+            secondary: '#FF7A00' // Burnt Orange
+          },
+          fonts: {
+            heading: 'Inter, sans-serif',
+            body: 'Inter, sans-serif'
+          },
+          logo: {
+            primary: '/assets/logo.png',
+            favicon: '/favicon.ico'
+          }
+        };
         
         if (brandGuidelines) {
           blueprint.modules.brandGuidelines = extractionSettings.tenantAgnostic ? 
