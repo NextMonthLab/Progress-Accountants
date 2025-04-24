@@ -795,6 +795,34 @@ export class DatabaseStorage implements IStorage {
     
     return updated;
   }
+  
+  async updateSeoConfigPriorities(priorities: { id: number; priority: number }[]): Promise<SeoConfiguration[]> {
+    try {
+      // Create an array to store the results
+      const updatedConfigs: SeoConfiguration[] = [];
+      
+      // Update each configuration one at a time to ensure all updates succeed
+      for (const item of priorities) {
+        const [updated] = await db
+          .update(seoConfigurations)
+          .set({ 
+            priority: item.priority,
+            updatedAt: new Date()
+          })
+          .where(eq(seoConfigurations.id, item.id))
+          .returning();
+        
+        if (updated) {
+          updatedConfigs.push(updated);
+        }
+      }
+      
+      return updatedConfigs;
+    } catch (error) {
+      console.error('Error updating SEO configuration priorities:', error);
+      throw error;
+    }
+  }
 
   // Brand Versioning operations
   async getBrandVersion(id: number): Promise<BrandVersion | undefined> {

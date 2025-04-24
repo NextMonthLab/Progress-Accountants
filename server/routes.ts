@@ -2137,6 +2137,45 @@ export async function registerRoutes(app: Express): Promise<Server> {
       handleApiError(res, error, "Failed to delete SEO configuration");
     }
   });
+  
+  // Batch update SEO configuration priorities
+  app.patch("/api/seo/configs/batch-update-priority", async (req: Request, res: Response) => {
+    try {
+      const { priorities } = req.body;
+      
+      if (!priorities || !Array.isArray(priorities)) {
+        return res.status(400).json({ error: "Invalid priorities format. Expected an array of {id, priority} objects." });
+      }
+      
+      // Validate each priority item
+      for (const item of priorities) {
+        if (!item.id || typeof item.id !== 'number' || item.priority === undefined || typeof item.priority !== 'number') {
+          return res.status(400).json({ 
+            error: "Each priority item must have a numeric id and priority value",
+            invalidItem: item 
+          });
+        }
+        
+        // Ensure priority is between 0 and 1
+        if (item.priority < 0 || item.priority > 1) {
+          return res.status(400).json({ 
+            error: "Priority values must be between 0 and 1",
+            invalidItem: item 
+          });
+        }
+      }
+      
+      const updatedConfigs = await storage.updateSeoConfigPriorities(priorities);
+      
+      return res.status(200).json({
+        success: true,
+        message: `Updated ${updatedConfigs.length} SEO configuration priorities`,
+        data: updatedConfigs
+      });
+    } catch (error) {
+      handleApiError(res, error, "Failed to update SEO configuration priorities");
+    }
+  });
 
   app.post("/api/seo/configs/:id/sync/guardian", async (req: Request, res: Response) => {
     try {
