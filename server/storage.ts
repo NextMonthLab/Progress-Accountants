@@ -66,6 +66,17 @@ import {
   type InsertCompanionConfig
 } from "@shared/schema";
 import { PageMetadata, PageComplexityAssessment } from "@shared/page_metadata";
+import { 
+  sotDeclarations, 
+  sotMetrics, 
+  sotSyncLogs,
+  type SotDeclaration,
+  type InsertSotDeclaration,
+  type SotMetric,
+  type InsertSotMetric,
+  type SotSyncLog,
+  type InsertSotSyncLog
+} from "@shared/sot";
 import { db } from "./db";
 import { eq, desc, asc, and } from "drizzle-orm";
 import connectPg from "connect-pg-simple";
@@ -231,6 +242,16 @@ export interface IStorage {
   updateExportableModules(clientId: string, moduleList: any[]): Promise<ClientRegistry | undefined>;
   markAsExportReady(clientId: string, exportReady: boolean): Promise<ClientRegistry | undefined>;
   updateHandoffStatus(clientId: string, status: string): Promise<ClientRegistry | undefined>;
+
+  // SOT (Single Source of Truth) operations
+  getSotDeclaration(): Promise<SotDeclaration | undefined>;
+  saveSotDeclaration(data: InsertSotDeclaration): Promise<SotDeclaration>;
+  updateSotDeclaration(id: number, data: Partial<InsertSotDeclaration>): Promise<SotDeclaration | undefined>;
+  getSotMetrics(): Promise<SotMetric | undefined>;
+  saveSotMetrics(data: InsertSotMetric): Promise<SotMetric>;
+  updateSotMetrics(id: number, data: Partial<InsertSotMetric>): Promise<SotMetric | undefined>;
+  logSotSync(eventType: string, status: string, details?: string): Promise<SotSyncLog>;
+  getSotSyncLogs(limit?: number): Promise<SotSyncLog[]>;
 }
 
 // Database-backed implementation of IStorage
@@ -1436,88 +1457,127 @@ export class DatabaseStorage implements IStorage {
 
   // SOT (Single Source of Truth) operations
   async getSotDeclaration(): Promise<SotDeclaration | undefined> {
-    const [declaration] = await db
-      .select()
-      .from(sotDeclarations)
-      .orderBy(desc(sotDeclarations.createdAt))
-      .limit(1);
-    
-    return declaration;
+    try {
+      const [declaration] = await db.select().from(sotDeclarations);
+      return declaration;
+    } catch (error) {
+      console.error("Error fetching SOT declaration:", error);
+      return undefined;
+    }
   }
-  
+
   async saveSotDeclaration(data: InsertSotDeclaration): Promise<SotDeclaration> {
-    const [declaration] = await db
-      .insert(sotDeclarations)
-      .values(data)
-      .returning();
-    
-    return declaration;
+    try {
+      const [declaration] = await db
+        .insert(sotDeclarations)
+        .values({
+          ...data,
+          createdAt: new Date(),
+          updatedAt: new Date()
+        })
+        .returning();
+      return declaration;
+    } catch (error) {
+      console.error("Error saving SOT declaration:", error);
+      throw error;
+    }
   }
-  
+
   async updateSotDeclaration(id: number, data: Partial<InsertSotDeclaration>): Promise<SotDeclaration | undefined> {
-    const [updated] = await db
-      .update(sotDeclarations)
-      .set({
-        ...data,
-        updatedAt: new Date()
-      })
-      .where(eq(sotDeclarations.id, id))
-      .returning();
-    
-    return updated;
+    try {
+      const [updated] = await db
+        .update(sotDeclarations)
+        .set({
+          ...data,
+          updatedAt: new Date()
+        })
+        .where(eq(sotDeclarations.id, id))
+        .returning();
+      return updated;
+    } catch (error) {
+      console.error(`Error updating SOT declaration with id ${id}:`, error);
+      return undefined;
+    }
   }
-  
+
   async getSotMetrics(): Promise<SotMetric | undefined> {
-    const [metrics] = await db
-      .select()
-      .from(sotMetrics)
-      .orderBy(desc(sotMetrics.createdAt))
-      .limit(1);
-    
-    return metrics;
+    try {
+      const [metrics] = await db.select().from(sotMetrics);
+      return metrics;
+    } catch (error) {
+      console.error("Error fetching SOT metrics:", error);
+      return undefined;
+    }
   }
-  
+
   async saveSotMetrics(data: InsertSotMetric): Promise<SotMetric> {
-    const [metrics] = await db
-      .insert(sotMetrics)
-      .values(data)
-      .returning();
-    
-    return metrics;
+    try {
+      const [metrics] = await db
+        .insert(sotMetrics)
+        .values({
+          ...data,
+          createdAt: new Date(),
+          updatedAt: new Date()
+        })
+        .returning();
+      return metrics;
+    } catch (error) {
+      console.error("Error saving SOT metrics:", error);
+      throw error;
+    }
   }
-  
+
   async updateSotMetrics(id: number, data: Partial<InsertSotMetric>): Promise<SotMetric | undefined> {
-    const [updated] = await db
-      .update(sotMetrics)
-      .set({
-        ...data,
-        updatedAt: new Date()
-      })
-      .where(eq(sotMetrics.id, id))
-      .returning();
-    
-    return updated;
+    try {
+      const [updated] = await db
+        .update(sotMetrics)
+        .set({
+          ...data,
+          updatedAt: new Date()
+        })
+        .where(eq(sotMetrics.id, id))
+        .returning();
+      return updated;
+    } catch (error) {
+      console.error(`Error updating SOT metrics with id ${id}:`, error);
+      return undefined;
+    }
   }
-  
+
   async logSotSync(eventType: string, status: string, details?: string): Promise<SotSyncLog> {
-    const [log] = await db
-      .insert(sotSyncLogs)
-      .values({
-        eventType,
-        status,
-        details
-      })
-      .returning();
-    
-    return log;
+    try {
+      const [log] = await db
+        .insert(sotSyncLogs)
+        .values({
+          eventType,
+          status,
+          details: details || null,
+          createdAt: new Date()
+        })
+        .returning();
+      return log;
+    } catch (error) {
+      console.error("Error logging SOT sync:", error);
+      throw error;
+    }
   }
-  
-  async getSotSyncLogs(limit: number = 10): Promise<SotSyncLog[]> {
-    return db
-      .select()
-      .from(sotSyncLogs)
-      .orderBy(desc(sotSyncLogs.createdAt))
-      .limit(limit);
+
+  async getSotSyncLogs(limit?: number): Promise<SotSyncLog[]> {
+    try {
+      let query = db
+        .select()
+        .from(sotSyncLogs)
+        .orderBy(desc(sotSyncLogs.createdAt));
+      
+      if (limit) {
+        query = query.limit(limit);
+      }
+      
+      return await query;
+    } catch (error) {
+      console.error("Error fetching SOT sync logs:", error);
+      return [];
+    }
   }
 }
 
