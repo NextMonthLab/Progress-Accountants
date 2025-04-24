@@ -1289,7 +1289,7 @@ export default function ClientDashboardPage() {
                   title="Marketplace Recommendations" 
                   description="Tools that might benefit your business"
                 >
-                  <Card>
+                  <Card variant="default">
                     <CardContent className="p-6">
                       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                         <div className="border rounded-lg p-4 hover:border-navy/40 transition-colors">
@@ -1326,7 +1326,7 @@ export default function ClientDashboardPage() {
             <div className="space-y-8">
               {/* Tool Stats */}
               <Section title="Tool Metrics">
-                <Card>
+                <Card variant="default">
                   <CardContent className="p-6 space-y-6">
                     <div>
                       <div className="flex justify-between items-center mb-2">
@@ -1409,7 +1409,7 @@ export default function ClientDashboardPage() {
             {/* Main content - left 2/3 */}
             <div className="lg:col-span-2 space-y-8">
               <Section title="System Health Status">
-                <Card>
+                <Card variant="default">
                   <CardHeader className="pb-0">
                     <div className="flex justify-between items-center">
                       <CardDescription>Overall system status and performance metrics</CardDescription>
@@ -1524,7 +1524,7 @@ export default function ClientDashboardPage() {
 
               {/* Recent Backups */}
               <Section title="Recent Backups">
-                <Card>
+                <Card variant="default">
                   <CardContent className="p-0">
                     <div className="divide-y">
                       <div className="p-4 hover:bg-gray-50">
