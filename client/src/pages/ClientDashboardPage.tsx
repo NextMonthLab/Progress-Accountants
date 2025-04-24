@@ -842,7 +842,7 @@ export default function ClientDashboardPage() {
                 description="Latest actions and system updates"
                 action={{ label: "View all activity", href: "/admin/activity" }}
               >
-                <Card>
+                <Card variant="default">
                   <CardContent className="p-6">
                     {isActivityLoading ? (
                       <div className="space-y-6">
@@ -1007,7 +1007,7 @@ export default function ClientDashboardPage() {
                 description="Most visited pages in the last 30 days"
                 action={{ label: "View all pages", href: "/admin/content/pages" }}
               >
-                <Card className="border-2 border-gray-200 shadow-md bg-gray-50">
+                <Card variant="light" className="border-2 border-gray-200 shadow-md">
                   <CardContent className="p-0">
                     <div className="overflow-x-auto">
                       <table className="w-full">
@@ -1117,7 +1117,7 @@ export default function ClientDashboardPage() {
                 title="Content Creation Activity" 
                 description="Page creation and updates over time"
               >
-                <Card className="border-2 border-gray-200 shadow-md bg-gray-50">
+                <Card variant="light" className="border-2 border-gray-200 shadow-md">
                   <CardContent className="p-6">
                     <AnalyticsChart height={200} />
                     
@@ -1194,7 +1194,7 @@ export default function ClientDashboardPage() {
 
               {/* Recents */}
               <Section title="Recently Updated">
-                <Card>
+                <Card variant="default">
                   <CardContent className="p-0">
                     <div className="divide-y">
                       <div className="px-6 py-4 hover:bg-gray-50">
