@@ -879,7 +879,7 @@ export default function ClientDashboardPage() {
                 description="Last 7 days website traffic"
                 action={{ label: "Full analytics", href: "/admin/analytics" }}
               >
-                <Card variant="navy" className="border-0 shadow-md">
+                <Card className="border-0 shadow-md bg-navy-900">
                   <CardContent className="pt-6 text-white">
                     <AnalyticsChart isLoading={isOverviewLoading} height={220} />
                     
@@ -962,7 +962,7 @@ export default function ClientDashboardPage() {
                 title="Industry News" 
                 action={{ label: "All news", href: "/admin/news" }}
               >
-                <Card variant="navy" className="border-0 shadow-md">
+                <Card className="border-0 shadow-md bg-navy-800">
                   <CardContent className="p-6">
                     {isNewsLoading ? (
                       <div className="space-y-6">
