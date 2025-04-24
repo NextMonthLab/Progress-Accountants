@@ -177,6 +177,13 @@ export default function AdminSidebar() {
           description: "Quick access to website building tools"
         },
         { 
+          title: "Dashboard v2", 
+          href: "/admin/dashboard-v2", 
+          icon: <LayoutDashboard className="h-5 w-5" />,
+          description: "High contrast dashboard with better visibility",
+          badge: { text: "Fixed", variant: "updated" }
+        },
+        { 
           title: "Client CRM", 
           href: "/admin/crm", 
           icon: <Users className="h-5 w-5" />,
