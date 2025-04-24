@@ -188,10 +188,10 @@ function Router() {
         allowedRoles={['admin', 'super_admin', 'editor']} 
       />
       
-      {/* Client dashboard routes */}
+      {/* Client dashboard routes - redirecting to consolidated dashboard */}
       <ProtectedRoute 
         path="/client-dashboard" 
-        component={DashboardPage} 
+        component={RedesignedDashboardPage} 
         allowedRoles={['client', 'admin', 'super_admin']} 
       />
       <ProtectedRoute 
