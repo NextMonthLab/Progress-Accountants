@@ -20,6 +20,7 @@ import ClientRegistrationPage from "@/pages/ClientRegistrationPage";
 import ClientDashboardPage from "@/pages/ClientDashboardPage";
 import ClientDashboardPage2 from "@/pages/ClientDashboardPage2";
 import RedesignedDashboardPage from "@/pages/RedesignedDashboardPage";
+import AdminDashboardPage from "@/pages/AdminDashboardPage";
 import CRMViewPage from "@/pages/CRMViewPage";
 import CRMViewPageEnhanced from "@/pages/CRMViewPageEnhanced";
 import ToolsDashboardPage from "@/pages/ToolsDashboardPage";
@@ -179,7 +180,7 @@ function Router() {
       />
       <ProtectedRoute 
         path="/admin/dashboard" 
-        component={RedesignedDashboardPage} 
+        component={AdminDashboardPage} 
         allowedRoles={['admin', 'super_admin', 'editor']} 
       />
       <ProtectedRoute 
@@ -188,10 +189,10 @@ function Router() {
         allowedRoles={['admin', 'super_admin', 'editor']} 
       />
       
-      {/* Client dashboard routes - redirecting to consolidated dashboard */}
+      {/* Client dashboard routes - financial dashboard for Progress clients */}
       <ProtectedRoute 
         path="/client-dashboard" 
-        component={RedesignedDashboardPage} 
+        component={ClientDashboardPage} 
         allowedRoles={['client', 'admin', 'super_admin']} 
       />
       <ProtectedRoute 

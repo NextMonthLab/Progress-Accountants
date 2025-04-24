@@ -36,7 +36,6 @@ import {
   Zap
 } from "lucide-react";
 import AdminLayout from '@/layouts/AdminLayout';
-import SystemHealth from '@/components/dashboard/SystemHealth';
 import AnalyticsChart from '@/components/dashboard/AnalyticsChart';
 
 // Stat Card Component
@@ -61,7 +60,15 @@ function StatCard({
   isGradient = false,
   className = ''
 }: StatCardProps) {
-  const scheme = {
+  // Define the color scheme with proper type
+  type ColorScheme = {
+    [key: string]: {
+      bg: string;
+      icon: string;
+    }
+  };
+
+  const scheme: ColorScheme = {
     navy: {
       bg: isGradient ? 'from-navy to-blue-900' : 'bg-white',
       icon: isGradient ? 'bg-white/20 text-white' : 'bg-navy/10 text-navy',
