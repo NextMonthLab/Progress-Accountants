@@ -36,7 +36,6 @@ import {
   XCircle,
   Zap
 } from "lucide-react";
-import AdminLayout from '@/layouts/AdminLayout';
 import AnalyticsChart from '@/components/dashboard/AnalyticsChart';
 
 // Stat Card Component
@@ -522,7 +521,6 @@ export default function AdminDashboardPage() {
   };
 
   return (
-    <AdminLayout>
       <div className="space-y-8">
         {/* Page Header */}
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
@@ -545,19 +543,19 @@ export default function AdminDashboardPage() {
         {/* Tabs Navigation */}
         <Tabs defaultValue="overview" value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="bg-white border border-gray-200 mb-6">
-            <TabsTrigger value="overview" className="data-[state=active]:bg-blue-50 data-[state=active]:text-navy data-[state=active]:border-b-2 data-[state=active]:border-navy">
+            <TabsTrigger value="overview" className="data-[state=active]:bg-orange-50 data-[state=active]:text-orange-600 data-[state=active]:border-b-2 data-[state=active]:border-orange-500">
               <LayoutDashboard className="h-4 w-4 mr-2" />
               Overview
             </TabsTrigger>
-            <TabsTrigger value="content" className="data-[state=active]:bg-blue-50 data-[state=active]:text-navy data-[state=active]:border-b-2 data-[state=active]:border-navy">
+            <TabsTrigger value="content" className="data-[state=active]:bg-orange-50 data-[state=active]:text-orange-600 data-[state=active]:border-b-2 data-[state=active]:border-orange-500">
               <FileText className="h-4 w-4 mr-2" />
               Content
             </TabsTrigger>
-            <TabsTrigger value="tools" className="data-[state=active]:bg-blue-50 data-[state=active]:text-navy data-[state=active]:border-b-2 data-[state=active]:border-navy">
+            <TabsTrigger value="tools" className="data-[state=active]:bg-orange-50 data-[state=active]:text-orange-600 data-[state=active]:border-b-2 data-[state=active]:border-orange-500">
               <Cpu className="h-4 w-4 mr-2" />
               Tools
             </TabsTrigger>
-            <TabsTrigger value="system" className="data-[state=active]:bg-blue-50 data-[state=active]:text-navy data-[state=active]:border-b-2 data-[state=active]:border-navy">
+            <TabsTrigger value="system" className="data-[state=active]:bg-orange-50 data-[state=active]:text-orange-600 data-[state=active]:border-b-2 data-[state=active]:border-orange-500">
               <Settings className="h-4 w-4 mr-2" />
               System
             </TabsTrigger>
@@ -1250,6 +1248,5 @@ export default function AdminDashboardPage() {
           </TabsContent>
         </Tabs>
       </div>
-    </AdminLayout>
   );
 }
