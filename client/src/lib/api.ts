@@ -152,7 +152,13 @@ export async function saveSeoConfig(config: {
   const method = config.id ? 'PATCH' : 'POST';
   const endpoint = config.id ? `/api/seo/configs/${config.id}` : '/api/seo/configs';
   
-  const response = await apiRequest(method, endpoint, config);
+  // Ensure priority is set to a default value (0.5) if not provided
+  const dataToSend = {
+    ...config,
+    priority: config.priority === null || config.priority === undefined ? 0.5 : config.priority
+  };
+  
+  const response = await apiRequest(method, endpoint, dataToSend);
   const data = await response.json();
   
   // Invalidate the SEO configs cache

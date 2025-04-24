@@ -132,12 +132,22 @@ export function SEOConfigEditor({ isOpen, onClose, config, onSaved }: SEOConfigE
   const onSubmit = async (values: SEOConfigFormValues) => {
     setIsSubmitting(true);
     try {
-      await saveSeoConfig(values);
+      // Ensure priority is explicitly set to 0.5 if not provided
+      const configToSave = {
+        ...values,
+        priority: 0.5 // Always set a default priority value
+      };
+      
+      await saveSeoConfig(configToSave);
       onSaved();
       onClose();
     } catch (error) {
       console.error('Failed to save SEO config:', error);
-      // Show error
+      toast({
+        title: "Error Saving SEO Configuration",
+        description: "There was a problem saving the SEO configuration. Please try again.",
+        variant: "destructive",
+      });
     } finally {
       setIsSubmitting(false);
     }
