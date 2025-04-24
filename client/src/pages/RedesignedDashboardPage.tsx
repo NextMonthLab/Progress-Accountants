@@ -496,7 +496,6 @@ export default function RedesignedDashboardPage() {
   };
 
   return (
-    <AdminLayout>
       <div className="px-1 py-6 md:px-4 lg:px-6">
         {/* Hero Section with Welcome and Overview Stats */}
         <div className="mb-8 bg-gradient-to-br from-navy to-blue-900 rounded-2xl p-8 text-white">
@@ -1425,6 +1424,5 @@ export default function RedesignedDashboardPage() {
           </TabsContent>
         </Tabs>
       </div>
-    </AdminLayout>
   );
 }
