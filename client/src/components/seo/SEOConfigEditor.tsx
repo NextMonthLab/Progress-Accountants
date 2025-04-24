@@ -80,7 +80,7 @@ export function SEOConfigEditor({ isOpen, onClose, config, onSaved }: SEOConfigE
       canonical: config?.canonical || null,
       image: config?.image || null,
       indexable: config?.indexable ?? true,
-      priority: config?.priority ? String(config.priority) : null,
+      priority: config?.priority || null,
       changeFrequency: config?.changeFrequency || null,
     },
   });
@@ -96,7 +96,7 @@ export function SEOConfigEditor({ isOpen, onClose, config, onSaved }: SEOConfigE
         canonical: config.canonical,
         image: config.image,
         indexable: config.indexable,
-        priority: config.priority ? String(config.priority) : null,
+        priority: config.priority || null,
         changeFrequency: config.changeFrequency,
       });
     } else {
