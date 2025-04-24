@@ -407,7 +407,7 @@ const NewsCard: React.FC<NewsCardProps> = ({
   isLoading = false 
 }) => {
   return (
-    <div className="border-b border-gray-300/20 pb-4 mb-4 last:mb-0 last:pb-0 last:border-0">
+    <div className="border-b border-gray-100 pb-4 mb-4 last:mb-0 last:pb-0 last:border-0">
       {isLoading ? (
         <div className="space-y-3">
           <div className="h-4 bg-gray-200 rounded w-3/4 animate-pulse"></div>
@@ -421,11 +421,11 @@ const NewsCard: React.FC<NewsCardProps> = ({
       ) : (
         <>
           <h3 className="font-semibold text-white">{title}</h3>
-          <p className="text-sm text-gray-200 mt-1 mb-2 line-clamp-2">{excerpt}</p>
+          <p className="text-sm text-gray-300 mt-1 mb-2 line-clamp-2">{excerpt}</p>
           <div className="flex items-center gap-3 text-xs">
             <span className="text-gray-300">{date}</span>
             {category && (
-              <Badge variant="outline" className="px-1.5 py-0 h-5 font-normal text-white border-white/30 bg-white/10">
+              <Badge variant="outline" className="px-1.5 py-0 h-5 font-normal">
                 {category}
               </Badge>
             )}
@@ -433,7 +433,7 @@ const NewsCard: React.FC<NewsCardProps> = ({
           {link && (
             <div className="mt-3">
               <Link href={link}>
-                <Button variant="ghost" size="sm" className="h-7 px-0 text-orange-300 hover:text-orange-200 font-medium">
+                <Button variant="ghost" size="sm" className="h-7 px-0 text-white font-medium">
                   Read more
                   <ArrowRight className="ml-1 h-3.5 w-3.5" />
                 </Button>
@@ -962,7 +962,7 @@ export default function ClientDashboardPage() {
                 title="Industry News" 
                 action={{ label: "All news", href: "/admin/news" }}
               >
-                <Card className="border-0 shadow-md bg-navy-800">
+                <Card className="border-0 shadow-md bg-navy-900">
                   <CardContent className="p-6">
                     {isNewsLoading ? (
                       <div className="space-y-6">
