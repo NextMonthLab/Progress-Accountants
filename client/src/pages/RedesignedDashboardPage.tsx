@@ -41,7 +41,7 @@ import { Link } from "wouter";
 import AdminLayout from "@/layouts/AdminLayout";
 import { useAuth } from "@/hooks/use-auth";
 import { useTenant } from "@/hooks/use-tenant";
-import AnalyticsChart from "@/components/dashboard/AnalyticsChart";
+import AnalyticsChart from "../components/dashboard/AnalyticsChart";
 
 // Section component
 interface SectionProps {
@@ -198,6 +198,14 @@ interface HealthStatusProps {
   details?: string;
   lastChecked?: string;
   isLoading?: boolean;
+}
+
+// Define a component-specific type for system health items
+interface SystemHealthComponent {
+  name: string;
+  status: 'good' | 'warning' | 'critical' | 'unknown';
+  details?: string;
+  lastChecked?: string;
 }
 
 const HealthStatus: React.FC<HealthStatusProps> = ({ 
@@ -1244,7 +1252,7 @@ export default function RedesignedDashboardPage() {
                   <Card className="border">
                     <CardContent className="p-0">
                       <div className="divide-y">
-                        {systemHealth?.components.map((component, index) => (
+                        {systemHealth?.components.map((component: SystemHealthComponent, index) => (
                           <HealthStatus 
                             key={index}
                             title={component.name} 

@@ -1,15 +1,10 @@
 import * as React from 'react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
-interface AnalyticsChartProps {
-  height?: number;
-  data?: any[];
-}
-
 /**
  * A chart component for displaying analytics data
  */
-const AnalyticsChart: React.FC<AnalyticsChartProps> = ({ height = 300, data }) => {
+const AnalyticsChart = ({ height = 300, data }) => {
   // Use provided data or fallback to demo data
   const chartData = data || [
     { name: 'Apr 15', pages: 3, updates: 5 },
