@@ -233,7 +233,7 @@ export default function Navbar() {
               asChild
             >
               <Link 
-                href="/client-dashboard" 
+                href="/admin/dashboard" 
                 className="no-underline flex items-center"
               >
                 <LayoutDashboard className="h-4 w-4 mr-2" />
@@ -338,7 +338,7 @@ export default function Navbar() {
                 asChild
               >
                 <Link 
-                  href="/client-dashboard" 
+                  href="/admin/dashboard" 
                   className="flex items-center justify-center py-2 no-underline"
                 >
                   <LayoutDashboard className="h-4 w-4 mr-2" />
