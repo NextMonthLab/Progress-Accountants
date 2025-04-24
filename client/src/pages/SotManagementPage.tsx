@@ -7,7 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { SotStatusIndicator } from '@/components/sot/SotStatusIndicator';
-import { AlertCircle, CheckCircle, RefreshCw, Download, Upload, ArrowUpDown } from 'lucide-react';
+import { AlertCircle, CheckCircle, RefreshCw, Download, Upload, ArrowUpDown, FileCheck } from 'lucide-react';
 import AdminLayout from '@/layouts/AdminLayout';
 
 export default function SotManagementPage() {

@@ -1,0 +1,76 @@
+PART 1: Add validateBlueprint() Utility
+
+File: server/utils/sotUtils.ts (create if not there)
+
+export function validateBlueprint(blueprint: any): { valid: boolean; errors: string[] } {
+  const errors: string[] = [];
+
+  if (!blueprint.client_id) errors.push("Missing client_id");
+  if (!blueprint.tools || !Array.isArray(blueprint.tools)) errors.push("Missing or invalid tools list");
+  if (!blueprint.routes || !Array.isArray(blueprint.routes)) errors.push("Missing or invalid routes array");
+  if (!blueprint.blueprint_version) errors.push("Missing blueprint_version");
+  if (!blueprint.plugin_status) errors.push("Missing plugin_status");
+
+  return {
+    valid: errors.length === 0,
+    errors
+  };
+}
+
+
+
+⸻
+
+PART 2: Add Import Endpoint (Skeleton)
+
+File: server/controllers/sotController.ts
+
+export async function importBlueprint(req: Request, res: Response) {
+  const blueprint = req.body;
+
+  // Step 1: Validate it
+  const { valid, errors } = validateBlueprint(blueprint);
+  if (!valid) {
+    return res.status(400).json({ status: "error", errors });
+  }
+
+  // Step 2: (Later) Store it, apply it, etc.
+  return res.json({ status: "import accepted", message: "Blueprint is valid. Processing not implemented yet." });
+}
+
+File: server/routes.ts
+
+app.post("/api/sot/import-blueprint", importBlueprint);
+
+
+
+⸻
+
+PART 3: Update the Frontend UI
+
+File: client/src/pages/SotManagementPage.tsx
+
+Add a Validate button:
+
+const handleValidateBlueprint = async () => {
+  const res = await fetch("/api/sot/extract-blueprint");
+  const blueprint = await res.json();
+
+  const validation = await fetch("/api/sot/import-blueprint", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(blueprint)
+  });
+
+  const result = await validation.json();
+  if (result.status === "error") {
+    toast.error(`Validation failed:\n${result.errors.join("\n")}`);
+  } else {
+    toast.success("Blueprint is valid!");
+  }
+};
+
+Add to the JSX UI:
+
+<Button onClick={handleValidateBlueprint}>Validate Blueprint</Button>
+

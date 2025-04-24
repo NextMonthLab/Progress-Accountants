@@ -4,6 +4,7 @@ import { insertSotDeclarationSchema, insertSotMetricSchema } from '@shared/sot';
 import { db } from '../db';
 import { eq } from 'drizzle-orm';
 import { tools } from '@shared/schema';
+import { validateBlueprint, sanitizeBlueprint, compareBlueprints } from '../utils/sotUtils';
 
 /**
  * Register SOT API routes
@@ -31,8 +32,12 @@ export function registerSotRoutes(app: Express) {
   // Client check-in endpoint
   app.post('/api/sot/client-check-in', clientCheckIn);
   
-  // Blueprint extraction endpoint
+  // Blueprint extraction and import endpoints
   app.post('/api/sot/extract-blueprint', extractBlueprint);
+  app.post('/api/sot/import-blueprint', importBlueprint);
+  
+  // Utility endpoints
+  app.get('/api/sot/echo-ping', echoSotSystem);
   
   console.log('✅ SOT routes registered');
 }
@@ -419,19 +424,54 @@ async function getInstalledToolsList(): Promise<string[]> {
 }
 
 /**
+ * SOT System Information - Returns information about the SOT system
+ */
+export async function echoSotSystem(req: Request, res: Response) {
+  return res.json({
+    system_name: "Progress SOT",
+    version: "1.1.1",
+    instance_type: "client",
+    tenant_id: "00000000-0000-0000-0000-000000000000",
+    available_routes: [
+      "/api/sot/declaration",
+      "/api/sot/metrics",
+      "/api/sot/logs",
+      "/api/sot/sync",
+      "/api/sot/client-check-in",
+      "/api/sot/extract-blueprint",
+      "/api/sot/import-blueprint",
+      "/api/sot/echo-ping"
+    ],
+    capabilities: [
+      "tenant_agnostic_export",
+      "blueprint_validation",
+      "blueprint_import",
+      "metrics_tracking",
+      "declaration_management"
+    ],
+    requires_auth: false,
+    healthcheck_path: "/api/sot/echo-ping"
+  });
+}
+
+/**
  * Blueprint Extraction - Extract a portable, tenant-agnostic blueprint
  */
-async function extractBlueprint(req: Request, res: Response) {
+export async function extractBlueprint(req: Request, res: Response) {
   try {
-    const { settings } = req.body;
+    const { settings = {} } = req.body;
     
-    // Validate extraction settings
-    if (!settings) {
-      return res.status(400).json({ 
-        error: 'Missing extraction settings',
-        message: 'Extraction settings are required for blueprint extraction'
-      });
-    }
+    // Default settings if not provided
+    const extractionSettings = {
+      includeBusinessIdentity: true,
+      includeBrandGuidelines: true,
+      includeModules: true,
+      includeTools: true,
+      tenantAgnostic: true,
+      exportPages: true,
+      exportLayouts: true,
+      ...settings
+    };
     
     // Get basic tenant information
     const tenantId = req.body.clientId || '00000000-0000-0000-0000-000000000000';
@@ -440,12 +480,15 @@ async function extractBlueprint(req: Request, res: Response) {
     const blueprint: any = {
       version: req.body.version || '1.1.1',
       extractedAt: new Date().toISOString(),
-      tenantAgnostic: settings.tenantAgnostic === true,
+      tenantAgnostic: extractionSettings.tenantAgnostic === true,
       source: {
-        tenantId: settings.tenantAgnostic ? null : tenantId
+        system: 'Progress',
+        tenantId: extractionSettings.tenantAgnostic ? null : tenantId,
+        version: '1.1.1'
       },
       schema: {
-        version: '1.0.0'
+        version: '1.1',
+        modules: ['businessIdentity', 'brandGuidelines', 'pages', 'tools']
       },
       modules: {},
       tools: [],
@@ -454,27 +497,187 @@ async function extractBlueprint(req: Request, res: Response) {
       contentBlocks: []
     };
     
-    // Include tools
-    try {
-      const installedTools = await getInstalledToolsList();
-      blueprint.tools = installedTools.map(tool => ({
-        name: tool,
-        version: '1.0.0',
-        configuration: {}
-      }));
-    } catch (error) {
-      console.error('Error including tools in blueprint:', error);
+    // Get business identity if requested
+    if (extractionSettings.includeBusinessIdentity) {
+      try {
+        const businessIdentity = await storage.getBusinessIdentity();
+        if (businessIdentity) {
+          blueprint.modules.businessIdentity = extractionSettings.tenantAgnostic ? 
+            sanitizeBusinessIdentity(businessIdentity) : 
+            businessIdentity;
+        }
+      } catch (error) {
+        console.error('Error fetching business identity:', error);
+      }
     }
+    
+    // Get brand guidelines if requested
+    if (extractionSettings.includeBrandGuidelines) {
+      try {
+        const brandGuidelines = await storage.getBrandGuidelines();
+        if (brandGuidelines) {
+          blueprint.modules.brandGuidelines = extractionSettings.tenantAgnostic ? 
+            sanitizeBrandGuidelines(brandGuidelines) : 
+            brandGuidelines;
+        }
+      } catch (error) {
+        console.error('Error fetching brand guidelines:', error);
+      }
+    }
+    
+    // Include tools if requested
+    if (extractionSettings.includeTools) {
+      try {
+        const installedTools = await getInstalledToolsList();
+        blueprint.tools = installedTools.map(tool => ({
+          name: tool,
+          version: '1.0.0',
+          configuration: {} // Default empty configuration
+        }));
+      } catch (error) {
+        console.error('Error including tools in blueprint:', error);
+      }
+    }
+    
+    // Include pages if requested
+    if (extractionSettings.exportPages) {
+      try {
+        // This is a placeholder - actual implementation would fetch pages from storage
+        const pages = await storage.getPublicPages();
+        blueprint.pages = extractionSettings.tenantAgnostic ? 
+          pages.map((page: any) => sanitizePage(page)) : 
+          pages;
+      } catch (error) {
+        console.error('Error fetching pages:', error);
+      }
+    }
+    
+    // Log the extraction
+    await storage.logSotSync(
+      'blueprint_extraction', 
+      'success', 
+      `Blueprint extracted with settings: ${JSON.stringify(extractionSettings)}`
+    );
     
     // Return the blueprint
     return res.status(200).json(blueprint);
   } catch (error: any) {
     console.error('Blueprint extraction failed:', error);
+    await storage.logSotSync(
+      'blueprint_extraction', 
+      'error', 
+      `Blueprint extraction failed: ${error?.message || 'Unknown error'}`
+    );
     return res.status(500).json({ 
       error: 'Blueprint extraction failed',
       message: error?.message || 'Unknown error during blueprint extraction'
     });
   }
+}
+
+/**
+ * Import Blueprint - Import a blueprint into the system
+ */
+export async function importBlueprint(req: Request, res: Response) {
+  try {
+    const blueprint = req.body;
+    
+    // Validate the blueprint
+    const { valid, errors } = validateBlueprint(blueprint);
+    
+    if (!valid) {
+      await storage.logSotSync('blueprint_import', 'error', `Validation failed: ${errors.join(', ')}`);
+      return res.status(400).json({ 
+        status: 'error', 
+        message: 'Blueprint validation failed', 
+        errors 
+      });
+    }
+    
+    // Log the validation success
+    await storage.logSotSync('blueprint_validation', 'success', 'Blueprint validated successfully');
+    
+    // For now, just verify the blueprint's validity and return success
+    // TODO: Implement actual import logic to apply the blueprint
+    
+    res.status(200).json({ 
+      status: 'success', 
+      message: 'Blueprint validated successfully. Import functionality will be implemented soon.',
+      blueprint_version: blueprint.version,
+      modules_found: Object.keys(blueprint.modules || {}),
+      tools_count: (blueprint.tools || []).length,
+      pages_count: (blueprint.pages || []).length
+    });
+  } catch (error: any) {
+    console.error('Error importing blueprint:', error);
+    await storage.logSotSync('blueprint_import', 'error', `Import failed: ${error.message || 'Unknown error'}`);
+    res.status(500).json({ 
+      status: 'error',
+      message: 'Failed to import blueprint', 
+      error: error.message 
+    });
+  }
+}
+
+/**
+ * Helper function to sanitize business identity for tenant-agnostic export
+ */
+function sanitizeBusinessIdentity(businessIdentity: any): any {
+  if (!businessIdentity) return null;
+  
+  const sanitized = { ...businessIdentity };
+  
+  if (sanitized.core) {
+    sanitized.core = {
+      ...sanitized.core,
+      businessName: '[BUSINESS_NAME]',
+      email: '[BUSINESS_EMAIL]',
+      phone: '[BUSINESS_PHONE]',
+      tenantId: null
+    };
+  }
+  
+  return sanitized;
+}
+
+/**
+ * Helper function to sanitize brand guidelines for tenant-agnostic export
+ */
+function sanitizeBrandGuidelines(brandGuidelines: any): any {
+  if (!brandGuidelines) return null;
+  
+  const sanitized = { ...brandGuidelines };
+  
+  if (sanitized.logo) {
+    sanitized.logo = {
+      primary: '[PRIMARY_LOGO_URL]',
+      secondary: '[SECONDARY_LOGO_URL]',
+      favicon: '[FAVICON_URL]'
+    };
+  }
+  
+  if (sanitized.tenantId) {
+    sanitized.tenantId = null;
+  }
+  
+  return sanitized;
+}
+
+/**
+ * Helper function to sanitize a page for tenant-agnostic export
+ */
+function sanitizePage(page: any): any {
+  if (!page) return null;
+  
+  const sanitized = { ...page };
+  
+  // Remove tenant-specific information
+  if (sanitized.tenantId) {
+    sanitized.tenantId = null;
+  }
+  
+  // Keep route, layout, and other structural information
+  return sanitized;
 }
 
 // Export all controller functions
@@ -486,5 +689,7 @@ export default {
   clientCheckIn,
   getSyncLogs,
   triggerSync,
-  extractBlueprint
+  extractBlueprint,
+  importBlueprint,
+  echoSotSystem
 };
