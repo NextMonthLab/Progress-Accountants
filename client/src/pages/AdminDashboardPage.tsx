@@ -545,19 +545,19 @@ export default function AdminDashboardPage() {
         {/* Tabs Navigation */}
         <Tabs defaultValue="overview" value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="bg-white border border-gray-200 mb-6">
-            <TabsTrigger value="overview" className="data-[state=active]:bg-navy data-[state=active]:text-white">
+            <TabsTrigger value="overview" className="data-[state=active]:bg-blue-50 data-[state=active]:text-navy data-[state=active]:border-b-2 data-[state=active]:border-navy">
               <LayoutDashboard className="h-4 w-4 mr-2" />
               Overview
             </TabsTrigger>
-            <TabsTrigger value="content" className="data-[state=active]:bg-navy data-[state=active]:text-white">
+            <TabsTrigger value="content" className="data-[state=active]:bg-blue-50 data-[state=active]:text-navy data-[state=active]:border-b-2 data-[state=active]:border-navy">
               <FileText className="h-4 w-4 mr-2" />
               Content
             </TabsTrigger>
-            <TabsTrigger value="tools" className="data-[state=active]:bg-navy data-[state=active]:text-white">
+            <TabsTrigger value="tools" className="data-[state=active]:bg-blue-50 data-[state=active]:text-navy data-[state=active]:border-b-2 data-[state=active]:border-navy">
               <Cpu className="h-4 w-4 mr-2" />
               Tools
             </TabsTrigger>
-            <TabsTrigger value="system" className="data-[state=active]:bg-navy data-[state=active]:text-white">
+            <TabsTrigger value="system" className="data-[state=active]:bg-blue-50 data-[state=active]:text-navy data-[state=active]:border-b-2 data-[state=active]:border-navy">
               <Settings className="h-4 w-4 mr-2" />
               System
             </TabsTrigger>
