@@ -64,12 +64,10 @@ function SortableItem({ config, index, totalItems }: SortableItemProps) {
     | "default"
     | "destructive"
     | "outline"
-    | "secondary"
-    | "success"
-    | "warning" = "default";
+    | "secondary" = "default";
 
   if (priorityValue >= 0.8) {
-    badgeVariant = "success"; // Highest priority
+    badgeVariant = "default"; // Highest priority
   } else if (priorityValue >= 0.5) {
     badgeVariant = "default"; // Medium-high priority
   } else if (priorityValue >= 0.3) {

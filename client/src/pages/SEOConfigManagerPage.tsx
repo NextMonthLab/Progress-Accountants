@@ -31,6 +31,11 @@ export default function SEOConfigManagerPage() {
   const [isPriorityManagerOpen, setIsPriorityManagerOpen] = useState(false);
   const [selectedConfig, setSelectedConfig] = useState<SEOConfig | null>(null);
   const [refreshTrigger, setRefreshTrigger] = useState(0);
+  
+  // Fetch all SEO configurations for the priority manager
+  const { data: seoConfigs = [] } = useQuery<SEOConfig[]>({
+    queryKey: ['/api/seo/configs', refreshTrigger],
+  });
 
   const handleEdit = (config: SEOConfig) => {
     setSelectedConfig(config);
@@ -103,19 +108,22 @@ export default function SEOConfigManagerPage() {
             />
           )}
           
-          <Dialog 
-            open={isPriorityManagerOpen} 
-            onOpenChange={setIsPriorityManagerOpen}
-          >
-            <DialogContent className="max-w-md p-0">
-              <SEOPriorityManager 
-                onClose={() => {
-                  setIsPriorityManagerOpen(false);
-                  handleRefresh(); // Refresh the list after managing priorities
-                }}
-              />
-            </DialogContent>
-          </Dialog>
+          {isPriorityManagerOpen && (
+            <SEOPriorityManager 
+              isOpen={isPriorityManagerOpen}
+              configs={seoConfigs.map(config => ({
+                id: config.id,
+                title: config.title,
+                routePath: config.routePath,
+                priority: config.priority,
+                indexable: config.indexable
+              }))}
+              onClose={() => {
+                setIsPriorityManagerOpen(false);
+                handleRefresh(); // Refresh the list after managing priorities
+              }}
+            />
+          )}
         </main>
       </div>
     </>

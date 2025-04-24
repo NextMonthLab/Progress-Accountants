@@ -2158,14 +2158,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
         
         // Ensure priority is between 0 and 1
         if (item.priority < 0 || item.priority > 1) {
-          return res.status(400).json({ 
+          return res.status(400).json({
             error: "Priority values must be between 0 and 1",
-            invalidItem: item 
+            invalidItem: item
           });
         }
       }
       
-      const updatedConfigs = await storage.updateSeoConfigPriorities(priorities);
+      // Update all priorities in storage
+      const updatedConfigs = await storage.batchUpdateSeoPriorities(priorities);
       
       return res.status(200).json({
         success: true,
