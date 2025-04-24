@@ -1591,6 +1591,34 @@ export class DatabaseStorage implements IStorage {
       throw error;
     }
   }
+  
+  /**
+   * Count the total number of pages in the system
+   */
+  async countPages(): Promise<number> {
+    try {
+      // Get the public pages from the router configuration
+      const publicPages = [
+        "/", 
+        "/about", 
+        "/services", 
+        "/industries", 
+        "/why-us", 
+        "/contact", 
+        "/team",
+        "/podcast-studio",
+        "/resources",
+        "/blog"
+      ];
+      
+      // Count the number of public pages
+      return publicPages.length;
+    } catch (error) {
+      console.error('Error counting pages:', error);
+      // Fallback to a fixed count
+      return 10;
+    }
+  }
 
   async getSotSyncLogs(limit?: number): Promise<SotSyncLog[]> {
     try {

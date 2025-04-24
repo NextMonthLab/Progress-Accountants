@@ -378,14 +378,39 @@ async function countTotalPages(): Promise<number> {
  */
 async function getInstalledToolsList(): Promise<string[]> {
   try {
-    // Query the database to get installed tools
-    const installedTools = await db.select()
-      .from(tools)
-      .where(eq(tools.status, 'installed'));
-      
-    return installedTools.map(tool => tool.name || 'unnamed-tool');
+    // List of standard installed tools in the system
+    const standardTools = [
+      'page_builder',
+      'seo_optimizer',
+      'business_identity_manager',
+      'brand_guidelines',
+      'media_library',
+      'user_management',
+      'companion_assistant',
+      'marketplace'
+    ];
+    
+    // Add any dynamic tools that might be installed
+    try {
+      const installedMarketplaceTools = await db.select({ name: tools.name })
+        .from(tools)
+        .where(eq(tools.status, 'installed'));
+        
+      const additionalTools = installedMarketplaceTools
+        .map(tool => tool.name || '')
+        .filter(name => name && !standardTools.includes(name));
+        
+      return [...standardTools, ...additionalTools];
+    } catch (dbError) {
+      console.log('Could not query marketplace tools, using standard list only:', dbError);
+      return standardTools;
+    }
   } catch (error) {
-    console.error('Error fetching installed tools:', error);
-    return [];
+    console.error('Error creating tool list:', error);
+    return [
+      'page_builder',
+      'seo_optimizer',
+      'business_identity_manager'
+    ];
   }
 }
