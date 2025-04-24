@@ -201,8 +201,8 @@ function QuickAction({
   const variantStyles = {
     primary: 'bg-gradient-to-br from-navy to-blue-900 text-white hover:shadow-lg hover:shadow-navy/20',
     secondary: 'bg-gradient-to-br from-orange-500 to-orange-600 text-white hover:shadow-lg hover:shadow-orange-500/20',
-    outline: 'border-2 border-navy/20 hover:border-navy/40 bg-white',
-    ghost: 'bg-gray-50 hover:bg-gray-100',
+    outline: 'border-2 border-navy/20 hover:border-navy/40 bg-white text-navy',
+    ghost: 'bg-gray-100 hover:bg-gray-200 text-navy',
   };
 
   return (
@@ -216,7 +216,7 @@ function QuickAction({
           )}
           <div>
             <h3 className={`font-medium ${variant === 'outline' || variant === 'ghost' ? 'text-navy' : 'text-white'}`}>{title}</h3>
-            <p className={`text-sm mt-1 ${variant === 'outline' || variant === 'ghost' ? 'text-gray-500' : 'text-white/80'}`}>{description}</p>
+            <p className={`text-sm mt-1 ${variant === 'outline' || variant === 'ghost' ? 'text-gray-700' : 'text-white/90'}`}>{description}</p>
           </div>
         </div>
         <div className="absolute bottom-4 right-4">
