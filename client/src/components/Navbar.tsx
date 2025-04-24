@@ -99,7 +99,7 @@ export default function Navbar() {
       label: "Business",
       items: [
         { label: "Services", href: "/services", icon: <Briefcase className="h-4 w-4 mr-2" /> },
-        { label: "Industries", href: "#industries", icon: <FastForward className="h-4 w-4 mr-2" /> },
+        { label: "Industries", href: "/industries", icon: <FastForward className="h-4 w-4 mr-2" /> },
         { label: "Why Us", href: "#why-us", icon: <Sparkles className="h-4 w-4 mr-2" /> },
       ]
     },
