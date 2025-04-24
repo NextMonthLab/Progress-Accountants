@@ -184,6 +184,14 @@ export default function AdminSidebar() {
           badge: { text: "Fixed", variant: "updated" }
         },
         { 
+          title: "Redesigned Dashboard", 
+          href: "/admin/dashboard-redesigned", 
+          icon: <LayoutDashboard className="h-5 w-5" />,
+          description: "New modern dashboard with enhanced UI",
+          badge: { text: "New", variant: "new" },
+          isNew: true
+        },
+        { 
           title: "Client CRM", 
           href: "/admin/crm", 
           icon: <Users className="h-5 w-5" />,
