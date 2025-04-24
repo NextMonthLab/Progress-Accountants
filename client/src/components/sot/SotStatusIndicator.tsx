@@ -130,8 +130,8 @@ export function SotStatusIndicator({ className }: SotStatusIndicatorProps) {
         <Tooltip>
           <TooltipTrigger asChild>
             <Badge variant={
-              status.status === 'ok' ? 'success' :
-              status.status === 'warning' ? 'warning' :
+              status.status === 'ok' ? 'secondary' :
+              status.status === 'warning' ? 'outline' :
               status.status === 'error' ? 'destructive' : 'outline'
             }>
               {status.status === 'ok' && (

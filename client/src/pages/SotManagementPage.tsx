@@ -113,8 +113,8 @@ export default function SotManagementPage() {
   const handleExtractBlueprint = async () => {
     setExtractLoading(true);
     try {
-      // This will eventually call the blueprint extraction API
-      const response = await fetch('/api/blueprint/export-v1.1.1', {
+      // Call the SOT blueprint extraction API
+      const response = await fetch('/api/sot/extract-blueprint', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -127,7 +127,8 @@ export default function SotManagementPage() {
       });
       
       if (!response.ok) {
-        throw new Error('Blueprint extraction failed');
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || 'Blueprint extraction failed');
       }
       
       const blueprint = await response.json();
@@ -146,11 +147,11 @@ export default function SotManagementPage() {
         description: 'Successfully extracted blueprint',
         variant: 'default',
       });
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error extracting blueprint:', error);
       toast({
         title: 'Extraction Failed',
-        description: 'Failed to extract blueprint',
+        description: error.message || 'Failed to extract blueprint',
         variant: 'destructive',
       });
     } finally {

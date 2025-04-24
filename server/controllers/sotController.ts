@@ -31,6 +31,9 @@ export function registerSotRoutes(app: Express) {
   // Client check-in endpoint
   app.post('/api/sot/client-check-in', clientCheckIn);
   
+  // Blueprint extraction endpoint
+  app.post('/api/sot/extract-blueprint', extractBlueprint);
+  
   console.log('✅ SOT routes registered');
 }
 
@@ -414,3 +417,74 @@ async function getInstalledToolsList(): Promise<string[]> {
     ];
   }
 }
+
+/**
+ * Blueprint Extraction - Extract a portable, tenant-agnostic blueprint
+ */
+async function extractBlueprint(req: Request, res: Response) {
+  try {
+    const { settings } = req.body;
+    
+    // Validate extraction settings
+    if (!settings) {
+      return res.status(400).json({ 
+        error: 'Missing extraction settings',
+        message: 'Extraction settings are required for blueprint extraction'
+      });
+    }
+    
+    // Get basic tenant information
+    const tenantId = req.body.clientId || '00000000-0000-0000-0000-000000000000';
+    
+    // Create the base blueprint structure
+    const blueprint: any = {
+      version: req.body.version || '1.1.1',
+      extractedAt: new Date().toISOString(),
+      tenantAgnostic: settings.tenantAgnostic === true,
+      source: {
+        tenantId: settings.tenantAgnostic ? null : tenantId
+      },
+      schema: {
+        version: '1.0.0'
+      },
+      modules: {},
+      tools: [],
+      pages: [],
+      layouts: [],
+      contentBlocks: []
+    };
+    
+    // Include tools
+    try {
+      const installedTools = await getInstalledToolsList();
+      blueprint.tools = installedTools.map(tool => ({
+        name: tool,
+        version: '1.0.0',
+        configuration: {}
+      }));
+    } catch (error) {
+      console.error('Error including tools in blueprint:', error);
+    }
+    
+    // Return the blueprint
+    return res.status(200).json(blueprint);
+  } catch (error: any) {
+    console.error('Blueprint extraction failed:', error);
+    return res.status(500).json({ 
+      error: 'Blueprint extraction failed',
+      message: error?.message || 'Unknown error during blueprint extraction'
+    });
+  }
+}
+
+// Export all controller functions
+export default {
+  createSotDeclaration,
+  getSotDeclaration,
+  saveSotMetrics,
+  getSotMetrics,
+  clientCheckIn,
+  getSyncLogs,
+  triggerSync,
+  extractBlueprint
+};
