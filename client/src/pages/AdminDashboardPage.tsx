@@ -241,20 +241,20 @@ function NewsItem({ title, excerpt, category, link = '#', isLoading = false }: N
     <div className="border-b border-white/10 pb-4 mb-4 last:mb-0 last:pb-0 last:border-0">
       {isLoading ? (
         <div className="space-y-3">
-          <div className="h-4 bg-gray-200 rounded w-3/4 animate-pulse"></div>
-          <div className="h-3 bg-gray-100 rounded w-full animate-pulse"></div>
+          <div className="h-4 bg-white/20 rounded w-3/4 animate-pulse"></div>
+          <div className="h-3 bg-white/10 rounded w-full animate-pulse"></div>
         </div>
       ) : (
         <>
           <div className="flex items-center gap-2 mb-2">
-            <Badge variant="outline" className="bg-gray-100 text-gray-800 hover:bg-gray-200 border-0">
+            <Badge variant="outline" className="bg-white/20 text-white hover:bg-white/30 border-0">
               {category}
             </Badge>
           </div>
           <Link href={link}>
-            <h3 className="font-medium text-navy hover:text-blue-600 transition-colors">{title}</h3>
+            <h3 className="font-medium text-white hover:text-orange-200 transition-colors">{title}</h3>
           </Link>
-          <p className="text-sm text-gray-500 mt-1 line-clamp-2">{excerpt}</p>
+          <p className="text-sm text-white/80 mt-1 line-clamp-2">{excerpt}</p>
         </>
       )}
     </div>
@@ -542,20 +542,20 @@ export default function AdminDashboardPage() {
 
         {/* Tabs Navigation */}
         <Tabs defaultValue="overview" value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="bg-white border border-gray-200 mb-6">
-            <TabsTrigger value="overview" className="data-[state=active]:bg-orange-50 data-[state=active]:text-orange-600 data-[state=active]:border-b-2 data-[state=active]:border-orange-500">
+          <TabsList className="bg-gray-50 border border-gray-200 mb-6 p-1">
+            <TabsTrigger value="overview" className="text-gray-600 hover:text-gray-800 data-[state=active]:bg-orange-50 data-[state=active]:text-orange-600 data-[state=active]:border-b-2 data-[state=active]:border-orange-500">
               <LayoutDashboard className="h-4 w-4 mr-2" />
               Overview
             </TabsTrigger>
-            <TabsTrigger value="content" className="data-[state=active]:bg-orange-50 data-[state=active]:text-orange-600 data-[state=active]:border-b-2 data-[state=active]:border-orange-500">
+            <TabsTrigger value="content" className="text-gray-600 hover:text-gray-800 data-[state=active]:bg-orange-50 data-[state=active]:text-orange-600 data-[state=active]:border-b-2 data-[state=active]:border-orange-500">
               <FileText className="h-4 w-4 mr-2" />
               Content
             </TabsTrigger>
-            <TabsTrigger value="tools" className="data-[state=active]:bg-orange-50 data-[state=active]:text-orange-600 data-[state=active]:border-b-2 data-[state=active]:border-orange-500">
+            <TabsTrigger value="tools" className="text-gray-600 hover:text-gray-800 data-[state=active]:bg-orange-50 data-[state=active]:text-orange-600 data-[state=active]:border-b-2 data-[state=active]:border-orange-500">
               <Cpu className="h-4 w-4 mr-2" />
               Tools
             </TabsTrigger>
-            <TabsTrigger value="system" className="data-[state=active]:bg-orange-50 data-[state=active]:text-orange-600 data-[state=active]:border-b-2 data-[state=active]:border-orange-500">
+            <TabsTrigger value="system" className="text-gray-600 hover:text-gray-800 data-[state=active]:bg-orange-50 data-[state=active]:text-orange-600 data-[state=active]:border-b-2 data-[state=active]:border-orange-500">
               <Settings className="h-4 w-4 mr-2" />
               System
             </TabsTrigger>
