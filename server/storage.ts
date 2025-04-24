@@ -252,6 +252,7 @@ export interface IStorage {
   saveSotMetrics(data: InsertSotMetric): Promise<SotMetric>;
   updateSotMetrics(id: number, data: Partial<InsertSotMetric>): Promise<SotMetric | undefined>;
   logSotSync(eventType: string, status: string, details?: string): Promise<SotSyncLog>;
+  countPages(): Promise<number>;
   getSotSyncLogs(limit?: number): Promise<SotSyncLog[]>;
 }
 

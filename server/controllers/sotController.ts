@@ -1,7 +1,9 @@
-import { Request, Response } from 'express';
+import { Request, Response, Express } from 'express';
 import { storage } from '../storage';
-import { Express } from 'express';
 import { insertSotDeclarationSchema, insertSotMetricSchema } from '@shared/sot';
+import { db } from '../db';
+import { eq } from 'drizzle-orm';
+import { tools } from '@shared/schema';
 
 /**
  * Register SOT API routes
@@ -25,6 +27,9 @@ export function registerSotRoutes(app: Express) {
   
   // SOT Actions
   app.post('/api/sot/sync', triggerSync);
+  
+  // Client check-in endpoint
+  app.post('/api/sot/client-check-in', clientCheckIn);
   
   console.log('✅ SOT routes registered');
 }
@@ -215,6 +220,77 @@ export async function createSyncLog(req: Request, res: Response) {
 }
 
 /**
+ * Client check-in endpoint to report status to the SOT system
+ */
+export async function clientCheckIn(req: Request, res: Response) {
+  try {
+    const { clientId, status, version, metrics } = req.body;
+    
+    if (!clientId || !status) {
+      return res.status(400).json({ 
+        error: 'Missing required fields', 
+        details: 'clientId and status are required' 
+      });
+    }
+    
+    // Record the client check-in
+    const logEntry = await storage.logSotSync(
+      'client_check_in', 
+      status, 
+      JSON.stringify({
+        clientId,
+        version,
+        metrics,
+        timestamp: new Date()
+      })
+    );
+    
+    // If this is the first check-in or metrics have changed, update SOT metrics
+    let currentMetrics = await storage.getSotMetrics();
+    
+    if (metrics && (!currentMetrics || shouldUpdateMetrics(currentMetrics, metrics))) {
+      if (currentMetrics) {
+        currentMetrics = await storage.updateSotMetrics(currentMetrics.id, {
+          ...metrics,
+          lastSyncAt: new Date()
+        });
+      } else {
+        currentMetrics = await storage.saveSotMetrics({
+          id: 1,
+          ...metrics,
+          lastSyncAt: new Date()
+        });
+      }
+    }
+    
+    // Get the declaration to send back to the client
+    const declaration = await storage.getSotDeclaration();
+    
+    res.status(200).json({
+      success: true,
+      message: 'Client check-in recorded successfully',
+      logEntry,
+      declaration,
+      settings: {
+        // System-defined settings that clients should follow
+        syncFrequency: 24 * 60 * 60 * 1000, // 24 hours in milliseconds
+        allowAutoUpdate: true,
+        requireReporting: true
+      }
+    });
+    
+  } catch (error: any) {
+    console.error('Error processing client check-in:', error);
+    await storage.logSotSync(
+      'client_check_in_error', 
+      'error', 
+      `Check-in processing failed: ${error.message || 'Unknown error'}`
+    );
+    res.status(500).json({ error: 'Failed to process client check-in' });
+  }
+}
+
+/**
  * Trigger a sync with the SOT system
  */
 export async function triggerSync(req: Request, res: Response) {
@@ -271,19 +347,45 @@ export async function triggerSync(req: Request, res: Response) {
 }
 
 /**
+ * Compare metrics to determine if an update is needed
+ */
+function shouldUpdateMetrics(current: any, incoming: any): boolean {
+  // Check if any key metrics have changed
+  return (
+    current.totalPages !== incoming.totalPages ||
+    JSON.stringify(current.installedTools) !== JSON.stringify(incoming.installedTools) ||
+    // Add other important metrics to compare
+    !!incoming.forceUpdate
+  );
+}
+
+/**
  * Helper to count the total number of pages in the system
  */
 async function countTotalPages(): Promise<number> {
-  // This would be implemented to query the pages table
-  // For now, we'll return a mock count
-  return 10;
+  try {
+    // Query the database to count pages
+    const result = await storage.countPages();
+    return result;
+  } catch (error) {
+    console.error('Error counting pages:', error);
+    return 0;
+  }
 }
 
 /**
  * Helper to get a list of installed tools
  */
 async function getInstalledToolsList(): Promise<string[]> {
-  // This would be implemented to query the tools table
-  // For now, we'll return a mock list
-  return ['page_builder', 'analytics', 'seo_optimizer'];
+  try {
+    // Query the database to get installed tools
+    const installedTools = await db.select()
+      .from(tools)
+      .where(eq(tools.status, 'installed'));
+      
+    return installedTools.map(tool => tool.name || 'unnamed-tool');
+  } catch (error) {
+    console.error('Error fetching installed tools:', error);
+    return [];
+  }
 }
