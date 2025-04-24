@@ -842,7 +842,7 @@ export default function ClientDashboardPage() {
                 description="Latest actions and system updates"
                 action={{ label: "View all activity", href: "/admin/activity" }}
               >
-                <Card variant="default">
+                <Card>
                   <CardContent className="p-6">
                     {isActivityLoading ? (
                       <div className="space-y-6">
@@ -1007,7 +1007,7 @@ export default function ClientDashboardPage() {
                 description="Most visited pages in the last 30 days"
                 action={{ label: "View all pages", href: "/admin/content/pages" }}
               >
-                <Card variant="light" className="border-2 border-gray-200 shadow-md">
+                <Card className="border-2 border-gray-200 shadow-md bg-gray-50">
                   <CardContent className="p-0">
                     <div className="overflow-x-auto">
                       <table className="w-full">
@@ -1117,7 +1117,7 @@ export default function ClientDashboardPage() {
                 title="Content Creation Activity" 
                 description="Page creation and updates over time"
               >
-                <Card variant="light" className="border-2 border-gray-200 shadow-md">
+                <Card className="border-2 border-gray-200 shadow-md bg-gray-50">
                   <CardContent className="p-6">
                     <AnalyticsChart height={200} />
                     
@@ -1194,7 +1194,7 @@ export default function ClientDashboardPage() {
 
               {/* Recents */}
               <Section title="Recently Updated">
-                <Card variant="default">
+                <Card>
                   <CardContent className="p-0">
                     <div className="divide-y">
                       <div className="px-6 py-4 hover:bg-gray-50">
@@ -1289,7 +1289,7 @@ export default function ClientDashboardPage() {
                   title="Marketplace Recommendations" 
                   description="Tools that might benefit your business"
                 >
-                  <Card variant="default">
+                  <Card>
                     <CardContent className="p-6">
                       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                         <div className="border rounded-lg p-4 hover:border-navy/40 transition-colors">
@@ -1326,7 +1326,7 @@ export default function ClientDashboardPage() {
             <div className="space-y-8">
               {/* Tool Stats */}
               <Section title="Tool Metrics">
-                <Card variant="default">
+                <Card>
                   <CardContent className="p-6 space-y-6">
                     <div>
                       <div className="flex justify-between items-center mb-2">
@@ -1409,7 +1409,7 @@ export default function ClientDashboardPage() {
             {/* Main content - left 2/3 */}
             <div className="lg:col-span-2 space-y-8">
               <Section title="System Health Status">
-                <Card variant="default">
+                <Card>
                   <CardHeader className="pb-0">
                     <div className="flex justify-between items-center">
                       <CardDescription>Overall system status and performance metrics</CardDescription>
@@ -1524,7 +1524,7 @@ export default function ClientDashboardPage() {
 
               {/* Recent Backups */}
               <Section title="Recent Backups">
-                <Card variant="default">
+                <Card>
                   <CardContent className="p-0">
                     <div className="divide-y">
                       <div className="p-4 hover:bg-gray-50">
