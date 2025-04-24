@@ -2166,7 +2166,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
       
       // Update all priorities in storage
-      const updatedConfigs = await storage.batchUpdateSeoPriorities(priorities);
+      const updatedConfigs = await storage.updateSeoConfigPriorities(priorities);
       
       return res.status(200).json({
         success: true,
