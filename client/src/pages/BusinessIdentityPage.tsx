@@ -182,7 +182,21 @@ export default function BusinessIdentityPage() {
     const savedData = localStorage.getItem('system_context.business_identity');
     if (savedData) {
       try {
-        const parsedData = JSON.parse(savedData);
+        let parsedData = JSON.parse(savedData);
+        
+        // Handle case where saved data might not have the products field
+        // This ensures backward compatibility with older saved data
+        if (!parsedData.products) {
+          parsedData = {
+            ...parsedData,
+            products: {
+              services: ["Tax Planning & Preparation", "Bookkeeping", "Business Advisory", "Financial Reporting", "Cloud Accounting"],
+              priceRange: "Mid-range to Premium",
+              deliveryMethod: "Online and In-person",
+            }
+          };
+        }
+        
         setBusinessIdentity(parsedData);
       } catch (error) {
         console.error('Error parsing stored business identity data:', error);
