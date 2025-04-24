@@ -3,7 +3,6 @@ import { SEOConfigList } from '@/components/seo/SEOConfigList';
 import { SEOConfigEditor } from '@/components/seo/SEOConfigEditor';
 import { SEOPreview } from '@/components/seo/SEOPreview';
 import { DocumentHead } from '@/components/DocumentHead';
-import AdminLayout from '@/layouts/AdminLayout';
 
 type SEOConfig = {
   id: number;
@@ -54,36 +53,41 @@ export default function SEOConfigManagerPage() {
     <>
       <DocumentHead route="/admin/seo" />
       
-      <AdminLayout title="SEO Configuration Manager">
-        <p className="text-muted-foreground mb-8">
-          Manage your website's SEO settings for each page
-        </p>
+      <div className="min-h-screen overflow-y-auto">
+        <main className="p-6">
+          <div className="mb-6">
+            <h1 className="text-2xl font-bold mb-2">SEO Configuration Manager</h1>
+            <p className="text-muted-foreground">
+              Manage your website's SEO settings for each page
+            </p>
+          </div>
 
-        <SEOConfigList
-          onEdit={handleEdit}
-          onPreview={handlePreview}
-          onAddNew={handleAddNew}
-          onRefresh={handleRefresh}
-          key={refreshTrigger} // Force re-render on refresh
-        />
-
-        {isEditorOpen && (
-          <SEOConfigEditor
-            isOpen={isEditorOpen}
-            onClose={() => setIsEditorOpen(false)}
-            config={selectedConfig}
-            onSaved={handleSaved}
+          <SEOConfigList
+            onEdit={handleEdit}
+            onPreview={handlePreview}
+            onAddNew={handleAddNew}
+            onRefresh={handleRefresh}
+            key={refreshTrigger} // Force re-render on refresh
           />
-        )}
 
-        {isPreviewOpen && selectedConfig && (
-          <SEOPreview
-            isOpen={isPreviewOpen}
-            onClose={() => setIsPreviewOpen(false)}
-            config={selectedConfig}
-          />
-        )}
-      </AdminLayout>
+          {isEditorOpen && (
+            <SEOConfigEditor
+              isOpen={isEditorOpen}
+              onClose={() => setIsEditorOpen(false)}
+              config={selectedConfig}
+              onSaved={handleSaved}
+            />
+          )}
+
+          {isPreviewOpen && selectedConfig && (
+            <SEOPreview
+              isOpen={isPreviewOpen}
+              onClose={() => setIsPreviewOpen(false)}
+              config={selectedConfig}
+            />
+          )}
+        </main>
+      </div>
     </>
   );
 }
