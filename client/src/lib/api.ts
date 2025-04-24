@@ -190,6 +190,16 @@ export async function deleteSeoConfig(id: number) {
   return response.ok;
 }
 
+export async function updateSeoConfigPriorities(priorities: { id: number, priority: number }[]) {
+  const response = await apiRequest('PATCH', '/api/seo/configs/batch-update-priority', { priorities });
+  const data = await response.json();
+  
+  // Invalidate the SEO configs cache
+  queryClient.invalidateQueries({ queryKey: ['/api/seo/configs'] });
+  
+  return data;
+}
+
 // Brand Versioning API functions
 export async function fetchAllBrandVersions() {
   const response = await apiRequest('GET', '/api/brand/versions');

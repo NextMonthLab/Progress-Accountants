@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { useQuery } from "@tanstack/react-query";
 import {
   Dialog,
   DialogContent,
@@ -68,6 +69,12 @@ type SEOConfigEditorProps = {
 export function SEOConfigEditor({ isOpen, onClose, config, onSaved }: SEOConfigEditorProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [previewUrl, setPreviewUrl] = useState('');
+  
+  // Fetch available pages for dropdown
+  const { data: publicPages = [] } = useQuery({
+    queryKey: ['/api/pages/public'],
+    enabled: isOpen,
+  });
 
   // Initialize form with default values or existing config
   const form = useForm<SEOConfigFormValues>({
@@ -155,12 +162,53 @@ export function SEOConfigEditor({ isOpen, onClose, config, onSaved }: SEOConfigE
                   name="routePath"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Route Path*</FormLabel>
+                      <FormLabel>Select Page*</FormLabel>
                       <FormControl>
-                        <Input placeholder="/about" {...field} />
+                        <Select
+                          value={field.value}
+                          onValueChange={(value) => {
+                            field.onChange(value);
+                            
+                            // Auto-populate title based on page selection
+                            // Extract page name from path for a default title
+                            const pathSegments = value.split('/').filter(Boolean);
+                            const pageName = pathSegments.length > 0 
+                              ? pathSegments[pathSegments.length - 1] 
+                              : 'Home';
+                              
+                            // Only set title if it's empty or matches a previous path-derived title
+                            const currentTitle = form.getValues('title');
+                            if (!currentTitle || /^[A-Z][a-z]+ Page$/.test(currentTitle)) {
+                              const formattedName = pageName.charAt(0).toUpperCase() + 
+                                pageName.slice(1).replace(/-/g, ' ');
+                              form.setValue('title', `${formattedName} Page`);
+                            }
+                          }}
+                        >
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select a page" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {publicPages.map((path: string) => (
+                              <SelectItem key={path} value={path}>
+                                {path === '/' ? 'Home (/)' : path}
+                              </SelectItem>
+                            ))}
+                            <SelectItem value="/custom">Custom Path...</SelectItem>
+                          </SelectContent>
+                        </Select>
                       </FormControl>
+                      {field.value === '/custom' && (
+                        <div className="mt-2">
+                          <Input 
+                            placeholder="/custom-page" 
+                            value={field.value === '/custom' ? '' : field.value}
+                            onChange={(e) => field.onChange(e.target.value)}
+                          />
+                        </div>
+                      )}
                       <FormDescription>
-                        The URL path for this page (e.g., /about, /services/accounting)
+                        Select an existing page or enter a custom path
                       </FormDescription>
                       <FormMessage />
                     </FormItem>
