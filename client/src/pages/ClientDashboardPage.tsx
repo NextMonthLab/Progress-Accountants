@@ -421,11 +421,11 @@ const NewsCard: React.FC<NewsCardProps> = ({
       ) : (
         <>
           <h3 className="font-semibold text-white">{title}</h3>
-          <p className="text-sm text-gray-300 mt-1 mb-2 line-clamp-2">{excerpt}</p>
+          <p className="text-sm text-white/80 mt-1 mb-2 line-clamp-2">{excerpt}</p>
           <div className="flex items-center gap-3 text-xs">
-            <span className="text-gray-300">{date}</span>
+            <span className="text-white/70">{date}</span>
             {category && (
-              <Badge variant="outline" className="px-1.5 py-0 h-5 font-normal">
+              <Badge variant="outline" className="px-1.5 py-0 h-5 font-normal text-white border-white/20">
                 {category}
               </Badge>
             )}
@@ -433,7 +433,7 @@ const NewsCard: React.FC<NewsCardProps> = ({
           {link && (
             <div className="mt-3">
               <Link href={link}>
-                <Button variant="ghost" size="sm" className="h-7 px-0 text-white font-medium">
+                <Button variant="ghost" size="sm" className="h-7 px-0 text-white hover:text-white/80 font-medium">
                   Read more
                   <ArrowRight className="ml-1 h-3.5 w-3.5" />
                 </Button>
