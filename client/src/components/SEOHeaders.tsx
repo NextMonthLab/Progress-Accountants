@@ -19,6 +19,9 @@ export function SEOHeaders({
   const { businessIdentity } = useBusinessIdentity();
   const businessName = businessIdentity?.core?.businessName || 'Progress Accountants';
   
+  // Get the language setting from business identity or default to en-GB
+  const language = businessIdentity?.core?.language || 'en-GB';
+  
   // Try to fetch SEO config for this path if provided
   const { data: seoConfig } = useQuery({
     queryKey: ['/api/seo/configs/path', path],
@@ -32,7 +35,7 @@ export function SEOHeaders({
   const keywords = seoConfig?.keywords || '';
 
   return (
-    <Helmet>
+    <Helmet htmlAttributes={{ lang: language }}>
       <title>{pageTitle}</title>
       <meta name="description" content={pageDescription} />
       <meta name="keywords" content={keywords} />
@@ -44,6 +47,7 @@ export function SEOHeaders({
       <meta property="og:title" content={pageTitle} />
       <meta property="og:description" content={pageDescription} />
       <meta property="og:image" content={businessIdentity?.branding?.logoUrl || ''} />
+      <meta property="og:locale" content={language.replace('-', '_')} />
       
       {/* Twitter */}
       <meta property="twitter:card" content="summary_large_image" />
