@@ -33,6 +33,7 @@ import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Loader2 } from "lucide-react";
 import { saveSeoConfig } from '@/lib/api';
+import { useToast } from "@/hooks/use-toast";
 
 // Form validation schema
 const seoConfigSchema = z.object({
@@ -70,6 +71,7 @@ type SEOConfigEditorProps = {
 export function SEOConfigEditor({ isOpen, onClose, config, onSaved }: SEOConfigEditorProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [previewUrl, setPreviewUrl] = useState('');
+  const { toast } = useToast();
   
   // Fetch available pages for dropdown
   const { data: publicPages = [] } = useQuery({
@@ -89,7 +91,7 @@ export function SEOConfigEditor({ isOpen, onClose, config, onSaved }: SEOConfigE
       image: config?.image || null,
       indexable: config?.indexable ?? true,
       priority: config?.priority || null,
-      changeFrequency: config?.changeFrequency || null,
+      changeFrequency: config?.changeFrequency as "always" | "hourly" | "daily" | "weekly" | "monthly" | "yearly" | "never" | null | undefined,
     },
   });
 
@@ -105,7 +107,7 @@ export function SEOConfigEditor({ isOpen, onClose, config, onSaved }: SEOConfigE
         image: config.image,
         indexable: config.indexable,
         priority: config.priority || null,
-        changeFrequency: config.changeFrequency,
+        changeFrequency: config.changeFrequency as "always" | "hourly" | "daily" | "weekly" | "monthly" | "yearly" | "never" | null | undefined,
       });
     } else {
       form.reset({
@@ -139,6 +141,10 @@ export function SEOConfigEditor({ isOpen, onClose, config, onSaved }: SEOConfigE
       };
       
       await saveSeoConfig(configToSave);
+      toast({
+        title: "SEO Configuration Saved",
+        description: "Your SEO configuration has been successfully saved.",
+      });
       onSaved();
       onClose();
     } catch (error) {
@@ -200,7 +206,7 @@ export function SEOConfigEditor({ isOpen, onClose, config, onSaved }: SEOConfigE
                             <SelectValue placeholder="Select a page" />
                           </SelectTrigger>
                           <SelectContent>
-                            {publicPages.map((path: string) => (
+                            {Array.isArray(publicPages) && publicPages.map((path: string) => (
                               <SelectItem key={path} value={path}>
                                 {path === '/' ? 'Home (/)' : path}
                               </SelectItem>
