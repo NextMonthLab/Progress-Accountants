@@ -63,20 +63,20 @@ function StatCard({
   // Define the color scheme with proper type
   const scheme = {
     navy: {
-      bg: isGradient ? 'from-navy to-blue-900' : 'bg-white',
-      icon: isGradient ? 'bg-white/20 text-white' : 'bg-navy/10 text-navy',
+      bg: isGradient ? 'from-navy to-blue-800' : 'bg-white',
+      icon: isGradient ? 'bg-white/30 text-white' : 'bg-navy/10 text-navy',
     },
     orange: {
-      bg: isGradient ? 'from-orange-500 to-orange-600' : 'bg-white',
-      icon: isGradient ? 'bg-white/20 text-white' : 'bg-orange-500/10 text-orange-500',
+      bg: isGradient ? 'from-orange-500 to-orange-700' : 'bg-white', 
+      icon: isGradient ? 'bg-white/30 text-white' : 'bg-orange-500/10 text-orange-500',
     },
     emerald: {
-      bg: isGradient ? 'from-emerald-500 to-emerald-600' : 'bg-white',
-      icon: isGradient ? 'bg-white/20 text-white' : 'bg-emerald-500/10 text-emerald-500',
+      bg: isGradient ? 'from-emerald-500 to-emerald-700' : 'bg-white',
+      icon: isGradient ? 'bg-white/30 text-white' : 'bg-emerald-500/10 text-emerald-500',
     },
     indigo: {
-      bg: isGradient ? 'from-indigo-500 to-indigo-600' : 'bg-white',
-      icon: isGradient ? 'bg-white/20 text-white' : 'bg-indigo-500/10 text-indigo-500',
+      bg: isGradient ? 'from-indigo-500 to-indigo-700' : 'bg-white',
+      icon: isGradient ? 'bg-white/30 text-white' : 'bg-indigo-500/10 text-indigo-500',
     }
   };
 
@@ -494,7 +494,7 @@ export default function AdminDashboardPage() {
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
           <div>
             <h1 className="text-2xl font-bold text-navy">Admin Dashboard</h1>
-            <p className="text-gray-500">Welcome back, {user?.username || 'User'}</p>
+            <p className="text-gray-700">Welcome back, {user?.username || 'User'}</p>
           </div>
           <div className="flex flex-wrap gap-2">
             <Button variant="outline" className="gap-2">
@@ -539,6 +539,7 @@ export default function AdminDashboardPage() {
                 icon={<FileText className="h-5 w-5" />}
                 color="navy"
                 isGradient={true}
+                className="shadow-lg"
               />
               <StatCard
                 label="Tools Installed"
