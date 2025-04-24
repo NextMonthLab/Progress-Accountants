@@ -2091,6 +2091,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/seo/configs", async (req: Request, res: Response) => {
     try {
       const configData = req.body;
+      
+      // Ensure priority is set (required by database schema)
+      if (configData.priority === undefined || configData.priority === null) {
+        configData.priority = 0.5; // Default to middle priority
+      }
+      
       const savedConfig = await storage.saveSeoConfiguration(configData);
       return res.status(201).json(savedConfig);
     } catch (error) {
@@ -2106,7 +2112,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({ error: "Invalid ID format" });
       }
       
-      const updatedConfig = await storage.updateSeoConfiguration(id, req.body);
+      const updateData = { ...req.body };
+      
+      // If we're explicitly clearing the priority, set it to the default
+      if (updateData.priority === null || updateData.priority === undefined) {
+        updateData.priority = 0.5;
+      }
+      
+      const updatedConfig = await storage.updateSeoConfiguration(id, updateData);
       
       if (!updatedConfig) {
         return res.status(404).json({ error: "SEO configuration not found" });
