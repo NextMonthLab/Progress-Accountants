@@ -154,7 +154,7 @@ export default function BrandGuidelinesPage() {
   const { toast } = useToast();
   const [guidelines, setGuidelines] = useState<BrandGuidelines>(defaultBrandGuidelines);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [activeTab, setActiveTab] = useState<string>("identity");
+  const [activeTab, setActiveTab] = useState<string>("visual");
   const [selectedTones, setSelectedTones] = useState<string[]>(defaultBrandGuidelines.brandIdentity.toneOfVoice);
   const [newTone, setNewTone] = useState<string>("");
   const [customFont, setCustomFont] = useState<string>("");
@@ -383,7 +383,7 @@ export default function BrandGuidelinesPage() {
         <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
           <h1 className="text-3xl font-bold text-[var(--navy)] mb-3">Brand Guidelines</h1>
           <p className="text-gray-600 mb-6">
-            NextMonth uses this information to generate all your pages, campaigns, and content. You can update your brand identity at any time—it updates everything going forward.
+            NextMonth uses this information to generate visual styles, messaging preferences, and brand materials for all your pages, campaigns, and content. You can update these guidelines at any time—changes will apply to all content going forward.
           </p>
 
           <Tabs 
@@ -391,12 +391,7 @@ export default function BrandGuidelinesPage() {
             onValueChange={setActiveTab}
             className="w-full"
           >
-            <TabsList className="grid grid-cols-4 mb-6">
-              <TabsTrigger value="identity" className="flex items-center gap-2">
-                <Building className="h-4 w-4" />
-                <span className="hidden sm:inline">Brand Identity</span>
-                <span className="inline sm:hidden">Identity</span>
-              </TabsTrigger>
+            <TabsList className="grid grid-cols-3 mb-6">
               <TabsTrigger value="visual" className="flex items-center gap-2">
                 <Palette className="h-4 w-4" />
                 <span className="hidden sm:inline">Visual Style</span>
@@ -414,90 +409,7 @@ export default function BrandGuidelinesPage() {
               </TabsTrigger>
             </TabsList>
 
-            {/* Brand Identity Tab */}
-            <TabsContent value="identity" className="pt-2">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Brand Identity</CardTitle>
-                  <CardDescription>
-                    Define who you are as a business and what you represent
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="businessName">Business Name</Label>
-                    <Input 
-                      id="businessName" 
-                      value={guidelines.brandIdentity.businessName} 
-                      onChange={(e) => handleInputChange('brandIdentity', 'businessName', e.target.value)}
-                      placeholder="Enter your business name"
-                    />
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <Label htmlFor="tagline">Tagline / Short Description</Label>
-                    <Input 
-                      id="tagline" 
-                      value={guidelines.brandIdentity.tagline} 
-                      onChange={(e) => handleInputChange('brandIdentity', 'tagline', e.target.value)}
-                      placeholder="A concise statement that captures your brand essence"
-                    />
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <Label htmlFor="missionStatement">Mission Statement</Label>
-                    <Textarea 
-                      id="missionStatement" 
-                      value={guidelines.brandIdentity.missionStatement} 
-                      onChange={(e) => handleInputChange('brandIdentity', 'missionStatement', e.target.value)}
-                      placeholder="What is your company's purpose and vision?"
-                      rows={4}
-                    />
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <Label>Tone of Voice</Label>
-                    <div className="flex flex-wrap gap-2 mb-3">
-                      {toneOptions.map(tone => (
-                        <Badge
-                          key={tone}
-                          variant="outline"
-                          className={`cursor-pointer ${
-                            selectedTones.includes(tone) 
-                              ? 'bg-[var(--orange)] text-white hover:bg-[var(--orange)]' 
-                              : 'bg-transparent hover:bg-gray-100'
-                          }`}
-                          onClick={() => toggleTone(tone)}
-                        >
-                          {tone}
-                          {selectedTones.includes(tone) && (
-                            <X className="ml-1 h-3 w-3" />
-                          )}
-                        </Badge>
-                      ))}
-                    </div>
-                    
-                    <div className="flex items-center gap-2">
-                      <Input 
-                        placeholder="Add custom tone..." 
-                        value={newTone}
-                        onChange={(e) => setNewTone(e.target.value)}
-                        onKeyPress={(e) => e.key === 'Enter' && addCustomTone()}
-                      />
-                      <Button
-                        type="button"
-                        variant="outline"
-                        size="sm"
-                        onClick={addCustomTone}
-                        disabled={!newTone.trim()}
-                      >
-                        <Plus className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
+
 
             {/* Visual Style Tab */}
             <TabsContent value="visual" className="pt-2">
