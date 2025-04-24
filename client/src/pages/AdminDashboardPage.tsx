@@ -63,20 +63,20 @@ function StatCard({
   // Define the color scheme with proper type
   const scheme = {
     navy: {
-      bg: isGradient ? 'from-navy to-blue-800' : 'bg-white',
-      icon: isGradient ? 'bg-white/30 text-white' : 'bg-navy/10 text-navy',
+      bg: isGradient ? 'from-navy via-blue-900 to-blue-950' : 'bg-white',
+      icon: isGradient ? 'bg-white/40 text-white' : 'bg-navy/10 text-navy',
     },
     orange: {
-      bg: isGradient ? 'from-orange-500 to-orange-700' : 'bg-white', 
-      icon: isGradient ? 'bg-white/30 text-white' : 'bg-orange-500/10 text-orange-500',
+      bg: isGradient ? 'from-orange-500 via-orange-600 to-orange-800' : 'bg-white', 
+      icon: isGradient ? 'bg-white/40 text-white' : 'bg-orange-500/10 text-orange-500',
     },
     emerald: {
-      bg: isGradient ? 'from-emerald-500 to-emerald-700' : 'bg-white',
-      icon: isGradient ? 'bg-white/30 text-white' : 'bg-emerald-500/10 text-emerald-500',
+      bg: isGradient ? 'from-emerald-500 via-emerald-600 to-emerald-800' : 'bg-white',
+      icon: isGradient ? 'bg-white/40 text-white' : 'bg-emerald-500/10 text-emerald-500',
     },
     indigo: {
-      bg: isGradient ? 'from-indigo-500 to-indigo-700' : 'bg-white',
-      icon: isGradient ? 'bg-white/30 text-white' : 'bg-indigo-500/10 text-indigo-500',
+      bg: isGradient ? 'from-indigo-500 via-indigo-600 to-indigo-800' : 'bg-white',
+      icon: isGradient ? 'bg-white/40 text-white' : 'bg-indigo-500/10 text-indigo-500',
     }
   };
 
@@ -116,7 +116,7 @@ function Section({ title, description, children, className = '' }: SectionProps)
       <div className="flex justify-between items-center mb-4">
         <div>
           <h2 className="text-xl font-bold text-navy">{title}</h2>
-          {description && <p className="text-sm text-gray-500 mt-1">{description}</p>}
+          {description && <p className="text-sm text-gray-700 mt-1">{description}</p>}
         </div>
       </div>
       {children}
@@ -151,9 +151,9 @@ function ActivityItem({ icon, title, description, time, isLoading = false }: Act
           </div>
           <div className="flex-1">
             <p className="font-medium text-navy">{title}</p>
-            <p className="text-sm text-gray-500">{description}</p>
+            <p className="text-sm text-gray-700">{description}</p>
           </div>
-          <div className="text-xs text-gray-400">{time}</div>
+          <div className="text-xs text-gray-600">{time}</div>
         </>
       )}
     </div>
@@ -199,10 +199,10 @@ function QuickAction({
   isLoading = false
 }: QuickActionProps) {
   const variantStyles = {
-    primary: 'bg-gradient-to-br from-navy to-blue-900 text-white hover:shadow-lg hover:shadow-navy/20',
-    secondary: 'bg-gradient-to-br from-orange-500 to-orange-600 text-white hover:shadow-lg hover:shadow-orange-500/20',
-    outline: 'border-2 border-navy/20 hover:border-navy/40 bg-white text-navy',
-    ghost: 'bg-gray-100 hover:bg-gray-200 text-navy',
+    primary: 'bg-gradient-to-br from-navy via-blue-900 to-blue-950 text-white hover:shadow-lg hover:shadow-navy/20',
+    secondary: 'bg-gradient-to-br from-orange-500 via-orange-600 to-orange-800 text-white hover:shadow-lg hover:shadow-orange-500/20',
+    outline: 'border-2 border-navy/40 hover:border-navy/60 bg-white text-navy',
+    ghost: 'bg-gray-200 hover:bg-gray-300 text-navy',
   };
 
   return (
@@ -270,7 +270,7 @@ function SystemHealth({ components = [], isLoading = false }: SystemHealthProps)
             )}
             <div>
               <p className="font-medium">{component.name}</p>
-              {component.details && <p className="text-xs text-gray-500">{component.details}</p>}
+              {component.details && <p className="text-xs text-gray-700">{component.details}</p>}
             </div>
           </div>
           <div className="flex items-center gap-2">
@@ -284,7 +284,7 @@ function SystemHealth({ components = [], isLoading = false }: SystemHealthProps)
               {component.status === 'good' ? 'Good' : 
                 component.status === 'warning' ? 'Warning' : 'Error'}
             </Badge>
-            <span className="text-xs text-gray-500">{component.lastChecked}</span>
+            <span className="text-xs text-gray-600">{component.lastChecked}</span>
           </div>
         </div>
       ))}
@@ -571,7 +571,7 @@ export default function AdminDashboardPage() {
                 <Card>
                   <CardHeader>
                     <CardTitle>Website Performance</CardTitle>
-                    <CardDescription>Traffic and engagement for the past 30 days</CardDescription>
+                    <CardDescription className="text-gray-700">Traffic and engagement for the past 30 days</CardDescription>
                   </CardHeader>
                   <CardContent>
                     <ChartPlaceholder height={280} isLoading={isLoadingMetrics} />
@@ -583,7 +583,7 @@ export default function AdminDashboardPage() {
                   <CardHeader className="flex flex-row items-center justify-between pb-2">
                     <div>
                       <CardTitle>Recent Activity</CardTitle>
-                      <CardDescription>Latest actions and system updates</CardDescription>
+                      <CardDescription className="text-gray-700">Latest actions and system updates</CardDescription>
                     </div>
                     <Link href="/activity-log">
                       <Button variant="ghost" size="sm" className="gap-1">
@@ -639,7 +639,7 @@ export default function AdminDashboardPage() {
                 <Card>
                   <CardHeader>
                     <CardTitle>Quick Actions</CardTitle>
-                    <CardDescription>Common tasks and actions</CardDescription>
+                    <CardDescription className="text-gray-700">Common tasks and actions</CardDescription>
                   </CardHeader>
                   <CardContent className="grid gap-3">
                     <QuickAction
