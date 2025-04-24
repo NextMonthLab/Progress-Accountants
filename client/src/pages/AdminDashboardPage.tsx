@@ -85,7 +85,7 @@ function StatCard({
       <div className={`${isGradient ? 'bg-gradient-to-br ' + scheme[color].bg : scheme[color].bg} p-6`}>
         <div className="flex justify-between items-start">
           <div>
-            <p className={`text-sm font-medium ${isGradient ? 'text-white/80' : 'text-gray-500'}`}>{label}</p>
+            <p className={`text-sm font-medium ${isGradient ? 'text-white/80' : 'text-gray-700'}`}>{label}</p>
             <h3 className={`text-2xl font-bold mt-1 ${isGradient ? 'text-white' : 'text-navy'}`}>{value}</h3>
             {change && (
               <p className={`text-xs font-medium mt-1 flex items-center ${isPositive ? (isGradient ? 'text-white/90' : 'text-emerald-500') : (isGradient ? 'text-white/90' : 'text-red-500')}`}>
@@ -646,7 +646,7 @@ export default function AdminDashboardPage() {
                       description="Design and publish a new page"
                       icon={<FileText className="h-5 w-5" />}
                       link="/page-builder/new"
-                      variant="primary"
+                      variant="outline"
                     />
                     <QuickAction
                       title="Install New Tool"
