@@ -36,6 +36,7 @@ interface BusinessIdentity {
     businessName: string;
     tagline: string;
     description: string;
+    language: string; // Website language setting
   };
   market: {
     primaryIndustry: string;
@@ -61,6 +62,7 @@ const defaultBusinessIdentity: BusinessIdentity = {
     businessName: "Progress Accountants",
     tagline: "Modern accounting. Real results.",
     description: "We're accountants who understand modern business needs. We combine traditional expertise with innovative technology to help businesses grow.",
+    language: "en-GB", // Default language is British English
   },
   market: {
     primaryIndustry: "Accounting & Tax Planning",
@@ -98,6 +100,22 @@ const workingStyleOptions = [
   "Hybrid",
   "Remote",
   "Flexible"
+];
+
+// Language options for the website
+const languageOptions = [
+  { value: "en-GB", label: "English (UK)" },
+  { value: "en-US", label: "English (US)" },
+  { value: "fr-FR", label: "French" },
+  { value: "es-ES", label: "Spanish" },
+  { value: "de-DE", label: "German" },
+  { value: "it-IT", label: "Italian" },
+  { value: "nl-NL", label: "Dutch" },
+  { value: "pt-PT", label: "Portuguese" },
+  { value: "sv-SE", label: "Swedish" },
+  { value: "da-DK", label: "Danish" },
+  { value: "fi-FI", label: "Finnish" },
+  { value: "no-NO", label: "Norwegian" },
 ];
 
 // Tone of voice options
@@ -348,6 +366,26 @@ export default function BusinessIdentityPage() {
                         rows={3}
                       />
                       <p className="text-sm text-gray-500">Imagine explaining your business in 30 seconds to someone unfamiliar with it.</p>
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="language">Website Language</Label>
+                      <Select 
+                        value={businessIdentity.core.language || "en-GB"}
+                        onValueChange={(value) => handleInputChange('core', 'language', value)}
+                      >
+                        <SelectTrigger id="language">
+                          <SelectValue placeholder="Select a language" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {languageOptions.map(lang => (
+                            <SelectItem key={lang.value} value={lang.value}>{lang.label}</SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <p className="text-sm text-gray-500">
+                        This sets the language for the website's spell checking and localization. Helps avoid false spelling errors for non-English content.
+                      </p>
                     </div>
                   </CardContent>
                 </Card>
