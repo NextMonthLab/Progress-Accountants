@@ -19,6 +19,7 @@ import AuthPage from "@/pages/AuthPage";
 import ClientRegistrationPage from "@/pages/ClientRegistrationPage";
 import ClientDashboardPage from "@/pages/ClientDashboardPage";
 import ClientDashboardPage2 from "@/pages/ClientDashboardPage2";
+import RedesignedDashboardPage from "@/pages/RedesignedDashboardPage";
 import CRMViewPage from "@/pages/CRMViewPage";
 import CRMViewPageEnhanced from "@/pages/CRMViewPageEnhanced";
 import ToolsDashboardPage from "@/pages/ToolsDashboardPage";
@@ -184,6 +185,11 @@ function Router() {
       <ProtectedRoute 
         path="/admin/dashboard-v2" 
         component={ClientDashboardPage2} 
+        allowedRoles={['admin', 'super_admin', 'editor']} 
+      />
+      <ProtectedRoute 
+        path="/admin/dashboard-redesigned" 
+        component={RedesignedDashboardPage} 
         allowedRoles={['admin', 'super_admin', 'editor']} 
       />
       <ProtectedRoute 
