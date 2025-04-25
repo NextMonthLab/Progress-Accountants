@@ -370,6 +370,14 @@ export default function AdminSidebar() {
           requiresStaff: true 
         },
         { 
+          title: "Conversation Insights", 
+          href: "/admin/conversation-insights", 
+          icon: <Sparkles className="h-5 w-5" />,
+          requiresStaff: true,
+          badge: { text: "New", variant: "new" },
+          isNew: true
+        },
+        { 
           title: "Brand Manager", 
           href: "/admin/brand", 
           icon: <PaintBucket className="h-5 w-5" />,
