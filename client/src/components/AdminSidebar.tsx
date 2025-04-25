@@ -241,12 +241,6 @@ export default function AdminSidebar() {
           badge: { text: "Enhanced", variant: "updated" } 
         },
         { 
-          title: "Content Dashboard", 
-          href: "/content-studio", 
-          icon: <LayoutDashboard className="h-5 w-5" />,
-          requiresStaff: true
-        },
-        { 
           title: "Social Media Generator", 
           href: "/tools/social-media-generator", 
           icon: <Newspaper className="h-5 w-5" />,
