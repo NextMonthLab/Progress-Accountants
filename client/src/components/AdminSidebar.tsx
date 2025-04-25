@@ -34,7 +34,8 @@ import {
   Database,
   Cpu,
   Newspaper,
-  User
+  User,
+  TrendingUp
 } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import { useState, useEffect, useRef } from "react";
