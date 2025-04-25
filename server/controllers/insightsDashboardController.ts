@@ -4,6 +4,18 @@ import { Request, Response } from 'express';
 import { eq, and, gte, lte, desc, count, sql } from 'drizzle-orm';
 import { subDays } from 'date-fns';
 
+// Extend Express.User with our custom properties
+declare global {
+  namespace Express {
+    interface User {
+      id: string | number;
+      tenantId: string;
+      userType: string;
+      // Other user properties...
+    }
+  }
+}
+
 export async function getLeaderboard(req: Request, res: Response) {
   try {
     if (!req.isAuthenticated()) {

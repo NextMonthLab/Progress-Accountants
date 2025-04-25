@@ -10,12 +10,15 @@ import { migrateDomainMappingsTables } from './db-migrate-domain-mappings';
 import { migrateSotTables } from './db-migrate-sot';
 import { migrateAgentTables } from './db-migrate-agent';
 import { migrateAiDesignSystemTables } from './db-migrate-ai-design-system';
+import { migrateInsightsDashboard } from './db-migrate-insights-dashboard';
 import { registerNavigationRoutes } from './controllers/navigationController';
 import { registerDomainMappingRoutes } from './controllers/domainMappingController';
 import { registerSotRoutes } from './controllers/sotController';
 import { registerAgentRoutes } from './controllers/agentController';
 import { registerSocialMediaRoutes } from './controllers/registerSocialMediaRoutes';
 import { registerAdvancedSeoRoutes } from './controllers/registerAdvancedSeoRoutes';
+import { registerInsightsRoutes } from './controllers/registerInsightsRoutes';
+import { initScheduler } from './scheduler';
 
 const app = express();
 app.use(express.json());
@@ -68,6 +71,8 @@ app.use((req, res, next) => {
     await migrateAgentTables();
     console.log('Running AI Design System migrations...');
     await migrateAiDesignSystemTables();
+    console.log('Running Insights Dashboard migrations...');
+    await migrateInsightsDashboard();
   } catch (error) {
     console.error('Error running migrations:', error);
   }
@@ -92,6 +97,9 @@ app.use((req, res, next) => {
   
   // Register Advanced SEO Intelligence routes
   registerAdvancedSeoRoutes(app);
+  
+  // Register Insights Dashboard routes
+  registerInsightsRoutes(app);
 
   app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
     const status = err.status || err.statusCode || 500;
@@ -128,5 +136,8 @@ app.use((req, res, next) => {
     });
     
     log('Backup scheduler initialized');
+    
+    // Initialize insights summary scheduler
+    initScheduler();
   });
 })();

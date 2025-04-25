@@ -7,7 +7,7 @@ import { eq, and } from 'drizzle-orm';
 declare global {
   namespace Express {
     interface User {
-      id: number;
+      id: string | number;
       tenantId: string;
       userType: string;
       // Other user properties...
