@@ -14,6 +14,8 @@ export const sotDeclarations = pgTable("sot_declarations", {
   toolsSupported: text("tools_supported").array().notNull(),
   callbackUrl: text("callback_url").notNull(),
   status: text("status").notNull().default("pending"),
+  isTemplate: boolean("is_template").default(false),
+  isCloneable: boolean("is_cloneable").default(false),
   lastSyncAt: timestamp("last_sync_at").defaultNow(),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
@@ -62,9 +64,11 @@ export const insertSotSyncLogSchema = createInsertSchema(sotSyncLogs);
 // Enhanced Zod Schema with validation
 export const sotDeclarationSchema = z.object({
   instanceId: z.string().min(1, "Instance ID is required"),
-  instanceType: z.enum(["client_site", "marketplace", "admin_portal", "analytics_engine"]),
+  instanceType: z.enum(["client_site", "marketplace", "admin_portal", "analytics_engine", "template"]),
   blueprintVersion: z.string().min(1, "Blueprint version is required"),
   toolsSupported: z.array(z.string()).min(1, "At least one supported tool must be specified"),
   callbackUrl: z.string().url("Valid callback URL is required"),
   status: z.enum(["pending", "active", "inactive"]).default("pending"),
+  isTemplate: z.boolean().optional().default(false),
+  isCloneable: z.boolean().optional().default(false),
 });
