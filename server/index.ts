@@ -9,6 +9,7 @@ import migrateNavigationTables from './db-migrate-navigation';
 import { migrateDomainMappingsTables } from './db-migrate-domain-mappings';
 import { migrateSotTables } from './db-migrate-sot';
 import { migrateAgentTables } from './db-migrate-agent';
+import { migrateAiDesignSystemTables } from './db-migrate-ai-design-system';
 import { registerNavigationRoutes } from './controllers/navigationController';
 import { registerDomainMappingRoutes } from './controllers/domainMappingController';
 import { registerSotRoutes } from './controllers/sotController';
@@ -63,6 +64,8 @@ app.use((req, res, next) => {
     await migrateSotTables();
     console.log('Running Progress Agent migrations...');
     await migrateAgentTables();
+    console.log('Running AI Design System migrations...');
+    await migrateAiDesignSystemTables();
   } catch (error) {
     console.error('Error running migrations:', error);
   }
