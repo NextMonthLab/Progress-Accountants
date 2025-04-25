@@ -239,7 +239,7 @@ function Router() {
       <ProtectedRoute path="/onboarding" component={OnboardingWelcomePage} />
       <ProtectedRoute path="/new-client-setup" component={NewClientOnboarding} />
       <ProtectedRoute path="/website-intent" component={WebsiteIntentPage} />
-      <ProtectedRoute path="/studio-banbury" component={StudioPage} />
+      <Route path="/studio-banbury" component={StudioPage} />
       <ProtectedRoute path="/scope-request" component={ScopeRequestPage} />
       <ProtectedRoute path="/brand-guidelines" component={BrandGuidelinesPage} />
       <ProtectedRoute path="/business-identity" component={BusinessIdentityPage} />
