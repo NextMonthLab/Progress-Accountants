@@ -304,6 +304,7 @@ export default function CRMViewPage() {
                     <TableHead>Email</TableHead>
                     <TableHead>Phone</TableHead>
                     <TableHead>Company</TableHead>
+                    <TableHead>Notes</TableHead>
                     <TableHead>Tags</TableHead>
                     <TableHead>Actions</TableHead>
                   </TableRow>
@@ -315,6 +316,11 @@ export default function CRMViewPage() {
                       <TableCell>{contact.email}</TableCell>
                       <TableCell>{contact.phone || '—'}</TableCell>
                       <TableCell>{contact.company || '—'}</TableCell>
+                      <TableCell className="max-w-[200px]">
+                        <div className="truncate">
+                          {contact.notes || '—'}
+                        </div>
+                      </TableCell>
                       <TableCell>
                         <div className="flex flex-wrap gap-1">
                           {contact.tags && contact.tags.length > 0 ? (
