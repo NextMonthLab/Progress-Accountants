@@ -239,13 +239,6 @@ export default function StudioPage() {
             >
               What's included in every session
             </h3>
-            <div className="max-w-lg mx-auto mb-8">
-              <img 
-                src="https://res.cloudinary.com/drl0fxrkq/image/upload/v1744815129/P1012279-Enhanced-NR_dgdlta.jpg" 
-                alt="Professional Studio Equipment" 
-                className="rounded-lg shadow-xl mx-auto"
-              />
-            </div>
           </div>
           
           <div className="grid md:grid-cols-3 gap-6">
@@ -257,7 +250,7 @@ export default function StudioPage() {
                 case 1: imageUrl = studioImages.podcast_mics; break;
                 case 2: imageUrl = studioImages.camera_preview; break;
                 case 3: imageUrl = studioImages.presentation_tv; break;
-                case 4: imageUrl = studioImages.interview_setup; break;
+                case 4: imageUrl = "https://res.cloudinary.com/drl0fxrkq/image/upload/v1744815129/P1012279-Enhanced-NR_dgdlta.jpg"; break;
                 case 5: imageUrl = studioImages.lighting_rig; break;
                 case 6: imageUrl = studioImages.acoustic_panels; break;
                 case 7: imageUrl = studioImages.technician; break;
