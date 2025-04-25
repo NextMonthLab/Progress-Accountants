@@ -43,11 +43,16 @@ export async function generateImage(prompt: string): Promise<{ url: string }> {
  * Generate social media post content using GPT-4
  * @param prompt User prompt for post generation
  * @param platform Target social media platform
+ * @param businessIdentity Optional business identity data for tone customization
  * @returns Object containing generated text
  */
-export async function generateSocialMediaPost(prompt: string, platform: string): Promise<{ text: string }> {
+export async function generateSocialMediaPost(
+  prompt: string, 
+  platform: string,
+  businessIdentity?: any
+): Promise<{ text: string }> {
   try {
-    const systemPrompt = getSystemPromptForPlatform(platform);
+    const systemPrompt = getSystemPromptForPlatform(platform, businessIdentity);
     
     const response = await openai.chat.completions.create({
       model: "gpt-4o", // the newest OpenAI model is "gpt-4o" which was released May 13, 2024
@@ -101,18 +106,37 @@ function enhanceImagePrompt(prompt: string): string {
 }
 
 /**
- * Get the appropriate system prompt based on platform
+ * Get the appropriate system prompt based on platform and business identity
+ * @param platform Social media platform
+ * @param businessIdentity Optional business identity data
+ * @returns Customized system prompt
  */
-function getSystemPromptForPlatform(platform: string): string {
-  const basePrompt = "You are an expert social media content creator for an accounting firm called Progress Accountants. " +
-    "Create professional, engaging content that showcases expertise and builds trust. " +
-    "The content should be appropriate for a business audience and maintain a professional tone. " +
-    "Focus on creating value for the reader while showcasing accounting expertise.";
+function getSystemPromptForPlatform(platform: string, businessIdentity?: any): string {
+  // Extract business information if available
+  const businessName = businessIdentity?.core?.businessName || "Progress Accountants";
+  const industry = businessIdentity?.market?.primaryIndustry || "accounting";
+  const targetAudience = businessIdentity?.market?.targetAudience || "business owners";
+  let toneOfVoice = businessIdentity?.personality?.toneOfVoice || [];
   
+  // Default to professional tone if no tones specified
+  if (!toneOfVoice || toneOfVoice.length === 0) {
+    toneOfVoice = ["professional", "friendly", "authoritative"];
+  }
+  
+  // Format the tones for the prompt
+  const tonesText = toneOfVoice.join(", ");
+  
+  // Build the base prompt with dynamic business information
+  const basePrompt = `You are an expert social media content creator for ${businessName}. ` +
+    `Create engaging content that showcases expertise and builds trust. ` +
+    `The content should be appropriate for ${targetAudience} and maintain a ${tonesText} tone. ` +
+    `Focus on creating value for the reader while showcasing ${industry} expertise.`;
+  
+  // Platform-specific instructions
   const platformSpecificPrompts: Record<string, string> = {
     linkedin: 
       basePrompt + 
-      " For LinkedIn, write in a professional tone with business insights. " +
+      ` For LinkedIn, write with a ${tonesText} tone with business insights. ` +
       "Include relevant hashtags (3-5) at the end. Keep the post between 1000-1300 characters. " +
       "Focus on thought leadership, industry insights, and professional development.",
       
@@ -120,17 +144,17 @@ function getSystemPromptForPlatform(platform: string): string {
       basePrompt + 
       " For Twitter/X, be concise and direct. " +
       "Keep the post under 280 characters. " +
-      "Include 1-2 relevant hashtags. Use punchy, attention-grabbing language.",
+      `Include 1-2 relevant hashtags. Use ${tonesText}, attention-grabbing language.`,
       
     facebook: 
       basePrompt + 
-      " For Facebook, use a conversational but still professional tone. " +
+      ` For Facebook, use a ${tonesText} tone. ` +
       "Keep the post between 80-250 words. " +
       "Ask a question at the end to encourage engagement.",
       
     instagram: 
       basePrompt + 
-      " For Instagram, write visually descriptive content. " +
+      ` For Instagram, write visually descriptive content with a ${tonesText} tone. ` +
       "Keep the post between 150-200 words. " + 
       "Include a clear call-to-action and 5-10 relevant hashtags at the end. " +
       "Focus on visual storytelling that complements an image."
