@@ -1218,3 +1218,100 @@ export const domainMappingsRelations = relations(domainMappings, ({ one }) => ({
 
 export type InsertDomainMapping = z.infer<typeof insertDomainMappingSchema>;
 export type DomainMapping = typeof domainMappings.$inferSelect;
+
+// AI Design System Tables
+export const aiDesignSuggestions = pgTable("ai_design_suggestions", {
+  id: serial("id").primaryKey(),
+  tenantId: uuid("tenant_id").references(() => tenants.id),
+  pageType: varchar("page_type", { length: 50 }).notNull(), // home, about, services, contact, etc.
+  businessType: varchar("business_type", { length: 100 }).notNull(), // accounting, legal, healthcare, etc.
+  components: jsonb("components").notNull(), // Array of suggested components
+  layouts: jsonb("layouts").notNull(), // Array of suggested layouts
+  colorPalettes: jsonb("color_palettes"), // Array of suggested color palettes
+  seoRecommendations: jsonb("seo_recommendations"), // SEO enhancement recommendations
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export const insertAiDesignSuggestionSchema = createInsertSchema(aiDesignSuggestions).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export type InsertAiDesignSuggestion = z.infer<typeof insertAiDesignSuggestionSchema>;
+export type AiDesignSuggestion = typeof aiDesignSuggestions.$inferSelect;
+
+// AI Component Recommendations
+export const aiComponentRecommendations = pgTable("ai_component_recommendations", {
+  id: serial("id").primaryKey(),
+  pageId: integer("page_id").references(() => pageBuilderPages.id).notNull(),
+  sectionId: integer("section_id").references(() => pageBuilderSections.id),
+  context: varchar("context", { length: 100 }).notNull(), // header, hero, content, footer, etc.
+  recommendations: jsonb("recommendations").notNull(), // Array of recommended components
+  reasoning: text("reasoning"), // Explanation of recommendations
+  used: boolean("used").default(false), // Whether recommendation was used
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export const insertAiComponentRecommendationSchema = createInsertSchema(aiComponentRecommendations).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export type InsertAiComponentRecommendation = z.infer<typeof insertAiComponentRecommendationSchema>;
+export type AiComponentRecommendation = typeof aiComponentRecommendations.$inferSelect;
+
+// AI Color Palette Generator
+export const aiColorPalettes = pgTable("ai_color_palettes", {
+  id: serial("id").primaryKey(),
+  tenantId: uuid("tenant_id").references(() => tenants.id),
+  name: varchar("name", { length: 100 }).notNull(),
+  primaryColor: varchar("primary_color", { length: 7 }).notNull(), // Hex code
+  secondaryColor: varchar("secondary_color", { length: 7 }).notNull(), // Hex code
+  accentColor: varchar("accent_color", { length: 7 }).notNull(), // Hex code
+  textColor: varchar("text_color", { length: 7 }).notNull(), // Hex code
+  backgroundColor: varchar("background_color", { length: 7 }).notNull(), // Hex code
+  additionalColors: jsonb("additional_colors"), // Additional color options
+  mood: varchar("mood", { length: 50 }), // professional, energetic, calm, etc.
+  industry: varchar("industry", { length: 100 }), // Industry this palette is suitable for
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export const insertAiColorPaletteSchema = createInsertSchema(aiColorPalettes).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export type InsertAiColorPalette = z.infer<typeof insertAiColorPaletteSchema>;
+export type AiColorPalette = typeof aiColorPalettes.$inferSelect;
+
+// Define relationships for AI design system
+export const aiDesignSuggestionsRelations = relations(aiDesignSuggestions, ({ one }) => ({
+  tenant: one(tenants, {
+    fields: [aiDesignSuggestions.tenantId],
+    references: [tenants.id],
+  }),
+}));
+
+export const aiComponentRecommendationsRelations = relations(aiComponentRecommendations, ({ one }) => ({
+  page: one(pageBuilderPages, {
+    fields: [aiComponentRecommendations.pageId],
+    references: [pageBuilderPages.id],
+  }),
+  section: one(pageBuilderSections, {
+    fields: [aiComponentRecommendations.sectionId],
+    references: [pageBuilderSections.id],
+  }),
+}));
+
+export const aiColorPalettesRelations = relations(aiColorPalettes, ({ one }) => ({
+  tenant: one(tenants, {
+    fields: [aiColorPalettes.tenantId],
+    references: [tenants.id],
+  }),
+}));
