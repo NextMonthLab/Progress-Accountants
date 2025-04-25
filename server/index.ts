@@ -12,6 +12,7 @@ import { migrateAgentTables } from './db-migrate-agent';
 import { migrateAiDesignSystemTables } from './db-migrate-ai-design-system';
 import { migrateInsightsDashboard } from './db-migrate-insights-dashboard';
 import { migrateBlueprintTables } from './db-migrate-blueprint';
+import { migrateCrmTables } from './db-migrate-crm';
 import { registerNavigationRoutes } from './controllers/navigationController';
 import { registerDomainMappingRoutes } from './controllers/domainMappingController';
 import { registerSotRoutes } from './controllers/sotController';
@@ -20,6 +21,7 @@ import { registerSocialMediaRoutes } from './controllers/registerSocialMediaRout
 import { registerAdvancedSeoRoutes } from './controllers/registerAdvancedSeoRoutes';
 import { registerInsightsRoutes } from './controllers/registerInsightsRoutes';
 import { registerBlueprintRoutes } from './controllers/blueprintController';
+import { registerCrmRoutes } from './controllers/crmController';
 import { initScheduler } from './scheduler';
 
 const app = express();
@@ -77,6 +79,8 @@ app.use((req, res, next) => {
     await migrateInsightsDashboard();
     console.log('Running Blueprint migrations...');
     await migrateBlueprintTables();
+    console.log('Running Starter CRM migrations...');
+    await migrateCrmTables();
   } catch (error) {
     console.error('Error running migrations:', error);
   }
@@ -107,6 +111,9 @@ app.use((req, res, next) => {
   
   // Register Blueprint routes
   registerBlueprintRoutes(app);
+  
+  // Register Starter CRM routes
+  registerCrmRoutes(app);
 
   app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
     const status = err.status || err.statusCode || 500;
