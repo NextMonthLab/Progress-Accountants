@@ -5,8 +5,18 @@ import { insertCompanionConfigSchema } from "@shared/schema";
 
 export const getCompanionConfig = async (req: Request, res: Response) => {
   try {
-    // Get tenantId from authenticated user
-    const tenantId = req.user?.tenantId as string;
+    // Get tenantId from authenticated user, query param, or body
+    let tenantId = req.user?.tenantId as string;
+    
+    // If not in user object, check query param
+    if (!tenantId && req.query.tenantId) {
+      tenantId = req.query.tenantId as string;
+    }
+    
+    // If not in query, check body
+    if (!tenantId && req.body.tenantId) {
+      tenantId = req.body.tenantId;
+    }
     
     if (!tenantId) {
       return res.status(400).json({ error: "Tenant ID is required" });
@@ -27,8 +37,18 @@ export const getCompanionConfig = async (req: Request, res: Response) => {
 
 export const createCompanionConfig = async (req: Request, res: Response) => {
   try {
-    // Get tenantId from authenticated user
-    const tenantId = req.user?.tenantId as string;
+    // Get tenantId from authenticated user, query param, or body
+    let tenantId = req.user?.tenantId as string;
+    
+    // If not in user object, check query param
+    if (!tenantId && req.query.tenantId) {
+      tenantId = req.query.tenantId as string;
+    }
+    
+    // If not in query, check body
+    if (!tenantId && req.body.tenantId) {
+      tenantId = req.body.tenantId;
+    }
     
     if (!tenantId) {
       return res.status(400).json({ error: "Tenant ID is required" });
@@ -68,8 +88,18 @@ export const createCompanionConfig = async (req: Request, res: Response) => {
 
 export const updateCompanionConfig = async (req: Request, res: Response) => {
   try {
-    // Get tenantId from authenticated user
-    const tenantId = req.user?.tenantId as string;
+    // Get tenantId from authenticated user, query param, or body
+    let tenantId = req.user?.tenantId as string;
+    
+    // If not in user object, check query param
+    if (!tenantId && req.query.tenantId) {
+      tenantId = req.query.tenantId as string;
+    }
+    
+    // If not in query, check body
+    if (!tenantId && req.body.tenantId) {
+      tenantId = req.body.tenantId;
+    }
     
     if (!tenantId) {
       return res.status(400).json({ error: "Tenant ID is required" });
