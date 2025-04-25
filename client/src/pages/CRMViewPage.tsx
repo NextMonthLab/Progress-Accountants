@@ -26,8 +26,10 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Loader2, PlusCircle, Pencil, Trash2, Link } from 'lucide-react';
 
+// Defining the Contact interface based on database schema
 interface Contact {
   id: number;
+  tenantId: string;
   name: string;
   email: string;
   phone?: string;
@@ -36,6 +38,7 @@ interface Contact {
   tags?: string[];
   createdAt: string;
   updatedAt: string;
+  createdBy?: number;
 }
 
 interface ContactFormData {
@@ -74,7 +77,7 @@ export default function CRMViewPage() {
 
   // Query for fetching contacts
   const {
-    data: contacts = [],
+    data: contactsResponse,
     isLoading,
     isError,
     error,
@@ -88,6 +91,9 @@ export default function CRMViewPage() {
       return res.json();
     },
   });
+
+  // Extract contacts array from response, or use empty array if not available
+  const contacts = contactsResponse?.data || [];
 
   // Mutation for adding a contact
   const addContactMutation = useMutation({
@@ -303,7 +309,7 @@ export default function CRMViewPage() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {contacts.map((contact) => (
+                  {contacts.map((contact: Contact) => (
                     <TableRow key={contact.id}>
                       <TableCell className="font-medium">{contact.name}</TableCell>
                       <TableCell>{contact.email}</TableCell>
@@ -312,7 +318,7 @@ export default function CRMViewPage() {
                       <TableCell>
                         <div className="flex flex-wrap gap-1">
                           {contact.tags && contact.tags.length > 0 ? (
-                            contact.tags.map((tag, index) => (
+                            contact.tags.map((tag: string, index: number) => (
                               <Badge key={index} variant="outline" className="mr-1">
                                 {tag}
                               </Badge>
