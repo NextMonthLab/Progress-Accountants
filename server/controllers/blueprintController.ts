@@ -4,7 +4,9 @@ import { storage } from '../storage';
 import { validateBlueprint, sanitizeBlueprint } from '../utils/sotUtils';
 import { eq } from 'drizzle-orm';
 import { sotDeclarations } from '@shared/sot';
-import { tools, users, pages, navigation_menus, menu_items } from '@shared/schema';
+import { tools, users } from '@shared/schema';
+import { pageBuilderPages } from '@shared/schema';
+import { navigationMenus, menuItems } from '@shared/navigation_menu';
 import { v4 as uuidv4 } from 'uuid';
 import { hashPassword } from '../auth';
 
@@ -296,11 +298,11 @@ async function generateBlueprint() {
     const availableTools = await db.select().from(tools);
     
     // Get pages
-    const allPages = await db.select().from(pages);
+    const allPages = await db.select().from(pageBuilderPages);
     
     // Get navigation structure
-    const menus = await db.select().from(navigation_menus);
-    const menuItems = await db.select().from(menu_items);
+    const menus = await db.select().from(navigationMenus);
+    const navigationItems = await db.select().from(menuItems);
     
     // Create blueprint object
     const blueprint = {
@@ -330,7 +332,7 @@ async function generateBlueprint() {
         menus: menus.map(menu => ({
           id: menu.id,
           name: menu.name,
-          items: menuItems
+          items: navigationItems
             .filter(item => item.menuId === menu.id)
             .map(item => ({
               id: item.id,
