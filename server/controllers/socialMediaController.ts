@@ -2,6 +2,26 @@ import { Request, Response } from 'express';
 import { generateSocialMediaPost, generateImage } from '../services/openaiImageService';
 import { v4 as uuidv4 } from 'uuid';
 
+// Extend Express Session type to include our custom properties
+declare module 'express-session' {
+  interface SessionData {
+    userPosts?: {
+      [userId: string]: Post[];
+    };
+  }
+}
+
+// Extend Express User interface
+declare global {
+  namespace Express {
+    interface User {
+      id: number | string;
+      role?: string;
+      isSuperAdmin?: boolean;
+    }
+  }
+}
+
 // Interface for social media posts
 interface Post {
   id: string;
