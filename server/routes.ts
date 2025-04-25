@@ -19,7 +19,7 @@ import {
   insertToolRequestSchema,
   insertPageToolIntegrationSchema
 } from "@shared/schema";
-import { registerBlueprintRoutes } from "./blueprint";
+import { registerBlueprintRoutes as registerLegacyBlueprintRoutes } from "./blueprint";
 import { registerMediaRoutes } from "./media-upload";
 import { registerSupportRoutes } from "./support";
 import { registerPageToolIntegrationRoutes } from "./page-tool-integrations";
@@ -227,7 +227,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   registerSocialMediaRoutes(app);
   
   // Register blueprint API endpoints
-  registerBlueprintRoutes(app);
+  registerLegacyBlueprintRoutes(app);
   
   // Register page-tool integration endpoints
   registerPageToolIntegrationRoutes(app);
@@ -2047,7 +2047,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
   
   // Register Blueprint Export routes
-  registerBlueprintRoutes(app);
+  registerLegacyBlueprintRoutes(app);
   
   // Create HTTP server
   const httpServer = createServer(app);
