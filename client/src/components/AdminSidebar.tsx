@@ -234,12 +234,26 @@ export default function AdminSidebar() {
           badge: { text: "Enhanced", variant: "updated" } 
         },
         { 
-          title: "AI Content Studio", 
-          href: "/content-studio", 
+          title: "Content Studio", 
           icon: <BrainCircuit className="h-5 w-5" />,
           requiresStaff: true,
           badge: { text: "Beta", variant: "beta" },
-          isNew: true
+          isNew: true,
+          items: [
+            { 
+              title: "Content Dashboard", 
+              href: "/content-studio", 
+              icon: <LayoutDashboard className="h-5 w-5" />,
+              requiresStaff: true
+            },
+            { 
+              title: "Social Media Generator", 
+              href: "/tools/social-media-generator", 
+              icon: <Newspaper className="h-5 w-5" />,
+              requiresStaff: true,
+              badge: { text: "New", variant: "new" }
+            }
+          ]
         },
       ]
     },

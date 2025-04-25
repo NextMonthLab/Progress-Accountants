@@ -77,6 +77,7 @@ import ConversationInsightsPage from "@/pages/ConversationInsightsPage";
 import SocialMediaGeneratorPage from "@/pages/SocialMediaGeneratorPage";
 import ContentStudioPage from "@/pages/ContentStudioPage";
 import AnalyticsPage from "@/pages/AnalyticsPage";
+import AccountPage from "@/pages/AccountPage";
 // Page Builder pages
 import PageBuilderListPage from "@/pages/PageBuilderListPage";
 import PageBuilderPage from "@/pages/PageBuilderPage";
@@ -240,6 +241,11 @@ function Router() {
         path="/client-portal" 
         component={ClientDashboardPage} 
         allowedRoles={['client', 'admin', 'super_admin']} 
+      />
+      <ProtectedRoute 
+        path="/account" 
+        component={AccountPage} 
+        allowedRoles={['client', 'admin', 'super_admin']}
       />
       
       {/* Tools and marketplace routes */}
