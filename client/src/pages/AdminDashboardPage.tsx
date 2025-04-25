@@ -657,6 +657,20 @@ export default function AdminDashboardPage() {
                       variant="secondary"
                     />
                     <QuickAction
+                      title="Insights Dashboard"
+                      description="Track and analyze user feedback"
+                      icon={<BarChart3 className="h-5 w-5" />}
+                      link="/admin/insights-dashboard"
+                      variant="default"
+                    />
+                    <QuickAction
+                      title="Manage Insight Users"
+                      description="Add and edit insight users"
+                      icon={<Users className="h-5 w-5" />}
+                      link="/admin/insight-users"
+                      variant="outline"
+                    />
+                    <QuickAction
                       title="View Website"
                       description="See your live website"
                       icon={<Globe className="h-5 w-5" />}
