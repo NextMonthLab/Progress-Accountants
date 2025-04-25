@@ -3,6 +3,18 @@ import { insightUsers, insertInsightUserSchema } from '@shared/insight_dashboard
 import { Request, Response } from 'express';
 import { eq, and } from 'drizzle-orm';
 
+// Extend Express.User with our custom properties
+declare global {
+  namespace Express {
+    interface User {
+      id: number;
+      tenantId: string;
+      userType: string;
+      // Other user properties...
+    }
+  }
+}
+
 export async function getInsightUsers(req: Request, res: Response) {
   try {
     if (!req.isAuthenticated() || !['admin', 'super_admin', 'editor'].includes(req.user.userType)) {

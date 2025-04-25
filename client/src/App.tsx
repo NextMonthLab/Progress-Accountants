@@ -28,6 +28,8 @@ import ToolsLandingPage from "@/pages/ToolsLandingPage";
 import ToolMarketplaceBrowserPage from "@/pages/ToolMarketplaceBrowserPage";
 import ComponentDemo from "@/pages/ComponentDemo";
 import TeamPage from "@/pages/TeamPage";
+import InsightUsersPage from "@/pages/InsightUsersPage";
+import InsightsDashboardPage from "@/pages/InsightsDashboardPage";
 import AboutPage from "@/pages/AboutPage";
 import ServicesPage from "@/pages/ServicesPage";
 import ServiceDetailPage from "@/pages/ServiceDetailPage";
@@ -199,6 +201,16 @@ function Router() {
         path="/admin/dashboard" 
         component={AdminDashboardPage} 
         allowedRoles={['admin', 'super_admin', 'editor']} 
+      />
+      <ProtectedRoute 
+        path="/admin/insights-dashboard" 
+        component={InsightsDashboardPage} 
+        allowedRoles={['admin', 'super_admin', 'editor']} 
+      />
+      <ProtectedRoute 
+        path="/admin/insight-users" 
+        component={InsightUsersPage} 
+        allowedRoles={['admin', 'super_admin']} 
       />
       <ProtectedRoute 
         path="/admin/new-request" 
