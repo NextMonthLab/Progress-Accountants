@@ -76,6 +76,7 @@ import SotManagementPage from "@/pages/SotManagementPage";
 import ConversationInsightsPage from "@/pages/ConversationInsightsPage";
 import SocialMediaGeneratorPage from "@/pages/SocialMediaGeneratorPage";
 import ContentStudioPage from "@/pages/ContentStudioPage";
+import AnalyticsPage from "@/pages/AnalyticsPage";
 // Page Builder pages
 import PageBuilderListPage from "@/pages/PageBuilderListPage";
 import PageBuilderPage from "@/pages/PageBuilderPage";
@@ -217,6 +218,11 @@ function Router() {
         path="/admin/insight-users" 
         component={InsightUsersPage} 
         allowedRoles={['admin', 'super_admin']} 
+      />
+      <ProtectedRoute 
+        path="/admin/analytics" 
+        component={AnalyticsPage} 
+        allowedRoles={['admin', 'super_admin', 'editor']} 
       />
       <ProtectedRoute 
         path="/admin/new-request" 
