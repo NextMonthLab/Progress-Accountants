@@ -3,10 +3,8 @@ import {
   Settings, 
   FileImage, 
   LayoutDashboard, 
-  Box, 
   Home, 
   Users, 
-  Store, 
   PaintBucket, 
   Layout, 
   FastForward, 
@@ -28,7 +26,6 @@ import {
   BarChart,
   CircleUser,
   BrainCircuit,
-  Rocket,
   SquarePen,
   Lightbulb,
   Database,
@@ -267,31 +264,7 @@ export default function AdminSidebar() {
         },
       ]
     },
-    {
-      title: "App Marketplace",
-      icon: <Rocket className="h-5 w-5" />,
-      isExpandable: true,
-      items: [
-        { 
-          title: "Tools Hub", 
-          href: "/tools-hub", 
-          icon: <Cpu className="h-5 w-5" />,
-          description: "Access all your available tools"
-        },
-        { 
-          title: "Discover Apps", 
-          href: "/marketplace", 
-          icon: <Store className="h-5 w-5" />,
-          badge: { text: "New", variant: "new" }
-        },
-        { 
-          title: "My Apps", 
-          href: "/installed-tools", 
-          icon: <Box className="h-5 w-5" />,
-          description: "Manage your installed applications"
-        }
-      ]
-    },
+    // App Marketplace section removed, Social Media Generator is under Content Studio
     {
       title: "Brand Center",
       icon: <Palette className="h-5 w-5" />,
