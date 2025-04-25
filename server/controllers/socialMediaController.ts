@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { generateSocialMediaPost, generateImage } from '../services/openaiImageService';
 import { v4 as uuidv4 } from 'uuid';
+import { pool } from '../db';
 
 // Extend Express Session type to include our custom properties
 declare module 'express-session' {
@@ -36,6 +37,47 @@ interface Post {
 // Controller methods
 export const socialMediaController = {
   
+  // Fetch the business identity data from the backend
+  async getBusinessIdentity(tenantId?: string) {
+    try {
+      // If we have a tenant ID, use it to get tenant-specific business identity
+      let query = "SELECT data FROM business_identity";
+      const params = [];
+      
+      if (tenantId) {
+        query += " WHERE tenant_id = $1";
+        params.push(tenantId);
+      } else {
+        query += " WHERE tenant_id IS NULL";
+      }
+      
+      query += " ORDER BY updated_at DESC LIMIT 1";
+      
+      const result = await pool.query(query, params);
+      
+      if (result.rows.length > 0) {
+        return result.rows[0].data;
+      }
+      
+      // Return default business identity if none found
+      return {
+        core: {
+          businessName: "Progress Accountants",
+        },
+        personality: {
+          toneOfVoice: ["professional", "friendly", "authoritative"]
+        },
+        market: {
+          primaryIndustry: "accounting",
+          targetAudience: "business owners"
+        }
+      };
+    } catch (error) {
+      console.error("Error fetching business identity:", error);
+      return null;
+    }
+  },
+  
   // Generate post content using AI
   generatePost: async (req: Request, res: Response) => {
     // Check user permissions
@@ -62,7 +104,11 @@ export const socialMediaController = {
         });
       }
       
-      const result = await generateSocialMediaPost(prompt, platform);
+      // Get business identity for tone of voice customization
+      const businessIdentity = await socialMediaController.getBusinessIdentity();
+      
+      // Generate post with business identity context
+      const result = await generateSocialMediaPost(prompt, platform, businessIdentity);
       
       res.status(200).json({
         success: true,

@@ -1,11 +1,12 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAuth } from "@/hooks/use-auth";
 import { usePermissions } from "@/hooks/use-permissions";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2, Copy, Download, RefreshCw, Image, Share2, ExternalLink } from "lucide-react";
+import { useBusinessIdentity } from "@/hooks/use-business-identity";
+import { Loader2, Copy, Download, RefreshCw, Image, Share2, ExternalLink, AlertCircle, InfoIcon, Link as LinkIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -24,6 +25,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Link } from "wouter";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import {
@@ -65,15 +68,27 @@ const SocialMediaPostGenerator: React.FC = () => {
   const { user } = useAuth();
   const { can } = usePermissions();
   const { toast } = useToast();
+  const { data: businessIdentity, isLoading: isLoadingBusinessIdentity } = useBusinessIdentity();
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatedCaption, setGeneratedCaption] = useState<string>("");
   const [generatedImageUrl, setGeneratedImageUrl] = useState<string>("");
   const [uploadedImage, setUploadedImage] = useState<string | null>(null);
   const [selectedTab, setSelectedTab] = useState<string>("upload");
+  const [showIdentityNotice, setShowIdentityNotice] = useState(true);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Check if user has appropriate permissions
   const canUseGenerator = user && can("use_tools");
+  
+  // Session timeout warning effect
+  useEffect(() => {
+    // Show a warning when the component mounts
+    toast({
+      title: "Session-Based Tool",
+      description: "Posts are stored in your current session only. They will be lost if you log out or refresh.",
+      duration: 6000,
+    });
+  }, []);
 
   // Initialize form
   const form = useForm<FormValues>({
@@ -173,30 +188,21 @@ const SocialMediaPostGenerator: React.FC = () => {
       const guide = platformGuides[platformKey] || platformGuides.other;
 
       // Create enhanced prompt for generating the caption
-      let prompt = `Generate a high-quality, engaging social media caption for ${data.platform} about "${data.subject}" for a professional accounting firm. 
-      Follow these platform-specific guidelines: ${guide}.
-      The caption should reflect the brand voice of a professional but approachable accounting firm.
-      Include relevant industry terminology but avoid jargon that might confuse non-experts.`;
+      let prompt = data.subject;
 
       if (data.additionalContext) {
-        prompt += ` Additional context: ${data.additionalContext}.`;
+        prompt += ` ${data.additionalContext}`;
       }
 
-      // If we have an image, include vision analysis
-      if (imageUrl) {
-        prompt += " The caption should reference the accompanying image appropriately.";
-        prompt += ` The image is related to ${data.subject} and should be integrated naturally into the caption.`;
-      }
-
-      // Call OpenAI API to generate the caption
-      const response = await fetch("/api/openai/generate-text", {
+      // Call our backend API which will use OpenAI and integrate business identity
+      const response = await fetch("/api/social-media/generate-post", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
           prompt,
-          max_tokens: 500,
+          platform: data.platform
         }),
       });
 
