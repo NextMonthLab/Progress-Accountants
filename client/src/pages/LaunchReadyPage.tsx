@@ -88,9 +88,6 @@ export default function LaunchReadyPage() {
     faq: 'not_started'
   });
   
-  // State for page display only
-  
-  
   // Define pages data
   const pages: PageSummary[] = [
     {
@@ -233,8 +230,6 @@ export default function LaunchReadyPage() {
       <Helmet>
         <title>Launch Ready | Onboarding Complete</title>
       </Helmet>
-      
-      
       
       <div className="container mx-auto px-4 max-w-6xl">
         <Card className="bg-white shadow-sm overflow-hidden">
