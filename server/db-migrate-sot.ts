@@ -17,7 +17,21 @@ export async function migrateSotTables() {
       await createSotDeclarationsTable();
       console.log('✅ Created sot_declarations table');
     } else {
-      console.log('ℹ️ sot_declarations table already exists, skipping creation.');
+      console.log('ℹ️ sot_declarations table already exists, checking for column updates...');
+      
+      // Check if the new template columns exist and add them if not
+      const isTemplateExists = await checkIfColumnExists('sot_declarations', 'is_template');
+      const isCloneableExists = await checkIfColumnExists('sot_declarations', 'is_cloneable');
+      
+      if (!isTemplateExists) {
+        await addColumnToTable('sot_declarations', 'is_template', 'BOOLEAN DEFAULT FALSE');
+        console.log('✅ Added is_template column to sot_declarations table');
+      }
+      
+      if (!isCloneableExists) {
+        await addColumnToTable('sot_declarations', 'is_cloneable', 'BOOLEAN DEFAULT FALSE');
+        console.log('✅ Added is_cloneable column to sot_declarations table');
+      }
     }
     
     if (!metricsExists) {
@@ -103,5 +117,31 @@ async function createSotSyncLogsTable() {
       details TEXT,
       created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
     )
+  `);
+}
+
+/**
+ * Check if a column exists in a table
+ */
+async function checkIfColumnExists(tableName: string, columnName: string): Promise<boolean> {
+  const result = await pool.query(`
+    SELECT EXISTS (
+      SELECT FROM information_schema.columns 
+      WHERE table_schema = 'public' 
+      AND table_name = $1 
+      AND column_name = $2
+    );
+  `, [tableName, columnName]);
+  
+  return result.rows[0].exists;
+}
+
+/**
+ * Add a column to an existing table
+ */
+async function addColumnToTable(tableName: string, columnName: string, columnDefinition: string): Promise<void> {
+  await pool.query(`
+    ALTER TABLE ${tableName} 
+    ADD COLUMN IF NOT EXISTS ${columnName} ${columnDefinition};
   `);
 }
