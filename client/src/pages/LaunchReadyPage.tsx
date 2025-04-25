@@ -13,7 +13,6 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { CheckCircle, FileEdit, ExternalLink, CheckCircle2, AlertCircle, Sparkles, Rocket, Loader2 } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
-import { Confetti } from '../components/Confetti';
 import { useAuth } from '@/hooks/use-auth';
 import { useQuery, useMutation } from '@tanstack/react-query';
 
@@ -89,8 +88,8 @@ export default function LaunchReadyPage() {
     faq: 'not_started'
   });
   
-  // State for animation
-  const [showConfetti, setShowConfetti] = useState(false);
+  // State for page display only
+  
   
   // Define pages data
   const pages: PageSummary[] = [
@@ -175,16 +174,6 @@ export default function LaunchReadyPage() {
     
     // Set onboarded status in localStorage
     localStorage.setItem('project_context.status', 'onboarded');
-    
-    // Start confetti after a short delay
-    setTimeout(() => {
-      setShowConfetti(true);
-    }, 500);
-    
-    // Clear confetti after a few seconds
-    setTimeout(() => {
-      setShowConfetti(false);
-    }, 3500);
   }, [toast]);
   
   // Handler for "Explore Marketplace" button
@@ -245,7 +234,7 @@ export default function LaunchReadyPage() {
         <title>Launch Ready | Onboarding Complete</title>
       </Helmet>
       
-      {showConfetti && <Confetti />}
+      
       
       <div className="container mx-auto px-4 max-w-6xl">
         <Card className="bg-white shadow-sm overflow-hidden">
