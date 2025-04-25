@@ -90,7 +90,6 @@ const OnboardingWelcomePage: React.FC = () => {
             <div className="bg-muted/40 p-6 rounded-lg">
               <h3 className="text-xl font-semibold mb-3">Hello {userName},</h3>
               <p className="text-muted-foreground">
-                Thank you for choosing Progress Accountants for your business needs. 
                 We're excited to help you set up your customized website that will showcase your 
                 services and attract new clients.
               </p>
