@@ -6,7 +6,6 @@ import SEOFooterSection from "@/components/SEOFooterSection";
 import ContactForm from "@/components/ContactForm";
 import { useEffect } from "react";
 import { Link } from "wouter";
-import podcastStudioImg from "@assets/Podcast Studio.jpg";
 
 export default function HomePage() {
   // Adding smooth scroll behavior for anchor links
@@ -54,7 +53,7 @@ export default function HomePage() {
           <div className="flex flex-col md:flex-row items-center gap-8">
             <div className="md:w-1/2">
               <img 
-                src={podcastStudioImg} 
+                src="https://res.cloudinary.com/drl0fxrkq/image/upload/v1682499876/podcast-studio/interview-setup-dual_wbtcgu.jpg" 
                 alt="Progress Podcast & Video Studio" 
                 className="rounded-lg shadow-xl"
               />
