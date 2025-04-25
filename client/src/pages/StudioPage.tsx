@@ -251,7 +251,7 @@ export default function StudioPage() {
                 case 2: imageUrl = studioImages.camera_preview; break;
                 case 3: imageUrl = studioImages.presentation_tv; break;
                 case 4: imageUrl = "https://res.cloudinary.com/drl0fxrkq/image/upload/v1744815129/P1012279-Enhanced-NR_dgdlta.jpg"; break;
-                case 5: imageUrl = studioImages.lighting_rig; break;
+                case 5: imageUrl = "https://res.cloudinary.com/drl0fxrkq/image/upload/v1744815126/P1012291-Enhanced-NR_czsge9.jpg"; break;
                 case 6: imageUrl = studioImages.acoustic_panels; break;
                 case 7: imageUrl = studioImages.technician; break;
                 case 8: imageUrl = studioImages.edit_desk; break;
