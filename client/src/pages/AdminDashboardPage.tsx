@@ -13,6 +13,7 @@ import {
   ArrowRight, 
   ArrowUpRight,
   BarChart3,
+  Users,
   BookOpen,
   CheckCircle2,
   Clock,
@@ -661,7 +662,7 @@ export default function AdminDashboardPage() {
                       description="Track and analyze user feedback"
                       icon={<BarChart3 className="h-5 w-5" />}
                       link="/admin/insights-dashboard"
-                      variant="default"
+                      variant="primary"
                     />
                     <QuickAction
                       title="Manage Insight Users"
@@ -1071,6 +1072,53 @@ export default function AdminDashboardPage() {
                       <Button size="sm" variant="outline">Update</Button>
                     </div>
                   </CardContent>
+                </Card>
+                
+                {/* Insights Dashboard Card */}
+                <Card className="mt-6 border-orange-500 border-2">
+                  <CardHeader>
+                    <CardTitle>Insights Dashboard</CardTitle>
+                    <CardDescription className="text-gray-700">Track and analyze user feedback</CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="flex items-center justify-between p-3 bg-gray-50 rounded-md">
+                      <div className="flex items-center gap-3">
+                        <div className="h-10 w-10 rounded-full bg-orange-500/10 flex items-center justify-center text-orange-500">
+                          <BarChart3 className="h-6 w-6" />
+                        </div>
+                        <div>
+                          <p className="font-medium">Track User Insights</p>
+                          <p className="text-xs text-gray-500">View leaderboard and track engagement</p>
+                        </div>
+                      </div>
+                      <Link href="/admin/insights-dashboard">
+                        <Button size="sm">Open</Button>
+                      </Link>
+                    </div>
+                    
+                    <div className="flex items-center justify-between p-3 bg-gray-50 rounded-md">
+                      <div className="flex items-center gap-3">
+                        <div className="h-10 w-10 rounded-full bg-navy/10 flex items-center justify-center text-navy">
+                          <Users className="h-6 w-6" />
+                        </div>
+                        <div>
+                          <p className="font-medium">Manage Users</p>
+                          <p className="text-xs text-gray-500">Add and edit insight contributors</p>
+                        </div>
+                      </div>
+                      <Link href="/admin/insight-users">
+                        <Button size="sm" variant="outline">Manage</Button>
+                      </Link>
+                    </div>
+                  </CardContent>
+                  <CardFooter>
+                    <Link href="/admin/insights-dashboard" className="w-full">
+                      <Button variant="outline" className="w-full">
+                        View Insights Dashboard
+                        <ArrowRight className="ml-2 h-4 w-4" />
+                      </Button>
+                    </Link>
+                  </CardFooter>
                 </Card>
               </div>
             </div>
