@@ -254,6 +254,13 @@ export default function AdminSidebar() {
           requiresStaff: true,
           badge: { text: "New", variant: "new" },
           isNew: true
+        },
+        { 
+          title: "Business Network", 
+          href: "/business-network", 
+          icon: <Users className="h-5 w-5" />,
+          badge: { text: "New", variant: "new" },
+          isNew: true
         }
       ]
     },

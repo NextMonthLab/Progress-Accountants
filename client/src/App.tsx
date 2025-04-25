@@ -79,6 +79,7 @@ import ContentStudioPage from "@/pages/ContentStudioPage";
 import AnalyticsPage from "@/pages/AnalyticsPage";
 import AccountPage from "@/pages/AccountPage";
 import NewsPage from "@/pages/NewsPage";
+import BusinessNetworkPage from "@/pages/BusinessNetworkPage";
 // Page Builder pages
 import PageBuilderListPage from "@/pages/PageBuilderListPage";
 import PageBuilderPage from "@/pages/PageBuilderPage";
@@ -272,6 +273,11 @@ function Router() {
         path="/content-studio" 
         component={ContentStudioPage} 
         allowedRoles={['admin', 'super_admin', 'editor']} 
+      />
+      <ProtectedRoute 
+        path="/business-network" 
+        component={BusinessNetworkPage} 
+        allowedRoles={['client', 'admin', 'super_admin', 'editor']} 
       />
       <ProtectedRoute path="/marketplace" component={EnhancedMarketplacePage} />
       <ProtectedRoute path="/installed-tools" component={InstalledToolsPage} />
