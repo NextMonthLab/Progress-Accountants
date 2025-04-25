@@ -1315,3 +1315,35 @@ export const aiColorPalettesRelations = relations(aiColorPalettes, ({ one }) => 
     references: [tenants.id],
   }),
 }));
+
+// Starter CRM - Contacts table
+export const crmContacts = pgTable("crm_contacts", {
+  id: serial("id").primaryKey(),
+  tenantId: uuid("tenant_id").references(() => tenants.id).notNull(), // Tenant reference
+  name: varchar("name", { length: 255 }).notNull(),
+  email: varchar("email", { length: 255 }).notNull(),
+  phone: varchar("phone", { length: 50 }),
+  company: varchar("company", { length: 255 }),
+  notes: text("notes"),
+  tags: jsonb("tags"), // Store tags as a JSON array of strings
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+  createdBy: integer("created_by").references(() => users.id),
+});
+
+export const insertCrmContactSchema = createInsertSchema(crmContacts).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const crmContactsRelations = relations(crmContacts, ({ one }) => ({
+  tenant: one(tenants, {
+    fields: [crmContacts.tenantId],
+    references: [tenants.id],
+  }),
+  createdByUser: one(users, {
+    fields: [crmContacts.createdBy],
+    references: [users.id],
+  }),
+}));
