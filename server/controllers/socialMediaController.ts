@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import { generateImage, generateSocialMediaPost } from "../services/openaiImageService";
-import { UserRole } from "@shared/schema";
 
 // Memory storage for current session posts (no persistence)
 const sessionPosts: Record<string, any[]> = {};
@@ -16,8 +15,8 @@ export const socialMediaController = {
     try {
       // Check user permissions (admin or editor only)
       if (!req.isAuthenticated() || 
-          (req.user.role !== UserRole.ADMIN && 
-           req.user.role !== UserRole.EDITOR && 
+          (req.user.userType !== 'admin' && 
+           req.user.userType !== 'editor' && 
            !req.user.isSuperAdmin)) {
         return res.status(403).json({
           message: "Permission denied. Admin or Editor role required.",
@@ -57,8 +56,8 @@ export const socialMediaController = {
     try {
       // Check user permissions (admin or editor only)
       if (!req.isAuthenticated() || 
-          (req.user.role !== UserRole.ADMIN && 
-           req.user.role !== UserRole.EDITOR && 
+          (req.user.userType !== 'admin' && 
+           req.user.userType !== 'editor' && 
            !req.user.isSuperAdmin)) {
         return res.status(403).json({
           message: "Permission denied. Admin or Editor role required.",
@@ -98,8 +97,8 @@ export const socialMediaController = {
     try {
       // Check user permissions (admin or editor only)
       if (!req.isAuthenticated() || 
-          (req.user.role !== UserRole.ADMIN && 
-           req.user.role !== UserRole.EDITOR && 
+          (req.user.userType !== 'admin' && 
+           req.user.userType !== 'editor' && 
            !req.user.isSuperAdmin)) {
         return res.status(403).json({
           message: "Permission denied. Admin or Editor role required.",

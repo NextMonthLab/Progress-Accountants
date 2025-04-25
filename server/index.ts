@@ -14,6 +14,7 @@ import { registerNavigationRoutes } from './controllers/navigationController';
 import { registerDomainMappingRoutes } from './controllers/domainMappingController';
 import { registerSotRoutes } from './controllers/sotController';
 import { registerAgentRoutes } from './controllers/agentController';
+import { registerSocialMediaRoutes } from './controllers/registerSocialMediaRoutes';
 
 const app = express();
 app.use(express.json());
@@ -84,6 +85,9 @@ app.use((req, res, next) => {
   
   // Register Progress Agent routes
   registerAgentRoutes(app);
+  
+  // Register Social Media Post Generator routes
+  registerSocialMediaRoutes(app);
 
   app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
     const status = err.status || err.statusCode || 500;
