@@ -1,0 +1,439 @@
+import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import AdminLayout from '@/layouts/AdminLayout';
+import { 
+  Card, 
+  CardContent, 
+  CardDescription, 
+  CardFooter, 
+  CardHeader, 
+  CardTitle 
+} from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { Label } from '@/components/ui/label';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { 
+  Select, 
+  SelectContent, 
+  SelectItem, 
+  SelectTrigger, 
+  SelectValue 
+} from '@/components/ui/select';
+import { 
+  Loader2, 
+  FileText, 
+  Download, 
+  Copy, 
+  Image as ImageIcon,
+  RefreshCw,
+  Check,
+  Sparkles
+} from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
+import { cn } from '@/lib/utils';
+
+type BlogPostForm = {
+  topic: string;
+  keywords: string;
+  tone: string;
+  targetAudience: string;
+  length: string;
+  includeImage: boolean;
+};
+
+type GeneratedContent = {
+  title: string;
+  content: string;
+  metaDescription: string;
+  imagePrompt?: string;
+  imageUrl?: string;
+};
+
+const BlogPostGenerator = () => {
+  const { toast } = useToast();
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [generatedContent, setGeneratedContent] = useState<GeneratedContent | null>(null);
+  const [isCopied, setIsCopied] = useState(false);
+  const [isImageGenerating, setIsImageGenerating] = useState(false);
+  
+  const { register, handleSubmit, watch, formState: { errors } } = useForm<BlogPostForm>({
+    defaultValues: {
+      topic: '',
+      keywords: '',
+      tone: 'professional',
+      targetAudience: 'business owners',
+      length: 'medium',
+      includeImage: true
+    }
+  });
+
+  const onSubmit = async (data: BlogPostForm) => {
+    setIsGenerating(true);
+    try {
+      // Simulate API call to OpenAI for blog post generation
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      // Sample generated content
+      const content = {
+        title: `How ${data.topic} is Transforming Modern Business`,
+        content: `
+## Introduction
+
+In today's rapidly evolving business landscape, ${data.topic} has emerged as a pivotal force driving transformation and innovation. This article explores how businesses are leveraging ${data.topic} to gain competitive advantages and streamline operations.
+
+## The Impact of ${data.topic} on Business Operations
+
+Organizations of all sizes are discovering that implementing ${data.topic} solutions can dramatically improve efficiency while reducing operational costs. According to recent industry reports, businesses that effectively integrate ${data.topic} into their workflows see an average productivity increase of 27%.
+
+## Key Benefits for ${data.targetAudience}
+
+For ${data.targetAudience}, the advantages of adopting ${data.topic} are particularly significant:
+
+1. **Enhanced Operational Efficiency**: Streamlined processes and automated workflows
+2. **Cost Reduction**: Lower overhead and improved resource allocation
+3. **Strategic Insights**: Better data-driven decision making
+4. **Competitive Advantage**: Staying ahead of market trends
+5. **Improved Client Experience**: More responsive and personalized service
+
+## Implementation Strategies
+
+Successfully implementing ${data.topic} requires a strategic approach:
+
+1. Begin with a thorough assessment of current processes
+2. Identify specific areas where ${data.topic} can provide immediate value
+3. Develop a phased implementation plan
+4. Ensure proper training and change management
+5. Continuously measure results and refine the approach
+
+## Future Trends to Watch
+
+As ${data.topic} continues to evolve, several emerging trends show particular promise:
+
+- AI-enhanced ${data.topic} solutions that provide predictive capabilities
+- Integration with other business systems for a unified operational approach
+- Mobile-first implementations that support remote and hybrid work models
+- Customized ${data.topic} applications designed for specific industry needs
+
+## Conclusion
+
+As we've explored, ${data.topic} represents a significant opportunity for ${data.targetAudience} looking to enhance their operational capabilities and market position. By taking a strategic approach to implementation and staying informed about emerging trends, businesses can fully leverage the transformative potential of ${data.topic}.
+
+*This article was prepared by Progress Accountants to help ${data.targetAudience} navigate the complexities of modern business technology.*
+        `,
+        metaDescription: `Discover how ${data.topic} is transforming business operations for ${data.targetAudience}. Learn implementation strategies and future trends in this comprehensive guide.`,
+        imagePrompt: `Create a professional business image representing ${data.topic} in a modern corporate setting, showing business professionals working with ${data.topic} technology.`
+      };
+      
+      setGeneratedContent(content);
+      toast({
+        title: "Blog post generated successfully",
+        description: "Your AI-generated content is ready to review and publish.",
+      });
+    } catch (error) {
+      toast({
+        title: "Generation failed",
+        description: "There was an error generating your blog post. Please try again.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsGenerating(false);
+    }
+  };
+
+  const generateImage = async () => {
+    if (!generatedContent?.imagePrompt) return;
+    
+    setIsImageGenerating(true);
+    try {
+      // Simulate API call to image generation service
+      await new Promise(resolve => setTimeout(resolve, 3000));
+      
+      // For demo, use a placeholder image
+      setGeneratedContent({
+        ...generatedContent,
+        imageUrl: 'https://placehold.co/600x400/e6f7ff/0a558c?text=Blog+Post+Image'
+      });
+      
+      toast({
+        title: "Image generated",
+        description: "Featured image has been created for your blog post.",
+      });
+    } catch (error) {
+      toast({
+        title: "Image generation failed",
+        description: "There was an error generating the image. Please try again.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsImageGenerating(false);
+    }
+  };
+
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text);
+    setIsCopied(true);
+    toast({
+      title: "Copied to clipboard",
+      description: "The content has been copied to your clipboard.",
+    });
+    setTimeout(() => setIsCopied(false), 2000);
+  };
+
+  const downloadMarkdown = () => {
+    if (!generatedContent) return;
+    
+    const element = document.createElement("a");
+    const file = new Blob([
+      `# ${generatedContent.title}\n\n${generatedContent.content}`
+    ], {type: 'text/markdown'});
+    element.href = URL.createObjectURL(file);
+    element.download = `${generatedContent.title.replace(/\s+/g, '-').toLowerCase()}.md`;
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
+    
+    toast({
+      title: "Downloaded markdown file",
+      description: "Your blog post has been saved as a markdown file.",
+    });
+  };
+
+  return (
+    <AdminLayout>
+      <div className="container mx-auto py-6 max-w-5xl">
+        <div className="flex items-center justify-between mb-6">
+          <div>
+            <h1 className="text-3xl font-bold tracking-tight">Blog Post Generator</h1>
+            <p className="text-muted-foreground">Create professional, SEO-optimized blog content with AI assistance.</p>
+          </div>
+        </div>
+
+        <Tabs defaultValue="create" className="w-full">
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="create">Create Post</TabsTrigger>
+            <TabsTrigger value="preview" disabled={!generatedContent}>Preview & Export</TabsTrigger>
+          </TabsList>
+          
+          <TabsContent value="create" className="mt-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>Content Parameters</CardTitle>
+                <CardDescription>
+                  Define the parameters for your AI-generated blog post.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+                  <div className="space-y-4">
+                    <div className="grid gap-4 md:grid-cols-2">
+                      <div className="space-y-2">
+                        <Label htmlFor="topic">Primary Topic</Label>
+                        <Input
+                          id="topic"
+                          placeholder="e.g., Cloud Accounting"
+                          {...register("topic", { required: "Topic is required" })}
+                          className={cn(errors.topic && "border-red-500")}
+                        />
+                        {errors.topic && (
+                          <p className="text-sm text-red-500">{errors.topic.message}</p>
+                        )}
+                      </div>
+                      
+                      <div className="space-y-2">
+                        <Label htmlFor="keywords">Keywords (comma separated)</Label>
+                        <Input
+                          id="keywords"
+                          placeholder="e.g., accounting, finance, tax planning"
+                          {...register("keywords")}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="grid gap-4 md:grid-cols-2">
+                      <div className="space-y-2">
+                        <Label htmlFor="tone">Content Tone</Label>
+                        <Select defaultValue="professional" {...register("tone")}>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select tone" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="professional">Professional</SelectItem>
+                            <SelectItem value="conversational">Conversational</SelectItem>
+                            <SelectItem value="authoritative">Authoritative</SelectItem>
+                            <SelectItem value="educational">Educational</SelectItem>
+                            <SelectItem value="persuasive">Persuasive</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label htmlFor="targetAudience">Target Audience</Label>
+                        <Select defaultValue="business owners" {...register("targetAudience")}>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select audience" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="business owners">Business Owners</SelectItem>
+                            <SelectItem value="entrepreneurs">Entrepreneurs</SelectItem>
+                            <SelectItem value="finance professionals">Finance Professionals</SelectItem>
+                            <SelectItem value="small business owners">Small Business Owners</SelectItem>
+                            <SelectItem value="corporate executives">Corporate Executives</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
+
+                    <div className="grid gap-4 md:grid-cols-2">
+                      <div className="space-y-2">
+                        <Label htmlFor="length">Article Length</Label>
+                        <Select defaultValue="medium" {...register("length")}>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select length" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="short">Short (500 words)</SelectItem>
+                            <SelectItem value="medium">Medium (1000 words)</SelectItem>
+                            <SelectItem value="long">Long (1500+ words)</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
+                  </div>
+
+                  <Button
+                    type="submit"
+                    className="w-full"
+                    disabled={isGenerating}
+                  >
+                    {isGenerating ? (
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        Generating...
+                      </>
+                    ) : (
+                      <>
+                        <Sparkles className="mr-2 h-4 w-4" />
+                        Generate Blog Post
+                      </>
+                    )}
+                  </Button>
+                </form>
+              </CardContent>
+            </Card>
+          </TabsContent>
+          
+          <TabsContent value="preview" className="mt-6">
+            {generatedContent && (
+              <div className="space-y-6">
+                <Card>
+                  <CardHeader>
+                    <CardTitle>
+                      {generatedContent.title}
+                    </CardTitle>
+                    <CardDescription>
+                      Meta Description: {generatedContent.metaDescription}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    {generatedContent.imageUrl && (
+                      <div className="mb-4">
+                        <img
+                          src={generatedContent.imageUrl}
+                          alt="Blog post featured image"
+                          className="w-full h-auto rounded-lg"
+                        />
+                      </div>
+                    )}
+                    
+                    {!generatedContent.imageUrl && generatedContent.imagePrompt && (
+                      <div className="mb-4 p-4 border border-dashed border-gray-300 rounded-lg bg-gray-50">
+                        <div className="flex justify-between items-center mb-2">
+                          <h3 className="font-medium">Featured Image</h3>
+                          <Button 
+                            variant="outline" 
+                            size="sm" 
+                            onClick={generateImage}
+                            disabled={isImageGenerating}
+                          >
+                            {isImageGenerating ? (
+                              <>
+                                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                Generating...
+                              </>
+                            ) : (
+                              <>
+                                <ImageIcon className="mr-2 h-4 w-4" />
+                                Generate Image
+                              </>
+                            )}
+                          </Button>
+                        </div>
+                        <p className="text-sm text-gray-600">
+                          {generatedContent.imagePrompt}
+                        </p>
+                      </div>
+                    )}
+                    
+                    <div className="prose max-w-none">
+                      <div 
+                        dangerouslySetInnerHTML={{ 
+                          __html: generatedContent.content
+                            .replace(/## (.*)/g, '<h2>$1</h2>')
+                            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                            .replace(/\*(.*?)\*/g, '<em>$1</em>')
+                            .replace(/\n\n/g, '<br/><br/>')
+                        }} 
+                      />
+                    </div>
+                  </CardContent>
+                  <CardFooter className="flex justify-end space-x-2">
+                    <Button
+                      variant="outline"
+                      onClick={() => copyToClipboard(generatedContent.content)}
+                    >
+                      {isCopied ? (
+                        <>
+                          <Check className="mr-2 h-4 w-4" />
+                          Copied
+                        </>
+                      ) : (
+                        <>
+                          <Copy className="mr-2 h-4 w-4" />
+                          Copy Content
+                        </>
+                      )}
+                    </Button>
+                    <Button
+                      variant="outline"
+                      onClick={downloadMarkdown}
+                    >
+                      <Download className="mr-2 h-4 w-4" />
+                      Download Markdown
+                    </Button>
+                    <Button
+                      variant="default"
+                      className="ml-2"
+                      onClick={() => {
+                        toast({
+                          title: "Success",
+                          description: "Blog post saved to drafts and can be published from the News page.",
+                        });
+                      }}
+                    >
+                      <FileText className="mr-2 h-4 w-4" />
+                      Save to Drafts
+                    </Button>
+                  </CardFooter>
+                </Card>
+              </div>
+            )}
+          </TabsContent>
+        </Tabs>
+      </div>
+    </AdminLayout>
+  );
+};
+
+export default BlogPostGenerator;

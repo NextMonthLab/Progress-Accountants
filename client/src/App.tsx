@@ -78,6 +78,7 @@ import SocialMediaGeneratorPage from "@/pages/SocialMediaGeneratorPage";
 import ContentStudioPage from "@/pages/ContentStudioPage";
 import AnalyticsPage from "@/pages/AnalyticsPage";
 import AccountPage from "@/pages/AccountPage";
+import NewsPage from "@/pages/NewsPage";
 // Page Builder pages
 import PageBuilderListPage from "@/pages/PageBuilderListPage";
 import PageBuilderPage from "@/pages/PageBuilderPage";
@@ -86,6 +87,7 @@ import CreateFormWizard from "@/pages/tools/wizards/CreateFormWizard";
 import CreateCalculatorWizard from "@/pages/tools/wizards/CreateCalculatorWizard";
 import CreateDashboardWizard from "@/pages/tools/wizards/CreateDashboardWizard";
 import CreateEmbedWizard from "@/pages/tools/wizards/CreateEmbedWizard";
+import BlogPostGenerator from "@/pages/tools/blog-post-generator";
 // Import tool pages
 import { DocumentHead } from "@/components/DocumentHead";
 import MainLayout from "@/layouts/MainLayout";
@@ -120,6 +122,7 @@ function Router() {
       <Route path="/contact" component={ContactPage} />
       <Route path="/testimonials" component={TestimonialsPage} />
       <Route path="/resources" component={ResourcesPage} />
+      <Route path="/news" component={NewsPage} />
       <Route path="/" component={HomePage} />
 
       {/* Super Admin routes (require super admin privileges) */}
@@ -258,6 +261,11 @@ function Router() {
       <ProtectedRoute 
         path="/tools/social-media-generator" 
         component={SocialMediaGeneratorPage} 
+        allowedRoles={['admin', 'super_admin', 'editor']} 
+      />
+      <ProtectedRoute 
+        path="/tools/blog-post-generator" 
+        component={BlogPostGenerator} 
         allowedRoles={['admin', 'super_admin', 'editor']} 
       />
       <ProtectedRoute 

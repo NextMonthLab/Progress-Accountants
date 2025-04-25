@@ -246,6 +246,14 @@ export default function AdminSidebar() {
           icon: <Newspaper className="h-5 w-5" />,
           requiresStaff: true,
           badge: { text: "New", variant: "new" }
+        },
+        { 
+          title: "Blog Post Generator", 
+          href: "/tools/blog-post-generator", 
+          icon: <FileText className="h-5 w-5" />,
+          requiresStaff: true,
+          badge: { text: "New", variant: "new" },
+          isNew: true
         }
       ]
     },
