@@ -7,6 +7,7 @@ import {
   pageBuilderSections,
   pageBuilderComponents,
   pageBuilderTemplates,
+  pageBuilderRecommendations,
   contentVersions,
   users,
   tenants,
@@ -16,6 +17,13 @@ import {
 } from "../../shared/schema";
 import { desc, eq, and } from "drizzle-orm";
 import { VersionableEntityType, ChangeType } from "@shared/version_control";
+import { 
+  calculateSeoScore, 
+  generateSeoRecommendations, 
+  applyRecommendation, 
+  dismissRecommendation, 
+  getPageRecommendations 
+} from "../services/seoAnalysisService";
 
 // Helper function to check if a table exists
 export async function checkIfTableExists(tableName: string): Promise<boolean> {
@@ -655,7 +663,211 @@ export const pageBuilderController = {
         success: false
       });
     }
+  },
+
+  // Get SEO score for a page
+  async getSeoScore(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+      
+      if (!id) {
+        return res.status(400).json({
+          message: "Page ID is required",
+          success: false
+        });
+      }
+      
+      const pageId = parseInt(id);
+      
+      // Check if page exists
+      const [page] = await db
+        .select()
+        .from(pageBuilderPages)
+        .where(eq(pageBuilderPages.id, pageId));
+      
+      if (!page) {
+        return res.status(404).json({
+          message: "Page not found",
+          success: false
+        });
+      }
+      
+      // Get the SEO score
+      const seoScore = await calculateSeoScore(pageId);
+      
+      return res.status(200).json({
+        message: "SEO score calculated successfully",
+        success: true,
+        data: seoScore
+      });
+    } catch (error) {
+      console.error("Error calculating SEO score:", error);
+      return res.status(500).json({
+        message: `Failed to calculate SEO score: ${(error as Error).message}`,
+        success: false
+      });
+    }
+  },
+  
+  // Generate SEO recommendations for a page
+  async generateSeoRecommendations(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+      
+      if (!id) {
+        return res.status(400).json({
+          message: "Page ID is required",
+          success: false
+        });
+      }
+      
+      const pageId = parseInt(id);
+      
+      // Check if page exists
+      const [page] = await db
+        .select()
+        .from(pageBuilderPages)
+        .where(eq(pageBuilderPages.id, pageId));
+      
+      if (!page) {
+        return res.status(404).json({
+          message: "Page not found",
+          success: false
+        });
+      }
+      
+      // Generate the recommendations
+      const recommendations = await generateSeoRecommendations(pageId);
+      
+      return res.status(200).json({
+        message: "SEO recommendations generated successfully",
+        success: true,
+        data: recommendations
+      });
+    } catch (error) {
+      console.error("Error generating SEO recommendations:", error);
+      return res.status(500).json({
+        message: `Failed to generate SEO recommendations: ${(error as Error).message}`,
+        success: false
+      });
+    }
+  },
+  
+  // Get SEO recommendations for a page
+  async getPageRecommendations(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+      
+      if (!id) {
+        return res.status(400).json({
+          message: "Page ID is required",
+          success: false
+        });
+      }
+      
+      const pageId = parseInt(id);
+      
+      // Check if page exists
+      const [page] = await db
+        .select()
+        .from(pageBuilderPages)
+        .where(eq(pageBuilderPages.id, pageId));
+      
+      if (!page) {
+        return res.status(404).json({
+          message: "Page not found",
+          success: false
+        });
+      }
+      
+      // Get the recommendations
+      const recommendations = await getPageRecommendations(pageId);
+      
+      return res.status(200).json({
+        message: "SEO recommendations retrieved successfully",
+        success: true,
+        data: recommendations
+      });
+    } catch (error) {
+      console.error("Error retrieving SEO recommendations:", error);
+      return res.status(500).json({
+        message: `Failed to retrieve SEO recommendations: ${(error as Error).message}`,
+        success: false
+      });
+    }
+  },
+  
+  // Apply a recommendation
+  async applyRecommendation(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+      
+      if (!id) {
+        return res.status(400).json({
+          message: "Recommendation ID is required",
+          success: false
+        });
+      }
+      
+      const recommendationId = parseInt(id);
+      
+      // Apply the recommendation
+      const success = await applyRecommendation(recommendationId);
+      
+      if (!success) {
+        return res.status(400).json({
+          message: "Failed to apply recommendation",
+          success: false
+        });
+      }
+      
+      return res.status(200).json({
+        message: "Recommendation applied successfully",
+        success: true
+      });
+    } catch (error) {
+      console.error("Error applying recommendation:", error);
+      return res.status(500).json({
+        message: `Failed to apply recommendation: ${(error as Error).message}`,
+        success: false
+      });
+    }
+  },
+  
+  // Dismiss a recommendation
+  async dismissRecommendation(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+      
+      if (!id) {
+        return res.status(400).json({
+          message: "Recommendation ID is required",
+          success: false
+        });
+      }
+      
+      const recommendationId = parseInt(id);
+      
+      // Dismiss the recommendation
+      const success = await dismissRecommendation(recommendationId);
+      
+      if (!success) {
+        return res.status(400).json({
+          message: "Failed to dismiss recommendation",
+          success: false
+        });
+      }
+      
+      return res.status(200).json({
+        message: "Recommendation dismissed successfully",
+        success: true
+      });
+    } catch (error) {
+      console.error("Error dismissing recommendation:", error);
+      return res.status(500).json({
+        message: `Failed to dismiss recommendation: ${(error as Error).message}`,
+        success: false
+      });
+    }
   }
 };
-
-// NOTE: This function is already defined above. Removing duplicate definition.
