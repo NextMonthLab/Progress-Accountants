@@ -15,6 +15,7 @@ import { registerDomainMappingRoutes } from './controllers/domainMappingControll
 import { registerSotRoutes } from './controllers/sotController';
 import { registerAgentRoutes } from './controllers/agentController';
 import { registerSocialMediaRoutes } from './controllers/registerSocialMediaRoutes';
+import { registerAdvancedSeoRoutes } from './controllers/registerAdvancedSeoRoutes';
 
 const app = express();
 app.use(express.json());
@@ -88,6 +89,9 @@ app.use((req, res, next) => {
   
   // Register Social Media Post Generator routes
   registerSocialMediaRoutes(app);
+  
+  // Register Advanced SEO Intelligence routes
+  registerAdvancedSeoRoutes(app);
 
   app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
     const status = err.status || err.statusCode || 500;
