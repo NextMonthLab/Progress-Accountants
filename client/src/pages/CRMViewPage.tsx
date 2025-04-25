@@ -25,7 +25,6 @@ import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Loader2, PlusCircle, Pencil, Trash2, Link } from 'lucide-react';
-import AdminLayout from '@/layouts/AdminLayout';
 
 interface Contact {
   id: number;
@@ -51,10 +50,8 @@ interface ContactFormData {
 export default function CRMViewPage() {
   const { toast } = useToast();
   const queryClient = useQueryClient();
-  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
-  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
-  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-  const [currentContact, setCurrentContact] = useState<Contact | null>(null);
+  
+  // State for contact form
   const [contactForm, setContactForm] = useState<ContactFormData>({
     name: '',
     email: '',
@@ -63,116 +60,111 @@ export default function CRMViewPage() {
     notes: '',
     tags: [],
   });
+  
+  // State for tag input
   const [tagInput, setTagInput] = useState('');
+  
+  // State for current contact being edited or deleted
+  const [currentContact, setCurrentContact] = useState<Contact | null>(null);
+  
+  // Dialog open states
+  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
-  // Query to fetch contacts
+  // Query for fetching contacts
   const {
     data: contacts = [],
     isLoading,
     isError,
     error,
-  } = useQuery<Contact[]>({
+  } = useQuery({
     queryKey: ['/api/crm/contacts'],
     queryFn: async () => {
-      try {
-        const res = await apiRequest('GET', '/api/crm/contacts');
-        const data = await res.json();
-        return data.data || [];
-      } catch (err) {
-        console.error('Error fetching contacts:', err);
+      const res = await fetch('/api/crm/contacts');
+      if (!res.ok) {
         throw new Error('Failed to fetch contacts');
       }
+      return res.json();
     },
   });
 
-  // Mutation to add a new contact
+  // Mutation for adding a contact
   const addContactMutation = useMutation({
     mutationFn: async (contact: ContactFormData) => {
-      try {
-        const res = await apiRequest('POST', '/api/crm/contacts', contact);
-        return await res.json();
-      } catch (err) {
-        console.error('Error adding contact:', err);
-        throw new Error('Failed to add contact');
-      }
+      const response = await apiRequest('POST', '/api/crm/contacts', contact);
+      const data = await response.json();
+      return data;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/crm/contacts'] });
       toast({
         title: 'Contact Added',
-        description: 'The contact has been added successfully.',
+        description: 'The contact has been successfully added.',
       });
       setIsAddDialogOpen(false);
       resetForm();
     },
-    onError: (err: any) => {
+    onError: (error: Error) => {
       toast({
-        title: 'Failed to Add Contact',
-        description: err.message || 'An error occurred while adding the contact.',
+        title: 'Error Adding Contact',
+        description: error.message,
         variant: 'destructive',
       });
     },
   });
 
-  // Mutation to update a contact
+  // Mutation for updating a contact
   const updateContactMutation = useMutation({
     mutationFn: async ({ id, contact }: { id: number; contact: ContactFormData }) => {
-      try {
-        const res = await apiRequest('PUT', `/api/crm/contacts/${id}`, contact);
-        return await res.json();
-      } catch (err) {
-        console.error('Error updating contact:', err);
-        throw new Error('Failed to update contact');
-      }
+      const response = await apiRequest('PUT', `/api/crm/contacts/${id}`, contact);
+      const data = await response.json();
+      return data;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/crm/contacts'] });
       toast({
         title: 'Contact Updated',
-        description: 'The contact has been updated successfully.',
+        description: 'The contact has been successfully updated.',
       });
       setIsEditDialogOpen(false);
       resetForm();
     },
-    onError: (err: any) => {
+    onError: (error: Error) => {
       toast({
-        title: 'Failed to Update Contact',
-        description: err.message || 'An error occurred while updating the contact.',
+        title: 'Error Updating Contact',
+        description: error.message,
         variant: 'destructive',
       });
     },
   });
 
-  // Mutation to delete a contact
+  // Mutation for deleting a contact
   const deleteContactMutation = useMutation({
     mutationFn: async (id: number) => {
-      try {
-        const res = await apiRequest('DELETE', `/api/crm/contacts/${id}`);
-        return await res.json();
-      } catch (err) {
-        console.error('Error deleting contact:', err);
-        throw new Error('Failed to delete contact');
-      }
+      const response = await apiRequest('DELETE', `/api/crm/contacts/${id}`);
+      const data = await response.json();
+      return data;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/crm/contacts'] });
       toast({
         title: 'Contact Deleted',
-        description: 'The contact has been deleted successfully.',
+        description: 'The contact has been successfully deleted.',
       });
       setIsDeleteDialogOpen(false);
       setCurrentContact(null);
     },
-    onError: (err: any) => {
+    onError: (error: Error) => {
       toast({
-        title: 'Failed to Delete Contact',
-        description: err.message || 'An error occurred while deleting the contact.',
+        title: 'Error Deleting Contact',
+        description: error.message,
         variant: 'destructive',
       });
     },
   });
 
-  // Reset the form
+  // Reset form fields
   const resetForm = () => {
     setContactForm({
       name: '',
@@ -185,7 +177,37 @@ export default function CRMViewPage() {
     setTagInput('');
   };
 
-  // Handle opening edit dialog
+  // Form change handler
+  const handleFormChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setContactForm((prev) => ({ ...prev, [name]: value }));
+  };
+
+  // Tag input change handler
+  const handleTagInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTagInput(e.target.value);
+  };
+
+  // Add tag to form
+  const handleAddTag = () => {
+    if (tagInput.trim() !== '' && !contactForm.tags.includes(tagInput.trim())) {
+      setContactForm((prev) => ({
+        ...prev,
+        tags: [...prev.tags, tagInput.trim()],
+      }));
+      setTagInput('');
+    }
+  };
+
+  // Remove tag from form
+  const handleRemoveTag = (tagToRemove: string) => {
+    setContactForm((prev) => ({
+      ...prev,
+      tags: prev.tags.filter((tag) => tag !== tagToRemove),
+    }));
+  };
+
+  // Edit contact handler
   const handleEditClick = (contact: Contact) => {
     setCurrentContact(contact);
     setContactForm({
@@ -199,48 +221,13 @@ export default function CRMViewPage() {
     setIsEditDialogOpen(true);
   };
 
-  // Handle opening delete dialog
+  // Delete contact handler
   const handleDeleteClick = (contact: Contact) => {
     setCurrentContact(contact);
     setIsDeleteDialogOpen(true);
   };
 
-  // Handle form change
-  const handleFormChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value } = e.target;
-    setContactForm({
-      ...contactForm,
-      [name]: value,
-    });
-  };
-
-  // Handle tag input change
-  const handleTagInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setTagInput(e.target.value);
-  };
-
-  // Add a tag
-  const handleAddTag = () => {
-    if (tagInput.trim() !== '' && !contactForm.tags.includes(tagInput.trim())) {
-      setContactForm({
-        ...contactForm,
-        tags: [...contactForm.tags, tagInput.trim()],
-      });
-      setTagInput('');
-    }
-  };
-
-  // Remove a tag
-  const handleRemoveTag = (tag: string) => {
-    setContactForm({
-      ...contactForm,
-      tags: contactForm.tags.filter((t) => t !== tag),
-    });
-  };
-
-  // Handle form submission
+  // Form submit handler
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -305,62 +292,62 @@ export default function CRMViewPage() {
           ) : (
             <div className="overflow-x-auto">
               <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Name</TableHead>
-                      <TableHead>Email</TableHead>
-                      <TableHead>Phone</TableHead>
-                      <TableHead>Company</TableHead>
-                      <TableHead>Tags</TableHead>
-                      <TableHead>Actions</TableHead>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Name</TableHead>
+                    <TableHead>Email</TableHead>
+                    <TableHead>Phone</TableHead>
+                    <TableHead>Company</TableHead>
+                    <TableHead>Tags</TableHead>
+                    <TableHead>Actions</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {contacts.map((contact) => (
+                    <TableRow key={contact.id}>
+                      <TableCell className="font-medium">{contact.name}</TableCell>
+                      <TableCell>{contact.email}</TableCell>
+                      <TableCell>{contact.phone || '—'}</TableCell>
+                      <TableCell>{contact.company || '—'}</TableCell>
+                      <TableCell>
+                        <div className="flex flex-wrap gap-1">
+                          {contact.tags && contact.tags.length > 0 ? (
+                            contact.tags.map((tag, index) => (
+                              <Badge key={index} variant="outline" className="mr-1">
+                                {tag}
+                              </Badge>
+                            ))
+                          ) : (
+                            '—'
+                          )}
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex items-center gap-2">
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => handleEditClick(contact)}
+                            title="Edit contact"
+                          >
+                            <Pencil className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => handleDeleteClick(contact)}
+                            title="Delete contact"
+                          >
+                            <Trash2 className="h-4 w-4 text-red-500" />
+                          </Button>
+                        </div>
+                      </TableCell>
                     </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {contacts.map((contact) => (
-                      <TableRow key={contact.id}>
-                        <TableCell className="font-medium">{contact.name}</TableCell>
-                        <TableCell>{contact.email}</TableCell>
-                        <TableCell>{contact.phone || '—'}</TableCell>
-                        <TableCell>{contact.company || '—'}</TableCell>
-                        <TableCell>
-                          <div className="flex flex-wrap gap-1">
-                            {contact.tags && contact.tags.length > 0 ? (
-                              contact.tags.map((tag, index) => (
-                                <Badge key={index} variant="outline" className="mr-1">
-                                  {tag}
-                                </Badge>
-                              ))
-                            ) : (
-                              '—'
-                            )}
-                          </div>
-                        </TableCell>
-                        <TableCell>
-                          <div className="flex items-center gap-2">
-                            <Button
-                              variant="ghost"
-                              size="icon"
-                              onClick={() => handleEditClick(contact)}
-                              title="Edit contact"
-                            >
-                              <Pencil className="h-4 w-4" />
-                            </Button>
-                            <Button
-                              variant="ghost"
-                              size="icon"
-                              onClick={() => handleDeleteClick(contact)}
-                              title="Delete contact"
-                            >
-                              <Trash2 className="h-4 w-4 text-red-500" />
-                            </Button>
-                          </div>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </div>
-            )}
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+          )}
         </CardContent>
         <CardFooter className="flex justify-between bg-muted/50 p-4 text-sm">
           <div>
@@ -399,298 +386,298 @@ export default function CRMViewPage() {
                   required
                 />
               </div>
-                <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="email" className="text-right">
-                    Email *
-                  </Label>
-                  <Input
-                    id="email"
-                    name="email"
-                    type="email"
-                    value={contactForm.email}
-                    onChange={handleFormChange}
-                    className="col-span-3"
-                    required
-                  />
-                </div>
-                <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="phone" className="text-right">
-                    Phone
-                  </Label>
-                  <Input
-                    id="phone"
-                    name="phone"
-                    value={contactForm.phone}
-                    onChange={handleFormChange}
-                    className="col-span-3"
-                  />
-                </div>
-                <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="company" className="text-right">
-                    Company
-                  </Label>
-                  <Input
-                    id="company"
-                    name="company"
-                    value={contactForm.company}
-                    onChange={handleFormChange}
-                    className="col-span-3"
-                  />
-                </div>
-                <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="notes" className="text-right">
-                    Notes
-                  </Label>
-                  <Textarea
-                    id="notes"
-                    name="notes"
-                    value={contactForm.notes}
-                    onChange={handleFormChange}
-                    className="col-span-3"
-                    rows={3}
-                  />
-                </div>
-                <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="tags" className="text-right">
-                    Tags
-                  </Label>
-                  <div className="col-span-3">
-                    <div className="flex gap-2">
-                      <Input
-                        id="tags"
-                        value={tagInput}
-                        onChange={handleTagInputChange}
-                        placeholder="Add a tag"
-                      />
-                      <Button
-                        type="button"
-                        variant="secondary"
-                        size="sm"
-                        onClick={handleAddTag}
-                      >
-                        Add
-                      </Button>
-                    </div>
-                    <div className="flex flex-wrap gap-1 mt-2">
-                      {contactForm.tags.map((tag, index) => (
-                        <Badge key={index} variant="secondary" className="mr-1">
-                          {tag}
-                          <button
-                            type="button"
-                            className="ml-1 text-xs"
-                            onClick={() => handleRemoveTag(tag)}
-                          >
-                            &times;
-                          </button>
-                        </Badge>
-                      ))}
-                    </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="email" className="text-right">
+                  Email *
+                </Label>
+                <Input
+                  id="email"
+                  name="email"
+                  type="email"
+                  value={contactForm.email}
+                  onChange={handleFormChange}
+                  className="col-span-3"
+                  required
+                />
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="phone" className="text-right">
+                  Phone
+                </Label>
+                <Input
+                  id="phone"
+                  name="phone"
+                  value={contactForm.phone}
+                  onChange={handleFormChange}
+                  className="col-span-3"
+                />
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="company" className="text-right">
+                  Company
+                </Label>
+                <Input
+                  id="company"
+                  name="company"
+                  value={contactForm.company}
+                  onChange={handleFormChange}
+                  className="col-span-3"
+                />
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="notes" className="text-right">
+                  Notes
+                </Label>
+                <Textarea
+                  id="notes"
+                  name="notes"
+                  value={contactForm.notes}
+                  onChange={handleFormChange}
+                  className="col-span-3"
+                  rows={3}
+                />
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="tags" className="text-right">
+                  Tags
+                </Label>
+                <div className="col-span-3">
+                  <div className="flex gap-2">
+                    <Input
+                      id="tags"
+                      value={tagInput}
+                      onChange={handleTagInputChange}
+                      placeholder="Add a tag"
+                    />
+                    <Button
+                      type="button"
+                      variant="secondary"
+                      size="sm"
+                      onClick={handleAddTag}
+                    >
+                      Add
+                    </Button>
+                  </div>
+                  <div className="flex flex-wrap gap-1 mt-2">
+                    {contactForm.tags.map((tag, index) => (
+                      <Badge key={index} variant="secondary" className="mr-1">
+                        {tag}
+                        <button
+                          type="button"
+                          className="ml-1 text-xs"
+                          onClick={() => handleRemoveTag(tag)}
+                        >
+                          &times;
+                        </button>
+                      </Badge>
+                    ))}
                   </div>
                 </div>
               </div>
-              <DialogFooter>
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={() => {
-                    resetForm();
-                    setIsAddDialogOpen(false);
-                  }}
-                >
-                  Cancel
-                </Button>
-                <Button type="submit" disabled={addContactMutation.isPending}>
-                  {addContactMutation.isPending && (
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  )}
-                  Add Contact
-                </Button>
-              </DialogFooter>
-            </form>
-          </DialogContent>
-        </Dialog>
-
-        {/* Edit Contact Dialog */}
-        <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
-          <DialogContent className="sm:max-w-md">
-            <DialogHeader>
-              <DialogTitle>Edit Contact</DialogTitle>
-              <DialogDescription>
-                Update the contact details below.
-              </DialogDescription>
-            </DialogHeader>
-            <form onSubmit={handleSubmit}>
-              <div className="grid gap-4 py-4">
-                <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="edit-name" className="text-right">
-                    Name *
-                  </Label>
-                  <Input
-                    id="edit-name"
-                    name="name"
-                    value={contactForm.name}
-                    onChange={handleFormChange}
-                    className="col-span-3"
-                    required
-                  />
-                </div>
-                <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="edit-email" className="text-right">
-                    Email *
-                  </Label>
-                  <Input
-                    id="edit-email"
-                    name="email"
-                    type="email"
-                    value={contactForm.email}
-                    onChange={handleFormChange}
-                    className="col-span-3"
-                    required
-                  />
-                </div>
-                <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="edit-phone" className="text-right">
-                    Phone
-                  </Label>
-                  <Input
-                    id="edit-phone"
-                    name="phone"
-                    value={contactForm.phone}
-                    onChange={handleFormChange}
-                    className="col-span-3"
-                  />
-                </div>
-                <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="edit-company" className="text-right">
-                    Company
-                  </Label>
-                  <Input
-                    id="edit-company"
-                    name="company"
-                    value={contactForm.company}
-                    onChange={handleFormChange}
-                    className="col-span-3"
-                  />
-                </div>
-                <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="edit-notes" className="text-right">
-                    Notes
-                  </Label>
-                  <Textarea
-                    id="edit-notes"
-                    name="notes"
-                    value={contactForm.notes}
-                    onChange={handleFormChange}
-                    className="col-span-3"
-                    rows={3}
-                  />
-                </div>
-                <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="edit-tags" className="text-right">
-                    Tags
-                  </Label>
-                  <div className="col-span-3">
-                    <div className="flex gap-2">
-                      <Input
-                        id="edit-tags"
-                        value={tagInput}
-                        onChange={handleTagInputChange}
-                        placeholder="Add a tag"
-                      />
-                      <Button
-                        type="button"
-                        variant="secondary"
-                        size="sm"
-                        onClick={handleAddTag}
-                      >
-                        Add
-                      </Button>
-                    </div>
-                    <div className="flex flex-wrap gap-1 mt-2">
-                      {contactForm.tags.map((tag, index) => (
-                        <Badge key={index} variant="secondary" className="mr-1">
-                          {tag}
-                          <button
-                            type="button"
-                            className="ml-1 text-xs"
-                            onClick={() => handleRemoveTag(tag)}
-                          >
-                            &times;
-                          </button>
-                        </Badge>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <DialogFooter>
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={() => {
-                    resetForm();
-                    setIsEditDialogOpen(false);
-                  }}
-                >
-                  Cancel
-                </Button>
-                <Button type="submit" disabled={updateContactMutation.isPending}>
-                  {updateContactMutation.isPending && (
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  )}
-                  Update Contact
-                </Button>
-              </DialogFooter>
-            </form>
-          </DialogContent>
-        </Dialog>
-
-        {/* Delete Contact Dialog */}
-        <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
-          <DialogContent className="sm:max-w-md">
-            <DialogHeader>
-              <DialogTitle>Delete Contact</DialogTitle>
-              <DialogDescription>
-                Are you sure you want to delete this contact? This action cannot be undone.
-              </DialogDescription>
-            </DialogHeader>
-            <div className="py-4">
-              {currentContact && (
-                <div className="space-y-2">
-                  <p>
-                    <strong>Name:</strong> {currentContact.name}
-                  </p>
-                  <p>
-                    <strong>Email:</strong> {currentContact.email}
-                  </p>
-                  {currentContact.company && (
-                    <p>
-                      <strong>Company:</strong> {currentContact.company}
-                    </p>
-                  )}
-                </div>
-              )}
             </div>
             <DialogFooter>
               <Button
                 type="button"
                 variant="outline"
-                onClick={() => setIsDeleteDialogOpen(false)}
+                onClick={() => {
+                  resetForm();
+                  setIsAddDialogOpen(false);
+                }}
               >
                 Cancel
               </Button>
-              <Button
-                variant="destructive"
-                onClick={handleDeleteConfirm}
-                disabled={deleteContactMutation.isPending}
-              >
-                {deleteContactMutation.isPending && (
+              <Button type="submit" disabled={addContactMutation.isPending}>
+                {addContactMutation.isPending && (
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 )}
-                Delete
+                Add Contact
               </Button>
             </DialogFooter>
-          </DialogContent>
+          </form>
+        </DialogContent>
+      </Dialog>
+
+      {/* Edit Contact Dialog */}
+      <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Edit Contact</DialogTitle>
+            <DialogDescription>
+              Update the contact details below.
+            </DialogDescription>
+          </DialogHeader>
+          <form onSubmit={handleSubmit}>
+            <div className="grid gap-4 py-4">
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="edit-name" className="text-right">
+                  Name *
+                </Label>
+                <Input
+                  id="edit-name"
+                  name="name"
+                  value={contactForm.name}
+                  onChange={handleFormChange}
+                  className="col-span-3"
+                  required
+                />
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="edit-email" className="text-right">
+                  Email *
+                </Label>
+                <Input
+                  id="edit-email"
+                  name="email"
+                  type="email"
+                  value={contactForm.email}
+                  onChange={handleFormChange}
+                  className="col-span-3"
+                  required
+                />
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="edit-phone" className="text-right">
+                  Phone
+                </Label>
+                <Input
+                  id="edit-phone"
+                  name="phone"
+                  value={contactForm.phone}
+                  onChange={handleFormChange}
+                  className="col-span-3"
+                />
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="edit-company" className="text-right">
+                  Company
+                </Label>
+                <Input
+                  id="edit-company"
+                  name="company"
+                  value={contactForm.company}
+                  onChange={handleFormChange}
+                  className="col-span-3"
+                />
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="edit-notes" className="text-right">
+                  Notes
+                </Label>
+                <Textarea
+                  id="edit-notes"
+                  name="notes"
+                  value={contactForm.notes}
+                  onChange={handleFormChange}
+                  className="col-span-3"
+                  rows={3}
+                />
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="edit-tags" className="text-right">
+                  Tags
+                </Label>
+                <div className="col-span-3">
+                  <div className="flex gap-2">
+                    <Input
+                      id="edit-tags"
+                      value={tagInput}
+                      onChange={handleTagInputChange}
+                      placeholder="Add a tag"
+                    />
+                    <Button
+                      type="button"
+                      variant="secondary"
+                      size="sm"
+                      onClick={handleAddTag}
+                    >
+                      Add
+                    </Button>
+                  </div>
+                  <div className="flex flex-wrap gap-1 mt-2">
+                    {contactForm.tags.map((tag, index) => (
+                      <Badge key={index} variant="secondary" className="mr-1">
+                        {tag}
+                        <button
+                          type="button"
+                          className="ml-1 text-xs"
+                          onClick={() => handleRemoveTag(tag)}
+                        >
+                          &times;
+                        </button>
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <DialogFooter>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => {
+                  resetForm();
+                  setIsEditDialogOpen(false);
+                }}
+              >
+                Cancel
+              </Button>
+              <Button type="submit" disabled={updateContactMutation.isPending}>
+                {updateContactMutation.isPending && (
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                )}
+                Update Contact
+              </Button>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
+
+      {/* Delete Contact Dialog */}
+      <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Delete Contact</DialogTitle>
+            <DialogDescription>
+              Are you sure you want to delete this contact? This action cannot be undone.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="py-4">
+            {currentContact && (
+              <div className="space-y-2">
+                <p>
+                  <strong>Name:</strong> {currentContact.name}
+                </p>
+                <p>
+                  <strong>Email:</strong> {currentContact.email}
+                </p>
+                {currentContact.company && (
+                  <p>
+                    <strong>Company:</strong> {currentContact.company}
+                  </p>
+                )}
+              </div>
+            )}
+          </div>
+          <DialogFooter>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => setIsDeleteDialogOpen(false)}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={handleDeleteConfirm}
+              disabled={deleteContactMutation.isPending}
+            >
+              {deleteContactMutation.isPending && (
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              )}
+              Delete
+            </Button>
+          </DialogFooter>
+        </DialogContent>
       </Dialog>
     </div>
   );
