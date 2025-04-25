@@ -33,7 +33,8 @@ import {
   Lightbulb,
   Database,
   Cpu,
-  Newspaper
+  Newspaper,
+  User
 } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import { useState, useEffect, useRef } from "react";
@@ -279,14 +280,6 @@ export default function AdminSidebar() {
           href: "/installed-tools", 
           icon: <Box className="h-5 w-5" />,
           description: "Manage your installed applications"
-        },
-        {
-          title: "Social Media",
-          href: "/tools/social-media-generator",
-          icon: <Newspaper className="h-5 w-5" />,
-          requiresStaff: true,
-          badge: { text: "New", variant: "new" },
-          isNew: true
         }
       ]
     },
@@ -314,12 +307,7 @@ export default function AdminSidebar() {
           icon: <Image className="h-5 w-5" />,
           requiresStaff: true 
         },
-        { 
-          title: "Theme Settings", 
-          href: "/admin/theme", 
-          icon: <Palette className="h-5 w-5" />,
-          requiresStaff: true 
-        },
+
       ]
     },
     {
@@ -372,6 +360,11 @@ export default function AdminSidebar() {
       isExpandable: true,
       items: [
         { 
+          title: "Account", 
+          href: "/account", 
+          icon: <User className="h-5 w-5" />
+        },
+        { 
           title: "Admin Settings", 
           href: "/admin/settings", 
           icon: <Settings className="h-5 w-5" />,
@@ -391,18 +384,7 @@ export default function AdminSidebar() {
           badge: { text: "New", variant: "new" },
           isNew: true
         },
-        { 
-          title: "Brand Manager", 
-          href: "/admin/brand", 
-          icon: <PaintBucket className="h-5 w-5" />,
-          requiresStaff: true 
-        },
-        { 
-          title: "Tenant Settings", 
-          href: "/admin/tenant", 
-          icon: <Database className="h-5 w-5" />,
-          requiresStaff: true 
-        },
+
         { 
           title: "Blueprint Management", 
           href: "/admin/blueprint-management", 
