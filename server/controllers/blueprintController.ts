@@ -230,6 +230,12 @@ async function registerAsTemplate(req: Request, res: Response) {
     
     // Register as template
     const blueprint = await generateBlueprint();
+    
+    // Handle possible null blueprint gracefully
+    if (!blueprint) {
+      return res.status(500).json({ error: 'Failed to generate blueprint' });
+    }
+    
     const declaration = await db.insert(sotDeclarations).values({
       id: Math.floor(Math.random() * 1000000),
       instanceId: uuidv4(),
@@ -323,10 +329,11 @@ async function generateBlueprint() {
       })),
       pages: allPages.map(page => ({
         id: page.id,
-        route: page.route,
-        title: page.title,
+        slug: page.slug,
+        name: page.name,
         status: page.status,
-        isPublic: page.isPublic,
+        published: page.published,
+        pageType: page.pageType,
       })),
       navigation: {
         menus: menus.map(menu => ({
@@ -371,15 +378,12 @@ async function performCloning(
     const hashedPassword = await hashPassword(adminPassword);
     
     const newAdminUser = await db.insert(users).values({
-      id: Math.floor(Math.random() * 1000000),
       username: 'admin',
       email: adminEmail,
       password: hashedPassword,
-      firstName: 'Admin',
-      lastName: 'User',
-      role: 'admin',
+      name: 'Admin User',
+      userType: 'admin',
       isSuperAdmin: true,
-      isActive: true,
     }).returning();
     
     // In a real implementation, we would:
