@@ -14,6 +14,7 @@ import { apiRequest } from "@/lib/queryClient";
 import PageBuilderSections from "./PageBuilderSections";
 import PageBuilderComponentPanel from "./PageBuilderComponentPanel";
 import PageBuilderSeoPanel from "./PageBuilderSeoPanel";
+import PageBuilderSeoAnalysis from "./PageBuilderSeoAnalysis";
 import PageBuilderPreview from "./PageBuilderPreview";
 import PageBuilderTemplateGallery from "./PageBuilderTemplateGallery";
 import { PageVersionHistory } from "./PageVersionHistory";
@@ -665,12 +666,20 @@ const PageBuilderContent: React.FC = () => {
 
             {/* SEO Tab */}
             <TabsContent value="seo">
-              <PageBuilderSeoPanel
-                seoSettings={page.seoSettings}
-                onUpdateSeo={handleUpdateSeo}
-                pageType={page.pageType}
-                isLocked={page.isLocked}
-              />
+              <div className="space-y-8">
+                <PageBuilderSeoPanel
+                  seoSettings={page.seoSettings}
+                  onUpdateSeo={handleUpdateSeo}
+                  pageType={page.pageType}
+                  isLocked={page.isLocked}
+                />
+                
+                {/* SEO Analysis Section */}
+                <div className="mt-6 border rounded-lg">
+                  <h3 className="text-lg font-medium p-4 border-b">SEO Analysis</h3>
+                  <PageBuilderSeoAnalysis pageId={page.id} />
+                </div>
+              </div>
             </TabsContent>
 
             {/* AI Design Tab */}
