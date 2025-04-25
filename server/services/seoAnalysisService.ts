@@ -1,7 +1,7 @@
 import OpenAI from "openai";
 import { db } from "../db";
 import { pageBuilderPages, pageBuilderComponents, pageBuilderSections, pageBuilderRecommendations } from "@shared/schema";
-import { eq, and } from "drizzle-orm";
+import { eq, and, or } from "drizzle-orm";
 
 // Initialize OpenAI client
 const openai = new OpenAI({
@@ -134,7 +134,11 @@ export async function calculateSeoScore(pageId: number): Promise<SeoScore> {
     });
 
     // Parse the response
-    const aiAnalysis = JSON.parse(response.choices[0].message.content);
+    const contentStr = response.choices[0].message.content;
+    if (!contentStr) {
+      throw new Error("Empty response from OpenAI");
+    }
+    const aiAnalysis = JSON.parse(contentStr);
     
     // Calculate overall score as weighted average
     const overallScore = calculateOverallScore(aiAnalysis.categoryScores);
@@ -226,7 +230,11 @@ export async function generateSeoRecommendations(pageId: number): Promise<SeoRec
     });
 
     // Parse the response
-    const aiRecommendations = JSON.parse(response.choices[0].message.content);
+    const contentStr = response.choices[0].message.content;
+    if (!contentStr) {
+      throw new Error("Empty response from OpenAI");
+    }
+    const aiRecommendations = JSON.parse(contentStr);
     
     if (!Array.isArray(aiRecommendations)) {
       throw new Error("Invalid response format from AI");
@@ -284,21 +292,23 @@ export async function applyRecommendation(recommendationId: number): Promise<boo
     
     // Update the page based on recommendation type
     const currentSeo = page.seo || {};
-    let updatedSeo = { ...currentSeo };
+    let updatedSeo = { ...currentSeo } as any;
+    
+    const improvement = recommendation.improvement || '';
     
     switch (recommendation.type) {
       case 'title':
-        updatedSeo.title = recommendation.suggestedValue;
+        updatedSeo.title = improvement;
         break;
       case 'description':
-        updatedSeo.description = recommendation.suggestedValue;
+        updatedSeo.description = improvement;
         break;
       case 'keywords':
         try {
-          updatedSeo.keywords = JSON.parse(recommendation.suggestedValue);
+          updatedSeo.keywords = JSON.parse(improvement);
         } catch (e) {
           console.error("Error parsing keywords:", e);
-          updatedSeo.keywords = recommendation.suggestedValue.split(',').map(k => k.trim());
+          updatedSeo.keywords = improvement.split(',').map((k: string) => k.trim());
         }
         break;
       // Other types would require more complex handling
@@ -367,14 +377,23 @@ export async function getPageRecommendations(pageId: number): Promise<any[]> {
           eq(pageBuilderRecommendations.dismissed, false)
         )
       )
-      .orderBy(db.sql`CASE 
-        WHEN ${pageBuilderRecommendations.priority} = 'high' THEN 1
-        WHEN ${pageBuilderRecommendations.priority} = 'medium' THEN 2
-        WHEN ${pageBuilderRecommendations.priority} = 'low' THEN 3
-        ELSE 4
-      END`);
+      .orderBy(pageBuilderRecommendations.id); // Simple ordering by id
     
-    return recommendations;
+    // Sort in memory by priority if needed
+    const sortedRecommendations = recommendations.sort((a, b) => {
+      const priorityOrder: Record<string, number> = {
+        'high': 1,
+        'medium': 2,
+        'low': 3
+      };
+      
+      const aOrder = priorityOrder[a.severity as string] || 4;
+      const bOrder = priorityOrder[b.severity as string] || 4;
+      
+      return aOrder - bOrder;
+    });
+    
+    return sortedRecommendations;
   } catch (error) {
     console.error("Error fetching page recommendations:", error);
     return [];
@@ -407,13 +426,23 @@ async function getPageWithComponents(pageId: number) {
     
     // Get all components for each section
     const sectionIds = sections.map(section => section.id);
-    const components = sectionIds.length > 0 
-      ? await db
-          .select()
-          .from(pageBuilderComponents)
-          .where(pageBuilderComponents.sectionId.in(sectionIds))
-          .orderBy(pageBuilderComponents.order)
-      : [];
+    let components: any[] = [];
+    
+    if (sectionIds.length > 0) {
+      // Instead of using .in(), we use a more compatible query
+      components = await db
+        .select()
+        .from(pageBuilderComponents)
+        .where(
+          // Create OR clauses for each section id
+          or(
+            ...sectionIds.map(id => 
+              eq(pageBuilderComponents.sectionId, id)
+            )
+          )
+        )
+        .orderBy(pageBuilderComponents.order);
+    }
     
     // Add components to their respective sections
     const sectionsWithComponents = sections.map(section => ({

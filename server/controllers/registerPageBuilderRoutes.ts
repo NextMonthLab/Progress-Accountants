@@ -28,5 +28,12 @@ export function registerPageBuilderRoutes(app: Express) {
   app.post("/api/page-builder/pages/:id/clone", isAuthenticated, pageBuilderController.clonePage);
   app.get("/api/page-builder/tenant-starter", isAuthenticated, pageBuilderController.getTenantStarterType);
   
+  // SEO Analysis routes
+  app.get("/api/page-builder/pages/:id/seo-score", isAuthenticated, pageBuilderController.getSeoScore);
+  app.post("/api/page-builder/pages/:id/recommendations", isAuthenticated, pageBuilderController.generateSeoRecommendations);
+  app.get("/api/page-builder/pages/:id/recommendations", isAuthenticated, pageBuilderController.getPageRecommendations);
+  app.post("/api/page-builder/recommendations/:id/apply", isAuthenticated, pageBuilderController.applyRecommendation);
+  app.post("/api/page-builder/recommendations/:id/dismiss", isAuthenticated, pageBuilderController.dismissRecommendation);
+  
   console.log("[PageBuilder] Routes registered");
 }
