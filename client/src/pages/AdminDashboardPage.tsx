@@ -685,6 +685,13 @@ export default function AdminDashboardPage() {
                       link="/media"
                       variant="outline"
                     />
+                    <QuickAction
+                      title="Blueprint Management"
+                      description="Extract and manage templates"
+                      icon={<Copy className="h-5 w-5" />}
+                      link="/admin/blueprint-management"
+                      variant="primary"
+                    />
                   </CardContent>
                 </Card>
 

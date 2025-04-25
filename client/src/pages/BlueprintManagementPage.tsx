@@ -35,13 +35,22 @@ const BlueprintManagementPage = () => {
   const [isCloneable, setIsCloneable] = useState(true);
   const [activeTab, setActiveTab] = useState('templates');
   
+  interface Template {
+    id: number;
+    instanceId: string;
+    blueprintVersion: string;
+    status: string;
+    isCloneable: boolean;
+    lastSyncAt: string;
+  }
+  
   // Get available templates
   const {
-    data: templates,
+    data: templates = [],
     isLoading: isLoadingTemplates,
     isError: isTemplatesError,
     error: templatesError,
-  } = useQuery({
+  } = useQuery<Template[]>({
     queryKey: ['/api/blueprint/templates'],
     enabled: activeTab === 'templates',
   });
@@ -250,7 +259,7 @@ const BlueprintManagementPage = () => {
                   <div className="text-center py-8 text-destructive">
                     Error loading templates: {templatesError instanceof Error ? templatesError.message : 'Unknown error'}
                   </div>
-                ) : templates?.length === 0 ? (
+                ) : templates.length === 0 ? (
                   <div className="text-center py-8 text-muted-foreground">
                     No templates available. Register this instance as a template to get started.
                   </div>
@@ -268,7 +277,7 @@ const BlueprintManagementPage = () => {
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {templates?.map((template: any) => (
+                      {templates.map((template) => (
                         <TableRow key={template.id}>
                           <TableCell>{template.id}</TableCell>
                           <TableCell className="font-mono text-xs">{template.instanceId.substring(0, 8)}...</TableCell>

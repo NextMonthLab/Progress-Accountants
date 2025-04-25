@@ -159,6 +159,11 @@ function Router() {
         allowedRoles={['admin', 'super_admin']} 
       />
       <ProtectedRoute 
+        path="/admin/blueprint-management" 
+        component={BlueprintManagementPage} 
+        allowedRoles={['admin', 'super_admin']} 
+      />
+      <ProtectedRoute 
         path="/admin/tenant-customization" 
         component={TenantCustomizationPage} 
         allowedRoles={['admin', 'super_admin']} 
