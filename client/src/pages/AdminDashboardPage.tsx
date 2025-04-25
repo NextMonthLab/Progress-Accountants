@@ -17,6 +17,7 @@ import {
   BookOpen,
   CheckCircle2,
   Clock,
+  Copy,
   Cpu,
   Database,
   FileText, 

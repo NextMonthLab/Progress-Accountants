@@ -11,6 +11,7 @@ import { migrateSotTables } from './db-migrate-sot';
 import { migrateAgentTables } from './db-migrate-agent';
 import { migrateAiDesignSystemTables } from './db-migrate-ai-design-system';
 import { migrateInsightsDashboard } from './db-migrate-insights-dashboard';
+import { migrateBlueprintTables } from './db-migrate-blueprint';
 import { registerNavigationRoutes } from './controllers/navigationController';
 import { registerDomainMappingRoutes } from './controllers/domainMappingController';
 import { registerSotRoutes } from './controllers/sotController';
@@ -74,6 +75,8 @@ app.use((req, res, next) => {
     await migrateAiDesignSystemTables();
     console.log('Running Insights Dashboard migrations...');
     await migrateInsightsDashboard();
+    console.log('Running Blueprint migrations...');
+    await migrateBlueprintTables();
   } catch (error) {
     console.error('Error running migrations:', error);
   }
