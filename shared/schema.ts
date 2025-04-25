@@ -6,6 +6,7 @@ import { PageMetadata, PageComplexityAssessment, ComplexityLevel } from "./page_
 import { ComponentType, SeoImpactLevel, ComponentContext } from "./advanced_page_builder";
 import { VersionableEntityType, VersionStatus, ChangeType } from "./version_control";
 import { DomainStatus, VerificationMethod } from "./domain_mapping";
+// Business network models are defined in business_network.ts
 
 // Tenants table to track all client instances
 // Define the table without self-reference first to fix circular reference
