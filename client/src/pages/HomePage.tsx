@@ -53,7 +53,7 @@ export default function HomePage() {
           <div className="flex flex-col md:flex-row items-center gap-8">
             <div className="md:w-1/2">
               <img 
-                src="/assets/studio.jpg" 
+                src="https://res.cloudinary.com/drl0fxrkq/image/upload/v1744815129/P1012279-Enhanced-NR_dgdlta.jpg" 
                 alt="Progress Podcast & Video Studio" 
                 className="rounded-lg shadow-xl"
               />
