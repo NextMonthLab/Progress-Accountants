@@ -4,8 +4,9 @@ import { v4 as uuidv4 } from 'uuid';
 import { cloneOperations, blueprintTemplates, blueprintExports } from '@shared/blueprint';
 import { eq } from 'drizzle-orm';
 import { hashPassword } from '../auth';
-import { users, User } from '@shared/schema';
+import { users } from '@shared/schema';
 import { sotDeclarations } from '@shared/sot';
+import { storage } from '../storage';
 
 /**
  * Register all blueprint-related routes
@@ -49,8 +50,8 @@ export function registerBlueprintRoutes(app: Express): void {
       }
       
       // Check if user has admin rights
-      const user = req.user as User;
-      if (user.role !== 'admin' && user.role !== 'superadmin') {
+      const user = req.user as Express.User;
+      if (user.userType !== 'admin' && !user.isSuperAdmin) {
         return res.status(403).json({ error: 'Admin privileges required' });
       }
 
@@ -85,8 +86,8 @@ export function registerBlueprintRoutes(app: Express): void {
       }
       
       // Check if user has admin rights
-      const user = req.user as User;
-      if (user.role !== 'admin' && user.role !== 'superadmin') {
+      const user = req.user as Express.User;
+      if (user.userType !== 'admin' && !user.isSuperAdmin) {
         return res.status(403).json({ error: 'Admin privileges required' });
       }
 
@@ -127,8 +128,8 @@ export function registerBlueprintRoutes(app: Express): void {
       }
       
       // Check if user has admin rights
-      const user = req.user as User;
-      if (user.role !== 'admin' && user.role !== 'superadmin') {
+      const user = req.user as Express.User;
+      if (user.userType !== 'admin' && !user.isSuperAdmin) {
         return res.status(403).json({ error: 'Admin privileges required' });
       }
 
@@ -186,8 +187,8 @@ export function registerBlueprintRoutes(app: Express): void {
       }
       
       // Only super admins can perform clones
-      const user = req.user as User;
-      if (user.role !== 'superadmin') {
+      const user = req.user as Express.User;
+      if (!user.isSuperAdmin) {
         return res.status(403).json({ error: 'Super admin privileges required for cloning' });
       }
 
@@ -231,13 +232,15 @@ export function registerBlueprintRoutes(app: Express): void {
       try {
         // 1. Create admin user for new instance
         const hashedPassword = await hashPassword(adminPassword);
+        
+        // Create new admin user with proper schema
         const [adminUser] = await db.insert(users).values({
-          email: adminEmail,
           username: adminEmail.split('@')[0],
           password: hashedPassword,
-          role: 'admin',
-          fullName: 'Administrator',
-          instanceId: newInstanceId,
+          email: adminEmail,
+          name: 'Administrator',
+          userType: 'admin',
+          tenantId: newInstanceId,
           isSuperAdmin: false
         }).returning();
         
@@ -245,10 +248,10 @@ export function registerBlueprintRoutes(app: Express): void {
         const sotData = await db.select().from(sotDeclarations).where(eq(sotDeclarations.instanceId, template.instanceId));
         
         for (const sot of sotData) {
+          const { id, ...sotWithoutId } = sot;
           // Clone each SOT declaration for the new instance
           await db.insert(sotDeclarations).values({
-            ...sot,
-            id: undefined, // Let the database generate a new ID
+            ...sotWithoutId,
             instanceId: newInstanceId,
             // Update any tenant-specific fields if needed
           });
@@ -274,17 +277,17 @@ export function registerBlueprintRoutes(app: Express): void {
           newInstanceId,
           adminUserId: adminUser.id
         });
-      } catch (cloneError) {
+      } catch (error: any) {
         // If an error occurs during cloning, update the operation status
         await db.update(cloneOperations)
           .set({
             status: 'failed',
-            errorMessage: cloneError.message || 'Unknown error during cloning',
+            errorMessage: error.message || 'Unknown error during cloning',
             completedAt: new Date()
           })
           .where(eq(cloneOperations.id, cloneOperation.id));
         
-        throw cloneError;
+        throw error;
       }
     } catch (error) {
       console.error('Error cloning template:', error);
