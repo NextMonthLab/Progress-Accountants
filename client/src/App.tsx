@@ -70,6 +70,7 @@ import SiteBrandingPage from "@/pages/admin/SiteBrandingPage";
 import MenuManagementPage from "@/pages/admin/MenuManagementPage";
 import DomainMappingPage from "@/pages/DomainMappingPage";
 import SotManagementPage from "@/pages/SotManagementPage";
+import ConversationInsightsPage from "@/pages/ConversationInsightsPage";
 // Page Builder pages
 import PageBuilderListPage from "@/pages/PageBuilderListPage";
 import PageBuilderPage from "@/pages/PageBuilderPage";
@@ -187,6 +188,11 @@ function Router() {
         path="/admin/sot-management" 
         component={SotManagementPage} 
         allowedRoles={['admin', 'super_admin']} 
+      />
+      <ProtectedRoute 
+        path="/admin/conversation-insights" 
+        component={ConversationInsightsPage} 
+        allowedRoles={['admin', 'super_admin', 'editor']} 
       />
       <ProtectedRoute 
         path="/admin/dashboard" 

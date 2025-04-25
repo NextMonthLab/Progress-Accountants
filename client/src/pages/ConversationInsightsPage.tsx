@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { useQuery } from '@tanstack/react-query';
 import { useToast } from '@/hooks/use-toast';
-import { AdminLayout } from '@/components/layouts/AdminLayout';
+import AdminLayout from '@/layouts/AdminLayout';
 import {
   Card,
   CardContent,
@@ -76,11 +76,11 @@ export default function ConversationInsightsPage() {
   
   // Fetch conversation insights
   const { 
-    data: insights = [], 
+    data: insights = [] as Insight[], 
     isLoading, 
     error, 
     refetch 
-  } = useQuery({
+  } = useQuery<Insight[]>({
     queryKey: ['/api/agent/insights'], 
     retry: false,
   });
@@ -89,7 +89,7 @@ export default function ConversationInsightsPage() {
   const { 
     data: stats = { totalConversations: 0, totalInsights: 0, leadPotential: 0 }, 
     isLoading: statsLoading 
-  } = useQuery({
+  } = useQuery<Stats>({
     queryKey: ['/api/agent/stats'], 
     retry: false,
   });
