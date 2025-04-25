@@ -52,6 +52,7 @@ import {
   getToolConfiguration,
   updateToolConfiguration
 } from "./controllers/marketplaceController";
+import { registerSocialMediaRoutes } from "./controllers/registerSocialMediaRoutes";
 import { setupAuth, hashPassword } from "./auth";
 import { simpleStorage } from "./simpleStorage";
 import { 
