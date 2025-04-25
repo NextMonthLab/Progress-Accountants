@@ -7,6 +7,7 @@ import { Check, Zap } from "lucide-react";
 import { useQuery } from '@tanstack/react-query';
 import { apiRequest } from '@/lib/queryClient';
 import { Badge } from '@/components/ui/badge';
+import AdminLayout from "@/layouts/AdminLayout";
 
 // Interface for subscription plan data
 interface PlanData {
@@ -93,129 +94,131 @@ export default function AccountPage() {
   };
   
   return (
-    <div className="container mx-auto py-6 px-4 md:px-6">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold">Account Settings</h1>
-        <p className="text-muted-foreground mt-1">
-          Manage your subscription and account details
-        </p>
-      </div>
-      
-      <div className="grid gap-6">
-        {/* Welcome and Current Plan Section */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Welcome, {businessName}</CardTitle>
-            <CardDescription>
-              Here's an overview of your current subscription
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <h3 className="font-medium">Current Plan</h3>
-                <div className="flex items-center gap-2 mt-1">
-                  <span className="text-2xl font-bold text-primary">{currentPlan}</span>
-                  <Badge variant="outline" className="bg-primary/10 hover:bg-primary/10">Active</Badge>
-                </div>
-              </div>
-              <Button variant="outline" onClick={handleUpgradeClick}>
-                Change Plan
-              </Button>
-            </div>
-            
-            <div className="space-y-2">
-              <div className="flex justify-between text-sm">
-                <span>Posts Generated This Month</span>
-                <span className="font-medium">{postsGenerated}/{maxPosts}</span>
-              </div>
-              <Progress value={usagePercentage} className="h-2" />
-            </div>
-          </CardContent>
-        </Card>
-        
-        {/* Subscription Plans Section */}
-        <div>
-          <h2 className="text-2xl font-bold mb-4">Need more power?</h2>
-          <div className="grid gap-6 md:grid-cols-3">
-            {subscriptionPlans.map((plan) => (
-              <Card key={plan.name} className={`relative overflow-hidden ${plan.name === currentPlan ? 'border-primary ring-1 ring-primary' : ''}`}>
-                {plan.isPopular && (
-                  <div className="absolute top-0 right-0 bg-primary text-primary-foreground text-xs font-medium px-3 py-1 rounded-bl-md">
-                    Popular
-                  </div>
-                )}
-                <CardHeader>
-                  <CardTitle>{plan.name}</CardTitle>
-                  <CardDescription>
-                    <span className="text-3xl font-bold">{plan.price}</span>/month
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <ul className="space-y-2">
-                    {plan.features.map((feature, index) => (
-                      <li key={index} className="flex items-center">
-                        <Check className="h-4 w-4 mr-2 text-primary" />
-                        <span className="text-sm">{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </CardContent>
-                <CardFooter>
-                  <Button 
-                    variant={plan.name === currentPlan ? "outline" : "default"}
-                    className="w-full"
-                    disabled={plan.name === currentPlan}
-                    onClick={handleUpgradeClick}
-                  >
-                    {plan.name === currentPlan ? "Current Plan" : "Upgrade"}
-                  </Button>
-                </CardFooter>
-              </Card>
-            ))}
-          </div>
+    <AdminLayout>
+      <div className="container mx-auto py-6 px-4 md:px-6">
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold">Account Settings</h1>
+          <p className="text-muted-foreground mt-1">
+            Manage your subscription and account details
+          </p>
         </div>
         
-        {/* Account Details Section - Placeholder for future expansion */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Account Details</CardTitle>
-            <CardDescription>
-              Manage your personal information and preferences
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              <div>
-                <h3 className="font-medium">Email</h3>
-                <p className="text-muted-foreground">admin@progressaccountants.com</p>
+        <div className="grid gap-6">
+          {/* Welcome and Current Plan Section */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Welcome, {businessName}</CardTitle>
+              <CardDescription>
+                Here's an overview of your current subscription
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="font-medium">Current Plan</h3>
+                  <div className="flex items-center gap-2 mt-1">
+                    <span className="text-2xl font-bold text-primary">{currentPlan}</span>
+                    <Badge variant="outline" className="bg-primary/10 hover:bg-primary/10">Active</Badge>
+                  </div>
+                </div>
+                <Button variant="outline" onClick={handleUpgradeClick}>
+                  Change Plan
+                </Button>
               </div>
-              <div>
-                <h3 className="font-medium">Account Created</h3>
-                <p className="text-muted-foreground">April 25, 2025</p>
+              
+              <div className="space-y-2">
+                <div className="flex justify-between text-sm">
+                  <span>Posts Generated This Month</span>
+                  <span className="font-medium">{postsGenerated}/{maxPosts}</span>
+                </div>
+                <Progress value={usagePercentage} className="h-2" />
               </div>
+            </CardContent>
+          </Card>
+          
+          {/* Subscription Plans Section */}
+          <div>
+            <h2 className="text-2xl font-bold mb-4">Need more power?</h2>
+            <div className="grid gap-6 md:grid-cols-3">
+              {subscriptionPlans.map((plan) => (
+                <Card key={plan.name} className={`relative overflow-hidden ${plan.name === currentPlan ? 'border-primary ring-1 ring-primary' : ''}`}>
+                  {plan.isPopular && (
+                    <div className="absolute top-0 right-0 bg-primary text-primary-foreground text-xs font-medium px-3 py-1 rounded-bl-md">
+                      Popular
+                    </div>
+                  )}
+                  <CardHeader>
+                    <CardTitle>{plan.name}</CardTitle>
+                    <CardDescription>
+                      <span className="text-3xl font-bold">{plan.price}</span>/month
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <ul className="space-y-2">
+                      {plan.features.map((feature, index) => (
+                        <li key={index} className="flex items-center">
+                          <Check className="h-4 w-4 mr-2 text-primary" />
+                          <span className="text-sm">{feature}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </CardContent>
+                  <CardFooter>
+                    <Button 
+                      variant={plan.name === currentPlan ? "outline" : "default"}
+                      className="w-full"
+                      disabled={plan.name === currentPlan}
+                      onClick={handleUpgradeClick}
+                    >
+                      {plan.name === currentPlan ? "Current Plan" : "Upgrade"}
+                    </Button>
+                  </CardFooter>
+                </Card>
+              ))}
             </div>
-          </CardContent>
-          <CardFooter>
-            <Button variant="outline">Edit Profile</Button>
-          </CardFooter>
-        </Card>
+          </div>
+          
+          {/* Account Details Section - Placeholder for future expansion */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Account Details</CardTitle>
+              <CardDescription>
+                Manage your personal information and preferences
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <div>
+                  <h3 className="font-medium">Email</h3>
+                  <p className="text-muted-foreground">admin@progressaccountants.com</p>
+                </div>
+                <div>
+                  <h3 className="font-medium">Account Created</h3>
+                  <p className="text-muted-foreground">April 25, 2025</p>
+                </div>
+              </div>
+            </CardContent>
+            <CardFooter>
+              <Button variant="outline">Edit Profile</Button>
+            </CardFooter>
+          </Card>
+        </div>
+        
+        {/* Upgrade Dialog */}
+        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Coming Soon</DialogTitle>
+              <DialogDescription>
+                This feature is coming soon! Please contact support to upgrade your plan.
+              </DialogDescription>
+            </DialogHeader>
+            <DialogFooter>
+              <Button onClick={() => setIsDialogOpen(false)}>Close</Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
-      
-      {/* Upgrade Dialog */}
-      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Coming Soon</DialogTitle>
-            <DialogDescription>
-              This feature is coming soon! Please contact support to upgrade your plan.
-            </DialogDescription>
-          </DialogHeader>
-          <DialogFooter>
-            <Button onClick={() => setIsDialogOpen(false)}>Close</Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-    </div>
+    </AdminLayout>
   );
 }
