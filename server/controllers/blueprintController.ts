@@ -164,7 +164,7 @@ export function registerBlueprintRoutes(app: Express): void {
         tenantId: template.tenantId,
         isTenantAgnostic: makeTenantAgnostic,
         blueprintData,
-        exportedBy: user.username,
+        exportedBy: user.email || user.name || 'unknown',
         validationStatus: 'validated'
       }).returning();
       
@@ -248,12 +248,28 @@ export function registerBlueprintRoutes(app: Express): void {
         const sotData = await db.select().from(sotDeclarations).where(eq(sotDeclarations.instanceId, template.instanceId));
         
         for (const sot of sotData) {
-          const { id, ...sotWithoutId } = sot;
-          // Clone each SOT declaration for the new instance
+          // Extract properties that are defined in the sotDeclarations schema
+          const {
+            instanceType,
+            blueprintVersion,
+            toolsSupported,
+            callbackUrl,
+            status,
+            isTemplate,
+            isCloneable
+          } = sot;
+          
+          // Clone each SOT declaration for the new instance with only the properties allowed by the schema
           await db.insert(sotDeclarations).values({
-            ...sotWithoutId,
+            id: sot.id, // We need to provide an ID explicitly since it's a required field
             instanceId: newInstanceId,
-            // Update any tenant-specific fields if needed
+            instanceType,
+            blueprintVersion,
+            toolsSupported,
+            callbackUrl,
+            status,
+            isTemplate: isTemplate || false,
+            isCloneable: isCloneable || false
           });
         }
         

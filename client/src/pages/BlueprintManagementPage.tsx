@@ -13,6 +13,7 @@ import { useToast } from "@/hooks/use-toast";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Badge } from "@/components/ui/badge";
 import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Loader2, FileUp, Copy, RefreshCw, CheckCircle, XCircle, AlertCircle, Info, Plus, Download, Upload, FileDown } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
@@ -364,27 +365,27 @@ export default function BlueprintManagementPage() {
           ) : (
             <div className="rounded-md border overflow-hidden">
               <Table>
-                <thead className="bg-muted/50">
-                  <tr>
-                    <th className="p-3 text-left font-medium">Request ID</th>
-                    <th className="p-3 text-left font-medium">Template</th>
-                    <th className="p-3 text-left font-medium">New Instance</th>
-                    <th className="p-3 text-left font-medium">Status</th>
-                    <th className="p-3 text-left font-medium">Started</th>
-                    <th className="p-3 text-left font-medium">Completed</th>
-                  </tr>
-                </thead>
-                <tbody>
+                <TableHeader className="bg-muted/50">
+                  <TableRow>
+                    <TableHead>Request ID</TableHead>
+                    <TableHead>Template</TableHead>
+                    <TableHead>New Instance</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead>Started</TableHead>
+                    <TableHead>Completed</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
                   {cloneOperations.map((operation: CloneOperation) => (
-                    <tr key={operation.id} className="border-t">
-                      <td className="p-3 font-mono text-xs">
+                    <TableRow key={operation.id}>
+                      <TableCell className="font-mono text-xs">
                         {operation.requestId.slice(0, 8)}...
-                      </td>
-                      <td className="p-3">
+                      </TableCell>
+                      <TableCell>
                         {operation.metadata?.originalTemplate || `Template #${operation.templateId}`}
-                      </td>
-                      <td className="p-3">{operation.instanceName}</td>
-                      <td className="p-3">
+                      </TableCell>
+                      <TableCell>{operation.instanceName}</TableCell>
+                      <TableCell>
                         <Badge
                           variant={
                             operation.status === 'completed' ? 'default' :
@@ -394,19 +395,19 @@ export default function BlueprintManagementPage() {
                         >
                           {operation.status}
                         </Badge>
-                      </td>
-                      <td className="p-3 text-sm text-muted-foreground">
+                      </TableCell>
+                      <TableCell className="text-sm text-muted-foreground">
                         {new Date(operation.startedAt).toLocaleString()}
-                      </td>
-                      <td className="p-3 text-sm text-muted-foreground">
+                      </TableCell>
+                      <TableCell className="text-sm text-muted-foreground">
                         {operation.completedAt 
                           ? new Date(operation.completedAt).toLocaleString() 
                           : '—'
                         }
-                      </td>
-                    </tr>
+                      </TableCell>
+                    </TableRow>
                   ))}
-                </tbody>
+                </TableBody>
               </Table>
             </div>
           )}
