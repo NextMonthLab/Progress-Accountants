@@ -152,7 +152,7 @@ export default function ConversationInsightsPage() {
         <title>Conversation Insights | Progress Accountants</title>
       </Helmet>
       
-      <div className="container mx-auto py-6">
+      <div className="py-6">
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-3xl font-bold">Conversation Insights</h1>
           <Button onClick={() => refetch()} variant="outline">
