@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/use-auth";
+import { useTenant } from "@/hooks/use-tenant";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
@@ -45,8 +46,12 @@ const companionConfigSchema = z.object({
 export default function CompanionSettingsPage() {
   const { toast } = useToast();
   const { user } = useAuth();
+  const { tenant } = useTenant();
   const queryClient = useQueryClient();
   const [activeTab, setActiveTab] = useState("tone");
+  
+  // Get the tenant ID for API requests
+  const tenantId = tenant?.id || '00000000-0000-0000-0000-000000000000';
   
   // Fetch current companion configuration
   const { 
@@ -54,16 +59,17 @@ export default function CompanionSettingsPage() {
     isLoading, 
     error 
   } = useQuery({
-    queryKey: ["/api/companion-config"],
+    queryKey: ["/api/companion-config", tenantId],
     queryFn: async () => {
-      const res = await apiRequest("GET", "/api/companion-config");
+      const res = await apiRequest("GET", `/api/companion-config?tenantId=${tenantId}`);
       if (!res.ok) {
         const error = await res.json();
         throw new Error(error.error || "Failed to fetch companion configuration");
       }
       return res.json();
     },
-    retry: 1
+    retry: 1,
+    enabled: !!tenantId
   });
   
   // Setup form with react-hook-form
@@ -106,7 +112,7 @@ export default function CompanionSettingsPage() {
   // Mutation for updating the configuration
   const updateMutation = useMutation({
     mutationFn: async (data: z.infer<typeof companionConfigSchema>) => {
-      const res = await apiRequest("PUT", "/api/companion-config", data);
+      const res = await apiRequest("PUT", "/api/companion-config", { ...data, tenantId });
       if (!res.ok) {
         const error = await res.json();
         throw new Error(error.error || "Failed to update companion configuration");
@@ -118,7 +124,7 @@ export default function CompanionSettingsPage() {
         title: "Configuration updated",
         description: "Your companion settings have been saved successfully.",
       });
-      queryClient.invalidateQueries({ queryKey: ["/api/companion-config"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/companion-config", tenantId] });
     },
     onError: (error: Error) => {
       toast({
@@ -256,41 +262,36 @@ export default function CompanionSettingsPage() {
   
   if (isLoading) {
     return (
-      <AdminLayout>
-        <div className="flex items-center justify-center min-h-[500px]">
-          <Loader size="lg" />
-        </div>
-      </AdminLayout>
+      <div className="flex items-center justify-center min-h-[500px]">
+        <Loader size="lg" />
+      </div>
     );
   }
   
   if (error) {
     return (
-      <AdminLayout>
-        <div className="flex flex-col items-center justify-center min-h-[500px]">
-          <h2 className="text-xl font-semibold mb-2">Error Loading Settings</h2>
-          <p className="text-muted-foreground mb-4">{(error as Error).message}</p>
-          <Button onClick={() => queryClient.invalidateQueries({ queryKey: ["/api/companion-config"] })}>
-            <RefreshCw className="mr-2 h-4 w-4" /> Try Again
-          </Button>
-        </div>
-      </AdminLayout>
+      <div className="flex flex-col items-center justify-center min-h-[500px]">
+        <h2 className="text-xl font-semibold mb-2">Error Loading Settings</h2>
+        <p className="text-muted-foreground mb-4">{(error as Error).message}</p>
+        <Button onClick={() => queryClient.invalidateQueries({ queryKey: ["/api/companion-config", tenantId] })}>
+          <RefreshCw className="mr-2 h-4 w-4" /> Try Again
+        </Button>
+      </div>
     );
   }
   
   return (
-    <AdminLayout>
-      <div className="container mx-auto py-6">
-        <div className="flex justify-between items-center mb-6">
-          <div>
-            <h1 className="text-3xl font-bold tracking-tight">Business Companion Persona Settings</h1>
-            <p className="text-muted-foreground mt-2">
-              Customize how your business companion interacts with users, what topics it discusses, and what data it can access.
-            </p>
-          </div>
+    <div className="container mx-auto py-6">
+      <div className="flex justify-between items-center mb-6">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight">Business Companion Persona Settings</h1>
+          <p className="text-muted-foreground mt-2">
+            Customize how your business companion interacts with users, what topics it discusses, and what data it can access.
+          </p>
         </div>
-        
-        <Form {...form}>
+      </div>
+      
+      <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <div className="space-y-6">
               <Tabs value={activeTab} onValueChange={setActiveTab}>
@@ -815,6 +816,5 @@ export default function CompanionSettingsPage() {
           </form>
         </Form>
       </div>
-    </AdminLayout>
   );
 }
