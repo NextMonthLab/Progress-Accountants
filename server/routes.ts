@@ -222,6 +222,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Register support chat endpoints
   registerSupportRoutes(app);
   
+  // Register social media endpoints
+  registerSocialMediaRoutes(app);
+  
   // Register blueprint API endpoints
   registerBlueprintRoutes(app);
   

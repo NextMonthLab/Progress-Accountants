@@ -71,6 +71,7 @@ import MenuManagementPage from "@/pages/admin/MenuManagementPage";
 import DomainMappingPage from "@/pages/DomainMappingPage";
 import SotManagementPage from "@/pages/SotManagementPage";
 import ConversationInsightsPage from "@/pages/ConversationInsightsPage";
+import SocialMediaGeneratorPage from "@/pages/SocialMediaGeneratorPage";
 // Page Builder pages
 import PageBuilderListPage from "@/pages/PageBuilderListPage";
 import PageBuilderPage from "@/pages/PageBuilderPage";
@@ -80,7 +81,6 @@ import CreateCalculatorWizard from "@/pages/tools/wizards/CreateCalculatorWizard
 import CreateDashboardWizard from "@/pages/tools/wizards/CreateDashboardWizard";
 import CreateEmbedWizard from "@/pages/tools/wizards/CreateEmbedWizard";
 // Import tool pages
-import SocialMediaGeneratorPage from "@/pages/tools/social-media-generator";
 import { DocumentHead } from "@/components/DocumentHead";
 import MainLayout from "@/layouts/MainLayout";
 import { ClientDataProvider, withAuth } from "@/components/ClientDataProvider";
