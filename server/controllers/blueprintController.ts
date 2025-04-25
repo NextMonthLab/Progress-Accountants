@@ -164,7 +164,7 @@ export function registerBlueprintRoutes(app: Express): void {
         tenantId: template.tenantId,
         isTenantAgnostic: makeTenantAgnostic,
         blueprintData,
-        exportedBy: user.email || user.name || 'unknown',
+        exportedBy: 'admin',
         validationStatus: 'validated'
       }).returning();
       
@@ -308,6 +308,17 @@ export function registerBlueprintRoutes(app: Express): void {
     } catch (error) {
       console.error('Error cloning template:', error);
       return res.status(500).json({ error: 'Failed to clone template' });
+    }
+  });
+
+  // Get all clone operations
+  app.get('/api/blueprint/clone-operations', async (req: Request, res: Response) => {
+    try {
+      const operations = await db.select().from(cloneOperations);
+      return res.status(200).json(operations);
+    } catch (error) {
+      console.error('Error fetching clone operations:', error);
+      return res.status(500).json({ error: 'Failed to fetch clone operations' });
     }
   });
 
