@@ -6,7 +6,6 @@ import SEOFooterSection from "@/components/SEOFooterSection";
 import ContactForm from "@/components/ContactForm";
 import { useEffect } from "react";
 import { Link } from "wouter";
-import podcastStudioImg from "@assets/images/podcast_studio.jpg";
 
 export default function HomePage() {
   // Adding smooth scroll behavior for anchor links
@@ -54,7 +53,7 @@ export default function HomePage() {
           <div className="flex flex-col md:flex-row items-center gap-8">
             <div className="md:w-1/2">
               <img 
-                src="/assets/podcast_studio.jpg" 
+                src="/assets/studio.jpg" 
                 alt="Progress Podcast & Video Studio" 
                 className="rounded-lg shadow-xl"
               />
@@ -81,15 +80,11 @@ export default function HomePage() {
                 </li>
               </ul>
               <div className="flex flex-wrap gap-4">
-                <Link href="/studio-banbury">
-                  <a className="inline-block px-6 py-3 bg-[var(--orange)] text-white rounded-md hover:bg-[var(--orange)]/90 transition">
-                    View Studio Details
-                  </a>
+                <Link href="/studio-banbury" className="inline-block px-6 py-3 bg-[var(--orange)] text-white rounded-md hover:bg-[var(--orange)]/90 transition">
+                  View Studio Details
                 </Link>
-                <Link href="/studio-banbury#booking-form">
-                  <a className="inline-block px-6 py-3 bg-white text-[var(--navy)] rounded-md hover:bg-gray-100 transition">
-                    Book Studio Time
-                  </a>
+                <Link href="/studio-banbury#booking-form" className="inline-block px-6 py-3 bg-white text-[var(--navy)] rounded-md hover:bg-gray-100 transition">
+                  Book Studio Time
                 </Link>
               </div>
             </div>
