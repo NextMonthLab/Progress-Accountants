@@ -27,8 +27,15 @@ export default function MainLayout({ children }: MainLayoutProps) {
     location === '/media' ||
     location === '/launch-ready';
   
-  // Use AdminLayout for admin routes
-  if (isAdminRoute) {
+  // Special handling for routes that might have AdminLayout already applied
+  // Certain routes are handled directly with their own layout
+  const hasOwnLayout = 
+    location === '/admin/conversation-insights' || 
+    location === '/admin/insights-dashboard' || 
+    location === '/admin/insight-users';
+    
+  // Use AdminLayout for admin routes, except those with their own layout
+  if (isAdminRoute && !hasOwnLayout) {
     return <AdminLayout>{children}</AdminLayout>;
   }
   
