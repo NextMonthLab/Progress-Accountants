@@ -312,6 +312,47 @@ export const insertCompanionConfigSchema = createInsertSchema(companionConfig).o
   updatedAt: true,
 });
 
+// Conversation Insights table
+export const conversationInsights = pgTable("conversation_insights", {
+  id: serial("id").primaryKey(),
+  conversationId: varchar("conversation_id", { length: 64 }).notNull(),
+  tenantId: uuid("tenant_id").references(() => tenants.id),
+  userMessage: text("user_message").notNull(),
+  agentResponse: text("agent_response").notNull(),
+  mode: varchar("mode", { length: 20 }).notNull(), // 'public' or 'admin'
+  intent: text("intent"), // GPT-analyzed intent
+  sentiment: varchar("sentiment", { length: 20 }), // positive, negative, neutral
+  leadPotential: boolean("lead_potential").default(false),
+  confusionDetected: boolean("confusion_detected").default(false),
+  tags: jsonb("tags"), // Array of auto-generated topic tags
+  analysisNotes: text("analysis_notes"), // GPT-generated insights
+  metadata: jsonb("metadata"), // Additional context (page, user-agent, etc.)
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export const insertConversationInsightSchema = createInsertSchema(conversationInsights).omit({
+  id: true,
+  createdAt: true,
+});
+
+// Table for agent conversations (storing full conversation history)
+export const agentConversations = pgTable("agent_conversations", {
+  id: serial("id").primaryKey(),
+  conversationId: varchar("conversation_id", { length: 64 }).notNull().unique(),
+  tenantId: uuid("tenant_id").references(() => tenants.id),
+  messages: jsonb("messages").notNull(), // Array of message objects with role, content
+  mode: varchar("mode", { length: 20 }).notNull(), // 'public' or 'admin'
+  metadata: jsonb("metadata"), // Additional context (clientId, page, etc.)
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export const insertAgentConversationSchema = createInsertSchema(agentConversations).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
 // Define relationships for companion config
 export const companionConfigRelations = relations(companionConfig, ({ one }) => ({
   tenant: one(tenants, {

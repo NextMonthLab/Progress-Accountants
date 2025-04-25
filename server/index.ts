@@ -8,9 +8,11 @@ import { migrateVersionControlTables } from './db-migrate-version-control';
 import migrateNavigationTables from './db-migrate-navigation';
 import { migrateDomainMappingsTables } from './db-migrate-domain-mappings';
 import { migrateSotTables } from './db-migrate-sot';
+import { migrateAgentTables } from './db-migrate-agent';
 import { registerNavigationRoutes } from './controllers/navigationController';
 import { registerDomainMappingRoutes } from './controllers/domainMappingController';
 import { registerSotRoutes } from './controllers/sotController';
+import { registerAgentRoutes } from './controllers/agentController';
 
 const app = express();
 app.use(express.json());
@@ -59,6 +61,8 @@ app.use((req, res, next) => {
     await migrateDomainMappingsTables();
     console.log('Running SOT migrations...');
     await migrateSotTables();
+    console.log('Running Progress Agent migrations...');
+    await migrateAgentTables();
   } catch (error) {
     console.error('Error running migrations:', error);
   }
@@ -74,6 +78,9 @@ app.use((req, res, next) => {
   
   // Register SOT routes
   registerSotRoutes(app);
+  
+  // Register Progress Agent routes
+  registerAgentRoutes(app);
 
   app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
     const status = err.status || err.statusCode || 500;
