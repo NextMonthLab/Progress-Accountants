@@ -18,12 +18,8 @@ export function registerCrmRoutes(app: Express) {
         return res.status(401).json({ error: 'Not authenticated' });
       }
       
-      // Get tenant ID from user or query parameter
-      const tenantId = req.user.tenantId || req.query.tenantId as string;
-      
-      if (!tenantId) {
-        return res.status(400).json({ error: 'Tenant ID is required' });
-      }
+      // Get tenant ID - use default if not available
+      const tenantId = req.user.tenantId || '00000000-0000-0000-0000-000000000000';
       
       const contacts = await db.select().from(crmContacts)
         .where(eq(crmContacts.tenantId, tenantId));
@@ -43,11 +39,8 @@ export function registerCrmRoutes(app: Express) {
       }
       
       const { id } = req.params;
-      const tenantId = req.user.tenantId;
-      
-      if (!tenantId) {
-        return res.status(400).json({ error: 'Tenant ID is required' });
-      }
+      // Get tenant ID - use default if not available
+      const tenantId = req.user.tenantId || '00000000-0000-0000-0000-000000000000';
       
       const [contact] = await db.select().from(crmContacts)
         .where(and(
@@ -73,11 +66,8 @@ export function registerCrmRoutes(app: Express) {
         return res.status(401).json({ error: 'Not authenticated' });
       }
       
-      const tenantId = req.user.tenantId;
-      
-      if (!tenantId) {
-        return res.status(400).json({ error: 'Tenant ID is required' });
-      }
+      // Get tenant ID - use default if not available
+      const tenantId = req.user.tenantId || '00000000-0000-0000-0000-000000000000';
       
       // Parse and validate request body
       const contactData = insertCrmContactSchema.parse({
@@ -109,11 +99,8 @@ export function registerCrmRoutes(app: Express) {
       }
       
       const { id } = req.params;
-      const tenantId = req.user.tenantId;
-      
-      if (!tenantId) {
-        return res.status(400).json({ error: 'Tenant ID is required' });
-      }
+      // Get tenant ID - use default if not available
+      const tenantId = req.user.tenantId || '00000000-0000-0000-0000-000000000000';
       
       // Check if the contact exists
       const [existingContact] = await db.select().from(crmContacts)
@@ -158,11 +145,8 @@ export function registerCrmRoutes(app: Express) {
       }
       
       const { id } = req.params;
-      const tenantId = req.user.tenantId;
-      
-      if (!tenantId) {
-        return res.status(400).json({ error: 'Tenant ID is required' });
-      }
+      // Get tenant ID - use default if not available
+      const tenantId = req.user.tenantId || '00000000-0000-0000-0000-000000000000';
       
       // Check if the contact exists
       const [existingContact] = await db.select().from(crmContacts)

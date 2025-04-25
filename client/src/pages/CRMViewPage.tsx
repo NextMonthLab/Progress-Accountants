@@ -74,17 +74,27 @@ export default function CRMViewPage() {
   } = useQuery<Contact[]>({
     queryKey: ['/api/crm/contacts'],
     queryFn: async () => {
-      const res = await apiRequest('GET', '/api/crm/contacts');
-      const data = await res.json();
-      return data.data;
+      try {
+        const res = await apiRequest('GET', '/api/crm/contacts');
+        const data = await res.json();
+        return data.data || [];
+      } catch (err) {
+        console.error('Error fetching contacts:', err);
+        throw new Error('Failed to fetch contacts');
+      }
     },
   });
 
   // Mutation to add a new contact
   const addContactMutation = useMutation({
     mutationFn: async (contact: ContactFormData) => {
-      const res = await apiRequest('POST', '/api/crm/contacts', contact);
-      return res.json();
+      try {
+        const res = await apiRequest('POST', '/api/crm/contacts', contact);
+        return await res.json();
+      } catch (err) {
+        console.error('Error adding contact:', err);
+        throw new Error('Failed to add contact');
+      }
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/crm/contacts'] });
@@ -107,8 +117,13 @@ export default function CRMViewPage() {
   // Mutation to update a contact
   const updateContactMutation = useMutation({
     mutationFn: async ({ id, contact }: { id: number; contact: ContactFormData }) => {
-      const res = await apiRequest('PUT', `/api/crm/contacts/${id}`, contact);
-      return res.json();
+      try {
+        const res = await apiRequest('PUT', `/api/crm/contacts/${id}`, contact);
+        return await res.json();
+      } catch (err) {
+        console.error('Error updating contact:', err);
+        throw new Error('Failed to update contact');
+      }
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/crm/contacts'] });
@@ -131,8 +146,13 @@ export default function CRMViewPage() {
   // Mutation to delete a contact
   const deleteContactMutation = useMutation({
     mutationFn: async (id: number) => {
-      const res = await apiRequest('DELETE', `/api/crm/contacts/${id}`);
-      return res.json();
+      try {
+        const res = await apiRequest('DELETE', `/api/crm/contacts/${id}`);
+        return await res.json();
+      } catch (err) {
+        console.error('Error deleting contact:', err);
+        throw new Error('Failed to delete contact');
+      }
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/crm/contacts'] });
