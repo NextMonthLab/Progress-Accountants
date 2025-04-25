@@ -31,6 +31,7 @@ import { registerOpenAIRoutes } from "./controllers/openai/registerOpenAIRoutes"
 import { registerVersionControlRoutes } from "./controllers/registerVersionControlRoutes";
 import { registerAiDesignRoutes } from "./controllers/registerAiDesignRoutes";
 import { registerEnhancedSeoRoutes } from "./controllers/registerEnhancedSeoRoutes";
+import { registerBusinessNetworkRoutes } from "./controllers/registerBusinessNetworkRoutes";
 import { 
   getAllResources, 
   getPublicResources, 
@@ -343,6 +344,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
   
   // Register enhanced SEO routes
   registerEnhancedSeoRoutes(app);
+  
+  // Register business network routes
+  registerBusinessNetworkRoutes(app);
   
   // ============= NEXTMONTH MARKETPLACE API ENDPOINTS =============
   // Get available tools from NextMonth marketplace
