@@ -253,7 +253,7 @@ export default function StudioPage() {
                 case 4: imageUrl = "https://res.cloudinary.com/drl0fxrkq/image/upload/v1744815129/P1012279-Enhanced-NR_dgdlta.jpg"; break;
                 case 5: imageUrl = "https://res.cloudinary.com/drl0fxrkq/image/upload/v1744815126/P1012291-Enhanced-NR_czsge9.jpg"; break;
                 case 6: imageUrl = "https://res.cloudinary.com/drl0fxrkq/image/upload/v1744815128/P1012283_lxsygy.jpg"; break;
-                case 7: imageUrl = studioImages.technician; break;
+                case 7: imageUrl = "https://res.cloudinary.com/drl0fxrkq/image/upload/v1744815132/P1012286-Enhanced-NR_wfndjg.jpg"; break;
                 case 8: imageUrl = studioImages.edit_desk; break;
                 default: imageUrl = studioImages.camera_setup;
               }
