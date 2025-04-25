@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "wouter";
 
 interface ProgressBannerProps {
   className?: string;
@@ -10,9 +11,15 @@ interface ProgressBannerProps {
 export function ProgressBanner({ className = "" }: ProgressBannerProps) {
   return (
     <div className={`bg-primary/10 p-3 text-center rounded-md ${className}`}>
-      <p className="text-sm font-medium text-primary">
-        Expert financial guidance for modern businesses
-      </p>
+      <div className="flex flex-col sm:flex-row justify-center items-center gap-2">
+        <p className="text-sm font-medium text-primary">
+          Expert financial guidance for modern businesses
+        </p>
+        <span className="hidden sm:inline text-primary">•</span>
+        <Link href="/studio-banbury" className="text-sm font-medium text-[var(--orange)] hover:underline cursor-pointer">
+          🎙️ Visit our Professional Podcast & Video Studio
+        </Link>
+      </div>
     </div>
   );
 }

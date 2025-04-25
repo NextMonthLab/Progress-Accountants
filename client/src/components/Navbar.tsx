@@ -108,8 +108,14 @@ export default function Navbar() {
       items: [
         { label: "About Us", href: "/about", icon: <BookOpen className="h-4 w-4 mr-2" /> },
         { label: "Our Team", href: "/team", icon: <Users className="h-4 w-4 mr-2" /> },
-        { label: "Studio", href: "/studio-banbury", icon: <Layout className="h-4 w-4 mr-2" /> },
         { label: "Contact", href: "/contact", icon: <Phone className="h-4 w-4 mr-2" /> },
+      ]
+    },
+    {
+      label: "Podcast Studio",
+      items: [
+        { label: "Studio Facilities", href: "/studio-banbury", icon: <Layout className="h-4 w-4 mr-2" /> },
+        { label: "Book Studio Time", href: "/studio-banbury#booking-form", icon: <Layout className="h-4 w-4 mr-2" /> },
       ]
     }
   ];
