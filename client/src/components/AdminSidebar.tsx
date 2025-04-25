@@ -193,6 +193,14 @@ export default function AdminSidebar() {
           badge: { text: "New", variant: "new" },
           isNew: true
         },
+        { 
+          title: "Insights Dashboard", 
+          href: "/admin/insights-dashboard", 
+          icon: <TrendingUp className="h-5 w-5" />,
+          requiresStaff: true,
+          badge: { text: "New", variant: "new" },
+          isNew: true
+        },
       ]
     },
     {
