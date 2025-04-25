@@ -239,6 +239,13 @@ export default function StudioPage() {
             >
               What's included in every session
             </h3>
+            <div className="max-w-lg mx-auto mb-8">
+              <img 
+                src="https://res.cloudinary.com/drl0fxrkq/image/upload/v1744815129/P1012279-Enhanced-NR_dgdlta.jpg" 
+                alt="Professional Studio Equipment" 
+                className="rounded-lg shadow-xl mx-auto"
+              />
+            </div>
           </div>
           
           <div className="grid md:grid-cols-3 gap-6">
