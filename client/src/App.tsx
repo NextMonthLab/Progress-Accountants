@@ -72,6 +72,7 @@ import DomainMappingPage from "@/pages/DomainMappingPage";
 import SotManagementPage from "@/pages/SotManagementPage";
 import ConversationInsightsPage from "@/pages/ConversationInsightsPage";
 import SocialMediaGeneratorPage from "@/pages/SocialMediaGeneratorPage";
+import ContentStudioPage from "@/pages/ContentStudioPage";
 // Page Builder pages
 import PageBuilderListPage from "@/pages/PageBuilderListPage";
 import PageBuilderPage from "@/pages/PageBuilderPage";
@@ -227,6 +228,11 @@ function Router() {
       <ProtectedRoute 
         path="/tools/social-media-generator" 
         component={SocialMediaGeneratorPage} 
+        allowedRoles={['admin', 'super_admin', 'editor']} 
+      />
+      <ProtectedRoute 
+        path="/content-studio" 
+        component={ContentStudioPage} 
         allowedRoles={['admin', 'super_admin', 'editor']} 
       />
       <ProtectedRoute path="/marketplace" component={EnhancedMarketplacePage} />
