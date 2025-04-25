@@ -674,6 +674,17 @@ const PageBuilderContent: React.FC = () => {
                   isLocked={page.isLocked}
                 />
                 
+                {/* Enhanced SEO Analysis */}
+                <div className="border rounded-lg overflow-hidden bg-white">
+                  <div className="p-4 bg-slate-50 border-b">
+                    <h3 className="text-lg font-medium">Enhanced SEO Analysis</h3>
+                    <p className="text-sm text-muted-foreground">Comprehensive SEO analysis with keyword density, mobile-friendliness, and competitor insights</p>
+                  </div>
+                  {page.id && (
+                    <EnhancedSeoAnalysis pageId={page.id} />
+                  )}
+                </div>
+                
                 {/* SEO Analysis Section */}
                 <div className="mt-6 border rounded-lg">
                   <h3 className="text-lg font-medium p-4 border-b">SEO Analysis</h3>
