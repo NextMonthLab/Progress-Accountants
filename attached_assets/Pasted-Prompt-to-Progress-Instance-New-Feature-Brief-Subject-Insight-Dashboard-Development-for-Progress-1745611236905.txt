@@ -1,0 +1,70 @@
+Prompt to Progress Instance – New Feature Brief
+
+Subject: Insight Dashboard Development for Progress Client Site
+
+⸻
+
+Context:
+The Progress client site already has a working lightweight Insights Gathering App.
+The next step is to develop a full Insights Dashboard to support deeper engagement, tracking, and gamification of user insights.
+
+⸻
+
+Feature Requirements:
+
+1. User Management:
+	•	Admins must be able to set up and manage users who have access to the Insights App.
+	•	Each user should have:
+	•	A display name
+	•	Role/position (optional field)
+	•	Active/inactive status toggle
+
+2. Insight Submission Tracking:
+	•	The system must record who submits each insight (linked to user profile).
+	•	It must timestamp each insight submission (date and time).
+
+3. Gamification Features:
+	•	The system must automatically track and display leaderboards showing:
+	•	Top insight contributors on a daily, weekly, and monthly rolling basis.
+	•	Leaderboards should:
+	•	Show user name
+	•	Number of insights submitted
+	•	Optional: A small “trophy” icon or visual badge for the top contributor of each period.
+
+4. AI Interpretation Layer (Phase 1):
+	•	The dashboard should include an AI-generated summary each week and month:
+	•	Identify common themes emerging from the insights submitted.
+	•	Highlight most valuable or insightful submissions based on patterns like originality, frequency of certain keywords, or emotional weight.
+	•	Summaries should be short, readable, and client-friendly (like a mini executive report).
+
+⸻
+
+Additional Notes:
+	•	The daily/weekly/monthly tracking must be rolling — i.e., always showing the latest full 24 hours, 7 days, or 30 days, not static calendar weeks or months.
+	•	We are open to simple, clean visual elements (e.g., small bar charts or badges) but must keep the dashboard lightweight and easy to navigate.
+	•	AI summaries should have a human-readable tone (friendly but professional), not a raw machine output.
+	•	Future phases may expand to rewards or recognition features based on leaderboards, but that is not required for Phase 1.
+
+⸻
+
+Deliverables for this Phase:
+	•	User access control for Insights App
+	•	Insight tracking per user
+	•	Daily, weekly, monthly leaderboards
+	•	Weekly and monthly AI theme/summary generation
+	•	Clean, lightweight Insights Dashboard UI
+
+⸻
+
+Success Criteria:
+	•	Admin can add/edit users easily.
+	•	Insight submission attribution is fully accurate.
+	•	Leaderboards update automatically.
+	•	AI summaries are relevant, readable, and refreshing weekly/monthly without manual intervention.
+
+⸻
+
+Tone and UX Reminder:
+	•	Dashboard should feel motivating, rewarding, and easy to use.
+	•	No unnecessary complexity — fast, visual, clear.
+	•	Think “Progress is a place where insights matter, and people feel good contributing.”
