@@ -68,7 +68,7 @@ const SocialMediaPostGenerator: React.FC = () => {
   const { user } = useAuth();
   const { can } = usePermissions();
   const { toast } = useToast();
-  const { data: businessIdentity, isLoading: isLoadingBusinessIdentity } = useBusinessIdentity();
+  const { businessIdentity, isLoading: isLoadingBusinessIdentity } = useBusinessIdentity();
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatedCaption, setGeneratedCaption] = useState<string>("");
   const [generatedImageUrl, setGeneratedImageUrl] = useState<string>("");
@@ -296,7 +296,7 @@ const SocialMediaPostGenerator: React.FC = () => {
   };
   
   // Share to social media
-  const getPlatformShareUrl = (platform: string, caption: string, imageUrl: string | null) => {
+  const getPlatformShareUrl = (platform: string, caption: string, imageUrl: string | null | undefined) => {
     const encodedText = encodeURIComponent(caption);
     switch (platform) {
       case "linkedin":
@@ -326,6 +326,49 @@ const SocialMediaPostGenerator: React.FC = () => {
 
   return (
     <div className="w-full max-w-5xl mx-auto">
+      {/* Session warning notice */}
+      <Alert className="mb-4 bg-amber-50 border-amber-200">
+        <AlertCircle className="h-4 w-4 text-amber-600" />
+        <AlertTitle className="text-amber-800">Session-based Tool</AlertTitle>
+        <AlertDescription className="text-amber-700">
+          This tool is for quick content creation only. All generated posts are stored in your browser session and will be lost when you log out or refresh the page.
+        </AlertDescription>
+      </Alert>
+      
+      {/* Marketplace redirect for long-term planning */}
+      <Alert variant="default" className="mb-4">
+        <InfoIcon className="h-4 w-4" />
+        <AlertTitle>Need content calendar planning?</AlertTitle>
+        <AlertDescription className="flex justify-between items-center">
+          <span>Looking for long-term storage and scheduling? Check out our full Social Media Marketing Suite.</span>
+          <Button variant="outline" size="sm" asChild>
+            <Link to="/marketplace/social-media-suite" className="flex items-center gap-2">
+              <ExternalLink className="h-4 w-4" />
+              <span>Marketplace</span>
+            </Link>
+          </Button>
+        </AlertDescription>
+      </Alert>
+      
+      {/* Business Identity connection notice */}
+      {showIdentityNotice && (
+        <Alert variant="default" className="mb-4 bg-blue-50 text-blue-700 border-blue-200">
+          <InfoIcon className="h-4 w-4" />
+          <AlertTitle>Using Business Identity Settings</AlertTitle>
+          <AlertDescription className="flex justify-between items-center">
+            <span>This tool is connected to your Business Identity settings to maintain consistent brand voice across generated content.</span>
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              onClick={() => setShowIdentityNotice(false)}
+              className="text-blue-700 hover:text-blue-900"
+            >
+              Dismiss
+            </Button>
+          </AlertDescription>
+        </Alert>
+      )}
+      
       <Card className="mb-8">
         <CardHeader>
           <CardTitle className="text-2xl">Universal Social Media Post Generator</CardTitle>
