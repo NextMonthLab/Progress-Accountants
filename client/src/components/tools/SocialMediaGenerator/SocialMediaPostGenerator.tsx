@@ -72,7 +72,7 @@ const SocialMediaPostGenerator: React.FC = () => {
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatedCaption, setGeneratedCaption] = useState<string>("");
   const [generatedImageUrl, setGeneratedImageUrl] = useState<string>("");
-  const [uploadedImage, setUploadedImage] = useState<string | null>(null);
+  const [uploadedImage, setUploadedImage] = useState<string | null | undefined>(null);
   const [selectedTab, setSelectedTab] = useState<string>("upload");
   const [showIdentityNotice, setShowIdentityNotice] = useState(true);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -296,7 +296,7 @@ const SocialMediaPostGenerator: React.FC = () => {
   };
   
   // Share to social media
-  const getPlatformShareUrl = (platform: string, caption: string, imageUrl: string | null | undefined) => {
+  const getPlatformShareUrl = (platform: string, caption: string, imageUrl?: string | null) => {
     const encodedText = encodeURIComponent(caption);
     switch (platform) {
       case "linkedin":
@@ -611,7 +611,7 @@ const SocialMediaPostGenerator: React.FC = () => {
                 <h3 className="text-lg font-medium mb-2">Image</h3>
                 <div className="bg-muted rounded-md p-4 flex justify-center">
                   <img
-                    src={generatedImageUrl || uploadedImage}
+                    src={generatedImageUrl || uploadedImage || ''}
                     alt="Post"
                     className="max-h-80 object-contain rounded"
                   />
@@ -646,7 +646,7 @@ const SocialMediaPostGenerator: React.FC = () => {
                 <div className="grid gap-4">
                   <div className="grid grid-cols-2 gap-2">
                     <a 
-                      href={getPlatformShareUrl("linkedin", generatedCaption, generatedImageUrl || uploadedImage || null)} 
+                      href={getPlatformShareUrl("linkedin", generatedCaption, generatedImageUrl || uploadedImage)} 
                       target="_blank" 
                       rel="noopener noreferrer"
                       className="flex items-center justify-center rounded-md border border-input p-2 hover:bg-accent"
@@ -656,7 +656,7 @@ const SocialMediaPostGenerator: React.FC = () => {
                       </Button>
                     </a>
                     <a 
-                      href={getPlatformShareUrl("facebook", generatedCaption, generatedImageUrl || uploadedImage || null)} 
+                      href={getPlatformShareUrl("facebook", generatedCaption, generatedImageUrl || uploadedImage)} 
                       target="_blank" 
                       rel="noopener noreferrer"
                       className="flex items-center justify-center rounded-md border border-input p-2 hover:bg-accent"
@@ -666,7 +666,7 @@ const SocialMediaPostGenerator: React.FC = () => {
                       </Button>
                     </a>
                     <a 
-                      href={getPlatformShareUrl("twitter", generatedCaption, generatedImageUrl || uploadedImage || null)} 
+                      href={getPlatformShareUrl("twitter", generatedCaption, generatedImageUrl || uploadedImage)} 
                       target="_blank" 
                       rel="noopener noreferrer"
                       className="flex items-center justify-center rounded-md border border-input p-2 hover:bg-accent"
