@@ -62,6 +62,7 @@ import SEOConfigManagerPage from "@/pages/SEOConfigManagerPage";
 import BrandManagerPage from "@/pages/BrandManagerPage";
 import CompanionSettingsPage from "@/pages/admin/companion-settings";
 import BlueprintManagerPage from "@/pages/BlueprintManagerPage";
+import BlueprintManagementPage from "@/pages/BlueprintManagementPage";
 import MediaManagementPage from "@/pages/MediaManagementPage";
 import NewClientOnboarding from "@/pages/NewClientOnboarding";
 import CreateNewPagePage from "@/pages/CreateNewPagePage";

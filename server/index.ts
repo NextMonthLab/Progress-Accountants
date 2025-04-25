@@ -18,6 +18,7 @@ import { registerAgentRoutes } from './controllers/agentController';
 import { registerSocialMediaRoutes } from './controllers/registerSocialMediaRoutes';
 import { registerAdvancedSeoRoutes } from './controllers/registerAdvancedSeoRoutes';
 import { registerInsightsRoutes } from './controllers/registerInsightsRoutes';
+import { registerBlueprintRoutes } from './controllers/blueprintController';
 import { initScheduler } from './scheduler';
 
 const app = express();
@@ -100,6 +101,9 @@ app.use((req, res, next) => {
   
   // Register Insights Dashboard routes
   registerInsightsRoutes(app);
+  
+  // Register Blueprint routes
+  registerBlueprintRoutes(app);
 
   app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
     const status = err.status || err.statusCode || 500;
