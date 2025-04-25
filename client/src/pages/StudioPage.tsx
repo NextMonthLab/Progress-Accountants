@@ -22,7 +22,6 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Checkbox } from "@/components/ui/checkbox";
-import { ImagePlaceholder } from '../assets/imagePlaceholders';
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -38,6 +37,7 @@ import { cn } from "@/lib/utils";
 
 // Import images
 import podcastStudioImage from "../assets/images/podcast_studio.jpg";
+import studioImages from "../assets/images/studio_features";
 
 // Form schema for the booking form
 const formSchema = z.object({
@@ -242,31 +242,48 @@ export default function StudioPage() {
           </div>
           
           <div className="grid md:grid-cols-3 gap-6">
-            {studioFeatures.map((feature, index) => (
-              <Card 
-                key={index} 
-                className="hover-scale transition duration-300 shadow-md overflow-hidden"
-              >
-                <div className="h-48 overflow-hidden">
-                  <ImagePlaceholder 
-                    height="100%" 
-                    text={feature.title}
-                    bgColor={index % 2 === 0 ? '#1a365d' : '#f27030'}
-                  />
-                </div>
-                <CardContent className="p-6">
-                  <h4 
-                    className="font-poppins font-semibold text-lg mb-2"
-                    style={{ color: 'var(--navy)' }}
-                  >
-                    {feature.title}
-                  </h4>
-                  <p style={{ color: 'var(--dark-grey)' }}>
-                    {feature.description}
-                  </p>
-                </CardContent>
-              </Card>
-            ))}
+            {studioFeatures.map((feature, index) => {
+              // Map feature image name to Cloudinary image URL
+              let imageUrl;
+              switch(index) {
+                case 0: imageUrl = studioImages.camera_setup; break;
+                case 1: imageUrl = studioImages.podcast_mics; break;
+                case 2: imageUrl = studioImages.camera_preview; break;
+                case 3: imageUrl = studioImages.presentation_tv; break;
+                case 4: imageUrl = studioImages.interview_setup; break;
+                case 5: imageUrl = studioImages.lighting_rig; break;
+                case 6: imageUrl = studioImages.acoustic_panels; break;
+                case 7: imageUrl = studioImages.technician; break;
+                case 8: imageUrl = studioImages.edit_desk; break;
+                default: imageUrl = studioImages.camera_setup;
+              }
+              
+              return (
+                <Card 
+                  key={index} 
+                  className="hover-scale transition duration-300 shadow-md overflow-hidden"
+                >
+                  <div className="h-48 overflow-hidden">
+                    <img 
+                      src={imageUrl} 
+                      alt={feature.title}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <CardContent className="p-6">
+                    <h4 
+                      className="font-poppins font-semibold text-lg mb-2"
+                      style={{ color: 'var(--navy)' }}
+                    >
+                      {feature.title}
+                    </h4>
+                    <p style={{ color: 'var(--dark-grey)' }}>
+                      {feature.description}
+                    </p>
+                  </CardContent>
+                </Card>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -282,10 +299,11 @@ export default function StudioPage() {
           <div className="flex flex-col md:flex-row items-center gap-10">
             <div className="md:w-1/2">
               <div className="rounded-lg overflow-hidden shadow-lg">
-                <ImagePlaceholder 
-                  height="350px" 
-                  text="Studio Location Map" 
-                  bgColor="#f27030"
+                <img 
+                  src={studioImages.location_map}
+                  alt="Studio Location Map"
+                  className="w-full h-auto object-cover"
+                  style={{ maxHeight: "350px" }}
                 />
               </div>
             </div>
