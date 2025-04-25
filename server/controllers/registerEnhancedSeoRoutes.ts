@@ -1,26 +1,43 @@
-import { Express } from "express";
-import * as enhancedSeoController from "./enhancedSeoController";
+import { Express } from 'express';
+import {
+  getSeoScore,
+  getSeoRecommendations,
+  generateSeoRecommendations,
+  applyRecommendation,
+  dismissRecommendation,
+  analyzeKeywordDensity,
+  analyzeCompetitors,
+  getCompetitorContentRecommendations,
+  analyzeMobileFriendliness,
+  getPageSeoSummary
+} from './enhancedSeoController';
 
 /**
  * Register enhanced SEO analysis routes
  * @param app Express application
  */
 export function registerEnhancedSeoRoutes(app: Express): void {
-  // Original SEO routes (compatibility)
-  app.get("/api/page-builder/pages/:pageId/seo-score", enhancedSeoController.getSeoScore);
-  app.get("/api/page-builder/pages/:pageId/recommendations", enhancedSeoController.getSeoRecommendations);
-  app.post("/api/page-builder/pages/:pageId/recommendations", enhancedSeoController.generateSeoRecommendations);
-  app.post("/api/page-builder/recommendations/:recommendationId/apply", enhancedSeoController.applyRecommendation);
-  app.post("/api/page-builder/recommendations/:recommendationId/dismiss", enhancedSeoController.dismissRecommendation);
-  
-  // New enhanced SEO routes
-  app.get("/api/enhanced-seo/pages/:pageId/keyword-analysis", enhancedSeoController.analyzeKeywordDensity);
-  app.post("/api/enhanced-seo/competitor-analysis", enhancedSeoController.analyzeCompetitors);
-  app.post("/api/enhanced-seo/pages/:pageId/competitor-content", enhancedSeoController.getCompetitorContentRecommendations);
-  app.get("/api/enhanced-seo/pages/:pageId/mobile-friendliness", enhancedSeoController.analyzeMobileFriendliness);
-  
-  // Comprehensive SEO summary endpoint - combines all analyses in one call
-  app.get("/api/enhanced-seo/pages/:pageId/summary", enhancedSeoController.getPageSeoSummary);
-  
-  console.log("✅ Enhanced SEO routes registered");
+  // Page SEO summary (combines all analyses)
+  app.get('/api/enhanced-seo/pages/:pageId/summary', getPageSeoSummary);
+
+  // SEO scores
+  app.get('/api/enhanced-seo/pages/:pageId/score', getSeoScore);
+
+  // Recommendations
+  app.get('/api/enhanced-seo/pages/:pageId/recommendations', getSeoRecommendations);
+  app.post('/api/enhanced-seo/pages/:pageId/recommendations/generate', generateSeoRecommendations);
+  app.post('/api/enhanced-seo/recommendations/:recommendationId/apply', applyRecommendation);
+  app.post('/api/enhanced-seo/recommendations/:recommendationId/dismiss', dismissRecommendation);
+
+  // Keyword analysis
+  app.get('/api/enhanced-seo/pages/:pageId/keyword-density', analyzeKeywordDensity);
+
+  // Mobile-friendliness
+  app.get('/api/enhanced-seo/pages/:pageId/mobile-friendliness', analyzeMobileFriendliness);
+
+  // Competitor analysis
+  app.post('/api/enhanced-seo/competitor-analysis', analyzeCompetitors);
+  app.post('/api/enhanced-seo/competitor-content-recommendations', getCompetitorContentRecommendations);
+
+  console.log('✅ Enhanced SEO routes registered');
 }

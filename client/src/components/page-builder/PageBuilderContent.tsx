@@ -15,6 +15,7 @@ import PageBuilderSections from "./PageBuilderSections";
 import PageBuilderComponentPanel from "./PageBuilderComponentPanel";
 import PageBuilderSeoPanel from "./PageBuilderSeoPanel";
 import PageBuilderSeoAnalysis from "./PageBuilderSeoAnalysis";
+import { EnhancedSeoAnalysis } from "./EnhancedSeoAnalysis";
 import PageBuilderPreview from "./PageBuilderPreview";
 import PageBuilderTemplateGallery from "./PageBuilderTemplateGallery";
 import { PageVersionHistory } from "./PageVersionHistory";
