@@ -262,50 +262,49 @@ export default function CRMViewPage() {
   };
 
   return (
-    <AdminLayout>
-      <div className="container mx-auto p-6">
-        <div className="flex justify-between items-center mb-6">
-          <div>
-            <h1 className="text-3xl font-bold">Starter CRM</h1>
-            <p className="text-muted-foreground">
-              Manage your contacts with this lightweight CRM tool
-            </p>
-          </div>
-          <Button 
-            onClick={() => {
-              resetForm();
-              setIsAddDialogOpen(true);
-            }}
-            className="flex items-center gap-2"
-          >
-            <PlusCircle className="h-4 w-4" />
-            Add Contact
-          </Button>
+    <div className="container mx-auto p-6">
+      <div className="flex justify-between items-center mb-6">
+        <div>
+          <h1 className="text-3xl font-bold">Starter CRM</h1>
+          <p className="text-muted-foreground">
+            Manage your contacts with this lightweight CRM tool
+          </p>
         </div>
+        <Button 
+          onClick={() => {
+            resetForm();
+            setIsAddDialogOpen(true);
+          }}
+          className="flex items-center gap-2"
+        >
+          <PlusCircle className="h-4 w-4" />
+          Add Contact
+        </Button>
+      </div>
 
-        <Card className="mb-6">
-          <CardHeader>
-            <CardTitle>Contacts</CardTitle>
-            <CardDescription>
-              A list of all your contacts. Add, edit, or remove contacts as needed.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            {isLoading ? (
-              <div className="flex justify-center py-8">
-                <Loader2 className="h-8 w-8 animate-spin text-primary" />
-              </div>
-            ) : isError ? (
-              <div className="text-center py-8 text-red-500">
-                Error loading contacts: {error instanceof Error ? error.message : 'Unknown error'}
-              </div>
-            ) : contacts.length === 0 ? (
-              <div className="text-center py-8 text-muted-foreground">
-                No contacts found. Add your first contact to get started.
-              </div>
-            ) : (
-              <div className="overflow-x-auto">
-                <Table>
+      <Card className="mb-6">
+        <CardHeader>
+          <CardTitle>Contacts</CardTitle>
+          <CardDescription>
+            A list of all your contacts. Add, edit, or remove contacts as needed.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          {isLoading ? (
+            <div className="flex justify-center py-8">
+              <Loader2 className="h-8 w-8 animate-spin text-primary" />
+            </div>
+          ) : isError ? (
+            <div className="text-center py-8 text-red-500">
+              Error loading contacts: {error instanceof Error ? error.message : 'Unknown error'}
+            </div>
+          ) : contacts.length === 0 ? (
+            <div className="text-center py-8 text-muted-foreground">
+              No contacts found. Add your first contact to get started.
+            </div>
+          ) : (
+            <div className="overflow-x-auto">
+              <Table>
                   <TableHeader>
                     <TableRow>
                       <TableHead>Name</TableHead>
@@ -362,44 +361,44 @@ export default function CRMViewPage() {
                 </Table>
               </div>
             )}
-          </CardContent>
-          <CardFooter className="flex justify-between bg-muted/50 p-4 text-sm">
-            <div>
-              Total Contacts: {contacts.length}
-            </div>
-            <div className="flex items-center">
-              <Link className="h-4 w-4 mr-2" />
-              <a href="#" className="text-primary hover:underline">
-                Looking for more advanced CRM features? Check out our marketplace.
-              </a>
-            </div>
-          </CardFooter>
-        </Card>
+        </CardContent>
+        <CardFooter className="flex justify-between bg-muted/50 p-4 text-sm">
+          <div>
+            Total Contacts: {contacts.length}
+          </div>
+          <div className="flex items-center">
+            <Link className="h-4 w-4 mr-2" />
+            <a href="#" className="text-primary hover:underline">
+              Looking for more advanced CRM features? Check out our marketplace.
+            </a>
+          </div>
+        </CardFooter>
+      </Card>
 
-        {/* Add Contact Dialog */}
-        <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
-          <DialogContent className="sm:max-w-md">
-            <DialogHeader>
-              <DialogTitle>Add New Contact</DialogTitle>
-              <DialogDescription>
-                Enter the contact details below to add a new contact to your CRM.
-              </DialogDescription>
-            </DialogHeader>
-            <form onSubmit={handleSubmit}>
-              <div className="grid gap-4 py-4">
-                <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="name" className="text-right">
-                    Name *
-                  </Label>
-                  <Input
-                    id="name"
-                    name="name"
-                    value={contactForm.name}
-                    onChange={handleFormChange}
-                    className="col-span-3"
-                    required
-                  />
-                </div>
+      {/* Add Contact Dialog */}
+      <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Add New Contact</DialogTitle>
+            <DialogDescription>
+              Enter the contact details below to add a new contact to your CRM.
+            </DialogDescription>
+          </DialogHeader>
+          <form onSubmit={handleSubmit}>
+            <div className="grid gap-4 py-4">
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="name" className="text-right">
+                  Name *
+                </Label>
+                <Input
+                  id="name"
+                  name="name"
+                  value={contactForm.name}
+                  onChange={handleFormChange}
+                  className="col-span-3"
+                  required
+                />
+              </div>
                 <div className="grid grid-cols-4 items-center gap-4">
                   <Label htmlFor="email" className="text-right">
                     Email *
@@ -692,8 +691,7 @@ export default function CRMViewPage() {
               </Button>
             </DialogFooter>
           </DialogContent>
-        </Dialog>
-      </div>
-    </AdminLayout>
+      </Dialog>
+    </div>
   );
 }
