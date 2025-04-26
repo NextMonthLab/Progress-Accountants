@@ -1,5 +1,8 @@
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
 import AdminLayout from "@/layouts/AdminLayout";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -16,12 +19,18 @@ import {
   Clock,
   TrendingUp,
   Users,
-  PlusCircle
+  PlusCircle,
+  X
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { useToast } from "@/hooks/use-toast";
 
 // Define types for the business offerings
 type BusinessService = {
@@ -95,11 +104,634 @@ type AffiliateItem = {
   featured?: boolean;
 };
 
+// Define schemas for form validation
+const serviceFormSchema = z.object({
+  title: z.string().min(3, { message: "Title must be at least 3 characters" }),
+  description: z.string().min(10, { message: "Description must be at least 10 characters" }),
+  price: z.string().min(1, { message: "Price is required" }),
+  category: z.string().min(1, { message: "Category is required" })
+});
+
+const offerFormSchema = z.object({
+  title: z.string().min(3, { message: "Title must be at least 3 characters" }),
+  description: z.string().min(10, { message: "Description must be at least 10 characters" }),
+  discount: z.string().min(1, { message: "Discount is required" }),
+  validUntil: z.string().min(1, { message: "Valid until date is required" })
+});
+
+const opportunityFormSchema = z.object({
+  title: z.string().min(3, { message: "Title must be at least 3 characters" }),
+  description: z.string().min(10, { message: "Description must be at least 10 characters" }),
+  budget: z.string().min(1, { message: "Budget is required" }),
+  deadline: z.string().min(1, { message: "Deadline is required" }),
+  location: z.string().min(1, { message: "Location is required" }),
+  requiredExpertise: z.string().min(1, { message: "Required expertise is required" })
+});
+
+const affiliateFormSchema = z.object({
+  title: z.string().min(3, { message: "Title must be at least 3 characters" }),
+  description: z.string().min(10, { message: "Description must be at least 10 characters" }),
+  price: z.string().min(1, { message: "Price is required" }),
+  commission: z.string().min(1, { message: "Commission is required" }),
+  image: z.string().optional()
+});
+
+// Form components
+const ServiceForm = ({ form, onSubmit, isPending }: { form: any, onSubmit: (data: any) => void, isPending: boolean }) => {
+  const categories = [
+    "Accounting",
+    "Tax",
+    "Bookkeeping",
+    "Payroll",
+    "Legal",
+    "Financial Planning",
+    "Business Consulting",
+    "Other"
+  ];
+  
+  return (
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <FormField
+          control={form.control}
+          name="title"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Title</FormLabel>
+              <FormControl>
+                <Input placeholder="Professional Tax Preparation" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        
+        <FormField
+          control={form.control}
+          name="description"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Description</FormLabel>
+              <FormControl>
+                <Textarea 
+                  placeholder="Comprehensive tax preparation for small businesses with expert consultation included."
+                  className="h-24"
+                  {...field} 
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        
+        <div className="grid grid-cols-2 gap-4">
+          <FormField
+            control={form.control}
+            name="price"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Price</FormLabel>
+                <FormControl>
+                  <Input placeholder="$499" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          
+          <FormField
+            control={form.control}
+            name="category"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Category</FormLabel>
+                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select a category" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {categories.map((category) => (
+                      <SelectItem key={category} value={category}>
+                        {category}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+        
+        <Button type="submit" className="w-full" disabled={isPending}>
+          {isPending ? "Submitting..." : "Add Service"}
+        </Button>
+      </form>
+    </Form>
+  );
+};
+
+const OfferForm = ({ form, onSubmit, isPending }: { form: any, onSubmit: (data: any) => void, isPending: boolean }) => {
+  return (
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <FormField
+          control={form.control}
+          name="title"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Title</FormLabel>
+              <FormControl>
+                <Input placeholder="Tax Season Special" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        
+        <FormField
+          control={form.control}
+          name="description"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Description</FormLabel>
+              <FormControl>
+                <Textarea 
+                  placeholder="25% off on all business tax preparation services for new clients."
+                  className="h-24"
+                  {...field} 
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        
+        <div className="grid grid-cols-2 gap-4">
+          <FormField
+            control={form.control}
+            name="discount"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Discount</FormLabel>
+                <FormControl>
+                  <Input placeholder="25% off" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          
+          <FormField
+            control={form.control}
+            name="validUntil"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Valid Until</FormLabel>
+                <FormControl>
+                  <Input type="date" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+        
+        <Button type="submit" className="w-full" disabled={isPending}>
+          {isPending ? "Submitting..." : "Add Offer"}
+        </Button>
+      </form>
+    </Form>
+  );
+};
+
+const OpportunityForm = ({ form, onSubmit, isPending }: { form: any, onSubmit: (data: any) => void, isPending: boolean }) => {
+  return (
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <FormField
+          control={form.control}
+          name="title"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Title</FormLabel>
+              <FormControl>
+                <Input placeholder="Financial Audit Project" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        
+        <FormField
+          control={form.control}
+          name="description"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Description</FormLabel>
+              <FormControl>
+                <Textarea 
+                  placeholder="Looking for an experienced accountant to conduct a comprehensive financial audit for our manufacturing business."
+                  className="h-24"
+                  {...field} 
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        
+        <div className="grid grid-cols-2 gap-4">
+          <FormField
+            control={form.control}
+            name="budget"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Budget</FormLabel>
+                <FormControl>
+                  <Input placeholder="$3,000-$5,000" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          
+          <FormField
+            control={form.control}
+            name="deadline"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Deadline</FormLabel>
+                <FormControl>
+                  <Input type="date" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+        
+        <div className="grid grid-cols-2 gap-4">
+          <FormField
+            control={form.control}
+            name="location"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Location</FormLabel>
+                <FormControl>
+                  <Input placeholder="Remote or Chicago, IL" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          
+          <FormField
+            control={form.control}
+            name="requiredExpertise"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Required Expertise</FormLabel>
+                <FormControl>
+                  <Input placeholder="Audit, Manufacturing, GAAP" {...field} />
+                </FormControl>
+                <FormDescription>
+                  Comma-separated list of skills
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+        
+        <Button type="submit" className="w-full" disabled={isPending}>
+          {isPending ? "Submitting..." : "Add Opportunity"}
+        </Button>
+      </form>
+    </Form>
+  );
+};
+
+const AffiliateForm = ({ form, onSubmit, isPending }: { form: any, onSubmit: (data: any) => void, isPending: boolean }) => {
+  return (
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <FormField
+          control={form.control}
+          name="title"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Title</FormLabel>
+              <FormControl>
+                <Input placeholder="Cloud Accounting Software" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        
+        <FormField
+          control={form.control}
+          name="description"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Description</FormLabel>
+              <FormControl>
+                <Textarea 
+                  placeholder="Complete accounting solution with invoicing, payroll, and tax management features."
+                  className="h-24"
+                  {...field} 
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        
+        <div className="grid grid-cols-2 gap-4">
+          <FormField
+            control={form.control}
+            name="price"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Price</FormLabel>
+                <FormControl>
+                  <Input placeholder="$499/year" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          
+          <FormField
+            control={form.control}
+            name="commission"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Commission</FormLabel>
+                <FormControl>
+                  <Input placeholder="20%" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+        
+        <FormField
+          control={form.control}
+          name="image"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Image URL (Optional)</FormLabel>
+              <FormControl>
+                <Input placeholder="https://example.com/product-image.jpg" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        
+        <Button type="submit" className="w-full" disabled={isPending}>
+          {isPending ? "Submitting..." : "Add Affiliate Item"}
+        </Button>
+      </form>
+    </Form>
+  );
+};
+
 export default function BusinessDiscoverPage() {
   const [activeTab, setActiveTab] = useState("services");
   const [searchQuery, setSearchQuery] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [sortBy, setSortBy] = useState("newest");
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [listingType, setListingType] = useState<"service" | "offer" | "opportunity" | "affiliate">("service");
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
+  
+  // Service form
+  const serviceForm = useForm<z.infer<typeof serviceFormSchema>>({
+    resolver: zodResolver(serviceFormSchema),
+    defaultValues: {
+      title: "",
+      description: "",
+      price: "",
+      category: ""
+    }
+  });
+  
+  // Offer form
+  const offerForm = useForm<z.infer<typeof offerFormSchema>>({
+    resolver: zodResolver(offerFormSchema),
+    defaultValues: {
+      title: "",
+      description: "",
+      discount: "",
+      validUntil: ""
+    }
+  });
+  
+  // Opportunity form
+  const opportunityForm = useForm<z.infer<typeof opportunityFormSchema>>({
+    resolver: zodResolver(opportunityFormSchema),
+    defaultValues: {
+      title: "",
+      description: "",
+      budget: "",
+      deadline: "",
+      location: "",
+      requiredExpertise: ""
+    }
+  });
+  
+  // Affiliate form
+  const affiliateForm = useForm<z.infer<typeof affiliateFormSchema>>({
+    resolver: zodResolver(affiliateFormSchema),
+    defaultValues: {
+      title: "",
+      description: "",
+      price: "",
+      commission: "",
+      image: ""
+    }
+  });
+  
+  // Create service mutation
+  const createServiceMutation = useMutation({
+    mutationFn: async (data: z.infer<typeof serviceFormSchema>) => {
+      const response = await fetch("/api/business-network/services", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+      });
+      
+      if (!response.ok) {
+        throw new Error("Failed to create service");
+      }
+      
+      return response.json();
+    },
+    onSuccess: () => {
+      toast({
+        title: "Service Created",
+        description: "Your service has been successfully registered.",
+        variant: "default"
+      });
+      serviceForm.reset();
+      setIsDialogOpen(false);
+      queryClient.invalidateQueries({ queryKey: ["/api/business-network/services"] });
+    },
+    onError: (error) => {
+      toast({
+        title: "Error",
+        description: error.message || "There was an error creating your service.",
+        variant: "destructive"
+      });
+    }
+  });
+  
+  // Create offer mutation
+  const createOfferMutation = useMutation({
+    mutationFn: async (data: z.infer<typeof offerFormSchema>) => {
+      const response = await fetch("/api/business-network/offers", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+      });
+      
+      if (!response.ok) {
+        throw new Error("Failed to create offer");
+      }
+      
+      return response.json();
+    },
+    onSuccess: () => {
+      toast({
+        title: "Offer Created",
+        description: "Your offer has been successfully registered.",
+        variant: "default"
+      });
+      offerForm.reset();
+      setIsDialogOpen(false);
+      queryClient.invalidateQueries({ queryKey: ["/api/business-network/offers"] });
+    },
+    onError: (error) => {
+      toast({
+        title: "Error",
+        description: error.message || "There was an error creating your offer.",
+        variant: "destructive"
+      });
+    }
+  });
+  
+  // Create opportunity mutation
+  const createOpportunityMutation = useMutation({
+    mutationFn: async (data: z.infer<typeof opportunityFormSchema>) => {
+      // Convert requiredExpertise from string to array
+      const formattedData = {
+        ...data,
+        requiredExpertise: data.requiredExpertise.split(',').map(item => item.trim())
+      };
+      
+      const response = await fetch("/api/business-network/opportunities", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(formattedData)
+      });
+      
+      if (!response.ok) {
+        throw new Error("Failed to create opportunity");
+      }
+      
+      return response.json();
+    },
+    onSuccess: () => {
+      toast({
+        title: "Opportunity Created",
+        description: "Your contract opportunity has been successfully registered.",
+        variant: "default"
+      });
+      opportunityForm.reset();
+      setIsDialogOpen(false);
+      queryClient.invalidateQueries({ queryKey: ["/api/business-network/opportunities"] });
+    },
+    onError: (error) => {
+      toast({
+        title: "Error",
+        description: error.message || "There was an error creating your opportunity.",
+        variant: "destructive"
+      });
+    }
+  });
+  
+  // Create affiliate item mutation
+  const createAffiliateItemMutation = useMutation({
+    mutationFn: async (data: z.infer<typeof affiliateFormSchema>) => {
+      const response = await fetch("/api/business-network/affiliate-items", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+      });
+      
+      if (!response.ok) {
+        throw new Error("Failed to create affiliate item");
+      }
+      
+      return response.json();
+    },
+    onSuccess: () => {
+      toast({
+        title: "Affiliate Item Created",
+        description: "Your affiliate item has been successfully registered.",
+        variant: "default"
+      });
+      affiliateForm.reset();
+      setIsDialogOpen(false);
+      queryClient.invalidateQueries({ queryKey: ["/api/business-network/affiliate-items"] });
+    },
+    onError: (error) => {
+      toast({
+        title: "Error",
+        description: error.message || "There was an error creating your affiliate item.",
+        variant: "destructive"
+      });
+    }
+  });
+  
+  // Function to handle form submission based on type
+  const handleFormSubmit = (type: string, data: any) => {
+    switch (type) {
+      case "service":
+        createServiceMutation.mutate(data);
+        break;
+      case "offer":
+        createOfferMutation.mutate(data);
+        break;
+      case "opportunity":
+        createOpportunityMutation.mutate(data);
+        break;
+      case "affiliate":
+        createAffiliateItemMutation.mutate(data);
+        break;
+    }
+  };
+  
+  // Function to open dialog with specific listing type
+  const openAddListingDialog = (type: "service" | "offer" | "opportunity" | "affiliate") => {
+    setListingType(type);
+    setIsDialogOpen(true);
+  };
 
   // Fetch business services
   const { data: services, isLoading: servicesLoading } = useQuery({

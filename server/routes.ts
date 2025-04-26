@@ -32,6 +32,7 @@ import { registerVersionControlRoutes } from "./controllers/registerVersionContr
 import { registerAiDesignRoutes } from "./controllers/registerAiDesignRoutes";
 import { registerEnhancedSeoRoutes } from "./controllers/registerEnhancedSeoRoutes";
 import { registerBusinessNetworkRoutes } from "./controllers/registerBusinessNetworkRoutes";
+import { registerBusinessDiscoverRoutes } from "./controllers/registerBusinessDiscoverRoutes";
 import { 
   getAllResources, 
   getPublicResources, 
@@ -347,6 +348,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
   
   // Register business network routes
   registerBusinessNetworkRoutes(app);
+  
+  // Register business discover routes
+  registerBusinessDiscoverRoutes(app);
   
   // ============= NEXTMONTH MARKETPLACE API ENDPOINTS =============
   // Get available tools from NextMonth marketplace
