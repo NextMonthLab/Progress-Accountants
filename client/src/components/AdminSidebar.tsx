@@ -241,6 +241,14 @@ export default function AdminSidebar() {
           badge: { text: "Enhanced", variant: "updated" } 
         },
         { 
+          title: "Image Optimization", 
+          href: "/admin/image-optimization", 
+          icon: <Image className="h-5 w-5" />,
+          requiresStaff: true,
+          badge: { text: "New", variant: "new" },
+          isNew: true
+        },
+        { 
           title: "Social Media Generator", 
           href: "/tools/social-media-generator", 
           icon: <Newspaper className="h-5 w-5" />,

@@ -18,7 +18,6 @@ const CompanionSettingsPage = lazy(() => import("@/pages/admin/companion-setting
 const MenuManagementPage = lazy(() => import("@/pages/admin/MenuManagementPage"));
 const DomainMappingPage = lazy(() => import("@/pages/DomainMappingPage"));
 const SotManagementPage = lazy(() => import("@/pages/SotManagementPage"));
-const EntrepreneurSupportPage = lazy(() => import("@/pages/EntrepreneurSupportPage"));
 const ConversationInsightsPage = lazy(() => import("@/pages/ConversationInsightsPage"));
 const InsightsDashboardPage = lazy(() => import("@/pages/InsightsDashboardPage"));
 const InsightUsersPage = lazy(() => import("@/pages/InsightUsersPage"));
@@ -26,8 +25,7 @@ const AnalyticsPage = lazy(() => import("@/pages/AnalyticsPage"));
 const ScopeRequestPage = lazy(() => import("@/pages/ScopeRequestPage"));
 const CloneTemplatePage = lazy(() => import("@/pages/CloneTemplatePage"));
 const MediaManagementPage = lazy(() => import("@/pages/MediaManagementPage"));
-// Removed Image Optimization Demo page in favor of background optimization
-const EntrepreneurSupport = lazy(() => import("@/pages/admin/EntrepreneurSupport"));
+const ImageOptimizationDemo = lazy(() => import("@/pages/ImageOptimizationDemo"));
 
 // Page builder pages
 const PageBuilderListPage = lazy(() => import("@/pages/PageBuilderListPage"));
@@ -153,12 +151,10 @@ export function AdminRoutes() {
         path="/media" 
         component={MediaManagementPage} 
       />
-      
-      {/* Entrepreneur Support route */}
       <ProtectedRoute 
-        path="/admin/entrepreneur-support" 
-        component={EntrepreneurSupportPage} 
-        allowedRoles={['admin', 'super_admin', 'client']} 
+        path="/admin/image-optimization" 
+        component={ImageOptimizationDemo} 
+        allowedRoles={['admin', 'super_admin', 'editor']} 
       />
       
       {/* Page Builder routes */}
