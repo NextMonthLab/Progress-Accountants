@@ -35,7 +35,9 @@ export function AppRouter() {
         <ClientRoutes />
         
         {/* Not Found Route */}
-        <Route component={NotFound} />
+        <Route>
+          <NotFound />
+        </Route>
       </Switch>
     </Suspense>
   );

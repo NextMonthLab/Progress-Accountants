@@ -96,5 +96,10 @@ export function ProtectedRoute({
   }
   
   // If all checks pass, render the component
-  return <Route path={path} component={Component} {...(exact ? { exact: true } : {})} />;
+  // CRITICAL FIX: Ensure component renders properly by using render prop instead of component prop
+  return (
+    <Route path={path} {...(exact ? { exact: true } : {})}>
+      <Component />
+    </Route>
+  );
 }
