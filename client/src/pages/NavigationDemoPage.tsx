@@ -22,25 +22,8 @@ const NavigationDemoPage: React.FC = () => {
   const [useNewNavigation, setUseNewNavigation] = useState(true);
   const { user } = useAuth();
   
-  if (!user) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <Card className="w-full max-w-md">
-          <CardHeader>
-            <CardTitle>Please Log In</CardTitle>
-            <CardDescription>
-              You need to be logged in to view this page.
-            </CardDescription>
-          </CardHeader>
-          <CardFooter>
-            <Button asChild className="w-full">
-              <Link href="/auth">Log In</Link>
-            </Button>
-          </CardFooter>
-        </Card>
-      </div>
-    );
-  }
+  // For now, don't check for authentication here since we're using ProtectedRoute
+  // which already handles the authentication check and redirection
   
   return (
     <AdminLayout useNewNavigation={useNewNavigation}>
