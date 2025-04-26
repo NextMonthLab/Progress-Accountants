@@ -12,7 +12,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useAuth } from '@/components/ClientDataProvider';
-import { ArrowRight, CheckCircle2, BellRing, MessageSquare, CloudUpload } from 'lucide-react';
+import { ArrowRight, CheckCircle2, BellRing, MessageSquare, CloudUpload, X } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 
 const OnboardingWelcomePage: React.FC = () => {
@@ -60,9 +60,22 @@ const OnboardingWelcomePage: React.FC = () => {
               @optional true
               @enabled_by_default true
              */}
-            <Alert className="border-primary/20 bg-primary/5 mb-6">
-              <div className="flex items-center gap-2">
-                <BellRing className="h-5 w-5" />
+            <Alert className="border-primary/20 bg-primary/5 mb-6 relative">
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                onClick={() => {
+                  // Add dismiss logic if needed
+                  const alert = document.querySelector('.border-primary');
+                  if (alert) alert.classList.add('hidden');
+                }}
+                className="absolute top-2 right-2 bg-primary/10 hover:bg-primary/20 rounded-full p-1 h-8 w-8"
+                aria-label="Dismiss"
+              >
+                <X className="h-5 w-5" />
+              </Button>
+              <div className="flex items-center gap-2 pr-8">
+                <BellRing className="h-5 w-5 flex-shrink-0" />
                 <AlertTitle className="font-semibold flex items-center">
                   Blueprint Upgraded
                   <Badge className="ml-2 bg-primary/20 hover:bg-primary/30 text-primary">v1.1.1</Badge>
