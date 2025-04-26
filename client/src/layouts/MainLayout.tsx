@@ -25,7 +25,8 @@ export default function MainLayout({ children }: MainLayoutProps) {
     location === '/installed-tools' || 
     location === '/tools-hub' ||
     location === '/media' ||
-    location === '/launch-ready';
+    location === '/launch-ready' ||
+    location === '/entrepreneur-support';
     
   // Public routes that should NEVER use AdminLayout even if logged in
   const alwaysPublicRoutes = [
