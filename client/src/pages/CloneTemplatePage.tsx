@@ -239,48 +239,58 @@ const CloneTemplatePage: React.FC = () => {
 
                 <Card>
                   <CardHeader>
-                    <CardTitle className="text-lg">How Your Site Will Connect</CardTitle>
+                    <CardTitle className="text-lg">NextMonth Ecosystem Architecture</CardTitle>
                     <CardDescription>
-                      Understanding the NextMonth ecosystem architecture
+                      Understanding how your site connects to the broader network
                     </CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div className="space-y-2">
-                      <h4 className="font-medium">Independent Instance</h4>
+                      <h4 className="font-medium">Independent Planet</h4>
                       <p className="text-sm text-muted-foreground">
-                        Your new site will be a completely independent instance with:
+                        Your new site is an independent planet - self-sufficient unless it chooses to connect:
                       </p>
                       <ul className="list-disc list-inside text-sm space-y-1 pl-4">
-                        <li>Separate database</li>
+                        <li>Separate database or namespace</li>
                         <li>Separate user accounts</li>
                         <li>Separate public pages</li>
-                        <li>Full control over your business data</li>
+                        <li>Complete control over your business data</li>
                       </ul>
                     </div>
                     
                     <div className="space-y-2">
-                      <h4 className="font-medium">NextMonthDev Central Hub</h4>
+                      <h4 className="font-medium">NextMonthDev: The Mothership</h4>
                       <p className="text-sm text-muted-foreground">
-                        The central platform that connects all sites:
+                        The central authority that supports all sites:
                       </p>
                       <ul className="list-disc list-inside text-sm space-y-1 pl-4">
-                        <li>Provides system-wide tools through the Marketplace</li>
-                        <li>Delivers blueprints and upgrades</li>
-                        <li>Monitors system health</li>
-                        <li>Enables secure inter-client communication</li>
+                        <li>Stores system-wide tools (the Marketplace)</li>
+                        <li>Maintains blueprints and system upgrades</li>
+                        <li>Monitors health via Mission Control</li>
+                        <li>Does NOT store your business data directly</li>
                       </ul>
                     </div>
                     
                     <div className="space-y-2">
-                      <h4 className="font-medium">Business Networking</h4>
+                      <h4 className="font-medium">NextMonth Hub: The Interstellar Relay</h4>
                       <p className="text-sm text-muted-foreground">
-                        Optional connectivity between client sites via secure API:
+                        The secure service layer that enables optional connectivity:
                       </p>
                       <ul className="list-disc list-inside text-sm space-y-1 pl-4">
-                        <li>Share only what you choose to make public</li>
-                        <li>Connect with other businesses on the platform</li>
-                        <li>Send secure messages across sites</li>
-                        <li>Your private data always remains private</li>
+                        <li>Only shares data explicitly marked for networking (opt-in)</li>
+                        <li>Routes messages between sites without direct database access</li>
+                        <li>Enables cross-site business networking</li>
+                        <li>Maintains strict privacy boundaries</li>
+                      </ul>
+                    </div>
+
+                    <div className="border-t pt-4 mt-4">
+                      <h4 className="font-medium mb-2">Security & Privacy Highlights</h4>
+                      <ul className="list-disc list-inside text-sm space-y-1 pl-4">
+                        <li><strong>All networking is opt-in</strong> - you control what leaves your site</li>
+                        <li><strong>User data stays local</strong> - only authorized profiles/posts are shared</li>
+                        <li><strong>Secure message routing</strong> - no direct database connections between sites</li>
+                        <li><strong>Local profiles with selective sharing</strong> - public aspects can be networked</li>
                       </ul>
                     </div>
                   </CardContent>
@@ -321,26 +331,39 @@ const CloneTemplatePage: React.FC = () => {
 
                     <div className="border rounded-lg p-4 w-full max-w-md mb-6">
                       <h4 className="font-medium mb-2 text-center">NextMonth Ecosystem</h4>
-                      <div className="flex flex-col items-center space-y-2">
+                      <div className="flex flex-col items-center space-y-4">
                         <div className="bg-blue-100 p-3 rounded-lg w-full max-w-sm text-center font-medium">
-                          NextMonth Hub
+                          NextMonthDev<br/>
+                          <span className="text-xs font-normal text-blue-700">The Mothership</span>
                         </div>
+                        
+                        <div className="h-4 w-px bg-gray-300"></div>
+                        
+                        <div className="bg-indigo-100 p-3 rounded-lg w-full max-w-sm text-center font-medium">
+                          NextMonth Hub API<br/>
+                          <span className="text-xs font-normal text-indigo-700">The Interstellar Relay</span>
+                        </div>
+                        
                         <div className="h-8 w-px bg-gray-300 relative">
                           <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-white px-2">
-                            <span className="text-xs">API</span>
+                            <span className="text-xs">Secure API</span>
                           </div>
                         </div>
+                        
                         <div className="grid grid-cols-2 gap-4 w-full max-w-sm">
-                          <div className="bg-green-100 p-2 rounded-lg text-center text-sm font-medium">
-                            Client Site A
+                          <div className="bg-green-100 p-3 rounded-lg text-center text-sm font-medium">
+                            Client Site A<br/>
+                            <span className="text-xs font-normal text-green-700">Independent Planet</span>
                           </div>
-                          <div className="bg-primary/20 p-2 rounded-lg text-center text-sm font-medium border-2 border-primary">
-                            Your New Site
+                          <div className="bg-primary/20 p-3 rounded-lg text-center text-sm font-medium border-2 border-primary">
+                            Your New Site<br/>
+                            <span className="text-xs font-normal text-primary/80">Independent Planet</span>
                           </div>
                         </div>
                       </div>
                       <p className="text-xs text-center mt-4 text-muted-foreground">
-                        Your new site is fully independent but can optionally connect to other sites via the NextMonth Hub.
+                        Each site is a self-sufficient planet that can optionally share data through the interstellar relay.
+                        <br/>Private data never leaves your planet unless you explicitly choose to share it.
                       </p>
                     </div>
                     
