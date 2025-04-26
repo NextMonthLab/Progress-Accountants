@@ -513,19 +513,19 @@ export default function AdminDashboardPage() {
         {/* Tabs Navigation */}
         <Tabs defaultValue="overview" value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="bg-gray-50 border border-gray-200 mb-6 p-1">
-            <TabsTrigger value="overview" className="text-navy hover:text-navy/80 data-[state=active]:bg-orange-50 data-[state=active]:text-orange-600 data-[state=active]:border-b-2 data-[state=active]:border-orange-500">
+            <TabsTrigger value="overview" className="text-orange-600 hover:text-orange-700 data-[state=active]:bg-orange-50 data-[state=active]:text-orange-600 data-[state=active]:border-b-2 data-[state=active]:border-orange-500">
               <LayoutDashboard className="h-4 w-4 mr-2" />
               Overview
             </TabsTrigger>
-            <TabsTrigger value="content" className="text-navy hover:text-navy/80 data-[state=active]:bg-orange-50 data-[state=active]:text-orange-600 data-[state=active]:border-b-2 data-[state=active]:border-orange-500">
+            <TabsTrigger value="content" className="text-orange-600 hover:text-orange-700 data-[state=active]:bg-orange-50 data-[state=active]:text-orange-600 data-[state=active]:border-b-2 data-[state=active]:border-orange-500">
               <FileText className="h-4 w-4 mr-2" />
               Content
             </TabsTrigger>
-            <TabsTrigger value="tools" className="text-navy hover:text-navy/80 data-[state=active]:bg-orange-50 data-[state=active]:text-orange-600 data-[state=active]:border-b-2 data-[state=active]:border-orange-500">
+            <TabsTrigger value="tools" className="text-orange-600 hover:text-orange-700 data-[state=active]:bg-orange-50 data-[state=active]:text-orange-600 data-[state=active]:border-b-2 data-[state=active]:border-orange-500">
               <Cpu className="h-4 w-4 mr-2" />
               Tools
             </TabsTrigger>
-            <TabsTrigger value="system" className="text-navy hover:text-navy/80 data-[state=active]:bg-orange-50 data-[state=active]:text-orange-600 data-[state=active]:border-b-2 data-[state=active]:border-orange-500">
+            <TabsTrigger value="system" className="text-orange-600 hover:text-orange-700 data-[state=active]:bg-orange-50 data-[state=active]:text-orange-600 data-[state=active]:border-b-2 data-[state=active]:border-orange-500">
               <Settings className="h-4 w-4 mr-2" />
               System
             </TabsTrigger>
