@@ -33,7 +33,8 @@ import {
   Sparkles,
   Cpu,
   PaintBucket,
-  AlertCircle
+  AlertCircle,
+  Plus
 } from "lucide-react";
 import { useTenant } from "@/hooks/use-tenant";
 
@@ -104,6 +105,7 @@ const PageBuilderContent: React.FC = () => {
   const [showAIAssistant, setShowAIAssistant] = useState<boolean>(false);
   const [versionHistoryOpen, setVersionHistoryOpen] = useState<boolean>(false);
   const [page, setPage] = useState<PageBuilderPage | null>(isNewPage ? createEmptyPage() : null);
+  const [deviceType, setDeviceType] = useState<"desktop" | "tablet" | "mobile">("desktop");
 
   // Create a default empty page
   function createEmptyPage(): PageBuilderPage {
@@ -123,7 +125,8 @@ const PageBuilderContent: React.FC = () => {
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
       sections: [],
-      isLocked: false
+      isLocked: false,
+      origin: 'manual'
     };
   }
 
@@ -492,7 +495,7 @@ const PageBuilderContent: React.FC = () => {
     // Update the page with template data
     setPage({
       ...page,
-      template: template.id,
+      // Don't set template directly - handle ID in backend
       sections: template.sections || []
     });
     
@@ -602,7 +605,7 @@ const PageBuilderContent: React.FC = () => {
           
           <Button
             onClick={handleSave}
-            disabled={saveMutation.isPending || page.isLocked}
+            disabled={(createPageMutation.isPending || updatePageMutation.isPending) || (page && page.isLocked)}
           >
             <Save className="h-4 w-4 mr-2" />
             Save
@@ -626,7 +629,7 @@ const PageBuilderContent: React.FC = () => {
           </div>
           
           <div className="border rounded-lg overflow-hidden">
-            <PageBuilderPreview page={page} />
+            <PageBuilderPreview page={page} deviceType={deviceType} />
           </div>
         </div>
       ) : (
