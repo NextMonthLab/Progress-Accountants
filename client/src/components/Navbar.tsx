@@ -3,7 +3,7 @@ import { Link, useLocation } from "wouter";
 import { 
   Menu, X, LayoutDashboard, ChevronDown, Users, Briefcase, 
   Phone, Layout, BookOpen, FastForward, Sparkles, UserPlus,
-  ArrowLeftCircle
+  ArrowLeftCircle, Newspaper
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/use-auth";
@@ -189,6 +189,15 @@ export default function Navbar() {
         {/* Desktop Menu - Public-facing menu only */}
         <div className="hidden md:flex items-center space-x-6">
           {publicMenuGroups.map(renderDesktopDropdown)}
+          
+          {/* News link */}
+          <Link 
+            href="/news" 
+            className={`font-medium ${isActive('/news') ? 'text-[var(--orange)]' : 'hover:text-[var(--orange)]'} transition duration-300 no-underline flex items-center`}
+          >
+            <Newspaper className="h-4 w-4 mr-2" />
+            News
+          </Link>
           
           {/* Always show the Client Portal link */}
           <Link 
