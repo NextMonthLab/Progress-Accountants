@@ -201,10 +201,10 @@ function QuickAction({
   isLoading = false
 }: QuickActionProps) {
   const variantStyles = {
-    primary: 'bg-gradient-to-br from-navy via-blue-900 to-blue-950 text-white hover:shadow-lg hover:shadow-navy/20',
-    secondary: 'bg-gradient-to-br from-orange-500 via-orange-600 to-orange-800 text-white hover:shadow-lg hover:shadow-orange-500/20',
-    outline: 'border-2 border-navy/40 hover:border-navy/60 bg-white text-navy',
-    ghost: 'bg-gray-200 hover:bg-gray-300 text-navy',
+    primary: 'bg-gradient-to-br from-navy via-blue-900 to-blue-950 hover:shadow-lg hover:shadow-navy/20',
+    secondary: 'bg-gradient-to-br from-orange-50 via-orange-100 to-orange-200 hover:shadow-lg hover:shadow-orange-500/20 border border-orange-300',
+    outline: 'border-2 border-navy/40 hover:border-navy/60 bg-white',
+    ghost: 'bg-gray-200 hover:bg-gray-300',
   };
 
   return (
@@ -663,7 +663,7 @@ export default function AdminDashboardPage() {
                       description="Track and analyze user feedback"
                       icon={<BarChart3 className="h-5 w-5" />}
                       link="/admin/insights-dashboard"
-                      variant="primary"
+                      variant="outline"
                     />
                     <QuickAction
                       title="Manage Insight Users"
@@ -691,7 +691,7 @@ export default function AdminDashboardPage() {
                       description="Extract and manage templates"
                       icon={<Copy className="h-5 w-5" />}
                       link="/admin/blueprint-management"
-                      variant="primary"
+                      variant="outline"
                     />
                   </CardContent>
                 </Card>
