@@ -6,10 +6,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { InfoIcon } from 'lucide-react';
 
-// Import optimized image components
-import OptimizedImage from '@/components/OptimizedImage';
-import ResponsiveImage from '@/components/ResponsiveImage';
-
 const ImageOptimizationDemo = () => {
   // Sample images to test with
   const images = {
@@ -37,197 +33,88 @@ const ImageOptimizationDemo = () => {
           </AlertDescription>
         </Alert>
         
-        <Tabs defaultValue="optimized">
-          <TabsList className="grid w-full grid-cols-3 mb-8">
-            <TabsTrigger value="optimized">OptimizedImage</TabsTrigger>
-            <TabsTrigger value="responsive">ResponsiveImage</TabsTrigger>
-            <TabsTrigger value="comparison">Comparison</TabsTrigger>
-          </TabsList>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>Standard Image</CardTitle>
+              <CardDescription>
+                Basic implementation with standard HTML img tag
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <img 
+                src={images.landscape} 
+                alt="Sample landscape image"
+                className="rounded-md w-full max-w-full h-auto"
+                width={600}
+                height={400}
+                loading="lazy"
+              />
+            </CardContent>
+          </Card>
           
-          <TabsContent value="optimized">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Standard OptimizedImage</CardTitle>
-                  <CardDescription>
-                    Basic implementation with lazy loading and quality optimization
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <OptimizedImage 
-                    src={images.landscape} 
-                    alt="Sample landscape image"
-                    className="rounded-md"
-                    width={600}
-                    height={400}
-                  />
-                </CardContent>
-              </Card>
-              
-              <Card>
-                <CardHeader>
-                  <CardTitle>With Different Object-Fit</CardTitle>
-                  <CardDescription>
-                    Using object-fit: contain to maintain aspect ratio
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <OptimizedImage 
-                    src={images.portrait} 
-                    alt="Sample portrait image"
-                    className="rounded-md"
-                    width={400}
-                    height={400}
-                    objectFit="contain"
-                  />
-                </CardContent>
-              </Card>
-              
-              <Card>
-                <CardHeader>
-                  <CardTitle>Lower Quality (Performance)</CardTitle>
-                  <CardDescription>
-                    Quality set to 30% to improve loading performance
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <OptimizedImage 
-                    src={images.landscape} 
-                    alt="Sample image with lower quality"
-                    className="rounded-md"
-                    width={600}
-                    height={400}
-                    quality={30}
-                  />
-                </CardContent>
-              </Card>
-              
-              <Card>
-                <CardHeader>
-                  <CardTitle>High Quality</CardTitle>
-                  <CardDescription>
-                    Quality set to 90% for better visual quality
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <OptimizedImage 
-                    src={images.landscape} 
-                    alt="Sample image with higher quality"
-                    className="rounded-md"
-                    width={600}
-                    height={400}
-                    quality={90}
-                  />
-                </CardContent>
-              </Card>
-            </div>
-          </TabsContent>
+          <Card>
+            <CardHeader>
+              <CardTitle>Image with Object-Fit</CardTitle>
+              <CardDescription>
+                Using object-fit: contain to maintain aspect ratio
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="w-[400px] h-[400px]">
+                <img 
+                  src={images.portrait} 
+                  alt="Sample portrait image"
+                  className="rounded-md object-contain w-full h-full"
+                  width={400}
+                  height={400}
+                  loading="lazy"
+                />
+              </div>
+            </CardContent>
+          </Card>
           
-          <TabsContent value="responsive">
-            <div className="grid grid-cols-1 gap-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Responsive Image</CardTitle>
-                  <CardDescription>
-                    Automatically adapts to different screen sizes using the picture element
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <ResponsiveImage 
-                    src={images.landscape} 
-                    alt="Responsive sample image"
-                    className="rounded-md w-full"
-                    aspectRatio="16/9"
-                  />
-                </CardContent>
-              </Card>
-              
-              <Card>
-                <CardHeader>
-                  <CardTitle>Custom Breakpoints</CardTitle>
-                  <CardDescription>
-                    Using custom sources for different screen sizes
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <ResponsiveImage 
-                    src={images.landscape} 
-                    alt="Responsive sample image with custom breakpoints"
-                    className="rounded-md w-full"
-                    aspectRatio="4/3"
-                    breakpoints={{
-                      sm: 'https://res.cloudinary.com/demo/image/upload/w_400,c_scale/sample.jpg',
-                      md: 'https://res.cloudinary.com/demo/image/upload/w_800,c_scale/sample.jpg',
-                      lg: 'https://res.cloudinary.com/demo/image/upload/w_1200,c_scale/sample.jpg',
-                      xl: 'https://res.cloudinary.com/demo/image/upload/w_1600,c_scale/sample.jpg'
-                    }}
-                  />
-                </CardContent>
-              </Card>
-            </div>
-          </TabsContent>
+          <Card>
+            <CardHeader>
+              <CardTitle>Responsive Image with Picture Element</CardTitle>
+              <CardDescription>
+                Using picture element for different viewport sizes
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <picture>
+                <source media="(max-width: 640px)" srcSet="https://res.cloudinary.com/demo/image/upload/w_400,c_scale/sample.jpg" />
+                <source media="(min-width: 641px) and (max-width: 768px)" srcSet="https://res.cloudinary.com/demo/image/upload/w_800,c_scale/sample.jpg" />
+                <source media="(min-width: 769px)" srcSet="https://res.cloudinary.com/demo/image/upload/w_1200,c_scale/sample.jpg" />
+                <img 
+                  src={images.landscape} 
+                  alt="Responsive image example"
+                  className="rounded-md w-full h-auto"
+                  loading="lazy"
+                />
+              </picture>
+            </CardContent>
+          </Card>
           
-          <TabsContent value="comparison">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Standard HTML Image</CardTitle>
-                  <CardDescription>
-                    Basic img tag without optimizations
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <img 
-                    src={images.landscape} 
-                    alt="Standard HTML image"
-                    className="rounded-md w-full"
-                  />
-                  <p className="mt-2 text-sm text-gray-500">
-                    No lazy loading, no optimized format, no loading state
-                  </p>
-                </CardContent>
-              </Card>
-              
-              <Card>
-                <CardHeader>
-                  <CardTitle>OptimizedImage Component</CardTitle>
-                  <CardDescription>
-                    Our optimized image component
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <OptimizedImage 
-                    src={images.landscape} 
-                    alt="Optimized image"
-                    className="rounded-md w-full"
-                  />
-                  <p className="mt-2 text-sm text-gray-500">
-                    With lazy loading, loading state, and quality optimization
-                  </p>
-                </CardContent>
-              </Card>
-              
-              <Card className="md:col-span-2">
-                <CardHeader>
-                  <CardTitle>Performance Benefits</CardTitle>
-                  <CardDescription>
-                    Key advantages of using our optimized image components
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <ul className="list-disc list-inside space-y-2">
-                    <li>Automatic lazy loading for better initial page load times</li>
-                    <li>Responsive images that load appropriately sized versions based on viewport</li>
-                    <li>Automatic quality optimization for Cloudinary images</li>
-                    <li>Loading skeleton state for better user experience</li>
-                    <li>Error fallback handling to prevent layout shifts</li>
-                    <li>Support for object-fit controls to maintain visual consistency</li>
-                  </ul>
-                </CardContent>
-              </Card>
-            </div>
-          </TabsContent>
-        </Tabs>
+          <Card>
+            <CardHeader>
+              <CardTitle>Performance Benefits</CardTitle>
+              <CardDescription>
+                Key advantages of using our optimized image components
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <ul className="list-disc list-inside space-y-2">
+                <li>Automatic lazy loading for better initial page load times</li>
+                <li>Responsive images that load appropriately sized versions based on viewport</li>
+                <li>Automatic quality optimization for Cloudinary images</li>
+                <li>Loading skeleton state for better user experience</li>
+                <li>Error fallback handling to prevent layout shifts</li>
+                <li>Support for object-fit controls to maintain visual consistency</li>
+              </ul>
+            </CardContent>
+          </Card>
+        </div>
       </div>
     </AdminLayout>
   );
