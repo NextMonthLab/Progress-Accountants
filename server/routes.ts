@@ -1,6 +1,7 @@
 import type { Express, Request, Response } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
+import crypto from "crypto";
 import { 
   type FeatureRequest, 
   type ModuleActivation, 
@@ -243,6 +244,45 @@ export async function registerRoutes(app: Express): Promise<Server> {
   
   // Register system monitoring endpoints
   registerSystemRoutes(app);
+  
+  // Template cloning endpoint
+  app.post("/api/tenant/clone", async (req: Request, res: Response) => {
+    try {
+      // Check if user is authenticated and has admin privileges
+      if (!req.isAuthenticated()) {
+        return res.status(401).json({ error: "Unauthorized" });
+      }
+
+      const user = req.user as any;
+      if (user.userType !== 'admin' && user.userType !== 'super_admin') {
+        return res.status(403).json({ error: "Forbidden" });
+      }
+      
+      const { templateId } = req.body;
+      
+      if (!templateId) {
+        return res.status(400).json({ error: "Template ID is required" });
+      }
+      
+      // Create a new tenant for the cloned template
+      // In a real implementation, this would involve copying database records
+      // and setting up the initial configuration
+      
+      // Generate a unique ID for the new tenant
+      const tenantId = crypto.randomUUID();
+      
+      // Return the new tenant information
+      res.status(200).json({
+        success: true,
+        tenantId,
+        templateId,
+        message: "Template cloning initialized successfully"
+      });
+    } catch (error: any) {
+      console.error("Error cloning template:", error);
+      res.status(500).json({ error: "Failed to clone template", message: error.message });
+    }
+  });
   
   // Pages API endpoints
   app.get("/api/pages/public", async (req: Request, res: Response) => {

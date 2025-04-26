@@ -81,6 +81,7 @@ import AccountPage from "@/pages/AccountPage";
 import NewsPage from "@/pages/NewsPage";
 import BusinessNetworkPage from "@/pages/BusinessNetworkPage";
 import BusinessDiscoverPage from "@/pages/BusinessDiscoverPage";
+import CloneTemplatePage from "@/pages/CloneTemplatePage";
 // Page Builder pages
 import PageBuilderListPage from "@/pages/PageBuilderListPage";
 import PageBuilderPage from "@/pages/PageBuilderPage";
@@ -234,6 +235,11 @@ function Router() {
         path="/admin/new-request" 
         component={ScopeRequestPage} 
         allowedRoles={['admin', 'super_admin', 'editor']} 
+      />
+      <ProtectedRoute 
+        path="/admin/clone-template" 
+        component={CloneTemplatePage} 
+        allowedRoles={['admin', 'super_admin']} 
       />
       
       {/* Client dashboard routes - financial dashboard for Progress clients */}
