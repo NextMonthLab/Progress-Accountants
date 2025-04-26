@@ -26,6 +26,8 @@ const ScopeRequestPage = lazy(() => import("@/pages/ScopeRequestPage"));
 const CloneTemplatePage = lazy(() => import("@/pages/CloneTemplatePage"));
 const MediaManagementPage = lazy(() => import("@/pages/MediaManagementPage"));
 // Removed Image Optimization Demo page in favor of background optimization
+const EntrepreneurSupportPage = lazy(() => import("@/pages/EntrepreneurSupportPage"));
+const EntrepreneurSupport = lazy(() => import("@/pages/admin/EntrepreneurSupport"));
 
 // Page builder pages
 const PageBuilderListPage = lazy(() => import("@/pages/PageBuilderListPage"));
@@ -150,6 +152,13 @@ export function AdminRoutes() {
       <ProtectedRoute 
         path="/media" 
         component={MediaManagementPage} 
+      />
+      
+      {/* Entrepreneur Support route */}
+      <ProtectedRoute 
+        path="/admin/entrepreneur-support" 
+        component={EntrepreneurSupport} 
+        allowedRoles={['admin', 'super_admin', 'client']} 
       />
       
       {/* Page Builder routes */}

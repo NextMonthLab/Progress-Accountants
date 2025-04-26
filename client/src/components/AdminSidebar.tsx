@@ -279,7 +279,7 @@ export default function AdminSidebar() {
         },
         { 
           title: "Entrepreneur Support", 
-          href: "/entrepreneur-support", 
+          href: "/admin/entrepreneur-support", 
           icon: <Lightbulb className="h-5 w-5" />,
           badge: { text: "New", variant: "new" },
           isNew: true
