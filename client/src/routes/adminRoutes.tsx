@@ -18,6 +18,7 @@ const CompanionSettingsPage = lazy(() => import("@/pages/admin/companion-setting
 const MenuManagementPage = lazy(() => import("@/pages/admin/MenuManagementPage"));
 const DomainMappingPage = lazy(() => import("@/pages/DomainMappingPage"));
 const SotManagementPage = lazy(() => import("@/pages/SotManagementPage"));
+// Import the EntrepreneurSupportPage component for admin routes
 const EntrepreneurSupportPage = lazy(() => import("@/pages/EntrepreneurSupportPage"));
 const ConversationInsightsPage = lazy(() => import("@/pages/ConversationInsightsPage"));
 const InsightsDashboardPage = lazy(() => import("@/pages/InsightsDashboardPage"));
@@ -157,7 +158,7 @@ export function AdminRoutes() {
       {/* Entrepreneur Support route */}
       <ProtectedRoute 
         path="/admin/entrepreneur-support" 
-        component={EntrepreneurSupportPage} 
+        component={EntrepreneurSupport} 
         allowedRoles={['admin', 'super_admin', 'client']} 
       />
       
