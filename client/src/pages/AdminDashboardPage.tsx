@@ -212,12 +212,12 @@ function QuickAction({
       <div className={`p-4 rounded-xl transition-all ${variantStyles[variant]} relative`}>
         <div className="flex items-start gap-3">
           {icon && (
-            <div className={`${variant === 'primary' ? 'text-white' : 'text-navy'}`}>
+            <div className="text-black">
               {icon}
             </div>
           )}
           <div>
-            <h3 className={`font-medium ${variant === 'primary' ? 'text-white' : 'text-navy'}`}>{title}</h3>
+            <h3 className="font-medium text-black">{title}</h3>
             <p className={`text-sm mt-1 ${variant === 'primary' ? 'text-white/90' : 'text-gray-700'}`}>{description}</p>
           </div>
         </div>
