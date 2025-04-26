@@ -189,3 +189,147 @@ export type InsertBusinessPost = z.infer<typeof insertBusinessPostSchema>;
 export type InsertComment = z.infer<typeof insertCommentSchema>;
 export type InsertFollow = z.infer<typeof insertFollowSchema>;
 export type InsertMessage = z.infer<typeof insertMessageSchema>;
+
+// Business Discovery Platform tables
+
+// Business Services table
+export const businessServices = pgTable("business_services", {
+  id: serial("id").primaryKey(),
+  providerId: integer("provider_id").notNull().references(() => businessProfiles.id),
+  title: varchar("title", { length: 255 }).notNull(),
+  description: text("description").notNull(),
+  price: varchar("price", { length: 100 }).notNull(),
+  category: varchar("category", { length: 100 }).notNull(),
+  featured: boolean("featured").default(false),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+// Business Offers table
+export const businessOffers = pgTable("business_offers", {
+  id: serial("id").primaryKey(),
+  providerId: integer("provider_id").notNull().references(() => businessProfiles.id),
+  title: varchar("title", { length: 255 }).notNull(),
+  description: text("description").notNull(),
+  discount: varchar("discount", { length: 100 }).notNull(),
+  validUntil: varchar("valid_until", { length: 100 }).notNull(),
+  featured: boolean("featured").default(false),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+// Contract Opportunities table
+export const contractOpportunities = pgTable("contract_opportunities", {
+  id: serial("id").primaryKey(),
+  postedById: integer("posted_by_id").notNull().references(() => businessProfiles.id),
+  title: varchar("title", { length: 255 }).notNull(),
+  description: text("description").notNull(),
+  budget: varchar("budget", { length: 100 }).notNull(),
+  deadline: varchar("deadline", { length: 100 }).notNull(),
+  location: varchar("location", { length: 255 }).notNull(),
+  requiredExpertise: jsonb("required_expertise").default([]),
+  featured: boolean("featured").default(false),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+// Affiliate Items table
+export const affiliateItems = pgTable("affiliate_items", {
+  id: serial("id").primaryKey(),
+  providerId: integer("provider_id").notNull().references(() => businessProfiles.id),
+  title: varchar("title", { length: 255 }).notNull(),
+  description: text("description").notNull(),
+  price: varchar("price", { length: 100 }).notNull(),
+  commission: varchar("commission", { length: 100 }).notNull(),
+  image: varchar("image", { length: 255 }),
+  featured: boolean("featured").default(false),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+// Define relationships for discovery platform tables
+export const businessServicesRelations = relations(businessServices, ({ one }) => ({
+  provider: one(businessProfiles, {
+    fields: [businessServices.providerId],
+    references: [businessProfiles.id],
+  }),
+}));
+
+export const businessOffersRelations = relations(businessOffers, ({ one }) => ({
+  provider: one(businessProfiles, {
+    fields: [businessOffers.providerId],
+    references: [businessProfiles.id],
+  }),
+}));
+
+export const contractOpportunitiesRelations = relations(contractOpportunities, ({ one }) => ({
+  postedBy: one(businessProfiles, {
+    fields: [contractOpportunities.postedById],
+    references: [businessProfiles.id],
+  }),
+}));
+
+export const affiliateItemsRelations = relations(affiliateItems, ({ one }) => ({
+  provider: one(businessProfiles, {
+    fields: [affiliateItems.providerId],
+    references: [businessProfiles.id],
+  }),
+}));
+
+// Add to businessProfiles relations
+export const businessProfilesRelationsExtended = relations(businessProfiles, ({ many, one }) => ({
+  user: one(users, {
+    fields: [businessProfiles.userId],
+    references: [users.id]
+  }),
+  posts: many(businessPosts),
+  comments: many(postComments),
+  followedBy: many(follows, { relationName: "follower" }),
+  following: many(follows, { relationName: "following" }),
+  sentMessages: many(messages, { relationName: "sender" }),
+  receivedMessages: many(messages, { relationName: "receiver" }),
+  services: many(businessServices),
+  offers: many(businessOffers),
+  opportunities: many(contractOpportunities),
+  affiliateItems: many(affiliateItems),
+}));
+
+// Create insert schemas for discovery platform tables
+export const insertBusinessServiceSchema = createInsertSchema(businessServices).omit({ 
+  id: true, 
+  featured: true,
+  createdAt: true,
+  updatedAt: true
+});
+
+export const insertBusinessOfferSchema = createInsertSchema(businessOffers).omit({ 
+  id: true, 
+  featured: true,
+  createdAt: true,
+  updatedAt: true
+});
+
+export const insertContractOpportunitySchema = createInsertSchema(contractOpportunities).omit({ 
+  id: true, 
+  featured: true,
+  createdAt: true,
+  updatedAt: true
+});
+
+export const insertAffiliateItemSchema = createInsertSchema(affiliateItems).omit({ 
+  id: true, 
+  featured: true,
+  createdAt: true,
+  updatedAt: true
+});
+
+// Types for discovery platform
+export type BusinessService = typeof businessServices.$inferSelect;
+export type BusinessOffer = typeof businessOffers.$inferSelect;
+export type ContractOpportunity = typeof contractOpportunities.$inferSelect;
+export type AffiliateItem = typeof affiliateItems.$inferSelect;
+
+export type InsertBusinessService = z.infer<typeof insertBusinessServiceSchema>;
+export type InsertBusinessOffer = z.infer<typeof insertBusinessOfferSchema>;
+export type InsertContractOpportunity = z.infer<typeof insertContractOpportunitySchema>;
+export type InsertAffiliateItem = z.infer<typeof insertAffiliateItemSchema>;
