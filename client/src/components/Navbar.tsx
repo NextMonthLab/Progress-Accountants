@@ -291,6 +291,19 @@ export default function Navbar() {
         <div className="container mx-auto px-4 py-3 flex flex-col divide-y">
           {publicMenuGroups.map(renderMobileMenuGroup)}
           
+          {/* News section */}
+          <div className="py-2">
+            <h4 className="text-sm uppercase tracking-wider text-gray-500 mb-2 px-2">News</h4>
+            <Link 
+              href="/news" 
+              className="flex items-center py-2 px-2 font-medium hover:text-[var(--orange)] transition duration-300 no-underline"
+              onClick={closeMenu}
+            >
+              <Newspaper className="h-4 w-4 mr-2" />
+              Latest News
+            </Link>
+          </div>
+          
           {/* Client Portal section */}
           <div className="py-2">
             <h4 className="text-sm uppercase tracking-wider text-gray-500 mb-2 px-2">Portal</h4>
