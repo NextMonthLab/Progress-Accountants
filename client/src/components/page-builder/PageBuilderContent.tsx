@@ -91,20 +91,43 @@ interface PageBuilderPage {
 
 const PageBuilderContent: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const pageId = parseInt(id);
+  const isNewPage = id === "new";
+  const pageId = isNewPage ? 0 : parseInt(id);
   const [, navigate] = useLocation();
   const queryClient = useQueryClient();
   const { toast } = useToast();
   const { tenant } = useTenant();
   
   // State
-  const [activeTab, setActiveTab] = useState<string>("editor");
+  const [activeTab, setActiveTab] = useState<string>(isNewPage ? "templates" : "editor");
   const [previewMode, setPreviewMode] = useState<boolean>(false);
   const [showAIAssistant, setShowAIAssistant] = useState<boolean>(false);
   const [versionHistoryOpen, setVersionHistoryOpen] = useState<boolean>(false);
-  const [page, setPage] = useState<PageBuilderPage | null>(null);
+  const [page, setPage] = useState<PageBuilderPage | null>(isNewPage ? createEmptyPage() : null);
 
-  // Fetch page data
+  // Create a default empty page
+  function createEmptyPage(): PageBuilderPage {
+    return {
+      id: 0,
+      tenantId: tenant?.id || '00000000-0000-0000-0000-000000000000',
+      title: 'New Page',
+      path: '',
+      description: '',
+      pageType: 'custom',
+      isPublished: false,
+      seoSettings: {
+        title: '',
+        description: '',
+        keywords: [],
+      },
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      sections: [],
+      isLocked: false
+    };
+  }
+
+  // Fetch page data for existing pages
   const { data: pageData, isLoading, error } = useQuery({
     queryKey: [`/api/page-builder/pages/${pageId}`],
     queryFn: async () => {
@@ -113,10 +136,10 @@ const PageBuilderContent: React.FC = () => {
       const data = await res.json();
       return data.data;
     },
-    enabled: !!pageId && !isNaN(pageId),
+    enabled: !isNewPage && !!pageId && !isNaN(pageId),
   });
 
-  // Update page in state when data changes
+  // Update page in state when data changes for existing pages
   useEffect(() => {
     if (pageData) {
       setPage(pageData);
@@ -133,8 +156,34 @@ const PageBuilderContent: React.FC = () => {
     }
   }, [page]);
 
-  // Save page mutation
-  const saveMutation = useMutation({
+  // Create new page mutation
+  const createPageMutation = useMutation({
+    mutationFn: async (newPage: PageBuilderPage) => {
+      const res = await apiRequest("POST", `/api/page-builder/pages`, newPage);
+      if (!res.ok) throw new Error("Failed to create page");
+      return res.json();
+    },
+    onSuccess: (data) => {
+      toast({
+        title: "Page created",
+        description: "New page has been created successfully",
+      });
+      // Redirect to the edit page with the new ID
+      if (data.data && data.data.id) {
+        navigate(`/page-builder/${data.data.id}`);
+      }
+    },
+    onError: (error) => {
+      toast({
+        title: "Error",
+        description: `Failed to create page: ${error.message}`,
+        variant: "destructive",
+      });
+    },
+  });
+
+  // Update existing page mutation
+  const updatePageMutation = useMutation({
     mutationFn: async (updatedPage: PageBuilderPage) => {
       const res = await apiRequest("PATCH", `/api/page-builder/pages/${pageId}`, updatedPage);
       if (!res.ok) throw new Error("Failed to update page");
@@ -158,8 +207,14 @@ const PageBuilderContent: React.FC = () => {
 
   // Handle save
   const handleSave = () => {
-    if (page) {
-      saveMutation.mutate(page);
+    if (!page) return;
+    
+    if (isNewPage) {
+      // Create a new page
+      createPageMutation.mutate(page);
+    } else {
+      // Update an existing page
+      updatePageMutation.mutate(page);
     }
   };
 

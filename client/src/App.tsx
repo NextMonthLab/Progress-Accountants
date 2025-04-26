@@ -11,6 +11,7 @@ import { CompanionContextProvider } from "@/hooks/use-companion-context";
 import { DualModeCompanion } from "@/components/companions/DualModeCompanion";
 import { UpgradeAnnouncement } from "@/components/UpgradeAnnouncement";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
+import AdminLayout from "@/layouts/AdminLayout";
 import { testLogin } from "@/lib/test-login";
 import SuperAdminDashboard from "@/pages/super-admin/SuperAdminDashboard";
 import HomePage from "@/pages/HomePage";
@@ -343,7 +344,15 @@ function Router() {
       {/* <ProtectedRoute path="/admin/resources-setup" component={ResourcesSetupPage} /> */}
       <ProtectedRoute path="/faq-setup" component={FAQSetupPage} />
       <ProtectedRoute path="/launch-ready" component={LaunchReadyPage} />
-      <ProtectedRoute path="/media" component={MediaManagementPage} />
+      <ProtectedRoute 
+        path="/media"
+        component={() => (
+          <AdminLayout>
+            <MediaManagementPage />
+          </AdminLayout>
+        )}
+        allowedRoles={['admin', 'super_admin', 'editor']} 
+      />
       
       {/* Page Builder routes */}
       <ProtectedRoute 
