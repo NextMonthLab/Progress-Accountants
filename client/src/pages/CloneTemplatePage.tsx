@@ -236,6 +236,55 @@ const CloneTemplatePage: React.FC = () => {
                     This process will create a new tenant with its own configuration. The process may take a few moments to complete.
                   </AlertDescription>
                 </Alert>
+
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="text-lg">How Your Site Will Connect</CardTitle>
+                    <CardDescription>
+                      Understanding the NextMonth ecosystem architecture
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="space-y-2">
+                      <h4 className="font-medium">Independent Instance</h4>
+                      <p className="text-sm text-muted-foreground">
+                        Your new site will be a completely independent instance with:
+                      </p>
+                      <ul className="list-disc list-inside text-sm space-y-1 pl-4">
+                        <li>Separate database</li>
+                        <li>Separate user accounts</li>
+                        <li>Separate public pages</li>
+                        <li>Full control over your business data</li>
+                      </ul>
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <h4 className="font-medium">NextMonthDev Central Hub</h4>
+                      <p className="text-sm text-muted-foreground">
+                        The central platform that connects all sites:
+                      </p>
+                      <ul className="list-disc list-inside text-sm space-y-1 pl-4">
+                        <li>Provides system-wide tools through the Marketplace</li>
+                        <li>Delivers blueprints and upgrades</li>
+                        <li>Monitors system health</li>
+                        <li>Enables secure inter-client communication</li>
+                      </ul>
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <h4 className="font-medium">Business Networking</h4>
+                      <p className="text-sm text-muted-foreground">
+                        Optional connectivity between client sites via secure API:
+                      </p>
+                      <ul className="list-disc list-inside text-sm space-y-1 pl-4">
+                        <li>Share only what you choose to make public</li>
+                        <li>Connect with other businesses on the platform</li>
+                        <li>Send secure messages across sites</li>
+                        <li>Your private data always remains private</li>
+                      </ul>
+                    </div>
+                  </CardContent>
+                </Card>
                 
                 <div className="flex justify-end space-x-3">
                   <Button variant="outline" onClick={() => setCurrentStep('variant')}>
@@ -269,6 +318,31 @@ const CloneTemplatePage: React.FC = () => {
                     <p className="text-muted-foreground text-center max-w-md mb-6">
                       Your new tenant instance has been created successfully.
                     </p>
+
+                    <div className="border rounded-lg p-4 w-full max-w-md mb-6">
+                      <h4 className="font-medium mb-2 text-center">NextMonth Ecosystem</h4>
+                      <div className="flex flex-col items-center space-y-2">
+                        <div className="bg-blue-100 p-3 rounded-lg w-full max-w-sm text-center font-medium">
+                          NextMonth Hub
+                        </div>
+                        <div className="h-8 w-px bg-gray-300 relative">
+                          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-white px-2">
+                            <span className="text-xs">API</span>
+                          </div>
+                        </div>
+                        <div className="grid grid-cols-2 gap-4 w-full max-w-sm">
+                          <div className="bg-green-100 p-2 rounded-lg text-center text-sm font-medium">
+                            Client Site A
+                          </div>
+                          <div className="bg-primary/20 p-2 rounded-lg text-center text-sm font-medium border-2 border-primary">
+                            Your New Site
+                          </div>
+                        </div>
+                      </div>
+                      <p className="text-xs text-center mt-4 text-muted-foreground">
+                        Your new site is fully independent but can optionally connect to other sites via the NextMonth Hub.
+                      </p>
+                    </div>
                     
                     {newTenantId && (
                       <div className="bg-muted rounded-lg p-4 w-full max-w-md flex justify-between items-center">
