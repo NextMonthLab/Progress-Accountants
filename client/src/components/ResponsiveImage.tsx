@@ -55,10 +55,10 @@ export const ResponsiveImage: React.FC<ResponsiveImageProps> = ({
     >
       <picture>
         {/* Different source formats and breakpoints */}
-        {sources.sm && sources.sm !== src && <source media="(max-width: 640px)" srcSet={sources.sm} />}
-        {sources.md && sources.md !== src && <source media="(min-width: 641px) and (max-width: 768px)" srcSet={sources.md} />}
-        {sources.lg && sources.lg !== src && <source media="(min-width: 769px) and (max-width: 1024px)" srcSet={sources.lg} />}
-        {sources.xl && sources.xl !== src && <source media="(min-width: 1025px)" srcSet={sources.xl} />}
+        {'sm' in sources && sources.sm !== src && <source media="(max-width: 640px)" srcSet={sources.sm} />}
+        {'md' in sources && sources.md !== src && <source media="(min-width: 641px) and (max-width: 768px)" srcSet={sources.md} />}
+        {'lg' in sources && sources.lg !== src && <source media="(min-width: 769px) and (max-width: 1024px)" srcSet={sources.lg} />}
+        {'xl' in sources && sources.xl !== src && <source media="(min-width: 1025px)" srcSet={sources.xl} />}
         
         {/* Fallback image */}
         <OptimizedImage
