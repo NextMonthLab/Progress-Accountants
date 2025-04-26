@@ -59,16 +59,19 @@ const EntrepreneurSupportPage = () => {
       setIsLoading(true);
       try {
         // Check if the tenant is set up for Solo Entrepreneur mode
-        if (tenant?.featureFlags) {
-          setIsSoloEntrepreneur(tenant.featureFlags.entrepreneurSupport === true);
+        // The customization field contains feature flags as JSON
+        if (tenant?.customization) {
+          const featureFlags = tenant.customization as any;
+          setIsSoloEntrepreneur(featureFlags.entrepreneurSupport === true || tenant.starterType === 'solo');
+        } else {
+          // For development purposes, enable by default
+          setIsSoloEntrepreneur(true);
         }
         
         // Load journal entries and news for authorized users
-        if (isSoloEntrepreneur) {
-          await loadJournalEntries();
-          await loadNews();
-          await loadInsights();
-        }
+        await loadJournalEntries();
+        await loadNews();
+        await loadInsights();
       } catch (error) {
         console.error("Error checking access:", error);
         toast({
@@ -82,7 +85,7 @@ const EntrepreneurSupportPage = () => {
     };
 
     checkAccess();
-  }, [user, tenant, isSoloEntrepreneur]);
+  }, [user, tenant]);
 
   const loadJournalEntries = async () => {
     // In a real implementation, this would fetch from the API
