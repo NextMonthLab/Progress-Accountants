@@ -19,7 +19,6 @@ const MenuManagementPage = lazy(() => import("@/pages/admin/MenuManagementPage")
 const DomainMappingPage = lazy(() => import("@/pages/DomainMappingPage"));
 const SotManagementPage = lazy(() => import("@/pages/SotManagementPage"));
 // Import the EntrepreneurSupportPage component for admin routes
-const EntrepreneurSupportPage = lazy(() => import("@/pages/EntrepreneurSupportPage"));
 const ConversationInsightsPage = lazy(() => import("@/pages/ConversationInsightsPage"));
 const InsightsDashboardPage = lazy(() => import("@/pages/InsightsDashboardPage"));
 const InsightUsersPage = lazy(() => import("@/pages/InsightUsersPage"));
