@@ -27,9 +27,9 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
           >
             <span className="text-xs text-muted-foreground">Powered by</span>
             <img 
-              src="https://res.cloudinary.com/drl0fxrkq/image/upload/v1744814861/New_Logo_white_rlemnm.png" 
+              src="https://res.cloudinary.com/drl0fxrkq/image/upload/v1744814862/New_Logo_wwntva.png" 
               alt="NextMonth Logo" 
-              className="h-8 dark:brightness-100 brightness-0"
+              className="h-[3.75rem]"
             />
           </a>
         </div>
