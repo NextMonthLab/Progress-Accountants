@@ -4,6 +4,7 @@ import { setupVite, serveStatic, log } from "./vite";
 import cron from 'node-cron';
 import { triggerBackup } from './backup';
 import { migratePageBuilderTables } from './db-migrate-page-builder';
+import { fixPageBuilderTables, addMissingColumns } from './db-migrate-page-builder-fix';
 import { migrateVersionControlTables } from './db-migrate-version-control';
 import migrateNavigationTables from './db-migrate-navigation';
 import { migrateDomainMappingsTables } from './db-migrate-domain-mappings';
@@ -64,6 +65,9 @@ app.use((req, res, next) => {
   try {
     console.log('Running Page Builder migrations...');
     await migratePageBuilderTables();
+    console.log('Running Page Builder fixes...');
+    await fixPageBuilderTables();
+    await addMissingColumns();
     console.log('Running Version Control migrations...');
     await migrateVersionControlTables();
     console.log('Running Navigation Menu migrations...');
