@@ -14,7 +14,9 @@ import {
   Pin,
   PinOff,
   Globe,
-  Circle
+  Circle,
+  Brain,
+  Sparkles
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -27,6 +29,7 @@ import {
 import { getSiteBranding } from '@/lib/api';
 import { defaultSiteBranding, SiteBranding } from '@shared/site_branding';
 import { NavigationItem, NavigationLink, NavigationSubmenu, NavigationGroup } from '@/types/navigation';
+import SmartActivityPanel from './SmartActivityPanel';
 
 // Admin sidebar logo component - similar to the current implementation
 function SidebarLogo({ collapsed }: { collapsed: boolean }) {
@@ -502,6 +505,9 @@ const DynamicSidebar: React.FC = () => {
           })}
         </div>
 
+        {/* Smart Activity Panel - Shows AI Insights */}
+        <SmartActivityPanel collapsed={sidebarCollapsed} />
+        
         {/* Sidebar Footer */}
         <div className="p-3 border-t border-gray-200 bg-gradient-to-r from-white to-orange-50/30">
           <Link href="/">

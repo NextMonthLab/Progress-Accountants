@@ -2,6 +2,7 @@ import { ReactNode } from "react";
 import AdminSidebar from "@/components/AdminSidebar";
 import DynamicSidebar from "@/components/navigation/DynamicSidebar";
 import QuickSelectMenu from "@/components/navigation/QuickSelectMenu";
+import SmartContextBanner from "@/components/SmartContextBanner";
 import { NavigationProvider } from "@/contexts/NavigationContext";
 
 interface AdminLayoutProps {
