@@ -139,6 +139,19 @@ function Router() {
       
       {/* Admin routes (require admin or super admin) */}
       <ProtectedRoute 
+        path="/admin" 
+        component={() => {
+          const [, setLocation] = useLocation();
+          useEffect(() => {
+            setLocation('/admin/dashboard');
+          }, [setLocation]);
+          return <div className="flex items-center justify-center min-h-screen">
+            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+          </div>;
+        }}
+        allowedRoles={['admin', 'super_admin', 'editor']} 
+      />
+      <ProtectedRoute 
         path="/admin/crm" 
         component={CRMViewPage} 
         allowedRoles={['admin', 'super_admin', 'editor']} 
