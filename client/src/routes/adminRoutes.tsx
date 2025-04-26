@@ -1,14 +1,11 @@
-import { lazy, Suspense } from 'react';
+import { lazy } from 'react';
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 
-// EMERGENCY FIX: Direct import critical admin pages to avoid lazy loading issues
-import AdminDashboardPage from "@/pages/AdminDashboardPage";
-import EntrepreneurSupport from "@/pages/admin/EntrepreneurSupport";
-
-// Lazy load remaining components
+// Lazy load admin components
 const SuperAdminDashboard = lazy(() => import("@/pages/super-admin/SuperAdminDashboard"));
 const CRMViewPage = lazy(() => import("@/pages/CRMViewPage"));
 const CRMViewPageEnhanced = lazy(() => import("@/pages/CRMViewPageEnhanced"));
+const AdminDashboardPage = lazy(() => import("@/pages/AdminDashboardPage"));
 const AdminSettingsPage = lazy(() => import("@/pages/AdminSettingsPage"));
 const SEOConfigManagerPage = lazy(() => import("@/pages/SEOConfigManagerPage"));
 const BrandManagerPage = lazy(() => import("@/pages/BrandManagerPage"));
@@ -21,7 +18,7 @@ const CompanionSettingsPage = lazy(() => import("@/pages/admin/companion-setting
 const MenuManagementPage = lazy(() => import("@/pages/admin/MenuManagementPage"));
 const DomainMappingPage = lazy(() => import("@/pages/DomainMappingPage"));
 const SotManagementPage = lazy(() => import("@/pages/SotManagementPage"));
-// Import the EntrepreneurSupportPage component for admin routes
+const EntrepreneurSupportPage = lazy(() => import("@/pages/EntrepreneurSupportPage"));
 const ConversationInsightsPage = lazy(() => import("@/pages/ConversationInsightsPage"));
 const InsightsDashboardPage = lazy(() => import("@/pages/InsightsDashboardPage"));
 const InsightUsersPage = lazy(() => import("@/pages/InsightUsersPage"));
@@ -30,6 +27,7 @@ const ScopeRequestPage = lazy(() => import("@/pages/ScopeRequestPage"));
 const CloneTemplatePage = lazy(() => import("@/pages/CloneTemplatePage"));
 const MediaManagementPage = lazy(() => import("@/pages/MediaManagementPage"));
 // Removed Image Optimization Demo page in favor of background optimization
+const EntrepreneurSupport = lazy(() => import("@/pages/admin/EntrepreneurSupport"));
 
 // Page builder pages
 const PageBuilderListPage = lazy(() => import("@/pages/PageBuilderListPage"));
@@ -38,12 +36,6 @@ const PageBuilderPage = lazy(() => import("@/pages/PageBuilderPage"));
 export function AdminRoutes() {
   return (
     <>
-      {/* Add index route for admin - EMERGENCY FIX */}
-      <ProtectedRoute 
-        path="/admin" 
-        component={AdminDashboardPage} 
-        allowedRoles={['admin', 'super_admin', 'editor']} 
-      />
       {/* Super Admin routes (require super admin privileges) */}
       <ProtectedRoute 
         path="/super-admin" 
@@ -127,14 +119,8 @@ export function AdminRoutes() {
         component={ConversationInsightsPage} 
         allowedRoles={['admin', 'super_admin', 'editor']} 
       />
-      {/* Support both formats for emergency access */}
       <ProtectedRoute 
         path="/admin/dashboard" 
-        component={AdminDashboardPage} 
-        allowedRoles={['admin', 'super_admin', 'editor']} 
-      />
-      <ProtectedRoute 
-        path="/admin-dashboard" 
         component={AdminDashboardPage} 
         allowedRoles={['admin', 'super_admin', 'editor']} 
       />
@@ -168,16 +154,11 @@ export function AdminRoutes() {
         component={MediaManagementPage} 
       />
       
-      {/* Entrepreneur Support routes - both formats */}
+      {/* Entrepreneur Support route */}
       <ProtectedRoute 
         path="/admin/entrepreneur-support" 
-        component={EntrepreneurSupport} 
-        allowedRoles={['admin', 'super_admin', 'editor']} 
-      />
-      <ProtectedRoute 
-        path="/admin-entrepreneur-support" 
-        component={EntrepreneurSupport} 
-        allowedRoles={['admin', 'super_admin', 'editor']} 
+        component={EntrepreneurSupportPage} 
+        allowedRoles={['admin', 'super_admin', 'client']} 
       />
       
       {/* Page Builder routes */}

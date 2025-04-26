@@ -21,11 +21,12 @@ export const UpgradeAnnouncement = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [, navigate] = useLocation();
   
-  // Completely disabled for mobile compatibility
+  // Check if the announcement has been dismissed before
   useEffect(() => {
-    // Force the announcement to be considered as seen
-    localStorage.setItem('blueprint_v1.1.1_announcement_seen', 'true');
-    setIsOpen(false);
+    const hasSeenAnnouncement = localStorage.getItem('blueprint_v1.1.1_announcement_seen');
+    if (!hasSeenAnnouncement) {
+      setIsOpen(true);
+    }
   }, []);
 
   const handleDismiss = () => {
@@ -42,22 +43,21 @@ export const UpgradeAnnouncement = () => {
 
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50 bg-black/50 p-4">
-      <Card className="w-full max-w-2xl shadow-xl relative">
-        {/* Mobile-friendly dismiss button - large, fixed to top-right corner */}
-        <Button 
-          variant="ghost" 
-          size="icon" 
-          onClick={handleDismiss} 
-          className="absolute top-2 right-2 z-10 bg-primary/90 text-primary-foreground hover:bg-primary rounded-full shadow-md"
-          aria-label="Close"
-        >
-          <X className="h-6 w-6" />
-        </Button>
-        
-        <CardHeader className="bg-primary text-primary-foreground pb-4 pr-12">
-          <div className="flex items-center gap-2">
-            <AlertCircle className="h-6 w-6" />
-            <CardTitle>Blueprint v1.1.1 Upgrade</CardTitle>
+      <Card className="w-full max-w-2xl shadow-xl">
+        <CardHeader className="bg-primary text-primary-foreground pb-4">
+          <div className="flex justify-between items-start">
+            <div className="flex items-center gap-2">
+              <AlertCircle className="h-6 w-6" />
+              <CardTitle>Blueprint v1.1.1 Upgrade</CardTitle>
+            </div>
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              onClick={handleDismiss} 
+              className="text-primary-foreground hover:bg-primary/90"
+            >
+              <X className="h-5 w-5" />
+            </Button>
           </div>
         </CardHeader>
         <CardContent className="pt-6 pb-3">
@@ -101,22 +101,15 @@ export const UpgradeAnnouncement = () => {
           </div>
         </CardContent>
         <Separator />
-        <CardFooter className="flex flex-col sm:flex-row justify-between pt-4 gap-4">
+        <CardFooter className="flex justify-between pt-4">
           <p className="text-sm text-muted-foreground">
             No action required—you're already upgraded.
           </p>
-          <div className="flex gap-3 w-full sm:w-auto justify-center sm:justify-end">
-            <Button 
-              variant="outline" 
-              onClick={handleDismiss}
-              className="px-6 py-2 text-base"
-            >
+          <div className="flex gap-3">
+            <Button variant="outline" onClick={handleDismiss}>
               Got it
             </Button>
-            <Button 
-              onClick={handleExploreBlueprint}
-              className="px-6 py-2 text-base"
-            >
+            <Button onClick={handleExploreBlueprint}>
               Explore Blueprint
             </Button>
           </div>

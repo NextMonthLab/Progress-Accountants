@@ -58,8 +58,7 @@ export function ToolsRoutes() {
       <ProtectedRoute 
         path="/entrepreneur-support" 
         component={EntrepreneurSupportPage}
-        allowedRoles={['client', 'admin', 'super_admin', 'editor']} 
-        exact
+        allowedRoles={['client', 'admin', 'super_admin']} 
       />
       <ProtectedRoute path="/marketplace" component={EnhancedMarketplacePage} />
       <ProtectedRoute path="/installed-tools" component={InstalledToolsPage} />

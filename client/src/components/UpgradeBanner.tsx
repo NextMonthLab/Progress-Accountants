@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Bell, ChevronRight, MessageSquare, X } from 'lucide-react';
+import { Bell, ChevronRight, MessageSquare } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -23,9 +23,14 @@ export const UpgradeBanner = () => {
   const [, navigate] = useLocation();
   
   useEffect(() => {
-    // Completely disable banner for mobile compatibility
-    localStorage.setItem('blueprint_v1.1.1_banner_dismissed', Date.now().toString());
-    setIsVisible(false);
+    // Show the banner for 14 days after the upgrade
+    const upgradeBannerDismissed = localStorage.getItem('blueprint_v1.1.1_banner_dismissed');
+    const timestamp = parseInt(upgradeBannerDismissed || '0', 10);
+    const twoWeeksInMs = 14 * 24 * 60 * 60 * 1000;
+    
+    if (!upgradeBannerDismissed || (Date.now() - timestamp) < twoWeeksInMs) {
+      setIsVisible(true);
+    }
   }, []);
 
   const handleDismiss = () => {
@@ -40,21 +45,10 @@ export const UpgradeBanner = () => {
   if (!isVisible) return null;
 
   return (
-    <Alert className="mb-4 border-primary/20 bg-primary/5 relative">
-      {/* Mobile-friendly dismiss button for small screens */}
-      <Button 
-        variant="ghost" 
-        size="icon" 
-        onClick={handleDismiss}
-        className="absolute top-2 right-2 md:hidden bg-primary/10 hover:bg-primary/20 rounded-full p-1 h-8 w-8"
-        aria-label="Dismiss"
-      >
-        <X className="h-5 w-5" />
-      </Button>
-      
-      <div className="flex flex-col md:flex-row md:items-start justify-between">
-        <div className="flex pr-8 md:pr-0">
-          <Bell className="h-4 w-4 mt-1 mr-2 flex-shrink-0" />
+    <Alert className="mb-4 border-primary/20 bg-primary/5">
+      <div className="flex items-start justify-between">
+        <div className="flex">
+          <Bell className="h-4 w-4 mt-1 mr-2" />
           <div>
             <AlertTitle className="mb-1 flex items-center gap-2">
               Blueprint Upgraded
@@ -67,11 +61,11 @@ export const UpgradeBanner = () => {
             </AlertDescription>
           </div>
         </div>
-        <div className="flex items-center gap-2 mt-3 md:mt-0 md:ml-4 justify-end">
-          <Button variant="outline" size="sm" onClick={handleDismiss} className="hidden md:inline-flex">
+        <div className="flex items-center gap-2 ml-4">
+          <Button variant="outline" size="sm" onClick={handleDismiss}>
             Dismiss
           </Button>
-          <Button size="sm" className="flex items-center py-2 px-4" onClick={handleExploreUpgrade}>
+          <Button size="sm" className="flex items-center" onClick={handleExploreUpgrade}>
             Details
             <ChevronRight className="h-3 w-3 ml-1" />
           </Button>

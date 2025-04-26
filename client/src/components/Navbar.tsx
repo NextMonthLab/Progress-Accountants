@@ -3,7 +3,7 @@ import { Link, useLocation } from "wouter";
 import { 
   Menu, X, LayoutDashboard, ChevronDown, Users, Briefcase, 
   Phone, Layout, BookOpen, FastForward, Sparkles, UserPlus,
-  ArrowLeftCircle, Newspaper, LogOut
+  ArrowLeftCircle, Newspaper
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/use-auth";
@@ -85,7 +85,7 @@ type MenuGroup = {
 // This navbar is ONLY for public-facing pages
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { user, logoutMutation } = useAuth();
+  const { user } = useAuth();
   const { tenant } = useTenant();
   const isStaff = user?.userType === 'admin' || user?.userType === 'super_admin' || user?.userType === 'editor' || user?.isSuperAdmin;
   const [location] = useLocation();
@@ -257,45 +257,6 @@ export default function Navbar() {
             </Button>
           )}
           
-          {/* Logout button for any authenticated user */}
-          {user && (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-                  {user.avatarUrl ? (
-                    <img
-                      src={user.avatarUrl}
-                      alt={`${user.username}'s profile`}
-                      className="h-8 w-8 rounded-full object-cover"
-                    />
-                  ) : (
-                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-muted">
-                      {user.name ? user.name.charAt(0).toUpperCase() : user.username.charAt(0).toUpperCase()}
-                    </div>
-                  )}
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem asChild>
-                  <Link href="/profile" className="cursor-pointer">Profile</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link href="/profile/settings" className="cursor-pointer">Settings</Link>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem 
-                  className="text-red-500 cursor-pointer"
-                  onClick={() => logoutMutation.mutate()}
-                >
-                  <LogOut className="mr-2 h-4 w-4" />
-                  <span>Logout</span>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          )}
-          
           <a href="#book-call">
             <Button 
               style={{ 
@@ -412,50 +373,6 @@ export default function Navbar() {
                   Admin Dashboard
                 </Link>
               </Button>
-            </div>
-          )}
-          
-          {/* User Profile & Logout section */}
-          {user && (
-            <div className="py-2">
-              <h4 className="text-sm uppercase tracking-wider text-gray-500 mb-2 px-2">My Account</h4>
-              
-              <div className="flex items-center mb-3 px-2">
-                {user.avatarUrl ? (
-                  <img 
-                    src={user.avatarUrl} 
-                    alt={`${user.username}'s profile`}
-                    className="h-10 w-10 rounded-full mr-3 object-cover" 
-                  />
-                ) : (
-                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-muted mr-3">
-                    {user.name ? user.name.charAt(0).toUpperCase() : user.username.charAt(0).toUpperCase()}
-                  </div>
-                )}
-                <div>
-                  <p className="font-medium">{user.name || user.username}</p>
-                  <p className="text-xs text-muted-foreground">{user.email}</p>
-                </div>
-              </div>
-              
-              <Link 
-                href="/profile" 
-                className="flex items-center py-2 px-2 font-medium hover:text-[var(--orange)] transition duration-300 no-underline"
-                onClick={closeMenu}
-              >
-                Profile Settings
-              </Link>
-              
-              <button
-                className="flex items-center py-2 px-2 w-full text-left font-medium text-red-500 hover:text-red-600 transition duration-300"
-                onClick={() => {
-                  closeMenu();
-                  logoutMutation.mutate();
-                }}
-              >
-                <LogOut className="h-4 w-4 mr-2" />
-                Logout
-              </button>
             </div>
           )}
           

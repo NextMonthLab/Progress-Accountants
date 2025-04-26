@@ -7,8 +7,6 @@ import { PublicRoutes } from './publicRoutes';
 import { AdminRoutes } from './adminRoutes';
 import { ToolsRoutes } from './toolsRoutes';
 import { ClientRoutes } from './clientRoutes';
-// EMERGENCY: Direct access routes with no guards or layouts
-import { EmergencyRoutes } from './emergencyRoutes';
 
 // Lazy load not found component
 const NotFound = lazy(() => import("@/pages/not-found"));
@@ -24,9 +22,6 @@ export function AppRouter() {
   return (
     <Suspense fallback={<LoadingFallback />}>
       <Switch>
-        {/* EMERGENCY Routes - direct access with no guards */}
-        <EmergencyRoutes />
-        
         {/* Public Routes */}
         <PublicRoutes />
         
@@ -40,9 +35,7 @@ export function AppRouter() {
         <ClientRoutes />
         
         {/* Not Found Route */}
-        <Route>
-          <NotFound />
-        </Route>
+        <Route component={NotFound} />
       </Switch>
     </Suspense>
   );

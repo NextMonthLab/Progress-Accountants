@@ -9,7 +9,6 @@ interface ProtectedRouteProps {
   component: any; // Using any to bypass the type issue with wouter's Route component expectations
   allowedRoles?: UserRole[];
   requireSuperAdmin?: boolean;
-  exact?: boolean;
 }
 
 export function ProtectedRoute({
@@ -17,7 +16,6 @@ export function ProtectedRoute({
   component: Component,
   allowedRoles,
   requireSuperAdmin = false,
-  exact = false,
 }: ProtectedRouteProps) {
   const { user, isLoading } = useAuth();
   const [, setLocation] = useLocation();
@@ -42,7 +40,7 @@ export function ProtectedRoute({
   // If still loading the user, display a loader
   if (isLoading) {
     return (
-      <Route path={path} {...(exact ? { exact: true } : {})}>
+      <Route path={path}>
         <div className="flex items-center justify-center min-h-screen">
           <Loader2 className="h-8 w-8 animate-spin text-primary" />
         </div>
@@ -53,7 +51,7 @@ export function ProtectedRoute({
   // If not authenticated, redirect to auth page
   if (!user) {
     return (
-      <Route path={path} {...(exact ? { exact: true } : {})}>
+      <Route path={path}>
         <Redirect to="/auth" />
       </Route>
     );
@@ -62,7 +60,7 @@ export function ProtectedRoute({
   // If super admin access is required but user is not a super admin
   if (requireSuperAdmin && !hasSuperAdminAccess()) {
     return (
-      <Route path={path} {...(exact ? { exact: true } : {})}>
+      <Route path={path}>
         <div className="flex flex-col items-center justify-center min-h-screen">
           <h1 className="text-2xl font-bold mb-4">Access Restricted</h1>
           <p className="text-gray-600 mb-4">You need super admin privileges to access this page.</p>
@@ -80,7 +78,7 @@ export function ProtectedRoute({
   // If role check is required but user doesn't have any of the allowed roles
   if (allowedRoles && !hasAllowedRole()) {
     return (
-      <Route path={path} {...(exact ? { exact: true } : {})}>
+      <Route path={path}>
         <div className="flex flex-col items-center justify-center min-h-screen">
           <h1 className="text-2xl font-bold mb-4">Access Restricted</h1>
           <p className="text-gray-600 mb-4">You don't have permission to access this page.</p>
@@ -96,10 +94,5 @@ export function ProtectedRoute({
   }
   
   // If all checks pass, render the component
-  // CRITICAL FIX: Ensure component renders properly by using render prop instead of component prop
-  return (
-    <Route path={path} {...(exact ? { exact: true } : {})}>
-      <Component />
-    </Route>
-  );
+  return <Route path={path} component={Component} />;
 }

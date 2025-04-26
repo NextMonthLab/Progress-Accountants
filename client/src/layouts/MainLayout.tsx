@@ -25,8 +25,7 @@ export default function MainLayout({ children }: MainLayoutProps) {
     location === '/installed-tools' || 
     location === '/tools-hub' ||
     location === '/media' ||
-    location === '/launch-ready' ||
-    location === '/entrepreneur-support';
+    location === '/launch-ready';
     
   // Public routes that should NEVER use AdminLayout even if logged in
   const alwaysPublicRoutes = [
@@ -49,14 +48,8 @@ export default function MainLayout({ children }: MainLayoutProps) {
     location === '/admin/insight-users';
     
   // Use AdminLayout for admin routes, except those with their own layout and always public routes
-  // CRITICAL FIX: Apply AdminLayout properly to admin routes
   if (isAdminRoute && !hasOwnLayout && !alwaysPublicRoutes.includes(location)) {
-    console.log('Rendering admin layout for path:', location);
-    return (
-      <AdminLayout>
-        {children}
-      </AdminLayout>
-    );
+    return <AdminLayout>{children}</AdminLayout>;
   }
   
   // Use standard layout for public-facing pages
