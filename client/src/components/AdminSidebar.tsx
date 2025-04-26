@@ -390,6 +390,14 @@ export default function AdminSidebar() {
           badge: { text: "New", variant: "new" },
           isNew: true
         },
+        { 
+          title: "Clone Template", 
+          href: "/admin/clone-template", 
+          icon: <Lightbulb className="h-5 w-5" />,
+          requiresStaff: true,
+          badge: { text: "New", variant: "new" },
+          isNew: true
+        },
       ]
     }
   ];

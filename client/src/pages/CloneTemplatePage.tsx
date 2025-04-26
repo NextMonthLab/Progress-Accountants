@@ -1,321 +1,325 @@
 import React, { useState } from 'react';
 import { useLocation } from 'wouter';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Separator } from "@/components/ui/separator";
-import { apiRequest } from "@/lib/queryClient";
+import { AlertCircle, CheckCircle2, Copy, FileWarning, LoaderCircle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { Loader2, ArrowRight, Check } from 'lucide-react';
+import { apiRequest } from '@/lib/queryClient';
 import SiteVariantSelector from '@/components/site-variant/SiteVariantSelector';
 import AdminLayout from '@/layouts/AdminLayout';
-import { type SiteVariantConfig } from '@shared/site_variants';
+import { SiteVariantConfig } from '@shared/site_variants';
 
+// Steps of the cloning process
 type CloneStep = 'template' | 'variant' | 'confirmation' | 'processing' | 'complete';
 
 const CloneTemplatePage: React.FC = () => {
-  const [, setLocation] = useLocation();
-  const [currentStep, setCurrentStep] = useState<CloneStep>('template');
-  const [templateId, setTemplateId] = useState<string>('progress-template');
-  const [tenantId, setTenantId] = useState<string>('');
-  const [isProcessing, setIsProcessing] = useState(false);
-  const [selectedVariant, setSelectedVariant] = useState<SiteVariantConfig | null>(null);
+  const [, navigate] = useLocation();
   const { toast } = useToast();
-
-  // Handle template selection
-  const handleTemplateSelect = (id: string) => {
-    setTemplateId(id);
-  };
-
-  // Proceed to variant selection
-  const handleProceedToVariant = async () => {
+  const [currentStep, setCurrentStep] = useState<CloneStep>('template');
+  const [selectedVariant, setSelectedVariant] = useState<SiteVariantConfig | null>(null);
+  const [cloneStatus, setCloneStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [newTenantId, setNewTenantId] = useState<string | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  
+  const handleTemplateSelect = async () => {
     try {
-      setIsProcessing(true);
-      
-      // In a real implementation, we would call an API to start the cloning process
-      // and get the new tenant ID. For now, we'll use a placeholder tenant ID
-      // that would be created by the server.
-      
-      // Simulating API call to create a new tenant
-      const response = await apiRequest(
-        'POST', 
-        '/api/tenant/clone', 
-        { templateId }
-      );
-      
-      if (!response.ok) {
-        throw new Error('Failed to initialize template cloning');
-      }
-      
-      const data = await response.json();
-      setTenantId(data.tenantId);
-      
-      // Move to variant selection step
+      // In a real implementation, we would verify the template selection
+      // For now, we'll just move to the variant selection step
       setCurrentStep('variant');
     } catch (error) {
-      console.error('Error initializing template clone:', error);
       toast({
         title: "Error",
-        description: "Failed to initialize template cloning. Please try again.",
+        description: "Failed to select template. Please try again.",
         variant: "destructive"
       });
-    } finally {
-      setIsProcessing(false);
     }
   };
-
-  // Handle variant selection
+  
   const handleVariantSelected = (variant: SiteVariantConfig) => {
     setSelectedVariant(variant);
   };
-
-  // Complete variant selection and move to confirmation
-  const handleVariantSelectionComplete = () => {
+  
+  const handleVariantConfirmed = () => {
     setCurrentStep('confirmation');
   };
-
-  // Proceed with cloning
-  const handleProceedWithCloning = async () => {
-    try {
-      setIsProcessing(true);
-      setCurrentStep('processing');
-      
-      // In a real implementation, we would call an API to finalize the cloning process
-      // For now, we'll simulate a delay to represent the cloning process
-      
-      setTimeout(() => {
-        setCurrentStep('complete');
-        setIsProcessing(false);
-      }, 3000);
-      
-    } catch (error) {
-      console.error('Error during template cloning:', error);
+  
+  const handleConfirmClone = async () => {
+    if (!selectedVariant) {
       toast({
         title: "Error",
-        description: "An error occurred during the cloning process. Please try again.",
+        description: "Please select a site variant first",
         variant: "destructive"
       });
-      setIsProcessing(false);
+      return;
+    }
+    
+    try {
+      setCloneStatus('loading');
+      setCurrentStep('processing');
+      
+      // Call API to clone the template with the selected variant
+      const response = await apiRequest('POST', '/api/tenant/clone', {
+        templateId: 'progress-template', // Default template ID
+        variantId: selectedVariant.id,
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to clone template');
+      }
+      
+      const data = await response.json();
+      setNewTenantId(data.tenantId);
+      setCloneStatus('success');
+      setCurrentStep('complete');
+      
+      toast({
+        title: "Success",
+        description: "Template cloned successfully!",
+      });
+    } catch (error) {
+      console.error('Error cloning template:', error);
+      setCloneStatus('error');
+      setErrorMessage(error instanceof Error ? error.message : 'An unknown error occurred');
+      
+      toast({
+        title: "Error",
+        description: "Failed to clone template. Please try again.",
+        variant: "destructive"
+      });
     }
   };
-
-  // Go to the newly created tenant
-  const handleGoToNewTenant = () => {
-    // Navigate to the new tenant's dashboard
-    setLocation(`/admin/dashboard?tenantId=${tenantId}`);
+  
+  const resetProcess = () => {
+    setCurrentStep('template');
+    setSelectedVariant(null);
+    setCloneStatus('idle');
+    setNewTenantId(null);
+    setErrorMessage(null);
+  };
+  
+  const navigateToNewTenant = () => {
+    if (newTenantId) {
+      navigate(`/admin/tenant/${newTenantId}/dashboard`);
+    }
+  };
+  
+  // Helper to copy tenant ID to clipboard
+  const copyTenantId = () => {
+    if (newTenantId) {
+      navigator.clipboard.writeText(newTenantId);
+      toast({
+        title: "Copied",
+        description: "Tenant ID copied to clipboard",
+      });
+    }
   };
 
   return (
     <AdminLayout>
-      <div className="container max-w-4xl py-10">
-        <h1 className="text-3xl font-bold tracking-tight mb-6">Clone Template</h1>
-        
+      <div className="container max-w-4xl py-8">
         <div className="mb-8">
-          <div className="flex items-center">
-            <div className={`flex h-10 w-10 items-center justify-center rounded-full ${
-              currentStep === 'template' ? 'bg-primary text-primary-foreground' : 
-              currentStep === 'variant' || currentStep === 'confirmation' || currentStep === 'processing' || currentStep === 'complete' ? 
-              'bg-primary text-primary-foreground' : 'border border-input bg-background'
-            }`}>
-              {currentStep === 'template' ? '1' : <Check className="h-5 w-5" />}
-            </div>
-            <div className="ml-4 flex-1">
-              <p className="font-medium">Select Template</p>
-              <p className="text-sm text-muted-foreground">Choose which template to clone</p>
-            </div>
-          </div>
-          
-          <div className="my-2 ml-5 h-[calc(28px)] w-px bg-border"></div>
-          
-          <div className="flex items-center">
-            <div className={`flex h-10 w-10 items-center justify-center rounded-full ${
-              currentStep === 'variant' ? 'bg-primary text-primary-foreground' : 
-              currentStep === 'confirmation' || currentStep === 'processing' || currentStep === 'complete' ? 
-              'bg-primary text-primary-foreground' : 'border border-input bg-background'
-            }`}>
-              {currentStep === 'variant' ? '2' : 
-               currentStep === 'confirmation' || currentStep === 'processing' || currentStep === 'complete' ? 
-               <Check className="h-5 w-5" /> : '2'}
-            </div>
-            <div className="ml-4 flex-1">
-              <p className="font-medium">Configure Variant</p>
-              <p className="text-sm text-muted-foreground">Select site variant configuration</p>
-            </div>
-          </div>
-          
-          <div className="my-2 ml-5 h-[calc(28px)] w-px bg-border"></div>
-          
-          <div className="flex items-center">
-            <div className={`flex h-10 w-10 items-center justify-center rounded-full ${
-              currentStep === 'confirmation' ? 'bg-primary text-primary-foreground' : 
-              currentStep === 'processing' || currentStep === 'complete' ? 
-              'bg-primary text-primary-foreground' : 'border border-input bg-background'
-            }`}>
-              {currentStep === 'confirmation' ? '3' : 
-               currentStep === 'processing' || currentStep === 'complete' ? 
-               <Check className="h-5 w-5" /> : '3'}
-            </div>
-            <div className="ml-4 flex-1">
-              <p className="font-medium">Confirmation</p>
-              <p className="text-sm text-muted-foreground">Review and confirm your selections</p>
-            </div>
-          </div>
-          
-          <div className="my-2 ml-5 h-[calc(28px)] w-px bg-border"></div>
-          
-          <div className="flex items-center">
-            <div className={`flex h-10 w-10 items-center justify-center rounded-full ${
-              currentStep === 'processing' || currentStep === 'complete' ? 
-              'bg-primary text-primary-foreground' : 'border border-input bg-background'
-            }`}>
-              {currentStep === 'complete' ? <Check className="h-5 w-5" /> : '4'}
-            </div>
-            <div className="ml-4 flex-1">
-              <p className="font-medium">Complete</p>
-              <p className="text-sm text-muted-foreground">Finalize and access your new site</p>
-            </div>
-          </div>
+          <h1 className="text-3xl font-bold tracking-tight">Clone Template</h1>
+          <p className="text-muted-foreground mt-2">
+            Create a new instance of the Progress platform with your preferred configuration
+          </p>
         </div>
         
-        <div className="mt-10">
-          {currentStep === 'template' && (
-            <div className="space-y-6">
-              <h2 className="text-2xl font-bold tracking-tight">Select Template</h2>
-              
-              <div className="grid grid-cols-1 gap-4">
-                <Card className={`cursor-pointer transition-all ${templateId === 'progress-template' ? 'border-2 border-primary' : ''}`}
-                      onClick={() => handleTemplateSelect('progress-template')}>
-                  <CardHeader>
-                    <CardTitle>Progress Accountants</CardTitle>
-                    <CardDescription>Professional accounting firm template with full client management</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-muted-foreground">Includes comprehensive client dashboard, financial reporting tools, and professional brand design.</p>
-                  </CardContent>
-                  <CardFooter className="flex justify-between border-t pt-4">
-                    <div className="text-xs text-muted-foreground">Latest Version: 1.1.1</div>
-                    {templateId === 'progress-template' && (
-                      <div className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold text-primary">
-                        Selected
-                      </div>
-                    )}
-                  </CardFooter>
-                </Card>
-              </div>
-              
-              <div className="flex justify-end mt-8">
-                <Button onClick={handleProceedToVariant} disabled={!templateId || isProcessing}>
-                  {isProcessing ? (
-                    <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Processing...
-                    </>
-                  ) : (
-                    <>
-                      Continue <ArrowRight className="ml-2 h-4 w-4" />
-                    </>
-                  )}
-                </Button>
+        <Card>
+          <CardHeader>
+            <div className="flex items-center justify-between">
+              <CardTitle>Template Cloning Wizard</CardTitle>
+              <div className="flex items-center space-x-2">
+                <div className={`h-2 w-8 rounded-full ${currentStep === 'template' || currentStep === 'variant' || currentStep === 'confirmation' || currentStep === 'processing' || currentStep === 'complete' ? 'bg-primary' : 'bg-muted'}`}></div>
+                <div className={`h-2 w-8 rounded-full ${currentStep === 'variant' || currentStep === 'confirmation' || currentStep === 'processing' || currentStep === 'complete' ? 'bg-primary' : 'bg-muted'}`}></div>
+                <div className={`h-2 w-8 rounded-full ${currentStep === 'confirmation' || currentStep === 'processing' || currentStep === 'complete' ? 'bg-primary' : 'bg-muted'}`}></div>
+                <div className={`h-2 w-8 rounded-full ${currentStep === 'processing' || currentStep === 'complete' ? 'bg-primary' : 'bg-muted'}`}></div>
+                <div className={`h-2 w-8 rounded-full ${currentStep === 'complete' ? 'bg-primary' : 'bg-muted'}`}></div>
               </div>
             </div>
-          )}
+            <CardDescription>
+              {currentStep === 'template' && "Step 1: Select the template you want to clone"}
+              {currentStep === 'variant' && "Step 2: Configure site variant options"}
+              {currentStep === 'confirmation' && "Step 3: Review and confirm your selection"}
+              {currentStep === 'processing' && "Step 4: Cloning in progress"}
+              {currentStep === 'complete' && "Complete: Your new instance is ready"}
+            </CardDescription>
+          </CardHeader>
           
-          {currentStep === 'variant' && tenantId && (
-            <SiteVariantSelector 
-              tenantId={tenantId} 
-              onVariantSelected={handleVariantSelected}
-              onComplete={handleVariantSelectionComplete}
-            />
-          )}
-          
-          {currentStep === 'confirmation' && selectedVariant && (
-            <div className="space-y-6">
-              <h2 className="text-2xl font-bold tracking-tight">Confirm Your Selections</h2>
-              
-              <Card>
-                <CardHeader>
-                  <CardTitle>Review Your Configuration</CardTitle>
-                  <CardDescription>Please review your selections before proceeding</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div>
-                    <h3 className="font-medium">Selected Template:</h3>
-                    <p>Progress Accountants</p>
+          <CardContent>
+            {currentStep === 'template' && (
+              <div className="space-y-6">
+                <Alert>
+                  <AlertCircle className="h-4 w-4" />
+                  <AlertTitle>Template Selection</AlertTitle>
+                  <AlertDescription>
+                    Currently only the Progress Accountants template is available for cloning.
+                  </AlertDescription>
+                </Alert>
+                
+                <Card className="border-2 border-primary">
+                  <CardHeader>
+                    <CardTitle>Progress Accountants Template</CardTitle>
+                    <CardDescription>
+                      Professional website template for accountants with comprehensive features
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <h4 className="font-medium mb-2">Features:</h4>
+                        <ul className="list-disc list-inside text-sm space-y-1">
+                          <li>Comprehensive client management</li>
+                          <li>Financial dashboard and reporting</li>
+                          <li>Content creation and blogging tools</li>
+                          <li>Business networking</li>
+                          <li>Professional design with navy and orange theme</li>
+                        </ul>
+                      </div>
+                      <div>
+                        <h4 className="font-medium mb-2">Ideal for:</h4>
+                        <ul className="list-disc list-inside text-sm space-y-1">
+                          <li>Accounting and financial firms</li>
+                          <li>Tax preparation services</li>
+                          <li>Business consulting</li>
+                          <li>Financial advisory services</li>
+                        </ul>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+                
+                <div className="flex justify-end">
+                  <Button onClick={handleTemplateSelect}>
+                    Continue to Configuration
+                  </Button>
+                </div>
+              </div>
+            )}
+            
+            {currentStep === 'variant' && (
+              <SiteVariantSelector 
+                tenantId="temporary-id" // Will be replaced with actual ID later
+                onVariantSelected={handleVariantSelected}
+                onComplete={handleVariantConfirmed}
+              />
+            )}
+            
+            {currentStep === 'confirmation' && selectedVariant && (
+              <div className="space-y-6">
+                <Alert className="bg-muted">
+                  <CheckCircle2 className="h-4 w-4" />
+                  <AlertTitle>Ready to Clone</AlertTitle>
+                  <AlertDescription>
+                    Please review your configuration before proceeding.
+                  </AlertDescription>
+                </Alert>
+                
+                <div className="border rounded-lg p-4">
+                  <h3 className="text-lg font-medium mb-2">Template Details:</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <p><strong>Template:</strong> Progress Accountants Template</p>
+                      <p><strong>Site Variant:</strong> {selectedVariant.name}</p>
+                    </div>
+                    <div>
+                      <p><strong>Website Type:</strong> {selectedVariant.websiteUsageType}</p>
+                      <p><strong>User Type:</strong> {selectedVariant.userType}</p>
+                    </div>
                   </div>
-                  
-                  <Separator />
-                  
-                  <div>
-                    <h3 className="font-medium">Selected Variant:</h3>
-                    <p className="font-bold">{selectedVariant.name}</p>
-                    <p className="text-sm text-muted-foreground mt-1">{selectedVariant.description}</p>
-                  </div>
-                  
-                  <Separator />
-                  
-                  <div>
-                    <h3 className="font-medium">Enabled Features:</h3>
-                    <ul className="list-disc list-inside mt-1">
-                      {Object.entries(selectedVariant.features)
-                        .filter(([_, enabled]) => enabled)
-                        .map(([feature]) => (
-                          <li key={feature} className="text-sm">
-                            {feature.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}
-                          </li>
-                        ))}
-                    </ul>
-                  </div>
-                </CardContent>
-                <CardFooter className="flex justify-between">
+                </div>
+                
+                <Alert className="border-amber-200 bg-amber-50 text-amber-800">
+                  <FileWarning className="h-4 w-4" />
+                  <AlertTitle>Important Note</AlertTitle>
+                  <AlertDescription>
+                    This process will create a new tenant with its own configuration. The process may take a few moments to complete.
+                  </AlertDescription>
+                </Alert>
+                
+                <div className="flex justify-end space-x-3">
                   <Button variant="outline" onClick={() => setCurrentStep('variant')}>
                     Back
                   </Button>
-                  <Button onClick={handleProceedWithCloning} disabled={isProcessing}>
-                    {isProcessing ? (
-                      <>
-                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                        Processing...
-                      </>
-                    ) : (
-                      "Proceed with Cloning"
-                    )}
+                  <Button onClick={handleConfirmClone}>
+                    Clone Template
                   </Button>
-                </CardFooter>
-              </Card>
-            </div>
-          )}
-          
-          {currentStep === 'processing' && (
-            <div className="flex flex-col items-center justify-center py-12">
-              <Loader2 className="h-16 w-16 animate-spin text-primary" />
-              <h2 className="text-2xl font-bold mt-6">Cloning in Progress</h2>
-              <p className="text-center text-muted-foreground max-w-sm mt-2">
-                We're creating your new site with the selected configuration. This may take a few moments.
-              </p>
-            </div>
-          )}
-          
-          {currentStep === 'complete' && (
-            <div className="space-y-6 text-center">
-              <div className="flex justify-center">
-                <div className="rounded-full bg-green-100 p-3">
-                  <Check className="h-10 w-10 text-green-600" />
                 </div>
               </div>
-              
-              <h2 className="text-2xl font-bold tracking-tight">Cloning Complete!</h2>
-              <p className="text-muted-foreground max-w-md mx-auto">
-                Your new site has been created successfully. You can now access it and start customizing.
-              </p>
-              
-              <div className="pt-4">
-                <Button size="lg" onClick={handleGoToNewTenant}>
-                  Go to New Site
-                </Button>
+            )}
+            
+            {currentStep === 'processing' && (
+              <div className="py-12 flex flex-col items-center justify-center">
+                <LoaderCircle className="h-12 w-12 animate-spin text-primary mb-4" />
+                <h3 className="text-lg font-medium mb-2">Cloning in Progress</h3>
+                <p className="text-muted-foreground text-center max-w-md">
+                  Please wait while we create your new tenant instance. This may take a few moments to complete.
+                </p>
               </div>
-            </div>
-          )}
-        </div>
+            )}
+            
+            {currentStep === 'complete' && (
+              <div className="space-y-6">
+                {cloneStatus === 'success' && (
+                  <div className="py-8 flex flex-col items-center justify-center">
+                    <div className="bg-green-100 text-green-600 rounded-full p-4 mb-4">
+                      <CheckCircle2 className="h-12 w-12" />
+                    </div>
+                    <h3 className="text-xl font-medium mb-2">Cloning Successful!</h3>
+                    <p className="text-muted-foreground text-center max-w-md mb-6">
+                      Your new tenant instance has been created successfully.
+                    </p>
+                    
+                    {newTenantId && (
+                      <div className="bg-muted rounded-lg p-4 w-full max-w-md flex justify-between items-center">
+                        <span className="font-mono text-sm truncate max-w-[250px]">{newTenantId}</span>
+                        <Button size="sm" variant="ghost" onClick={copyTenantId}>
+                          <Copy className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    )}
+                    
+                    <div className="flex justify-center mt-8 space-x-3">
+                      <Button variant="outline" onClick={resetProcess}>
+                        Clone Another
+                      </Button>
+                      <Button onClick={navigateToNewTenant}>
+                        Go to New Instance
+                      </Button>
+                    </div>
+                  </div>
+                )}
+                
+                {cloneStatus === 'error' && (
+                  <div className="py-8 flex flex-col items-center justify-center">
+                    <div className="bg-red-100 text-red-600 rounded-full p-4 mb-4">
+                      <AlertCircle className="h-12 w-12" />
+                    </div>
+                    <h3 className="text-xl font-medium mb-2">Cloning Failed</h3>
+                    <p className="text-muted-foreground text-center max-w-md mb-6">
+                      There was an error while creating your new tenant instance.
+                    </p>
+                    
+                    {errorMessage && (
+                      <Alert variant="destructive" className="mb-6">
+                        <AlertCircle className="h-4 w-4" />
+                        <AlertTitle>Error</AlertTitle>
+                        <AlertDescription>
+                          {errorMessage}
+                        </AlertDescription>
+                      </Alert>
+                    )}
+                    
+                    <Button onClick={resetProcess}>
+                      Try Again
+                    </Button>
+                  </div>
+                )}
+              </div>
+            )}
+          </CardContent>
+        </Card>
       </div>
     </AdminLayout>
   );
