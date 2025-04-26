@@ -1,46 +1,43 @@
-import { useState } from "react";
-import { Lightbulb, ArrowRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { AlertTriangle, CheckCircle2, LightbulbIcon } from "lucide-react";
 
 interface EntrepreneurInsightProps {
   insights: string[];
 }
 
 export function EntrepreneurInsight({ insights }: EntrepreneurInsightProps) {
-  const [currentInsightIndex, setCurrentInsightIndex] = useState(0);
-
-  const nextInsight = () => {
-    setCurrentInsightIndex((prev) => (prev + 1) % insights.length);
-  };
-
-  if (insights.length === 0) {
+  if (!insights || insights.length === 0) {
     return (
-      <div className="text-center p-4">
-        <Lightbulb className="h-6 w-6 text-muted-foreground mx-auto mb-2" />
-        <p className="text-sm text-muted-foreground">
-          Start journaling to receive personalized business insights.
-        </p>
+      <div className="text-center py-4">
+        <p className="text-muted-foreground text-sm">No insights available yet.</p>
+        <p className="text-xs mt-1">Continue using your journal to receive personalized insights.</p>
       </div>
     );
   }
 
+  const getInsightIcon = (insight: string) => {
+    if (insight.toLowerCase().includes('stress') || 
+        insight.toLowerCase().includes('challenge') || 
+        insight.toLowerCase().includes('concern')) {
+      return <AlertTriangle className="h-4 w-4 text-amber-500 flex-shrink-0" />;
+    } else if (insight.toLowerCase().includes('excellent') || 
+               insight.toLowerCase().includes('great') || 
+               insight.toLowerCase().includes('positive')) {
+      return <CheckCircle2 className="h-4 w-4 text-emerald-500 flex-shrink-0" />;
+    } else {
+      return <LightbulbIcon className="h-4 w-4 text-blue-500 flex-shrink-0" />;
+    }
+  };
+
   return (
     <div className="space-y-4">
-      <div className="bg-card rounded-lg p-4 min-h-[100px] flex items-center border">
-        <div className="flex items-start gap-3">
-          <Lightbulb className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
-          <p className="text-sm">{insights[currentInsightIndex]}</p>
+      {insights.map((insight, index) => (
+        <div key={index} className="flex items-start gap-3">
+          <div className="mt-0.5">
+            {getInsightIcon(insight)}
+          </div>
+          <p className="text-sm text-gray-700">{insight}</p>
         </div>
-      </div>
-      
-      {insights.length > 1 && (
-        <div className="flex justify-end">
-          <Button variant="ghost" size="sm" onClick={nextInsight} className="text-xs">
-            Next Insight
-            <ArrowRight className="h-3 w-3 ml-1" />
-          </Button>
-        </div>
-      )}
+      ))}
     </div>
   );
 }

@@ -1,104 +1,119 @@
-import { JournalEntryType } from "@/pages/EntrepreneurSupportPage";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { formatDistanceToNow } from "date-fns";
-import { Edit3, Lightbulb, ThumbsUp, Frown, Smile, Meh, PieChart } from "lucide-react";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Edit3, Trash2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { JournalEntryType } from "@/pages/EntrepreneurSupportPage";
+import { useState } from "react";
+import { useToast } from "@/hooks/use-toast";
+import { cn } from "@/lib/utils";
 
 interface JournalEntryProps {
   entry: JournalEntryType;
 }
 
 const JournalEntry = ({ entry }: JournalEntryProps) => {
-  // Helper function to render the appropriate icon based on category
-  const getCategoryIcon = () => {
-    switch (entry.category) {
+  const { toast } = useToast();
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  const handleDelete = () => {
+    toast({
+      title: "Journal entry deleted",
+      description: "Your journal entry has been permanently deleted.",
+    });
+  };
+
+  const handleEdit = () => {
+    toast({
+      title: "Edit mode",
+      description: "Journal editing will be available in the next update.",
+    });
+  };
+
+  const getCategoryColor = (category: string) => {
+    switch (category) {
       case "thoughts":
-        return <Edit3 className="h-4 w-4" />;
+        return "bg-blue-100 text-blue-600";
       case "feelings":
-        return getMoodIcon();
+        return "bg-purple-100 text-purple-600";
       case "ideas":
-        return <Lightbulb className="h-4 w-4" />;
+        return "bg-emerald-100 text-emerald-600";
       case "challenges":
-        return <PieChart className="h-4 w-4" />;
+        return "bg-amber-100 text-amber-600";
       case "opportunities":
-        return <ThumbsUp className="h-4 w-4" />;
+        return "bg-indigo-100 text-indigo-600";
       default:
-        return <Edit3 className="h-4 w-4" />;
+        return "bg-gray-100 text-gray-600";
     }
   };
 
-  // Helper function to render the appropriate icon based on mood
-  const getMoodIcon = () => {
-    switch (entry.mood) {
+  const getMoodIcon = (mood: string | null | undefined) => {
+    switch (mood) {
       case "positive":
-        return <Smile className="h-4 w-4" />;
-      case "neutral":
-        return <Meh className="h-4 w-4" />;
+        return "😊";
       case "negative":
-        return <Frown className="h-4 w-4" />;
+        return "😔";
+      case "neutral":
+        return "😐";
       default:
-        return <Meh className="h-4 w-4" />;
+        return "";
     }
   };
 
-  // Helper function to get badge color based on category
-  const getCategoryColor = () => {
-    switch (entry.category) {
-      case "thoughts":
-        return "bg-blue-100 text-blue-800 hover:bg-blue-200";
-      case "feelings":
-        return "bg-orange-100 text-orange-800 hover:bg-orange-200";
-      case "ideas":
-        return "bg-purple-100 text-purple-800 hover:bg-purple-200";
-      case "challenges":
-        return "bg-red-100 text-red-800 hover:bg-red-200";
-      case "opportunities":
-        return "bg-green-100 text-green-800 hover:bg-green-200";
-      default:
-        return "bg-gray-100 text-gray-800 hover:bg-gray-200";
-    }
-  };
-
-  // Helper function to get badge color based on mood
-  const getMoodColor = () => {
-    switch (entry.mood) {
-      case "positive":
-        return "bg-green-100 text-green-800";
-      case "neutral":
-        return "bg-gray-100 text-gray-800";
-      case "negative":
-        return "bg-red-100 text-red-800";
-      default:
-        return "bg-gray-100 text-gray-800";
-    }
-  };
+  const formattedDate = formatDistanceToNow(new Date(entry.date), {
+    addSuffix: true,
+  });
 
   return (
-    <Card>
-      <CardHeader className="py-3 px-4 flex flex-row items-center justify-between space-y-0">
-        <div className="flex space-x-2 items-center">
-          <Badge variant="outline" className={getCategoryColor()}>
-            <span className="flex items-center">
-              {getCategoryIcon()}
-              <span className="ml-1 capitalize">{entry.category}</span>
-            </span>
-          </Badge>
-          {entry.mood && (
-            <Badge variant="outline" className={getMoodColor()}>
-              <span className="flex items-center">
-                {getMoodIcon()}
-                <span className="ml-1 capitalize">{entry.mood}</span>
-              </span>
-            </Badge>
+    <Card className="overflow-hidden">
+      <CardContent className="p-4">
+        <div className="space-y-3">
+          <div className="flex justify-between items-center">
+            <div className="flex space-x-2 items-center">
+              <Badge 
+                variant="outline" 
+                className={cn("capitalize", getCategoryColor(entry.category))}
+              >
+                {entry.category}
+              </Badge>
+              {entry.mood && (
+                <span className="text-lg" title={entry.mood}>
+                  {getMoodIcon(entry.mood)}
+                </span>
+              )}
+            </div>
+            <span className="text-xs text-muted-foreground">{formattedDate}</span>
+          </div>
+          
+          <div 
+            className={cn(
+              "text-sm text-gray-700",
+              !isExpanded && entry.content.length > 150 && "line-clamp-3"
+            )}
+          >
+            {entry.content}
+          </div>
+          
+          {entry.content.length > 150 && (
+            <button 
+              className="text-xs text-primary font-medium hover:underline"
+              onClick={() => setIsExpanded(!isExpanded)}
+            >
+              {isExpanded ? "Show less" : "Show more"}
+            </button>
           )}
         </div>
-        <div className="text-xs text-muted-foreground">
-          {formatDistanceToNow(new Date(entry.date), { addSuffix: true })}
-        </div>
-      </CardHeader>
-      <CardContent className="py-2 px-4">
-        <p className="text-sm whitespace-pre-wrap">{entry.content}</p>
       </CardContent>
+      <CardFooter className="px-4 py-2 bg-gray-50 border-t flex justify-end space-x-2">
+        <Button variant="ghost" size="sm" onClick={handleEdit}>
+          <Edit3 className="h-4 w-4 mr-1" />
+          Edit
+        </Button>
+        <Button variant="ghost" size="sm" className="text-destructive hover:text-destructive" onClick={handleDelete}>
+          <Trash2 className="h-4 w-4 mr-1" />
+          Delete
+        </Button>
+      </CardFooter>
     </Card>
   );
 };
