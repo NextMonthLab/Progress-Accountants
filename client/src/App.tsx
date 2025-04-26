@@ -42,10 +42,9 @@ function App() {
             <TenantProvider>
               <CompanionContextProvider>
                 <DocumentHead route="/" />
+                {/* CRITICAL FIX: Removed MainLayout for emergency testing */}
                 <FirstTimeUserDetector>
-                  <MainLayout>
-                    <Router />
-                  </MainLayout>
+                  <Router />
                 </FirstTimeUserDetector>
                 <DualModeCompanion />
                 <UpgradeAnnouncement />
