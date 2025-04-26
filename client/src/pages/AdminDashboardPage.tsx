@@ -212,7 +212,7 @@ function QuickAction({
       <div className={`p-4 rounded-xl transition-all ${variantStyles[variant]} relative`}>
         <div className="flex items-start gap-3">
           {icon && (
-            <div className={`${variant === 'outline' || variant === 'ghost' ? 'text-navy' : 'text-white'}`}>
+            <div className={`${variant === 'outline' || variant === 'ghost' || variant === 'secondary' ? 'text-navy' : 'text-white'}`}>
               {icon}
             </div>
           )}
