@@ -12,10 +12,27 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
       <AdminSidebar />
       
       {/* Main Content */}
-      <div className="flex-1 overflow-y-auto">
-        <main className="min-h-full px-6">
+      <div className="flex-1 overflow-y-auto flex flex-col">
+        <main className="flex-1 px-6">
           {children}
         </main>
+        
+        {/* Powered by NextMonth footer */}
+        <div className="px-6 py-3 border-t border-gray-200 dark:border-gray-800 mt-auto">
+          <a 
+            href="https://nextmonth.io" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 opacity-70 hover:opacity-100 transition-opacity"
+          >
+            <span className="text-xs text-muted-foreground">Powered by</span>
+            <img 
+              src="https://res.cloudinary.com/drl0fxrkq/image/upload/v1744814861/New_Logo_white_rlemnm.png" 
+              alt="NextMonth Logo" 
+              className="h-4 dark:brightness-100 brightness-0"
+            />
+          </a>
+        </div>
       </div>
     </div>
   );
