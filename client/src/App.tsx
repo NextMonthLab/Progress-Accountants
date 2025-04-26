@@ -346,11 +346,7 @@ function Router() {
       <ProtectedRoute path="/launch-ready" component={LaunchReadyPage} />
       <ProtectedRoute 
         path="/media"
-        component={() => (
-          <AdminLayout>
-            <MediaManagementPage />
-          </AdminLayout>
-        )}
+        component={MediaManagementPage}
         allowedRoles={['admin', 'super_admin', 'editor']} 
       />
       
