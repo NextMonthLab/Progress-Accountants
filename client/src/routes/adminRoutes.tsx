@@ -25,7 +25,7 @@ const AnalyticsPage = lazy(() => import("@/pages/AnalyticsPage"));
 const ScopeRequestPage = lazy(() => import("@/pages/ScopeRequestPage"));
 const CloneTemplatePage = lazy(() => import("@/pages/CloneTemplatePage"));
 const MediaManagementPage = lazy(() => import("@/pages/MediaManagementPage"));
-const ImageOptimizationDemo = lazy(() => import("@/pages/ImageOptimizationDemo"));
+// Removed Image Optimization Demo page in favor of background optimization
 
 // Page builder pages
 const PageBuilderListPage = lazy(() => import("@/pages/PageBuilderListPage"));
@@ -150,11 +150,6 @@ export function AdminRoutes() {
       <ProtectedRoute 
         path="/media" 
         component={MediaManagementPage} 
-      />
-      <ProtectedRoute 
-        path="/admin/image-optimization" 
-        component={ImageOptimizationDemo} 
-        allowedRoles={['admin', 'super_admin', 'editor']} 
       />
       
       {/* Page Builder routes */}
