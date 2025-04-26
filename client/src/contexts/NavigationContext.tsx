@@ -5,7 +5,7 @@ import {
   NavigationGroup,
   DEFAULT_NAVIGATION_GROUPS
 } from '@/types/navigation';
-import { apiRequest } from '@/lib/queryClient';
+import { fetchNavigationData } from '@/lib/navigation-service';
 
 interface NavigationContextType {
   navigationItems: NavigationItem[];
@@ -66,23 +66,20 @@ export const NavigationProvider: React.FC<{ children: React.ReactNode }> = ({ ch
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const fetchNavigationItems = async () => {
+    const loadNavigationData = async () => {
       setIsLoading(true);
       try {
-        // In a real implementation, this would fetch from the API
-        // For now, let's simulate this with a delay
-        setTimeout(() => {
-          // We'll use the current sidebar items but restructure them
-          // In a real implementation, we'd fetch this from the API
-          setIsLoading(false);
-        }, 500);
+        // Fetch navigation items from our service
+        const items = await fetchNavigationData();
+        setNavigationItems(items);
+        setIsLoading(false);
       } catch (error) {
-        console.error('Error fetching navigation items:', error);
+        console.error('Error loading navigation items:', error);
         setIsLoading(false);
       }
     };
 
-    fetchNavigationItems();
+    loadNavigationData();
   }, []);
 
   const addPinnedItem = (itemId: string) => {

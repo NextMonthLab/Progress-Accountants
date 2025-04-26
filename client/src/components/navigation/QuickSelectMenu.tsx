@@ -38,7 +38,7 @@ const QuickSelectItem: React.FC<QuickSelectItemProps> = ({ item, onRemove }) => 
   const isActive = location === item.href || location.startsWith(item.href + '/');
   
   // Get the Lucide icon dynamically
-  const IconComponent = (LucideIcons as Record<string, React.ComponentType<any>>)[item.icon] || LucideIcons.Circle;
+  const IconComponent = (LucideIcons as any)[item.icon] || LucideIcons.Circle;
 
   return (
     <TooltipProvider>

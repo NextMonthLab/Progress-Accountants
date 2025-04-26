@@ -142,7 +142,7 @@ const DynamicSidebar: React.FC = () => {
   // Helper to render a navigation link
   const renderNavLink = (item: NavigationLink, isNested = false) => {
     // Get the Lucide icon dynamically
-    const IconComponent = (LucideIcons as Record<string, React.ComponentType<any>>)[item.icon] || Circle;
+    const IconComponent = (LucideIcons as any)[item.icon] || Circle;
     const isPinned = pinnedItems.includes(item.id);
     
     // For collapsed sidebar, show tooltips
@@ -289,7 +289,7 @@ const DynamicSidebar: React.FC = () => {
 
   // Render submenu
   const renderSubmenu = (submenu: NavigationSubmenu) => {
-    const IconComponent = (LucideIcons as Record<string, React.ComponentType<any>>)[submenu.icon] || Circle;
+    const IconComponent = (LucideIcons as any)[submenu.icon] || Circle;
     const isExpanded = expandedSubmenus.includes(submenu.id);
     
     if (sidebarCollapsed) {
@@ -428,7 +428,7 @@ const DynamicSidebar: React.FC = () => {
             if (filteredItems.length === 0) return null;
             
             // Get the group icon
-            const GroupIconComponent = (LucideIcons as Record<string, React.ComponentType<any>>)[group.icon] || Settings;
+            const GroupIconComponent = (LucideIcons as any)[group.icon] || Settings;
             
             // Special marketplace treatment - always visible and prominent
             const isMarketplaceGroup = group.id === 'marketplace';
