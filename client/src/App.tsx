@@ -83,6 +83,7 @@ import BusinessNetworkPage from "@/pages/BusinessNetworkPage";
 import BusinessDiscoverPage from "@/pages/BusinessDiscoverPage";
 import CloneTemplatePage from "@/pages/CloneTemplatePage";
 import EntrepreneurSupportPage from "@/pages/EntrepreneurSupportPage";
+import NavigationDemoPage from "@/pages/NavigationDemoPage";
 // Page Builder pages
 import PageBuilderListPage from "@/pages/PageBuilderListPage";
 import PageBuilderPage from "@/pages/PageBuilderPage";
@@ -296,6 +297,11 @@ function Router() {
         path="/entrepreneur-support" 
         component={EntrepreneurSupportPage}
         allowedRoles={['client', 'admin', 'super_admin']} 
+      />
+      <ProtectedRoute 
+        path="/admin/navigation-demo" 
+        component={NavigationDemoPage}
+        allowedRoles={['admin', 'super_admin']} 
       />
       <ProtectedRoute path="/marketplace" component={EnhancedMarketplacePage} />
       <ProtectedRoute path="/installed-tools" component={InstalledToolsPage} />

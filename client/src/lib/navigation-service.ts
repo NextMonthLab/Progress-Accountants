@@ -320,6 +320,18 @@ export const mapSidebarToNavigation = (): NavigationItem[] => {
       category: 'system',
     },
     {
+      id: 'navigation_demo',
+      title: 'Navigation Demo',
+      icon: 'Compass',
+      type: 'link',
+      href: '/admin/navigation-demo',
+      requiresStaff: true,
+      badge: { text: 'Preview', variant: 'pro' },
+      isNew: true,
+      category: 'system',
+      description: 'Preview our new navigation system',
+    },
+    {
       id: 'clone_template',
       title: 'Clone Template',
       icon: 'Lightbulb',
