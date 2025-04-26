@@ -154,12 +154,7 @@ export function AdminRoutes() {
         component={MediaManagementPage} 
       />
       
-      {/* Entrepreneur Support route */}
-      <ProtectedRoute 
-        path="/admin/entrepreneur-support" 
-        component={EntrepreneurSupport} 
-        allowedRoles={['admin', 'super_admin', 'client']} 
-      />
+      {/* Removing admin/entrepreneur-support route to avoid conflicts */}
       
       {/* Page Builder routes */}
       <ProtectedRoute 

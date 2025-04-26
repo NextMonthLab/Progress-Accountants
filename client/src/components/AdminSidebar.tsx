@@ -282,7 +282,11 @@ export default function AdminSidebar() {
           href: "/entrepreneur-support", 
           icon: <Lightbulb className="h-5 w-5" />,
           badge: { text: "New", variant: "new" },
-          isNew: true
+          isNew: true,
+          onClick: (e) => {
+            e.preventDefault();
+            window.location.href = "/entrepreneur-support";
+          }
         }
       ]
     },
