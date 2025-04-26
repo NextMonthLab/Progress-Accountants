@@ -26,6 +26,19 @@ export default function MainLayout({ children }: MainLayoutProps) {
     location === '/tools-hub' ||
     location === '/media' ||
     location === '/launch-ready';
+    
+  // Public routes that should NEVER use AdminLayout even if logged in
+  const alwaysPublicRoutes = [
+    '/news',
+    '/about',
+    '/services',
+    '/team',
+    '/contact',
+    '/testimonials',
+    '/resources',
+    '/studio-banbury',
+    '/'
+  ];
   
   // Special handling for routes that might have AdminLayout already applied
   // Certain routes are handled directly with their own layout
@@ -34,8 +47,8 @@ export default function MainLayout({ children }: MainLayoutProps) {
     location === '/admin/insights-dashboard' || 
     location === '/admin/insight-users';
     
-  // Use AdminLayout for admin routes, except those with their own layout
-  if (isAdminRoute && !hasOwnLayout) {
+  // Use AdminLayout for admin routes, except those with their own layout and always public routes
+  if (isAdminRoute && !hasOwnLayout && !alwaysPublicRoutes.includes(location)) {
     return <AdminLayout>{children}</AdminLayout>;
   }
   
