@@ -23,14 +23,9 @@ export const UpgradeBanner = () => {
   const [, navigate] = useLocation();
   
   useEffect(() => {
-    // Show the banner for 14 days after the upgrade
-    const upgradeBannerDismissed = localStorage.getItem('blueprint_v1.1.1_banner_dismissed');
-    const timestamp = parseInt(upgradeBannerDismissed || '0', 10);
-    const twoWeeksInMs = 14 * 24 * 60 * 60 * 1000;
-    
-    if (!upgradeBannerDismissed || (Date.now() - timestamp) < twoWeeksInMs) {
-      setIsVisible(true);
-    }
+    // Completely disable banner for mobile compatibility
+    localStorage.setItem('blueprint_v1.1.1_banner_dismissed', Date.now().toString());
+    setIsVisible(false);
   }, []);
 
   const handleDismiss = () => {

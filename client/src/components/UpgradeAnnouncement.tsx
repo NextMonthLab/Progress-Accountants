@@ -21,12 +21,11 @@ export const UpgradeAnnouncement = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [, navigate] = useLocation();
   
-  // Check if the announcement has been dismissed before
+  // Completely disabled for mobile compatibility
   useEffect(() => {
-    const hasSeenAnnouncement = localStorage.getItem('blueprint_v1.1.1_announcement_seen');
-    if (!hasSeenAnnouncement) {
-      setIsOpen(true);
-    }
+    // Force the announcement to be considered as seen
+    localStorage.setItem('blueprint_v1.1.1_announcement_seen', 'true');
+    setIsOpen(false);
   }, []);
 
   const handleDismiss = () => {
