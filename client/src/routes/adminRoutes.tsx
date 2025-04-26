@@ -36,6 +36,12 @@ const PageBuilderPage = lazy(() => import("@/pages/PageBuilderPage"));
 export function AdminRoutes() {
   return (
     <>
+      {/* Add index route for admin - EMERGENCY FIX */}
+      <ProtectedRoute 
+        path="/admin" 
+        component={AdminDashboardPage} 
+        allowedRoles={['admin', 'super_admin', 'editor']} 
+      />
       {/* Super Admin routes (require super admin privileges) */}
       <ProtectedRoute 
         path="/super-admin" 
@@ -119,8 +125,14 @@ export function AdminRoutes() {
         component={ConversationInsightsPage} 
         allowedRoles={['admin', 'super_admin', 'editor']} 
       />
+      {/* Support both formats for emergency access */}
       <ProtectedRoute 
         path="/admin/dashboard" 
+        component={AdminDashboardPage} 
+        allowedRoles={['admin', 'super_admin', 'editor']} 
+      />
+      <ProtectedRoute 
+        path="/admin-dashboard" 
         component={AdminDashboardPage} 
         allowedRoles={['admin', 'super_admin', 'editor']} 
       />
@@ -154,9 +166,14 @@ export function AdminRoutes() {
         component={MediaManagementPage} 
       />
       
-      {/* Entrepreneur Support route in admin folder */}
+      {/* Entrepreneur Support routes - both formats */}
       <ProtectedRoute 
         path="/admin/entrepreneur-support" 
+        component={EntrepreneurSupport} 
+        allowedRoles={['admin', 'super_admin', 'editor']} 
+      />
+      <ProtectedRoute 
+        path="/admin-entrepreneur-support" 
         component={EntrepreneurSupport} 
         allowedRoles={['admin', 'super_admin', 'editor']} 
       />
