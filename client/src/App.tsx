@@ -80,6 +80,7 @@ import AnalyticsPage from "@/pages/AnalyticsPage";
 import AccountPage from "@/pages/AccountPage";
 import NewsPage from "@/pages/NewsPage";
 import BusinessNetworkPage from "@/pages/BusinessNetworkPage";
+import BusinessDiscoverPage from "@/pages/BusinessDiscoverPage";
 // Page Builder pages
 import PageBuilderListPage from "@/pages/PageBuilderListPage";
 import PageBuilderPage from "@/pages/PageBuilderPage";
@@ -277,6 +278,11 @@ function Router() {
       <ProtectedRoute 
         path="/business-network" 
         component={BusinessNetworkPage} 
+        allowedRoles={['client', 'admin', 'super_admin', 'editor']} 
+      />
+      <ProtectedRoute 
+        path="/business-discover" 
+        component={BusinessDiscoverPage} 
         allowedRoles={['client', 'admin', 'super_admin', 'editor']} 
       />
       <ProtectedRoute path="/marketplace" component={EnhancedMarketplacePage} />

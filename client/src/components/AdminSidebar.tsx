@@ -261,6 +261,13 @@ export default function AdminSidebar() {
           icon: <Users className="h-5 w-5" />,
           badge: { text: "New", variant: "new" },
           isNew: true
+        },
+        { 
+          title: "Business Discover", 
+          href: "/business-discover", 
+          icon: <Globe className="h-5 w-5" />,
+          badge: { text: "New", variant: "new" },
+          isNew: true
         }
       ]
     },
