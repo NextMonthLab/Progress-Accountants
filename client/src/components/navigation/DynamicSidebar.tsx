@@ -509,7 +509,7 @@ const DynamicSidebar: React.FC = () => {
         <SmartActivityPanel collapsed={sidebarCollapsed} />
         
         {/* Sidebar Footer */}
-        <div className="p-3 border-t border-gray-200 bg-gradient-to-r from-white to-orange-50/30">
+        <div className="p-3 space-y-2 border-t border-gray-200 bg-gradient-to-r from-white to-orange-50/30">
           <Link href="/">
             <Button 
               variant="outline"
@@ -523,6 +523,19 @@ const DynamicSidebar: React.FC = () => {
               {!sidebarCollapsed && "View Website"}
             </Button>
           </Link>
+          
+          <Button 
+            variant="outline"
+            className={cn(
+              "w-full flex items-center justify-center transition-all duration-200",
+              sidebarCollapsed ? "p-2" : "",
+              "border-red-200 bg-white text-red-600 hover:bg-red-50 hover:border-red-300"
+            )}
+            onClick={() => logoutMutation.mutate()}
+          >
+            <X className={cn("h-5 w-5", sidebarCollapsed ? "" : "mr-2")} />
+            {!sidebarCollapsed && "Logout"}
+          </Button>
         </div>
       </div>
     </TooltipProvider>
