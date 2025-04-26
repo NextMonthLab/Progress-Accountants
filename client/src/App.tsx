@@ -43,7 +43,9 @@ function App() {
               <CompanionContextProvider>
                 <DocumentHead route="/" />
                 <FirstTimeUserDetector>
-                  <Router />
+                  <MainLayout>
+                    <Router />
+                  </MainLayout>
                 </FirstTimeUserDetector>
                 <DualModeCompanion />
                 <UpgradeAnnouncement />
