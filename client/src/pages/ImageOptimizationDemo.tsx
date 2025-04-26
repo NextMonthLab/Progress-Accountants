@@ -3,10 +3,12 @@ import { Helmet } from 'react-helmet';
 import AdminLayout from '@/layouts/AdminLayout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import OptimizedImage from '@/components/OptimizedImage';
-import ResponsiveImage from '@/components/ResponsiveImage';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { InfoIcon } from 'lucide-react';
+
+// Import optimized image components
+import OptimizedImage from '@/components/OptimizedImage';
+import ResponsiveImage from '@/components/ResponsiveImage';
 
 const ImageOptimizationDemo = () => {
   // Sample images to test with
