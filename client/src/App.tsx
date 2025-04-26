@@ -3,6 +3,8 @@ import { Toaster } from "@/components/ui/toaster";
 import { useEffect } from "react";
 import { Loader2 } from "lucide-react";
 import { useQuery, QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { NavigationProvider } from "@/contexts/NavigationContext";
+import DynamicSidebar from "@/components/navigation/DynamicSidebar";
 import NotFound from "@/pages/not-found";
 import { useAuth, AuthProvider } from "@/hooks/use-auth";
 import { TenantProvider } from "@/hooks/use-tenant";
@@ -346,7 +348,7 @@ function Router() {
       <ProtectedRoute path="/launch-ready" component={LaunchReadyPage} />
       <ProtectedRoute 
         path="/media"
-        component={MediaManagementPage}
+        component={MediaManagementPage} 
         allowedRoles={['admin', 'super_admin', 'editor']} 
       />
       

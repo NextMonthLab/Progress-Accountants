@@ -1,12 +1,21 @@
 import React from "react";
-import AdminLayout from "@/layouts/AdminLayout";
+import DynamicSidebar from "@/components/navigation/DynamicSidebar";
+import { NavigationProvider } from "@/contexts/NavigationContext";
 import PageBuilderContent from "@/components/page-builder/PageBuilderContent";
 
+// Render directly without additional layouts 
 const PageBuilderPage: React.FC = () => {
   return (
-    <AdminLayout>
-      <PageBuilderContent />
-    </AdminLayout>
+    <div className="flex h-screen overflow-hidden">
+      <NavigationProvider>
+        <DynamicSidebar />
+        <div className="flex-1 flex flex-col overflow-hidden">
+          <div className="flex-1 overflow-auto">
+            <PageBuilderContent />
+          </div>
+        </div>
+      </NavigationProvider>
+    </div>
   );
 };
 
