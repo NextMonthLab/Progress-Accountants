@@ -27,7 +27,7 @@ const ScopeRequestPage = lazy(() => import("@/pages/ScopeRequestPage"));
 const CloneTemplatePage = lazy(() => import("@/pages/CloneTemplatePage"));
 const MediaManagementPage = lazy(() => import("@/pages/MediaManagementPage"));
 // Removed Image Optimization Demo page in favor of background optimization
-const EntrepreneurSupport = lazy(() => import("@/pages/admin/EntrepreneurSupport"));
+// EntrepreneurSupport moved to toolsRoutes.tsx
 
 // Page builder pages
 const PageBuilderListPage = lazy(() => import("@/pages/PageBuilderListPage"));
@@ -154,12 +154,7 @@ export function AdminRoutes() {
         component={MediaManagementPage} 
       />
       
-      {/* Entrepreneur Support route */}
-      <ProtectedRoute 
-        path="/admin/entrepreneur-support" 
-        component={EntrepreneurSupport} 
-        allowedRoles={['admin', 'super_admin', 'client']} 
-      />
+      {/* Entrepreneur Support routes are now in toolsRoutes.tsx */}
       
       {/* Page Builder routes */}
       <ProtectedRoute 
