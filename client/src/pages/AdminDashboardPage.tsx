@@ -217,12 +217,12 @@ function QuickAction({
             </div>
           )}
           <div>
-            <h3 className={`font-medium ${variant === 'outline' || variant === 'ghost' ? 'text-navy' : 'text-white'}`}>{title}</h3>
-            <p className={`text-sm mt-1 ${variant === 'outline' || variant === 'ghost' ? 'text-gray-700' : 'text-white/90'}`}>{description}</p>
+            <h3 className={`font-medium ${variant === 'outline' || variant === 'ghost' || variant === 'secondary' ? 'text-navy' : 'text-white'}`}>{title}</h3>
+            <p className={`text-sm mt-1 ${variant === 'outline' || variant === 'ghost' || variant === 'secondary' ? 'text-gray-700' : 'text-white/90'}`}>{description}</p>
           </div>
         </div>
         <div className="absolute bottom-4 right-4">
-          <ArrowUpRight className={`h-4 w-4 ${variant === 'outline' || variant === 'ghost' ? 'text-navy/60' : 'text-white/60'}`} />
+          <ArrowUpRight className={`h-4 w-4 ${variant === 'outline' || variant === 'ghost' || variant === 'secondary' ? 'text-navy/60' : 'text-white/60'}`} />
         </div>
       </div>
     </Link>
