@@ -21,8 +21,11 @@ export default function AdminLayout({ children, useNewNavigation = true }: Admin
           {/* New Dynamic Sidebar */}
           <DynamicSidebar />
           
-          {/* Main Content */}
+          {/* Main Content with Smart Context Banner */}
           <div className="flex-1 overflow-y-auto flex flex-col">
+            {/* Smart Context Banner - shows intelligent awareness */}
+            <SmartContextBanner />
+            
             <main className="flex-1 px-6">
               {children}
             </main>
@@ -53,8 +56,11 @@ export default function AdminLayout({ children, useNewNavigation = true }: Admin
           {/* Current Admin Sidebar */}
           <AdminSidebar />
           
-          {/* Main Content */}
+          {/* Main Content with Smart Context Banner */}
           <div className="flex-1 overflow-y-auto flex flex-col">
+            {/* Smart Context Banner - shows intelligent awareness */}
+            <SmartContextBanner />
+            
             <main className="flex-1 px-6">
               {children}
             </main>
