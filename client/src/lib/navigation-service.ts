@@ -324,7 +324,7 @@ export const mapSidebarToNavigation = (): NavigationItem[] => {
       title: 'Navigation Demo',
       icon: 'Compass',
       type: 'link',
-      href: '/admin/navigation-demo',
+      href: '/navigation-demo',
       requiresStaff: true,
       badge: { text: 'Preview', variant: 'pro' },
       isNew: true,

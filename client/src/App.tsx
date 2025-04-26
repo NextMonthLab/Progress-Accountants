@@ -299,7 +299,7 @@ function Router() {
         allowedRoles={['client', 'admin', 'super_admin']} 
       />
       <ProtectedRoute 
-        path="/admin/navigation-demo" 
+        path="/navigation-demo" 
         component={NavigationDemoPage}
         allowedRoles={['admin', 'super_admin']} 
       />
