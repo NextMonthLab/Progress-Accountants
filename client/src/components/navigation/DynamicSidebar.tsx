@@ -384,6 +384,29 @@ const DynamicSidebar: React.FC = () => {
         "flex flex-col h-screen border-r border-gray-200 bg-white transition-all duration-300",
         sidebarCollapsed ? "w-[70px]" : "w-64"
       )}>
+        {/* Smart Site Collapse Toggle */}
+        <div className="absolute -right-3 top-24 z-10">
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <button
+                onClick={toggleSidebar}
+                className={cn(
+                  "flex items-center justify-center w-6 h-6 rounded-full bg-white border border-gray-200 shadow-sm hover:bg-orange-50 transition-all duration-150",
+                )}
+                aria-label={sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+              >
+                <ChevronRight className={cn(
+                  "h-3 w-3 text-gray-500 transition-transform duration-200",
+                  sidebarCollapsed ? "rotate-180" : ""
+                )} />
+              </button>
+            </TooltipTrigger>
+            <TooltipContent side="right" className="text-xs">
+              {sidebarCollapsed ? "Expand Smart Navigation" : "Collapse Smart Navigation"}
+            </TooltipContent>
+          </Tooltip>
+        </div>
+        
         {/* Sidebar Header */}
         <div className="px-4 py-3 flex items-center justify-between border-b border-gray-200 bg-gradient-to-r from-white to-orange-50/30">
           <SidebarLogo collapsed={sidebarCollapsed} />
