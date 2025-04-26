@@ -5,7 +5,7 @@
  */
 import { Request, Response } from "express";
 import { db, pool } from "../db";
-import { getVariantById, getVariantByTypes, WebsiteUsageType, UserType, SiteVariantConfig } from "@shared/site_variants";
+import { getVariantById, getVariantByTypes, WebsiteUsageType, UserType, SiteVariantConfig, SITE_VARIANTS } from "@shared/site_variants";
 
 /**
  * Get all available site variants
@@ -14,9 +14,12 @@ export async function getSiteVariants(req: Request, res: Response) {
   try {
     const { websiteUsageType, userType } = req.query;
     
+    // Import the SITE_VARIANTS from the shared module
+    // (we already have it imported at the top of the file)
+    
     // If specific types are provided, filter the variants
     if (websiteUsageType || userType) {
-      const variants = require("@shared/site_variants").SITE_VARIANTS.filter((variant: any) => {
+      const filteredVariants = SITE_VARIANTS.filter((variant) => {
         let match = true;
         if (websiteUsageType && variant.websiteUsageType !== websiteUsageType) {
           match = false;
@@ -27,12 +30,11 @@ export async function getSiteVariants(req: Request, res: Response) {
         return match;
       });
       
-      return res.status(200).json(variants);
+      return res.status(200).json(filteredVariants);
     }
     
     // Otherwise return all variants
-    const variants = require("@shared/site_variants").SITE_VARIANTS;
-    res.status(200).json(variants);
+    res.status(200).json(SITE_VARIANTS);
   } catch (error) {
     console.error("Error fetching site variants:", error);
     res.status(500).json({ error: "Failed to fetch site variants" });

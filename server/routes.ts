@@ -47,6 +47,7 @@ import { registerResourcesRoutes } from "./controllers/resourcesController";
 import { registerCompanionRoutes } from "./controllers/companionController";
 import { registerCompanionConfigRoutes } from "./controllers/registerCompanionConfigRoutes";
 import { registerToolMarketplaceRoutes } from "./controllers/toolMarketplaceController";
+import { registerSiteVariantRoutes } from "./routes/siteVariantRoutes";
 import { 
   getAvailableTools,
   getToolCategories,
@@ -215,7 +216,6 @@ storage.getContactSubmissions = async function() {
 };
 
 import { registerPageBuilderRoutes as registerPageBuilderApiRoutes } from "./controllers/registerPageBuilderRoutes";
-import { registerSiteVariantRoutes } from "./routes/siteVariantRoutes";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Set up authentication
