@@ -82,6 +82,7 @@ import NewsPage from "@/pages/NewsPage";
 import BusinessNetworkPage from "@/pages/BusinessNetworkPage";
 import BusinessDiscoverPage from "@/pages/BusinessDiscoverPage";
 import CloneTemplatePage from "@/pages/CloneTemplatePage";
+import EntrepreneurSupportPage from "@/pages/EntrepreneurSupportPage";
 // Page Builder pages
 import PageBuilderListPage from "@/pages/PageBuilderListPage";
 import PageBuilderPage from "@/pages/PageBuilderPage";
@@ -290,6 +291,11 @@ function Router() {
         path="/business-discover" 
         component={BusinessDiscoverPage} 
         allowedRoles={['client', 'admin', 'super_admin', 'editor']} 
+      />
+      <ProtectedRoute 
+        path="/entrepreneur-support" 
+        component={EntrepreneurSupportPage}
+        allowedRoles={['client', 'admin', 'super_admin']} 
       />
       <ProtectedRoute path="/marketplace" component={EnhancedMarketplacePage} />
       <ProtectedRoute path="/installed-tools" component={InstalledToolsPage} />
