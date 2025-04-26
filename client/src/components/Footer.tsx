@@ -149,7 +149,7 @@ export default function Footer() {
               <img 
                 src="https://res.cloudinary.com/drl0fxrkq/image/upload/v1744814861/New_Logo_white_rlemnm.png" 
                 alt="NextMonth Logo" 
-                className="h-8"
+                className="h-12"
               />
             </a>
           </div>
