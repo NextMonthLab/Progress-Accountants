@@ -13,6 +13,7 @@ import { migrateAiDesignSystemTables } from './db-migrate-ai-design-system';
 import { migrateInsightsDashboard } from './db-migrate-insights-dashboard';
 import { migrateBlueprintTables } from './db-migrate-blueprint';
 import { migrateCrmTables } from './db-migrate-crm';
+import { migrateSiteVariantsTables } from './db-migrate-site-variants';
 import { registerNavigationRoutes } from './controllers/navigationController';
 import { registerDomainMappingRoutes } from './controllers/domainMappingController';
 import { registerSotRoutes } from './controllers/sotController';
@@ -81,6 +82,8 @@ app.use((req, res, next) => {
     await migrateBlueprintTables();
     console.log('Running Starter CRM migrations...');
     await migrateCrmTables();
+    console.log('Running Site Variants migrations...');
+    await migrateSiteVariantsTables();
   } catch (error) {
     console.error('Error running migrations:', error);
   }

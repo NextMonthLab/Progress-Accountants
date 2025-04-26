@@ -214,6 +214,7 @@ storage.getContactSubmissions = async function() {
 };
 
 import { registerPageBuilderRoutes as registerPageBuilderApiRoutes } from "./controllers/registerPageBuilderRoutes";
+import { registerSiteVariantRoutes } from "./routes/siteVariantRoutes";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Set up authentication
@@ -221,6 +222,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
   
   // Register media upload endpoints
   registerMediaRoutes(app);
+  
+  // Register site variant endpoints
+  registerSiteVariantRoutes(app);
   
   // Register support chat endpoints
   registerSupportRoutes(app);
