@@ -256,6 +256,14 @@ export default function AdminSidebar() {
           isNew: true
         },
         { 
+          title: "News & Blog", 
+          href: "/news", 
+          icon: <Newspaper className="h-5 w-5" />,
+          requiresStaff: true,
+          badge: { text: "New", variant: "new" },
+          isNew: true
+        },
+        { 
           title: "Business Network", 
           href: "/business-network", 
           icon: <Users className="h-5 w-5" />,
