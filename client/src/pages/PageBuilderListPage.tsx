@@ -3,6 +3,7 @@ import { useLocation } from "wouter";
 import { useQuery } from "@tanstack/react-query";
 import AdminLayout from "@/layouts/AdminLayout";
 import { Button } from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast";
 import {
   Table,
   TableBody,
@@ -48,6 +49,7 @@ const PageBuilderListPage: React.FC = () => {
   const [versionHistoryOpen, setVersionHistoryOpen] = useState(false);
   const [selectedPageId, setSelectedPageId] = useState<number | null>(null);
   const { tenant } = useTenant();
+  const { toast } = useToast();
   const [tenantStarterType, setTenantStarterType] = useState<'blank' | 'pro' | null>(null);
 
   // Fetch tenant starter type
