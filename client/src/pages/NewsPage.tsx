@@ -35,81 +35,8 @@ type BlogPost = {
   slug: string;
 };
 
-// Sample blog post data
-const BLOG_POSTS: BlogPost[] = [
-  {
-    id: '1',
-    title: 'Understanding Tax Planning for Small Businesses',
-    excerpt: 'Effective tax planning strategies can help small businesses reduce their tax liability and improve cash flow.',
-    content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit...',
-    author: 'Jane Smith',
-    date: 'April 20, 2025',
-    category: 'Tax Planning',
-    tags: ['small business', 'tax planning', 'finance'],
-    imageUrl: 'https://placehold.co/600x400/e6f7ff/0a558c?text=Tax+Planning',
-    slug: 'understanding-tax-planning-small-businesses'
-  },
-  {
-    id: '2',
-    title: 'The Benefits of Cloud Accounting for Modern Businesses',
-    excerpt: 'Cloud accounting solutions offer numerous advantages for businesses of all sizes, from improved accessibility to enhanced security.',
-    content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit...',
-    author: 'Michael Johnson',
-    date: 'April 15, 2025',
-    category: 'Accounting Technology',
-    tags: ['cloud accounting', 'technology', 'business efficiency'],
-    imageUrl: 'https://placehold.co/600x400/e6f7ff/0a558c?text=Cloud+Accounting',
-    slug: 'benefits-cloud-accounting-modern-businesses'
-  },
-  {
-    id: '3',
-    title: 'Year-End Financial Checklist for Business Owners',
-    excerpt: 'Prepare for the end of the financial year with this comprehensive checklist designed for business owners.',
-    content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit...',
-    author: 'Sarah Thompson',
-    date: 'April 10, 2025',
-    category: 'Financial Planning',
-    tags: ['year-end', 'checklist', 'financial planning'],
-    imageUrl: 'https://placehold.co/600x400/e6f7ff/0a558c?text=Financial+Checklist',
-    slug: 'year-end-financial-checklist-business-owners'
-  },
-  {
-    id: '4',
-    title: 'Navigating Business Expense Deductions',
-    excerpt: 'Learn which business expenses are deductible and how to properly document them to maximize your tax savings.',
-    content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit...',
-    author: 'David Wilson',
-    date: 'April 5, 2025',
-    category: 'Tax Planning',
-    tags: ['tax deductions', 'business expenses', 'compliance'],
-    imageUrl: 'https://placehold.co/600x400/e6f7ff/0a558c?text=Business+Expenses',
-    slug: 'navigating-business-expense-deductions'
-  },
-  {
-    id: '5',
-    title: 'Strategic Financial Planning for Growth',
-    excerpt: 'Develop a robust financial strategy that supports your business growth objectives while managing risk.',
-    content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit...',
-    author: 'Emma Roberts',
-    date: 'March 30, 2025',
-    category: 'Financial Planning',
-    tags: ['strategic planning', 'business growth', 'risk management'],
-    imageUrl: 'https://placehold.co/600x400/e6f7ff/0a558c?text=Strategic+Planning',
-    slug: 'strategic-financial-planning-growth'
-  },
-  {
-    id: '6',
-    title: 'Understanding the New Tax Legislation Changes',
-    excerpt: 'Stay informed about recent tax legislation changes and how they might impact your business operations.',
-    content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit...',
-    author: 'Robert Johnson',
-    date: 'March 25, 2025',
-    category: 'Tax Updates',
-    tags: ['tax legislation', 'compliance', 'business taxes'],
-    imageUrl: 'https://placehold.co/600x400/e6f7ff/0a558c?text=Tax+Legislation',
-    slug: 'understanding-new-tax-legislation-changes'
-  }
-];
+// Blog post data - empty array to start with
+const BLOG_POSTS: BlogPost[] = [];
 
 // Unique categories from blog posts
 const CATEGORIES = Array.from(new Set(BLOG_POSTS.map(post => post.category)));
