@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLocation } from 'wouter';
 import { 
   Card, 
@@ -18,6 +18,35 @@ import { useQuery } from '@tanstack/react-query';
 const OnboardingWelcomePage: React.FC = () => {
   const [, navigate] = useLocation();
   const { userId, userName } = useAuth();
+  const [isMobile, setIsMobile] = useState(false);
+  const [showUpgradeAlert, setShowUpgradeAlert] = useState(false);
+  
+  // Check if device is mobile
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setIsMobile(window.innerWidth < 768); // 768px is standard MD breakpoint
+    };
+    
+    // Check on initial load
+    checkScreenSize();
+    
+    // Listen for window resize events
+    window.addEventListener('resize', checkScreenSize);
+    
+    // Cleanup
+    return () => window.removeEventListener('resize', checkScreenSize);
+  }, []);
+  
+  // Determine whether to show the upgrade alert
+  useEffect(() => {
+    const alertDismissed = localStorage.getItem('blueprint_v1.1.1_onboarding_alert_dismissed');
+    setShowUpgradeAlert(!isMobile && !alertDismissed);
+  }, [isMobile]);
+  
+  const dismissUpgradeAlert = () => {
+    localStorage.setItem('blueprint_v1.1.1_onboarding_alert_dismissed', 'true');
+    setShowUpgradeAlert(false);
+  };
 
   // Check onboarding status
   const { data: onboardingState, isLoading } = useQuery({
@@ -60,32 +89,44 @@ const OnboardingWelcomePage: React.FC = () => {
               @optional true
               @enabled_by_default true
              */}
-            <Alert className="border-primary/20 bg-primary/5 mb-6">
-              <div className="flex items-center gap-2">
-                <BellRing className="h-5 w-5" />
-                <AlertTitle className="font-semibold flex items-center">
-                  Blueprint Upgraded
-                  <Badge className="ml-2 bg-primary/20 hover:bg-primary/30 text-primary">v1.1.1</Badge>
-                </AlertTitle>
-              </div>
-              <AlertDescription className="mt-2">
-                <p className="mb-2">We've just upgraded your Progress Accountants workspace with two exciting new features:</p>
-                <div className="pl-2 border-l-2 border-primary/20 mt-2 space-y-3">
-                  <div className="flex gap-2">
-                    <MessageSquare className="h-4 w-4 mt-1 flex-shrink-0" />
-                    <div>
-                      <span className="font-medium">Companion Console</span> – Your on-demand support buddy with context-aware help. Look for the chat button in the bottom-right corner.
-                    </div>
+            {showUpgradeAlert && (
+              <Alert className="border-primary/20 bg-primary/5 mb-6 relative">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <BellRing className="h-5 w-5" />
+                    <AlertTitle className="font-semibold flex items-center">
+                      Blueprint Upgraded
+                      <Badge className="ml-2 bg-primary/20 hover:bg-primary/30 text-primary">v1.1.1</Badge>
+                    </AlertTitle>
                   </div>
-                  <div className="flex gap-2">
-                    <CloudUpload className="h-4 w-4 mt-1 flex-shrink-0" />
-                    <div>
-                      <span className="font-medium">Smarter Media Uploads</span> – Upload unlimited images with AI-suggested placement and business attribution.
-                    </div>
-                  </div>
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    onClick={dismissUpgradeAlert}
+                    className="h-7 w-7 p-0"
+                  >
+                    ✕
+                  </Button>
                 </div>
-              </AlertDescription>
-            </Alert>
+                <AlertDescription className="mt-2">
+                  <p className="mb-2">We've just upgraded your Progress Accountants workspace with two exciting new features:</p>
+                  <div className="pl-2 border-l-2 border-primary/20 mt-2 space-y-3">
+                    <div className="flex gap-2">
+                      <MessageSquare className="h-4 w-4 mt-1 flex-shrink-0" />
+                      <div>
+                        <span className="font-medium">Companion Console</span> – Your on-demand support buddy with context-aware help. Look for the chat button in the bottom-right corner.
+                      </div>
+                    </div>
+                    <div className="flex gap-2">
+                      <CloudUpload className="h-4 w-4 mt-1 flex-shrink-0" />
+                      <div>
+                        <span className="font-medium">Smarter Media Uploads</span> – Upload unlimited images with AI-suggested placement and business attribution.
+                      </div>
+                    </div>
+                  </div>
+                </AlertDescription>
+              </Alert>
+            )}
             
             <div className="bg-muted/40 p-6 rounded-lg">
               <h3 className="text-xl font-semibold mb-3">Hello {userName},</h3>

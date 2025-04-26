@@ -20,7 +20,24 @@ import { useLocation } from 'wouter';
 
 export const UpgradeBanner = () => {
   const [isVisible, setIsVisible] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const [, navigate] = useLocation();
+  
+  // Check if device is mobile
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setIsMobile(window.innerWidth < 768); // 768px is standard MD breakpoint
+    };
+    
+    // Check on initial load
+    checkScreenSize();
+    
+    // Listen for window resize events
+    window.addEventListener('resize', checkScreenSize);
+    
+    // Cleanup
+    return () => window.removeEventListener('resize', checkScreenSize);
+  }, []);
   
   useEffect(() => {
     // Show the banner for 14 days after the upgrade
@@ -28,10 +45,11 @@ export const UpgradeBanner = () => {
     const timestamp = parseInt(upgradeBannerDismissed || '0', 10);
     const twoWeeksInMs = 14 * 24 * 60 * 60 * 1000;
     
-    if (!upgradeBannerDismissed || (Date.now() - timestamp) < twoWeeksInMs) {
+    // Only show if not on mobile and not previously dismissed (or if within 14 days)
+    if ((!upgradeBannerDismissed || (Date.now() - timestamp) < twoWeeksInMs) && !isMobile) {
       setIsVisible(true);
     }
-  }, []);
+  }, [isMobile]);
 
   const handleDismiss = () => {
     localStorage.setItem('blueprint_v1.1.1_banner_dismissed', Date.now().toString());
@@ -42,7 +60,8 @@ export const UpgradeBanner = () => {
     navigate('/admin/blueprint');
   };
 
-  if (!isVisible) return null;
+  // Don't render on mobile or if already closed
+  if (isMobile || !isVisible) return null;
 
   return (
     <Alert className="mb-4 border-primary/20 bg-primary/5">

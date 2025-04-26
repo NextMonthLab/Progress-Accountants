@@ -19,15 +19,33 @@ import { useLocation } from 'wouter';
 
 export const UpgradeAnnouncement = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const [, navigate] = useLocation();
+  
+  // Check if device is mobile
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setIsMobile(window.innerWidth < 768); // 768px is standard MD breakpoint
+    };
+    
+    // Check on initial load
+    checkScreenSize();
+    
+    // Listen for window resize events
+    window.addEventListener('resize', checkScreenSize);
+    
+    // Cleanup
+    return () => window.removeEventListener('resize', checkScreenSize);
+  }, []);
   
   // Check if the announcement has been dismissed before
   useEffect(() => {
     const hasSeenAnnouncement = localStorage.getItem('blueprint_v1.1.1_announcement_seen');
-    if (!hasSeenAnnouncement) {
+    // Only show if not on mobile and not previously dismissed
+    if (!hasSeenAnnouncement && !isMobile) {
       setIsOpen(true);
     }
-  }, []);
+  }, [isMobile]);
 
   const handleDismiss = () => {
     localStorage.setItem('blueprint_v1.1.1_announcement_seen', 'true');
@@ -39,7 +57,8 @@ export const UpgradeAnnouncement = () => {
     navigate('/admin/blueprint');
   };
 
-  if (!isOpen) return null;
+  // Don't render on mobile or if already closed
+  if (isMobile || !isOpen) return null;
 
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50 bg-black/50 p-4">
