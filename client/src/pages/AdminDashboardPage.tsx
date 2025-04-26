@@ -201,10 +201,10 @@ function QuickAction({
   isLoading = false
 }: QuickActionProps) {
   const variantStyles = {
-    primary: 'bg-gradient-to-br from-navy via-blue-900 to-blue-950 hover:shadow-lg hover:shadow-navy/20',
-    secondary: 'bg-gradient-to-br from-orange-50 via-orange-100 to-orange-200 hover:shadow-lg hover:shadow-orange-500/20 border border-orange-300',
-    outline: 'border-2 border-navy/40 hover:border-navy/60 bg-white',
-    ghost: 'bg-gray-200 hover:bg-gray-300',
+    primary: 'bg-gradient-to-br from-navy via-blue-900 to-blue-950 hover:shadow-lg hover:shadow-navy/20 text-white',
+    secondary: 'bg-gradient-to-br from-orange-50 via-orange-100 to-orange-200 hover:shadow-lg hover:shadow-orange-500/20 border border-orange-300 text-navy',
+    outline: 'border-2 border-navy/40 hover:border-navy/60 bg-white text-navy',
+    ghost: 'bg-gray-200 hover:bg-gray-300 text-navy',
   };
 
   return (
@@ -212,17 +212,17 @@ function QuickAction({
       <div className={`p-4 rounded-xl transition-all ${variantStyles[variant]} relative`}>
         <div className="flex items-start gap-3">
           {icon && (
-            <div className={`${variant === 'outline' || variant === 'ghost' || variant === 'secondary' ? 'text-navy' : 'text-white'}`}>
+            <div className={`${variant === 'primary' ? 'text-white' : 'text-navy'}`}>
               {icon}
             </div>
           )}
           <div>
-            <h3 className={`font-medium ${variant === 'outline' || variant === 'ghost' || variant === 'secondary' ? 'text-navy' : 'text-white'}`}>{title}</h3>
-            <p className={`text-sm mt-1 ${variant === 'outline' || variant === 'ghost' || variant === 'secondary' ? 'text-gray-700' : 'text-white/90'}`}>{description}</p>
+            <h3 className={`font-medium ${variant === 'primary' ? 'text-white' : 'text-navy'}`}>{title}</h3>
+            <p className={`text-sm mt-1 ${variant === 'primary' ? 'text-white/90' : 'text-gray-700'}`}>{description}</p>
           </div>
         </div>
         <div className="absolute bottom-4 right-4">
-          <ArrowUpRight className={`h-4 w-4 ${variant === 'outline' || variant === 'ghost' || variant === 'secondary' ? 'text-navy/60' : 'text-white/60'}`} />
+          <ArrowUpRight className={`h-4 w-4 ${variant === 'primary' ? 'text-white/60' : 'text-navy/60'}`} />
         </div>
       </div>
     </Link>
