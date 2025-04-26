@@ -19,7 +19,6 @@ import { ThemeProvider } from "@/components/ThemeProvider";
 
 // Router for all application routes
 function Router() {
-  console.log("Router component rendering");
   // Use AppRouter which contains all lazy-loaded routes
   return <AppRouter />;
 }
@@ -35,8 +34,6 @@ const queryClient = new QueryClient({
 });
 
 function App() {
-  console.log("App component rendering");
-  
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider queryClient={queryClient}>
@@ -69,9 +66,6 @@ function FirstTimeUserDetector({ children }: { children: React.ReactNode }) {
   
   // Query current location
   const [location] = useLocation();
-  
-  console.log("FirstTimeUserDetector: current location", location);
-  console.log("FirstTimeUserDetector: user", user ? `${user.username} (${user.userType})` : 'Not logged in');
   
   // Only redirect authenticated non-admin users who haven't completed onboarding
   useEffect(() => {
@@ -107,7 +101,6 @@ function FirstTimeUserDetector({ children }: { children: React.ReactNode }) {
     
     // If we need to redirect to onboarding
     if (!onboardingComplete && !isAllowedPath) {
-      console.log("Redirecting to onboarding");
       navigate('/onboarding');
     }
   }, [user, location, navigate]);

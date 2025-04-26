@@ -6,8 +6,6 @@ interface AdminLayoutProps {
 }
 
 export default function AdminLayout({ children }: AdminLayoutProps) {
-  console.log("AdminLayout rendered with children:", children ? "has children" : "no children");
-  
   return (
     <div className="flex h-screen overflow-hidden">
       {/* Admin Sidebar */}

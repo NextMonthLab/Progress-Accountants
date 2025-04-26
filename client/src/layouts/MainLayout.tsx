@@ -13,9 +13,6 @@ interface MainLayoutProps {
 export default function MainLayout({ children }: MainLayoutProps) {
   const [location] = useLocation();
   
-  // Log current location for debugging
-  console.log("Current location:", location);
-  
   // Check if we should use admin layout based on URL path
   const isAdminRoute = 
     location.startsWith('/admin') || 
@@ -50,20 +47,13 @@ export default function MainLayout({ children }: MainLayoutProps) {
     location === '/admin/conversation-insights' || 
     location === '/admin/insights-dashboard' || 
     location === '/admin/insight-users';
-  
-  // Debug output
-  console.log("isAdminRoute:", isAdminRoute);
-  console.log("alwaysPublicRoutes.includes(location):", alwaysPublicRoutes.includes(location));
-  console.log("hasOwnLayout:", hasOwnLayout);
-  
+    
   // Use AdminLayout for admin routes, except those with their own layout and always public routes
   if (isAdminRoute && !hasOwnLayout && !alwaysPublicRoutes.includes(location)) {
-    console.log("Using AdminLayout");
     return <AdminLayout>{children}</AdminLayout>;
   }
   
   // Use standard layout for public-facing pages
-  console.log("Using standard layout");
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar />
