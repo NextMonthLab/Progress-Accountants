@@ -3,6 +3,7 @@ import AdminSidebar from "@/components/AdminSidebar";
 import DynamicSidebar from "@/components/navigation/DynamicSidebar";
 import QuickSelectMenu from "@/components/navigation/QuickSelectMenu";
 import SmartContextBanner from "@/components/SmartContextBanner";
+import SmartCommandBar from "@/components/SmartCommandBar";
 import { NavigationProvider } from "@/contexts/NavigationContext";
 
 interface AdminLayoutProps {
@@ -49,6 +50,9 @@ export default function AdminLayout({ children, useNewNavigation = true }: Admin
             
             {/* Quick Select Menu - floating UI */}
             <QuickSelectMenu />
+            
+            {/* Smart Command Bar - intelligent command interface */}
+            <SmartCommandBar />
           </div>
         </NavigationProvider>
       ) : (
