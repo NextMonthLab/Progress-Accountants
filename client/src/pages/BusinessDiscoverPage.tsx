@@ -1382,21 +1382,85 @@ export default function BusinessDiscoverPage() {
           className="w-full"
         >
           <TabsList className="w-full grid grid-cols-4">
-            <TabsTrigger value="services" className="flex items-center">
-              <Building2 className="mr-2 h-4 w-4" />
-              Services
+            <TabsTrigger 
+              value="services" 
+              className="flex items-center justify-between"
+            >
+              <div className="flex items-center">
+                <Building2 className="mr-2 h-4 w-4" />
+                Services
+              </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="ml-2 p-0 h-6 w-6"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  openAddListingDialog("service");
+                }}
+              >
+                <PlusCircle className="h-4 w-4" />
+              </Button>
             </TabsTrigger>
-            <TabsTrigger value="offers" className="flex items-center">
-              <Tags className="mr-2 h-4 w-4" />
-              Offers
+            <TabsTrigger 
+              value="offers" 
+              className="flex items-center justify-between"
+            >
+              <div className="flex items-center">
+                <Tags className="mr-2 h-4 w-4" />
+                Offers
+              </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="ml-2 p-0 h-6 w-6"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  openAddListingDialog("offer");
+                }}
+              >
+                <PlusCircle className="h-4 w-4" />
+              </Button>
             </TabsTrigger>
-            <TabsTrigger value="opportunities" className="flex items-center">
-              <Briefcase className="mr-2 h-4 w-4" />
-              Opportunities
+            <TabsTrigger 
+              value="opportunities" 
+              className="flex items-center justify-between"
+            >
+              <div className="flex items-center">
+                <Briefcase className="mr-2 h-4 w-4" />
+                Opportunities
+              </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="ml-2 p-0 h-6 w-6"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  openAddListingDialog("opportunity");
+                }}
+              >
+                <PlusCircle className="h-4 w-4" />
+              </Button>
             </TabsTrigger>
-            <TabsTrigger value="affiliate" className="flex items-center">
-              <ShoppingBag className="mr-2 h-4 w-4" />
-              Affiliate
+            <TabsTrigger 
+              value="affiliate" 
+              className="flex items-center justify-between"
+            >
+              <div className="flex items-center">
+                <ShoppingBag className="mr-2 h-4 w-4" />
+                Affiliate
+              </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="ml-2 p-0 h-6 w-6"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  openAddListingDialog("affiliate");
+                }}
+              >
+                <PlusCircle className="h-4 w-4" />
+              </Button>
             </TabsTrigger>
           </TabsList>
 
@@ -1498,6 +1562,58 @@ export default function BusinessDiscoverPage() {
             </TabsContent>
           </div>
         </Tabs>
+
+        {/* Add Listing Dialog */}
+        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+          <DialogContent className="sm:max-w-md">
+            <DialogHeader>
+              <DialogTitle>
+                {listingType === "service" && "Add New Service"}
+                {listingType === "offer" && "Add New Offer"}
+                {listingType === "opportunity" && "Add New Opportunity"}
+                {listingType === "affiliate" && "Add New Affiliate Item"}
+              </DialogTitle>
+              <DialogDescription>
+                {listingType === "service" && "Register a professional service that your business offers to clients."}
+                {listingType === "offer" && "Create a special promotion or discount to attract new clients."}
+                {listingType === "opportunity" && "Post a contract opportunity for qualified professionals."}
+                {listingType === "affiliate" && "Add a product or service that you recommend with commission."}
+              </DialogDescription>
+            </DialogHeader>
+            
+            {listingType === "service" && (
+              <ServiceForm 
+                form={serviceForm} 
+                onSubmit={(data) => handleFormSubmit("service", data)}
+                isPending={createServiceMutation.isPending}
+              />
+            )}
+            
+            {listingType === "offer" && (
+              <OfferForm 
+                form={offerForm} 
+                onSubmit={(data) => handleFormSubmit("offer", data)}
+                isPending={createOfferMutation.isPending}
+              />
+            )}
+            
+            {listingType === "opportunity" && (
+              <OpportunityForm 
+                form={opportunityForm} 
+                onSubmit={(data) => handleFormSubmit("opportunity", data)}
+                isPending={createOpportunityMutation.isPending}
+              />
+            )}
+            
+            {listingType === "affiliate" && (
+              <AffiliateForm 
+                form={affiliateForm} 
+                onSubmit={(data) => handleFormSubmit("affiliate", data)}
+                isPending={createAffiliateItemMutation.isPending}
+              />
+            )}
+          </DialogContent>
+        </Dialog>
       </div>
     </AdminLayout>
   );
