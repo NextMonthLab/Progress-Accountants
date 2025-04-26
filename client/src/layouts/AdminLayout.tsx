@@ -9,8 +9,8 @@ interface AdminLayoutProps {
   useNewNavigation?: boolean;
 }
 
-export default function AdminLayout({ children, useNewNavigation = false }: AdminLayoutProps) {
-  // We'll use a feature flag approach to allow testing both navigation systems
+export default function AdminLayout({ children, useNewNavigation = true }: AdminLayoutProps) {
+  // We're now using the new navigation system by default
   const Sidebar = useNewNavigation ? DynamicSidebar : AdminSidebar;
   
   return (
