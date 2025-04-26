@@ -29,7 +29,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
             <img 
               src="https://res.cloudinary.com/drl0fxrkq/image/upload/v1744814861/New_Logo_white_rlemnm.png" 
               alt="NextMonth Logo" 
-              className="h-4 dark:brightness-100 brightness-0"
+              className="h-8 dark:brightness-100 brightness-0"
             />
           </a>
         </div>

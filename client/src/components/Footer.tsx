@@ -138,6 +138,21 @@ export default function Footer() {
               Terms of Service
             </Link>
           </p>
+          <div className="mt-4 flex justify-center">
+            <a 
+              href="https://nextmonth.io" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 opacity-70 hover:opacity-100 transition-opacity"
+            >
+              <span className="text-xs">Powered by</span>
+              <img 
+                src="https://res.cloudinary.com/drl0fxrkq/image/upload/v1744814861/New_Logo_white_rlemnm.png" 
+                alt="NextMonth Logo" 
+                className="h-8"
+              />
+            </a>
+          </div>
         </div>
       </div>
     </footer>
