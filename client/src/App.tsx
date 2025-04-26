@@ -1,6 +1,7 @@
 import { Switch, Route, useLocation } from "wouter";
 import { Toaster } from "@/components/ui/toaster";
 import { useEffect } from "react";
+import { Loader2 } from "lucide-react";
 import { useQuery, QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import NotFound from "@/pages/not-found";
 import { useAuth, AuthProvider } from "@/hooks/use-auth";
