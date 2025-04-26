@@ -1,0 +1,72 @@
+Prompt Title:
+New Personal Entrepreneur Support Page (Solo Build Only)
+
+Prompt Body:
+Create a dedicated Personal Entrepreneur Support page for Solo Entrepreneur site clones.
+This page is not available for Team site versions and must never expose private data publicly.
+
+Core Components:
+
+Entrepreneur News Feed
+
+Live pull of trending articles and insights from the world of small business, startups, and entrepreneurship.
+
+News should update dynamically or at regular intervals.
+
+Sources can include curated APIs (e.g., Google News - Entrepreneurship category, RSS feeds, or equivalent).
+
+Business Reflection and Support Journal
+
+Allow entrepreneurs to log entries in multiple categories:
+
+Thoughts
+
+Feelings
+
+Ideas
+
+Challenges
+
+Opportunities
+
+Optional mood indicator or simple emoji/status alongside each entry.
+
+Journal entries should be private and securely stored (admin-only access).
+
+AI Contextual Analysis and Guidance
+
+Run periodic AI analysis on journal entries to:
+
+Detect mood, stress indicators, cognitive load trends.
+
+Offer personalized, practical advice (e.g., time management tips, motivation, rest recommendations).
+
+Acknowledge health, mental well-being, and financial realities sensitively and supportively.
+
+Responses must feel empathetic and aligned with entrepreneurial challenges.
+
+Private Context-Aware Companion Assistant
+
+The admin-side Companion Assistant (private dashboard only) must have access to journal/AI analysis context.
+
+Example: If stress or sadness is detected, the assistant could gently suggest breaks or encouragement (e.g., "Looks like you’ve been carrying a lot lately. How about a 5-minute reset?").
+
+Compartmentalization is critical: No private journal or AI analysis data can bleed into the public-facing Companion Assistant used on public pages.
+
+Public Companion Assistant remains neutral and blind to personal data.
+
+Critical Safeguards:
+
+Journal and AI insight data must never be exposed outside of the logged-in admin dashboard.
+
+Data Privacy Barrier must exist between:
+
+Personal Entrepreneur Support Page (private use)
+
+Public Website Pages (public use)
+
+If necessary, separate Companion AI contexts should be defined internally to enforce strict separation of modes.
+
+Activation Condition:
+
+This page and companion behavior should only activate if the user selected "Solo Entrepreneur" mode at clone/setup.
