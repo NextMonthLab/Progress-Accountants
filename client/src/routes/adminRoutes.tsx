@@ -1,11 +1,14 @@
-import { lazy } from 'react';
+import { lazy, Suspense } from 'react';
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 
-// Lazy load admin components
+// EMERGENCY FIX: Direct import critical admin pages to avoid lazy loading issues
+import AdminDashboardPage from "@/pages/AdminDashboardPage";
+import EntrepreneurSupport from "@/pages/admin/EntrepreneurSupport";
+
+// Lazy load remaining components
 const SuperAdminDashboard = lazy(() => import("@/pages/super-admin/SuperAdminDashboard"));
 const CRMViewPage = lazy(() => import("@/pages/CRMViewPage"));
 const CRMViewPageEnhanced = lazy(() => import("@/pages/CRMViewPageEnhanced"));
-const AdminDashboardPage = lazy(() => import("@/pages/AdminDashboardPage"));
 const AdminSettingsPage = lazy(() => import("@/pages/AdminSettingsPage"));
 const SEOConfigManagerPage = lazy(() => import("@/pages/SEOConfigManagerPage"));
 const BrandManagerPage = lazy(() => import("@/pages/BrandManagerPage"));
@@ -26,7 +29,6 @@ const AnalyticsPage = lazy(() => import("@/pages/AnalyticsPage"));
 const ScopeRequestPage = lazy(() => import("@/pages/ScopeRequestPage"));
 const CloneTemplatePage = lazy(() => import("@/pages/CloneTemplatePage"));
 const MediaManagementPage = lazy(() => import("@/pages/MediaManagementPage"));
-const EntrepreneurSupport = lazy(() => import("@/pages/admin/EntrepreneurSupport"));
 // Removed Image Optimization Demo page in favor of background optimization
 
 // Page builder pages
