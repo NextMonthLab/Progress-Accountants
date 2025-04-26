@@ -119,7 +119,7 @@ const SidebarItemBadge = ({
 
 // Dynamic Sidebar component to replace the current AdminSidebar
 const DynamicSidebar: React.FC = () => {
-  const { user } = useAuth();
+  const { user, logoutMutation } = useAuth();
   const [location] = useLocation();
   const { 
     navigationGroups, 
@@ -524,18 +524,20 @@ const DynamicSidebar: React.FC = () => {
             </Button>
           </Link>
           
-          <Button 
-            variant="outline"
-            className={cn(
-              "w-full flex items-center justify-center transition-all duration-200",
-              sidebarCollapsed ? "p-2" : "",
-              "border-red-200 bg-white text-red-600 hover:bg-red-50 hover:border-red-300"
-            )}
-            onClick={() => logoutMutation.mutate()}
-          >
-            <X className={cn("h-5 w-5", sidebarCollapsed ? "" : "mr-2")} />
-            {!sidebarCollapsed && "Logout"}
-          </Button>
+          <form action="/api/logout" method="post">
+            <Button 
+              type="submit"
+              variant="outline"
+              className={cn(
+                "w-full flex items-center justify-center transition-all duration-200",
+                sidebarCollapsed ? "p-2" : "",
+                "border-red-200 bg-white text-red-600 hover:bg-red-50 hover:border-red-300"
+              )}
+            >
+              <X className={cn("h-5 w-5", sidebarCollapsed ? "" : "mr-2")} />
+              {!sidebarCollapsed && "Logout"}
+            </Button>
+          </form>
         </div>
       </div>
     </TooltipProvider>
