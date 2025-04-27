@@ -126,17 +126,7 @@ export const mapSidebarToNavigation = (): NavigationItem[] => {
       isNew: true,
       category: 'creator_tools',
     },
-    {
-      id: 'news_blog',
-      title: 'News & Blog',
-      icon: 'Newspaper',
-      type: 'link',
-      href: '/news',
-      requiresStaff: true,
-      badge: { text: 'New', variant: 'new' },
-      isNew: true,
-      category: 'creator_tools',
-    },
+
     
     // Personal Growth
     {
