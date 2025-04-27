@@ -1,25 +1,42 @@
-import { createContext, useContext, ReactNode, useState, useEffect } from 'react';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { useQuery, useMutation } from '@tanstack/react-query';
+import { queryClient } from '@/lib/queryClient';
 import { useToast } from '@/hooks/use-toast';
-import { apiRequest } from '@/lib/queryClient';
 
-// Types for the health monitoring system
-export interface HealthMetric {
+// Define the health status types
+export type ServiceHealth = {
+  healthy: boolean;
+  latency?: number;
+  message?: string;
+  lastChecked?: Date;
+};
+
+export type SystemHealthStatus = {
+  status: 'healthy' | 'degraded' | 'error';
+  services: Record<string, ServiceHealth>;
+  timestamp: Date;
+  message?: string;
+};
+
+export type HealthMetric = {
   id: number;
   name: string;
-  category: 'api' | 'performance' | 'security' | 'storage';
-  description: string;
-  threshold: any;
+  category: string;
+  description: string | null;
+  threshold: {
+    warning: number;
+    critical: number;
+  };
   enabled: boolean;
   createdAt: Date;
   updatedAt: Date;
-}
+};
 
-export interface HealthIncident {
-  id: number;
+export type HealthIncident = {
+  id?: number;
   metricId: number;
-  status: 'active' | 'resolved' | 'acknowledged';
-  severity: 'warning' | 'critical' | 'info';
+  status: string;
+  severity: string;
   affectedArea: string;
   affectedUsers: number;
   details: any;
@@ -27,253 +44,330 @@ export interface HealthIncident {
   resolvedAt?: Date;
   createdAt?: Date;
   updatedAt?: Date;
-}
+};
 
-export interface HealthNotification {
-  id: number;
+export type HealthNotification = {
+  id?: number;
   incidentId: number;
-  type: 'admin' | 'user';
-  status: 'pending' | 'delivered' | 'dismissed';
+  type: string;
+  status: string;
   message: string;
+  affectedArea: string;
+  severity: string;
   createdAt: Date;
-  affectedArea?: string;
-  severity?: 'warning' | 'critical' | 'info';
-}
+};
 
-export interface SystemHealthStatus {
-  status: 'healthy' | 'degraded' | 'error';
+export type MetricData = {
+  id: number;
+  name: string;
+  category: string;
+  value: number;
   timestamp: Date;
-  services: {
-    api: { healthy: boolean; lastChecked: Date; error?: string };
-    database: { healthy: boolean; lastChecked: Date; error?: string };
-    fileStorage: { healthy: boolean; lastChecked: Date; error?: string };
-    auth: { healthy: boolean; lastChecked: Date; error?: string };
-  };
-}
+  status: 'normal' | 'warning' | 'critical';
+};
 
-interface HealthContextType {
-  // Health status
+export type HealthPerformanceData = {
+  apiResponseTimes: { timestamp: Date; value: number }[];
+  pageLoadTimes: { timestamp: Date; value: number }[];
+  memoryUsage: { timestamp: Date; value: number }[];
+  errorRates: { timestamp: Date; value: number }[];
+};
+
+// Define the context type
+type HealthContextType = {
   healthStatus: SystemHealthStatus | null;
   isLoadingHealthStatus: boolean;
-  
-  // Notifications
-  notifications: HealthNotification[];
-  isLoadingNotifications: boolean;
-  markNotificationDelivered: (notificationId: number) => void;
-  
-  // Incidents
+  healthMetrics: HealthMetric[];
+  isLoadingMetrics: boolean;
   incidents: HealthIncident[];
   isLoadingIncidents: boolean;
+  notifications: HealthNotification[];
+  isLoadingNotifications: boolean;
+  performanceData: HealthPerformanceData | null;
+  isLoadingPerformanceData: boolean;
+  refreshHealthStatus: () => void;
+  acknowledgeIncident: (incidentId: number) => void;
   resolveIncident: (incidentId: number) => void;
-  
-  // Metrics
-  metrics: HealthMetric[];
-  isLoadingMetrics: boolean;
-  updateMetric: (metricId: number, updates: { enabled?: boolean; threshold?: any }) => void;
-  
-  // Tracking functions
-  trackApiError: (route: string, statusCode: number) => void;
-  trackPageLoadTime: (page: string, loadTimeMs: number) => void;
-  trackSessionFailure: () => void;
-  trackMediaUpload: (success: boolean) => void;
-}
+  dismissNotification: (notificationId: number) => void;
+  trackMetric: (metricName: string, value: number) => void;
+  enableMetric: (metricId: number, enabled: boolean) => void;
+};
 
-const HealthContext = createContext<HealthContextType | null>(null);
+// Create the context
+const HealthContext = createContext<HealthContextType | undefined>(undefined);
 
-export function HealthProvider({ children }: { children: ReactNode }) {
+// Create the provider component
+export const HealthProvider = ({ children }: { children: ReactNode }) => {
   const { toast } = useToast();
-  const queryClient = useQueryClient();
   
-  // Function to track API errors
-  const trackApiError = async (route: string, statusCode: number) => {
-    try {
-      await apiRequest('POST', '/api/health/track/api-error', { route, statusCode });
-    } catch (error) {
-      console.error('Failed to track API error:', error);
-    }
-  };
-  
-  // Function to track page load times
-  const trackPageLoadTime = async (page: string, loadTimeMs: number) => {
-    try {
-      await apiRequest('POST', '/api/health/track/page-load', { page, loadTimeMs });
-    } catch (error) {
-      console.error('Failed to track page load time:', error);
-    }
-  };
-  
-  // Function to track session failures
-  const trackSessionFailure = async () => {
-    try {
-      await apiRequest('POST', '/api/health/track/session-failure', {});
-    } catch (error) {
-      console.error('Failed to track session failure:', error);
-    }
-  };
-  
-  // Function to track media uploads
-  const trackMediaUpload = async (success: boolean) => {
-    try {
-      await apiRequest('POST', '/api/health/track/media-upload', { success });
-    } catch (error) {
-      console.error('Failed to track media upload:', error);
-    }
-  };
-  
-  // Fetch system health status
-  const { 
+  // Fetch current system health status
+  const {
     data: healthStatus,
-    isLoading: isLoadingHealthStatus
+    isLoading: isLoadingHealthStatus,
+    refetch: refetchHealthStatus,
   } = useQuery<SystemHealthStatus>({
-    queryKey: ['/api/health'],
-    queryFn: async () => {
-      const response = await apiRequest('GET', '/api/health');
-      return await response.json();
-    },
+    queryKey: ['/api/health/status'],
     refetchInterval: 60000, // Refetch every minute
-  });
-  
-  // Fetch admin notifications
-  const { 
-    data: notificationsData,
-    isLoading: isLoadingNotifications
-  } = useQuery<{ success: boolean; notifications: HealthNotification[] }>({
-    queryKey: ['/api/admin/health/notifications'],
-    queryFn: async () => {
-      const response = await apiRequest('GET', '/api/admin/health/notifications');
-      return await response.json();
-    },
-    refetchInterval: 30000, // Refetch every 30 seconds
-  });
-  
-  // Fetch recent incidents
-  const { 
-    data: incidentsData,
-    isLoading: isLoadingIncidents
-  } = useQuery<{ success: boolean; incidents: HealthIncident[] }>({
-    queryKey: ['/api/admin/health/incidents'],
-    queryFn: async () => {
-      const response = await apiRequest('GET', '/api/admin/health/incidents');
-      return await response.json();
-    },
-    refetchInterval: 60000, // Refetch every minute
+    refetchOnWindowFocus: true,
+    retry: 3,
   });
   
   // Fetch health metrics
-  const { 
-    data: metricsData,
-    isLoading: isLoadingMetrics
-  } = useQuery<{ success: boolean; metrics: HealthMetric[] }>({
-    queryKey: ['/api/admin/health/metrics'],
-    queryFn: async () => {
-      const response = await apiRequest('GET', '/api/admin/health/metrics');
-      return await response.json();
-    }
+  const {
+    data: healthMetrics = [],
+    isLoading: isLoadingMetrics,
+  } = useQuery<HealthMetric[]>({
+    queryKey: ['/api/health/metrics'],
+    refetchInterval: 300000, // Refetch every 5 minutes
   });
   
-  // Mark notification as delivered
-  const markNotificationDeliveredMutation = useMutation({
-    mutationFn: async (notificationId: number) => {
-      await apiRequest('POST', `/api/admin/health/notifications/${notificationId}/deliver`);
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['/api/admin/health/notifications'] });
-    },
-    onError: (error: any) => {
-      toast({
-        title: 'Error',
-        description: `Failed to mark notification as delivered: ${error.message}`,
-        variant: 'destructive'
-      });
-    }
+  // Fetch active incidents
+  const {
+    data: incidents = [],
+    isLoading: isLoadingIncidents,
+    refetch: refetchIncidents,
+  } = useQuery<HealthIncident[]>({
+    queryKey: ['/api/health/incidents'],
+    refetchInterval: 120000, // Refetch every 2 minutes
   });
   
-  // Resolve incident
-  const resolveIncidentMutation = useMutation({
+  // Fetch notifications
+  const {
+    data: notifications = [],
+    isLoading: isLoadingNotifications,
+    refetch: refetchNotifications,
+  } = useQuery<HealthNotification[]>({
+    queryKey: ['/api/health/notifications'],
+    refetchInterval: 120000, // Refetch every 2 minutes
+  });
+  
+  // Fetch performance data
+  const {
+    data: performanceData = null,
+    isLoading: isLoadingPerformanceData,
+  } = useQuery<HealthPerformanceData | null>({
+    queryKey: ['/api/health/performance'],
+    refetchInterval: 300000, // Refetch every 5 minutes
+    enabled: false, // Disabled by default, will be enabled when needed
+  });
+  
+  // Mutation to acknowledge an incident
+  const acknowledgeMutation = useMutation({
     mutationFn: async (incidentId: number) => {
-      await apiRequest('POST', `/api/admin/health/incidents/${incidentId}/resolve`);
+      const response = await fetch(`/api/health/incidents/${incidentId}/acknowledge`, {
+        method: 'POST',
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to acknowledge incident');
+      }
+      
+      return response.json();
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['/api/admin/health/incidents'] });
+      refetchIncidents();
+      refetchNotifications();
       toast({
-        title: 'Success',
-        description: 'Incident resolved successfully'
+        title: 'Incident acknowledged',
+        description: 'The incident has been acknowledged',
       });
     },
-    onError: (error: any) => {
+    onError: (error: Error) => {
       toast({
-        title: 'Error',
-        description: `Failed to resolve incident: ${error.message}`,
-        variant: 'destructive'
+        title: 'Failed to acknowledge incident',
+        description: error.message,
+        variant: 'destructive',
       });
-    }
+    },
   });
   
-  // Update metric
-  const updateMetricMutation = useMutation({
-    mutationFn: async ({ metricId, updates }: { metricId: number, updates: { enabled?: boolean; threshold?: any } }) => {
-      await apiRequest('PUT', `/api/admin/health/metrics/${metricId}`, updates);
+  // Mutation to resolve an incident
+  const resolveMutation = useMutation({
+    mutationFn: async (incidentId: number) => {
+      const response = await fetch(`/api/health/incidents/${incidentId}/resolve`, {
+        method: 'POST',
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to resolve incident');
+      }
+      
+      return response.json();
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['/api/admin/health/metrics'] });
+      refetchIncidents();
+      refetchNotifications();
       toast({
-        title: 'Success',
-        description: 'Metric updated successfully'
+        title: 'Incident resolved',
+        description: 'The incident has been marked as resolved',
       });
     },
-    onError: (error: any) => {
+    onError: (error: Error) => {
       toast({
-        title: 'Error',
-        description: `Failed to update metric: ${error.message}`,
-        variant: 'destructive'
+        title: 'Failed to resolve incident',
+        description: error.message,
+        variant: 'destructive',
       });
-    }
+    },
   });
   
-  // Helper function to mark a notification as delivered
-  const markNotificationDelivered = (notificationId: number) => {
-    markNotificationDeliveredMutation.mutate(notificationId);
+  // Mutation to dismiss a notification
+  const dismissMutation = useMutation({
+    mutationFn: async (notificationId: number) => {
+      const response = await fetch(`/api/health/notifications/${notificationId}/dismiss`, {
+        method: 'POST',
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to dismiss notification');
+      }
+      
+      return response.json();
+    },
+    onSuccess: () => {
+      refetchNotifications();
+    },
+    onError: (error: Error) => {
+      toast({
+        title: 'Failed to dismiss notification',
+        description: error.message,
+        variant: 'destructive',
+      });
+    },
+  });
+  
+  // Mutation to track a metric
+  const trackMetricMutation = useMutation({
+    mutationFn: async ({ name, value }: { name: string; value: number }) => {
+      const response = await fetch('/api/health/metrics/track', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name, value }),
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to track metric');
+      }
+      
+      return response.json();
+    },
+  });
+  
+  // Mutation to enable/disable a metric
+  const toggleMetricMutation = useMutation({
+    mutationFn: async ({ metricId, enabled }: { metricId: number; enabled: boolean }) => {
+      const response = await fetch(`/api/health/metrics/${metricId}/toggle`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ enabled }),
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to update metric');
+      }
+      
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/health/metrics'] });
+      toast({
+        title: 'Metric updated',
+        description: 'The metric status has been updated',
+      });
+    },
+    onError: (error: Error) => {
+      toast({
+        title: 'Failed to update metric',
+        description: error.message,
+        variant: 'destructive',
+      });
+    },
+  });
+  
+  // Function to refresh health status
+  const refreshHealthStatus = () => {
+    refetchHealthStatus();
   };
   
-  // Helper function to resolve an incident
+  // Function to acknowledge an incident
+  const acknowledgeIncident = (incidentId: number) => {
+    acknowledgeMutation.mutate(incidentId);
+  };
+  
+  // Function to resolve an incident
   const resolveIncident = (incidentId: number) => {
-    resolveIncidentMutation.mutate(incidentId);
+    resolveMutation.mutate(incidentId);
   };
   
-  // Helper function to update a metric
-  const updateMetric = (metricId: number, updates: { enabled?: boolean; threshold?: any }) => {
-    updateMetricMutation.mutate({ metricId, updates });
+  // Function to dismiss a notification
+  const dismissNotification = (notificationId: number) => {
+    dismissMutation.mutate(notificationId);
+  };
+  
+  // Function to track a metric
+  const trackMetric = (metricName: string, value: number) => {
+    trackMetricMutation.mutate({ name: metricName, value });
+  };
+  
+  // Function to enable/disable a metric
+  const enableMetric = (metricId: number, enabled: boolean) => {
+    toggleMetricMutation.mutate({ metricId, enabled });
+  };
+  
+  // Show toast notification when new incidents are detected
+  useEffect(() => {
+    if (incidents && incidents.length > 0) {
+      const activeIncidents = incidents.filter(incident => incident.status === 'active');
+      if (activeIncidents.length > 0) {
+        // Show toast only for new incidents (those without an ID yet)
+        const newIncidents = activeIncidents.filter(incident => !incident.id);
+        if (newIncidents.length > 0) {
+          toast({
+            title: `${newIncidents.length} new system ${newIncidents.length === 1 ? 'issue' : 'issues'} detected`,
+            description: 'Check the Health Dashboard for details',
+            variant: 'destructive',
+          });
+        }
+      }
+    }
+  }, [incidents, toast]);
+  
+  // Provide the context value
+  const contextValue: HealthContextType = {
+    healthStatus: healthStatus || null,
+    isLoadingHealthStatus,
+    healthMetrics,
+    isLoadingMetrics,
+    incidents,
+    isLoadingIncidents,
+    notifications,
+    isLoadingNotifications,
+    performanceData,
+    isLoadingPerformanceData,
+    refreshHealthStatus,
+    acknowledgeIncident,
+    resolveIncident,
+    dismissNotification,
+    trackMetric,
+    enableMetric,
   };
   
   return (
-    <HealthContext.Provider
-      value={{
-        healthStatus: healthStatus || null,
-        isLoadingHealthStatus,
-        notifications: notificationsData?.notifications || [],
-        isLoadingNotifications,
-        markNotificationDelivered,
-        incidents: incidentsData?.incidents || [],
-        isLoadingIncidents,
-        resolveIncident,
-        metrics: metricsData?.metrics || [],
-        isLoadingMetrics,
-        updateMetric,
-        trackApiError,
-        trackPageLoadTime,
-        trackSessionFailure,
-        trackMediaUpload
-      }}
-    >
+    <HealthContext.Provider value={contextValue}>
       {children}
     </HealthContext.Provider>
   );
-}
+};
 
-export function useHealth() {
+// Hook to use the health context
+export const useHealth = () => {
   const context = useContext(HealthContext);
-  if (!context) {
+  if (context === undefined) {
     throw new Error('useHealth must be used within a HealthProvider');
   }
   return context;
-}
+};

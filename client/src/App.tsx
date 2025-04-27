@@ -14,8 +14,10 @@ import { DualModeCompanion } from "@/components/companions/DualModeCompanion";
 import { UpgradeAnnouncement } from "@/components/UpgradeAnnouncement";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { HelpProvider } from "@/contexts/HelpContext";
+import { HealthProvider } from "@/contexts/HealthContext";
 import InstantHelpWidget from "@/components/support/InstantHelpWidget";
 import ContextSuggestion from "@/components/support/ContextSuggestion";
+import HealthTracker from "@/components/health/HealthTracker";
 import AdminLayout from "@/layouts/AdminLayout";
 import { testLogin } from "@/lib/test-login";
 import SuperAdminDashboard from "@/pages/super-admin/SuperAdminDashboard";
@@ -96,6 +98,7 @@ import NavigationDemoPage from "@/pages/NavigationDemoPage";
 import AssistantPage from "@/pages/support/AssistantPage";
 import TicketPage from "@/pages/support/TicketPage";
 import SupportRequestsPage from "@/pages/admin/SupportRequestsPage";
+import HealthDashboardPage from "@/pages/admin/HealthDashboardPage";
 // Page Builder pages
 import PageBuilderListPage from "@/pages/PageBuilderListPage";
 import PageBuilderPage from "@/pages/PageBuilderPage";
@@ -261,6 +264,11 @@ function Router() {
       <ProtectedRoute 
         path="/admin/support-requests" 
         component={SupportRequestsPage} 
+        allowedRoles={['admin', 'super_admin']} 
+      />
+      <ProtectedRoute 
+        path="/admin/health-dashboard" 
+        component={HealthDashboardPage} 
         allowedRoles={['admin', 'super_admin']} 
       />
       <ProtectedRoute 
@@ -439,17 +447,20 @@ function App() {
             <TenantProvider>
               <CompanionContextProvider>
                 <HelpProvider>
-                  <DocumentHead route="/" />
-                  <FirstTimeUserDetector>
-                    <MainLayout>
-                      <Router />
-                    </MainLayout>
-                  </FirstTimeUserDetector>
-                  <DualModeCompanion />
-                  <UpgradeAnnouncement />
-                  <InstantHelpWidget />
-                  <ContextSuggestion />
-                  <Toaster />
+                  <HealthProvider>
+                    <DocumentHead route="/" />
+                    <FirstTimeUserDetector>
+                      <MainLayout>
+                        <Router />
+                      </MainLayout>
+                    </FirstTimeUserDetector>
+                    <DualModeCompanion />
+                    <UpgradeAnnouncement />
+                    <InstantHelpWidget />
+                    <ContextSuggestion />
+                    <HealthTracker />
+                    <Toaster />
+                  </HealthProvider>
                 </HelpProvider>
               </CompanionContextProvider>
             </TenantProvider>
