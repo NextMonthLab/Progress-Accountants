@@ -2,40 +2,39 @@
  * This script initializes the database tables for the Support System feature
  */
 import { pool } from './db';
-import { logger } from './utils/logger';
 
 export async function migrateSupportSystemTables() {
-  logger.info('Running Support System migrations...');
-  logger.info('Starting Support System table migrations...');
+  console.log('Running Support System migrations...');
+  console.log('Starting Support System table migrations...');
 
   try {
     // Create the sessions table if it doesn't exist
     if (!await checkIfTableExists('support_sessions')) {
       await createSupportSessionsTable();
-      logger.info('✅ support_sessions table created successfully');
+      console.log('✅ support_sessions table created successfully');
     } else {
-      logger.info('ℹ️ support_sessions table already exists, skipping creation.');
+      console.log('ℹ️ support_sessions table already exists, skipping creation.');
     }
 
     // Create the tickets table if it doesn't exist
     if (!await checkIfTableExists('support_tickets')) {
       await createSupportTicketsTable();
-      logger.info('✅ support_tickets table created successfully');
+      console.log('✅ support_tickets table created successfully');
     } else {
-      logger.info('ℹ️ support_tickets table already exists, skipping creation.');
+      console.log('ℹ️ support_tickets table already exists, skipping creation.');
     }
 
     // Create the messages table if it doesn't exist
     if (!await checkIfTableExists('support_messages')) {
       await createSupportMessagesTable();
-      logger.info('✅ support_messages table created successfully');
+      console.log('✅ support_messages table created successfully');
     } else {
-      logger.info('ℹ️ support_messages table already exists, skipping creation.');
+      console.log('ℹ️ support_messages table already exists, skipping creation.');
     }
 
-    logger.info('✅ Support System database migration completed successfully');
+    console.log('✅ Support System database migration completed successfully');
   } catch (error) {
-    logger.error('❌ Support System database migration failed:', error);
+    console.error('❌ Support System database migration failed:', error);
     throw error;
   }
 }
