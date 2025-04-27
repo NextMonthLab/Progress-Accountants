@@ -6,6 +6,18 @@ import { Request, Response, NextFunction } from "express";
 // Imported from shared schema to ensure consistency
 import { UserRole } from "@shared/schema";
 
+// Middleware to require authentication
+export const requireAuth = (req: Request, res: Response, next: NextFunction) => {
+  if (!req.user) {
+    return res.status(401).json({
+      error: "Unauthorized",
+      message: "Authentication required"
+    });
+  }
+  
+  return next();
+};
+
 // Define permissions for each role
 const rolePermissions: Record<UserRole, string[]> = {
   super_admin: [

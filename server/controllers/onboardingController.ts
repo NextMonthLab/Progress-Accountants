@@ -1,209 +1,174 @@
-import { Express, Request, Response } from "express";
-import { db } from "../db";
-import { sql } from "drizzle-orm";
-import { getUserFromSession } from "../middleware/auth";
+import { Request, Response, Express } from "express";
+import { storage } from "../storage";
+import { OnboardingState, insertOnboardingStateSchema } from "@shared/schema";
+import { requireAuth } from "../middleware/rbac";
+import { z } from "zod";
+
+// Validate the incoming progress update data
+const progressUpdateSchema = z.object({
+  stage: z.string(),
+  status: z.string(),
+  data: z.record(z.any()).optional()
+});
+
+// Get the current onboarding progress for the authenticated user
+export const getOnboardingProgress = [
+  requireAuth,
+  async (req: Request, res: Response) => {
+    try {
+      const userId = req.user?.id;
+      
+      if (!userId) {
+        return res.status(401).json({ error: "User not authenticated" });
+      }
+      
+      const progress = await storage.getOnboardingState(userId);
+      return res.json(progress || { status: "not_started" });
+    } catch (error) {
+      console.error("Error fetching onboarding progress:", error);
+      return res.status(500).json({ error: "Failed to fetch onboarding progress" });
+    }
+  }
+];
+
+// Update the onboarding progress for a specific stage
+export const updateOnboardingProgress = [
+  requireAuth,
+  async (req: Request, res: Response) => {
+    try {
+      const userId = req.user?.id;
+      
+      if (!userId) {
+        return res.status(401).json({ error: "User not authenticated" });
+      }
+      
+      const validationResult = progressUpdateSchema.safeParse(req.body);
+      
+      if (!validationResult.success) {
+        return res.status(400).json({ 
+          error: "Invalid request data", 
+          details: validationResult.error.format() 
+        });
+      }
+      
+      const { stage, status, data } = validationResult.data;
+      
+      const updatedState = await storage.updateOnboardingStatus(
+        userId,
+        stage,
+        status,
+        data
+      );
+      
+      return res.json(updatedState);
+    } catch (error) {
+      console.error("Error updating onboarding progress:", error);
+      return res.status(500).json({ error: "Failed to update onboarding progress" });
+    }
+  }
+];
+
+// Mark a specific onboarding stage as complete
+export const completeOnboardingStage = [
+  requireAuth,
+  async (req: Request, res: Response) => {
+    try {
+      const userId = req.user?.id;
+      
+      if (!userId) {
+        return res.status(401).json({ error: "User not authenticated" });
+      }
+      
+      const { stage, data } = req.body;
+      
+      if (!stage) {
+        return res.status(400).json({ error: "Stage is required" });
+      }
+      
+      const updatedState = await storage.markOnboardingStageComplete(
+        userId,
+        stage,
+        data
+      );
+      
+      return res.json(updatedState);
+    } catch (error) {
+      console.error("Error completing onboarding stage:", error);
+      return res.status(500).json({ error: "Failed to complete onboarding stage" });
+    }
+  }
+];
+
+// Get any incomplete onboarding stages for the user
+export const getIncompleteOnboarding = [
+  requireAuth,
+  async (req: Request, res: Response) => {
+    try {
+      const userId = req.user?.id;
+      
+      if (!userId) {
+        return res.status(401).json({ error: "User not authenticated" });
+      }
+      
+      const incompleteState = await storage.getIncompleteOnboarding(userId);
+      return res.json(incompleteState || { status: "no_incomplete_stages" });
+    } catch (error) {
+      console.error("Error fetching incomplete onboarding:", error);
+      return res.status(500).json({ error: "Failed to fetch incomplete onboarding" });
+    }
+  }
+];
+
+// Save the user's preferred onboarding approach/setup
+export const saveOnboardingPreference = [
+  requireAuth,
+  async (req: Request, res: Response) => {
+    try {
+      const userId = req.user?.id;
+      
+      if (!userId) {
+        return res.status(401).json({ error: "User not authenticated" });
+      }
+      
+      const { preference } = req.body;
+      
+      if (!preference) {
+        return res.status(400).json({ error: "Preference is required" });
+      }
+      
+      const updatedState = await storage.saveOnboardingPreference(
+        userId,
+        preference
+      );
+      
+      return res.json(updatedState);
+    } catch (error) {
+      console.error("Error saving onboarding preference:", error);
+      return res.status(500).json({ error: "Failed to save onboarding preference" });
+    }
+  }
+];
 
 /**
- * Registers onboarding-related routes
+ * Register all onboarding routes
  */
 export function registerOnboardingRoutes(app: Express) {
   console.log("Registering Onboarding routes...");
-
-  /**
-   * Get onboarding status for a user
-   */
-  app.get("/api/onboarding/:userId", async (req: Request, res: Response) => {
-    try {
-      // Verify authenticated session
-      const sessionUser = await getUserFromSession(req);
-      if (!sessionUser) {
-        return res.status(401).json({ error: "Not authenticated" });
-      }
-
-      // Only allow access to own onboarding data or for admins
-      const { userId } = req.params;
-      const parsedUserId = parseInt(userId, 10);
-      if (sessionUser.id !== parsedUserId && 
-          sessionUser.userType !== 'admin' && 
-          sessionUser.userType !== 'super_admin') {
-        return res.status(403).json({ error: "Access denied" });
-      }
-
-      // Check if onboarding_stages table exists
-      const tableExists = await db.execute(sql`
-        SELECT EXISTS (
-          SELECT FROM information_schema.tables 
-          WHERE table_name = 'onboarding_stages'
-        );
-      `);
-
-      // Create table if it doesn't exist
-      if (!tableExists.rows[0].exists) {
-        await db.execute(sql`
-          CREATE TABLE onboarding_stages (
-            id SERIAL PRIMARY KEY,
-            user_id INTEGER NOT NULL,
-            stage VARCHAR(50) NOT NULL,
-            status VARCHAR(20) NOT NULL DEFAULT 'not_started',
-            data JSONB DEFAULT '{}'::jsonb,
-            created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-            updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
-          );
-        `);
-      }
-
-      // Get onboarding data for the user
-      const stages = await db.execute(sql`
-        SELECT * FROM onboarding_stages
-        WHERE user_id = ${parsedUserId}
-        ORDER BY updated_at DESC;
-      `);
-
-      return res.status(200).json({
-        success: true,
-        data: stages.rows,
-      });
-    } catch (error) {
-      console.error("Error getting onboarding status:", error);
-      return res.status(500).json({ error: "Internal server error" });
-    }
-  });
-
-  /**
-   * Update onboarding status
-   */
-  app.patch("/api/onboarding/status", async (req: Request, res: Response) => {
-    try {
-      // Verify authenticated session
-      const sessionUser = await getUserFromSession(req);
-      if (!sessionUser) {
-        return res.status(401).json({ error: "Not authenticated" });
-      }
-
-      // Get request body
-      const { userId, stage, status, data } = req.body;
-
-      // Only allow updates to own onboarding data or for admins
-      if (sessionUser.id !== userId && 
-          sessionUser.userType !== 'admin' && 
-          sessionUser.userType !== 'super_admin') {
-        return res.status(403).json({ error: "Access denied" });
-      }
-
-      // Check if the stage already exists for the user
-      const existingStage = await db.execute(sql`
-        SELECT * FROM onboarding_stages
-        WHERE user_id = ${userId} AND stage = ${stage};
-      `);
-
-      if (existingStage.rows.length > 0) {
-        // Update existing stage
-        await db.execute(sql`
-          UPDATE onboarding_stages
-          SET status = ${status}, data = ${JSON.stringify(data)}, updated_at = NOW()
-          WHERE user_id = ${userId} AND stage = ${stage};
-        `);
-      } else {
-        // Create new stage
-        await db.execute(sql`
-          INSERT INTO onboarding_stages (user_id, stage, status, data)
-          VALUES (${userId}, ${stage}, ${status}, ${JSON.stringify(data)});
-        `);
-      }
-
-      return res.status(200).json({
-        success: true,
-        message: "Onboarding status updated",
-      });
-    } catch (error) {
-      console.error("Error updating onboarding status:", error);
-      return res.status(500).json({ error: "Internal server error" });
-    }
-  });
-
-  /**
-   * Mark stage as complete
-   */
-  app.patch("/api/onboarding/complete", async (req: Request, res: Response) => {
-    try {
-      // Verify authenticated session
-      const sessionUser = await getUserFromSession(req);
-      if (!sessionUser) {
-        return res.status(401).json({ error: "Not authenticated" });
-      }
-
-      // Get request body
-      const { userId, stage, data } = req.body;
-
-      // Only allow updates to own onboarding data or for admins
-      if (sessionUser.id !== userId && 
-          sessionUser.userType !== 'admin' && 
-          sessionUser.userType !== 'super_admin') {
-        return res.status(403).json({ error: "Access denied" });
-      }
-
-      // Check if the stage already exists for the user
-      const existingStage = await db.execute(sql`
-        SELECT * FROM onboarding_stages
-        WHERE user_id = ${userId} AND stage = ${stage};
-      `);
-
-      if (existingStage.rows.length > 0) {
-        // Update existing stage to completed
-        await db.execute(sql`
-          UPDATE onboarding_stages
-          SET status = 'completed', data = ${JSON.stringify(data)}, updated_at = NOW()
-          WHERE user_id = ${userId} AND stage = ${stage};
-        `);
-      } else {
-        // Create new completed stage
-        await db.execute(sql`
-          INSERT INTO onboarding_stages (user_id, stage, status, data)
-          VALUES (${userId}, ${stage}, 'completed', ${JSON.stringify(data)});
-        `);
-      }
-
-      return res.status(200).json({
-        success: true,
-        message: "Stage marked as complete",
-      });
-    } catch (error) {
-      console.error("Error completing onboarding stage:", error);
-      return res.status(500).json({ error: "Internal server error" });
-    }
-  });
-
-  /**
-   * Reset onboarding progress
-   */
-  app.post("/api/onboarding/reset", async (req: Request, res: Response) => {
-    try {
-      // Verify authenticated session with admin privileges
-      const sessionUser = await getUserFromSession(req);
-      if (!sessionUser || 
-          (sessionUser.userType !== 'admin' && 
-           sessionUser.userType !== 'super_admin')) {
-        return res.status(403).json({ error: "Access denied" });
-      }
-
-      // Get user ID to reset
-      const { userId } = req.body;
-
-      // Delete all onboarding stages for the user
-      await db.execute(sql`
-        DELETE FROM onboarding_stages
-        WHERE user_id = ${userId};
-      `);
-
-      return res.status(200).json({
-        success: true,
-        message: "Onboarding progress reset",
-      });
-    } catch (error) {
-      console.error("Error resetting onboarding progress:", error);
-      return res.status(500).json({ error: "Internal server error" });
-    }
-  });
-
+  
+  // Get current onboarding progress
+  app.get('/api/onboarding/progress', getOnboardingProgress);
+  
+  // Update progress for a specific stage
+  app.post('/api/onboarding/progress', updateOnboardingProgress);
+  
+  // Mark a specific stage as complete
+  app.post('/api/onboarding/complete-stage', completeOnboardingStage);
+  
+  // Get any incomplete onboarding
+  app.get('/api/onboarding/incomplete', getIncompleteOnboarding);
+  
+  // Save preferred onboarding path
+  app.post('/api/onboarding/preference', saveOnboardingPreference);
+  
   console.log("✅ Onboarding routes registered");
 }

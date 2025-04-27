@@ -1,0 +1,123 @@
+✨ Master Build Prompt: NextMonth Concierge Onboarding Journey (Replit Build)
+
+⸻
+
+🎬 Introduction
+
+You are tasked with building the NextMonth Concierge Onboarding System.
+
+This system is cinematic, premium, and user-guided, designed to help new clients set up their Smart Sites through an intelligent, self-paced journey — without human handholding until launch.
+
+You will receive instructions broken into stages.
+Each stage must be completed cleanly before moving to the next.
+
+⸻
+
+🛠️ Staging Structure
+
+You will follow these stages:
+
+Stage	Focus
+Stage 1	System Overview + Build Foundation (base routes, components, progress handling)
+Stage 2	Account Creation Module (Magic Link + SSO login flow)
+Stage 3	Foundations Discovery Flow (initial questions: business type, team size, urgency)
+Stage 4	Concierge Split Flow (DIY Minimal Site or Professional Pages Intake)
+Stage 5	Professional Pages Guided Intake (pages, design feel, typography, colors, inspiration)
+Stage 6	Launch Profile Generation + Admin Summary Panel
+Stage 7	Auto-Generated Concierge Summary Email
+Stage 8	Review, Polish, Final UX Enhancements (progress saving, soft animations, accessibility)
+
+
+
+⸻
+
+📦 Stage 1 Instructions (Begin Here)
+
+Goal:
+Set up the foundation for the Concierge Journey system.
+
+You must:
+
+1. Create the base structure:
+	•	/onboarding/start — Landing welcome screen
+	•	/onboarding/flow — Main onboarding journey router
+	•	/onboarding/complete — Final confirmation screen
+
+⸻
+
+2. Build the Progress Handler
+	•	Create a simple Progress Manager that saves:
+	•	Current stage
+	•	Completed sections
+	•	Basic answers in session or database (using a clean object structure)
+
+Example:
+
+{
+  "user_id": "abc123",
+  "current_stage": "foundations_discovery",
+  "answers": {
+    "business_type": "Consulting",
+    "team_size": "Solo",
+    "urgency": "2–4 weeks"
+  }
+}
+
+
+
+⸻
+
+3. Set up Initial Welcome Screen (/onboarding/start)
+
+Content should be:
+
+⸻
+
+Welcome to NextMonth
+
+You’re about to design the future of your business.
+This isn’t just a website — it’s the foundation of your next decade of growth.
+
+Let’s build it, step by step.
+[Start Your Journey]
+
+⸻
+
+	•	Clicking [Start Your Journey] should route them to /onboarding/flow.
+
+⸻
+
+4. Confirm When Ready
+	•	When Stage 1 is complete, output a simple JSON confirmation:
+
+{
+  "status": "Stage 1 Completed",
+  "routes_created": ["/onboarding/start", "/onboarding/flow", "/onboarding/complete"],
+  "progress_manager": "initialized"
+}
+
+	•	Await further instructions before starting Stage 2.
+
+⸻
+
+🧠 Reminders
+	•	Design everything cinematically and minimally (this is a premium system).
+	•	Maintain progress saving between sessions.
+	•	All content must be structured cleanly — no messy strings, no duplicated routes.
+	•	Respond cleanly and await the next stage prompt after Stage 1.
+
+⸻
+
+✅ Final Note for Ratplet:
+
+This onboarding journey must feel like a VIP client experience —
+not just a signup form.
+Every screen, every choice, every step must feel crafted and alive.
+
+You will be guided through every stage carefully.
+
+Begin with Stage 1.
+
+⸻
+
+✨ End of Stage 1 Master Prompt

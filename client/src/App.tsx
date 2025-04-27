@@ -71,6 +71,10 @@ import BlueprintManagementPage from "@/pages/BlueprintManagementPage";
 import MediaManagementPage from "@/pages/MediaManagementPage";
 import NewClientOnboarding from "@/pages/NewClientOnboarding";
 import CreateNewPagePage from "@/pages/CreateNewPagePage";
+// Import new concierge onboarding pages
+import ConciergeStartPage from "@/pages/concierge/ConciergeStartPage";
+import ConciergeFlowPage from "@/pages/concierge/ConciergeFlowPage";
+import ConciergeCompletePage from "@/pages/concierge/ConciergeCompletePage";
 // Admin settings pages
 import TenantCustomizationPage from "@/pages/admin/TenantCustomizationPage";
 import ThemeManagementPage from "@/pages/admin/ThemeManagementPage";
@@ -336,6 +340,23 @@ function Router() {
       <ProtectedRoute path="/onboarding" component={OnboardingWelcomePage} />
       <ProtectedRoute path="/new-client-setup" component={NewClientOnboarding} />
       <ProtectedRoute path="/website-intent" component={WebsiteIntentPage} />
+      
+      {/* Premium Concierge Onboarding Journey routes */}
+      <ProtectedRoute 
+        path="/concierge/start" 
+        component={ConciergeStartPage} 
+        allowedRoles={['admin', 'super_admin']} 
+      />
+      <ProtectedRoute 
+        path="/concierge/flow" 
+        component={ConciergeFlowPage} 
+        allowedRoles={['admin', 'super_admin']} 
+      />
+      <ProtectedRoute 
+        path="/concierge/complete" 
+        component={ConciergeCompletePage} 
+        allowedRoles={['admin', 'super_admin']} 
+      />
       <Route path="/studio-banbury" component={StudioPage} />
       <ProtectedRoute path="/scope-request" component={ScopeRequestPage} />
       <ProtectedRoute path="/brand-guidelines" component={BrandGuidelinesPage} />
