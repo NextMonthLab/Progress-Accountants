@@ -89,6 +89,10 @@ import BusinessDiscoverPage from "@/pages/BusinessDiscoverPage";
 import CloneTemplatePage from "@/pages/CloneTemplatePage";
 import EntrepreneurSupportPage from "@/pages/EntrepreneurSupportPage";
 import NavigationDemoPage from "@/pages/NavigationDemoPage";
+// Support System pages
+import AssistantPage from "@/pages/support/AssistantPage";
+import TicketPage from "@/pages/support/TicketPage";
+import SupportRequestsPage from "@/pages/admin/SupportRequestsPage";
 // Page Builder pages
 import PageBuilderListPage from "@/pages/PageBuilderListPage";
 import PageBuilderPage from "@/pages/PageBuilderPage";
@@ -133,6 +137,11 @@ function Router() {
       <Route path="/testimonials" component={TestimonialsPage} />
       <Route path="/resources" component={ResourcesPage} />
       <Route path="/news" component={NewsPage} />
+      
+      {/* Support System routes */}
+      <Route path="/support/assistant" component={AssistantPage} />
+      <Route path="/support/ticket" component={TicketPage} />
+      
       <Route path="/" component={HomePage} />
 
       {/* Super Admin routes (require super admin privileges) */}
@@ -244,6 +253,11 @@ function Router() {
       <ProtectedRoute 
         path="/admin/insight-users" 
         component={InsightUsersPage} 
+        allowedRoles={['admin', 'super_admin']} 
+      />
+      <ProtectedRoute 
+        path="/admin/support-requests" 
+        component={SupportRequestsPage} 
         allowedRoles={['admin', 'super_admin']} 
       />
       <ProtectedRoute 
