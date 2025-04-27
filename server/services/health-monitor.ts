@@ -98,7 +98,7 @@ export class HealthMonitorService {
   /**
    * Start the health monitoring service
    */
-  public start(intervalMs: number = 60000): void {
+  public async start(intervalMs: number = 60000): Promise<void> {
     if (this.monitoringInterval) {
       console.log('Health monitoring is already running');
       return;
@@ -106,16 +106,48 @@ export class HealthMonitorService {
 
     console.log(`Starting health monitoring service (interval: ${intervalMs}ms)`);
     
-    // Run an initial check
-    this.performHealthChecks();
-    
-    // Set up the monitoring interval
-    this.monitoringInterval = setInterval(() => {
+    try {
+      // Check if tables exist first
+      const tablesExist = await this.checkTablesExist();
+      
+      if (!tablesExist) {
+        console.log('Health monitoring tables not ready. Service will wait for migrations to complete.');
+        // Try again in 10 seconds
+        setTimeout(() => this.start(intervalMs), 10000);
+        return;
+      }
+      
+      // Run an initial check
       this.performHealthChecks();
-    }, intervalMs);
-    
-    // Set up event listeners
-    this.setupEventListeners();
+      
+      // Set up the monitoring interval
+      this.monitoringInterval = setInterval(() => {
+        this.performHealthChecks();
+      }, intervalMs);
+      
+      // Set up event listeners
+      this.setupEventListeners();
+      
+      console.log('Health monitoring service started successfully');
+    } catch (error) {
+      console.error('Error starting health monitoring service:', error);
+      // Try again in 10 seconds
+      setTimeout(() => this.start(intervalMs), 10000);
+    }
+  }
+  
+  /**
+   * Check if required tables exist
+   */
+  private async checkTablesExist(): Promise<boolean> {
+    try {
+      // Try to query for health_metrics table
+      await db.execute(sql`SELECT 1 FROM health_metrics LIMIT 1`);
+      return true;
+    } catch (error) {
+      // Table doesn't exist or other DB error
+      return false;
+    }
   }
 
   /**

@@ -20,11 +20,16 @@ import {
 } from './controllers/healthController';
 import { healthMonitor } from './services/health-monitor';
 
-export function registerHealthRoutes(app: Express) {
+export async function registerHealthRoutes(app: Express) {
   console.log('Registering Health Monitoring routes...');
 
   // Start the health monitoring service
-  healthMonitor.start();
+  try {
+    await healthMonitor.start();
+  } catch (error) {
+    console.error('Error starting health monitoring service:', error);
+    // We'll continue setting up the routes, the service will retry later
+  }
 
   // Public health endpoint (for status checks)
   app.get('/api/health', getHealthStatus);

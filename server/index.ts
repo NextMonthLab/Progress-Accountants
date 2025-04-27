@@ -140,7 +140,7 @@ app.use((req, res, next) => {
   registerOnboardingRoutes(app);
   
   // Register Health Monitoring routes
-  registerHealthRoutes(app);
+  await registerHealthRoutes(app);
 
   app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
     const status = err.status || err.statusCode || 500;
