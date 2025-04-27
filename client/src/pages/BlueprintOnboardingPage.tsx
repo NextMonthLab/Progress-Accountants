@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Star, Rocket, Sparkles, Award } from 'lucide-react';
-import { OnboardingLayout, CinematicHero, StageCard, OnboardingProgress } from '@/components/onboarding/CinematicOnboarding';
+import CinematicOnboarding from '@/components/onboarding/CinematicOnboarding';
 import EmblemGallery from '@/components/onboarding/EmblemGallery';
 
 const BlueprintOnboardingPage: React.FC = () => {
@@ -53,53 +53,7 @@ const BlueprintOnboardingPage: React.FC = () => {
         </TabsList>
         
         <TabsContent value="journey" className="space-y-4">
-          <OnboardingLayout backgroundStyle="gradient">
-            <CinematicHero
-              title="Welcome to Your Guided Journey"
-              subtitle="Learn how to get the most out of the Progress platform"
-            >
-              <div className="flex flex-col md:flex-row gap-4">
-                <Button variant="default">Start Now</Button>
-                <Button variant="outline" className="bg-white/10 hover:bg-white/20">View Guide</Button>
-              </div>
-            </CinematicHero>
-            
-            <div className="space-y-4 py-4">
-              <OnboardingProgress 
-                stages={['intro', 'basics', 'content', 'design', 'launch']}
-                currentStage="content"
-                completedStages={['intro', 'basics']}
-              />
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <StageCard
-                  title="Platform Introduction"
-                  description="Learn about the core concepts of Progress"
-                  completed={true}
-                />
-                <StageCard
-                  title="Getting Started"
-                  description="Set up your account and workspace"
-                  completed={true}
-                />
-                <StageCard
-                  title="Content Creation"
-                  description="Learn to build and manage your site content"
-                  active={true}
-                />
-                <StageCard
-                  title="Design & Branding"
-                  description="Customize the look and feel of your site"
-                  disabled={true}
-                />
-                <StageCard
-                  title="Launch & Optimize"
-                  description="Prepare your site for visitors"
-                  disabled={true}
-                />
-              </div>
-            </div>
-          </OnboardingLayout>
+          <CinematicOnboarding autoAdvance={true} showCompleted={true} />
         </TabsContent>
         
         <TabsContent value="emblems" className="space-y-4">
