@@ -415,15 +415,49 @@ As we've explored, ${data.topic} represents a significant opportunity for ${data
                     <Button
                       variant="default"
                       className="ml-2"
-                      onClick={() => {
-                        toast({
-                          title: "Success",
-                          description: "Blog post saved to drafts and can be published from the News page.",
-                        });
+                      onClick={async () => {
+                        if (!generatedContent) return;
+                        
+                        try {
+                          // Set loading state
+                          setIsGenerating(true);
+                          
+                          // Make actual API call to publish directly to news page
+                          const response = await fetch('/api/blog/publish-to-news', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                              title: generatedContent.title,
+                              content: generatedContent.content,
+                              metaDescription: generatedContent.metaDescription,
+                              imageUrl: generatedContent.imageUrl || '',
+                              status: 'published',
+                              publishedAt: new Date().toISOString()
+                            })
+                          });
+                          
+                          if (!response.ok) {
+                            throw new Error('Failed to publish post');
+                          }
+                          
+                          toast({
+                            title: "Published Successfully",
+                            description: "Blog post has been automatically published to the external news page.",
+                          });
+                        } catch (error) {
+                          toast({
+                            title: "Publication failed",
+                            description: "There was an error publishing your blog post. Please try again.",
+                            variant: "destructive"
+                          });
+                          console.error('Publish error:', error);
+                        } finally {
+                          setIsGenerating(false);
+                        }
                       }}
                     >
                       <FileText className="mr-2 h-4 w-4" />
-                      Save to Drafts
+                      Publish to News Page
                     </Button>
                   </CardFooter>
                 </Card>

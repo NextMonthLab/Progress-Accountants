@@ -19,6 +19,7 @@ export function registerBlogRoutes(app: Express): void {
   app.get("/api/blog/posts/:id", BlogController.getBlogPost);
   app.get("/api/blog/posts/slug/:slug", BlogController.getBlogPostBySlug);
   app.post("/api/blog/posts", BlogController.createBlogPost);
+  app.post("/api/blog/publish-to-news", BlogController.publishDirectToNews);
   app.put("/api/blog/posts/:id", BlogController.updateBlogPost);
   app.delete("/api/blog/posts/:id", BlogController.deleteBlogPost);
   

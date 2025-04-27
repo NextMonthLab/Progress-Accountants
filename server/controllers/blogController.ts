@@ -253,6 +253,13 @@ export const BlogController = {
       // Set created by user ID
       validatedData.authorId = user.id;
 
+      // If publish direct is set to true, automatically set status to published
+      // This handles direct publishing from the blog generator to news page
+      if (req.body.publishDirect === true) {
+        validatedData.status = 'published';
+        validatedData.publishedAt = new Date();
+      }
+
       const blogPost = await storage.createBlogPost(validatedData);
       
       // Log the activity
@@ -264,7 +271,8 @@ export const BlogController = {
         entityId: blogPost.id.toString(),
         details: {
           title: blogPost.title,
-          slug: blogPost.slug
+          slug: blogPost.slug,
+          publishedDirectly: req.body.publishDirect === true
         }
       });
       
@@ -275,6 +283,38 @@ export const BlogController = {
       }
       console.error("Error creating blog post:", error);
       res.status(500).json({ error: "Failed to create blog post" });
+    }
+  },
+
+  // New method for direct publishing to the news page
+  async publishDirectToNews(req: Request, res: Response) {
+    try {
+      const user = getUserFromRequest(req);
+      if (!user) {
+        return res.status(401).json({ error: "Unauthorized" });
+      }
+
+      // Add the publishDirect flag to request body
+      req.body.publishDirect = true;
+      
+      // Set defaults for the news post
+      if (!req.body.slug) {
+        req.body.slug = slugify(req.body.title);
+      }
+      
+      if (!req.body.status) {
+        req.body.status = 'published';
+      }
+      
+      if (!req.body.publishedAt) {
+        req.body.publishedAt = new Date();
+      }
+
+      // Use the existing createBlogPost method
+      return this.createBlogPost(req, res);
+    } catch (error) {
+      console.error("Error publishing directly to news:", error);
+      res.status(500).json({ error: "Failed to publish post to news page" });
     }
   },
 
