@@ -260,19 +260,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Register system monitoring endpoints
   registerSystemRoutes(app);
   
-  // Template cloning endpoint
-  app.post("/api/tenant/clone", async (req: Request, res: Response) => {
+  // Template cloning endpoint - restricted to super admins only
+  app.post("/api/tenant/clone", requireSuperAdmin, async (req: Request, res: Response) => {
     try {
-      // Check if user is authenticated and has admin privileges
-      if (!req.isAuthenticated()) {
-        return res.status(401).json({ error: "Unauthorized" });
-      }
-
-      const user = req.user as any;
-      // Restrict cloning to super admin users only
-      if (!user.isSuperAdmin && user.userType !== 'super_admin') {
-        return res.status(403).json({ error: "Super admin privileges required for cloning" });
-      }
       
       const { templateId } = req.body;
       
@@ -422,17 +412,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Get installed tools from NextMonth marketplace
   app.get("/api/nextmonth/marketplace/installed", getInstalledTools);
   
-  // Install a tool from NextMonth marketplace
-  app.post("/api/nextmonth/marketplace/install/:toolId", installTool);
+  // Install a tool from NextMonth marketplace - restricted to super admins
+  app.post("/api/nextmonth/marketplace/install/:toolId", requireSuperAdmin, installTool);
   
-  // Uninstall a tool from NextMonth marketplace
-  app.post("/api/nextmonth/marketplace/uninstall/:installationId", uninstallTool);
+  // Uninstall a tool from NextMonth marketplace - restricted to super admins
+  app.post("/api/nextmonth/marketplace/uninstall/:installationId", requireSuperAdmin, uninstallTool);
   
   // Get tool configuration from NextMonth marketplace
   app.get("/api/nextmonth/marketplace/tools/:installationId/config", getToolConfiguration);
   
-  // Update tool configuration in NextMonth marketplace
-  app.patch("/api/nextmonth/marketplace/tools/:installationId/config", updateToolConfiguration);
+  // Update tool configuration in NextMonth marketplace - restricted to super admins
+  app.patch("/api/nextmonth/marketplace/tools/:installationId/config", requireSuperAdmin, updateToolConfiguration);
   
 
   
