@@ -1,0 +1,124 @@
+ Stage 7 Prompt: Final System Readiness Check – Cinematic AI Support System (Blueprint Version)
+
+⸻
+
+🎯 Stage 7 Focus
+
+You will now:
+	•	Perform a full readiness audit of the new AI-powered Support System
+	•	Verify that each core support layer is correctly implemented, modular, cinematic, and blueprint-compatible
+	•	Prepare the final “Deployment Certification Report” before the system goes live
+
+⸻
+
+🛠️ Tasks for Stage 7
+
+⸻
+
+1. Full System Component Checklist
+
+Component	Ready Check
+Instant Help Assistant	Functional across all screens, smart context awareness, escalation to Ticket Engine works
+Self-Resolving Ticket Engine	Accepts structured user input, offers instant suggestions, escalates if needed
+Admin Support Panel	Lists tickets, allows status changes, admin notes, ticket exports
+Proactive Health Monitoring	Background checks operational, preemptive messaging functional
+Personalized Support Digest Generator	Summarizes resolved support interactions, user notifications working
+
+✅ Confirm each is functional.
+
+⸻
+
+2. User Journey Simulation Tests
+
+Run these realistic scenarios:
+
+Scenario	Expected Behavior
+Minor Upload Problem	Assistant offers instant tip; user resolves it without needing ticket
+Calendar Booking Glitch	User submits ticket; Ticket Engine suggests fix; user solves it
+Critical Error Spike	Health Monitor preemptively notifies users + flags Admin
+Full Ticket Escalation	User stuck, ticket escalates to Admin Panel properly
+Support Digest	User receives cinematic digest confirming resolution
+
+Confirm that users feel helped, not lost, at every point.
+
+⸻
+
+3. Admin Readiness Checklist
+
+Admin Capability	Ready Check
+View all active tickets easily	✅
+Update ticket statuses (New → In Progress → Resolved)	✅
+Export tickets if needed	✅
+See active system health alerts	✅
+Access user Support Digests (optional)	✅
+
+
+
+⸻
+
+4. Visual, Cinematic Integrity Check
+
+Confirm that across the system:
+	•	Typography is clean and calming (no messy font clashes)
+	•	Animations are subtle (no jarring popups)
+	•	Support feels like part of the platform (not a bolted-on helpdesk)
+
+⸻
+
+5. Final Certification Report
+
+When all checks are passed, output:
+
+{
+  "status": "Support System Certification Completed",
+  "deployment_ready": "true",
+  "components_verified": [
+    "instant_help_assistant",
+    "self_resolving_ticket_engine",
+    "admin_support_panel",
+    "proactive_health_monitoring",
+    "personalized_support_digest"
+  ],
+  "user_experience_verified": "true",
+  "admin_experience_verified": "true"
+}
+
+This signals you are cleared for full NextMonth and Agora OS support launch!
+
+⸻
+
+📜 Visual UX Notes for Final Check
+	•	ALL touchpoints must feel smooth, polished, premium.
+	•	Users should never see raw error messages or dead-ends.
+	•	Admin view must stay simple even as ticket volumes grow.
+
+⸻
+
+🧠 Ratplet Reminders
+	•	Remember: This system must scale from 1 user to 10,000+ users with no loss of quality.
+	•	Always prioritize graceful degradation — even if something goes wrong, make it cinematic.
+	•	Keep all future expansions modular: more health checks, more Digest options, more assistant smartness.
+
+⸻
+
+✨ End of Stage 7 Prompt
+
+⸻
+
+
+
+⸻
+
+✅ Full Support System Final Map:
+
+Stage	Focus	Status
+Stage 1	Core Support Routing + Structures — done	
+Stage 2	Instant Help Assistant — done	
+Stage 3	Self-Resolving Ticket Engine — done	
+Stage 4	Admin Support Panel — done	
+Stage 5	Proactive Health Monitoring — done	
+Stage 6	Personalized Support Digest — done	
+Stage 7	Final System Readiness Certification — THIS	
+
+
+

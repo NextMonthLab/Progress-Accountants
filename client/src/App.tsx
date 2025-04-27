@@ -98,6 +98,7 @@ import NavigationDemoPage from "@/pages/NavigationDemoPage";
 import AssistantPage from "@/pages/support/AssistantPage";
 import TicketPage from "@/pages/support/TicketPage";
 import DigestPage from "@/pages/support/DigestPage";
+import SystemReadinessPage from "@/pages/support/SystemReadinessPage";
 import SupportRequestsPage from "@/pages/admin/SupportRequestsPage";
 import HealthDashboardPage from "@/pages/admin/HealthDashboardPage";
 // Page Builder pages
@@ -276,6 +277,11 @@ function Router() {
       <ProtectedRoute 
         path="/admin/support-digests" 
         component={DigestPage} 
+        allowedRoles={['admin', 'super_admin']} 
+      />
+      <ProtectedRoute 
+        path="/admin/system-readiness" 
+        component={SystemReadinessPage} 
         allowedRoles={['admin', 'super_admin']} 
       />
       <ProtectedRoute 

@@ -27,7 +27,7 @@ const BreadcrumbList = React.forwardRef<
   <ol
     ref={ref}
     className={cn(
-      "flex flex-wrap items-center gap-1.5 break-words",
+      "flex flex-wrap items-center gap-1.5 break-words sm:gap-2.5",
       className
     )}
     {...props}
@@ -37,39 +37,15 @@ BreadcrumbList.displayName = "BreadcrumbList";
 
 const BreadcrumbItem = React.forwardRef<
   HTMLLIElement,
-  React.LiHTMLAttributes<HTMLLIElement> & {
-    isCurrentPage?: boolean;
-  }
->(({ className, isCurrentPage, ...props }, ref) => (
+  React.LiHTMLAttributes<HTMLLIElement>
+>(({ className, ...props }, ref) => (
   <li
     ref={ref}
     className={cn("inline-flex items-center gap-1.5", className)}
-    aria-current={isCurrentPage ? "page" : undefined}
     {...props}
   />
 ));
 BreadcrumbItem.displayName = "BreadcrumbItem";
-
-const BreadcrumbLink = React.forwardRef<
-  HTMLAnchorElement,
-  React.AnchorHTMLAttributes<HTMLAnchorElement> & {
-    asChild?: boolean;
-  }
->(({ asChild, className, ...props }, ref) => {
-  const Comp = asChild ? Slot : "a";
-
-  return (
-    <Comp
-      ref={ref}
-      className={cn(
-        "flex items-center text-sm font-medium underline-offset-4 transition-colors hover:text-foreground hover:underline",
-        className
-      )}
-      {...props}
-    />
-  );
-});
-BreadcrumbLink.displayName = "BreadcrumbLink";
 
 const BreadcrumbSeparator = React.forwardRef<
   HTMLSpanElement,
@@ -78,8 +54,7 @@ const BreadcrumbSeparator = React.forwardRef<
   <span
     ref={ref}
     role="presentation"
-    aria-hidden="true"
-    className={cn("text-muted-foreground", className)}
+    className={cn("opacity-50", className)}
     {...props}
   >
     <ChevronRight className="h-3.5 w-3.5" />
@@ -94,20 +69,36 @@ const BreadcrumbEllipsis = React.forwardRef<
   <span
     ref={ref}
     role="presentation"
-    aria-hidden="true"
     className={cn("flex h-9 w-9 items-center justify-center", className)}
     {...props}
   >
-    ...
+    <span className="flex h-1 w-1 rounded-full bg-muted-foreground">&hellip;</span>
   </span>
 ));
 BreadcrumbEllipsis.displayName = "BreadcrumbEllipsis";
+
+const BreadcrumbLink = React.forwardRef<
+  HTMLAnchorElement,
+  React.AnchorHTMLAttributes<HTMLAnchorElement> & {
+    asChild?: boolean;
+  }
+>(({ asChild, className, ...props }, ref) => {
+  const Comp = asChild ? Slot : "a";
+  return (
+    <Comp
+      ref={ref}
+      className={cn("transition-colors hover:text-foreground font-medium flex items-center", className)}
+      {...props}
+    />
+  );
+});
+BreadcrumbLink.displayName = "BreadcrumbLink";
 
 export {
   Breadcrumb,
   BreadcrumbList,
   BreadcrumbItem,
-  BreadcrumbLink,
   BreadcrumbSeparator,
   BreadcrumbEllipsis,
+  BreadcrumbLink,
 };
