@@ -3,7 +3,6 @@ import { useLocation } from "wouter";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { ProgressBanner } from "@/components/ProgressBanner";
-import { CompanionConsole } from "@/components/support/CompanionConsole";
 import AdminLayout from "@/layouts/AdminLayout";
 
 interface MainLayoutProps {
@@ -63,7 +62,6 @@ export default function MainLayout({ children }: MainLayoutProps) {
         <ProgressBanner />
       </div>
       <Footer />
-      <CompanionConsole />
     </div>
   );
 }
