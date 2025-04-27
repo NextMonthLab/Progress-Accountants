@@ -30,6 +30,7 @@ import { getSiteBranding } from '@/lib/api';
 import { defaultSiteBranding, SiteBranding } from '@shared/site_branding';
 import { NavigationItem, NavigationLink, NavigationSubmenu, NavigationGroup } from '@/types/navigation';
 import SmartActivityPanel from './SmartActivityPanel';
+import OnboardingProgressRing from '@/components/onboarding/OnboardingProgressRing';
 
 // Admin sidebar logo component - similar to the current implementation
 function SidebarLogo({ collapsed }: { collapsed: boolean }) {

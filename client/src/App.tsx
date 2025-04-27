@@ -28,6 +28,7 @@ import AdminDashboardPage from "@/pages/AdminDashboardPage";
 import CRMViewPage from "@/pages/CRMViewPage";
 import CRMViewPageEnhanced from "@/pages/CRMViewPageEnhanced";
 import ToolsDashboardPage from "@/pages/ToolsDashboardPage";
+import BlueprintOnboardingPage from "@/pages/BlueprintOnboardingPage";
 import ToolsLandingPage from "@/pages/ToolsLandingPage";
 import ToolMarketplaceBrowserPage from "@/pages/ToolMarketplaceBrowserPage";
 import ComponentDemo from "@/pages/ComponentDemo";
@@ -258,6 +259,11 @@ function Router() {
       <ProtectedRoute 
         path="/admin/clone-template" 
         component={CloneTemplatePage} 
+        allowedRoles={['admin', 'super_admin']} 
+      />
+      <ProtectedRoute 
+        path="/admin/onboarding" 
+        component={BlueprintOnboardingPage} 
         allowedRoles={['admin', 'super_admin']} 
       />
       
