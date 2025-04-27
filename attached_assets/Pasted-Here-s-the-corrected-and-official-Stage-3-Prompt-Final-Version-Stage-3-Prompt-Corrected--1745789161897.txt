@@ -1,0 +1,146 @@
+Here’s the corrected and official Stage 3 Prompt (Final Version):
+
+⸻
+
+✨ Stage 3 Prompt (Corrected): Build the Self-Resolving Ticket Engine (Blueprint Version)
+
+⸻
+
+🎯 Stage 3 Focus
+
+You will now:
+	•	Build the generic Self-Resolving Ticket Engine
+	•	It must be blueprint-compatible across all NextMonth client sites, including but not limited to Progress Accountants
+	•	Allow users to report structured issues
+	•	Attempt self-resolution of common problems automatically
+	•	Escalate to admin (Rob) only if necessary
+
+⸻
+
+⚡ Important Context
+
+This Ticket Engine was originally discussed while reviewing the Progress Accountants client site.
+However, this Ticket Engine must be designed generically for the full NextMonth Blueprint so it can be reused across all sites.
+
+✅ Do not hard-code client-specific logic (like Progress-only categories).
+✅ Build with modular issue types and dynamic context awareness per client instance.
+
+⸻
+
+🛠️ Tasks for Stage 3
+
+⸻
+
+1. Create Self-Resolving Ticket Form (at /support/ticket)
+
+Header:
+
+Need Help? Let’s Solve It Together.
+
+⸻
+
+Structured Questions (Generic Blueprint Version):
+
+Field	Purpose
+What were you trying to do?	Free text
+Which part of the system were you using?	Dynamic Dropdown (autogenerates from active tools/pages detected)
+Did you see an error message?	Yes/No (If yes, open small text field to enter error)
+Which device are you on?	Dropdown: Desktop / Tablet / Mobile
+Have you tried refreshing or reloading the page?	Yes/No
+
+
+
+⸻
+
+2. Dynamic Self-Resolution Logic
+
+After submission:
+	•	AI reads context
+	•	If common patterns detected → suggest instant solutions
+
+Issue Trigger	Suggested Self-Fix
+Media Upload Problem	“Try reducing file size or switching to desktop device.”
+Booking or Calendar Issue	“Refresh browser, clear cache, check if adblocker is interfering.”
+Page Content Editing Issue	“Try saving as draft first before publishing live changes.”
+User Login Trouble	“Reset your password using [Forgot Password] link.”
+
+User Options:
+	•	[Problem Solved, Thank You]
+	•	[Still Need Help → Escalate]
+
+⸻
+
+3. Escalation Handling
+
+If escalation needed:
+	•	Save structured session and ticket
+	•	Route to Admin Support Panel
+	•	Notify Rob/admin with full ticket context
+
+⸻
+
+4. Ticket Confirmation UX
+
+When ticket is submitted:
+
+Thank You — We’re On It!
+
+Your issue has been logged.
+We’ll review and respond as soon as possible.
+
+[Return to Dashboard] button.
+
+⸻
+
+📜 Visual UX Notes
+
+Element	Style
+Ticket Form	Professional, clean card layout
+Auto-Suggestions	Fade in smoothly after structured data submission
+Escalation Flow	Calm, professional tone — no “panic” feeling
+Loading States	Micro-animations (no spinning wheels of death)
+
+
+
+⸻
+
+✅ Completion Confirmation
+
+When Stage 3 is complete, output:
+
+{
+  "status": "Support System Stage 3 Completed",
+  "self_resolving_ticket_engine_functional": "true",
+  "blueprint_generic_scope_confirmed": "true",
+  "automatic_fix_suggestions_operational": "true",
+  "structured_ticket_capture_operational": "true"
+}
+
+Await Stage 4 instructions before proceeding.
+
+⸻
+
+🧠 Ratplet Reminders
+	•	Ticket system must stay generic and modular, pulling system context dynamically.
+	•	Must work for Progress, NextMonth Home, Beta Sites, Future Clients — no hard-coded assumptions.
+	•	Build so that site-specific issues can easily be added later via config (not by modifying core code).
+
+⸻
+
+✨ End of Corrected Stage 3 Prompt
+
+⸻
+
+
+
+⸻
+
+✅ Quick Recap (Corrected):
+
+Stage	Focus	Status
+Stage 1	Core routes + data structures — done	
+Stage 2	Instant Help Assistant — done	
+Stage 3	Self-Resolving Ticket Engine (generic, blueprint version) — THIS	
+
+
+

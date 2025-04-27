@@ -219,6 +219,7 @@ export async function logIssue(req: Request, res: Response) {
 export async function escalateSession(req: Request, res: Response) {
   try {
     const { sessionId } = req.params;
+    const { issueDetails } = req.body;
     
     // Verify the session exists
     const [session] = await db.select().from(supportSessions).where(eq(supportSessions.sessionId, sessionId));
@@ -237,21 +238,108 @@ export async function escalateSession(req: Request, res: Response) {
         metaData: {
           ...(session.metaData as object || {}),
           escalated: true,
-          escalatedAt: new Date().toISOString()
+          escalatedAt: new Date().toISOString(),
+          escalationDetails: issueDetails || null
         }
       })
       .where(eq(supportSessions.sessionId, sessionId))
       .returning();
     
+    // Create a ticket automatically from this escalation
+    const ticketId = uuidv4();
+    const userId = session.userId;
+    
+    // Get the issue details from the request or use defaults
+    const issueSummary = issueDetails?.whatTrying || 'Support assistance needed';
+    const systemPart = issueDetails?.systemPart || 'Unknown';
+    const errorMessage = issueDetails?.errorMessage?.hasError ? issueDetails.errorMessage.message : null;
+    
+    const systemContext = {
+      escalatedFrom: 'self-resolving-ticket-engine',
+      originalSession: sessionId,
+      device: issueDetails?.device || 'Unknown',
+      triedRefresh: issueDetails?.triedRefresh || false,
+      timestamp: new Date().toISOString()
+    };
+    
+    // Create a support ticket for this escalation
+    const [ticket] = await db.insert(supportTickets)
+      .values({
+        ticketId,
+        sessionId,
+        userId,
+        issueSummary,
+        systemContext,
+        status: 'escalated',
+        priority: 'high'
+      })
+      .returning();
+    
     return res.status(200).json({
       success: true,
-      session: updatedSession
+      session: updatedSession,
+      ticket
     });
   } catch (error) {
     console.error("Error escalating session:", error);
     return res.status(500).json({
       success: false,
       error: "Failed to escalate session"
+    });
+  }
+}
+
+/**
+ * Mark a support session as resolved
+ */
+export async function resolveSession(req: Request, res: Response) {
+  try {
+    const { sessionId } = req.params;
+    const { resolution } = req.body;
+    
+    // Verify the session exists
+    const [session] = await db.select().from(supportSessions).where(eq(supportSessions.sessionId, sessionId));
+    
+    if (!session) {
+      return res.status(404).json({
+        success: false,
+        error: "Session not found"
+      });
+    }
+    
+    // Update the session status
+    const [updatedSession] = await db.update(supportSessions)
+      .set({ 
+        status: 'resolved',
+        metaData: {
+          ...(session.metaData as object || {}),
+          resolved: true,
+          resolvedAt: new Date().toISOString(),
+          resolution: resolution || "Self-resolved"
+        }
+      })
+      .where(eq(supportSessions.sessionId, sessionId))
+      .returning();
+    
+    // Create an issue record for tracking what was resolved
+    const [issue] = await db.insert(supportIssues)
+      .values({
+        sessionId,
+        issueText: resolution || "Issue self-resolved through suggested fixes",
+        status: 'resolved'
+      })
+      .returning();
+    
+    return res.status(200).json({
+      success: true,
+      session: updatedSession,
+      issue
+    });
+  } catch (error) {
+    console.error("Error resolving session:", error);
+    return res.status(500).json({
+      success: false,
+      error: "Failed to resolve session"
     });
   }
 }

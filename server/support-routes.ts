@@ -7,6 +7,7 @@ import {
   getTicketById, 
   updateTicket, 
   escalateSession,
+  resolveSession,
   getAllSupportRequests,
   addTicketMessage
 } from './controllers/supportController';
@@ -25,6 +26,9 @@ export function registerSupportRoutes(app: Express) {
   
   // Escalate a session to human support
   app.post("/api/support/session/:sessionId/escalate", escalateSession);
+  
+  // Mark a session as resolved (self-resolved)
+  app.post("/api/support/session/:sessionId/resolve", resolveSession);
   
   // Support tickets
   app.post("/api/support/ticket", createSupportTicket);
