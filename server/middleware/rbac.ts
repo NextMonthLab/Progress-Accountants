@@ -106,7 +106,7 @@ export function requireSuperAdmin() {
 }
 
 // Middleware to require specific role
-export function requireRole(role: UserRole) {
+export function requireRole(role: UserRole | UserRole[]) {
   return (req: Request, res: Response, next: NextFunction) => {
     if (!req.user) {
       return res.status(401).json({
@@ -123,14 +123,27 @@ export function requireRole(role: UserRole) {
     const userRole = req.user.userType as UserRole || 'client';
     
     // Check if user has the required role
-    if (userRole === role) {
-      return next();
+    if (Array.isArray(role)) {
+      // Check if user has any of the required roles
+      if (role.includes(userRole)) {
+        return next();
+      }
+      
+      return res.status(403).json({
+        error: "Forbidden",
+        message: `One of roles [${role.join(', ')}] required`
+      });
+    } else {
+      // Single role check
+      if (userRole === role) {
+        return next();
+      }
+      
+      return res.status(403).json({
+        error: "Forbidden",
+        message: `Role '${role}' required`
+      });
     }
-    
-    return res.status(403).json({
-      error: "Forbidden",
-      message: `Role '${role}' required`
-    });
   };
 }
 

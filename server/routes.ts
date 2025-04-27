@@ -22,7 +22,7 @@ import {
 } from "@shared/schema";
 import { registerBlueprintRoutes as registerLegacyBlueprintRoutes } from "./blueprint";
 import { registerMediaRoutes } from "./media-upload";
-import { registerSupportRoutes } from "./support";
+import { registerSupportRoutes } from "./support-routes";
 import { registerPageToolIntegrationRoutes } from "./page-tool-integrations";
 import { registerTenantRoutes } from "./controllers/tenantController";
 import { registerSystemRoutes } from "./controllers/systemController";

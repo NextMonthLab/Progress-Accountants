@@ -36,7 +36,7 @@ export function registerSupportRoutes(app: Express) {
   app.get(
     "/api/admin/support-requests", 
     isAuthenticated, 
-    requireRole(['admin', 'super_admin']), 
+    requireRole(['admin', 'super_admin'] as any), // Type cast to workaround the compiler error
     getAllSupportRequests
   );
   
