@@ -1,0 +1,154 @@
+✨ Stage 4 Prompt: Build the Admin Support Panel (Blueprint Version)
+
+⸻
+
+🎯 Stage 4 Focus
+
+You will now:
+	•	Build the Admin Support Panel for managing all support tickets
+	•	Ensure it is generic for the NextMonth Blueprint — usable across all client sites
+(Progress Accountants, NextMonth Home, Beta Sites, Future Clients)
+	•	Allow Admin users (Rob initially) to:
+	•	View support submissions
+	•	Update ticket statuses
+	•	Add internal notes
+	•	Export ticket records
+
+⸻
+
+🛠️ Tasks for Stage 4
+
+⸻
+
+1. Create Admin Panel Route
+
+Route	Purpose
+/admin/support-requests	Central Admin Panel for managing user support tickets
+
+
+
+⸻
+
+2. Admin Panel Layout
+
+2.1 Submission List View (Main Screen)
+
+Column	Content
+Name	User full name
+Issue Summary	Short description of the problem
+Area Affected	System area (auto-pulled from structured ticket)
+Submission Date	Date/time of ticket
+Status	New / In Progress / Resolved / Escalated
+Actions	[View Full Ticket] button
+
+
+
+⸻
+
+Features:
+	•	Sortable by date, name, system area
+	•	Filterable by Status (e.g., New, In Progress)
+	•	Basic search function (search by user name, issue summary)
+
+⸻
+
+2.2 Full Ticket View (When Admin Clicks [View Full Ticket])
+
+Displays:
+
+Section	Content
+User Information	Name, Email (if available), User ID (if session linked)
+Ticket Details	All structured data: action tried, system page, device type, etc.
+Auto-Suggested Resolution	(If any was shown during Ticket creation)
+Admin Notes Field	Editable field for internal updates
+Status Update Dropdown	New / In Progress / Resolved / Escalated
+Export Ticket Button	Download full ticket JSON (for offline storage if needed)
+
+
+
+⸻
+
+3. Ticket Status Management
+
+Status	Meaning
+New	Fresh submission, unreviewed
+In Progress	Under investigation or awaiting user reply
+Resolved	Issue solved and closed
+Escalated	Complex case, potentially needing Rob’s direct intervention
+
+Statuses must update without full page reload (prefer AJAX/live updating).
+
+⸻
+
+4. Admin Notes Field
+
+Allow internal-only admin notes to be stored with the ticket.
+
+Examples:
+	•	“Called client 12/05, advised clear cache.”
+	•	“Problem was browser plugin conflict.”
+	•	“Asked user to retry file upload on Chrome.”
+
+⸻
+
+5. Export Ticket Record
+
+Allow downloading each ticket individually:
+	•	Format: JSON or CSV
+	•	Includes full user answers, system context, admin notes, timestamps
+
+⸻
+
+📜 Visual UX Notes
+
+Element	Style
+List View	Premium clean table (borderless rows, alternating backgrounds)
+Ticket Details View	Card-style sections for info separation
+Notes Field	Subtle editable box (autosaves if possible)
+Loading/Updates	Micro-interactions only (smooth transitions)
+
+
+
+⸻
+
+✅ Completion Confirmation
+
+When Stage 4 is complete, output:
+
+{
+  "status": "Support System Stage 4 Completed",
+  "admin_support_panel_functional": "true",
+  "ticket_viewing_and_management_operational": "true",
+  "status_updates_operational": "true",
+  "ticket_export_functional": "true"
+}
+
+Await Stage 5 instructions before proceeding.
+
+⸻
+
+🧠 Ratplet Reminders
+	•	Keep Admin Panel lightweight and scalable — it should easily handle 10 → 1,000+ tickets.
+	•	Prioritize fast ticket access, minimal clicks to get full issue context.
+	•	Always display Admin Notes and Ticket Status cleanly and separately.
+
+⸻
+
+✨ End of Stage 4 Prompt
+
+⸻
+
+
+
+⸻
+
+✅ Quick Recap:
+
+Stage	Focus	Status
+Stage 1	Core routes + session/ticket structures — done	
+Stage 2	Instant Help Assistant — done	
+Stage 3	Self-Resolving Ticket Engine (generic) — done	
+Stage 4	Admin Support Panel (generic, blueprint version) — THIS	
+
+
+
