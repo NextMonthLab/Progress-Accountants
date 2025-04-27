@@ -1,0 +1,131 @@
+✨ Stage 5 Prompt: Build the Proactive Health Monitoring System (Blueprint Version)
+
+⸻
+
+🎯 Stage 5 Focus
+
+You will now:
+	•	Build the first version of the Proactive Health Monitoring System
+	•	It must work generically across all NextMonth Blueprint client sites
+	•	The goal is to detect system issues automatically before users even raise a support ticket
+	•	If issues are detected, trigger:
+	•	Preemptive user-friendly messages
+	•	Admin alerts to Rob (only when necessary)
+
+⸻
+
+🛠️ Tasks for Stage 5
+
+⸻
+
+1. Set Up Health Monitoring Service
+
+Service	Purpose
+/services/health-monitor	Continuously runs background checks across key system areas
+
+This service must run lightweight, non-intrusive system checks at regular intervals.
+
+⸻
+
+2. Define Core Health Metrics to Monitor
+
+Metric	Purpose	Trigger
+API Error Rates	Monitor failures on critical routes (/media-upload, /bookings, /portal)	Spike in 5xx errors within 5 min
+Dashboard Load Times	Monitor page load performance (>3s = problem)	Slowdown detected
+User Session Failures	Monitor failed logins, session expirations	Spike detected
+Media Upload Failures	Monitor % of uploads failing	Crosses threshold (>10%)
+
+You can start with these 4 key areas and expand modularly later.
+
+⸻
+
+3. Automated Preemptive Messaging
+
+When a problem is detected:
+	•	Send cinematic but reassuring user message at the affected area:
+
+Example:
+
+“We’re refreshing part of the system to ensure optimal performance.
+Please retry shortly — everything’s under active care.”
+
+Do NOT blame the user or overexpose system complexity.
+
+⸻
+
+4. Internal Admin Alerts
+
+When a problem crosses critical threshold:
+	•	Notify Admin (Rob) via Admin Panel dashboard widget or simple internal alert
+
+Example Alert Message:
+
+“⚡ Health Alert:
+API Errors on /media-upload route have exceeded safe thresholds.
+Impact detected for 12 users.
+Monitoring active.”
+
+⸻
+
+5. Monitoring Reporting UI (Optional for Bonus)
+
+Create a small /admin/system-health view:
+	•	Shows recent health events
+	•	Auto-clears resolved incidents after 24 hours
+	•	Provides historical trend view (lightweight)
+
+⸻
+
+📜 Visual UX Notes
+
+Element	Style
+User-Facing Preemptive Messages	Minimal, cinematic overlays (no ugly popups)
+Admin Alerts	Calm notifications inside Admin Panel (not push notifications yet)
+Health Dashboard (Optional)	Soft trend graphs, simple incident list
+
+
+
+⸻
+
+✅ Completion Confirmation
+
+When Stage 5 is complete, output:
+
+{
+  "status": "Support System Stage 5 Completed",
+  "proactive_health_monitoring_operational": "true",
+  "user_preemptive_messaging_operational": "true",
+  "admin_alerts_operational": "true"
+}
+
+Await Stage 6 instructions before proceeding.
+
+⸻
+
+🧠 Ratplet Reminders
+	•	NEVER panic the user. Even serious errors must feel cinematic and under control.
+	•	Monitor core user paths first: Uploads, Logins, Portal Access.
+	•	Modularize health checks so more can be added easily in future (e.g., CDN delays, DB slowdowns).
+
+⸻
+
+✨ End of Stage 5 Prompt
+
+⸻
+
+
+
+⸻
+
+✅ Quick Recap:
+
+Stage	Focus	Status
+Stage 1	Core routes + session/ticket structures — done	
+Stage 2	Instant Help Assistant — done	
+Stage 3	Self-Resolving Ticket Engine — done	
+Stage 4	Admin Support Panel — done	
+Stage 5	Proactive Health Monitoring System — THIS	
+
+
+
+

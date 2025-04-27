@@ -18,6 +18,7 @@ import { migrateSiteVariantsTables } from './db-migrate-site-variants';
 import { migrateOnboardingTables } from './db-migrate-onboarding';
 import { migrateSupportTables } from './db-migrate-support';
 import { migrateSupportSystemTables } from './db-migrate-support-system';
+import { migrateHealthMonitoringTables } from './db-migrate-health-monitoring';
 import { registerNavigationRoutes } from './controllers/navigationController';
 import { registerDomainMappingRoutes } from './controllers/domainMappingController';
 import { registerSotRoutes } from './controllers/sotController';
@@ -28,6 +29,7 @@ import { registerInsightsRoutes } from './controllers/registerInsightsRoutes';
 import { registerBlueprintRoutes } from './controllers/blueprintController';
 import { registerCrmRoutes } from './controllers/crmController';
 import { registerOnboardingRoutes } from './controllers/onboardingController';
+import { registerHealthRoutes } from './health-routes';
 import { initScheduler } from './scheduler';
 
 const app = express();
@@ -98,6 +100,8 @@ app.use((req, res, next) => {
     await migrateSupportTables();
     console.log('Running Support System v2 migrations...');
     await migrateSupportSystemTables();
+    console.log('Running Health Monitoring System migrations...');
+    await migrateHealthMonitoringTables();
   } catch (error) {
     console.error('Error running migrations:', error);
   }
@@ -134,6 +138,9 @@ app.use((req, res, next) => {
   
   // Register Onboarding routes
   registerOnboardingRoutes(app);
+  
+  // Register Health Monitoring routes
+  registerHealthRoutes(app);
 
   app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
     const status = err.status || err.statusCode || 500;
