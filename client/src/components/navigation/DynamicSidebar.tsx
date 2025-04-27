@@ -136,6 +136,8 @@ const DynamicSidebar: React.FC = () => {
   
   // Check if user has staff privileges (admin, super_admin, or editor)
   const isStaff = user?.userType === 'admin' || user?.userType === 'super_admin' || user?.userType === 'editor' || user?.isSuperAdmin;
+  // Check if user is a super admin
+  const isSuperAdmin = user?.isSuperAdmin || user?.userType === 'super_admin';
   
   // Check if the current route is active
   const isActive = (href: string) => {
@@ -437,12 +439,24 @@ const DynamicSidebar: React.FC = () => {
             
             // Filter items based on user permissions
             const filteredItems = groupItems.filter(item => {
+              // Check staff permission
               if (item.requiresStaff && !isStaff) return false;
+              
+              // Check super admin permission
+              if ((item as any).requiresSuperAdmin && !isSuperAdmin) return false;
               
               if (item.type === 'submenu') {
                 // Filter submenu items based on permissions
                 const accessibleItems = (item as NavigationSubmenu).items.filter(
-                  subItem => !subItem.requiresStaff || (subItem.requiresStaff && isStaff)
+                  subItem => {
+                    // Check staff permission for submenu items
+                    if (subItem.requiresStaff && !isStaff) return false;
+                    
+                    // Check super admin permission for submenu items
+                    if ((subItem as any).requiresSuperAdmin && !isSuperAdmin) return false;
+                    
+                    return true;
+                  }
                 );
                 return accessibleItems.length > 0;
               }
