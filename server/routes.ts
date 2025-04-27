@@ -217,6 +217,21 @@ storage.getContactSubmissions = async function() {
 
 import { registerPageBuilderRoutes as registerPageBuilderApiRoutes } from "./controllers/registerPageBuilderRoutes";
 
+// Super admin access middleware
+const requireSuperAdmin = (req: Request, res: Response, next: Function) => {
+  // Check if user is authenticated and is a super admin
+  if (!req.isAuthenticated()) {
+    return res.status(401).json({ message: "Authentication required" });
+  }
+  
+  const user = req.user as any;
+  if (!user.isSuperAdmin && user.userType !== 'super_admin') {
+    return res.status(403).json({ message: "Super admin access required" });
+  }
+  
+  next();
+};
+
 export async function registerRoutes(app: Express): Promise<Server> {
   // Set up authentication
   setupAuth(app);
