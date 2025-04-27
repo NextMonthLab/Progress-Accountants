@@ -261,7 +261,8 @@ export default function InstantHelpWidget() {
     }
   }, [currentView]);
 
-  // Handle keyboard shortcuts
+  // Handle keyboard shortcuts are already managed by the HelpContext provider
+  // This local handler is redundant but we'll keep it for now to ensure backward compatibility
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       // Alt+H to toggle help panel
@@ -271,10 +272,14 @@ export default function InstantHelpWidget() {
       }
     };
 
+    // We don't need to add the listener here since HelpContext already handles it
+    // But we'll keep the code for reference
+    /*
     window.addEventListener('keydown', handleKeyDown);
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
+    */
   }, []);
 
   // Render a passive suggestion based on current context
