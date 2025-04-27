@@ -1,0 +1,140 @@
+✨ Stage 1 Prompt: Agora OS and NextMonth AI Support System – Foundation Build
+
+⸻
+
+🎯 Stage 1 Focus
+
+You will now:
+	•	Set up the core architecture for the AI-powered support system
+	•	Create the initial module shells that will grow into:
+	•	Instant Help Assistant (live help)
+	•	Self-Resolving Ticket Engine (structured troubleshooting)
+	•	Admin Escalation Panel (only for rare cases)
+
+We are not fully building each feature yet — just laying the foundation cleanly and modularly.
+
+⸻
+
+🛠️ Tasks for Stage 1
+
+⸻
+
+1. Create Core Support System Routes
+
+Route	Purpose
+/support/assistant	Embedded Instant Help Assistant
+/support/ticket	Self-Resolving Ticket Engine
+/admin/support-requests	Admin Escalation Panel for human oversight
+
+
+
+⸻
+
+2. Create Core Support Data Structures
+
+2.1 Support Session Object
+
+Tracks every user’s support journey.
+
+{
+  "user_id": "xyz123",
+  "session_id": "support_001",
+  "current_mode": "assistant",
+  "issues_logged": [],
+  "tickets_generated": [],
+  "status": "active",
+  "escalated": false
+}
+
+
+
+⸻
+
+2.2 Support Ticket Object
+
+Stores structured escalation cases if needed.
+
+{
+  "ticket_id": "ticket_001",
+  "user_id": "xyz123",
+  "issue_summary": "Can't upload media",
+  "steps_attempted": ["Tried uploading file", "Cleared cache"],
+  "system_context": {
+    "page": "media-uploader",
+    "browser": "Chrome 112"
+  },
+  "status": "new",
+  "assigned_to": "admin"
+}
+
+
+
+⸻
+
+3. Setup Basic Routing Logic
+
+From	Action	To
+/support/assistant	User asks a quick question	Try to resolve instantly
+/support/assistant	If issue persists	Redirect to /support/ticket
+/support/ticket	Capture structured support info	Try self-resolution or escalate
+/support/ticket	If escalated	Save to /admin/support-requests
+
+
+
+⸻
+
+4. Visual/UX Skeletons (For Stage 1 Only)
+
+Screen	Placeholder Text
+/support/assistant	“Welcome to Instant Support. How can we help you?”
+/support/ticket	“Let’s solve your issue together. Please answer a few questions.”
+/admin/support-requests	“Support Requests Admin Panel (Coming Soon)”
+
+No real functionality yet — just clean placeholder text and buttons to prove navigation works.
+
+⸻
+
+📜 Visual UX Notes
+	•	Treat every screen as part of the cinematic experience, even at Stage 1
+	•	Placeholder screens should have clean, elegant layouts
+	•	Even unfinished routes should feel premium and deliberate
+
+⸻
+
+✅ Completion Confirmation
+
+When Stage 1 is complete, output:
+
+{
+  "status": "Support System Stage 1 Completed",
+  "routes_created": ["/support/assistant", "/support/ticket", "/admin/support-requests"],
+  "basic_navigation_working": "true",
+  "session_tracking_stubbed": "true"
+}
+
+Await Stage 2 instructions before proceeding.
+
+⸻
+
+🧠 Ratplet Reminders
+	•	Structure everything modularly — Instant Assistant, Ticket Engine, and Admin Panel must evolve separately without breaking.
+	•	Build it so Rob can monitor everything centrally with minimal cognitive load.
+	•	Plan ahead: multi-language support, fallback modes, future AI model improvements.
+
+⸻
+
+✨ End of Stage 1 Prompt
+
+⸻
+
+
+
+⸻
+
+✅ Quick Recap:
+
+Stage	Focus	Status
+Stage 1	Core routes + session/ticket data structures — THIS	
+
+
+
