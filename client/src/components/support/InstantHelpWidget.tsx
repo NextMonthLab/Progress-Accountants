@@ -117,40 +117,31 @@ export default function InstantHelpWidget() {
   const [location, setLocation] = useLocation();
   const { toast } = useToast();
   const { user } = useAuth();
+  const { sessionId, isHelpOpen, openHelp, closeHelp, toggleHelp, isInitialized } = useHelp();
   const [isOpen, setIsOpen] = useState(false);
-  const [sessionId, setSessionId] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [isSearching, setIsSearching] = useState(false);
   const [searchResults, setSearchResults] = useState<PageContextTip[]>([]);
-  const [isInitialized, setIsInitialized] = useState(false);
   const [currentView, setCurrentView] = useState<'home' | 'search' | 'report'>('home');
   const [contextualHelp, setContextualHelp] = useState<ContextualHelp>(defaultContextualHelp);
   const [reportIssue, setReportIssue] = useState('');
   const [isReporting, setIsReporting] = useState(false);
   const searchInputRef = useRef<HTMLInputElement>(null);
 
-  // Initialize a support session when the component mounts
+  // Sync our local isOpen state with the HelpContext state
   useEffect(() => {
-    const createSession = async () => {
-      try {
-        const response = await apiRequest('POST', '/api/support/session');
-        if (!response.ok) {
-          throw new Error('Failed to create support session');
-        }
-        
-        const data = await response.json();
-        setSessionId(data.session.sessionId);
-        setIsInitialized(true);
-      } catch (error) {
-        console.error('Error creating support session:', error);
-      }
-    };
+    setIsOpen(isHelpOpen);
+  }, [isHelpOpen]);
 
-    if (!isInitialized) {
-      createSession();
+  // When local state changes, update the context state
+  useEffect(() => {
+    if (isOpen) {
+      openHelp();
+    } else {
+      closeHelp();
     }
-  }, [isInitialized]);
+  }, [isOpen, openHelp, closeHelp]);
 
   // Determine context-based help based on current URL
   useEffect(() => {

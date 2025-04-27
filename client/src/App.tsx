@@ -13,6 +13,9 @@ import { CompanionContextProvider } from "@/hooks/use-companion-context";
 import { DualModeCompanion } from "@/components/companions/DualModeCompanion";
 import { UpgradeAnnouncement } from "@/components/UpgradeAnnouncement";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
+import { HelpProvider } from "@/contexts/HelpContext";
+import InstantHelpWidget from "@/components/support/InstantHelpWidget";
+import ContextSuggestion from "@/components/support/ContextSuggestion";
 import AdminLayout from "@/layouts/AdminLayout";
 import { testLogin } from "@/lib/test-login";
 import SuperAdminDashboard from "@/pages/super-admin/SuperAdminDashboard";
@@ -435,15 +438,19 @@ function App() {
           <ThemeProvider>
             <TenantProvider>
               <CompanionContextProvider>
-                <DocumentHead route="/" />
-                <FirstTimeUserDetector>
-                  <MainLayout>
-                    <Router />
-                  </MainLayout>
-                </FirstTimeUserDetector>
-                <DualModeCompanion />
-                <UpgradeAnnouncement />
-                <Toaster />
+                <HelpProvider>
+                  <DocumentHead route="/" />
+                  <FirstTimeUserDetector>
+                    <MainLayout>
+                      <Router />
+                    </MainLayout>
+                  </FirstTimeUserDetector>
+                  <DualModeCompanion />
+                  <UpgradeAnnouncement />
+                  <InstantHelpWidget />
+                  <ContextSuggestion />
+                  <Toaster />
+                </HelpProvider>
               </CompanionContextProvider>
             </TenantProvider>
           </ThemeProvider>
