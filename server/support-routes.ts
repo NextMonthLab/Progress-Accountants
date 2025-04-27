@@ -13,6 +13,7 @@ import {
 } from './controllers/supportController';
 import { isAuthenticated } from './middleware/auth';
 import { requireRole } from './middleware/rbac';
+import digestRoutes from './digest-routes';
 
 export function registerSupportRoutes(app: Express) {
   console.log("Registering Support System routes...");
@@ -43,6 +44,9 @@ export function registerSupportRoutes(app: Express) {
     requireRole(['admin', 'super_admin'] as any), // Type cast to workaround the compiler error
     getAllSupportRequests
   );
+  
+  // Register support digest routes
+  app.use('/api/support/digest', digestRoutes);
   
   console.log("✅ Support System routes registered");
 }
