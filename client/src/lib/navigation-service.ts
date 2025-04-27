@@ -329,6 +329,7 @@ export const mapSidebarToNavigation = (): NavigationItem[] => {
       type: 'link',
       href: '/admin/clone-template',
       requiresStaff: true,
+      requiresSuperAdmin: true, // Only show to super admins
       badge: { text: 'New', variant: 'new' },
       isNew: true,
       category: 'system',

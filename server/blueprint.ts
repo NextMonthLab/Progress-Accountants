@@ -280,6 +280,21 @@ async function publishBlueprintToVault(clientId: string, vaultPath: string = 'bl
   }
 }
 
+// Middleware to check for super admin access
+const requireSuperAdmin = (req: Request, res: Response, next: Function) => {
+  // Check if user is authenticated and is a super admin
+  if (!req.isAuthenticated()) {
+    return res.status(401).json({ message: "Authentication required" });
+  }
+  
+  const user = req.user as any;
+  if (!user.isSuperAdmin && user.userType !== 'super_admin') {
+    return res.status(403).json({ message: "Super admin access required" });
+  }
+  
+  next();
+};
+
 export function registerBlueprintRoutes(app: Express): void {
   // Get blueprint status
   app.get("/api/blueprint/status", async (req: Request, res: Response) => {
@@ -382,7 +397,7 @@ export function registerBlueprintRoutes(app: Express): void {
   });
   
   // Create or update blueprint version
-  app.post("/api/blueprint/tag", async (req: Request, res: Response) => {
+  app.post("/api/blueprint/tag", requireSuperAdmin, async (req: Request, res: Response) => {
     try {
       const validationResult = blueprintVersionSchema.safeParse(req.body);
       
@@ -424,7 +439,7 @@ export function registerBlueprintRoutes(app: Express): void {
   });
   
   // Generate module map and store it
-  app.post("/api/blueprint/modules", async (req: Request, res: Response) => {
+  app.post("/api/blueprint/modules", requireSuperAdmin, async (req: Request, res: Response) => {
     try {
       const { clientId } = req.body;
       
@@ -466,7 +481,7 @@ export function registerBlueprintRoutes(app: Express): void {
   });
   
   // Generate and export full blueprint package
-  app.post("/api/blueprint/package", async (req: Request, res: Response) => {
+  app.post("/api/blueprint/package", requireSuperAdmin, async (req: Request, res: Response) => {
     try {
       const { clientId } = req.body;
       

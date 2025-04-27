@@ -31,6 +31,7 @@ export interface BaseNavigationItem {
   isNew?: boolean;
   description?: string;
   requiresStaff?: boolean;
+  requiresSuperAdmin?: boolean; // Only show to super admins
   category: NavigationItemCategory;
   pinnedOrder?: number; // For Quick Select menu
 }
