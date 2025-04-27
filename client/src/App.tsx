@@ -97,6 +97,7 @@ import NavigationDemoPage from "@/pages/NavigationDemoPage";
 // Support System pages
 import AssistantPage from "@/pages/support/AssistantPage";
 import TicketPage from "@/pages/support/TicketPage";
+import DigestPage from "@/pages/support/DigestPage";
 import SupportRequestsPage from "@/pages/admin/SupportRequestsPage";
 import HealthDashboardPage from "@/pages/admin/HealthDashboardPage";
 // Page Builder pages
@@ -147,6 +148,7 @@ function Router() {
       {/* Support System routes */}
       <Route path="/support/assistant" component={AssistantPage} />
       <Route path="/support/ticket" component={TicketPage} />
+      <Route path="/support/digest" component={DigestPage} />
       
       <Route path="/" component={HomePage} />
 
@@ -269,6 +271,11 @@ function Router() {
       <ProtectedRoute 
         path="/admin/health-dashboard" 
         component={HealthDashboardPage} 
+        allowedRoles={['admin', 'super_admin']} 
+      />
+      <ProtectedRoute 
+        path="/admin/support-digests" 
+        component={DigestPage} 
         allowedRoles={['admin', 'super_admin']} 
       />
       <ProtectedRoute 
