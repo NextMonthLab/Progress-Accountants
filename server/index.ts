@@ -24,6 +24,7 @@ import { registerAdvancedSeoRoutes } from './controllers/registerAdvancedSeoRout
 import { registerInsightsRoutes } from './controllers/registerInsightsRoutes';
 import { registerBlueprintRoutes } from './controllers/blueprintController';
 import { registerCrmRoutes } from './controllers/crmController';
+import { registerOnboardingRoutes } from './controllers/onboardingController';
 import { initScheduler } from './scheduler';
 
 const app = express();
@@ -121,6 +122,9 @@ app.use((req, res, next) => {
   
   // Register Starter CRM routes
   registerCrmRoutes(app);
+  
+  // Register Onboarding routes
+  registerOnboardingRoutes(app);
 
   app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
     const status = err.status || err.statusCode || 500;

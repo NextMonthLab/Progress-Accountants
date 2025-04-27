@@ -428,6 +428,37 @@ const DynamicSidebar: React.FC = () => {
             )}
           </button>
         </div>
+        
+        {/* User Profile & Onboarding Progress */}
+        {user && (user.userType === 'admin' || user.userType === 'super_admin') && (
+          <div className="px-4 py-3 flex items-center space-x-3 border-b border-gray-200 bg-gradient-to-r from-white to-blue-50/20">
+            <div className="relative flex-shrink-0">
+              <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-semibold">
+                {user.username ? user.username.charAt(0).toUpperCase() : 'U'}
+              </div>
+              {!sidebarCollapsed && (
+                <div className="absolute -bottom-1 -right-1">
+                  <OnboardingProgressRing size={20} />
+                </div>
+              )}
+            </div>
+            {!sidebarCollapsed && (
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium truncate">{user.username}</p>
+                <p className="text-xs text-muted-foreground truncate">
+                  {user.isSuperAdmin || user.userType === 'super_admin' 
+                    ? 'Super Admin' 
+                    : user.userType === 'admin' ? 'Admin' : 'User'}
+                </p>
+              </div>
+            )}
+            {sidebarCollapsed && (
+              <div className="absolute right-0 top-20">
+                <OnboardingProgressRing size={24} />
+              </div>
+            )}
+          </div>
+        )}
 
         {/* Sidebar Content - Dynamic Navigation Groups */}
         <div className="flex-1 overflow-y-auto py-4 space-y-4">
