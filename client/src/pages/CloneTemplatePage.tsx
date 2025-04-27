@@ -1,15 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation } from 'wouter';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { AlertCircle, CheckCircle2, Copy, FileWarning, LoaderCircle } from 'lucide-react';
+import { AlertCircle, CheckCircle2, Copy, FileWarning, LoaderCircle, ShieldAlert } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { apiRequest } from '@/lib/queryClient';
 import SiteVariantSelector from '@/components/site-variant/SiteVariantSelector';
 import AdminLayout from '@/layouts/AdminLayout';
 import { SiteVariantConfig } from '@shared/site_variants';
+import { useAuth } from '@/hooks/use-auth';
 
 // Steps of the cloning process
 type CloneStep = 'template' | 'variant' | 'confirmation' | 'processing' | 'complete';
@@ -17,11 +18,15 @@ type CloneStep = 'template' | 'variant' | 'confirmation' | 'processing' | 'compl
 const CloneTemplatePage: React.FC = () => {
   const [, navigate] = useLocation();
   const { toast } = useToast();
+  const { user } = useAuth();
   const [currentStep, setCurrentStep] = useState<CloneStep>('template');
   const [selectedVariant, setSelectedVariant] = useState<SiteVariantConfig | null>(null);
   const [cloneStatus, setCloneStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [newTenantId, setNewTenantId] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  
+  // Check if user has super admin privileges
+  const isSuperAdmin = user?.isSuperAdmin || user?.userType === 'super_admin';
   
   const handleTemplateSelect = async () => {
     try {
@@ -50,6 +55,16 @@ const CloneTemplatePage: React.FC = () => {
       toast({
         title: "Error",
         description: "Please select a site variant first",
+        variant: "destructive"
+      });
+      return;
+    }
+    
+    // Check if user has super admin privileges before proceeding
+    if (!isSuperAdmin) {
+      toast({
+        title: "Permission Denied",
+        description: "Template cloning is restricted to super administrators only. Please contact a system administrator for assistance.",
         variant: "destructive"
       });
       return;
@@ -125,6 +140,16 @@ const CloneTemplatePage: React.FC = () => {
             Create a new instance of the Progress platform with your preferred configuration
           </p>
         </div>
+        
+        {!isSuperAdmin && (
+          <Alert variant="destructive" className="mb-6">
+            <ShieldAlert className="h-4 w-4" />
+            <AlertTitle>Restricted Access</AlertTitle>
+            <AlertDescription>
+              Template cloning is restricted to super administrators only. You can browse the options, but you won't be able to create a new instance. Please contact a system administrator if you need to clone a template.
+            </AlertDescription>
+          </Alert>
+        )}
         
         <Card>
           <CardHeader>
