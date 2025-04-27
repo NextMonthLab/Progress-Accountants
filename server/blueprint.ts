@@ -625,7 +625,7 @@ export function registerBlueprintRoutes(app: Express): void {
   });
   
   // Register and sync the Upgrade Announcement modules
-  app.post("/api/blueprint/register-upgrade-announcements", async (req: Request, res: Response) => {
+  app.post("/api/blueprint/register-upgrade-announcements", requireSuperAdmin, async (req: Request, res: Response) => {
     try {
       const { clientId } = req.body;
       
@@ -690,7 +690,7 @@ export function registerBlueprintRoutes(app: Express): void {
   });
   
   // Export Blueprint v1.1.1 with announcement modules
-  app.post("/api/blueprint/export-v1.1.1", async (req: Request, res: Response) => {
+  app.post("/api/blueprint/export-v1.1.1", requireSuperAdmin, async (req: Request, res: Response) => {
     try {
       const { clientId } = req.body;
       
@@ -793,7 +793,7 @@ export function registerBlueprintRoutes(app: Express): void {
   });
 
   // Auto-publish blueprint v1.1.1 to Vault
-  app.post("/api/blueprint/auto-publish-v1.1.1", async (req: Request, res: Response) => {
+  app.post("/api/blueprint/auto-publish-v1.1.1", requireSuperAdmin, async (req: Request, res: Response) => {
     try {
       const { clientId, vaultPath = 'blueprints/client/v1.1.1/' } = req.body;
       
@@ -861,7 +861,7 @@ export function registerBlueprintRoutes(app: Express): void {
   });
   
   // Update handoff status
-  app.post("/api/blueprint/handoff-status", async (req: Request, res: Response) => {
+  app.post("/api/blueprint/handoff-status", requireSuperAdmin, async (req: Request, res: Response) => {
     try {
       const { clientId, status } = req.body;
       
@@ -894,7 +894,7 @@ export function registerBlueprintRoutes(app: Express): void {
   });
   
   // Auto-enable v1.1.1 modules for new client instances
-  app.post("/api/blueprint/auto-enable-v111", async (req: Request, res: Response) => {
+  app.post("/api/blueprint/auto-enable-v111", requireSuperAdmin, async (req: Request, res: Response) => {
     try {
       const { clientId } = req.body;
       
