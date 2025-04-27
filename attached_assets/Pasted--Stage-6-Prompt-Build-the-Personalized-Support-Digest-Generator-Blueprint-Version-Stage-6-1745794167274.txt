@@ -1,0 +1,141 @@
+✨ Stage 6 Prompt: Build the Personalized Support Digest Generator (Blueprint Version)
+
+⸻
+
+🎯 Stage 6 Focus
+
+You will now:
+	•	Build the Personalized Support Digest Generator
+	•	After major support interactions (resolved ticket, self-resolved issue, escalated help session),
+the system automatically sends a clean, cinematic Digest to the user
+	•	It must work generically across all NextMonth Blueprint client sites (Progress, Beta Sites, etc.)
+
+⸻
+
+🛠️ Tasks for Stage 6
+
+⸻
+
+1. Support Digest Generation Trigger
+
+Triggers immediately when:
+
+Event	Example
+Ticket Resolved	User submits a ticket and it’s marked Resolved
+Self-Resolution Success	User solves an issue through Instant Help or Auto-Suggest
+System Health Event	User impacted by preemptive maintenance and we recover smoothly
+
+
+
+⸻
+
+2. Support Digest Core Content
+
+Each digest contains:
+
+Section	Content
+Header	Thank you for working with us to improve your experience.
+Interaction Summary	What issue was raised (brief)
+Resolution Summary	How it was solved (simple explanation)
+System Status Update	Current system status (optional health badge: “System Healthy”)
+What’s Next	Optional small tip (“Here’s something you might find useful next”)
+
+
+
+⸻
+
+3. Example Support Digest (for Progress Accountants)
+
+Subject Line:
+
+“Your Support Journey: Mission Completed”
+
+Body:
+
+Thank You for Improving Your Studio Experience
+
+We noticed you needed help uploading a media file.
+
+Resolution:
+Your upload completed successfully after a device switch to desktop.
+
+System Status:
+All systems are now operating normally.
+
+Next Tip:
+Explore our Media Manager tips for even faster publishing next time!
+
+[Explore More] button.
+
+⸻
+
+4. Delivery Options
+
+Method	Details
+In-System Notification	Small “Your Support Digest is Ready” card inside Dashboard
+Optional Email	If email on file, lightweight email version (optional Phase 2)
+
+First priority = in-system messaging.
+
+⸻
+
+5. Storage & Access
+	•	Store each Digest in user’s support history (simple list view like “My Support Records”)
+	•	Digest record contains:
+	•	Date
+	•	Issue
+	•	Resolution
+	•	Link to full interaction if needed
+
+⸻
+
+📜 Visual UX Notes
+
+Element	Style
+Support Digest	Minimalist, premium card layout (think “mission debrief” style)
+Typography	Calm, high-end sans-serif font
+Animations	Subtle fade-in of Digest page/notification
+
+
+
+⸻
+
+✅ Completion Confirmation
+
+When Stage 6 is complete, output:
+
+{
+  "status": "Support System Stage 6 Completed",
+  "support_digest_generation_operational": "true",
+  "user_notification_delivery_operational": "true",
+  "support_history_recording_operational": "true"
+}
+
+Await Stage 7 instructions before proceeding.
+
+⸻
+
+🧠 Ratplet Reminders
+	•	Digests must feel cinematic and valuable — not transactional or spammy.
+	•	Always phrase Digests as “mission completions” not just “ticket closed.”
+	•	Store Digests for reference if needed later (build trust over time).
+
+⸻
+
+✨ End of Stage 6 Prompt
+
+⸻
+
+
+
+⸻
+
+✅ Quick Recap:
+
+Stage	Focus	Status
+Stage 1	Core routes + session/ticket structures — done	
+Stage 2	Instant Help Assistant — done	
+Stage 3	Self-Resolving Ticket Engine — done	
+Stage 4	Admin Support Panel — done	
+Stage 5	Proactive Health Monitoring System — done	
+Stage 6	Personalized Support Digest Generator — THIS	
