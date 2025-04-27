@@ -1,0 +1,149 @@
+✨ Stage 2 Prompt: Build the Instant Help Assistant (Smart Contextual AI)
+
+⸻
+
+🎯 Stage 2 Focus
+
+You will now:
+	•	Build the first functional version of the Instant Help Assistant
+	•	It will embed inside NextMonth and Agora OS dashboards
+	•	It will analyze context automatically and offer smart suggestions before the user even asks for help
+	•	If needed, escalate quietly into the Ticket Engine without fuss
+
+⸻
+
+🛠️ Tasks for Stage 2
+
+⸻
+
+1. Instant Help Widget (Frontend)
+
+Element	Details
+Position	Embedded directly into the interface — not floating bottom-right bubble (unless very minimal)
+Activation	Small “Help” icon or button (always visible but subtle)
+Opening Action	Opens clean support panel sliding from right side
+
+
+
+⸻
+
+2. Assistant Modes
+
+2.1 Smart Passive Mode (Default)
+	•	Without user clicking anything, the Assistant can:
+	•	Detect current page or current tool being used
+	•	Display a subtle “Need help with [Tool/Page Name]?” link above or inside the panel
+
+Example:
+
+You’re editing a Blueprint.
+[Need help publishing your first Blueprint?]
+
+(Tiny, classy suggestion — not pushy.)
+
+⸻
+
+2.2 Active Help Mode (On User Click)
+
+When user opens the Assistant:
+
+Title:
+Instant Help Center
+
+Subline:
+Find quick tips, tutorials, or get guided help — instantly.
+
+⸻
+
+Options Available:
+
+Option	Action
+Quick Tips	List 2–4 context-specific quick actions
+Search Help	Free text — “How can we help you?”
+Report Issue	If user frustrated or stuck → escalates to Ticket Engine
+Contact Support (optional)	ONLY appears if Ticket System deems escalation necessary
+
+
+
+⸻
+
+2.3 Example Quick Tip Based on Context
+
+Context	Quick Tips
+Media Upload Page	“Upload Your First Video” • “File Size Requirements”
+Blueprint Builder	“Publishing Your Blueprint” • “Saving as Draft”
+Account Settings	“Resetting Your Password” • “Setting Up SSO”
+
+
+
+⸻
+
+3. AI Smart Search (Optional for Premium)
+
+Allow user to type in a free text query.
+	•	If matches a FAQ or known help topic → auto-suggests the best article.
+	•	Otherwise → escalate into Ticket Engine without friction.
+
+⸻
+
+4. Seamless Escalation
+
+If:
+	•	User signals frustration (“this didn’t help” click)
+	•	User searches without finding help
+	•	System detects repeated page reloads/errors
+
+→ Redirect instantly but quietly to /support/ticket
+
+Pre-fill any known info (user ID, current page, browser).
+
+⸻
+
+📜 Visual UX Notes
+
+Element	Style
+Assistant Panel	Slide-over, semi-transparent background
+Typography	Calm, readable, professional tone
+Animations	Soft fades, no clunky popups
+Icons	Minimal, line-style icons (e.g., help, search, settings)
+
+
+
+⸻
+
+✅ Completion Confirmation
+
+When Stage 2 is complete, output:
+
+{
+  "status": "Support System Stage 2 Completed",
+  "instant_help_assistant_functional": "true",
+  "smart_context_suggestions_working": "true",
+  "smooth_escalation_to_ticket_engine_operational": "true"
+}
+
+Await Stage 3 instructions before proceeding.
+
+⸻
+
+🧠 Ratplet Reminders
+	•	Context awareness is EVERYTHING. Always offer help based on current screen.
+	•	No annoying popups or pushy chatbots — just intelligent, cinematic availability.
+	•	Escalate gracefully when needed, without user ever feeling lost or abandoned.
+
+⸻
+
+✨ End of Stage 2 Prompt
+
+⸻
+
+
+
+⸻
+
+✅ Quick Recap:
+
+Stage	Focus	Status
+Stage 1	Core routes + session/ticket structures — done	
+Stage 2	Instant Help Assistant — THIS	
+
