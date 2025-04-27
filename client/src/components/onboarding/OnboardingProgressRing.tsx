@@ -1,138 +1,98 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { useAuth } from '@/hooks/use-auth';
-import { useLocation } from 'wouter';
-import { apiRequest } from '@/lib/queryClient';
-import { 
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/components/ui/tooltip';
-import { Button } from '@/components/ui/button';
-import { CheckCircle2, ArrowRight } from 'lucide-react';
+import { Progress } from '@/components/ui/progress';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
-/**
- * Onboarding Progress Ring Component
- * 
- * This component shows a subtle progress ring around the user's profile 
- * or in any designated spot to indicate onboarding completion status.
- * 
- * @since v1.1.1
- */
-export default function OnboardingProgressRing({ size = 36 }: { size?: number }) {
+interface OnboardingProgressRingProps {
+  size?: number;
+  showTooltip?: boolean;
+}
+
+const OnboardingProgressRing: React.FC<OnboardingProgressRingProps> = ({ 
+  size = 36,
+  showTooltip = true
+}) => {
   const { user } = useAuth();
-  const [, navigate] = useLocation();
-  const [loading, setLoading] = useState(true);
   const [progress, setProgress] = useState(0);
-  const [isComplete, setIsComplete] = useState(false);
   
-  // Circle properties
-  const strokeWidth = size * 0.07; // Adjust stroke width based on size
-  const radius = (size - strokeWidth) / 2;
-  const circumference = 2 * Math.PI * radius;
-  const strokeDashoffset = circumference - (progress / 100) * circumference;
-  
-  // Load onboarding progress data
-  useEffect(() => {
-    const loadOnboardingProgress = async () => {
-      if (!user) return;
+  const { data, isLoading } = useQuery({
+    queryKey: ['/api/onboarding', user?.id],
+    queryFn: async () => {
+      if (!user?.id) return null;
       
-      try {
-        setLoading(true);
-        const response = await apiRequest('GET', `/api/onboarding/${user.id}`);
-        const data = await response.json();
-        
-        // Example steps
-        const steps = ['identity', 'foundation', 'media', 'tool', 'blueprint'];
-        const completedSteps = data.data?.filter(
-          (step: any) => steps.includes(step.stage) && step.status === 'completed'
-        ).length || 0;
-        
-        const calculatedProgress = Math.round((completedSteps / steps.length) * 100);
-        setProgress(calculatedProgress);
-        setIsComplete(calculatedProgress === 100);
-      } catch (error) {
-        console.error('Error loading onboarding progress:', error);
-      } finally {
-        setLoading(false);
+      const response = await fetch(`/api/onboarding/${user.id}`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch onboarding status');
       }
-    };
-    
-    loadOnboardingProgress();
-  }, [user]);
+      
+      return response.json();
+    },
+    enabled: !!user?.id,
+  });
   
-  const handleNavigateToOnboarding = () => {
-    navigate('/admin/onboarding');
-  };
+  useEffect(() => {
+    if (data?.data) {
+      // Calculate progress based on completed stages
+      const completedStages = data.data.filter((stage: any) => stage.status === 'completed').length;
+      const totalStages = data.data.length || 10; // Default to 10 total stages if none found
+      
+      // Calculate percentage and round to nearest 5%
+      const calculatedProgress = Math.round((completedStages / totalStages) * 100 / 5) * 5;
+      
+      // Ensure there's always at least 5% progress to show the ring
+      setProgress(Math.max(5, calculatedProgress));
+    }
+  }, [data]);
   
-  if (loading) return null;
+  const ringSize = `${size}px`;
+  
+  const progressRing = (
+    <div 
+      className="relative flex items-center justify-center bg-white rounded-full"
+      style={{ width: ringSize, height: ringSize }}
+    >
+      <Progress 
+        value={progress} 
+        className="h-full w-full rounded-full absolute"
+      />
+      <div 
+        className="absolute text-[10px] font-bold text-emerald-700 flex items-center justify-center"
+        style={{ width: `${size * 0.7}px`, height: `${size * 0.7}px` }}
+      >
+        {progress}%
+      </div>
+    </div>
+  );
+  
+  if (!showTooltip) {
+    return progressRing;
+  }
   
   return (
     <TooltipProvider>
-      <Tooltip>
+      <Tooltip delayDuration={300}>
         <TooltipTrigger asChild>
-          <Button 
-            variant="ghost" 
-            size="icon" 
-            className="rounded-full p-0" 
-            onClick={handleNavigateToOnboarding}
-          >
-            <svg width={size} height={size} className="transform -rotate-90">
-              {/* Background circle */}
-              <circle
-                cx={size / 2}
-                cy={size / 2}
-                r={radius}
-                fill="none"
-                stroke="currentColor"
-                strokeOpacity={0.1}
-                strokeWidth={strokeWidth}
-              />
-              
-              {/* Progress circle */}
-              <circle
-                cx={size / 2}
-                cy={size / 2}
-                r={radius}
-                fill="none"
-                stroke="currentColor"
-                strokeOpacity={0.8}
-                strokeWidth={strokeWidth}
-                strokeDasharray={circumference}
-                strokeDashoffset={strokeDashoffset}
-                strokeLinecap="round"
-                className="text-primary transition-all duration-500 ease-in-out"
-              />
-              
-              {/* Center icon */}
-              <foreignObject
-                x={(size - (size * 0.6)) / 2}
-                y={(size - (size * 0.6)) / 2}
-                width={size * 0.6}
-                height={size * 0.6}
-              >
-                <div className="h-full w-full flex items-center justify-center">
-                  {isComplete ? (
-                    <CheckCircle2 className="h-full w-full text-primary" />
-                  ) : (
-                    <ArrowRight className="h-full w-full text-primary" />
-                  )}
-                </div>
-              </foreignObject>
-            </svg>
-          </Button>
+          {progressRing}
         </TooltipTrigger>
-        <TooltipContent>
-          {isComplete ? (
-            <p>Blueprint Activation Complete!</p>
-          ) : (
-            <div>
-              <p>Blueprint Activation: {progress}%</p>
-              <p className="text-xs text-muted-foreground">Click to continue setup</p>
-            </div>
-          )}
+        <TooltipContent side="right" className="bg-white p-3 max-w-xs">
+          <div className="space-y-2">
+            <h4 className="font-semibold">Onboarding Progress</h4>
+            <p className="text-sm text-muted-foreground">
+              {progress < 100 
+                ? `You're ${progress}% through your onboarding journey!` 
+                : "Congratulations! You have completed all onboarding stages."}
+            </p>
+            {progress < 100 && (
+              <p className="text-xs text-emerald-600">
+                Continue your onboarding to unlock more powerful platform features.
+              </p>
+            )}
+          </div>
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>
   );
-}
+};
+
+export default OnboardingProgressRing;

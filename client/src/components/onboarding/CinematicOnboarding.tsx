@@ -1,560 +1,565 @@
 import React, { useState, useEffect } from 'react';
+import { useLocation } from 'wouter';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useAuth } from '@/hooks/use-auth';
-import { 
-  Dialog, 
-  DialogContent, 
-  DialogTitle, 
-  DialogDescription, 
-  DialogFooter 
-} from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
-import { 
-  Card, 
-  CardContent, 
-  CardDescription, 
-  CardFooter, 
-  CardHeader, 
-  CardTitle 
-} from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Loader2, CheckCircle2, ArrowRight, Shield } from 'lucide-react';
-import { apiRequest } from '@/lib/queryClient';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { Rocket, CheckCircle2, ArrowRight, Star, BookOpen, Settings, Sparkles } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { motion, AnimatePresence } from 'framer-motion';
+import EmblemGallery from './EmblemGallery';
 
-// Define the step interface
-interface OnboardingStep {
+interface OnboardingStage {
   id: string;
   title: string;
   description: string;
-  emblems: { id: string; name: string; description: string; }
+  icon: React.ReactNode;
+  tasks: OnboardingTask[];
+  emblemId?: string;
 }
 
-// The steps from the cinematic onboarding document
-const ONBOARDING_STEPS: OnboardingStep[] = [
-  {
-    id: 'identity',
-    title: 'Define Your Identity',
-    description: 'Confirm your brand, mission, and tone of voice.',
-    emblems: {
-      id: 'identity-emblem',
-      name: 'Identity Activated',
-      description: 'Your business identity has been established'
-    }
-  },
-  {
-    id: 'foundation',
-    title: 'Launch Your Foundation Pages',
-    description: 'Publish your first key screens.',
-    emblems: {
-      id: 'foundation-emblem',
-      name: 'Beacon Deployed',
-      description: 'Your core pages are now operational'
-    }
-  },
-  {
-    id: 'media',
-    title: 'Upload Core Media',
-    description: 'Add your first images, logos, or assets.',
-    emblems: {
-      id: 'media-emblem',
-      name: 'Signal Online',
-      description: 'Your visual identity is established'
-    }
-  },
-  {
-    id: 'tool',
-    title: 'Connect Your First Tool',
-    description: 'Integrate a marketplace tool into your system.',
-    emblems: {
-      id: 'tool-emblem',
-      name: 'Systems Engaged',
-      description: 'You\'ve connected your first extension'
-    }
-  },
-  {
-    id: 'blueprint',
-    title: 'Complete Your Business Blueprint',
-    description: 'Fill out critical business data for future scalability.',
-    emblems: {
-      id: 'blueprint-emblem',
-      name: 'Blueprint Locked',
-      description: 'Your business architecture is secured'
-    }
-  }
-];
-
-// Welcome dialog component
-export function WelcomeDialog({ 
-  open, 
-  onOpenChange, 
-  onBegin 
-}: { 
-  open: boolean; 
-  onOpenChange: (open: boolean) => void;
-  onBegin: () => void;
-}) {
-  return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-xl">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2, duration: 0.5 }}
-        >
-          <DialogTitle className="text-3xl font-bold tracking-tight text-primary">
-            Welcome to the NextMonth Control Deck.
-          </DialogTitle>
-          <DialogDescription className="mt-4 text-lg leading-relaxed">
-            You're about to activate the living blueprint of your business.
-            Every step you take strengthens your foundations, expands your reach, and future-proofs your success.
-          </DialogDescription>
-          <div className="my-6 space-y-2">
-            <h4 className="text-xl font-semibold">Your mission:</h4>
-            <p className="text-muted-foreground">
-              Complete your first sequence. Unlock your system's true power. Build momentum that lasts decades.
-            </p>
-          </div>
-          <DialogFooter>
-            <Button 
-              size="lg" 
-              className="mt-2 space-x-2" 
-              onClick={onBegin}
-            >
-              <span>Begin Setup</span>
-              <ArrowRight className="w-4 h-4" />
-            </Button>
-          </DialogFooter>
-        </motion.div>
-      </DialogContent>
-    </Dialog>
-  );
+interface OnboardingTask {
+  id: string;
+  title: string;
+  description: string;
+  completed: boolean;
+  action?: () => void;
+  actionLabel?: string;
 }
 
-// Step Card Component
-function StepCard({ 
-  step, 
-  status, 
-  onComplete, 
-  isSelected = false 
-}: { 
-  step: OnboardingStep; 
-  status: 'not_started' | 'in_progress' | 'completed'; 
-  onComplete: () => void;
-  isSelected?: boolean;
-}) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4 }}
-    >
-      <Card 
-        className={`mb-4 transition-all duration-300 ${isSelected ? 'border-primary shadow-lg' : 'border-muted shadow'}`}
-      >
-        <CardHeader className="pb-3">
-          <div className="flex items-center justify-between">
-            <CardTitle className="text-xl">{step.title}</CardTitle>
-            <StatusBadge status={status} />
-          </div>
-          <CardDescription>{step.description}</CardDescription>
-        </CardHeader>
-        <CardContent>
-          {status === 'completed' && (
-            <div className="flex items-center space-x-3 p-3 bg-primary/5 rounded-md">
-              <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
-                <CheckCircle2 className="h-5 w-5 text-primary" />
-              </div>
-              <div>
-                <p className="font-medium">{step.emblems.name}</p>
-                <p className="text-sm text-muted-foreground">{step.emblems.description}</p>
-              </div>
-            </div>
-          )}
-          {status === 'in_progress' && (
-            <div className="space-y-3">
-              <p className="text-sm text-muted-foreground">
-                Currently working on this step. Complete the tasks to unlock the {step.emblems.name} emblem.
-              </p>
-              {isSelected && (
-                <Button onClick={onComplete} className="mt-2">
-                  Mark as Complete
-                </Button>
-              )}
-            </div>
-          )}
-          {status === 'not_started' && (
-            <div className="space-y-3">
-              <p className="text-sm text-muted-foreground">
-                Complete this step to unlock the {step.emblems.name} emblem.
-              </p>
-            </div>
-          )}
-        </CardContent>
-      </Card>
-    </motion.div>
-  );
+interface CinematicOnboardingProps {
+  autoAdvance?: boolean;
+  showCompleted?: boolean;
 }
 
-// Status Badge Component
-function StatusBadge({ status }: { status: 'not_started' | 'in_progress' | 'completed' }) {
-  switch (status) {
-    case 'completed':
-      return (
-        <Badge variant="default" className="bg-green-600">
-          Completed
-        </Badge>
-      );
-    case 'in_progress':
-      return (
-        <Badge variant="outline" className="border-primary text-primary">
-          In Progress
-        </Badge>
-      );
-    default:
-      return (
-        <Badge variant="outline" className="border-muted text-muted-foreground">
-          Not Started
-        </Badge>
-      );
-  }
-}
-
-// Completion Dialog Component
-export function CompletionDialog({ 
-  open, 
-  onOpenChange, 
-  onEnterCommandCenter 
-}: { 
-  open: boolean; 
-  onOpenChange: (open: boolean) => void;
-  onEnterCommandCenter: () => void;
-}) {
-  return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-xl">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.4 }}
-          className="text-center"
-        >
-          <div className="mx-auto w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mb-6">
-            <Shield className="h-10 w-10 text-primary" />
-          </div>
-          <DialogTitle className="text-3xl font-bold tracking-tight text-primary">
-            Congratulations, Architect.
-          </DialogTitle>
-          <DialogDescription className="mt-4 text-lg leading-relaxed">
-            Your system core is now fully operational.
-            Your foundations are secure. Your future is live.
-            <div className="mt-2">From here, everything builds.</div>
-          </DialogDescription>
-          <DialogFooter className="mt-8 flex justify-center">
-            <Button 
-              size="lg" 
-              className="space-x-2" 
-              onClick={onEnterCommandCenter}
-            >
-              <span>Enter Command Center</span>
-              <ArrowRight className="w-4 h-4" />
-            </Button>
-          </DialogFooter>
-        </motion.div>
-      </DialogContent>
-    </Dialog>
-  );
-}
-
-// Main Onboarding Component
-export default function CinematicOnboarding() {
+const CinematicOnboarding: React.FC<CinematicOnboardingProps> = ({
+  autoAdvance = true,
+  showCompleted = true
+}) => {
   const { user } = useAuth();
+  const [, setLocation] = useLocation();
+  const [activeStage, setActiveStage] = useState<string>('welcome');
+  const [overallProgress, setOverallProgress] = useState<number>(0);
   const { toast } = useToast();
-  const [loading, setLoading] = useState(true);
-  const [welcomeOpen, setWelcomeOpen] = useState(false);
-  const [completionOpen, setCompletionOpen] = useState(false);
-  const [onboardingData, setOnboardingData] = useState<{[key: string]: {status: 'not_started' | 'in_progress' | 'completed'}}>({});
-  const [selectedStepId, setSelectedStepId] = useState<string | null>(null);
+  const queryClient = useQueryClient();
   
-  // Calculated progress as percentage
-  const completedSteps = Object.values(onboardingData).filter(step => step.status === 'completed').length;
-  const totalSteps = ONBOARDING_STEPS.length;
-  const progressPercentage = (completedSteps / totalSteps) * 100;
-  const allCompleted = completedSteps === totalSteps;
-  
-  // Show welcome dialog for new users
-  useEffect(() => {
-    if (user && !loading && Object.keys(onboardingData).length === 0) {
-      setWelcomeOpen(true);
-    }
-  }, [user, loading, onboardingData]);
-  
-  // Show completion dialog when all steps are completed
-  useEffect(() => {
-    if (allCompleted && !loading) {
-      setCompletionOpen(true);
-    }
-  }, [allCompleted, loading]);
-  
-  // Load onboarding data
-  useEffect(() => {
-    const loadOnboardingData = async () => {
-      if (!user) return;
-      
-      try {
-        setLoading(true);
-        const response = await apiRequest('GET', `/api/onboarding/${user.id}`);
-        const data = await response.json();
-        
-        // Initialize onboarding data
-        const initialData: {[key: string]: {status: 'not_started' | 'in_progress' | 'completed'}} = {};
-        ONBOARDING_STEPS.forEach(step => {
-          const existingStep = data.data?.find((s: any) => s.stage === step.id);
-          initialData[step.id] = { 
-            status: existingStep ? existingStep.status : 'not_started' 
-          };
-        });
-        
-        setOnboardingData(initialData);
-        
-        // Find first incomplete step to select
-        const firstIncompleteStep = ONBOARDING_STEPS.find(
-          step => initialData[step.id].status !== 'completed'
-        );
-        
-        if (firstIncompleteStep) {
-          setSelectedStepId(firstIncompleteStep.id);
-          // Mark it as in progress if it's not already
-          if (initialData[firstIncompleteStep.id].status === 'not_started') {
-            updateStepStatus(firstIncompleteStep.id, 'in_progress');
-          }
+  // Define onboarding stages with their respective tasks
+  const stages: OnboardingStage[] = [
+    {
+      id: 'welcome',
+      title: 'Welcome to Progress',
+      description: 'Let\'s get you started with the platform',
+      icon: <Rocket className="h-6 w-6 text-orange-500" />,
+      emblemId: 'pioneer',
+      tasks: [
+        {
+          id: 'welcome_task',
+          title: 'Start your onboarding journey',
+          description: 'Begin the guided tour of the platform',
+          completed: false,
+          action: () => setActiveStage('navigation'),
+          actionLabel: 'Begin Tour'
         }
-      } catch (error) {
-        console.error('Error loading onboarding data:', error);
-        toast({
-          title: 'Error',
-          description: 'Failed to load onboarding progress. Please refresh the page.',
-          variant: 'destructive',
-        });
-      } finally {
-        setLoading(false);
-      }
-    };
-    
-    loadOnboardingData();
-  }, [user, toast]);
+      ]
+    },
+    {
+      id: 'navigation',
+      title: 'Platform Navigation',
+      description: 'Learn how to navigate the platform',
+      icon: <Sparkles className="h-6 w-6 text-emerald-500" />,
+      emblemId: 'navigator',
+      tasks: [
+        {
+          id: 'explore_sidebar',
+          title: 'Explore the sidebar',
+          description: 'The sidebar contains all the main sections of the platform',
+          completed: false
+        },
+        {
+          id: 'pin_favorites',
+          title: 'Pin your favorite items',
+          description: 'Click the pin icon to add items to your favorites',
+          completed: false
+        },
+        {
+          id: 'visit_dashboard',
+          title: 'Visit your dashboard',
+          description: 'Check out your personalized dashboard',
+          completed: false,
+          action: () => setLocation('/admin/dashboard'),
+          actionLabel: 'Go to Dashboard'
+        }
+      ]
+    },
+    {
+      id: 'content',
+      title: 'Content Management',
+      description: 'Learn to create and manage content',
+      icon: <BookOpen className="h-6 w-6 text-blue-500" />,
+      emblemId: 'content_creator',
+      tasks: [
+        {
+          id: 'create_page',
+          title: 'Create a new page',
+          description: 'Try creating a new page for your website',
+          completed: false,
+          action: () => setLocation('/admin/page-builder'),
+          actionLabel: 'Page Builder'
+        },
+        {
+          id: 'manage_media',
+          title: 'Manage your media',
+          description: 'Upload and organize your media files',
+          completed: false,
+          action: () => setLocation('/admin/media-hub'),
+          actionLabel: 'Media Hub'
+        }
+      ]
+    },
+    {
+      id: 'settings',
+      title: 'Platform Settings',
+      description: 'Configure your platform settings',
+      icon: <Settings className="h-6 w-6 text-purple-500" />,
+      tasks: [
+        {
+          id: 'profile_settings',
+          title: 'Update your profile',
+          description: 'Complete your profile information',
+          completed: false,
+          action: () => setLocation('/admin/profile'),
+          actionLabel: 'Edit Profile'
+        },
+        {
+          id: 'brand_settings',
+          title: 'Configure brand settings',
+          description: 'Set up your brand colors and logo',
+          completed: false,
+          action: () => setLocation('/admin/brand-settings'),
+          actionLabel: 'Brand Settings'
+        }
+      ]
+    },
+    {
+      id: 'completion',
+      title: 'Onboarding Complete',
+      description: 'You\'ve completed the basic onboarding',
+      icon: <Star className="h-6 w-6 text-yellow-500" />,
+      emblemId: 'mastery',
+      tasks: [
+        {
+          id: 'completion_acknowledgement',
+          title: 'Acknowledge completion',
+          description: 'You\'ve completed the basic onboarding process',
+          completed: false,
+          action: () => {
+            toast({
+              title: "Onboarding Complete!",
+              description: "You've successfully completed the onboarding. Congratulations!",
+              variant: "default",
+            });
+            setLocation('/admin/dashboard');
+          },
+          actionLabel: 'Return to Dashboard'
+        }
+      ]
+    }
+  ];
   
-  // Update step status
-  const updateStepStatus = async (stepId: string, status: 'not_started' | 'in_progress' | 'completed') => {
-    if (!user) return;
-    
-    try {
-      setOnboardingData(prev => ({
-        ...prev,
-        [stepId]: { status }
-      }));
+  // Fetch user's onboarding status
+  const { data: onboardingData, isLoading } = useQuery({
+    queryKey: ['/api/onboarding', user?.id],
+    queryFn: async () => {
+      if (!user?.id) return null;
       
-      // Update in the backend
-      let endpoint;
-      if (status === 'completed') {
-        endpoint = '/api/onboarding/complete';
-      } else {
-        endpoint = '/api/onboarding/status';
+      const response = await fetch(`/api/onboarding/${user.id}`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch onboarding status');
       }
       
-      await apiRequest('PATCH', endpoint, {
-        userId: user.id,
-        stage: stepId,
-        status,
-        data: {} // Any step-specific data
+      return response.json();
+    },
+    enabled: !!user?.id,
+  });
+  
+  // Mutation to update onboarding status
+  const updateOnboardingMutation = useMutation({
+    mutationFn: async ({ stage, status, data }: { stage: string, status: string, data: any }) => {
+      if (!user?.id) throw new Error('User not authenticated');
+      
+      const response = await fetch('/api/onboarding/status', {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userId: user.id,
+          stage,
+          status,
+          data
+        }),
       });
       
-      // If completing current step, select next incomplete step
-      if (status === 'completed' && stepId === selectedStepId) {
-        const nextIncompleteStep = ONBOARDING_STEPS.find(
-          step => step.id !== stepId && onboardingData[step.id]?.status !== 'completed'
-        );
-        
-        if (nextIncompleteStep) {
-          setSelectedStepId(nextIncompleteStep.id);
-          if (onboardingData[nextIncompleteStep.id]?.status === 'not_started') {
-            updateStepStatus(nextIncompleteStep.id, 'in_progress');
-          }
-        }
+      if (!response.ok) {
+        throw new Error('Failed to update onboarding status');
       }
-    } catch (error) {
-      console.error('Error updating step status:', error);
+      
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/onboarding', user?.id] });
+    },
+  });
+  
+  // Complete stage mutation
+  const completeStagesMutation = useMutation({
+    mutationFn: async ({ stage, data }: { stage: string, data: any }) => {
+      if (!user?.id) throw new Error('User not authenticated');
+      
+      const response = await fetch('/api/onboarding/complete', {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userId: user.id,
+          stage,
+          data
+        }),
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to complete stage');
+      }
+      
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/onboarding', user?.id] });
+      
+      // Show toast notification on stage completion
       toast({
-        title: 'Error',
-        description: 'Failed to update step status. Please try again.',
-        variant: 'destructive',
+        title: "Stage Completed!",
+        description: "You've completed a stage in your onboarding journey.",
+        variant: "default",
       });
       
-      // Revert the status change
-      setOnboardingData(prev => ({
-        ...prev,
-        [stepId]: { status: prev[stepId]?.status || 'not_started' }
-      }));
-    }
-  };
+      // Auto-advance to next stage if enabled
+      if (autoAdvance) {
+        const currentIndex = stages.findIndex(s => s.id === activeStage);
+        if (currentIndex < stages.length - 1) {
+          setActiveStage(stages[currentIndex + 1].id);
+        }
+      }
+    },
+  });
   
-  // Start the onboarding process
-  const handleBeginOnboarding = () => {
-    setWelcomeOpen(false);
+  // Reset onboarding mutation (admin only)
+  const resetOnboardingMutation = useMutation({
+    mutationFn: async (userId: number) => {
+      const response = await fetch('/api/onboarding/reset', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ userId }),
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to reset onboarding');
+      }
+      
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/onboarding', user?.id] });
+      toast({
+        title: "Onboarding Reset",
+        description: "Onboarding progress has been reset.",
+        variant: "default",
+      });
+    },
+  });
+  
+  // Mark task as completed
+  const completeTask = (stageId: string, taskId: string) => {
+    // Find the stage and task
+    const stage = stages.find(s => s.id === stageId);
+    if (!stage) return;
     
-    // Initialize the first step
-    if (selectedStepId) {
-      updateStepStatus(selectedStepId, 'in_progress');
+    const taskIndex = stage.tasks.findIndex(t => t.id === taskId);
+    if (taskIndex === -1) return;
+    
+    // Update task status
+    updateOnboardingMutation.mutate({
+      stage: stageId,
+      status: 'in_progress',
+      data: {
+        completedTasks: [taskId]
+      }
+    });
+    
+    // Check if all tasks in the stage are completed
+    const allTasksCompleted = stage.tasks.every((t, idx) => 
+      idx === taskIndex || t.completed
+    );
+    
+    // If all tasks are completed, mark the stage as completed
+    if (allTasksCompleted) {
+      completeStagesMutation.mutate({
+        stage: stageId,
+        data: {
+          completedAt: new Date().toISOString()
+        }
+      });
     }
   };
   
-  // Complete the current step
-  const handleCompleteStep = (stepId: string) => {
-    updateStepStatus(stepId, 'completed');
-  };
+  // Process onboarding data to update task completion status
+  useEffect(() => {
+    if (onboardingData?.data && Array.isArray(onboardingData.data)) {
+      // Create a map of completed stages
+      const completedStagesMap = onboardingData.data.reduce((acc: any, stage: any) => {
+        if (stage.status === 'completed') {
+          acc[stage.stage] = true;
+        } else if (stage.status === 'in_progress' && stage.data?.completedTasks) {
+          acc[`${stage.stage}_tasks`] = stage.data.completedTasks;
+        }
+        return acc;
+      }, {});
+      
+      // Find the first incomplete stage
+      const firstIncompleteStage = stages.find(stage => 
+        !completedStagesMap[stage.id]
+      );
+      
+      // Set active stage to the first incomplete stage or keep current if none found
+      if (firstIncompleteStage) {
+        setActiveStage(firstIncompleteStage.id);
+      }
+      
+      // Calculate overall progress
+      const totalStages = stages.length;
+      const completedStages = Object.keys(completedStagesMap).filter(key => !key.includes('_tasks')).length;
+      const calculatedProgress = Math.round((completedStages / totalStages) * 100);
+      setOverallProgress(calculatedProgress);
+    }
+  }, [onboardingData]);
   
-  // Enter command center (complete onboarding)
-  const handleEnterCommandCenter = () => {
-    setCompletionOpen(false);
-    window.location.href = '/admin/dashboard';
-  };
-  
-  if (loading) {
+  // Loading state
+  if (isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-[60vh]">
-        <div className="text-center">
-          <Loader2 className="mx-auto h-8 w-8 animate-spin text-primary" />
-          <p className="mt-2 text-muted-foreground">Loading your command deck...</p>
-        </div>
+      <div className="w-full flex justify-center p-8">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
       </div>
     );
   }
   
   return (
-    <div className="container max-w-4xl mx-auto py-8 px-4">
-      {/* Welcome Modal */}
-      <WelcomeDialog
-        open={welcomeOpen}
-        onOpenChange={setWelcomeOpen}
-        onBegin={handleBeginOnboarding}
-      />
-      
-      {/* Completion Modal */}
-      <CompletionDialog
-        open={completionOpen}
-        onOpenChange={setCompletionOpen}
-        onEnterCommandCenter={handleEnterCommandCenter}
-      />
-      
-      {/* Header with Progress */}
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold tracking-tight">Control Deck Setup</h1>
-        <p className="text-muted-foreground mb-4">
-          Complete your activation sequence to unlock your system's full potential.
-        </p>
-        <div className="space-y-2">
-          <div className="flex justify-between text-sm">
-            <span>Initialization Progress</span>
-            <span>{completedSteps}/{totalSteps} Complete</span>
+    <div className="space-y-8">
+      {/* Overall Progress */}
+      <Card className="border-none shadow-sm bg-gradient-to-r from-blue-50 to-indigo-50">
+        <CardHeader className="pb-2">
+          <CardTitle className="text-xl font-bold flex items-center">
+            <Rocket className="mr-2 h-5 w-5 text-orange-500" />
+            Platform Onboarding
+          </CardTitle>
+          <CardDescription>
+            Complete these tasks to master the platform
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-2">
+            <div className="flex justify-between text-sm">
+              <span>Progress</span>
+              <span>{overallProgress}%</span>
+            </div>
+            <Progress value={overallProgress} className="h-2" />
           </div>
-          <Progress value={progressPercentage} className="h-2" />
-        </div>
-      </div>
+        </CardContent>
+      </Card>
       
-      {/* Cinematic Vertical Checklist */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        {/* Steps List */}
-        <div className="md:col-span-2">
-          <AnimatePresence>
-            {ONBOARDING_STEPS.map((step) => (
-              <StepCard
-                key={step.id}
-                step={step}
-                status={onboardingData[step.id]?.status || 'not_started'}
-                onComplete={() => handleCompleteStep(step.id)}
-                isSelected={selectedStepId === step.id}
-              />
-            ))}
-          </AnimatePresence>
-        </div>
-        
-        {/* Emblems Sidebar */}
-        <div className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle>Your Emblems</CardTitle>
-              <CardDescription>
-                Track your progress through the system activation.
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {ONBOARDING_STEPS.map((step) => (
-                  <div 
-                    key={step.id}
-                    className={`flex items-center space-x-3 p-3 rounded-md transition-all duration-300 ${
-                      onboardingData[step.id]?.status === 'completed' 
-                        ? 'bg-primary/10' 
-                        : 'bg-muted/20 opacity-60'
-                    }`}
-                  >
-                    <div 
-                      className={`h-10 w-10 rounded-full flex items-center justify-center ${
-                        onboardingData[step.id]?.status === 'completed'
-                          ? 'bg-primary/20'
-                          : 'bg-muted'
-                      }`}
-                    >
-                      {onboardingData[step.id]?.status === 'completed' ? (
-                        <CheckCircle2 className="h-5 w-5 text-primary" />
-                      ) : (
-                        <span className="h-5 w-5 rounded-full bg-muted-foreground/20" />
-                      )}
-                    </div>
-                    <div>
-                      <p className={`font-medium ${onboardingData[step.id]?.status !== 'completed' && 'text-muted-foreground'}`}>
-                        {step.emblems.name}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-            <CardFooter className="flex justify-center border-t pt-4">
-              <div className="text-center text-sm text-muted-foreground">
-                {completedSteps === 0 ? (
-                  <span>Complete steps to unlock emblems</span>
-                ) : completedSteps === totalSteps ? (
-                  <span className="text-primary font-medium">All emblems unlocked!</span>
-                ) : (
-                  <span>{completedSteps} of {totalSteps} emblems unlocked</span>
-                )}
-              </div>
-            </CardFooter>
-          </Card>
-          
-          {/* Silent Mode Option */}
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-base">Interface Options</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="font-medium text-sm">Silent Mode</p>
-                  <p className="text-xs text-muted-foreground">
-                    Disable visual effects and animations
-                  </p>
+      {/* Stages Tabs */}
+      <Tabs defaultValue={activeStage} value={activeStage} onValueChange={setActiveStage} className="w-full">
+        <TabsList className="grid grid-cols-5 mb-8">
+          {stages.map((stage) => (
+            <TabsTrigger 
+              key={stage.id} 
+              value={stage.id}
+              className="relative"
+            >
+              <div className="flex flex-col items-center space-y-1">
+                <div className="relative">
+                  {stage.icon}
+                  {onboardingData?.data?.some((s: any) => s.stage === stage.id && s.status === 'completed') && (
+                    <CheckCircle2 className="w-3 h-3 text-emerald-500 absolute -top-1 -right-1" />
+                  )}
                 </div>
-                <Button variant="outline" size="sm">
-                  Enable
-                </Button>
+                <span className="text-xs">{stage.title.split(' ')[0]}</span>
               </div>
-            </CardContent>
-          </Card>
+            </TabsTrigger>
+          ))}
+        </TabsList>
+        
+        {stages.map((stage) => {
+          // Get stage data from API response
+          const stageData = onboardingData?.data?.find((s: any) => s.stage === stage.id);
+          const isStageCompleted = stageData?.status === 'completed';
+          const completedTasks = stageData?.data?.completedTasks || [];
+          
+          // Update task completion status
+          const tasksWithStatus = stage.tasks.map(task => ({
+            ...task,
+            completed: isStageCompleted || completedTasks.includes(task.id)
+          }));
+          
+          return (
+            <TabsContent key={stage.id} value={stage.id} className="space-y-4">
+              <Card>
+                <CardHeader className="pb-3">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <CardTitle className="text-lg font-bold flex items-center">
+                        {stage.icon}
+                        <span className="ml-2">{stage.title}</span>
+                      </CardTitle>
+                      <CardDescription>{stage.description}</CardDescription>
+                    </div>
+                    {isStageCompleted && (
+                      <div className="flex items-center text-emerald-600 text-sm font-medium">
+                        <CheckCircle2 className="mr-1 h-4 w-4" />
+                        Completed
+                      </div>
+                    )}
+                  </div>
+                </CardHeader>
+                <CardContent className="pb-2">
+                  <div className="space-y-4">
+                    {tasksWithStatus.map((task) => (
+                      <div 
+                        key={task.id} 
+                        className={`p-4 rounded-lg border ${task.completed 
+                          ? 'bg-emerald-50 border-emerald-100' 
+                          : 'bg-white border-gray-100'}`}
+                      >
+                        <div className="flex items-start justify-between">
+                          <div className="space-y-1">
+                            <h4 className="font-medium flex items-center">
+                              {task.completed && <CheckCircle2 className="mr-2 h-4 w-4 text-emerald-600" />}
+                              {task.title}
+                            </h4>
+                            <p className="text-sm text-gray-500">{task.description}</p>
+                          </div>
+                          {!task.completed && task.action && (
+                            <Button 
+                              size="sm" 
+                              onClick={() => {
+                                completeTask(stage.id, task.id);
+                                if (task.action) task.action();
+                              }}
+                            >
+                              {task.actionLabel || 'Complete'}
+                            </Button>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+                <CardFooter className="pt-0 flex justify-between">
+                  {/* Navigation between stages */}
+                  <div className="flex space-x-2">
+                    {stages.findIndex(s => s.id === stage.id) > 0 && (
+                      <Button 
+                        variant="outline" 
+                        size="sm"
+                        onClick={() => {
+                          const currentIndex = stages.findIndex(s => s.id === stage.id);
+                          if (currentIndex > 0) {
+                            setActiveStage(stages[currentIndex - 1].id);
+                          }
+                        }}
+                      >
+                        Previous Stage
+                      </Button>
+                    )}
+                    
+                    {stages.findIndex(s => s.id === stage.id) < stages.length - 1 && (
+                      <Button 
+                        variant="outline" 
+                        size="sm"
+                        onClick={() => {
+                          const currentIndex = stages.findIndex(s => s.id === stage.id);
+                          if (currentIndex < stages.length - 1) {
+                            setActiveStage(stages[currentIndex + 1].id);
+                          }
+                        }}
+                      >
+                        Next Stage <ArrowRight className="ml-1 h-4 w-4" />
+                      </Button>
+                    )}
+                  </div>
+                  
+                  {/* Stage completion button */}
+                  {!isStageCompleted && tasksWithStatus.every(task => task.completed) && (
+                    <Button
+                      onClick={() => {
+                        completeStagesMutation.mutate({
+                          stage: stage.id,
+                          data: {
+                            completedAt: new Date().toISOString()
+                          }
+                        });
+                      }}
+                      className="bg-emerald-600 hover:bg-emerald-700"
+                    >
+                      Complete Stage <CheckCircle2 className="ml-2 h-4 w-4" />
+                    </Button>
+                  )}
+                </CardFooter>
+              </Card>
+              
+              {/* Show emblems only for the completion stage */}
+              {stage.id === 'completion' && (
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Your Earned Emblems</CardTitle>
+                    <CardDescription>
+                      Emblems you've unlocked through your journey
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <EmblemGallery layout="carousel" showLocked={false} />
+                  </CardContent>
+                </Card>
+              )}
+            </TabsContent>
+          );
+        })}
+      </Tabs>
+      
+      {/* Admin controls for resetting onboarding */}
+      {user && (user.userType === 'admin' || user.userType === 'super_admin') && (
+        <div className="mt-8 pt-8 border-t border-gray-200">
+          <div className="flex justify-between items-center">
+            <h3 className="text-sm font-medium text-gray-500">Admin Controls</h3>
+            <Button 
+              variant="destructive" 
+              size="sm"
+              onClick={() => {
+                if (window.confirm('Are you sure you want to reset onboarding progress? This cannot be undone.')) {
+                  resetOnboardingMutation.mutate(user.id);
+                }
+              }}
+            >
+              Reset Onboarding
+            </Button>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
-}
+};
+
+export default CinematicOnboarding;

@@ -1,278 +1,258 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { useAuth } from '@/hooks/use-auth';
 import { 
-  Card, 
-  CardContent, 
-  CardDescription, 
-  CardFooter, 
-  CardHeader, 
-  CardTitle 
-} from '@/components/ui/card';
-import { useToast } from '@/hooks/use-toast';
-import { 
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/components/ui/tooltip';
-import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Loader2, CheckCircle2, LockKeyhole } from 'lucide-react';
-import { apiRequest } from '@/lib/queryClient';
-import { cn } from '@/lib/utils';
+  Star, 
+  Award, 
+  Sparkles, 
+  Rocket, 
+  Medal, 
+  Zap, 
+  Crown,
+  BookOpen,
+  PenTool,
+  Share,
+  Users,
+  Globe,
+  LineChart,
+  Search,
+  Shield
+} from 'lucide-react';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
-// Emblem type definition
+// Define emblem types
 interface Emblem {
   id: string;
   name: string;
   description: string;
-  unlocked: boolean;
-  unlockedAt?: string;
   icon: React.ReactNode;
+  unlocked: boolean;
+  unlockedAt?: Date;
 }
 
-/**
- * Emblem Gallery Component
- * 
- * This component displays the user's unlocked emblems in an elegant, organized gallery.
- * It's part of the cinematic gamification system in the Blueprint Blueprint.
- * 
- * @since v1.1.1
- */
-export default function EmblemGallery() {
+// Props interface
+interface EmblemGalleryProps {
+  layout?: 'grid' | 'carousel';
+  showLocked?: boolean;
+}
+
+// Default emblems
+const defaultEmblems: Emblem[] = [
+  {
+    id: 'pioneer',
+    name: 'Pioneer',
+    description: 'Completed the initial platform onboarding',
+    icon: <Rocket className="h-8 w-8 text-orange-500" />,
+    unlocked: false
+  },
+  {
+    id: 'navigator',
+    name: 'Navigator',
+    description: 'Explored all main sections of the platform',
+    icon: <Sparkles className="h-8 w-8 text-emerald-500" />,
+    unlocked: false
+  },
+  {
+    id: 'content_creator',
+    name: 'Content Creator',
+    description: 'Published your first piece of content',
+    icon: <PenTool className="h-8 w-8 text-blue-500" />,
+    unlocked: false
+  },
+  {
+    id: 'social_butterfly',
+    name: 'Social Butterfly',
+    description: 'Created your first social media post',
+    icon: <Share className="h-8 w-8 text-indigo-500" />,
+    unlocked: false
+  },
+  {
+    id: 'team_builder',
+    name: 'Team Builder',
+    description: 'Added your first team member',
+    icon: <Users className="h-8 w-8 text-amber-500" />,
+    unlocked: false
+  },
+  {
+    id: 'site_master',
+    name: 'Site Master',
+    description: 'Published your website successfully',
+    icon: <Globe className="h-8 w-8 text-teal-500" />,
+    unlocked: false
+  },
+  {
+    id: 'insight_analyst',
+    name: 'Insight Analyst',
+    description: 'Reviewed your first analytics report',
+    icon: <LineChart className="h-8 w-8 text-violet-500" />,
+    unlocked: false
+  },
+  {
+    id: 'seo_explorer',
+    name: 'SEO Explorer',
+    description: 'Optimized your first page for search engines',
+    icon: <Search className="h-8 w-8 text-rose-500" />,
+    unlocked: false
+  },
+  {
+    id: 'blueprint_architect',
+    name: 'Blueprint Architect',
+    description: 'Created your first site blueprint',
+    icon: <Shield className="h-8 w-8 text-cyan-500" />,
+    unlocked: false
+  },
+  {
+    id: 'mastery',
+    name: 'Platform Mastery',
+    description: 'Unlocked all platform emblems',
+    icon: <Crown className="h-8 w-8 text-yellow-500" />,
+    unlocked: false
+  }
+];
+
+const EmblemGallery: React.FC<EmblemGalleryProps> = ({ 
+  layout = 'grid',
+  showLocked = true
+}) => {
   const { user } = useAuth();
-  const { toast } = useToast();
-  const [loading, setLoading] = useState(true);
-  const [emblems, setEmblems] = useState<Emblem[]>([]);
-  const [activeTab, setActiveTab] = useState<'all' | 'unlocked'>('all');
   
-  // Get emblem data
-  useEffect(() => {
-    const loadEmblems = async () => {
-      if (!user) return;
+  const { data, isLoading } = useQuery({
+    queryKey: ['/api/emblems', user?.id],
+    queryFn: async () => {
+      if (!user?.id) return null;
       
       try {
-        setLoading(true);
-        const response = await apiRequest('GET', `/api/onboarding/${user.id}`);
+        const response = await fetch(`/api/onboarding/${user.id}`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch emblems');
+        }
+        
         const data = await response.json();
         
-        // Map the API data to emblems
-        const mappedEmblems: Emblem[] = [
-          {
-            id: 'identity-emblem',
-            name: 'Identity Activated',
-            description: 'Your business identity has been established',
-            unlocked: data.data?.some((step: any) => step.stage === 'identity' && step.status === 'completed') || false,
-            unlockedAt: data.data?.find((step: any) => step.stage === 'identity' && step.status === 'completed')?.updatedAt,
-            icon: <CheckCircle2 className="h-6 w-6" />
-          },
-          {
-            id: 'foundation-emblem',
-            name: 'Beacon Deployed',
-            description: 'Your core pages are now operational',
-            unlocked: data.data?.some((step: any) => step.stage === 'foundation' && step.status === 'completed') || false,
-            unlockedAt: data.data?.find((step: any) => step.stage === 'foundation' && step.status === 'completed')?.updatedAt,
-            icon: <CheckCircle2 className="h-6 w-6" />
-          },
-          {
-            id: 'media-emblem',
-            name: 'Signal Online',
-            description: 'Your visual identity is established',
-            unlocked: data.data?.some((step: any) => step.stage === 'media' && step.status === 'completed') || false,
-            unlockedAt: data.data?.find((step: any) => step.stage === 'media' && step.status === 'completed')?.updatedAt,
-            icon: <CheckCircle2 className="h-6 w-6" />
-          },
-          {
-            id: 'tool-emblem',
-            name: 'Systems Engaged',
-            description: 'You\'ve connected your first extension',
-            unlocked: data.data?.some((step: any) => step.stage === 'tool' && step.status === 'completed') || false,
-            unlockedAt: data.data?.find((step: any) => step.stage === 'tool' && step.status === 'completed')?.updatedAt,
-            icon: <CheckCircle2 className="h-6 w-6" />
-          },
-          {
-            id: 'blueprint-emblem',
-            name: 'Blueprint Locked',
-            description: 'Your business architecture is secured',
-            unlocked: data.data?.some((step: any) => step.stage === 'blueprint' && step.status === 'completed') || false,
-            unlockedAt: data.data?.find((step: any) => step.stage === 'blueprint' && step.status === 'completed')?.updatedAt,
-            icon: <CheckCircle2 className="h-6 w-6" />
-          }
-        ];
+        // Process emblems from onboarding data
+        const unlockedEmblems = data.data
+          .filter((stage: any) => stage.status === 'completed')
+          .map((stage: any) => {
+            // Map stage to emblem if possible
+            const emblemId = stage.stage.replace('stage_', ''); 
+            return {
+              emblemId,
+              unlockedAt: new Date(stage.updated_at)
+            };
+          });
         
-        setEmblems(mappedEmblems);
+        return {
+          emblems: defaultEmblems.map(emblem => {
+            const matchingEmblem = unlockedEmblems.find((e: any) => 
+              e.emblemId === emblem.id || 
+              (e.emblemId === 'complete' && emblem.id === 'mastery')
+            );
+            
+            if (matchingEmblem) {
+              return {
+                ...emblem,
+                unlocked: true,
+                unlockedAt: matchingEmblem.unlockedAt
+              };
+            }
+            
+            return emblem;
+          })
+        };
       } catch (error) {
-        console.error('Error loading emblems:', error);
-        toast({
-          title: 'Error loading emblems',
-          description: 'Unable to retrieve your achievement data. Please try again.',
-          variant: 'destructive',
-        });
-      } finally {
-        setLoading(false);
+        console.error('Error fetching emblems:', error);
+        return { emblems: defaultEmblems };
       }
-    };
-    
-    loadEmblems();
-  }, [user, toast]);
+    },
+    enabled: !!user?.id,
+  });
   
-  // Calculate statistics
-  const totalEmblems = emblems.length;
-  const unlockedEmblems = emblems.filter(emblem => emblem.unlocked).length;
-  const unlockedPercentage = totalEmblems > 0 ? (unlockedEmblems / totalEmblems) * 100 : 0;
-  
-  // Format date for display
-  const formatDate = (dateString?: string) => {
-    if (!dateString) return '';
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', { 
-      month: 'short', 
-      day: 'numeric', 
-      year: 'numeric' 
-    });
-  };
-  
-  if (loading) {
+  // If loading, show loading state
+  if (isLoading) {
     return (
-      <Card>
-        <CardHeader>
-          <CardTitle>Your Emblems</CardTitle>
-          <CardDescription>Loading your accomplishments...</CardDescription>
-        </CardHeader>
-        <CardContent className="flex items-center justify-center py-8">
-          <Loader2 className="h-8 w-8 animate-spin text-primary" />
-        </CardContent>
-      </Card>
+      <div className="w-full flex justify-center p-8">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+      </div>
     );
   }
   
+  // Get emblems from data or use defaults
+  const emblems = data?.emblems || defaultEmblems;
+  
+  // Filter emblems based on showLocked prop
+  const filteredEmblems = showLocked ? emblems : emblems.filter(emblem => emblem.unlocked);
+  
+  if (filteredEmblems.length === 0) {
+    return (
+      <div className="text-center p-8 border rounded-lg bg-gray-50">
+        <p className="text-muted-foreground">No emblems found. Complete onboarding tasks to earn emblems!</p>
+      </div>
+    );
+  }
+  
+  // Grid layout
+  if (layout === 'grid') {
+    return (
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+        {filteredEmblems.map((emblem) => (
+          <EmblemCard key={emblem.id} emblem={emblem} />
+        ))}
+      </div>
+    );
+  }
+  
+  // Carousel layout
   return (
-    <Card>
-      <CardHeader className="pb-3">
-        <div className="flex items-center justify-between">
-          <div>
-            <CardTitle>Your Emblems</CardTitle>
-            <CardDescription>Track your blueprint activation progress</CardDescription>
-          </div>
-          <Badge variant="outline" className="text-primary border-primary">
-            {unlockedEmblems}/{totalEmblems} Unlocked
-          </Badge>
+    <div className="flex overflow-x-auto py-4 pb-6 space-x-4 snap-x">
+      {filteredEmblems.map((emblem) => (
+        <div key={emblem.id} className="snap-center shrink-0 w-64">
+          <EmblemCard emblem={emblem} />
         </div>
-      </CardHeader>
-      
-      <CardContent>
-        <Tabs defaultValue="all" onValueChange={(value) => setActiveTab(value as 'all' | 'unlocked')}>
-          <TabsList className="mb-4">
-            <TabsTrigger value="all">All Emblems</TabsTrigger>
-            <TabsTrigger value="unlocked">Unlocked</TabsTrigger>
-          </TabsList>
-          
-          <TabsContent value="all" className="mt-0">
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
-              {emblems.map((emblem) => (
-                <TooltipProvider key={emblem.id}>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <div 
-                        className={cn(
-                          "flex flex-col items-center justify-center p-4 rounded-lg transition-all duration-300 cursor-pointer h-32",
-                          emblem.unlocked 
-                            ? "bg-primary/10 hover:bg-primary/15 border border-primary/20" 
-                            : "bg-muted/30 opacity-60 hover:opacity-80 border border-muted"
-                        )}
-                      >
-                        <div 
-                          className={cn(
-                            "h-12 w-12 rounded-full flex items-center justify-center mb-2",
-                            emblem.unlocked ? "bg-primary/20" : "bg-muted"
-                          )}
-                        >
-                          {emblem.unlocked ? (
-                            emblem.icon
-                          ) : (
-                            <LockKeyhole className="h-6 w-6 text-muted-foreground/50" />
-                          )}
-                        </div>
-                        <p className={cn(
-                          "text-sm font-medium text-center",
-                          !emblem.unlocked && "text-muted-foreground"
-                        )}>
-                          {emblem.name}
-                        </p>
-                      </div>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <div className="space-y-1 p-1">
-                        <p className="font-medium">{emblem.name}</p>
-                        <p className="text-xs">{emblem.description}</p>
-                        {emblem.unlocked && emblem.unlockedAt && (
-                          <p className="text-xs text-muted-foreground">
-                            Unlocked on {formatDate(emblem.unlockedAt)}
-                          </p>
-                        )}
-                      </div>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-              ))}
-            </div>
-          </TabsContent>
-          
-          <TabsContent value="unlocked" className="mt-0">
-            {unlockedEmblems === 0 ? (
-              <div className="text-center p-8 text-muted-foreground">
-                <p>No emblems unlocked yet.</p>
-                <p className="text-sm mt-1">Complete onboarding steps to earn emblems.</p>
-              </div>
-            ) : (
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
-                {emblems.filter(emblem => emblem.unlocked).map((emblem) => (
-                  <TooltipProvider key={emblem.id}>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <div 
-                          className="flex flex-col items-center justify-center p-4 rounded-lg bg-primary/10 hover:bg-primary/15 border border-primary/20 transition-all duration-300 cursor-pointer h-32"
-                        >
-                          <div className="h-12 w-12 rounded-full bg-primary/20 flex items-center justify-center mb-2">
-                            {emblem.icon}
-                          </div>
-                          <p className="text-sm font-medium text-center">{emblem.name}</p>
-                        </div>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <div className="space-y-1 p-1">
-                          <p className="font-medium">{emblem.name}</p>
-                          <p className="text-xs">{emblem.description}</p>
-                          {emblem.unlockedAt && (
-                            <p className="text-xs text-muted-foreground">
-                              Unlocked on {formatDate(emblem.unlockedAt)}
-                            </p>
-                          )}
-                        </div>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                ))}
-              </div>
-            )}
-          </TabsContent>
-        </Tabs>
-      </CardContent>
-      
-      <CardFooter className="border-t pt-4 pb-3">
-        <div className="w-full">
-          <div className="flex justify-between text-sm mb-1.5">
-            <span className="text-muted-foreground">Blueprint Activation</span>
-            <span className="font-medium">{unlockedPercentage.toFixed(0)}%</span>
-          </div>
-          <div className="h-2 w-full bg-muted rounded-full overflow-hidden">
-            <div 
-              className="h-full bg-primary transition-all duration-500" 
-              style={{ width: `${unlockedPercentage}%` }}
-            ></div>
-          </div>
-        </div>
-      </CardFooter>
-    </Card>
+      ))}
+    </div>
   );
-}
+};
+
+// Single emblem card component
+const EmblemCard: React.FC<{ emblem: Emblem }> = ({ emblem }) => {
+  return (
+    <TooltipProvider>
+      <Tooltip delayDuration={300}>
+        <TooltipTrigger asChild>
+          <Card className={`overflow-hidden transition-all duration-300 ${emblem.unlocked ? 'bg-white shadow-md' : 'bg-gray-100/60 saturate-0'}`}>
+            <CardHeader className="p-3 pb-0">
+              <CardTitle className="text-sm truncate">{emblem.name}</CardTitle>
+            </CardHeader>
+            <CardContent className="p-4 flex flex-col items-center justify-center h-24">
+              <div className={`transform transition-all duration-300 ${emblem.unlocked ? 'scale-110' : 'opacity-50'}`}>
+                {emblem.icon}
+              </div>
+            </CardContent>
+            <CardFooter className="p-3 pt-0">
+              <CardDescription className="text-xs">
+                {emblem.unlocked 
+                  ? <span className="text-emerald-600 font-medium">Unlocked</span>
+                  : <span className="text-muted-foreground">Locked</span>
+                }
+              </CardDescription>
+            </CardFooter>
+          </Card>
+        </TooltipTrigger>
+        <TooltipContent side="top" className="p-3 max-w-xs">
+          <div className="space-y-2">
+            <h4 className="font-semibold">{emblem.name}</h4>
+            <p className="text-sm">{emblem.description}</p>
+            {emblem.unlocked && emblem.unlockedAt && (
+              <p className="text-xs text-muted-foreground">
+                Unlocked on {emblem.unlockedAt.toLocaleDateString()}
+              </p>
+            )}
+          </div>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
+  );
+};
+
+export default EmblemGallery;

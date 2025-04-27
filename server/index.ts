@@ -15,6 +15,7 @@ import { migrateInsightsDashboard } from './db-migrate-insights-dashboard';
 import { migrateBlueprintTables } from './db-migrate-blueprint';
 import { migrateCrmTables } from './db-migrate-crm';
 import { migrateSiteVariantsTables } from './db-migrate-site-variants';
+import { migrateOnboardingTables } from './db-migrate-onboarding';
 import { registerNavigationRoutes } from './controllers/navigationController';
 import { registerDomainMappingRoutes } from './controllers/domainMappingController';
 import { registerSotRoutes } from './controllers/sotController';
@@ -89,6 +90,8 @@ app.use((req, res, next) => {
     await migrateCrmTables();
     console.log('Running Site Variants migrations...');
     await migrateSiteVariantsTables();
+    console.log('Running Onboarding migrations...');
+    await migrateOnboardingTables();
   } catch (error) {
     console.error('Error running migrations:', error);
   }
