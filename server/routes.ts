@@ -254,8 +254,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
 
       const user = req.user as any;
-      if (user.userType !== 'admin' && user.userType !== 'super_admin') {
-        return res.status(403).json({ error: "Forbidden" });
+      // Restrict cloning to super admin users only
+      if (!user.isSuperAdmin && user.userType !== 'super_admin') {
+        return res.status(403).json({ error: "Super admin privileges required for cloning" });
       }
       
       const { templateId } = req.body;

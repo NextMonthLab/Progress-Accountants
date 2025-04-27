@@ -527,7 +527,7 @@ export function registerBlueprintRoutes(app: Express): void {
   });
   
   // Notify Guardian about export
-  app.post("/api/blueprint/notify-guardian", async (req: Request, res: Response) => {
+  app.post("/api/blueprint/notify-guardian", requireSuperAdmin, async (req: Request, res: Response) => {
     try {
       const { clientId, event = "export-ready" } = req.body;
       
@@ -567,7 +567,7 @@ export function registerBlueprintRoutes(app: Express): void {
   });
   
   // Register and sync the CompanionConsole module
-  app.post("/api/blueprint/register-companion-console", async (req: Request, res: Response) => {
+  app.post("/api/blueprint/register-companion-console", requireSuperAdmin, async (req: Request, res: Response) => {
     try {
       const { clientId } = req.body;
       

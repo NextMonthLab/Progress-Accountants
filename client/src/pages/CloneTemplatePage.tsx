@@ -66,7 +66,8 @@ const CloneTemplatePage: React.FC = () => {
       });
       
       if (!response.ok) {
-        throw new Error('Failed to clone template');
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to clone template');
       }
       
       const data = await response.json();
@@ -85,7 +86,7 @@ const CloneTemplatePage: React.FC = () => {
       
       toast({
         title: "Error",
-        description: "Failed to clone template. Please try again.",
+        description: error instanceof Error ? error.message : "Failed to clone template. Please try again.",
         variant: "destructive"
       });
     }
