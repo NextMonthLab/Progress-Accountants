@@ -401,7 +401,7 @@ const DynamicSidebar: React.FC = () => {
   return (
     <TooltipProvider>
       <div className={cn(
-        "flex flex-col h-screen border-r border-gray-200 bg-white transition-all duration-300",
+        "flex flex-col h-screen border-r border-gray-200 bg-gray-100 transition-all duration-300",
         // Desktop styles
         !isMobile && (sidebarCollapsed ? "w-[70px]" : "w-64"),
         // Mobile styles
@@ -446,7 +446,7 @@ const DynamicSidebar: React.FC = () => {
         )}
         
         {/* Sidebar Header */}
-        <div className="px-4 py-3 flex items-center justify-between border-b border-gray-200 bg-gradient-to-r from-white to-orange-50/30">
+        <div className="px-4 py-3 flex items-center justify-between border-b border-gray-200 bg-gradient-to-r from-gray-100 to-orange-50/30">
           <SidebarLogo collapsed={sidebarCollapsed} />
           <button
             onClick={isMobile ? toggleMobileSidebar : toggleSidebar}
@@ -468,7 +468,7 @@ const DynamicSidebar: React.FC = () => {
         
         {/* User Profile & Onboarding Progress */}
         {user && (user.userType === 'admin' || user.userType === 'super_admin') && (
-          <div className="px-4 py-3 flex items-center space-x-3 border-b border-gray-200 bg-gradient-to-r from-white to-blue-50/20">
+          <div className="px-4 py-3 flex items-center space-x-3 border-b border-gray-200 bg-gradient-to-r from-gray-100 to-blue-50/20">
             <div className="relative flex-shrink-0">
               <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-semibold">
                 {user.username ? user.username.charAt(0).toUpperCase() : 'U'}
