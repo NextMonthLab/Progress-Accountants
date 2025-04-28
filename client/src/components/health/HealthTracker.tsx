@@ -1,28 +1,21 @@
 import { useEffect, useRef, useCallback } from 'react';
 import { useHealth } from '@/contexts/HealthContext';
 
-// TypeScript definition for requestIdleCallback
-// (not included in standard lib.dom, but available in modern browsers)
+// We don't need to define requestIdleCallback types - commenting out to avoid issues
+/*
 declare global {
-  interface IdleRequestOptions {
-    timeout: number;
-  }
-
-  interface IdleDeadline {
-    didTimeout: boolean;
-    timeRemaining: () => number;
-  }
-
-  type IdleRequestCallback = (deadline: IdleDeadline) => void;
-
   interface Window {
     requestIdleCallback: (
-      callback: IdleRequestCallback,
-      options?: IdleRequestOptions
+      callback: (deadline: {
+        didTimeout: boolean;
+        timeRemaining: () => number;
+      }) => void,
+      options?: { timeout?: number }
     ) => number;
     cancelIdleCallback: (handle: number) => void;
   }
 }
+*/
 
 /**
  * HealthTracker component that silently monitors page load times
@@ -101,7 +94,17 @@ export default function HealthTracker() {
   }, [trackMetric]);
   
   // Set up API call monitoring by intercepting fetch and XHR
+  // With reduced frequency and avoiding health endpoints monitoring
   const setupApiCallMonitoring = useCallback(() => {
+    // Skip monitoring health endpoints to prevent recursive monitoring
+    const shouldSkipUrl = (url: string) => {
+      return url.includes('/api/health/') || url.includes('/api/metrics/') || url.includes('/api/health/metrics/track');
+    };
+    
+    // Reduce reporting frequency - only report every 50 calls instead of every 5
+    const reportingThreshold = 50;
+    let lastReportTime = Date.now();
+    
     // Intercept fetch calls
     const originalFetch = window.fetch;
     window.fetch = async function(input, init) {
@@ -112,65 +115,89 @@ export default function HealthTracker() {
         const response = await originalFetch.apply(this, [input, init]);
         const endTime = performance.now();
         
-        // Only track API calls to our backend
-        if (url.startsWith('/api/')) {
+        // Only track API calls to our backend, skip health endpoints
+        if (url.startsWith('/api/') && !shouldSkipUrl(url)) {
           const apiLatency = endTime - startTime;
           apiCallsRef.current.set(url, apiLatency);
           
-          // Aggregate API latency metrics every few calls
-          if (apiCallsRef.current.size >= 5) {
+          // Don't report too frequently and ensure we have enough data points
+          const timeElapsed = Date.now() - lastReportTime;
+          if (apiCallsRef.current.size >= reportingThreshold || timeElapsed > 60000) {
             const avgLatency = Array.from(apiCallsRef.current.values())
               .reduce((sum, val) => sum + val, 0) / apiCallsRef.current.size;
             
-            trackMetric('api_response_time', avgLatency);
-            console.log(`[Health] Avg API latency: ${avgLatency.toFixed(2)}ms`);
-            apiCallsRef.current.clear();
+            // Only log once per minute max
+            if (timeElapsed > 60000) {
+              trackMetric('api_response_time', avgLatency);
+              console.log(`[Health] Avg API latency: ${avgLatency.toFixed(2)}ms over ${apiCallsRef.current.size} calls`);
+              lastReportTime = Date.now();
+              apiCallsRef.current.clear();
+            }
           }
           
-          // Track error rates
-          if (!response.ok) {
+          // Only track critical errors (500+)
+          if (response.status >= 500) {
             errorCountRef.current++;
-            trackMetric('api_error_rate', errorCountRef.current);
+            // Only report after accumulating multiple errors
+            if (errorCountRef.current % 5 === 0) {
+              trackMetric('api_error_rate', errorCountRef.current);
+            }
           }
         }
         
         return response;
       } catch (error) {
-        errorCountRef.current++;
-        trackMetric('api_error_rate', errorCountRef.current);
+        // Only count network-level errors
+        if (url.startsWith('/api/') && !shouldSkipUrl(url)) {
+          errorCountRef.current++;
+          if (errorCountRef.current % 5 === 0) {
+            trackMetric('api_error_rate', errorCountRef.current);
+          }
+        }
         throw error;
       }
     };
     
-    // Intercept XHR calls
+    // Intercept XHR calls - with similar optimizations
     const originalXhrOpen = XMLHttpRequest.prototype.open;
     XMLHttpRequest.prototype.open = function(method, url, ...args) {
-      if (typeof url === 'string' && url.startsWith('/api/')) {
+      if (typeof url === 'string' && url.startsWith('/api/') && !shouldSkipUrl(url)) {
         const startTime = performance.now();
         
         this.addEventListener('load', () => {
+          // Only track non-health endpoints
           const endTime = performance.now();
           const apiLatency = endTime - startTime;
           
           apiCallsRef.current.set(url, apiLatency);
           
-          if (apiCallsRef.current.size >= 5) {
-            const avgLatency = Array.from(apiCallsRef.current.values())
-              .reduce((sum, val) => sum + val, 0) / apiCallsRef.current.size;
-            
-            trackMetric('api_response_time', avgLatency);
-            apiCallsRef.current.clear();
+          // Use the same reporting threshold as fetch
+          const timeElapsed = Date.now() - lastReportTime;
+          if (apiCallsRef.current.size >= reportingThreshold || timeElapsed > 60000) {
+            if (timeElapsed > 60000) {
+              const avgLatency = Array.from(apiCallsRef.current.values())
+                .reduce((sum, val) => sum + val, 0) / apiCallsRef.current.size;
+              
+              trackMetric('api_response_time', avgLatency);
+              lastReportTime = Date.now();
+              apiCallsRef.current.clear();
+            }
           }
           
-          if (this.status >= 400) {
+          // Only track critical errors
+          if (this.status >= 500) {
             errorCountRef.current++;
-            trackMetric('api_error_rate', errorCountRef.current);
+            if (errorCountRef.current % 5 === 0) {
+              trackMetric('api_error_rate', errorCountRef.current);
+            }
           }
         });
         
         this.addEventListener('error', () => {
           errorCountRef.current++;
-          trackMetric('api_error_rate', errorCountRef.current);
+          if (errorCountRef.current % 5 === 0) {
+            trackMetric('api_error_rate', errorCountRef.current);
+          }
         });
       }
       
@@ -179,43 +206,55 @@ export default function HealthTracker() {
     };
   }, [trackMetric]);
   
-  // Run tracking on idle to avoid impacting user experience
+  // Run tracking on idle to avoid impacting user experience - with reduced frequency
   const runTrackingTasks = useCallback(() => {
-    const scheduleTasks = () => {
+    // Track navigation timing and initial load just once
+    const runInitialTasks = () => {
       if (window.requestIdleCallback) {
         window.requestIdleCallback(
           (deadline) => {
             if (deadline.timeRemaining() > 0 || deadline.didTimeout) {
               trackNavigationTiming();
               trackInitialLoad();
-              
-              // Run memory tracking less frequently
-              if (Math.random() < 0.2) { // ~20% chance to run
-                trackMemoryUsage();
-              }
+              // Run once after initial load
+              trackMemoryUsage();
             }
-            
-            // Schedule the next run
-            scheduleTasks();
           },
-          { timeout: 2000 }
+          { timeout: 3000 }
         );
       } else {
         // Fallback for browsers that don't support requestIdleCallback
         setTimeout(() => {
           trackNavigationTiming();
           trackInitialLoad();
-          
-          if (Math.random() < 0.2) {
-            trackMemoryUsage();
-          }
-          
-          scheduleTasks();
-        }, 5000);
+          trackMemoryUsage();
+        }, 3000);
       }
     };
     
-    scheduleTasks();
+    // Run periodic memory checks at a much lower frequency (every 60 seconds)
+    const scheduleMemoryChecks = () => {
+      setTimeout(() => {
+        if (window.requestIdleCallback) {
+          window.requestIdleCallback(
+            () => {
+              trackMemoryUsage();
+              scheduleMemoryChecks(); // Schedule next check
+            },
+            { timeout: 1000 }
+          );
+        } else {
+          trackMemoryUsage();
+          scheduleMemoryChecks(); // Schedule next check
+        }
+      }, 60000); // 60 seconds between checks
+    };
+    
+    // Run the initial tracking once
+    runInitialTasks();
+    
+    // Start the memory check schedule
+    scheduleMemoryChecks();
   }, [trackNavigationTiming, trackMemoryUsage, trackInitialLoad]);
   
   // Error tracking using window.onerror
