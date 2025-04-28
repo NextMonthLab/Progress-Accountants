@@ -134,23 +134,26 @@ export class RateLimiter {
   }
 }
 
-// Create a shared instance for health monitoring endpoints
+// Optimized rate limiter for health metrics
 export const healthMetricsRateLimiter = new RateLimiter({
-  maxRequestsPerInterval: 1, // Allow just 1 request per interval
-  intervalMs: 10000, // 10 second interval
-  allowAllRequests: true // Let all requests through but only process ones within limits
+  maxRequestsPerInterval: 20,   // Allow 20 requests per minute
+  intervalMs: 60000,            // 1 minute interval
+  allowAllRequests: true,       // Don't reject requests
+  samplingRate: 20              // Process 1 in 20 requests (95% reduction)
 });
 
-// Create a more lenient rate limiter for page performance metrics
+// Page metrics rate limiter with sampling
 export const pageMetricsRateLimiter = new RateLimiter({
-  maxRequestsPerInterval: 5, // Allow 5 requests per interval
-  intervalMs: 60000, // 1 minute interval
-  allowAllRequests: true
+  maxRequestsPerInterval: 10,   // Allow 10 requests per minute
+  intervalMs: 60000,            // 1 minute interval
+  allowAllRequests: true,       // Don't reject requests
+  samplingRate: 10              // Process 1 in 10 requests (90% reduction)
 });
 
-// Create a rate limiter for system status checks
+// Health status endpoint rate limiter
 export const healthStatusRateLimiter = new RateLimiter({
-  maxRequestsPerInterval: 3, // Allow 3 requests per interval
-  intervalMs: 30000, // 30 second interval
-  allowAllRequests: true
+  maxRequestsPerInterval: 5,    // Allow 5 requests per minute
+  intervalMs: 30000,            // 30 second interval
+  allowAllRequests: true,       // Don't reject requests
+  samplingRate: 1               // Process every request within limits
 });
