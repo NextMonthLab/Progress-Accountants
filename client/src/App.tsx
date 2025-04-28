@@ -20,6 +20,9 @@ import ContextSuggestion from "@/components/support/ContextSuggestion";
 import HealthTracker from "@/components/health/HealthTracker";
 import AdminLayout from "@/layouts/AdminLayout";
 import { testLogin } from "@/lib/test-login";
+import { DocumentHead } from "@/components/DocumentHead";
+import MainLayout from "@/layouts/MainLayout";
+import { ThemeProvider } from "@/components/ThemeProvider";
 import SuperAdminDashboard from "@/pages/super-admin/SuperAdminDashboard";
 import HomePage from "@/pages/HomePage";
 import StudioPage from "@/pages/StudioPage";
@@ -114,10 +117,8 @@ import CreateDashboardWizard from "@/pages/tools/wizards/CreateDashboardWizard";
 import CreateEmbedWizard from "@/pages/tools/wizards/CreateEmbedWizard";
 import BlogPostGenerator from "@/pages/tools/blog-post-generator";
 // Import tool pages
-// DocumentHead already imported above
-import MainLayout from "@/layouts/MainLayout";
+// DocumentHead and MainLayout already imported above
 import { ClientDataProvider, withAuth } from "@/components/ClientDataProvider";
-import { ThemeProvider } from "@/components/ThemeProvider";
 
 // Protected routes with auth requirements
 const ProtectedClientDashboard = withAuth(ClientDashboardPage, 'client');
@@ -254,7 +255,7 @@ function Router() {
       />
       <ProtectedRoute 
         path="/admin/dashboard" 
-        component={AdminDashboardPageSimple} 
+        component={AdminDashboardPage} 
         allowedRoles={['admin', 'super_admin', 'editor']} 
       />
       <ProtectedRoute 
@@ -455,7 +456,7 @@ const queryClient = new QueryClient({
 });
 
 function App() {
-  // DIAGNOSTIC MODE LEVEL 4
+  // FULL APP STRUCTURE
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
@@ -465,9 +466,17 @@ function App() {
               <CompanionContextProvider>
                 <HelpProvider>
                   <HealthProvider>
-                    <Switch>
-                      <Route path="/" component={DiagnosticDashboard} />
-                    </Switch>
+                    <DocumentHead route="/" />
+                    <FirstTimeUserDetector>
+                      <MainLayout>
+                        <Router />
+                      </MainLayout>
+                    </FirstTimeUserDetector>
+                    <DualModeCompanion />
+                    <UpgradeAnnouncement />
+                    <InstantHelpWidget />
+                    <ContextSuggestion />
+                    <HealthTracker />
                     <Toaster />
                   </HealthProvider>
                 </HelpProvider>
@@ -479,7 +488,7 @@ function App() {
     </QueryClientProvider>
   );
   
-  /* FULL APP STRUCTURE - REFERENCE ONLY
+  /* DIAGNOSTIC MODE - USED FOR TROUBLESHOOTING
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider queryClient={queryClient}>
