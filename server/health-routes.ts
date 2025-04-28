@@ -99,7 +99,18 @@ export async function registerHealthRoutes(app: Express) {
         setTimeout(() => {
           metricsToProcess.forEach(metric => {
             if (typeof metric.name === 'string' && typeof metric.value === 'number') {
-              healthMonitor.trackMetric(metric.name, metric.value);
+              // Direct metric collection instead of using trackMetric which doesn't exist
+              if (metric.name === 'api_error_rate') {
+                healthMonitor.trackApiError(metric.name, metric.value);
+              } else if (metric.name === 'page_load_time') {
+                healthMonitor.trackPageLoadTime(metric.name, metric.value);
+              } else if (metric.name === 'memory_usage') {
+                // Track page memory usage using performanceMetrics
+                healthMonitor.trackPerformanceMetric('memory_usage', metric.value);
+              } else {
+                // For other metrics, track as performance metrics
+                healthMonitor.trackPerformanceMetric(metric.name, metric.value);
+              }
             }
           });
           console.log(`Processed ${metricsToProcess.length} metrics in batch`);
@@ -126,7 +137,16 @@ export async function registerHealthRoutes(app: Express) {
       // Process after responding to client
       setTimeout(() => {
         try {
-          healthMonitor.trackMetric(name, value);
+          // Direct metric collection instead of using trackMetric
+          if (name === 'api_error_rate') {
+            healthMonitor.trackApiError(name, value);
+          } else if (name === 'page_load_time') {
+            healthMonitor.trackPageLoadTime(name, value);
+          } else if (name === 'memory_usage') {
+            healthMonitor.trackPerformanceMetric('memory_usage', value);
+          } else {
+            healthMonitor.trackPerformanceMetric(name, value);
+          }
         } catch (error) {
           console.error(`Error tracking metric ${name}:`, error);
         }
