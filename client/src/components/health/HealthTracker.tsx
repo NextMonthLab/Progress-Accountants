@@ -276,17 +276,25 @@ export default function HealthTracker() {
   useEffect(() => {
     console.log('[Health] Health tracker initialized');
     
-    // Set up all tracking mechanisms
-    setupApiCallMonitoring();
-    setupErrorTracking();
-    runTrackingTasks();
+    // TEMPORARILY DISABLED FOR PERFORMANCE - all health monitoring is now disabled
+    // to prevent excessive API calls and improve application loading performance
     
-    // Clean up function not really needed as we want the trackers to persist
-    // throughout the application lifecycle, but included for completeness
+    // This functionality is disabled but code kept for future re-enabling:
+    // setupApiCallMonitoring();
+    // setupErrorTracking();
+    // runTrackingTasks();
+    
+    // Just track initial memory usage once for diagnostic purposes
+    if (window.performance && (window.performance as any).memory) {
+      const memoryInfo = (window.performance as any).memory;
+      const usedJSHeapSize = Math.round((memoryInfo.usedJSHeapSize / memoryInfo.jsHeapSizeLimit) * 100);
+      console.log(`[Health] Memory usage: ${usedJSHeapSize}%`);
+    }
+    
     return () => {
       console.log('[Health] Health tracker stopped');
     };
-  }, [setupApiCallMonitoring, setupErrorTracking, runTrackingTasks]);
+  }, []);
   
   // This component doesn't render anything
   return null;

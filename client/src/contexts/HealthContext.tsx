@@ -236,9 +236,16 @@ export const HealthProvider = ({ children }: { children: ReactNode }) => {
     },
   });
   
-  // Mutation to track a metric
+  // Mutation to track a metric - TEMPORARILY DISABLED
   const trackMetricMutation = useMutation({
     mutationFn: async ({ name, value }: { name: string; value: number }) => {
+      // TEMPORARILY DISABLED - to prevent excessive API calls
+      console.log(`[Health Metric Disabled] ${name}: ${value}`);
+      
+      // Return mock success response instead of making an actual API call
+      return { success: true };
+      
+      /* ORIGINAL CODE - commented out to prevent API calls
       const response = await fetch('/api/health/metrics/track', {
         method: 'POST',
         headers: {
@@ -252,6 +259,7 @@ export const HealthProvider = ({ children }: { children: ReactNode }) => {
       }
       
       return response.json();
+      */
     },
   });
   
