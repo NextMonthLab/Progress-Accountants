@@ -128,6 +128,16 @@ export default function InstantHelpWidget() {
   const [reportIssue, setReportIssue] = useState('');
   const [isReporting, setIsReporting] = useState(false);
   const searchInputRef = useRef<HTMLInputElement>(null);
+  
+  // Check if current path is an admin path
+  const isAdminPath = location.startsWith('/admin') || 
+                     location.startsWith('/settings') || 
+                     location.startsWith('/marketplace') || 
+                     location.startsWith('/blueprint') || 
+                     location.startsWith('/support') || 
+                     location.startsWith('/tenant') || 
+                     location === '/login' || 
+                     location === '/dashboard';
 
   // Sync our local isOpen state with the HelpContext state
   useEffect(() => {
@@ -309,12 +319,17 @@ export default function InstantHelpWidget() {
     );
   };
 
+  // Only render the help widget on admin paths
+  if (!isAdminPath) {
+    return null;
+  }
+  
   return (
     <>
       {/* Passive suggestion that appears on certain pages */}
       {renderPassiveSuggestion()}
       
-      {/* Main help button - always visible */}
+      {/* Main help button - only visible on admin pages */}
       <div className="fixed right-6 bottom-6 z-50">
         <Sheet open={isOpen} onOpenChange={setIsOpen}>
           <SheetTrigger asChild>
