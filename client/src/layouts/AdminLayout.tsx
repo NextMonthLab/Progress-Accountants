@@ -1,6 +1,8 @@
 import { ReactNode } from "react";
 import AdminSidebar from "@/components/AdminSidebar";
 import DynamicSidebar from "@/components/navigation/DynamicSidebar";
+import MobileSidebarToggle from "@/components/navigation/MobileSidebarToggle";
+import MobileOverlay from "@/components/navigation/MobileOverlay";
 import QuickSelectMenu from "@/components/navigation/QuickSelectMenu";
 import SmartContextBanner from "@/components/SmartContextBanner";
 import SmartCommandBar from "@/components/SmartCommandBar";
@@ -21,6 +23,12 @@ export default function AdminLayout({ children, useNewNavigation = true }: Admin
         <NavigationProvider>
           {/* New Dynamic Sidebar */}
           <DynamicSidebar />
+          
+          {/* Mobile Sidebar Toggle - only visible when sidebar is collapsed on mobile */}
+          <MobileSidebarToggle />
+          
+          {/* Mobile Overlay - only visible when mobile sidebar is open */}
+          <MobileOverlay />
           
           {/* Main Content with Smart Context Banner */}
           <div className="flex-1 overflow-y-auto flex flex-col">
