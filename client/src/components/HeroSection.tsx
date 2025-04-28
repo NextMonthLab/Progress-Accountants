@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import teamPhotoImage from "../assets/images/team_photo.jpg";
 import { HeroSkeleton } from "@/components/ui/skeletons";
 import { useBusinessIdentity } from "@/hooks/use-business-identity";
+import { OptimizedImage } from "@/components/ui/OptimizedImage";
 
 export default function HeroSection() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -102,10 +103,13 @@ export default function HeroSection() {
           </div>
           <div className="md:w-1/2 mt-10 md:mt-0 image-container">
             <div className="rounded-lg overflow-hidden shadow-2xl border border-gray-700">
-              <img 
+              <OptimizedImage 
                 src={teamPhotoImage} 
                 alt={`${businessName} Team`}
                 className="w-full h-auto object-cover"
+                width={800}
+                height={450}
+                priority={true} // This is above-the-fold content so load with priority
               />
             </div>
             <div className="mt-4 bg-white/10 p-4 rounded-lg backdrop-blur-sm">
