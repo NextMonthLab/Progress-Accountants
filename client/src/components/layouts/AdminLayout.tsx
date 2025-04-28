@@ -1,121 +1,195 @@
 import React, { ReactNode } from 'react';
 import { useLocation, Link } from 'wouter';
 import { useAuth } from '@/hooks/use-auth';
-import {
-  Home,
-  Users,
-  FileText,
-  Settings,
-  Layers,
-  Wrench as Tool,
-  Layout,
-  User,
-  BarChart3,
-  MessageSquare,
-  CloudUpload,
-  PieChart
-} from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Separator } from '@/components/ui/separator';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { 
+  Home, 
+  Settings, 
+  Users, 
+  BarChart3, 
+  Network, 
+  Database, 
+  CreditCard, 
+  PanelLeft, 
+  Globe, 
+  Shield, 
+  MessageSquare,
+  LogOut,
+  User,
+  RefreshCw
+} from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
 
-type AdminLayoutProps = {
+interface AdminLayoutProps {
   children: ReactNode;
-};
+  title?: string;
+  showBackButton?: boolean;
+}
 
 /**
- * Admin Layout Component
- * Provides consistent layout for admin pages with navigation sidebar
+ * AdminLayout Component
+ * Provides a consistent layout for admin pages with navigation
  */
-export function AdminLayout({ children }: AdminLayoutProps) {
-  const [location] = useLocation();
+export function AdminLayout({ 
+  children, 
+  title = 'Admin Dashboard', 
+  showBackButton = false 
+}: AdminLayoutProps) {
+  const [location, navigate] = useLocation();
   const { user, logoutMutation } = useAuth();
+  const { toast } = useToast();
   
   const handleLogout = () => {
-    logoutMutation.mutate();
+    logoutMutation.mutate(undefined, {
+      onSuccess: () => {
+        navigate('/auth');
+        toast({
+          title: 'Logged out',
+          description: 'You have been successfully logged out',
+        });
+      }
+    });
   };
-
-  const navItems = [
-    { path: '/admin', label: 'Dashboard', icon: <Home className="h-5 w-5" /> },
-    { path: '/admin/brand', label: 'Brand', icon: <Layers className="h-5 w-5" /> },
-    { path: '/admin/pages', label: 'Pages', icon: <FileText className="h-5 w-5" /> },
-    { path: '/admin/tools', label: 'Tools', icon: <Tool className="h-5 w-5" /> },
-    { path: '/admin/users', label: 'Users', icon: <Users className="h-5 w-5" /> },
-    { path: '/admin/reports', label: 'Reports', icon: <BarChart3 className="h-5 w-5" /> },
-    { path: '/admin/chat', label: 'Support', icon: <MessageSquare className="h-5 w-5" /> },
-    { path: '/admin/sot', label: 'SOT', icon: <CloudUpload className="h-5 w-5" /> },
-    { path: '/admin/insights', label: 'Insights', icon: <PieChart className="h-5 w-5" /> },
-    { path: '/admin/settings', label: 'Settings', icon: <Settings className="h-5 w-5" /> },
+  
+  const menuItems = [
+    { label: 'Dashboard', icon: <Home className="h-4 w-4" />, href: '/admin' },
+    { label: 'Users', icon: <Users className="h-4 w-4" />, href: '/admin/users' },
+    { label: 'Analytics', icon: <BarChart3 className="h-4 w-4" />, href: '/admin/analytics' },
+    { label: 'Business Network', icon: <Network className="h-4 w-4" />, href: '/admin/network' },
+    { label: 'CRM', icon: <Users className="h-4 w-4" />, href: '/admin/crm' },
+    { label: 'Website', icon: <Globe className="h-4 w-4" />, href: '/admin/website' },
+    { label: 'Database', icon: <Database className="h-4 w-4" />, href: '/admin/database' },
+    { label: 'Billing', icon: <CreditCard className="h-4 w-4" />, href: '/admin/billing' },
+    { label: 'SOT Manager', icon: <RefreshCw className="h-4 w-4" />, href: '/admin/sot' },
+    { label: 'Settings', icon: <Settings className="h-4 w-4" />, href: '/admin/settings' },
+    { label: 'Support', icon: <MessageSquare className="h-4 w-4" />, href: '/admin/support' },
+  ];
+  
+  // For super admins only
+  const advancedItems = [
+    { label: 'Blueprint Management', icon: <Shield className="h-4 w-4" />, href: '/admin/blueprint' },
   ];
 
+  const isSuperAdmin = user?.role === 'superadmin';
+  
   return (
     <div className="flex h-screen bg-background">
       {/* Sidebar */}
-      <div className="hidden md:flex md:w-64 md:flex-col">
-        <div className="flex flex-col flex-grow pt-5 overflow-y-auto border-r border-border bg-card">
-          <div className="flex items-center flex-shrink-0 px-4 mb-5">
-            <Link href="/admin">
-              <span className="flex items-center">
-                <Layout className="h-8 w-8 text-primary mr-2" />
-                <span className="text-xl font-bold">Progress Admin</span>
-              </span>
-            </Link>
+      <div className="w-64 border-r hidden md:block">
+        <div className="h-full flex flex-col">
+          <div className="p-4 flex items-center">
+            <div className="font-semibold text-lg">Progress Admin</div>
           </div>
+          <Separator />
           
-          <div className="flex flex-col flex-grow">
-            <nav className="flex-1 px-2 pb-4 space-y-1">
-              {navItems.map((item) => {
-                const isActive = location === item.path;
-                return (
-                  <Link key={item.path} href={item.path}>
-                    <span
-                      className={`flex items-center px-4 py-3 text-sm rounded-md cursor-pointer ${
-                        isActive
-                          ? 'bg-primary/10 text-primary font-medium'
-                          : 'text-foreground hover:bg-accent hover:text-accent-foreground'
-                      }`}
+          <ScrollArea className="flex-1">
+            <nav className="p-2">
+              <div className="space-y-1">
+                {menuItems.map(item => (
+                  <Link key={item.href} href={item.href}>
+                    <Button 
+                      variant={location === item.href ? "secondary" : "ghost"} 
+                      className="w-full justify-start"
                     >
-                      <span className="mr-3">{item.icon}</span>
-                      {item.label}
-                    </span>
+                      {item.icon}
+                      <span className="ml-2">{item.label}</span>
+                    </Button>
                   </Link>
-                );
-              })}
+                ))}
+              </div>
+              
+              {isSuperAdmin && (
+                <>
+                  <Separator className="my-2" />
+                  <div className="pt-2">
+                    <div className="px-3 text-xs font-semibold text-muted-foreground mb-2">
+                      Advanced
+                    </div>
+                    <div className="space-y-1">
+                      {advancedItems.map(item => (
+                        <Link key={item.href} href={item.href}>
+                          <Button 
+                            variant={location === item.href ? "secondary" : "ghost"} 
+                            className="w-full justify-start"
+                          >
+                            {item.icon}
+                            <span className="ml-2">{item.label}</span>
+                          </Button>
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                </>
+              )}
             </nav>
-          </div>
+          </ScrollArea>
           
-          <div className="flex-shrink-0 p-4 border-t border-border">
-            <div className="flex items-center">
-              <div className="flex-shrink-0">
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
-                        <User className="h-5 w-5" />
-                      </div>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>{user?.username || 'User'}</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
+          <Separator />
+          <div className="p-4">
+            <div className="flex items-center gap-3 mb-2">
+              <Avatar>
+                <AvatarFallback>{user?.username?.charAt(0).toUpperCase() || 'U'}</AvatarFallback>
+                {user?.avatar && <AvatarImage src={user.avatar} alt={user?.username || 'User'} />}
+              </Avatar>
+              <div>
+                <div className="font-medium">{user?.username || 'User'}</div>
+                <div className="text-xs text-muted-foreground">{user?.email || 'No email'}</div>
               </div>
-              <div className="ml-3 flex-1">
-                <p className="text-sm font-medium">{user?.username || 'User'}</p>
-                <p className="text-xs text-muted-foreground">Administrator</p>
-              </div>
-              <Button variant="ghost" size="sm" onClick={handleLogout}>
-                <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                </svg>
+            </div>
+            <div className="flex gap-2">
+              <Button size="sm" variant="outline" className="w-full justify-start" asChild>
+                <Link href="/admin/profile">
+                  <User className="h-4 w-4 mr-2" />
+                  Profile
+                </Link>
+              </Button>
+              <Button size="sm" variant="outline" className="w-full justify-start" onClick={handleLogout}>
+                <LogOut className="h-4 w-4 mr-2" />
+                Log Out
               </Button>
             </div>
           </div>
         </div>
       </div>
       
-      {/* Main content */}
-      <div className="flex flex-col flex-1 w-0 overflow-hidden">
-        <main className="relative flex-1 overflow-y-auto focus:outline-none">
+      {/* Mobile Sidebar Toggle Button */}
+      <div className="md:hidden fixed bottom-4 left-4 z-50">
+        <Button size="icon" variant="outline" className="rounded-full h-12 w-12 shadow-lg">
+          <PanelLeft className="h-5 w-5" />
+        </Button>
+      </div>
+      
+      {/* Main Content */}
+      <div className="flex-1 overflow-auto">
+        <header className="sticky top-0 z-30 bg-background p-4 border-b">
+          <div className="flex justify-between items-center">
+            <div className="flex items-center gap-3">
+              {showBackButton && (
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  onClick={() => window.history.back()}
+                >
+                  Back
+                </Button>
+              )}
+              <h1 className="text-xl font-semibold">{title}</h1>
+            </div>
+            
+            {/* Mobile Only User Menu */}
+            <div className="md:hidden">
+              <Avatar className="h-8 w-8">
+                <AvatarFallback>{user?.username?.charAt(0).toUpperCase() || 'U'}</AvatarFallback>
+                {user?.avatar && <AvatarImage src={user.avatar} alt={user?.username || 'User'} />}
+              </Avatar>
+            </div>
+          </div>
+        </header>
+        
+        <main className="p-6">
           {children}
         </main>
       </div>

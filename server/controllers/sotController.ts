@@ -483,6 +483,54 @@ export class SotController {
       });
     }
   }
+
+  /**
+   * Get SOT metrics
+   */
+  async getMetrics(req: Request, res: Response): Promise<void> {
+    try {
+      // Get counts from database
+      const declarationsResult = await pool.query(`
+        SELECT COUNT(*) as total FROM sot_declarations
+      `);
+      
+      const profilesResult = await pool.query(`
+        SELECT COUNT(*) as total FROM sot_client_profiles
+      `);
+      
+      const syncsResult = await pool.query(`
+        SELECT COUNT(*) as total FROM sot_sync_logs WHERE status = 'success'
+      `);
+      
+      const lastSyncResult = await pool.query(`
+        SELECT created_at FROM sot_sync_logs 
+        WHERE status = 'success' 
+        ORDER BY created_at DESC 
+        LIMIT 1
+      `);
+      
+      const totalDeclarations = parseInt(declarationsResult.rows[0]?.total || '0');
+      const totalProfiles = parseInt(profilesResult.rows[0]?.total || '0');
+      const totalSyncs = parseInt(syncsResult.rows[0]?.total || '0');
+      const lastSyncTimestamp = lastSyncResult.rows[0]?.created_at || null;
+      
+      res.status(200).json({
+        success: true,
+        metrics: {
+          totalDeclarations,
+          totalProfiles,
+          totalSyncs,
+          lastSyncTimestamp
+        }
+      });
+    } catch (error) {
+      logger.error('Error in getMetrics:', error);
+      res.status(500).json({
+        success: false,
+        error: 'Internal server error'
+      });
+    }
+  }
 }
 
 // Create singleton instance

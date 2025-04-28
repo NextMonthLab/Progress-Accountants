@@ -26,6 +26,9 @@ sotRouter.post('/sync', sotController.syncNow.bind(sotController));
 sotRouter.get('/sync/status', sotController.getSyncStatus.bind(sotController));
 sotRouter.patch('/sync/schedule', sotController.updateSyncSchedule.bind(sotController));
 
+// Metrics
+sotRouter.get('/metrics', sotController.getMetrics.bind(sotController));
+
 /**
  * Register SOT routes with the app
  */
