@@ -48,6 +48,7 @@ import { registerCompanionRoutes } from "./controllers/companionController";
 import { registerCompanionConfigRoutes } from "./controllers/registerCompanionConfigRoutes";
 import { registerToolMarketplaceRoutes } from "./controllers/toolMarketplaceController";
 import { registerSiteVariantRoutes } from "./routes/siteVariantRoutes";
+import { getIndustryNews, updateNewsfeedConfig } from "./controllers/newsfeedController";
 import { 
   getAvailableTools,
   getToolCategories,
@@ -401,6 +402,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
   
   // Register business discover routes
   registerBusinessDiscoverRoutes(app);
+  
+  // Newsfeed routes
+  app.get("/api/newsfeed/industry", getIndustryNews);
+  app.post("/api/newsfeed/config", updateNewsfeedConfig);
   
   // ============= NEXTMONTH MARKETPLACE API ENDPOINTS =============
   // Get available tools from NextMonth marketplace

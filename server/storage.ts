@@ -77,6 +77,7 @@ import {
   type SotSyncLog,
   type InsertSotSyncLog
 } from "@shared/sot";
+import { NewsfeedConfig } from "@shared/newsfeed_types";
 import { db } from "./db";
 import { eq, desc, asc, and } from "drizzle-orm";
 import connectPg from "connect-pg-simple";
