@@ -155,8 +155,9 @@ function Router() {
       <Route path="/support/ticket" component={TicketPage} />
       <Route path="/support/digest" component={DigestPage} />
       
+      {/* We're keeping the DiagnosticDashboard as root for stability */}
       <Route path="/" component={DiagnosticDashboard} />
-
+      
       {/* Super Admin routes (require super admin privileges) */}
       <ProtectedRoute 
         path="/super-admin" 
