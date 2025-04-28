@@ -6,6 +6,7 @@ import { PageMetadata, PageComplexityAssessment, ComplexityLevel } from "./page_
 import { ComponentType, SeoImpactLevel, ComponentContext } from "./advanced_page_builder";
 import { VersionableEntityType, VersionStatus, ChangeType } from "./version_control";
 import { DomainStatus, VerificationMethod } from "./domain_mapping";
+import { NewsfeedSource } from "./newsfeed_types";
 // Business network models are defined in business_network.ts
 
 // Tenants table to track all client instances
@@ -19,6 +20,7 @@ export const tenants = pgTable("tenants", {
   plan: varchar("plan", { length: 50 }).default("standard").notNull(), // standard, premium, enterprise
   theme: jsonb("theme"), // Theme configuration
   customization: jsonb("customization"), // Client-specific customization (UI labels, tone, feature flags)
+  newsfeedConfig: jsonb("newsfeed_config"), // Newsfeed configuration for admin dashboard
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
   parentTemplate: uuid("parent_template"), // Will add the reference constraint later
