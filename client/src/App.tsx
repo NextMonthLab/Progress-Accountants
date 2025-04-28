@@ -23,6 +23,8 @@ import { testLogin } from "@/lib/test-login";
 import { DocumentHead } from "@/components/DocumentHead";
 import MainLayout from "@/layouts/MainLayout";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import ErrorBoundary from "@/components/error/ErrorBoundary";
+import ContentLoader from "@/components/error/ContentLoader";
 import SuperAdminDashboard from "@/pages/super-admin/SuperAdminDashboard";
 import HomePage from "@/pages/HomePage";
 import StudioPage from "@/pages/StudioPage";
@@ -459,66 +461,74 @@ const queryClient = new QueryClient({
 function App() {
   // FULL APP STRUCTURE
   return (
-    <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <PermissionsProvider>
-          <ThemeProvider>
-            <TenantProvider>
-              <CompanionContextProvider>
-                <HelpProvider>
-                  <HealthProvider>
-                    <DocumentHead route="/" />
-                    <FirstTimeUserDetector>
-                      <MainLayout>
-                        <Router />
-                      </MainLayout>
-                    </FirstTimeUserDetector>
-                    <DualModeCompanion />
-                    <UpgradeAnnouncement />
-                    <InstantHelpWidget />
-                    <ContextSuggestion />
-                    <HealthTracker />
-                    <Toaster />
-                  </HealthProvider>
-                </HelpProvider>
-              </CompanionContextProvider>
-            </TenantProvider>
-          </ThemeProvider>
-        </PermissionsProvider>
-      </AuthProvider>
-    </QueryClientProvider>
+    <ErrorBoundary contentType="application">
+      <QueryClientProvider client={queryClient}>
+        <AuthProvider>
+          <PermissionsProvider>
+            <ThemeProvider>
+              <TenantProvider>
+                <CompanionContextProvider>
+                  <HelpProvider>
+                    <HealthProvider>
+                      <DocumentHead route="/" />
+                      <FirstTimeUserDetector>
+                        <MainLayout>
+                          <ErrorBoundary contentType="page">
+                            <Router />
+                          </ErrorBoundary>
+                        </MainLayout>
+                      </FirstTimeUserDetector>
+                      <DualModeCompanion />
+                      <UpgradeAnnouncement />
+                      <InstantHelpWidget />
+                      <ContextSuggestion />
+                      <HealthTracker />
+                      <Toaster />
+                    </HealthProvider>
+                  </HelpProvider>
+                </CompanionContextProvider>
+              </TenantProvider>
+            </ThemeProvider>
+          </PermissionsProvider>
+        </AuthProvider>
+      </QueryClientProvider>
+    </ErrorBoundary>
   );
   
   /* DIAGNOSTIC MODE - USED FOR TROUBLESHOOTING
   return (
-    <QueryClientProvider client={queryClient}>
-      <AuthProvider queryClient={queryClient}>
-        <PermissionsProvider>
-          <ThemeProvider>
-            <TenantProvider>
-              <CompanionContextProvider>
-                <HelpProvider>
-                  <HealthProvider>
-                    <DocumentHead route="/" />
-                    <FirstTimeUserDetector>
-                      <MainLayout>
-                        <Router />
-                      </MainLayout>
-                    </FirstTimeUserDetector>
-                    <DualModeCompanion />
-                    <UpgradeAnnouncement />
-                    <InstantHelpWidget />
-                    <ContextSuggestion />
-                    <HealthTracker />
-                    <Toaster />
-                  </HealthProvider>
-                </HelpProvider>
-              </CompanionContextProvider>
-            </TenantProvider>
-          </ThemeProvider>
-        </PermissionsProvider>
-      </AuthProvider>
-    </QueryClientProvider>
+    <ErrorBoundary contentType="application">
+      <QueryClientProvider client={queryClient}>
+        <AuthProvider queryClient={queryClient}>
+          <PermissionsProvider>
+            <ThemeProvider>
+              <TenantProvider>
+                <CompanionContextProvider>
+                  <HelpProvider>
+                    <HealthProvider>
+                      <DocumentHead route="/" />
+                      <FirstTimeUserDetector>
+                        <MainLayout>
+                          <ErrorBoundary contentType="page">
+                            <Router />
+                          </ErrorBoundary>
+                        </MainLayout>
+                      </FirstTimeUserDetector>
+                      <DualModeCompanion />
+                      <UpgradeAnnouncement />
+                      <InstantHelpWidget />
+                      <ContextSuggestion />
+                      <HealthTracker />
+                      <Toaster />
+                    </HealthProvider>
+                  </HelpProvider>
+                </CompanionContextProvider>
+              </TenantProvider>
+            </ThemeProvider>
+          </PermissionsProvider>
+        </AuthProvider>
+      </QueryClientProvider>
+    </ErrorBoundary>
   );
   */
 }

@@ -19,6 +19,7 @@ import { Separator } from '@/components/ui/separator';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { useAuth } from '@/hooks/use-auth';
 import { Link } from 'wouter';
+import ContentLoader from '@/components/error/ContentLoader';
 
 // Diagnostic Dashboard with lightweight newsfeed component
 export default function DiagnosticDashboard() {
@@ -279,7 +280,9 @@ export default function DiagnosticDashboard() {
             {/* Newsfeed Component */}
             <div className="md:col-span-2">
               <h2 className="text-xl font-bold mb-4">Optimized Newsfeed Component</h2>
-              <LightweightNewsfeed />
+              <ContentLoader contentType="newsfeed">
+                <LightweightNewsfeed />
+              </ContentLoader>
             </div>
           </div>
         </TabsContent>
