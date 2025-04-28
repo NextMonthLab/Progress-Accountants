@@ -8,7 +8,7 @@ import { Link } from "wouter";
 import { useAuth } from '@/hooks/use-auth';
 import { useTenant } from '@/hooks/use-tenant';
 import { useQuery } from '@tanstack/react-query';
-// Import for IndustryNewsfeed removed temporarily to fix memory issues
+import { LightweightNewsfeed } from '@/components/dashboard/LightweightNewsfeed';
 import { 
   AlertTriangle,
   ArrowRight, 
@@ -669,26 +669,8 @@ export default function AdminDashboardPage() {
                   </CardContent>
                 </Card>
 
-                {/* Industry News - Temporarily removed to fix memory issues */}
-                <Card className="col-span-2 h-[450px] overflow-hidden">
-                  <CardHeader className="pb-2">
-                    <CardTitle className="text-xl flex items-center gap-2">
-                      <Newspaper className="h-5 w-5" />
-                      Industry News
-                    </CardTitle>
-                    <CardDescription>
-                      Latest updates from your industry
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="pb-2 h-[390px] overflow-y-auto">
-                    <div className="p-4 text-center">
-                      <p className="text-muted-foreground">Industry news temporarily unavailable</p>
-                      <p className="text-sm text-muted-foreground mt-2 mb-4">
-                        We're working on optimizing the industry news feed for better performance.
-                      </p>
-                    </div>
-                  </CardContent>
-                </Card>
+                {/* Industry News - Now using LightweightNewsfeed component */}
+                <LightweightNewsfeed />
 
                 {/* System Health */}
                 <Card>
