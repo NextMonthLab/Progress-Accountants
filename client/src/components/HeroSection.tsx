@@ -49,12 +49,12 @@ const itemVariants = {
 
 // Animated background pattern component
 const AnimatedPattern = () => (
-  <div className="absolute inset-0 overflow-hidden opacity-10 z-0">
+  <div className="absolute inset-0 overflow-hidden opacity-5 z-0">
     <div className="absolute top-0 left-0 w-full h-full">
       <svg viewBox="0 0 100 100" preserveAspectRatio="none" width="100%" height="100%">
         <defs>
-          <pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse">
-            <path d="M 10 0 L 0 0 0 10" fill="none" stroke="white" strokeWidth="0.5"/>
+          <pattern id="grid" width="3" height="3" patternUnits="userSpaceOnUse">
+            <path d="M 3 0 L 0 0 0 3" fill="none" stroke="white" strokeWidth="0.2"/>
           </pattern>
         </defs>
         <rect width="100%" height="100%" fill="url(#grid)" />
