@@ -240,20 +240,26 @@ const DynamicSidebar: React.FC = () => {
           className={cn(
             "flex items-center justify-between rounded-md px-3 py-2 transition-all duration-200",
             isActive(item.href) 
-              ? "bg-gradient-to-r from-orange-100 to-orange-50 text-[var(--orange)]" 
-              : "text-gray-700 hover:bg-orange-50/50 hover:text-[var(--orange)]",
+              ? "bg-gradient-to-r from-orange-100 to-orange-50 text-[var(--navy)] font-medium shadow-sm" 
+              : "text-[var(--navy)] hover:bg-orange-50/50 hover:text-[var(--orange)]",
             "no-underline group",
             isNested && "ml-6 text-sm"
           )}
         >
           <div className="flex items-center">
             <span className="mr-3 relative">
-              <IconComponent className="h-5 w-5" />
+              <IconComponent className={cn(
+                "h-5 w-5",
+                isActive(item.href) ? "text-[var(--orange)]" : "text-gray-600"
+              )} />
               {item.isNew && (
                 <span className="absolute -top-1 -right-1 w-2 h-2 bg-emerald-500 rounded-full"></span>
               )}
             </span>
-            <span>{item.title}</span>
+            <span className={cn(
+              "font-medium",
+              isActive(item.href) ? "text-[var(--navy)]" : "text-gray-800"
+            )}>{item.title}</span>
           </div>
           
           <div className="flex items-center">
@@ -356,8 +362,8 @@ const DynamicSidebar: React.FC = () => {
       <div key={submenu.id} className="space-y-1">
         <button
           className={cn(
-            "flex items-center justify-between w-full rounded-md px-3 py-2 transition-all duration-200 text-gray-700 hover:bg-orange-50/50 hover:text-[var(--orange)] text-left",
-            isExpanded && "bg-orange-50/30"
+            "flex items-center justify-between w-full rounded-md px-3 py-2 transition-all duration-200 text-[var(--navy)] hover:bg-orange-50/50 hover:text-[var(--orange)] text-left font-medium",
+            isExpanded && "bg-orange-50/70 shadow-sm"
           )}
           onClick={(e) => {
             e.preventDefault();
@@ -366,14 +372,19 @@ const DynamicSidebar: React.FC = () => {
         >
           <div className="flex items-center">
             <span className="mr-3">
-              <IconComponent className="h-5 w-5" />
+              <IconComponent className={cn(
+                "h-5 w-5",
+                isExpanded ? "text-[var(--orange)]" : "text-gray-600"
+              )} />
             </span>
-            <span>{submenu.title}</span>
+            <span className={cn(
+              isExpanded ? "text-[var(--navy)]" : "text-gray-800"
+            )}>{submenu.title}</span>
           </div>
           <ChevronDown
             className={cn(
               "h-4 w-4 transition-transform duration-200",
-              isExpanded ? "transform rotate-180" : ""
+              isExpanded ? "transform rotate-180 text-[var(--orange)]" : "text-gray-500"
             )}
           />
         </button>
@@ -541,16 +552,16 @@ const DynamicSidebar: React.FC = () => {
                 )}
                 onClick={() => toggleGroup(group.id)}
               >
-                <span className="mr-2 text-gray-400">
+                <span className="mr-2 text-[var(--navy)]">
                   <GroupIconComponent className="h-5 w-5" />
                 </span>
-                <h3 className="text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <h3 className="text-xs font-bold text-[var(--navy)] uppercase tracking-wider">
                   {group.title}
                 </h3>
                 <ChevronDown 
                   className={cn(
-                    "ml-auto h-4 w-4 text-gray-400 transition-transform duration-200",
-                    isGroupExpanded ? "transform rotate-180" : ""
+                    "ml-auto h-4 w-4 transition-transform duration-200",
+                    isGroupExpanded ? "transform rotate-180 text-[var(--orange)]" : "text-[var(--navy)]"
                   )} 
                 />
               </div>
