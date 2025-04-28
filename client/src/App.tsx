@@ -454,45 +454,50 @@ const queryClient = new QueryClient({
 });
 
 function App() {
-  // DIAGNOSTIC MODE LEVEL 1: Add back QueryClientProvider and AuthProvider only
-  // This will help identify if those providers are causing issues
+  // DIAGNOSTIC MODE LEVEL 2: Add PermissionsProvider, ThemeProvider and TenantProvider
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider queryClient={queryClient}>
-        <div style={{padding: '20px', background: 'white', minHeight: '100vh'}}>
-          <h1 style={{fontSize: '24px', fontWeight: 'bold', marginBottom: '16px'}}>
-            Diagnostic Dashboard (Level 1)
-          </h1>
-          <p style={{marginBottom: '16px'}}>
-            Testing with QueryClientProvider and AuthProvider only.
-          </p>
-          
-          <div style={{
-            border: '1px solid #ddd',
-            borderRadius: '8px',
-            padding: '16px',
-            marginBottom: '16px'
-          }}>
-            <h2 style={{fontSize: '18px', fontWeight: 'bold', marginBottom: '8px'}}>
-              System Status
-            </h2>
-            <p>If this loads, the issue is not with the query client or auth providers.</p>
-            <button 
-              style={{
-                marginTop: '16px',
-                padding: '8px 16px',
-                background: '#0066cc',
-                color: 'white',
-                border: 'none',
-                borderRadius: '4px',
-                cursor: 'pointer'
-              }}
-              onClick={() => window.location.reload()}
-            >
-              Refresh Page
-            </button>
-          </div>
-        </div>
+        <PermissionsProvider>
+          <ThemeProvider>
+            <TenantProvider>
+              <div style={{padding: '20px', background: 'white', minHeight: '100vh'}}>
+                <h1 style={{fontSize: '24px', fontWeight: 'bold', marginBottom: '16px'}}>
+                  Diagnostic Dashboard (Level 2)
+                </h1>
+                <p style={{marginBottom: '16px'}}>
+                  Testing with QueryClient, Auth, Permissions, Theme, and Tenant providers.
+                </p>
+                
+                <div style={{
+                  border: '1px solid #ddd',
+                  borderRadius: '8px',
+                  padding: '16px',
+                  marginBottom: '16px'
+                }}>
+                  <h2 style={{fontSize: '18px', fontWeight: 'bold', marginBottom: '8px'}}>
+                    System Status
+                  </h2>
+                  <p>If this loads, the issue is likely in one of the remaining providers or components.</p>
+                  <button 
+                    style={{
+                      marginTop: '16px',
+                      padding: '8px 16px',
+                      background: '#0066cc',
+                      color: 'white',
+                      border: 'none',
+                      borderRadius: '4px',
+                      cursor: 'pointer'
+                    }}
+                    onClick={() => window.location.reload()}
+                  >
+                    Refresh Page
+                  </button>
+                </div>
+              </div>
+            </TenantProvider>
+          </ThemeProvider>
+        </PermissionsProvider>
       </AuthProvider>
     </QueryClientProvider>
   );
