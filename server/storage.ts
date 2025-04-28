@@ -255,6 +255,14 @@ export interface IStorage {
   logSotSync(eventType: string, status: string, details?: string): Promise<SotSyncLog>;
   countPages(): Promise<number>;
   getSotSyncLogs(limit?: number): Promise<SotSyncLog[]>;
+  
+  // SOT Client Profile operations
+  getClientProfile(businessId: string): Promise<SotClientProfile | undefined>;
+  saveClientProfile(profileData: ClientProfileData): Promise<SotClientProfile>;
+  updateClientProfile(id: number, profileData: ClientProfileData): Promise<SotClientProfile | undefined>;
+  updateClientProfileSyncStatus(id: number, status: string, message?: string): Promise<SotClientProfile | undefined>;
+  getPages(): Promise<{path: string}[]>;
+  getInstalledTools(): Promise<{id: string}[]>;
 }
 
 // Database-backed implementation of IStorage
@@ -1635,6 +1643,129 @@ export class DatabaseStorage implements IStorage {
       return await query;
     } catch (error) {
       console.error("Error fetching SOT sync logs:", error);
+      return [];
+    }
+  }
+  
+  // SOT Client Profile operations
+  async getClientProfile(businessId: string): Promise<SotClientProfile | undefined> {
+    try {
+      const [profile] = await db
+        .select()
+        .from(sotClientProfiles)
+        .where(eq(sotClientProfiles.businessId, businessId))
+        .orderBy(desc(sotClientProfiles.updatedAt));
+      
+      return profile;
+    } catch (error) {
+      console.error(`Error fetching client profile for ${businessId}:`, error);
+      return undefined;
+    }
+  }
+  
+  async saveClientProfile(profileData: ClientProfileData): Promise<SotClientProfile> {
+    try {
+      // Check if a profile already exists for this business
+      const existingProfile = await this.getClientProfile(profileData.clientInformation.businessId);
+      
+      if (existingProfile) {
+        // Update existing profile instead of creating a new one
+        return this.updateClientProfile(existingProfile.id, profileData);
+      }
+      
+      // Create new profile
+      const [profile] = await db
+        .insert(sotClientProfiles)
+        .values({
+          businessId: profileData.clientInformation.businessId,
+          profileData: profileData as any, // Cast to any for jsonb column
+          syncStatus: 'pending',
+          lastSyncAt: new Date(),
+          createdAt: new Date(),
+          updatedAt: new Date()
+        })
+        .returning();
+      
+      return profile;
+    } catch (error) {
+      console.error(`Error saving client profile:`, error);
+      throw error;
+    }
+  }
+  
+  async updateClientProfile(id: number, profileData: ClientProfileData): Promise<SotClientProfile | undefined> {
+    try {
+      const [updated] = await db
+        .update(sotClientProfiles)
+        .set({
+          profileData: profileData as any, // Cast to any for jsonb column
+          syncStatus: 'pending',
+          lastSyncAt: new Date(),
+          updatedAt: new Date()
+        })
+        .where(eq(sotClientProfiles.id, id))
+        .returning();
+      
+      return updated;
+    } catch (error) {
+      console.error(`Error updating client profile with id ${id}:`, error);
+      return undefined;
+    }
+  }
+  
+  async updateClientProfileSyncStatus(id: number, status: string, message?: string): Promise<SotClientProfile | undefined> {
+    try {
+      const [updated] = await db
+        .update(sotClientProfiles)
+        .set({
+          syncStatus: status,
+          syncMessage: message,
+          lastSyncAt: new Date(),
+          updatedAt: new Date()
+        })
+        .where(eq(sotClientProfiles.id, id))
+        .returning();
+      
+      return updated;
+    } catch (error) {
+      console.error(`Error updating client profile sync status for id ${id}:`, error);
+      return undefined;
+    }
+  }
+  
+  async getPages(): Promise<{path: string}[]> {
+    try {
+      // This is a placeholder - you should replace it with your actual pages table query
+      // For demonstration purposes, returning a list of common pages
+      return [
+        { path: "/" },
+        { path: "/about" },
+        { path: "/services" },
+        { path: "/team" },
+        { path: "/contact" },
+        { path: "/industries" },
+        { path: "/resources" },
+        { path: "/news" }
+      ];
+    } catch (error) {
+      console.error("Error fetching pages:", error);
+      return [];
+    }
+  }
+  
+  async getInstalledTools(): Promise<{id: string}[]> {
+    try {
+      // This is a placeholder - you should replace it with your actual tools table query
+      // For demonstration purposes, returning a list of common tools
+      return [
+        { id: "crm" },
+        { id: "financial_dashboard" },
+        { id: "social_media_generator" },
+        { id: "blog_post_generator" },
+        { id: "content_studio" }
+      ];
+    } catch (error) {
+      console.error("Error fetching installed tools:", error);
       return [];
     }
   }
