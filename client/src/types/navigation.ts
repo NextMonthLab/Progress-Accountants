@@ -52,7 +52,8 @@ export interface NavigationState {
   pinnedItems: string[]; // IDs of pinned items for Quick Select
   expandedGroups: string[]; // IDs of expanded groups in sidebar
   expandedSubmenus: string[]; // IDs of expanded submenus
-  sidebarCollapsed: boolean;
+  sidebarCollapsed: boolean; // For desktop sidebar state
+  mobileSidebarCollapsed: boolean; // For mobile sidebar state
   quickSelectEnabled: boolean;
 }
 

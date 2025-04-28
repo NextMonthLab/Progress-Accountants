@@ -17,10 +17,12 @@ interface NavigationContextType {
   toggleGroup: (groupId: string) => void;
   toggleSubmenu: (submenuId: string) => void;
   toggleSidebar: () => void;
+  toggleMobileSidebar: () => void;
   toggleQuickSelect: () => void;
   getItemsForQuickSelect: () => NavigationItem[];
   getGroupItems: (groupId: string) => NavigationItem[];
   isLoading: boolean;
+  isMobile: boolean;
 }
 
 const DEFAULT_NAVIGATION_STATE: NavigationState = {
@@ -28,6 +30,7 @@ const DEFAULT_NAVIGATION_STATE: NavigationState = {
   expandedGroups: ['admin_tools', 'creator_tools'], // Default expanded groups
   expandedSubmenus: [],
   sidebarCollapsed: false,
+  mobileSidebarCollapsed: true, // Default to collapsed on mobile
   quickSelectEnabled: true,
 };
 
