@@ -19,6 +19,7 @@ interface NavigationContextType {
   toggleSidebar: () => void;
   toggleMobileSidebar: () => void;
   toggleQuickSelect: () => void;
+  toggleFocusedMode: () => void; // Toggle focused mode on/off
   getItemsForQuickSelect: () => NavigationItem[];
   getGroupItems: (groupId: string) => NavigationItem[];
   isLoading: boolean;
@@ -32,6 +33,7 @@ const DEFAULT_NAVIGATION_STATE: NavigationState = {
   sidebarCollapsed: false,
   mobileSidebarCollapsed: true, // Default to collapsed on mobile
   quickSelectEnabled: true,
+  focusedMode: false, // Default to normal mode (not focused)
 };
 
 const NavigationContext = createContext<NavigationContextType | null>(null);
@@ -156,6 +158,13 @@ export const NavigationProvider: React.FC<{ children: React.ReactNode }> = ({ ch
       quickSelectEnabled: !prev.quickSelectEnabled
     }));
   };
+  
+  const toggleFocusedMode = () => {
+    setNavigationState(prev => ({
+      ...prev,
+      focusedMode: !prev.focusedMode
+    }));
+  };
 
   const getItemsForQuickSelect = (): NavigationItem[] => {
     return navigationItems.filter(item => 
@@ -192,6 +201,7 @@ export const NavigationProvider: React.FC<{ children: React.ReactNode }> = ({ ch
         toggleSidebar,
         toggleMobileSidebar,
         toggleQuickSelect,
+        toggleFocusedMode,
         getItemsForQuickSelect,
         getGroupItems,
         isLoading,

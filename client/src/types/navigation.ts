@@ -55,6 +55,7 @@ export interface NavigationState {
   sidebarCollapsed: boolean; // For desktop sidebar state
   mobileSidebarCollapsed: boolean; // For mobile sidebar state
   quickSelectEnabled: boolean;
+  focusedMode: boolean; // Whether the UI is in focused mode (hides smart context)
 }
 
 // Default navigation groups
