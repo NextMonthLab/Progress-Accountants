@@ -26,15 +26,15 @@ import { healthMetricsRateLimiter, pageMetricsRateLimiter, healthStatusRateLimit
 export async function registerHealthRoutes(app: Express) {
   console.log('Registering Health Monitoring routes (OPTIMIZED FOR PERFORMANCE)...');
 
-  // Start the health monitoring service with reduced activity frequency
+  // Start the health monitoring service with greatly reduced activity frequency
   try {
     await healthMonitor.start({
-      statusCheckIntervalMs: 300000, // 5 minutes (instead of 1 minute)
-      dbCheckIntervalMs: 600000,     // 10 minutes (instead of 5 minutes)
-      incidentRetentionDays: 14,     // Store incidents for 14 days
+      statusCheckIntervalMs: 900000, // 15 minutes (instead of 5 minutes)
+      dbCheckIntervalMs: 1800000,    // 30 minutes (instead of 10 minutes)
+      incidentRetentionDays: 7,      // Store incidents for 7 days (reduced from 14 days)
     });
     
-    console.log('Health monitoring service started with optimized settings');
+    console.log('Health monitoring service started successfully');
   } catch (error) {
     console.error('Error starting health monitoring service:', error);
     // We'll continue setting up the routes, the service will retry later
@@ -92,14 +92,23 @@ export async function registerHealthRoutes(app: Express) {
     // Always return success, but only process if under rate limit
     if (isAllowed && Array.isArray(metrics)) {
       try {
-        // Process each metric in the batch (max 20 metrics per batch)
-        const metricsToProcess = metrics.slice(0, 20);
-        
-        // Process in background after responding to client
-        setTimeout(() => {
-          metricsToProcess.forEach(metric => {
-            if (typeof metric.name === 'string' && typeof metric.value === 'number') {
-              // Direct metric collection instead of using trackMetric which doesn't exist
+        // Apply additional sampling - only process 1 in 5 batches to further reduce load
+        if (Math.random() < 0.2) {
+          // Process a reduced set of metrics from the batch (max 10 per batch)
+          const metricsToProcess = metrics.slice(0, 10);
+          
+          // Process in background after responding to client
+          setTimeout(() => {
+            // Only process core metrics like page load time and serious errors
+            // Skip less important metrics to reduce database load
+            const criticalMetrics = metricsToProcess.filter(metric => 
+              (typeof metric.name === 'string' && typeof metric.value === 'number') &&
+              (metric.name === 'page_load_time' || 
+               metric.name === 'api_error_rate' || 
+               (metric.name === 'memory_usage' && metric.value > 80)) // Only track high memory usage
+            );
+            
+            criticalMetrics.forEach(metric => {
               if (metric.name === 'api_error_rate') {
                 healthMonitor.trackApiError(metric.name, metric.value);
               } else if (metric.name === 'page_load_time') {
@@ -107,14 +116,14 @@ export async function registerHealthRoutes(app: Express) {
               } else if (metric.name === 'memory_usage') {
                 // Track page memory usage using performanceMetrics
                 healthMonitor.trackPerformanceMetric('memory_usage', metric.value);
-              } else {
-                // For other metrics, track as performance metrics
-                healthMonitor.trackPerformanceMetric(metric.name, metric.value);
               }
+            });
+            
+            if (criticalMetrics.length > 0) {
+              console.log(`Processed ${criticalMetrics.length} critical metrics in batch`);
             }
-          });
-          console.log(`Processed ${metricsToProcess.length} metrics in batch`);
-        }, 10);
+          }, 10);
+        }
       } catch (error) {
         console.error('Error processing metrics batch:', error);
       }

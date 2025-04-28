@@ -36,13 +36,13 @@ const HEALTH_CONFIG = {
   // Is detailed monitoring enabled (more metrics and higher frequency)
   isDetailedMonitoringEnabled: false,
   // How often to send batched metrics (ms)
-  batchIntervalMs: 60000, // 1 minute
+  batchIntervalMs: 300000, // 5 minutes (increased from 1 minute)
   // Maximum batch size before forcing a send
-  maxBatchSize: 10,
+  maxBatchSize: 20, // Increased to reduce frequency of sends
   // Sampling rate for API calls (1/N calls are tracked)
-  apiSamplingRate: 20, // Track 1 in 20 API calls
+  apiSamplingRate: 50, // Track 1 in 50 API calls (reduced frequency)
   // Memory check interval
-  memoryCheckIntervalMs: 120000, // 2 minutes
+  memoryCheckIntervalMs: 300000, // 5 minutes (reduced frequency)
 }
 
 /**
@@ -260,22 +260,23 @@ export default function HealthTracker() {
       }
     };
     
-    // Run periodic memory checks at a much lower frequency (every 60 seconds)
+    // Run periodic memory checks at a much lower frequency (matching memoryCheckIntervalMs)
     const scheduleMemoryChecks = () => {
       setTimeout(() => {
+        // Only check memory when the page is idle
         if (window.requestIdleCallback) {
           window.requestIdleCallback(
             () => {
               trackMemoryUsage();
               scheduleMemoryChecks(); // Schedule next check
             },
-            { timeout: 1000 }
+            { timeout: 2000 }
           );
         } else {
           trackMemoryUsage();
           scheduleMemoryChecks(); // Schedule next check
         }
-      }, 60000); // 60 seconds between checks
+      }, HEALTH_CONFIG.memoryCheckIntervalMs); // Use the config value
     };
     
     // Run the initial tracking once
