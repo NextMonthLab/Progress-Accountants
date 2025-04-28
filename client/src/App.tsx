@@ -1,6 +1,6 @@
 import { Switch, Route, useLocation } from "wouter";
 import { Toaster } from "@/components/ui/toaster";
-import { useEffect } from "react";
+import { useEffect, lazy, Suspense } from "react";
 import { Loader2 } from "lucide-react";
 import { useQuery, QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { NavigationProvider } from "@/contexts/NavigationContext";
@@ -32,6 +32,7 @@ import RedesignedDashboardPage from "@/pages/RedesignedDashboardPage";
 import AdminDashboardPage from "@/pages/AdminDashboardPage";
 import AdminDashboardPageSimple from "@/pages/AdminDashboardPage.simple";
 import DiagnosticDashboard from "@/pages/DiagnosticDashboard";
+// DocumentHead imported elsewhere
 import CRMViewPage from "@/pages/CRMViewPage";
 import CRMViewPageEnhanced from "@/pages/CRMViewPageEnhanced";
 import ToolsDashboardPage from "@/pages/ToolsDashboardPage";
@@ -113,7 +114,7 @@ import CreateDashboardWizard from "@/pages/tools/wizards/CreateDashboardWizard";
 import CreateEmbedWizard from "@/pages/tools/wizards/CreateEmbedWizard";
 import BlogPostGenerator from "@/pages/tools/blog-post-generator";
 // Import tool pages
-import { DocumentHead } from "@/components/DocumentHead";
+// DocumentHead already imported above
 import MainLayout from "@/layouts/MainLayout";
 import { ClientDataProvider, withAuth } from "@/components/ClientDataProvider";
 import { ThemeProvider } from "@/components/ThemeProvider";
@@ -454,57 +455,19 @@ const queryClient = new QueryClient({
 });
 
 function App() {
-  // DIAGNOSTIC MODE LEVEL 3: Add CompanionContextProvider, HelpProvider, HealthProvider
+  // DIAGNOSTIC MODE LEVEL 4
   return (
     <QueryClientProvider client={queryClient}>
-      <AuthProvider queryClient={queryClient}>
+      <AuthProvider>
         <PermissionsProvider>
           <ThemeProvider>
             <TenantProvider>
               <CompanionContextProvider>
                 <HelpProvider>
                   <HealthProvider>
-                    <DocumentHead route="/" />
-                    <div style={{padding: '20px', background: 'white', minHeight: '100vh'}}>
-                      <h1 style={{fontSize: '24px', fontWeight: 'bold', marginBottom: '16px'}}>
-                        Diagnostic Dashboard (Level 3)
-                      </h1>
-                      <p style={{marginBottom: '16px'}}>
-                        Testing with all providers but no MainLayout or Router.
-                      </p>
-                      
-                      <div style={{
-                        border: '1px solid #ddd',
-                        borderRadius: '8px',
-                        padding: '16px',
-                        marginBottom: '16px'
-                      }}>
-                        <h2 style={{fontSize: '18px', fontWeight: 'bold', marginBottom: '8px'}}>
-                          System Status
-                        </h2>
-                        <p>If this loads, the issue is likely in MainLayout or Router components.</p>
-                        <button 
-                          style={{
-                            marginTop: '16px',
-                            padding: '8px 16px',
-                            background: '#0066cc',
-                            color: 'white',
-                            border: 'none',
-                            borderRadius: '4px',
-                            cursor: 'pointer'
-                          }}
-                          onClick={() => window.location.reload()}
-                        >
-                          Refresh Page
-                        </button>
-                      </div>
-                    </div>
-                    {/* We are not including these components yet */}
-                    {/* <DualModeCompanion /> */}
-                    {/* <UpgradeAnnouncement /> */}
-                    {/* <InstantHelpWidget /> */}
-                    {/* <ContextSuggestion /> */}
-                    {/* <HealthTracker /> */}
+                    <Switch>
+                      <Route path="/" component={DiagnosticDashboard} />
+                    </Switch>
                     <Toaster />
                   </HealthProvider>
                 </HelpProvider>

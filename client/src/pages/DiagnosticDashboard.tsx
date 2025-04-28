@@ -1,6 +1,7 @@
 import React from 'react';
+import { LightweightNewsfeed } from '../components/dashboard/LightweightNewsfeed';
 
-// Absolute minimum component with no imports
+// Diagnostic Dashboard with lightweight newsfeed component
 export default function DiagnosticDashboard() {
   return (
     <div style={{padding: '20px', background: 'white', minHeight: '100vh'}}>
@@ -8,7 +9,7 @@ export default function DiagnosticDashboard() {
         Diagnostic Dashboard
       </h1>
       <p style={{marginBottom: '16px'}}>
-        This is an emergency diagnostic page with absolutely no dependencies.
+        Testing with the lightweight newsfeed component
       </p>
       
       <div style={{
@@ -20,7 +21,7 @@ export default function DiagnosticDashboard() {
         <h2 style={{fontSize: '18px', fontWeight: 'bold', marginBottom: '8px'}}>
           System Status
         </h2>
-        <p>This is an ultra-minimal page to troubleshoot memory issues.</p>
+        <p>Testing with a simplified newsfeed component to isolate memory issues.</p>
         <button 
           style={{
             marginTop: '16px',
@@ -35,6 +36,11 @@ export default function DiagnosticDashboard() {
         >
           Refresh Page
         </button>
+      </div>
+      
+      {/* Including the lightweight newsfeed */}
+      <div style={{marginTop: '24px'}}>
+        <LightweightNewsfeed />
       </div>
     </div>
   );
