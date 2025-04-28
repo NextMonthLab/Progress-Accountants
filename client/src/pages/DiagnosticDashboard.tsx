@@ -53,23 +53,23 @@ export default function DiagnosticDashboard() {
   }, []);
   
   return (
-    <div className="container mx-auto p-6">
-      <div className="flex justify-between items-center mb-6">
+    <div className="container mx-auto p-3 sm:p-6 bg-background">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-6">
         <div>
-          <h1 className="text-3xl font-bold">Diagnostic Dashboard</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold text-navy">Diagnostic Dashboard</h1>
           <p className="text-muted-foreground mt-1">
             System diagnostic view to isolate and resolve memory issues
           </p>
         </div>
-        <div className="flex items-center gap-2">
-          <div className="text-sm text-muted-foreground">
+        <div className="flex items-center gap-2 w-full sm:w-auto">
+          <div className="text-xs sm:text-sm text-muted-foreground">
             Last updated: {systemHealth.lastChecked}
           </div>
           <Button 
             size="sm" 
             variant="outline"
             onClick={refreshSystemStatus}
-            className="flex items-center gap-1"
+            className="flex items-center gap-1 ml-auto sm:ml-0"
           >
             <RefreshCw className="h-3.5 w-3.5" />
             Refresh
@@ -83,7 +83,7 @@ export default function DiagnosticDashboard() {
         onValueChange={setActiveTab}
         className="space-y-4"
       >
-        <TabsList className="grid grid-cols-3 w-[400px]">
+        <TabsList className="grid grid-cols-3 w-full max-w-md">
           <TabsTrigger value="overview">Overview</TabsTrigger>
           <TabsTrigger value="performance">Performance</TabsTrigger>
           <TabsTrigger value="newsfeeds">Newsfeeds</TabsTrigger>

@@ -209,22 +209,29 @@ function QuickAction({
     ghost: 'bg-gray-200 hover:bg-gray-300 text-navy',
   };
 
+  // Icon colors based on variant
+  const iconColor = variant === 'primary' ? 'text-white' : 'text-navy';
+  // Title colors based on variant
+  const titleColor = variant === 'primary' ? 'text-white' : 'text-navy';
+  // Description colors based on variant with better contrast
+  const descriptionColor = variant === 'primary' ? 'text-white/90' : 'text-navy/80';
+
   return (
     <Link href={link}>
       <div className={`p-4 rounded-xl transition-all ${variantStyles[variant]} relative`}>
         <div className="flex items-start gap-3">
           {icon && (
-            <div className="text-black">
+            <div className={iconColor}>
               {icon}
             </div>
           )}
           <div>
-            <h3 className="font-medium text-black">{title}</h3>
-            <p className={`text-sm mt-1 ${variant === 'primary' ? 'text-white/90' : 'text-gray-700'}`}>{description}</p>
+            <h3 className={`font-medium ${titleColor}`}>{title}</h3>
+            <p className={`text-sm mt-1 ${descriptionColor}`}>{description}</p>
           </div>
         </div>
         <div className="absolute bottom-4 right-4">
-          <ArrowUpRight className={`h-4 w-4 ${variant === 'primary' ? 'text-white/60' : 'text-navy/60'}`} />
+          <ArrowUpRight className={`h-4 w-4 ${variant === 'primary' ? 'text-white/70' : 'text-navy/70'}`} />
         </div>
       </div>
     </Link>
@@ -464,15 +471,15 @@ export default function AdminDashboardPage() {
   };
 
   return (
-      <div className="space-y-8">
+      <div className="space-y-6 p-2 sm:p-4 md:p-6 bg-background">
         {/* Page Header */}
-        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-4 rounded-lg shadow-sm border border-gray-100">
           <div>
             <h1 className="text-2xl font-bold text-navy">Admin Dashboard</h1>
             <p className="text-gray-700">Welcome back, {user?.username || 'User'}</p>
           </div>
-          <div className="flex flex-wrap gap-2">
-            <Button variant="outline" className="gap-2">
+          <div className="flex flex-wrap gap-2 mt-2 sm:mt-0">
+            <Button variant="outline" className="gap-2 border-navy/30 text-navy">
               <Settings className="h-4 w-4" />
               Settings
             </Button>
@@ -485,20 +492,20 @@ export default function AdminDashboardPage() {
 
         {/* Tabs Navigation */}
         <Tabs defaultValue="overview" value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="bg-gray-50 border border-gray-200 mb-6 p-1">
-            <TabsTrigger value="overview" className="text-orange-600 hover:text-orange-700 data-[state=active]:bg-orange-50 data-[state=active]:text-orange-600 data-[state=active]:border-b-2 data-[state=active]:border-orange-500">
+          <TabsList className="bg-white rounded-lg shadow-sm border border-gray-100 mb-6 p-1 overflow-x-auto flex w-full md:w-auto">
+            <TabsTrigger value="overview" className="text-navy hover:text-navy/80 data-[state=active]:bg-orange-50 data-[state=active]:text-orange-600 data-[state=active]:border-b-2 data-[state=active]:border-orange-500 whitespace-nowrap">
               <LayoutDashboard className="h-4 w-4 mr-2" />
               Overview
             </TabsTrigger>
-            <TabsTrigger value="content" className="text-orange-600 hover:text-orange-700 data-[state=active]:bg-orange-50 data-[state=active]:text-orange-600 data-[state=active]:border-b-2 data-[state=active]:border-orange-500">
+            <TabsTrigger value="content" className="text-navy hover:text-navy/80 data-[state=active]:bg-orange-50 data-[state=active]:text-orange-600 data-[state=active]:border-b-2 data-[state=active]:border-orange-500 whitespace-nowrap">
               <FileText className="h-4 w-4 mr-2" />
               Content
             </TabsTrigger>
-            <TabsTrigger value="tools" className="text-orange-600 hover:text-orange-700 data-[state=active]:bg-orange-50 data-[state=active]:text-orange-600 data-[state=active]:border-b-2 data-[state=active]:border-orange-500">
+            <TabsTrigger value="tools" className="text-navy hover:text-navy/80 data-[state=active]:bg-orange-50 data-[state=active]:text-orange-600 data-[state=active]:border-b-2 data-[state=active]:border-orange-500 whitespace-nowrap">
               <Cpu className="h-4 w-4 mr-2" />
               Tools
             </TabsTrigger>
-            <TabsTrigger value="system" className="text-orange-600 hover:text-orange-700 data-[state=active]:bg-orange-50 data-[state=active]:text-orange-600 data-[state=active]:border-b-2 data-[state=active]:border-orange-500">
+            <TabsTrigger value="system" className="text-navy hover:text-navy/80 data-[state=active]:bg-orange-50 data-[state=active]:text-orange-600 data-[state=active]:border-b-2 data-[state=active]:border-orange-500 whitespace-nowrap">
               <Settings className="h-4 w-4 mr-2" />
               System
             </TabsTrigger>
