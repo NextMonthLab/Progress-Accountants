@@ -69,30 +69,34 @@ function StatCard({
     navy: {
       bg: isGradient ? 'from-navy via-blue-900 to-blue-950' : 'bg-white',
       icon: isGradient ? 'bg-white/40 text-white' : 'bg-navy/10 text-navy',
+      border: isGradient ? 'border-navy/10' : 'border-navy/10'
     },
     orange: {
       bg: isGradient ? 'from-orange-500 via-orange-600 to-orange-800' : 'bg-white', 
       icon: isGradient ? 'bg-white/40 text-white' : 'bg-orange-500/10 text-orange-500',
+      border: isGradient ? 'border-orange-500/10' : 'border-orange-500/10'
     },
     emerald: {
       bg: isGradient ? 'from-emerald-500 via-emerald-600 to-emerald-800' : 'bg-white',
       icon: isGradient ? 'bg-white/40 text-white' : 'bg-emerald-500/10 text-emerald-500',
+      border: isGradient ? 'border-emerald-500/10' : 'border-emerald-500/10'
     },
     indigo: {
       bg: isGradient ? 'from-indigo-500 via-indigo-600 to-indigo-800' : 'bg-white',
       icon: isGradient ? 'bg-white/40 text-white' : 'bg-indigo-500/10 text-indigo-500',
+      border: isGradient ? 'border-indigo-500/10' : 'border-indigo-500/10'
     }
   };
 
   return (
-    <Card className={`overflow-hidden border-0 ${isGradient ? 'shadow-lg shadow-' + color + '/10' : 'shadow-md border-2 border-gray-200'} ${className}`}>
-      <div className={`${isGradient ? 'bg-gradient-to-br ' + scheme[color].bg : scheme[color].bg} p-6`}>
-        <div className="flex justify-between items-start">
+    <Card className={`overflow-hidden border ${isGradient ? 'shadow-lg shadow-' + color + '/10 border-0' : 'shadow-sm border ' + scheme[color].border} ${className} hover:shadow-md transition-all`}>
+      <div className={`${isGradient ? 'bg-gradient-to-br ' + scheme[color].bg : scheme[color].bg} p-4 sm:p-6`}>
+        <div className="flex justify-between items-center">
           <div>
-            <p className={`text-sm font-medium ${isGradient ? 'text-white/80' : 'text-gray-700'}`}>{label}</p>
-            <h3 className={`text-2xl font-bold mt-1 ${isGradient ? 'text-white' : 'text-navy'}`}>{value}</h3>
+            <p className={`text-sm font-medium ${isGradient ? 'text-white/90' : 'text-gray-700'}`}>{label}</p>
+            <h3 className={`text-xl sm:text-2xl font-bold mt-1 ${isGradient ? 'text-white' : 'text-navy'}`}>{value}</h3>
             {change && (
-              <p className={`text-xs font-medium mt-1 flex items-center ${isPositive ? (isGradient ? 'text-white/90' : 'text-emerald-500') : (isGradient ? 'text-white/90' : 'text-red-500')}`}>
+              <p className={`text-xs font-medium mt-1 flex items-center ${isPositive ? (isGradient ? 'text-white' : 'text-emerald-600') : (isGradient ? 'text-white' : 'text-red-600')}`}>
                 {isPositive ? '↑' : '↓'} {change}
               </p>
             )}

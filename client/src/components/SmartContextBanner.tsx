@@ -76,18 +76,20 @@ const SmartContextBanner: React.FC = () => {
   if (!isOpen || !smartContext || navigationState.focusedMode) return null;
 
   return (
-    <div className="bg-gradient-to-r from-slate-50 to-orange-50/30 border-b border-gray-200 p-2 px-4 text-sm relative">
-      <div className="flex items-center justify-between">
+    <div className="bg-white shadow-sm border-b border-gray-200 p-2 px-3 sm:px-4 text-sm relative">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center">
-          <Brain className="h-4 w-4 text-[var(--navy)] mr-2" />
-          <span className="font-medium text-[var(--navy)]">Smart Context</span>
+          <div className="bg-blue-50 p-1.5 rounded-md">
+            <Brain className="h-4 w-4 text-navy" />
+          </div>
+          <span className="font-medium text-navy ml-2">Smart Context</span>
           {loading ? (
             <div className="ml-3 h-4 w-32 bg-gray-200 rounded animate-pulse"></div>
           ) : (
-            <span className="ml-3 text-gray-700">{smartContext.context}</span>
+            <span className="ml-3 text-gray-700 font-medium">{smartContext.context}</span>
           )}
           
-          <div className="flex items-center ml-6 text-xs text-gray-500">
+          <div className="hidden sm:flex items-center ml-6 text-xs text-gray-500">
             <Clock className="h-3 w-3 mr-1" />
             {loading ? (
               <div className="h-3 w-24 bg-gray-200 rounded animate-pulse"></div>
@@ -97,11 +99,20 @@ const SmartContextBanner: React.FC = () => {
           </div>
         </div>
         
-        <div className="flex items-center">
+        <div className="flex items-center mt-1 sm:mt-0">
+          <div className="flex sm:hidden items-center text-xs text-gray-500 mr-2">
+            <Clock className="h-3 w-3 mr-1" />
+            {loading ? (
+              <div className="h-3 w-24 bg-gray-200 rounded animate-pulse"></div>
+            ) : (
+              <span>Last activity: {smartContext.lastActivity}</span>
+            )}
+          </div>
+          
           <Button 
             variant="ghost" 
             size="sm" 
-            className="h-7 px-2 text-xs hover:bg-orange-100/50 transition-all"
+            className="h-7 px-2 text-xs text-gray-600 hover:bg-orange-100 hover:text-orange-700 transition-all ml-auto"
             onClick={() => setIsOpen(false)}
           >
             <X className="h-3 w-3 mr-1" />
@@ -112,12 +123,16 @@ const SmartContextBanner: React.FC = () => {
       
       {/* Intelligent Suggestions */}
       {!loading && smartContext.suggestions.length > 0 && (
-        <div className="mt-1 pl-6 flex items-center text-xs">
-          <LightbulbIcon className="h-3 w-3 text-amber-500 mr-1" />
-          <span className="text-gray-600 mr-2">Smart suggestions:</span>
-          <ul className="flex space-x-4">
+        <div className="mt-2 pl-2 sm:pl-6 flex flex-col sm:flex-row sm:items-center text-xs">
+          <div className="flex items-center">
+            <div className="bg-amber-50 p-1 rounded-md">
+              <LightbulbIcon className="h-3 w-3 text-amber-500" />
+            </div>
+            <span className="text-gray-700 font-medium ml-2 mr-2">Smart suggestions:</span>
+          </div>
+          <ul className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4 mt-2 sm:mt-0 ml-6 sm:ml-0">
             {smartContext.suggestions.map((suggestion, index) => (
-              <li key={index} className="text-[var(--navy)] hover:text-[var(--orange)] transition-colors">
+              <li key={index} className="text-navy hover:text-orange-600 transition-colors bg-gray-50 py-1 px-2 sm:py-0.5 sm:px-2 rounded-md">
                 {suggestion}
               </li>
             ))}
