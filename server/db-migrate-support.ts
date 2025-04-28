@@ -16,11 +16,29 @@ export async function migrateSupportTables() {
     // Check if tables already exist to avoid duplicate migrations
     if (await checkIfTableExists("support_sessions")) {
       console.log("ℹ️ support_sessions table already exists, skipping creation.");
+      
+      // Add a unique constraint to session_id if it doesn't exist
+      try {
+        await db.execute(`
+          DO $$
+          BEGIN
+              IF NOT EXISTS (
+                  SELECT 1 FROM pg_constraint 
+                  WHERE conname = 'support_sessions_session_id_key'
+              ) THEN
+                  ALTER TABLE support_sessions ADD CONSTRAINT support_sessions_session_id_key UNIQUE (session_id);
+              END IF;
+          END$$;
+        `);
+        console.log("✅ Added unique constraint to support_sessions.session_id if needed");
+      } catch (error) {
+        console.error("Warning: Could not add unique constraint to session_id:", error);
+      }
     } else {
       await db.execute(`
         CREATE TABLE IF NOT EXISTS support_sessions (
           id SERIAL PRIMARY KEY,
-          session_id TEXT NOT NULL,
+          session_id TEXT NOT NULL UNIQUE,
           user_id INTEGER REFERENCES users(id),
           created_at TIMESTAMP DEFAULT NOW() NOT NULL,
           updated_at TIMESTAMP DEFAULT NOW() NOT NULL,
@@ -52,11 +70,29 @@ export async function migrateSupportTables() {
 
     if (await checkIfTableExists("support_tickets")) {
       console.log("ℹ️ support_tickets table already exists, skipping creation.");
+      
+      // Add a unique constraint to ticket_id if it doesn't exist
+      try {
+        await db.execute(`
+          DO $$
+          BEGIN
+              IF NOT EXISTS (
+                  SELECT 1 FROM pg_constraint 
+                  WHERE conname = 'support_tickets_ticket_id_key'
+              ) THEN
+                  ALTER TABLE support_tickets ADD CONSTRAINT support_tickets_ticket_id_key UNIQUE (ticket_id);
+              END IF;
+          END$$;
+        `);
+        console.log("✅ Added unique constraint to support_tickets.ticket_id if needed");
+      } catch (error) {
+        console.error("Warning: Could not add unique constraint to ticket_id:", error);
+      }
     } else {
       await db.execute(`
         CREATE TABLE IF NOT EXISTS support_tickets (
           id SERIAL PRIMARY KEY,
-          ticket_id TEXT NOT NULL,
+          ticket_id TEXT NOT NULL UNIQUE,
           session_id TEXT REFERENCES support_sessions(session_id),
           user_id INTEGER REFERENCES users(id),
           created_at TIMESTAMP DEFAULT NOW() NOT NULL,
