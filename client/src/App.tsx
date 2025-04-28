@@ -48,6 +48,7 @@ import ComponentDemo from "@/pages/ComponentDemo";
 import TeamPage from "@/pages/TeamPage";
 import InsightUsersPage from "@/pages/InsightUsersPage";
 import InsightsDashboardPage from "@/pages/InsightsDashboardPage";
+import SotManagerPage from "@/pages/admin/SotManagerPage";
 import AboutPage from "@/pages/AboutPage";
 import ServicesPage from "@/pages/ServicesPage";
 import ServiceDetailPage from "@/pages/ServiceDetailPage";
@@ -259,12 +260,9 @@ function Router() {
         allowedRoles={['admin', 'super_admin']} 
       />
       <ProtectedRoute 
-        path="/admin/sot-json-sender" 
-        component={() => import("@/pages/admin/SotManagerPage").then(module => {
-          const SotManagerPage = module.default;
-          return <SotManagerPage />;
-        })}
-        allowedRoles={['super_admin']} 
+        path="/admin/sot" 
+        component={SotManagerPage}
+        allowedRoles={['admin', 'super_admin']} 
       />
       <ProtectedRoute 
         path="/admin/conversation-insights" 

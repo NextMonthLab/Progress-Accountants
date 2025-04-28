@@ -1,20 +1,19 @@
 import React, { ReactNode } from 'react';
-import { Link, useLocation } from 'wouter';
+import { useLocation, Link } from 'wouter';
 import { useAuth } from '@/hooks/use-auth';
-import { 
-  Settings, 
-  Home, 
-  Users, 
-  FileText, 
-  Layers, 
-  Database, 
-  CloudUpload,
-  BarChart3,
-  MessageSquare,
-  PieChart,
+import {
+  Home,
+  Users,
+  FileText,
+  Settings,
+  Layers,
   Wrench as Tool,
   Layout,
-  User
+  User,
+  BarChart3,
+  MessageSquare,
+  CloudUpload,
+  PieChart
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
