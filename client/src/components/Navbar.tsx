@@ -243,8 +243,8 @@ export default function Navbar() {
           {/* Show admin dashboard link with high visibility for staff */}
           {isStaff && (
             <Button 
-              variant="outline"
-              className="border-[var(--navy)] text-[var(--navy)] hover:text-[var(--orange)] hover:border-[var(--orange)]"
+              variant="default"
+              className="bg-[var(--navy)] text-white hover:bg-[var(--orange)] transition-colors font-medium shadow-sm"
               asChild
             >
               <Link 
@@ -360,8 +360,8 @@ export default function Navbar() {
             <div className="py-2">
               <h4 className="text-sm uppercase tracking-wider text-gray-500 mb-2 px-2">Admin</h4>
               <Button 
-                variant="outline"
-                className="w-full border-[var(--navy)] text-[var(--navy)] hover:text-[var(--orange)] hover:border-[var(--orange)]"
+                variant="default"
+                className="w-full bg-[var(--navy)] text-white hover:bg-[var(--orange)] transition-colors font-medium shadow-sm"
                 onClick={closeMenu}
                 asChild
               >
