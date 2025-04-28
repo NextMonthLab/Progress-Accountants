@@ -220,7 +220,7 @@ const DynamicSidebar: React.FC = () => {
                     item.badge.variant === "updated" ? "bg-blue-500" :
                     item.badge.variant === "beta" ? "bg-purple-500" :
                     item.badge.variant === "pro" ? "bg-gradient-to-r from-amber-500 to-orange-500" :
-                    "bg-gray-200 text-gray-800"
+                    "bg-gray-200 text-[var(--navy)]"
                   )}
                 >
                   {item.badge.text}
@@ -250,7 +250,7 @@ const DynamicSidebar: React.FC = () => {
             <span className="mr-3 relative">
               <IconComponent className={cn(
                 "h-5 w-5",
-                isActive(item.href) ? "text-[var(--orange)]" : "text-gray-600"
+                isActive(item.href) ? "text-[var(--orange)]" : "text-[var(--navy)]"
               )} />
               {item.isNew && (
                 <span className="absolute -top-1 -right-1 w-2 h-2 bg-emerald-500 rounded-full"></span>
@@ -343,7 +343,7 @@ const DynamicSidebar: React.FC = () => {
                           "text-[8px] py-0 h-3 ml-1",
                           item.badge.variant === "new" ? "bg-emerald-500" :
                           item.badge.variant === "updated" ? "bg-blue-500" :
-                          "bg-gray-200 text-gray-800"
+                          "bg-gray-200 text-[var(--navy)]"
                         )}
                       >
                         {item.badge.text}
@@ -374,7 +374,7 @@ const DynamicSidebar: React.FC = () => {
             <span className="mr-3">
               <IconComponent className={cn(
                 "h-5 w-5",
-                isExpanded ? "text-[var(--orange)]" : "text-gray-600"
+                isExpanded ? "text-[var(--orange)]" : "text-[var(--navy)]"
               )} />
             </span>
             <span className={cn(
@@ -457,11 +457,11 @@ const DynamicSidebar: React.FC = () => {
             }
           >
             {isMobile ? (
-              <X className="h-5 w-5 text-gray-600" />
+              <X className="h-5 w-5 text-[var(--navy)]" />
             ) : sidebarCollapsed ? (
-              <ChevronRight className="h-5 w-5 text-gray-600" />
+              <ChevronRight className="h-5 w-5 text-[var(--navy)]" />
             ) : (
-              <MenuIcon className="h-5 w-5 text-gray-600" />
+              <MenuIcon className="h-5 w-5 text-[var(--navy)]" />
             )}
           </button>
         </div>
