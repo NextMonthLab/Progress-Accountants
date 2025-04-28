@@ -1,4 +1,4 @@
-import { integer, pgTable, text, timestamp, boolean } from "drizzle-orm/pg-core";
+import { integer, pgTable, text, timestamp, boolean, jsonb } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
@@ -17,6 +17,21 @@ export const sotDeclarations = pgTable("sot_declarations", {
   isTemplate: boolean("is_template").default(false),
   isCloneable: boolean("is_cloneable").default(false),
   lastSyncAt: timestamp("last_sync_at").defaultNow(),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+/**
+ * SOT Client Profile table
+ * Stores complete client profile data for synchronization with SOT system
+ */
+export const sotClientProfiles = pgTable("sot_client_profiles", {
+  id: integer("id").primaryKey().notNull(),
+  businessId: text("business_id").notNull(),
+  profileData: jsonb("profile_data").notNull(),
+  lastSyncAt: timestamp("last_sync_at").defaultNow(),
+  syncStatus: text("sync_status").notNull().default("pending"),
+  syncMessage: text("sync_message"),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
@@ -50,14 +65,75 @@ export const sotSyncLogs = pgTable("sot_sync_logs", {
 export type SotDeclaration = typeof sotDeclarations.$inferSelect;
 export type InsertSotDeclaration = typeof sotDeclarations.$inferInsert;
 
+export type SotClientProfile = typeof sotClientProfiles.$inferSelect;
+export type InsertSotClientProfile = typeof sotClientProfiles.$inferInsert;
+
 export type SotMetric = typeof sotMetrics.$inferSelect;
 export type InsertSotMetric = typeof sotMetrics.$inferInsert;
 
 export type SotSyncLog = typeof sotSyncLogs.$inferSelect;
 export type InsertSotSyncLog = typeof sotSyncLogs.$inferInsert;
 
+// Client Profile interface for JSON data
+export interface ClientProfileData {
+  clientInformation: {
+    businessId: string;
+    businessName: string;
+    businessType: string;
+    industry: string;
+    description: string;
+    location: {
+      city: string;
+      country: string;
+    };
+    dateOnboarded: string;
+  };
+  platformBlueprintInformation: {
+    currentBlueprintVersion: string;
+    pagesPublished: string[];
+    toolsInstalled: string[];
+    automationsActive: string[];
+    lastDeploymentDate: string;
+    hostingEnvironment: string;
+  };
+  activityTracking: {
+    totalCreditsPurchased: number;
+    totalCreditsConsumed: number;
+    lastActivityTimestamp: string;
+    accountStatus: string;
+  };
+  externalPublicInfo: {
+    websiteUrl: string;
+    publicLinkedIn: string;
+    publicYouTubeChannel: string;
+    podcastInfo: {
+      name: string;
+      platforms: string[];
+      frequency: string;
+      totalEpisodes: number;
+    };
+  };
+  dynamicUpdateTriggers: {
+    realtimeWebhookEnabled: boolean;
+    updateFrequency: string;
+    lastSyncTimestamp: string;
+  };
+  systemMetadata: {
+    instanceId: string;
+    instanceType: string;
+    tenantId: string;
+    isTemplate: boolean;
+    isCloneable: boolean;
+    supportTier: string;
+    statusCheckFrequency: number;
+    createdAt: string;
+    updatedAt: string;
+  };
+}
+
 // Zod Schemas
 export const insertSotDeclarationSchema = createInsertSchema(sotDeclarations);
+export const insertSotClientProfileSchema = createInsertSchema(sotClientProfiles);
 export const insertSotMetricSchema = createInsertSchema(sotMetrics);
 export const insertSotSyncLogSchema = createInsertSchema(sotSyncLogs);
 
