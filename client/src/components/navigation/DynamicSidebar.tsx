@@ -210,7 +210,7 @@ const DynamicSidebar: React.FC = () => {
                 )}
               </div>
               {item.description && (
-                <p className="text-xs text-gray-500">{item.description}</p>
+                <p className="text-xs text-[var(--navy)]">{item.description}</p>
               )}
               {item.badge && (
                 <Badge 
@@ -384,7 +384,7 @@ const DynamicSidebar: React.FC = () => {
           <ChevronDown
             className={cn(
               "h-4 w-4 transition-transform duration-200",
-              isExpanded ? "transform rotate-180 text-[var(--orange)]" : "text-gray-500"
+              isExpanded ? "transform rotate-180 text-[var(--orange)]" : "text-[var(--navy)]"
             )}
           />
         </button>
@@ -420,7 +420,7 @@ const DynamicSidebar: React.FC = () => {
                   aria-label={sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
                 >
                   <ChevronRight className={cn(
-                    "h-3 w-3 text-gray-500 transition-transform duration-200",
+                    "h-3 w-3 text-[var(--navy)] transition-transform duration-200",
                     sidebarCollapsed ? "rotate-180" : ""
                   )} />
                 </button>
@@ -440,7 +440,7 @@ const DynamicSidebar: React.FC = () => {
               className="p-2 rounded-full bg-white border border-gray-200 shadow-sm hover:bg-orange-50 transition-all duration-150"
               aria-label="Close sidebar"
             >
-              <X className="h-4 w-4 text-gray-500" />
+              <X className="h-4 w-4 text-[var(--navy)]" />
             </button>
           </div>
         )}
