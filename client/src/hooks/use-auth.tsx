@@ -75,10 +75,23 @@ export function AuthProvider({
 
   const loginMutation = useMutation({
     mutationFn: async (credentials: LoginData) => {
-      const res = await apiRequest("POST", "/api/login", credentials);
-      return res.json();
+      try {
+        const res = await apiRequest("POST", "/api/login", credentials);
+        if (!res.ok) {
+          const errorResponse = await res.json();
+          throw new Error(errorResponse.error || "Login failed");
+        }
+        return res.json();
+      } catch (error) {
+        console.error("Login error:", error);
+        throw error;
+      }
     },
     onSuccess: (response: AuthResponse) => {
+      // Immediately invalidate and refetch the user data
+      queryClient.invalidateQueries({ queryKey: ["/api/user"] });
+      
+      // Still set the query data for immediate UI updates
       queryClient.setQueryData(["/api/user"], response.user);
       
       toast({
@@ -86,10 +99,19 @@ export function AuthProvider({
         description: `Welcome back, ${response.user.name || response.user.username}!`,
       });
       
-      // Redirect to the appropriate dashboard based on role
-      if (response.redirectPath) {
-        setLocation(response.redirectPath);
-      }
+      // Delay the navigation slightly to ensure the user data is properly set
+      setTimeout(() => {
+        if (response.redirectPath) {
+          console.log("Redirecting to:", response.redirectPath);
+          window.location.href = response.redirectPath; // Use direct navigation instead of wouter
+        } else {
+          // Fallback based on user role
+          const redirectPath = response.user.isSuperAdmin ? '/super-admin' : 
+                              (response.user.userType === 'admin' ? '/admin/dashboard' : '/');
+          console.log("Fallback redirecting to:", redirectPath);
+          window.location.href = redirectPath; // Use direct navigation instead of wouter
+        }
+      }, 100);
     },
     onError: (error: any) => {
       // Handle structured error responses from the server
@@ -162,17 +184,31 @@ export function AuthProvider({
 
   const logoutMutation = useMutation({
     mutationFn: async () => {
-      await apiRequest("POST", "/api/logout");
+      try {
+        const res = await apiRequest("POST", "/api/logout");
+        if (!res.ok) {
+          throw new Error("Logout failed");
+        }
+        return res;
+      } catch (error) {
+        console.error("Logout error:", error);
+        throw error;
+      }
     },
     onSuccess: () => {
+      // Immediately invalidate the user query and clear cache
+      queryClient.invalidateQueries({ queryKey: ["/api/user"] });
       queryClient.setQueryData(["/api/user"], null);
+      
       toast({
         title: "Logged out",
         description: "You have been successfully logged out",
       });
       
-      // Redirect to home page after logout
-      setLocation("/");
+      // Use direct navigation for more reliable redirect
+      setTimeout(() => {
+        window.location.href = "/";
+      }, 100);
     },
     onError: (error: Error) => {
       toast({
