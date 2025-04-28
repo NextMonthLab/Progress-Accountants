@@ -128,12 +128,14 @@ const DynamicSidebar: React.FC = () => {
     toggleGroup, 
     toggleSubmenu,
     toggleSidebar,
+    toggleMobileSidebar,
     addPinnedItem,
     removePinnedItem,
-    getGroupItems
+    getGroupItems,
+    isMobile
   } = useNavigation();
   
-  const { sidebarCollapsed, expandedGroups, expandedSubmenus, pinnedItems } = navigationState;
+  const { sidebarCollapsed, mobileSidebarCollapsed, expandedGroups, expandedSubmenus, pinnedItems } = navigationState;
   
   // Check if user has staff privileges (admin, super_admin, or editor)
   const isStaff = user?.userType === 'admin' || user?.userType === 'super_admin' || user?.userType === 'editor' || user?.isSuperAdmin;
@@ -388,40 +390,63 @@ const DynamicSidebar: React.FC = () => {
     <TooltipProvider>
       <div className={cn(
         "flex flex-col h-screen border-r border-gray-200 bg-white transition-all duration-300",
-        sidebarCollapsed ? "w-[70px]" : "w-64"
+        // Desktop styles
+        !isMobile && (sidebarCollapsed ? "w-[70px]" : "w-64"),
+        // Mobile styles
+        isMobile && (mobileSidebarCollapsed ? "w-0 border-r-0" : "fixed w-[90%] max-w-[280px] shadow-lg z-50")
       )}>
-        {/* Smart Site Collapse Toggle */}
-        <div className="absolute -right-3 top-24 z-10">
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <button
-                onClick={toggleSidebar}
-                className={cn(
-                  "flex items-center justify-center w-6 h-6 rounded-full bg-white border border-gray-200 shadow-sm hover:bg-orange-50 transition-all duration-150",
-                )}
-                aria-label={sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
-              >
-                <ChevronRight className={cn(
-                  "h-3 w-3 text-gray-500 transition-transform duration-200",
-                  sidebarCollapsed ? "rotate-180" : ""
-                )} />
-              </button>
-            </TooltipTrigger>
-            <TooltipContent side="right" className="text-xs">
-              {sidebarCollapsed ? "Expand Smart Navigation" : "Collapse Smart Navigation"}
-            </TooltipContent>
-          </Tooltip>
-        </div>
+        {/* Desktop Smart Site Collapse Toggle */}
+        {!isMobile && (
+          <div className="absolute -right-3 top-24 z-10">
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <button
+                  onClick={toggleSidebar}
+                  className={cn(
+                    "flex items-center justify-center w-6 h-6 rounded-full bg-white border border-gray-200 shadow-sm hover:bg-orange-50 transition-all duration-150",
+                  )}
+                  aria-label={sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+                >
+                  <ChevronRight className={cn(
+                    "h-3 w-3 text-gray-500 transition-transform duration-200",
+                    sidebarCollapsed ? "rotate-180" : ""
+                  )} />
+                </button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs">
+                {sidebarCollapsed ? "Expand Smart Navigation" : "Collapse Smart Navigation"}
+              </TooltipContent>
+            </Tooltip>
+          </div>
+        )}
+        
+        {/* Mobile Menu Close Button */}
+        {isMobile && !mobileSidebarCollapsed && (
+          <div className="absolute top-4 right-4 z-20">
+            <button
+              onClick={toggleMobileSidebar}
+              className="p-2 rounded-full bg-white border border-gray-200 shadow-sm hover:bg-orange-50 transition-all duration-150"
+              aria-label="Close sidebar"
+            >
+              <X className="h-4 w-4 text-gray-500" />
+            </button>
+          </div>
+        )}
         
         {/* Sidebar Header */}
         <div className="px-4 py-3 flex items-center justify-between border-b border-gray-200 bg-gradient-to-r from-white to-orange-50/30">
           <SidebarLogo collapsed={sidebarCollapsed} />
           <button
-            onClick={toggleSidebar}
+            onClick={isMobile ? toggleMobileSidebar : toggleSidebar}
             className="p-2 rounded-md hover:bg-orange-100 transition-colors"
-            aria-label={sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+            aria-label={isMobile 
+              ? mobileSidebarCollapsed ? "Open menu" : "Close menu" 
+              : sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"
+            }
           >
-            {sidebarCollapsed ? (
+            {isMobile ? (
+              <X className="h-5 w-5 text-gray-600" />
+            ) : sidebarCollapsed ? (
               <ChevronRight className="h-5 w-5 text-gray-600" />
             ) : (
               <MenuIcon className="h-5 w-5 text-gray-600" />

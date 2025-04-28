@@ -67,6 +67,25 @@ export const NavigationProvider: React.FC<{ children: React.ReactNode }> = ({ ch
     DEFAULT_NAVIGATION_STATE
   );
   const [isLoading, setIsLoading] = useState(true);
+  const [isMobile, setIsMobile] = useState<boolean>(false);
+  
+  // Check if we're on a mobile device
+  useEffect(() => {
+    const checkIfMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    // Initial check
+    checkIfMobile();
+    
+    // Add resize listener
+    window.addEventListener('resize', checkIfMobile);
+    
+    // Cleanup
+    return () => {
+      window.removeEventListener('resize', checkIfMobile);
+    };
+  }, []);
 
   useEffect(() => {
     const loadNavigationData = async () => {
@@ -124,6 +143,13 @@ export const NavigationProvider: React.FC<{ children: React.ReactNode }> = ({ ch
     }));
   };
 
+  const toggleMobileSidebar = () => {
+    setNavigationState(prev => ({
+      ...prev,
+      mobileSidebarCollapsed: !prev.mobileSidebarCollapsed
+    }));
+  };
+
   const toggleQuickSelect = () => {
     setNavigationState(prev => ({
       ...prev,
@@ -164,10 +190,12 @@ export const NavigationProvider: React.FC<{ children: React.ReactNode }> = ({ ch
         toggleGroup,
         toggleSubmenu,
         toggleSidebar,
+        toggleMobileSidebar,
         toggleQuickSelect,
         getItemsForQuickSelect,
         getGroupItems,
-        isLoading
+        isLoading,
+        isMobile
       }}
     >
       {children}
