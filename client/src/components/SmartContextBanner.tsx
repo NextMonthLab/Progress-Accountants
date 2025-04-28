@@ -3,6 +3,7 @@ import { Brain, X, Clock, ChevronDown, ChevronUp, LightbulbIcon } from 'lucide-r
 import { useLocation } from 'wouter';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { useNavigation } from '@/contexts/NavigationContext';
 
 interface SmartContext {
   context: string;
@@ -16,6 +17,7 @@ const SmartContextBanner: React.FC = () => {
   const [isOpen, setIsOpen] = useState(true);
   const [smartContext, setSmartContext] = useState<SmartContext | null>(null);
   const [loading, setLoading] = useState(true);
+  const { navigationState } = useNavigation();
 
   // Load contextual information based on current page
   useEffect(() => {
@@ -70,7 +72,8 @@ const SmartContextBanner: React.FC = () => {
     }, 600);
   }, [location]);
 
-  if (!isOpen || !smartContext) return null;
+  // Don't show the banner if it's been dismissed, there's no context, or focused mode is enabled
+  if (!isOpen || !smartContext || navigationState.focusedMode) return null;
 
   return (
     <div className="bg-gradient-to-r from-slate-50 to-orange-50/30 border-b border-gray-200 p-2 px-4 text-sm relative">

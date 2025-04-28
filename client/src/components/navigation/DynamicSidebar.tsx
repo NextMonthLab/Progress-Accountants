@@ -129,6 +129,7 @@ const DynamicSidebar: React.FC = () => {
     toggleSubmenu,
     toggleSidebar,
     toggleMobileSidebar,
+    toggleFocusedMode,
     addPinnedItem,
     removePinnedItem,
     getGroupItems,
