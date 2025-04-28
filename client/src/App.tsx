@@ -259,6 +259,14 @@ function Router() {
         allowedRoles={['admin', 'super_admin']} 
       />
       <ProtectedRoute 
+        path="/admin/sot-json-sender" 
+        component={() => import("@/pages/admin/SotManagerPage").then(module => {
+          const SotManagerPage = module.default;
+          return <SotManagerPage />;
+        })}
+        allowedRoles={['super_admin']} 
+      />
+      <ProtectedRoute 
         path="/admin/conversation-insights" 
         component={ConversationInsightsPage} 
         allowedRoles={['admin', 'super_admin', 'editor']} 

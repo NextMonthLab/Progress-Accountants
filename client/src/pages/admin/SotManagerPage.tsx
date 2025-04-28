@@ -62,7 +62,7 @@ export default function SotManagerPage() {
   }, []);
 
   // Check if user is authorized (super admin)
-  const isAuthorized = user && user.role === 'superadmin';
+  const isAuthorized = user && user.userType === 'super_admin';
 
   // Format date for display
   const formatDate = (dateString: string) => {
