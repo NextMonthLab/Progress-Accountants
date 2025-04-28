@@ -454,47 +454,61 @@ const queryClient = new QueryClient({
 });
 
 function App() {
-  // DIAGNOSTIC MODE LEVEL 2: Add PermissionsProvider, ThemeProvider and TenantProvider
+  // DIAGNOSTIC MODE LEVEL 3: Add CompanionContextProvider, HelpProvider, HealthProvider
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider queryClient={queryClient}>
         <PermissionsProvider>
           <ThemeProvider>
             <TenantProvider>
-              <div style={{padding: '20px', background: 'white', minHeight: '100vh'}}>
-                <h1 style={{fontSize: '24px', fontWeight: 'bold', marginBottom: '16px'}}>
-                  Diagnostic Dashboard (Level 2)
-                </h1>
-                <p style={{marginBottom: '16px'}}>
-                  Testing with QueryClient, Auth, Permissions, Theme, and Tenant providers.
-                </p>
-                
-                <div style={{
-                  border: '1px solid #ddd',
-                  borderRadius: '8px',
-                  padding: '16px',
-                  marginBottom: '16px'
-                }}>
-                  <h2 style={{fontSize: '18px', fontWeight: 'bold', marginBottom: '8px'}}>
-                    System Status
-                  </h2>
-                  <p>If this loads, the issue is likely in one of the remaining providers or components.</p>
-                  <button 
-                    style={{
-                      marginTop: '16px',
-                      padding: '8px 16px',
-                      background: '#0066cc',
-                      color: 'white',
-                      border: 'none',
-                      borderRadius: '4px',
-                      cursor: 'pointer'
-                    }}
-                    onClick={() => window.location.reload()}
-                  >
-                    Refresh Page
-                  </button>
-                </div>
-              </div>
+              <CompanionContextProvider>
+                <HelpProvider>
+                  <HealthProvider>
+                    <DocumentHead route="/" />
+                    <div style={{padding: '20px', background: 'white', minHeight: '100vh'}}>
+                      <h1 style={{fontSize: '24px', fontWeight: 'bold', marginBottom: '16px'}}>
+                        Diagnostic Dashboard (Level 3)
+                      </h1>
+                      <p style={{marginBottom: '16px'}}>
+                        Testing with all providers but no MainLayout or Router.
+                      </p>
+                      
+                      <div style={{
+                        border: '1px solid #ddd',
+                        borderRadius: '8px',
+                        padding: '16px',
+                        marginBottom: '16px'
+                      }}>
+                        <h2 style={{fontSize: '18px', fontWeight: 'bold', marginBottom: '8px'}}>
+                          System Status
+                        </h2>
+                        <p>If this loads, the issue is likely in MainLayout or Router components.</p>
+                        <button 
+                          style={{
+                            marginTop: '16px',
+                            padding: '8px 16px',
+                            background: '#0066cc',
+                            color: 'white',
+                            border: 'none',
+                            borderRadius: '4px',
+                            cursor: 'pointer'
+                          }}
+                          onClick={() => window.location.reload()}
+                        >
+                          Refresh Page
+                        </button>
+                      </div>
+                    </div>
+                    {/* We are not including these components yet */}
+                    {/* <DualModeCompanion /> */}
+                    {/* <UpgradeAnnouncement /> */}
+                    {/* <InstantHelpWidget /> */}
+                    {/* <ContextSuggestion /> */}
+                    {/* <HealthTracker /> */}
+                    <Toaster />
+                  </HealthProvider>
+                </HelpProvider>
+              </CompanionContextProvider>
             </TenantProvider>
           </ThemeProvider>
         </PermissionsProvider>
