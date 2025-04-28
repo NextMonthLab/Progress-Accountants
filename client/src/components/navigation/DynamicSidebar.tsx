@@ -136,7 +136,7 @@ const DynamicSidebar: React.FC = () => {
     isMobile
   } = useNavigation();
   
-  const { sidebarCollapsed, mobileSidebarCollapsed, expandedGroups, expandedSubmenus, pinnedItems } = navigationState;
+  const { sidebarCollapsed, mobileSidebarCollapsed, expandedGroups, expandedSubmenus, pinnedItems, focusedMode } = navigationState;
   
   // Check if user has staff privileges (admin, super_admin, or editor)
   const isStaff = user?.userType === 'admin' || user?.userType === 'super_admin' || user?.userType === 'editor' || user?.isSuperAdmin;
@@ -582,6 +582,52 @@ const DynamicSidebar: React.FC = () => {
         
         {/* Sidebar Footer */}
         <div className="p-3 space-y-2 border-t border-gray-200 bg-gradient-to-r from-white to-orange-50/30">
+          {/* Focused Mode Toggle */}
+          {sidebarCollapsed ? (
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button 
+                  variant="outline"
+                  onClick={toggleFocusedMode}
+                  className={cn(
+                    "w-full flex items-center justify-center transition-all duration-200 mb-2 p-2",
+                    focusedMode 
+                      ? "border-emerald-300 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 hover:border-emerald-400" 
+                      : "border-gray-300 bg-white text-gray-700 hover:bg-gray-50 hover:border-gray-400"
+                  )}
+                >
+                  {focusedMode ? <Sparkles className="h-5 w-5" /> : <Brain className="h-5 w-5" />}
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right">
+                {focusedMode ? "Exit Focused Mode" : "Enter Focused Mode"}
+              </TooltipContent>
+            </Tooltip>
+          ) : (
+            <Button 
+              variant="outline"
+              onClick={toggleFocusedMode}
+              className={cn(
+                "w-full flex items-center justify-center transition-all duration-200 mb-2",
+                focusedMode 
+                  ? "border-emerald-300 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 hover:border-emerald-400" 
+                  : "border-gray-300 bg-white text-gray-700 hover:bg-gray-50 hover:border-gray-400"
+              )}
+            >
+              {focusedMode ? (
+                <>
+                  <Sparkles className="mr-2 h-5 w-5" />
+                  Exit Focused Mode
+                </>
+              ) : (
+                <>
+                  <Brain className="mr-2 h-5 w-5" />
+                  Enter Focused Mode
+                </>
+              )}
+            </Button>
+          )}
+        
           <Link href="/">
             <Button 
               variant="outline"
