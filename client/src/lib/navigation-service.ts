@@ -299,6 +299,18 @@ export const mapSidebarToNavigation = (): NavigationItem[] => {
       category: 'system',
     },
     {
+      id: 'diagnostics_dashboard',
+      title: 'Diagnostics Dashboard',
+      icon: 'ActivitySquare',
+      type: 'link',
+      href: '/diagnostics',
+      requiresStaff: true,
+      requiresSuperAdmin: false, // Available to admin and super_admin
+      badge: { text: 'Admin', variant: 'pro' },
+      category: 'system',
+      description: 'System diagnostics and performance monitoring',
+    },
+    {
       id: 'blueprint_management',
       title: 'Blueprint Management',
       icon: 'Cpu',
