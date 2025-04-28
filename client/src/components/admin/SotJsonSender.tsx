@@ -1,603 +1,815 @@
 import React, { useState, useEffect } from 'react';
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Textarea } from "@/components/ui/textarea";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { AlertCircle, CheckCircle, RefreshCw, Send, Database, FileText } from 'lucide-react';
-import { Badge } from "@/components/ui/badge";
-import { useMutation, useQuery } from '@tanstack/react-query';
-import { apiRequest, queryClient } from '@/lib/queryClient';
-import { Skeleton } from '@/components/ui/skeleton';
+import { useQuery, useMutation } from '@tanstack/react-query';
+import { getQueryFn, apiRequest, queryClient } from '@/lib/queryClient';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { Label } from '@/components/ui/label';
+import { Switch } from '@/components/ui/switch';
+import { Badge } from '@/components/ui/badge';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { useToast } from '@/hooks/use-toast';
-import { useAuth } from '@/hooks/use-auth';
+import { Loader2, RefreshCw, Clock, Upload, CheckCircle, XCircle, AlertCircle } from 'lucide-react';
+import { formatDistanceToNow } from 'date-fns';
 
-export function SotJsonSender() {
+interface SotDeclaration {
+  id: number;
+  instanceId: string;
+  instanceType: string;
+  blueprintVersion: string;
+  toolsSupported: string[];
+  callbackUrl: string;
+  isTemplate: boolean;
+  isCloneable: boolean;
+  status: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+interface SotClientProfile {
+  id: number;
+  businessId: string;
+  businessName: string;
+  businessType: string;
+  industry: string;
+  description: string;
+  location: {
+    city: string;
+    country: string;
+  };
+  profileData: any;
+  syncStatus: string;
+  lastSyncAt: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+interface SyncStatus {
+  isRunning: boolean;
+  schedule: string;
+  lastSync: string | null;
+  retryCount: number;
+  maxRetries: number;
+  logs: SyncLog[];
+}
+
+interface SyncLog {
+  id: number;
+  eventType: string;
+  status: string;
+  details: any;
+  createdAt: string;
+}
+
+interface SotJsonSenderProps {
+  className?: string;
+}
+
+/**
+ * SotJsonSender Component
+ * Provides an interface to interact with the SOT system
+ */
+export default function SotJsonSender({ className }: SotJsonSenderProps) {
   const { toast } = useToast();
-  const { user } = useAuth();
-  const [activeTab, setActiveTab] = useState("declaration");
-  const [declarationJson, setDeclarationJson] = useState("");
-  const [profileJson, setProfileJson] = useState("");
-  const [isValidJson, setIsValidJson] = useState(true);
-  const [jsonErrorMessage, setJsonErrorMessage] = useState("");
-  
-  // Get SOT declaration
-  const { 
-    data: declaration, 
-    isLoading: isLoadingDeclaration 
-  } = useQuery({
-    queryKey: ['/api/sot/declaration'],
-    queryFn: async () => {
-      try {
-        const res = await apiRequest('GET', '/api/sot/declaration');
-        return await res.json();
-      } catch (error) {
-        console.error('Error fetching SOT declaration:', error);
-        return null;
-      }
-    },
-    retry: false,
-    enabled: true
+  const [activeTab, setActiveTab] = useState('declarations');
+  const [jsonMode, setJsonMode] = useState(false);
+  const [newDeclaration, setNewDeclaration] = useState({
+    instanceId: '',
+    instanceType: 'client_site',
+    blueprintVersion: '1.0.0',
+    toolsSupported: '',
+    callbackUrl: ''
   });
   
-  // Get client profile
-  const { 
-    data: clientProfile, 
-    isLoading: isLoadingProfile 
+  // Get declarations
+  const {
+    data: declarationsData,
+    isLoading: isLoadingDeclarations,
+    error: declarationsError
   } = useQuery({
-    queryKey: ['/api/sot/client-profile'],
-    queryFn: async () => {
-      try {
-        const res = await apiRequest('GET', '/api/sot/client-profile');
-        return await res.json();
-      } catch (error) {
-        console.error('Error fetching client profile:', error);
-        return null;
-      }
-    },
-    retry: false,
-    enabled: true
+    queryKey: ['/api/sot/declarations'],
+    queryFn: getQueryFn(),
+    refetchInterval: 60000 // Refetch every minute
   });
   
-  // Get sync logs
-  const { 
-    data: syncLogs, 
-    isLoading: isLoadingLogs 
+  // Get client profiles
+  const {
+    data: profilesData,
+    isLoading: isLoadingProfiles,
+    error: profilesError
   } = useQuery({
-    queryKey: ['/api/sot/sync-logs'],
-    queryFn: async () => {
-      try {
-        const res = await apiRequest('GET', '/api/sot/sync-logs');
-        return await res.json();
-      } catch (error) {
-        console.error('Error fetching sync logs:', error);
-        return { logs: [], pagination: { totalLogs: 0 } };
-      }
-    },
-    enabled: Boolean(user?.isSuperAdmin)
+    queryKey: ['/api/sot/profiles'],
+    queryFn: getQueryFn(),
+    refetchInterval: 60000 // Refetch every minute
   });
   
-  // Update declaration mutation
-  const updateDeclaration = useMutation({
-    mutationFn: async (json: string) => {
-      const res = await apiRequest('POST', '/api/sot/declaration', JSON.parse(json));
-      return await res.json();
+  // Get sync status
+  const {
+    data: syncStatusData,
+    isLoading: isLoadingSyncStatus,
+    error: syncStatusError
+  } = useQuery({
+    queryKey: ['/api/sot/sync/status'],
+    queryFn: getQueryFn(),
+    refetchInterval: 30000 // Refetch every 30 seconds
+  });
+  
+  // Register declaration mutation
+  const registerDeclarationMutation = useMutation({
+    mutationFn: async (data: any) => {
+      const response = await apiRequest('POST', '/api/sot/declarations', data);
+      return response.json();
     },
     onSuccess: () => {
       toast({
-        title: 'Declaration updated',
-        description: 'SOT declaration has been successfully updated.',
-        variant: 'default',
+        title: 'Declaration Registered',
+        description: 'The SOT declaration has been registered successfully',
+        variant: 'default'
       });
-      queryClient.invalidateQueries({ queryKey: ['/api/sot/declaration'] });
-      queryClient.invalidateQueries({ queryKey: ['/api/sot/sync-logs'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/sot/declarations'] });
+      resetDeclarationForm();
     },
     onError: (error: Error) => {
       toast({
-        title: 'Update failed',
-        description: `Failed to update SOT declaration: ${error.message}`,
-        variant: 'destructive',
+        title: 'Registration Failed',
+        description: error.message || 'Failed to register SOT declaration',
+        variant: 'destructive'
       });
     }
   });
   
-  // Update profile mutation
-  const updateProfile = useMutation({
-    mutationFn: async (json: string) => {
-      const res = await apiRequest('POST', '/api/sot/client-profile', JSON.parse(json));
-      return await res.json();
+  // Update template status mutation
+  const updateTemplateMutation = useMutation({
+    mutationFn: async ({ instanceId, isTemplate, isCloneable }: { instanceId: string, isTemplate: boolean, isCloneable: boolean }) => {
+      const response = await apiRequest('PATCH', `/api/sot/declarations/${instanceId}/template`, { isTemplate, isCloneable });
+      return response.json();
     },
     onSuccess: () => {
       toast({
-        title: 'Profile updated',
-        description: 'Client profile has been successfully updated.',
-        variant: 'default',
+        title: 'Template Status Updated',
+        description: 'The template status has been updated successfully',
+        variant: 'default'
       });
-      queryClient.invalidateQueries({ queryKey: ['/api/sot/client-profile'] });
-      queryClient.invalidateQueries({ queryKey: ['/api/sot/sync-logs'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/sot/declarations'] });
     },
     onError: (error: Error) => {
       toast({
-        title: 'Update failed',
-        description: `Failed to update client profile: ${error.message}`,
-        variant: 'destructive',
+        title: 'Update Failed',
+        description: error.message || 'Failed to update template status',
+        variant: 'destructive'
       });
     }
   });
   
-  // Trigger sync mutation
-  const triggerSync = useMutation({
+  // Trigger manual sync mutation
+  const triggerSyncMutation = useMutation({
     mutationFn: async () => {
-      const res = await apiRequest('POST', '/api/sot/sync', {});
-      return await res.json();
+      const response = await apiRequest('POST', '/api/sot/sync');
+      return response.json();
     },
     onSuccess: (data) => {
       toast({
-        title: 'Sync completed',
-        description: 'Client profile sync has been successfully completed.',
-        variant: 'default',
+        title: 'Sync Triggered',
+        description: data.message || 'Manual sync has been triggered successfully',
+        variant: 'default'
       });
-      queryClient.invalidateQueries({ queryKey: ['/api/sot/client-profile'] });
-      queryClient.invalidateQueries({ queryKey: ['/api/sot/sync-logs'] });
-      
-      // Update the profile JSON area with the latest data
-      setProfileJson(JSON.stringify(data.profileData, null, 2));
+      queryClient.invalidateQueries({ queryKey: ['/api/sot/sync/status'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/sot/profiles'] });
     },
     onError: (error: Error) => {
       toast({
-        title: 'Sync failed',
-        description: `Failed to sync client profile: ${error.message}`,
-        variant: 'destructive',
+        title: 'Sync Failed',
+        description: error.message || 'Failed to trigger manual sync',
+        variant: 'destructive'
       });
     }
   });
   
-  // Initialize JSON editors with fetched data
-  useEffect(() => {
-    if (declaration) {
-      try {
-        setDeclarationJson(JSON.stringify(declaration, null, 2));
-      } catch (e) {
-        setDeclarationJson("");
-      }
+  // Update sync schedule mutation
+  const updateScheduleMutation = useMutation({
+    mutationFn: async (schedule: string) => {
+      const response = await apiRequest('PATCH', '/api/sot/sync/schedule', { schedule });
+      return response.json();
+    },
+    onSuccess: () => {
+      toast({
+        title: 'Schedule Updated',
+        description: 'The sync schedule has been updated successfully',
+        variant: 'default'
+      });
+      queryClient.invalidateQueries({ queryKey: ['/api/sot/sync/status'] });
+    },
+    onError: (error: Error) => {
+      toast({
+        title: 'Update Failed',
+        description: error.message || 'Failed to update sync schedule',
+        variant: 'destructive'
+      });
     }
-  }, [declaration]);
+  });
   
-  useEffect(() => {
-    if (clientProfile) {
-      try {
-        setProfileJson(JSON.stringify(clientProfile, null, 2));
-      } catch (e) {
-        setProfileJson("");
-      }
-    }
-  }, [clientProfile]);
-  
-  // Validate JSON input
-  const validateJson = (json: string): boolean => {
-    try {
-      if (json.trim() === "") return true;
-      JSON.parse(json);
-      setIsValidJson(true);
-      setJsonErrorMessage("");
-      return true;
-    } catch (e) {
-      setIsValidJson(false);
-      setJsonErrorMessage(e.message);
-      return false;
-    }
+  const resetDeclarationForm = () => {
+    setNewDeclaration({
+      instanceId: '',
+      instanceType: 'client_site',
+      blueprintVersion: '1.0.0',
+      toolsSupported: '',
+      callbackUrl: ''
+    });
   };
   
-  // Handle text change in JSON editors
-  const handleJsonChange = (json: string, type: 'declaration' | 'profile') => {
-    if (type === 'declaration') {
-      setDeclarationJson(json);
+  const handleDeclarationSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (jsonMode) {
+      try {
+        const jsonData = JSON.parse(document.getElementById('declarationJson')?.value || '{}');
+        registerDeclarationMutation.mutate(jsonData);
+      } catch (error) {
+        toast({
+          title: 'Invalid JSON',
+          description: 'Please provide valid JSON data',
+          variant: 'destructive'
+        });
+      }
     } else {
-      setProfileJson(json);
-    }
-    validateJson(json);
-  };
-  
-  // Handle form submissions
-  const handleSubmitDeclaration = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (validateJson(declarationJson)) {
-      updateDeclaration.mutate(declarationJson);
-    }
-  };
-  
-  const handleSubmitProfile = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (validateJson(profileJson)) {
-      updateProfile.mutate(profileJson);
-    }
-  };
-  
-  const handleSyncProfile = () => {
-    triggerSync.mutate();
-  };
-  
-  // Create a template JSON for new declarations
-  const createTemplateDeclaration = () => {
-    const template = {
-      instanceId: "00000000-0000-0000-0000-000000000000",
-      instanceType: "client_site",
-      blueprintVersion: "1.0.0",
-      toolsSupported: ["social_media", "crm", "analytics"],
-      callbackUrl: "https://api.nextmonth.ai/sot/callback",
-      isTemplate: false,
-      isCloneable: true
-    };
-    
-    setDeclarationJson(JSON.stringify(template, null, 2));
-  };
-  
-  // Create a template JSON for new client profiles
-  const createTemplateProfile = () => {
-    const template = {
-      businessId: "00000000-0000-0000-0000-000000000000",
-      businessName: "Progress Accountants",
-      businessType: "Accounting Firm",
-      industry: "Finance",
-      description: "Professional accounting services",
-      locationData: {
-        city: "London",
-        country: "United Kingdom"
-      },
-      contactInfo: {
-        email: "info@progressaccountants.com",
-        phone: "+44 123 456 7890"
-      },
-      profileData: {
-        metrics: {
-          totalPages: 10,
-          totalUsers: 5,
-          totalTools: 8
-        },
-        features: {
-          hasCustomBranding: true,
-          hasPublishedPages: true,
-          hasCRM: true,
-          hasAnalytics: true
-        },
-        dateOnboarded: new Date().toISOString(),
-        lastSync: new Date().toISOString()
+      // Form mode
+      if (!newDeclaration.instanceId || !newDeclaration.callbackUrl) {
+        toast({
+          title: 'Missing Fields',
+          description: 'Please fill in all required fields',
+          variant: 'destructive'
+        });
+        return;
       }
-    };
+      
+      const toolsArray = newDeclaration.toolsSupported
+        .split(',')
+        .map(tool => tool.trim())
+        .filter(tool => tool.length > 0);
+      
+      registerDeclarationMutation.mutate({
+        instanceId: newDeclaration.instanceId,
+        instanceType: newDeclaration.instanceType,
+        blueprintVersion: newDeclaration.blueprintVersion,
+        toolsSupported: toolsArray,
+        callbackUrl: newDeclaration.callbackUrl
+      });
+    }
+  };
+  
+  const handleToggleTemplate = (declaration: SotDeclaration, isTemplate: boolean, isCloneable: boolean) => {
+    updateTemplateMutation.mutate({
+      instanceId: declaration.instanceId,
+      isTemplate,
+      isCloneable
+    });
+  };
+  
+  const handleManualSync = () => {
+    triggerSyncMutation.mutate();
+  };
+  
+  const handleUpdateSchedule = (e: React.FormEvent) => {
+    e.preventDefault();
+    const scheduleInput = document.getElementById('syncSchedule') as HTMLInputElement;
+    if (scheduleInput && scheduleInput.value) {
+      updateScheduleMutation.mutate(scheduleInput.value);
+    }
+  };
+  
+  const renderDeclarationStatus = (status: string) => {
+    switch (status) {
+      case 'active':
+        return <Badge variant="success" className="bg-green-500">Active</Badge>;
+      case 'pending':
+        return <Badge variant="outline" className="bg-yellow-500 text-white">Pending</Badge>;
+      case 'error':
+        return <Badge variant="destructive">Error</Badge>;
+      default:
+        return <Badge variant="secondary">{status}</Badge>;
+    }
+  };
+  
+  const renderSyncStatus = (status: string) => {
+    switch (status) {
+      case 'synced':
+        return <Badge variant="success" className="bg-green-500">Synced</Badge>;
+      case 'pending':
+        return <Badge variant="outline" className="bg-yellow-500 text-white">Pending</Badge>;
+      case 'error':
+        return <Badge variant="destructive">Error</Badge>;
+      default:
+        return <Badge variant="secondary">{status}</Badge>;
+    }
+  };
+  
+  const renderTimeAgo = (dateString: string | null) => {
+    if (!dateString) return 'Never';
     
-    setProfileJson(JSON.stringify(template, null, 2));
+    try {
+      const date = new Date(dateString);
+      return formatDistanceToNow(date, { addSuffix: true });
+    } catch (error) {
+      return 'Invalid date';
+    }
+  };
+  
+  const declarations = declarationsData?.declarations || [];
+  const profiles = profilesData?.profiles || [];
+  const syncStatus: SyncStatus = syncStatusData?.status || {
+    isRunning: false,
+    schedule: '0 3 * * *',
+    lastSync: null,
+    retryCount: 0,
+    maxRetries: 3,
+    logs: []
   };
   
   return (
-    <div className="container mx-auto py-6">
-      <h1 className="text-3xl font-semibold mb-6">SOT Management System</h1>
-      
-      <Tabs defaultValue="declaration" value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="grid grid-cols-3 w-full md:w-2/3 lg:w-1/3 mb-6">
-          <TabsTrigger value="declaration">SOT Declaration</TabsTrigger>
-          <TabsTrigger value="profile">Client Profile</TabsTrigger>
-          <TabsTrigger value="logs">Sync Logs</TabsTrigger>
+    <div className={`space-y-6 ${className}`}>
+      <Tabs value={activeTab} onValueChange={setActiveTab}>
+        <TabsList className="grid w-full grid-cols-3">
+          <TabsTrigger value="declarations">SOT Declarations</TabsTrigger>
+          <TabsTrigger value="profiles">Client Profiles</TabsTrigger>
+          <TabsTrigger value="sync">Sync Status</TabsTrigger>
         </TabsList>
         
-        {/* Declaration Tab */}
-        <TabsContent value="declaration">
+        {/* Declarations Tab */}
+        <TabsContent value="declarations" className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center">
-                <Database className="h-5 w-5 mr-2" />
-                SOT Declaration
-              </CardTitle>
+              <CardTitle>Register SOT Declaration</CardTitle>
               <CardDescription>
-                Manage your Source of Truth declaration settings
+                Register or update an instance with the SOT system
               </CardDescription>
+              <div className="flex items-center space-x-2 pt-2">
+                <Switch
+                  id="json-mode"
+                  checked={jsonMode}
+                  onCheckedChange={setJsonMode}
+                />
+                <Label htmlFor="json-mode">JSON Mode</Label>
+              </div>
             </CardHeader>
             <CardContent>
-              {isLoadingDeclaration ? (
-                <div className="space-y-2">
-                  <Skeleton className="h-[20px] w-[150px]" />
-                  <Skeleton className="h-[300px] w-full" />
-                </div>
-              ) : declaration ? (
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between mb-4">
-                    <div>
-                      <Badge variant="outline" className="mr-2">
-                        {declaration.instance_type}
-                      </Badge>
-                      <Badge variant={declaration.status === 'pending' ? 'secondary' : 'default'}>
-                        {declaration.status}
-                      </Badge>
-                    </div>
-                    <p className="text-sm text-muted-foreground">
-                      Last updated: {new Date(declaration.updated_at).toLocaleString()}
-                    </p>
+              <form onSubmit={handleDeclarationSubmit}>
+                {jsonMode ? (
+                  <div className="space-y-4">
+                    <Label htmlFor="declarationJson">JSON Data</Label>
+                    <Textarea
+                      id="declarationJson"
+                      placeholder="Enter JSON data..."
+                      className="font-mono h-64"
+                      defaultValue={JSON.stringify({
+                        instanceId: "client-site-123",
+                        instanceType: "client_site",
+                        blueprintVersion: "1.0.0",
+                        toolsSupported: ["crm", "financial-dashboard", "reporting"],
+                        callbackUrl: "https://nextmonth.ai/sot/callback"
+                      }, null, 2)}
+                    />
                   </div>
-                  
-                  <form onSubmit={handleSubmitDeclaration}>
-                    <div className="space-y-4">
-                      <div>
-                        <Label htmlFor="declaration-json">Declaration JSON</Label>
-                        <Textarea
-                          id="declaration-json"
-                          className="font-mono h-[300px]"
-                          value={declarationJson}
-                          onChange={(e) => handleJsonChange(e.target.value, 'declaration')}
+                ) : (
+                  <div className="space-y-4">
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="instanceId">Instance ID *</Label>
+                        <Input
+                          id="instanceId"
+                          value={newDeclaration.instanceId}
+                          onChange={(e) => setNewDeclaration({...newDeclaration, instanceId: e.target.value})}
+                          placeholder="e.g. client-site-123"
+                          required
                         />
                       </div>
-                      
-                      {!isValidJson && (
-                        <Alert variant="destructive">
-                          <AlertCircle className="h-4 w-4" />
-                          <AlertTitle>Invalid JSON</AlertTitle>
-                          <AlertDescription>{jsonErrorMessage}</AlertDescription>
-                        </Alert>
-                      )}
-                      
-                      <div className="flex justify-between">
-                        <Button
-                          type="button"
-                          variant="outline"
-                          onClick={createTemplateDeclaration}
-                        >
-                          Create Template
-                        </Button>
-                        <Button
-                          type="submit"
-                          disabled={!isValidJson || updateDeclaration.isPending}
-                        >
-                          {updateDeclaration.isPending ? (
-                            <>
-                              <RefreshCw className="mr-2 h-4 w-4 animate-spin" />
-                              Updating...
-                            </>
-                          ) : (
-                            <>
-                              <Send className="mr-2 h-4 w-4" />
-                              Update Declaration
-                            </>
-                          )}
-                        </Button>
-                      </div>
-                    </div>
-                  </form>
-                </div>
-              ) : (
-                <div className="space-y-4">
-                  <Alert>
-                    <AlertCircle className="h-4 w-4" />
-                    <AlertTitle>No declaration found</AlertTitle>
-                    <AlertDescription>
-                      Create a new SOT declaration using the form below.
-                    </AlertDescription>
-                  </Alert>
-                  
-                  <form onSubmit={handleSubmitDeclaration}>
-                    <div className="space-y-4">
-                      <div>
-                        <Label htmlFor="declaration-json">Declaration JSON</Label>
-                        <Textarea
-                          id="declaration-json"
-                          className="font-mono h-[300px]"
-                          value={declarationJson}
-                          onChange={(e) => handleJsonChange(e.target.value, 'declaration')}
-                          placeholder='{"instanceId": "00000000-0000-0000-0000-000000000000", ...}'
+                      <div className="space-y-2">
+                        <Label htmlFor="instanceType">Instance Type *</Label>
+                        <Input
+                          id="instanceType"
+                          value={newDeclaration.instanceType}
+                          onChange={(e) => setNewDeclaration({...newDeclaration, instanceType: e.target.value})}
+                          placeholder="e.g. client_site"
+                          required
                         />
                       </div>
-                      
-                      {!isValidJson && (
-                        <Alert variant="destructive">
-                          <AlertCircle className="h-4 w-4" />
-                          <AlertTitle>Invalid JSON</AlertTitle>
-                          <AlertDescription>{jsonErrorMessage}</AlertDescription>
-                        </Alert>
-                      )}
-                      
-                      <div className="flex justify-between">
-                        <Button
-                          type="button"
-                          variant="outline"
-                          onClick={createTemplateDeclaration}
-                        >
-                          Create Template
-                        </Button>
-                        <Button
-                          type="submit"
-                          disabled={!isValidJson || declarationJson.trim() === "" || updateDeclaration.isPending}
-                        >
-                          {updateDeclaration.isPending ? (
-                            <>
-                              <RefreshCw className="mr-2 h-4 w-4 animate-spin" />
-                              Creating...
-                            </>
-                          ) : (
-                            <>
-                              <Send className="mr-2 h-4 w-4" />
-                              Create Declaration
-                            </>
-                          )}
-                        </Button>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="blueprintVersion">Blueprint Version *</Label>
+                        <Input
+                          id="blueprintVersion"
+                          value={newDeclaration.blueprintVersion}
+                          onChange={(e) => setNewDeclaration({...newDeclaration, blueprintVersion: e.target.value})}
+                          placeholder="e.g. 1.0.0"
+                          required
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="toolsSupported">
+                          Tools Supported * <span className="text-xs text-muted-foreground">(comma separated)</span>
+                        </Label>
+                        <Input
+                          id="toolsSupported"
+                          value={newDeclaration.toolsSupported}
+                          onChange={(e) => setNewDeclaration({...newDeclaration, toolsSupported: e.target.value})}
+                          placeholder="e.g. crm, reporting, dashboard"
+                          required
+                        />
                       </div>
                     </div>
-                  </form>
+                    <div className="space-y-2">
+                      <Label htmlFor="callbackUrl">Callback URL *</Label>
+                      <Input
+                        id="callbackUrl"
+                        value={newDeclaration.callbackUrl}
+                        onChange={(e) => setNewDeclaration({...newDeclaration, callbackUrl: e.target.value})}
+                        placeholder="e.g. https://nextmonth.ai/sot/callback"
+                        required
+                      />
+                    </div>
+                  </div>
+                )}
+                <div className="pt-4">
+                  <Button 
+                    type="submit" 
+                    disabled={registerDeclarationMutation.isPending}
+                    className="w-full"
+                  >
+                    {registerDeclarationMutation.isPending && (
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    )}
+                    Register Declaration
+                  </Button>
                 </div>
-              )}
+              </form>
             </CardContent>
           </Card>
-        </TabsContent>
-        
-        {/* Client Profile Tab */}
-        <TabsContent value="profile">
+          
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center">
-                <FileText className="h-5 w-5 mr-2" />
-                Client Profile
-              </CardTitle>
+              <CardTitle>Existing Declarations</CardTitle>
               <CardDescription>
-                Manage your client profile data sent to the Source of Truth system
+                View and manage SOT declarations
               </CardDescription>
             </CardHeader>
             <CardContent>
-              {isLoadingProfile ? (
-                <div className="space-y-2">
-                  <Skeleton className="h-[20px] w-[150px]" />
-                  <Skeleton className="h-[300px] w-full" />
+              {isLoadingDeclarations ? (
+                <div className="flex justify-center py-8">
+                  <Loader2 className="h-8 w-8 animate-spin text-primary" />
                 </div>
-              ) : (
-                <div className="space-y-4">
-                  {clientProfile && (
-                    <div className="flex items-center justify-between mb-4">
-                      <div>
-                        <Badge variant="outline" className="mr-2">
-                          {clientProfile.business_type}
-                        </Badge>
-                        <Badge variant={clientProfile.sync_status === 'pending' ? 'secondary' : 'default'}>
-                          {clientProfile.sync_status}
-                        </Badge>
-                      </div>
-                      <p className="text-sm text-muted-foreground">
-                        Last synced: {clientProfile.last_sync_at ? new Date(clientProfile.last_sync_at).toLocaleString() : 'Never'}
-                      </p>
-                    </div>
-                  )}
-                  
-                  <div className="flex justify-end mb-4">
-                    <Button 
-                      variant="outline" 
-                      onClick={handleSyncProfile}
-                      disabled={triggerSync.isPending}
-                    >
-                      {triggerSync.isPending ? (
-                        <>
-                          <RefreshCw className="mr-2 h-4 w-4 animate-spin" />
-                          Syncing...
-                        </>
-                      ) : (
-                        <>
-                          <RefreshCw className="mr-2 h-4 w-4" />
-                          Sync Profile Now
-                        </>
-                      )}
-                    </Button>
-                  </div>
-                  
-                  <form onSubmit={handleSubmitProfile}>
-                    <div className="space-y-4">
-                      <div>
-                        <Label htmlFor="profile-json">Profile JSON</Label>
-                        <Textarea
-                          id="profile-json"
-                          className="font-mono h-[300px]"
-                          value={profileJson}
-                          onChange={(e) => handleJsonChange(e.target.value, 'profile')}
-                          placeholder='{"businessId": "00000000-0000-0000-0000-000000000000", ...}'
-                        />
-                      </div>
-                      
-                      {!isValidJson && (
-                        <Alert variant="destructive">
-                          <AlertCircle className="h-4 w-4" />
-                          <AlertTitle>Invalid JSON</AlertTitle>
-                          <AlertDescription>{jsonErrorMessage}</AlertDescription>
-                        </Alert>
-                      )}
-                      
-                      <div className="flex justify-between">
-                        <Button
-                          type="button"
-                          variant="outline"
-                          onClick={createTemplateProfile}
-                        >
-                          Create Template
-                        </Button>
-                        <Button
-                          type="submit"
-                          disabled={!isValidJson || profileJson.trim() === "" || updateProfile.isPending}
-                        >
-                          {updateProfile.isPending ? (
-                            <>
-                              <RefreshCw className="mr-2 h-4 w-4 animate-spin" />
-                              {clientProfile ? 'Updating...' : 'Creating...'}
-                            </>
-                          ) : (
-                            <>
-                              <Send className="mr-2 h-4 w-4" />
-                              {clientProfile ? 'Update Profile' : 'Create Profile'}
-                            </>
-                          )}
-                        </Button>
-                      </div>
-                    </div>
-                  </form>
-                </div>
-              )}
-            </CardContent>
-          </Card>
-        </TabsContent>
-        
-        {/* Sync Logs Tab */}
-        <TabsContent value="logs">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center">
-                <FileText className="h-5 w-5 mr-2" />
-                Sync Logs
-              </CardTitle>
-              <CardDescription>
-                View a history of SOT sync operations
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              {isLoadingLogs ? (
-                <div className="space-y-2">
-                  <Skeleton className="h-[20px] w-full" />
-                  <Skeleton className="h-[20px] w-full" />
-                  <Skeleton className="h-[20px] w-full" />
-                  <Skeleton className="h-[20px] w-full" />
-                  <Skeleton className="h-[20px] w-full" />
-                </div>
-              ) : syncLogs?.logs?.length > 0 ? (
-                <div className="border rounded-md">
-                  <div className="grid grid-cols-4 gap-4 p-4 font-medium border-b">
-                    <div>Event Type</div>
-                    <div>Status</div>
-                    <div>Timestamp</div>
-                    <div>Details</div>
-                  </div>
-                  <div className="divide-y">
-                    {syncLogs.logs.map((log, index) => (
-                      <div key={index} className="grid grid-cols-4 gap-4 p-4 text-sm">
-                        <div>{log.event_type.replace('_', ' ')}</div>
-                        <div>
-                          <Badge variant={log.status === 'error' ? 'destructive' : 'default'}>
-                            {log.status}
-                          </Badge>
-                        </div>
-                        <div>{new Date(log.created_at).toLocaleString()}</div>
-                        <div className="truncate max-w-xs" title={log.details}>
-                          {log.details}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              ) : (
-                <Alert>
+              ) : declarationsError ? (
+                <Alert variant="destructive">
                   <AlertCircle className="h-4 w-4" />
-                  <AlertTitle>No sync logs found</AlertTitle>
+                  <AlertTitle>Error</AlertTitle>
                   <AlertDescription>
-                    Sync logs will appear here once SOT sync operations have been performed.
+                    Failed to load declarations
                   </AlertDescription>
                 </Alert>
+              ) : declarations.length === 0 ? (
+                <Alert>
+                  <AlertCircle className="h-4 w-4" />
+                  <AlertTitle>No Declarations</AlertTitle>
+                  <AlertDescription>
+                    No SOT declarations have been registered yet
+                  </AlertDescription>
+                </Alert>
+              ) : (
+                <div className="space-y-4">
+                  {declarations.map((declaration: SotDeclaration) => (
+                    <Card key={declaration.id} className="overflow-hidden">
+                      <CardHeader className="pb-2">
+                        <div className="flex justify-between items-center">
+                          <CardTitle className="text-md font-medium">
+                            {declaration.instanceId}
+                          </CardTitle>
+                          {renderDeclarationStatus(declaration.status)}
+                        </div>
+                        <CardDescription>
+                          {declaration.instanceType} • v{declaration.blueprintVersion}
+                        </CardDescription>
+                      </CardHeader>
+                      <CardContent className="pb-2">
+                        <div className="grid grid-cols-2 gap-2 text-sm">
+                          <div>
+                            <span className="text-muted-foreground">Callback URL:</span>
+                            <div className="truncate font-mono text-xs">
+                              {declaration.callbackUrl}
+                            </div>
+                          </div>
+                          <div>
+                            <span className="text-muted-foreground">Tools:</span>
+                            <div className="flex flex-wrap gap-1 pt-1">
+                              {declaration.toolsSupported.map((tool) => (
+                                <Badge key={tool} variant="outline" className="text-xs">
+                                  {tool}
+                                </Badge>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                      </CardContent>
+                      <CardFooter className="flex justify-between pt-2">
+                        <div className="text-xs text-muted-foreground">
+                          Created {renderTimeAgo(declaration.createdAt)}
+                        </div>
+                        <div className="flex gap-2">
+                          <div className="flex items-center space-x-2">
+                            <Switch
+                              id={`template-${declaration.id}`}
+                              checked={declaration.isTemplate}
+                              onCheckedChange={(checked) => handleToggleTemplate(declaration, checked, declaration.isCloneable)}
+                              disabled={updateTemplateMutation.isPending}
+                            />
+                            <Label htmlFor={`template-${declaration.id}`} className="text-xs">
+                              Template
+                            </Label>
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <Switch
+                              id={`cloneable-${declaration.id}`}
+                              checked={declaration.isCloneable}
+                              onCheckedChange={(checked) => handleToggleTemplate(declaration, declaration.isTemplate, checked)}
+                              disabled={updateTemplateMutation.isPending || !declaration.isTemplate}
+                            />
+                            <Label htmlFor={`cloneable-${declaration.id}`} className="text-xs">
+                              Cloneable
+                            </Label>
+                          </div>
+                        </div>
+                      </CardFooter>
+                    </Card>
+                  ))}
+                </div>
               )}
-              
-              {syncLogs?.pagination && syncLogs.pagination.totalLogs > 0 && (
-                <div className="flex justify-between items-center mt-4">
-                  <p className="text-sm text-muted-foreground">
-                    Showing {syncLogs.logs.length} of {syncLogs.pagination.totalLogs} logs
-                  </p>
+            </CardContent>
+          </Card>
+        </TabsContent>
+        
+        {/* Profiles Tab */}
+        <TabsContent value="profiles" className="space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle>Client Profiles</CardTitle>
+              <CardDescription>
+                View client profiles synchronized with the SOT system
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              {isLoadingProfiles ? (
+                <div className="flex justify-center py-8">
+                  <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                </div>
+              ) : profilesError ? (
+                <Alert variant="destructive">
+                  <AlertCircle className="h-4 w-4" />
+                  <AlertTitle>Error</AlertTitle>
+                  <AlertDescription>
+                    Failed to load client profiles
+                  </AlertDescription>
+                </Alert>
+              ) : profiles.length === 0 ? (
+                <Alert>
+                  <AlertCircle className="h-4 w-4" />
+                  <AlertTitle>No Profiles</AlertTitle>
+                  <AlertDescription>
+                    No client profiles have been synchronized yet
+                  </AlertDescription>
+                </Alert>
+              ) : (
+                <div className="space-y-4">
+                  {profiles.map((profile: SotClientProfile) => (
+                    <Card key={profile.id} className="overflow-hidden">
+                      <CardHeader className="pb-2">
+                        <div className="flex justify-between items-center">
+                          <CardTitle className="text-md font-medium">
+                            {profile.businessName}
+                          </CardTitle>
+                          {renderSyncStatus(profile.syncStatus)}
+                        </div>
+                        <CardDescription>
+                          {profile.businessType} • {profile.industry || 'No industry'}
+                        </CardDescription>
+                      </CardHeader>
+                      <CardContent className="pb-2">
+                        <div className="grid grid-cols-2 gap-2 text-sm">
+                          <div>
+                            <span className="text-muted-foreground">Business ID:</span>
+                            <div className="truncate font-mono text-xs">
+                              {profile.businessId}
+                            </div>
+                          </div>
+                          <div>
+                            <span className="text-muted-foreground">Location:</span>
+                            <div className="text-xs">
+                              {profile.location?.city}, {profile.location?.country}
+                            </div>
+                          </div>
+                        </div>
+                        <div className="mt-2">
+                          <span className="text-muted-foreground text-sm">Description:</span>
+                          <div className="text-xs mt-1">
+                            {profile.description || 'No description available'}
+                          </div>
+                        </div>
+                      </CardContent>
+                      <CardFooter className="flex justify-between pt-2">
+                        <div className="text-xs text-muted-foreground">
+                          Last synced {renderTimeAgo(profile.lastSyncAt)}
+                        </div>
+                        {profile.syncStatus === 'error' && (
+                          <Badge variant="outline" className="bg-red-500/10 text-red-500 border-red-500/20">
+                            Sync Error
+                          </Badge>
+                        )}
+                      </CardFooter>
+                    </Card>
+                  ))}
+                </div>
+              )}
+            </CardContent>
+            <CardFooter>
+              <Button
+                onClick={handleManualSync}
+                disabled={triggerSyncMutation.isPending}
+                className="w-full"
+              >
+                {triggerSyncMutation.isPending ? (
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                ) : (
+                  <RefreshCw className="mr-2 h-4 w-4" />
+                )}
+                Sync Now
+              </Button>
+            </CardFooter>
+          </Card>
+        </TabsContent>
+        
+        {/* Sync Status Tab */}
+        <TabsContent value="sync" className="space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle>Sync Configuration</CardTitle>
+              <CardDescription>
+                Configure the synchronization with the SOT system
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              {isLoadingSyncStatus ? (
+                <div className="flex justify-center py-4">
+                  <Loader2 className="h-6 w-6 animate-spin text-primary" />
+                </div>
+              ) : syncStatusError ? (
+                <Alert variant="destructive">
+                  <AlertCircle className="h-4 w-4" />
+                  <AlertTitle>Error</AlertTitle>
+                  <AlertDescription>
+                    Failed to load sync status
+                  </AlertDescription>
+                </Alert>
+              ) : (
+                <>
+                  <div className="grid grid-cols-2 gap-4 mb-4">
+                    <div className="space-y-2">
+                      <Label>Status</Label>
+                      <div className="flex items-center space-x-2">
+                        {syncStatus.isRunning ? (
+                          <>
+                            <Badge variant="outline" className="bg-green-500/10 text-green-500 border-green-500/20">
+                              Running
+                            </Badge>
+                            <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+                          </>
+                        ) : (
+                          <>
+                            <Badge variant="outline" className="bg-yellow-500/10 text-yellow-500 border-yellow-500/20">
+                              Stopped
+                            </Badge>
+                            <div className="w-2 h-2 rounded-full bg-yellow-500" />
+                          </>
+                        )}
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Last Sync</Label>
+                      <div className="flex items-center space-x-2">
+                        <Clock className="h-4 w-4 text-muted-foreground" />
+                        <span>{renderTimeAgo(syncStatus.lastSync)}</span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <form onSubmit={handleUpdateSchedule} className="space-y-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="syncSchedule">
+                        Sync Schedule (cron expression) 
+                        <span className="ml-2 text-xs text-muted-foreground">e.g. 0 3 * * *</span>
+                      </Label>
+                      <div className="flex space-x-2">
+                        <Input
+                          id="syncSchedule"
+                          defaultValue={syncStatus.schedule}
+                          placeholder="0 3 * * *"
+                          className="font-mono"
+                        />
+                        <Button 
+                          type="submit" 
+                          variant="outline"
+                          disabled={updateScheduleMutation.isPending}
+                        >
+                          {updateScheduleMutation.isPending ? (
+                            <Loader2 className="h-4 w-4 animate-spin" />
+                          ) : (
+                            "Update"
+                          )}
+                        </Button>
+                      </div>
+                    </div>
+                  </form>
+                  
+                  <div className="pt-6">
+                    <Button
+                      onClick={handleManualSync}
+                      disabled={triggerSyncMutation.isPending}
+                      className="w-full"
+                    >
+                      {triggerSyncMutation.isPending ? (
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      ) : (
+                        <RefreshCw className="mr-2 h-4 w-4" />
+                      )}
+                      Trigger Manual Sync
+                    </Button>
+                  </div>
+                </>
+              )}
+            </CardContent>
+          </Card>
+          
+          <Card>
+            <CardHeader>
+              <CardTitle>Sync Logs</CardTitle>
+              <CardDescription>
+                Recent synchronization activity with the SOT system
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              {isLoadingSyncStatus ? (
+                <div className="flex justify-center py-4">
+                  <Loader2 className="h-6 w-6 animate-spin text-primary" />
+                </div>
+              ) : syncStatusError ? (
+                <Alert variant="destructive">
+                  <AlertCircle className="h-4 w-4" />
+                  <AlertTitle>Error</AlertTitle>
+                  <AlertDescription>
+                    Failed to load sync logs
+                  </AlertDescription>
+                </Alert>
+              ) : syncStatus.logs.length === 0 ? (
+                <Alert>
+                  <AlertCircle className="h-4 w-4" />
+                  <AlertTitle>No Logs</AlertTitle>
+                  <AlertDescription>
+                    No synchronization logs available
+                  </AlertDescription>
+                </Alert>
+              ) : (
+                <div className="space-y-2 max-h-96 overflow-y-auto">
+                  {syncStatus.logs.map((log, index) => (
+                    <div 
+                      key={log.id || index} 
+                      className={`p-3 rounded-md text-sm ${
+                        log.status === 'success' 
+                          ? 'bg-green-500/10 border border-green-500/20' 
+                          : 'bg-red-500/10 border border-red-500/20'
+                      }`}
+                    >
+                      <div className="flex justify-between items-start">
+                        <div className="flex items-center space-x-2">
+                          {log.status === 'success' ? (
+                            <CheckCircle className="h-4 w-4 text-green-500" />
+                          ) : (
+                            <XCircle className="h-4 w-4 text-red-500" />
+                          )}
+                          <span className="font-medium">{log.eventType}</span>
+                        </div>
+                        <span className="text-xs text-muted-foreground">
+                          {renderTimeAgo(log.createdAt)}
+                        </span>
+                      </div>
+                      {log.details && (
+                        <div className="mt-2 text-xs font-mono bg-background/50 p-2 rounded overflow-x-auto">
+                          {typeof log.details === 'string' 
+                            ? log.details 
+                            : JSON.stringify(log.details, null, 2)
+                          }
+                        </div>
+                      )}
+                    </div>
+                  ))}
                 </div>
               )}
             </CardContent>

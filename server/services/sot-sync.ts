@@ -1,200 +1,380 @@
-import { storage } from '../storage';
-import { ClientProfileData } from '@shared/sot';
-import { logger } from '../utils/logger';
 import cron from 'node-cron';
+import { db, pool } from '../db';
+import { logger } from '../utils/logger';
+import { storage } from '../storage';
+import axios from 'axios';
 
 /**
- * SOT Sync Service
- * Handles synchronization with the Source of Truth system
+ * SOT (Source of Truth) Sync Service
+ * Handles synchronizing client profile data with the NextMonth SOT system
  */
 export class SotSyncService {
-  private scheduler: cron.ScheduledTask | null = null;
-  private readonly cronExpression = '0 0 * * *'; // Run once a day at midnight
+  private scheduledJob: cron.ScheduledTask | null = null;
+  private syncSchedule: string = '0 3 * * *'; // Run daily at 3 AM
+  private isRunning: boolean = false;
+  private lastSyncTimestamp: Date | null = null;
+  private retryCount: number = 0;
+  private maxRetries: number = 3;
   
   constructor() {
-    logger.info('SOT Sync Service initialized');
+    logger.info('SotSyncService initialized');
   }
   
   /**
-   * Start the scheduled sync
+   * Start the SOT sync service with scheduled jobs
    */
-  startScheduler(): void {
-    if (this.scheduler) {
-      logger.info('Scheduler already running, skipping');
+  public start(): void {
+    if (this.isRunning) {
+      logger.warn('SotSyncService is already running');
       return;
     }
     
-    logger.info(`Starting SOT sync scheduler with cron expression: ${this.cronExpression}`);
-    this.scheduler = cron.schedule(this.cronExpression, async () => {
-      logger.info('Running scheduled SOT sync');
-      await this.runSync();
+    this.scheduledJob = cron.schedule(this.syncSchedule, async () => {
+      await this.performScheduledSync();
     });
     
-    // Log the start
-    storage.logSotSync('scheduler', 'success', 'Scheduler started');
+    this.isRunning = true;
+    logger.info(`SOT sync service started with schedule: ${this.syncSchedule}`);
   }
   
   /**
-   * Stop the scheduled sync
+   * Stop the SOT sync service
    */
-  stopScheduler(): void {
-    if (!this.scheduler) {
-      logger.info('Scheduler not running, skipping');
+  public stop(): void {
+    if (!this.isRunning) {
+      logger.warn('SotSyncService is not running');
       return;
     }
     
-    logger.info('Stopping SOT sync scheduler');
-    this.scheduler.stop();
-    this.scheduler = null;
+    if (this.scheduledJob) {
+      this.scheduledJob.stop();
+      this.scheduledJob = null;
+    }
     
-    // Log the stop
-    storage.logSotSync('scheduler', 'success', 'Scheduler stopped');
+    this.isRunning = false;
+    logger.info('SOT sync service stopped');
   }
   
   /**
-   * Trigger an immediate sync
+   * Perform a manual sync operation
    */
-  async triggerImmediateSync(): Promise<boolean> {
+  public async performManualSync(): Promise<any> {
     try {
-      logger.info('Manual sync triggered');
-      await this.runSync();
-      return true;
+      logger.info('Starting manual SOT sync operation');
+      
+      // Generate client profile
+      const profileData = await this.generateClientProfile();
+      
+      // Update local database
+      await this.updateLocalProfile(profileData);
+      
+      // Send to SOT system if there's a declaration with a callback URL
+      await this.sendToSotSystem(profileData);
+      
+      // Log the sync operation
+      await this.logSyncOperation('manual_sync', 'success', { profileData });
+      
+      this.lastSyncTimestamp = new Date();
+      this.retryCount = 0;
+      
+      logger.info('Manual SOT sync operation completed successfully');
+      
+      return {
+        success: true,
+        profileData,
+        timestamp: this.lastSyncTimestamp
+      };
     } catch (error) {
-      logger.error('Failed to trigger immediate sync:', error);
-      // Log the failure
-      storage.logSotSync('manual_sync', 'failure', `Error: ${error.message}`);
-      return false;
+      logger.error('Error during manual SOT sync operation:', error);
+      
+      // Log the error
+      await this.logSyncOperation('manual_sync', 'error', { 
+        error: error.message || 'Unknown error'
+      });
+      
+      return {
+        success: false,
+        error: error.message || 'Unknown error'
+      };
     }
   }
   
   /**
-   * Run the sync process
-   * This is the main method that handles the sync process
+   * Perform a scheduled sync operation
    */
-  private async runSync(): Promise<void> {
+  private async performScheduledSync(): Promise<void> {
     try {
-      logger.info('Starting sync process');
+      logger.info('Starting scheduled SOT sync operation');
       
-      // 1. Generate client profile
-      const profile = await this.generateClientProfile();
+      // Generate client profile
+      const profileData = await this.generateClientProfile();
       
-      // 2. Save to the database
-      const savedProfile = await storage.saveClientProfile(profile);
+      // Update local database
+      await this.updateLocalProfile(profileData);
       
-      // 3. Send to the SOT system - mock for now
-      const syncId = savedProfile.id;
-      logger.info(`Profile saved with ID ${syncId}, sending to SOT system`);
+      // Send to SOT system if there's a declaration with a callback URL
+      await this.sendToSotSystem(profileData);
       
-      // 4. Update status to indicate sync initiated
-      await storage.updateClientProfileSyncStatus(syncId, 'syncing', 'Sync in progress');
+      // Log the sync operation
+      await this.logSyncOperation('scheduled_sync', 'success', { profileData });
       
-      // 5. In a real implementation, this would make an API call to the SOT system
-      // For demo purposes, we'll simulate a successful sync after a delay
-      setTimeout(async () => {
-        // 6. Update status to indicate successful sync
-        await storage.updateClientProfileSyncStatus(syncId, 'success', 'Sync completed successfully');
-        logger.info(`Sync completed for profile ${syncId}`);
+      this.lastSyncTimestamp = new Date();
+      this.retryCount = 0;
+      
+      logger.info('Scheduled SOT sync operation completed successfully');
+    } catch (error) {
+      logger.error('Error during scheduled SOT sync operation:', error);
+      
+      // Log the error
+      await this.logSyncOperation('scheduled_sync', 'error', { 
+        error: error.message || 'Unknown error'
+      });
+      
+      // Retry if within max retries
+      if (this.retryCount < this.maxRetries) {
+        this.retryCount++;
+        const retryDelay = this.retryCount * 60 * 1000; // Exponential backoff
         
-        // 7. Log the successful sync
-        storage.logSotSync('profile_sync', 'success', `Profile ${syncId} synced successfully`);
-      }, 2000);
-      
-    } catch (error) {
-      logger.error('Error during sync process:', error);
-      // Log the failure
-      storage.logSotSync('profile_sync', 'failure', `Error: ${error.message}`);
-      throw error;
+        logger.info(`Scheduling retry #${this.retryCount} in ${retryDelay / 1000} seconds`);
+        
+        setTimeout(() => {
+          this.performScheduledSync();
+        }, retryDelay);
+      } else {
+        logger.error(`Max retries (${this.maxRetries}) reached for scheduled sync operation`);
+        this.retryCount = 0;
+      }
     }
   }
   
   /**
-   * Generate client profile
-   * This method collects all the necessary data to create a client profile
+   * Generate client profile based on current system state
    */
-  async generateClientProfile(): Promise<ClientProfileData> {
+  private async generateClientProfile(): Promise<any> {
+    const businessIdentity = await storage.getBusinessIdentity();
+    const pages = await storage.getPages();
+    const users = await storage.getUsers();
+    const tools = await storage.getTools?.() || []; // Optional method
+    
+    // Current timestamp for the sync operation
+    const syncTimestamp = new Date().toISOString();
+    
+    // Build the profile data
+    return {
+      businessId: businessIdentity?.id || '00000000-0000-0000-0000-000000000000',
+      businessName: businessIdentity?.name || 'Progress Accountants',
+      businessType: businessIdentity?.type || 'Accounting Firm',
+      industry: businessIdentity?.industry || 'Finance',
+      description: businessIdentity?.description || 'Professional accounting services',
+      location: {
+        city: businessIdentity?.city || 'London',
+        country: businessIdentity?.country || 'United Kingdom'
+      },
+      metrics: {
+        totalPages: pages?.length || 0,
+        totalUsers: users?.length || 0,
+        totalTools: tools?.length || 0
+      },
+      features: {
+        hasCustomBranding: Boolean(businessIdentity?.branding?.logo || businessIdentity?.branding?.colors),
+        hasPublishedPages: pages?.some(page => page.published) || false,
+        hasCRM: Boolean(storage.getCrmContacts),
+        hasAnalytics: Boolean(storage.getAnalyticsData)
+      },
+      dateOnboarded: businessIdentity?.createdAt || syncTimestamp,
+      lastSync: syncTimestamp
+    };
+  }
+  
+  /**
+   * Update local profile in the database
+   */
+  private async updateLocalProfile(profileData: any): Promise<void> {
+    // Check if profile already exists
+    const existingResult = await pool.query(`
+      SELECT * FROM sot_client_profiles 
+      WHERE business_id = $1
+      LIMIT 1
+    `, [profileData.businessId]);
+    
+    if (existingResult.rows.length > 0) {
+      // Update existing profile
+      await pool.query(`
+        UPDATE sot_client_profiles 
+        SET 
+          business_name = $1, 
+          business_type = $2, 
+          industry = $3, 
+          description = $4,
+          location_data = $5,
+          profile_data = $6,
+          sync_status = $7,
+          sync_message = $8,
+          last_sync_at = CURRENT_TIMESTAMP,
+          updated_at = CURRENT_TIMESTAMP
+        WHERE business_id = $9
+      `, [
+        profileData.businessName,
+        profileData.businessType,
+        profileData.industry,
+        profileData.description,
+        JSON.stringify(profileData.location),
+        JSON.stringify(profileData),
+        'synced',
+        'Sync completed successfully',
+        profileData.businessId
+      ]);
+      
+      logger.info(`Updated existing profile for business ID: ${profileData.businessId}`);
+    } else {
+      // Create new profile
+      await pool.query(`
+        INSERT INTO sot_client_profiles (
+          business_id, 
+          business_name, 
+          business_type, 
+          industry, 
+          description,
+          location_data,
+          profile_data,
+          sync_status,
+          sync_message,
+          last_sync_at
+        )
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, CURRENT_TIMESTAMP)
+      `, [
+        profileData.businessId,
+        profileData.businessName,
+        profileData.businessType,
+        profileData.industry,
+        profileData.description,
+        JSON.stringify(profileData.location),
+        JSON.stringify(profileData),
+        'synced',
+        'Sync completed successfully'
+      ]);
+      
+      logger.info(`Created new profile for business ID: ${profileData.businessId}`);
+    }
+  }
+  
+  /**
+   * Send profile data to SOT system using the callback URL from the declaration
+   */
+  private async sendToSotSystem(profileData: any): Promise<void> {
     try {
-      logger.info('Generating client profile');
+      // Get the latest declaration
+      const declarationResult = await pool.query(`
+        SELECT * FROM sot_declarations 
+        ORDER BY created_at DESC 
+        LIMIT 1
+      `);
       
-      // Fetch business identity
-      const identity = await storage.getBusinessIdentity();
-      if (!identity) {
-        throw new Error('Business identity not found');
+      if (declarationResult.rows.length === 0) {
+        logger.info('No SOT declaration found, skipping external sync');
+        return;
       }
       
-      // Fetch tenant information
-      const tenant = await storage.getTenant('00000000-0000-0000-0000-000000000000');
-      if (!tenant) {
-        throw new Error('Tenant not found');
+      const declaration = declarationResult.rows[0];
+      
+      if (!declaration.callback_url) {
+        logger.info('No callback URL in declaration, skipping external sync');
+        return;
       }
       
-      // Fetch installed pages
-      const pages = await storage.getPages();
-      
-      // Fetch installed tools
-      const tools = await storage.getInstalledTools();
-      
-      // Current timestamp
-      const timestamp = new Date().toISOString();
-      
-      // Construct client profile data
-      const profileData: ClientProfileData = {
-        clientInformation: {
-          businessId: "progress-accountants",
-          instanceId: tenant.id,
-          businessName: identity.name || "Progress Accountants",
-          contactEmail: "support@progressaccountants.com",
-          syncTimestamp: timestamp
-        },
-        businessProfile: {
-          name: identity.name || "Progress Accountants",
-          industry: tenant.industry || "Accounting",
-          description: identity.mission || "Professional accounting services",
-          foundedYear: "2020",
-          location: {
-            country: "United Kingdom",
-            city: "London"
-          },
-          size: "10-50",
-          website: tenant.domain || "progressaccountants.com"
-        },
-        brandInformation: {
-          colors: {
-            primary: "#003366", // Navy blue
-            secondary: "#d7582c", // Burnt orange
-            accent: "#6699cc" // Light blue
-          },
-          logo: {
-            url: "https://assets.progressaccountants.com/logo.png",
-            altText: "Progress Accountants Logo"
-          },
-          tagline: "Modern accounting for growing businesses",
-          brandVoice: identity.brandVoice || "Professional, approachable, modern"
-        },
-        platformUsage: {
-          activeSince: tenant.createdAt.toISOString(),
-          lastActivity: tenant.updatedAt.toISOString(),
-          installedPages: pages.map(page => page.path),
-          installedTools: tools.map(tool => tool.id),
-          userCount: 5,
-          contentCount: 25
-        },
-        systemRequirements: {
-          apiVersion: "1.0.0",
-          compatibilityFlags: ["json-ld", "structured-data", "responsive"],
-          supportRequests: 2
-        }
+      // Prepare the payload
+      const payload = {
+        instanceId: declaration.instance_id,
+        instanceType: declaration.instance_type,
+        blueprintVersion: declaration.blueprint_version,
+        profile: profileData,
+        timestamp: new Date().toISOString()
       };
       
-      logger.info('Client profile generated successfully');
-      return profileData;
+      // Send to the SOT system
+      logger.info(`Sending profile data to SOT system at ${declaration.callback_url}`);
       
+      const response = await axios.post(declaration.callback_url, payload, {
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        timeout: 10000 // 10-second timeout
+      });
+      
+      if (response.status >= 200 && response.status < 300) {
+        logger.info('Successfully sent profile data to SOT system');
+        
+        // Update declaration status if it was pending
+        if (declaration.status === 'pending') {
+          await pool.query(`
+            UPDATE sot_declarations 
+            SET status = 'active', updated_at = CURRENT_TIMESTAMP
+            WHERE id = $1
+          `, [declaration.id]);
+          
+          logger.info('Updated declaration status to active');
+        }
+      } else {
+        throw new Error(`SOT system responded with status: ${response.status}`);
+      }
     } catch (error) {
-      logger.error('Error generating client profile:', error);
-      // Log the failure
-      storage.logSotSync('profile_generation', 'failure', `Error: ${error.message}`);
-      throw error;
+      logger.error('Error sending profile data to SOT system:', error);
+      
+      // Continue without failing the entire sync operation
+      // This error is logged but doesn't cause the sync operation to fail
     }
+  }
+  
+  /**
+   * Log a sync operation to the database
+   */
+  private async logSyncOperation(eventType: string, status: 'success' | 'error', details: any): Promise<void> {
+    try {
+      await pool.query(`
+        INSERT INTO sot_sync_logs (event_type, status, details)
+        VALUES ($1, $2, $3)
+      `, [
+        eventType, 
+        status, 
+        JSON.stringify(details)
+      ]);
+    } catch (error) {
+      logger.error('Error logging sync operation:', error);
+    }
+  }
+  
+  /**
+   * Get the status of the SOT sync service
+   */
+  public getStatus(): any {
+    return {
+      isRunning: this.isRunning,
+      schedule: this.syncSchedule,
+      lastSync: this.lastSyncTimestamp,
+      retryCount: this.retryCount,
+      maxRetries: this.maxRetries
+    };
+  }
+  
+  /**
+   * Update the sync schedule
+   */
+  public updateSchedule(schedule: string): void {
+    if (!cron.validate(schedule)) {
+      throw new Error(`Invalid cron schedule: ${schedule}`);
+    }
+    
+    this.syncSchedule = schedule;
+    
+    // Restart the service with the new schedule if it's running
+    if (this.isRunning) {
+      this.stop();
+      this.start();
+    }
+    
+    logger.info(`SOT sync schedule updated to: ${schedule}`);
   }
 }
 
+// Create singleton instance
 export const sotSyncService = new SotSyncService();
