@@ -462,12 +462,62 @@ export class HealthMonitorService {
 
   /**
    * Log a metric value
+   * 
+   * Note: This method uses memory caching to avoid excessive database writes
+   * and handles the case where the health_metric_logs table doesn't exist yet.
    */
+  private metricLogsCache = new Map<number, { value: any, timestamp: number }[]>();
+  private lastDbWriteTime = 0;
+  private dbWriteIntervalMs = 300000; // 5 minutes between writes
+  private tableExistenceChecked = false;
+  
   private async logMetricValue(metricId: number, value: any): Promise<void> {
     try {
+      // Add to in-memory cache first
+      const now = Date.now();
+      const existingLogs = this.metricLogsCache.get(metricId) || [];
+      existingLogs.push({ value, timestamp: now });
+      
+      // Keep only the last 100 entries per metric to prevent memory issues
+      if (existingLogs.length > 100) {
+        existingLogs.shift(); // Remove oldest
+      }
+      
+      this.metricLogsCache.set(metricId, existingLogs);
+      
+      // Only write to DB periodically to avoid excessive writes
+      const timeSinceLastWrite = now - this.lastDbWriteTime;
+      if (timeSinceLastWrite < this.dbWriteIntervalMs) {
+        return;
+      }
+      
+      // We'll only attempt to write to DB once per interval
+      this.lastDbWriteTime = now;
+      
+      // If we haven't checked table existence yet, try to create it
+      if (!this.tableExistenceChecked) {
+        try {
+          // Try to create the table if it doesn't exist
+          await db.execute(sql`
+            CREATE TABLE IF NOT EXISTS health_metric_logs (
+              id SERIAL PRIMARY KEY,
+              metric_id INTEGER NOT NULL,
+              value JSONB NOT NULL,
+              created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW()
+            )
+          `);
+          this.tableExistenceChecked = true;
+        } catch (tableError) {
+          console.error('Error creating health_metric_logs table:', tableError);
+          return; // Skip DB write attempt if we can't create the table
+        }
+      }
+      
+      // Only write the latest value per metric to the database
+      const latestValue = existingLogs[existingLogs.length - 1].value;
       await db.execute(sql`
         INSERT INTO health_metric_logs (metric_id, value)
-        VALUES (${metricId}, ${JSON.stringify(value)})
+        VALUES (${metricId}, ${JSON.stringify(latestValue)})
       `);
     } catch (error) {
       console.error('Error logging metric value:', error);

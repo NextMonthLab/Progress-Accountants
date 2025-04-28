@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, useRef, ReactNode } from 'react';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { queryClient } from '@/lib/queryClient';
 import { useToast } from '@/hooks/use-toast';
@@ -236,32 +236,74 @@ export const HealthProvider = ({ children }: { children: ReactNode }) => {
     },
   });
   
-  // Mutation to track a metric - TEMPORARILY DISABLED
+  // Metric batching state
+  const [metricBatch, setMetricBatch] = useState<{name: string, value: number}[]>([]);
+  const batchTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const batchSizeLimit = 10;
+  const batchTimeMs = 30000; // 30 seconds
+
+  // Enhanced mutation to track metric - with batching support
   const trackMetricMutation = useMutation({
     mutationFn: async ({ name, value }: { name: string; value: number }) => {
-      // TEMPORARILY DISABLED - to prevent excessive API calls
-      console.log(`[Health Metric Disabled] ${name}: ${value}`);
+      // Add to batch
+      setMetricBatch(prev => [...prev, { name, value }]);
       
-      // Return mock success response instead of making an actual API call
+      // Log for transparency
+      console.debug(`[Health] Added to batch: ${name}: ${value}`);
+      
+      // We always return success immediately
       return { success: true };
-      
-      /* ORIGINAL CODE - commented out to prevent API calls
-      const response = await fetch('/api/health/metrics/track', {
+    },
+  });
+  
+  // Mutation to send batch of metrics
+  const sendMetricBatchMutation = useMutation({
+    mutationFn: async (metrics: {name: string, value: number}[]) => {
+      const response = await fetch('/api/health/metrics/batch', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ name, value }),
+        body: JSON.stringify({ metrics }),
       });
       
       if (!response.ok) {
-        throw new Error('Failed to track metric');
+        throw new Error('Failed to send metric batch');
       }
       
       return response.json();
-      */
     },
   });
+  
+  // Process metric batches
+  useEffect(() => {
+    // Only process if we have metrics and no timer is set
+    if (metricBatch.length > 0 && !batchTimerRef.current) {
+      // If we've reached the size limit, send immediately
+      if (metricBatch.length >= batchSizeLimit) {
+        sendMetricBatchMutation.mutate([...metricBatch]);
+        setMetricBatch([]);
+        return;
+      }
+      
+      // Otherwise set a timer to send after delay
+      batchTimerRef.current = setTimeout(() => {
+        if (metricBatch.length > 0) {
+          sendMetricBatchMutation.mutate([...metricBatch]);
+          setMetricBatch([]);
+        }
+        batchTimerRef.current = null;
+      }, batchTimeMs);
+    }
+    
+    // Clean up timer on unmount
+    return () => {
+      if (batchTimerRef.current) {
+        clearTimeout(batchTimerRef.current);
+        batchTimerRef.current = null;
+      }
+    };
+  }, [metricBatch, sendMetricBatchMutation]);
   
   // Mutation to enable/disable a metric
   const toggleMetricMutation = useMutation({

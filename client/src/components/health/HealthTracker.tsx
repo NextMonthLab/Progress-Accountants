@@ -1,21 +1,49 @@
-import { useEffect, useRef, useCallback } from 'react';
+import { useEffect, useRef, useCallback, useState } from 'react';
 import { useHealth } from '@/contexts/HealthContext';
 
-// We don't need to define requestIdleCallback types - commenting out to avoid issues
-/*
+// Proper type definitions for requestIdleCallback and cancelIdleCallback
+interface IdleDeadline {
+  didTimeout: boolean;
+  timeRemaining: () => number;
+}
+
+type IdleRequestCallback = (deadline: IdleDeadline) => void;
+
+interface IdleRequestOptions {
+  timeout?: number;
+}
+
+// Extend Window interface properly
 declare global {
   interface Window {
-    requestIdleCallback: (
-      callback: (deadline: {
-        didTimeout: boolean;
-        timeRemaining: () => number;
-      }) => void,
-      options?: { timeout?: number }
-    ) => number;
-    cancelIdleCallback: (handle: number) => void;
+    requestIdleCallback: (callback: IdleRequestCallback, options?: IdleRequestOptions) => number;
+    cancelIdleCallback: (handle: number) => number;
   }
 }
-*/
+
+/**
+ * Metric batch collector for efficient health monitoring
+ */
+interface MetricBatch {
+  metrics: {name: string, value: number}[];
+  lastSentAt: number;
+}
+
+// Configuration for health monitoring
+const HEALTH_CONFIG = {
+  // Whether health monitoring is enabled at all
+  isEnabled: true, 
+  // Is detailed monitoring enabled (more metrics and higher frequency)
+  isDetailedMonitoringEnabled: false,
+  // How often to send batched metrics (ms)
+  batchIntervalMs: 60000, // 1 minute
+  // Maximum batch size before forcing a send
+  maxBatchSize: 10,
+  // Sampling rate for API calls (1/N calls are tracked)
+  apiSamplingRate: 20, // Track 1 in 20 API calls
+  // Memory check interval
+  memoryCheckIntervalMs: 120000, // 2 minutes
+}
 
 /**
  * HealthTracker component that silently monitors page load times
@@ -272,29 +300,182 @@ export default function HealthTracker() {
     });
   }, [trackMetric]);
   
-  // Initialize all monitoring when component mounts
+  // Metric batching for efficient processing
+  const [metricBatch, setMetricBatch] = useState<{name: string, value: number}[]>([]);
+  const lastBatchSentRef = useRef<number>(Date.now());
+  
+  // Simplified API tracking that respects sampling rate
+  const setupEfficientApiMonitoring = useCallback(() => {
+    if (!HEALTH_CONFIG.isEnabled) return;
+    
+    // Skip monitoring health endpoints to prevent recursive monitoring
+    const shouldSkipUrl = (url: string) => {
+      return url.includes('/api/health/') || 
+             url.includes('/api/metrics/') || 
+             url.includes('/api/health/metrics/track');
+    };
+    
+    let apiCallCount = 0;
+    const samplingRate = HEALTH_CONFIG.apiSamplingRate;
+    
+    // Only intercept fetch for simplicity
+    const originalFetch = window.fetch;
+    window.fetch = async function(input, init) {
+      const url = typeof input === 'string' ? input : (input as Request).url;
+      
+      // Only track API calls to our backend, skip health endpoints
+      const shouldTrack = url.startsWith('/api/') && 
+                        !shouldSkipUrl(url) && 
+                        ++apiCallCount % samplingRate === 0;
+      
+      const startTime = shouldTrack ? performance.now() : 0;
+      
+      try {
+        const response = await originalFetch.apply(this, [input, init]);
+        
+        // Only track sampled requests
+        if (shouldTrack) {
+          const endTime = performance.now();
+          const apiLatency = endTime - startTime;
+          
+          // Add to batch instead of sending immediately
+          setMetricBatch(prev => [...prev, {name: 'api_latency', value: apiLatency}]);
+          
+          // Track errors
+          if (response.status >= 500) {
+            setMetricBatch(prev => [...prev, {name: 'api_error', value: response.status}]);
+          }
+        }
+        
+        return response;
+      } catch (error) {
+        if (shouldTrack) {
+          setMetricBatch(prev => [...prev, {name: 'api_network_error', value: 1}]);
+        }
+        throw error;
+      }
+    };
+    
+    console.log('[Health] Efficient API monitoring initialized');
+  }, []);
+  
+  // Track essential performance metrics at reasonable intervals
+  const trackCorePerformance = useCallback(() => {
+    if (!HEALTH_CONFIG.isEnabled) return;
+    
+    // One-time tracking of load performance
+    const trackInitialPerformance = () => {
+      // Use setTimeout to ensure this runs after page load
+      setTimeout(() => {
+        if (window.performance?.timing) {
+          const timing = window.performance.timing;
+          const pageLoadTime = timing.loadEventEnd - timing.navigationStart;
+          
+          if (pageLoadTime > 0 && pageLoadTime < 60000) {
+            setMetricBatch(prev => [...prev, {
+              name: 'page_load_time', 
+              value: pageLoadTime
+            }]);
+            console.log(`[Health] Initial page load: ${pageLoadTime}ms`);
+          }
+        }
+        
+        // Track memory usage if available
+        trackMemoryUsage();
+      }, 3000);
+    };
+    
+    // Schedule periodic memory checks
+    const scheduleMemoryChecks = () => {
+      const memoryInterval = setInterval(() => {
+        if (document.visibilityState === 'visible') {
+          trackMemoryUsage();
+        }
+      }, HEALTH_CONFIG.memoryCheckIntervalMs);
+      
+      // Clean up on component unmount
+      return () => clearInterval(memoryInterval);
+    };
+    
+    // Track memory usage
+    const trackMemoryUsage = () => {
+      // @ts-ignore - performance.memory is non-standard
+      if (window.performance?.memory) {
+        // @ts-ignore
+        const memoryInfo = window.performance.memory;
+        const usedJSHeapSize = Math.round(
+          (memoryInfo.usedJSHeapSize / memoryInfo.jsHeapSizeLimit) * 100
+        );
+        
+        setMetricBatch(prev => [...prev, {
+          name: 'memory_usage',
+          value: usedJSHeapSize
+        }]);
+        
+        console.log(`[Health] Memory usage: ${usedJSHeapSize}%`);
+      }
+    };
+    
+    // Initial performance tracking
+    trackInitialPerformance();
+    
+    // Return the cleanup for memory interval
+    return scheduleMemoryChecks();
+  }, []);
+  
+  // Process metrics in batch mode
+  useEffect(() => {
+    if (!HEALTH_CONFIG.isEnabled || metricBatch.length === 0) return;
+    
+    const now = Date.now();
+    const timeSinceLastBatch = now - lastBatchSentRef.current;
+    const shouldSendBatch = 
+      metricBatch.length >= HEALTH_CONFIG.maxBatchSize || 
+      timeSinceLastBatch >= HEALTH_CONFIG.batchIntervalMs;
+    
+    if (shouldSendBatch) {
+      console.log(`[Health] Sending batch of ${metricBatch.length} metrics`);
+      
+      // Process each metric in the batch
+      metricBatch.forEach(metric => {
+        trackMetric(metric.name, metric.value);
+      });
+      
+      // Clear the batch
+      setMetricBatch([]);
+      lastBatchSentRef.current = now;
+    }
+  }, [metricBatch, trackMetric]);
+  
+  // Initialize monitoring when component mounts
   useEffect(() => {
     console.log('[Health] Health tracker initialized');
     
-    // TEMPORARILY DISABLED FOR PERFORMANCE - all health monitoring is now disabled
-    // to prevent excessive API calls and improve application loading performance
-    
-    // This functionality is disabled but code kept for future re-enabling:
-    // setupApiCallMonitoring();
-    // setupErrorTracking();
-    // runTrackingTasks();
-    
-    // Just track initial memory usage once for diagnostic purposes
-    if (window.performance && (window.performance as any).memory) {
-      const memoryInfo = (window.performance as any).memory;
-      const usedJSHeapSize = Math.round((memoryInfo.usedJSHeapSize / memoryInfo.jsHeapSizeLimit) * 100);
-      console.log(`[Health] Memory usage: ${usedJSHeapSize}%`);
+    if (HEALTH_CONFIG.isEnabled) {
+      // Set up the essential monitoring
+      setupEfficientApiMonitoring();
+      const cleanup = trackCorePerformance();
+      
+      // Only set up error tracking if detailed monitoring is enabled
+      if (HEALTH_CONFIG.isDetailedMonitoringEnabled) {
+        setupErrorTracking();
+      }
+      
+      return () => {
+        if (cleanup) cleanup();
+        console.log('[Health] Health tracker stopped');
+      };
+    } else {
+      // Just track initial memory usage for diagnostic purposes
+      if (window.performance && (window.performance as any).memory) {
+        const memoryInfo = (window.performance as any).memory;
+        const usedJSHeapSize = Math.round(
+          (memoryInfo.usedJSHeapSize / memoryInfo.jsHeapSizeLimit) * 100
+        );
+        console.log(`[Health] Memory usage: ${usedJSHeapSize}%`);
+      }
     }
-    
-    return () => {
-      console.log('[Health] Health tracker stopped');
-    };
-  }, []);
+  }, [setupEfficientApiMonitoring, trackCorePerformance, setupErrorTracking]);
   
   // This component doesn't render anything
   return null;
