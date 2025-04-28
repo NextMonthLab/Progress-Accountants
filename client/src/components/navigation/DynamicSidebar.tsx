@@ -166,7 +166,7 @@ const DynamicSidebar: React.FC = () => {
                   "flex items-center justify-center rounded-md p-2 transition-all duration-200",
                   isActive(item.href) 
                     ? "bg-gradient-to-r from-orange-100 to-orange-50 text-[var(--orange)]" 
-                    : "text-gray-700 hover:bg-orange-50/50 hover:text-[var(--orange)]",
+                    : "text-[var(--navy)] hover:bg-orange-50/50 hover:text-[var(--orange)]",
                   "no-underline relative",
                   isNested && "ml-2"
                 )}
@@ -313,7 +313,7 @@ const DynamicSidebar: React.FC = () => {
           <Tooltip>
             <TooltipTrigger asChild>
               <button
-                className="flex items-center justify-center rounded-md p-2 transition-all duration-200 text-gray-700 hover:bg-orange-50/50 hover:text-[var(--orange)]"
+                className="flex items-center justify-center rounded-md p-2 transition-all duration-200 text-[var(--navy)] hover:bg-orange-50/50 hover:text-[var(--orange)]"
                 onClick={(e) => {
                   e.preventDefault();
                   toggleSubmenu(submenu.id);
@@ -604,7 +604,7 @@ const DynamicSidebar: React.FC = () => {
                     "w-full flex items-center justify-center transition-all duration-200 mb-2 p-2",
                     focusedMode 
                       ? "border-emerald-300 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 hover:border-emerald-400" 
-                      : "border-gray-300 bg-white text-gray-700 hover:bg-gray-50 hover:border-gray-400"
+                      : "border-gray-300 bg-white text-[var(--navy)] hover:bg-gray-50 hover:border-gray-400"
                   )}
                 >
                   {focusedMode ? <Sparkles className="h-5 w-5" /> : <Brain className="h-5 w-5" />}
@@ -622,7 +622,7 @@ const DynamicSidebar: React.FC = () => {
                 "w-full flex items-center justify-center transition-all duration-200 mb-2",
                 focusedMode 
                   ? "border-emerald-300 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 hover:border-emerald-400" 
-                  : "border-gray-300 bg-white text-gray-700 hover:bg-gray-50 hover:border-gray-400"
+                  : "border-gray-300 bg-white text-[var(--navy)] hover:bg-gray-50 hover:border-gray-400"
               )}
             >
               {focusedMode ? (
