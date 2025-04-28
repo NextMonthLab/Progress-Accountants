@@ -12,6 +12,7 @@ export async function migrateSotTables() {
     const declarationsExists = await checkIfTableExists('sot_declarations');
     const metricsExists = await checkIfTableExists('sot_metrics');
     const syncLogsExists = await checkIfTableExists('sot_sync_logs');
+    const clientProfilesExists = await checkIfTableExists('sot_client_profiles');
     
     if (!declarationsExists) {
       await createSotDeclarationsTable();
@@ -46,6 +47,13 @@ export async function migrateSotTables() {
       console.log('✅ Created sot_sync_logs table');
     } else {
       console.log('ℹ️ sot_sync_logs table already exists, skipping creation.');
+    }
+    
+    if (!clientProfilesExists) {
+      await createSotClientProfilesTable();
+      console.log('✅ Created sot_client_profiles table');
+    } else {
+      console.log('ℹ️ sot_client_profiles table already exists, skipping creation.');
     }
     
     console.log('✅ SOT database migration completed successfully');
@@ -134,6 +142,30 @@ async function checkIfColumnExists(tableName: string, columnName: string): Promi
   `, [tableName, columnName]);
   
   return result.rows[0].exists;
+}
+
+/**
+ * Create the sot_client_profiles table
+ */
+async function createSotClientProfilesTable() {
+  await pool.query(`
+    CREATE TABLE sot_client_profiles (
+      id SERIAL PRIMARY KEY,
+      business_id TEXT NOT NULL,
+      business_name TEXT NOT NULL,
+      business_type TEXT NOT NULL,
+      industry TEXT,
+      description TEXT,
+      location_data JSONB,
+      contact_info JSONB,
+      profile_data JSONB NOT NULL,
+      sync_status TEXT NOT NULL DEFAULT 'pending',
+      sync_message TEXT,
+      last_sync_at TIMESTAMP WITH TIME ZONE,
+      created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+      updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+    )
+  `);
 }
 
 /**

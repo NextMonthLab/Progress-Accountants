@@ -21,7 +21,7 @@ import { migrateSupportSystemTables } from './db-migrate-support-system';
 import { migrateHealthMonitoringTables } from './db-migrate-health-monitoring';
 import { registerNavigationRoutes } from './controllers/navigationController';
 import { registerDomainMappingRoutes } from './controllers/domainMappingController';
-import { registerSotRoutes } from './controllers/sotController';
+import { registerSotRoutes } from './routes/sot-routes';
 import { registerAgentRoutes } from './controllers/agentController';
 import { registerSocialMediaRoutes } from './controllers/registerSocialMediaRoutes';
 import { registerAdvancedSeoRoutes } from './controllers/registerAdvancedSeoRoutes';

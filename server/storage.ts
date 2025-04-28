@@ -70,12 +70,16 @@ import {
   sotDeclarations, 
   sotMetrics, 
   sotSyncLogs,
+  sotClientProfiles,
   type SotDeclaration,
   type InsertSotDeclaration,
   type SotMetric,
   type InsertSotMetric,
   type SotSyncLog,
-  type InsertSotSyncLog
+  type InsertSotSyncLog,
+  type SotClientProfile,
+  type InsertSotClientProfile,
+  type ClientProfileData
 } from "@shared/sot";
 import { NewsfeedConfig } from "@shared/newsfeed_types";
 import { db } from "./db";
