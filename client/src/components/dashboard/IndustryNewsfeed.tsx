@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -15,18 +15,19 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { useIndustryNewsfeed } from '@/hooks/use-industry-newsfeed';
 import { NewsfeedSource, IndustryCategory, PREDEFINED_FEEDS } from '@shared/newsfeed_types';
-import { Newspaper, Settings, RefreshCw, ExternalLink } from 'lucide-react';
+import { Newspaper, Settings, RefreshCw, ExternalLink, AlertTriangle } from 'lucide-react';
 import { format } from 'date-fns';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
-// Schema for newsfeed configuration form
+// Schema for newsfeed configuration form with limited max items
 const configFormSchema = z.object({
   source: z.enum([NewsfeedSource.RSS, NewsfeedSource.API, NewsfeedSource.CUSTOM]),
   url: z.string().url({ message: "Please enter a valid URL" }),
   customName: z.string().optional(),
   displaySettings: z.object({
     showImages: z.boolean(),
-    itemCount: z.number().min(1).max(20),
+    itemCount: z.number().min(1).max(10), // Reduced max to 10 items to prevent memory issues
     refreshInterval: z.number().min(15).max(1440),
     showCategories: z.boolean(),
     showPublishDate: z.boolean()
@@ -48,63 +49,102 @@ export function IndustryNewsfeed() {
   } = useIndustryNewsfeed();
   
   const [configDialogOpen, setConfigDialogOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  
+  // Fallback defaults to ensure we always have values even if API fails
+  const defaultFormValues = {
+    source: NewsfeedSource.RSS,
+    url: PREDEFINED_FEEDS[IndustryCategory.ACCOUNTING].url,
+    customName: "",
+    displaySettings: {
+      showImages: true,
+      itemCount: 5,
+      refreshInterval: 60,
+      showCategories: true,
+      showPublishDate: true
+    }
+  };
   
   const form = useForm<ConfigFormValues>({
     resolver: zodResolver(configFormSchema),
-    defaultValues: {
-      source: newsConfig?.source || NewsfeedSource.RSS,
-      url: newsConfig?.url || "",
-      customName: newsConfig?.customName || "",
-      displaySettings: {
-        showImages: newsConfig?.displaySettings?.showImages ?? true,
-        itemCount: newsConfig?.displaySettings?.itemCount ?? 5,
-        refreshInterval: newsConfig?.displaySettings?.refreshInterval ?? 60,
-        showCategories: newsConfig?.displaySettings?.showCategories ?? true,
-        showPublishDate: newsConfig?.displaySettings?.showPublishDate ?? true
-      }
-    }
+    defaultValues: defaultFormValues,
+    mode: "onChange"
   });
   
-  // Update form when config loads
-  if (newsConfig && !form.formState.isDirty) {
-    form.reset({
-      source: newsConfig.source,
-      url: newsConfig.url,
-      customName: newsConfig.customName || "",
-      displaySettings: {
-        showImages: newsConfig.displaySettings.showImages,
-        itemCount: newsConfig.displaySettings.itemCount,
-        refreshInterval: newsConfig.displaySettings.refreshInterval,
-        showCategories: newsConfig.displaySettings.showCategories,
-        showPublishDate: newsConfig.displaySettings.showPublishDate
+  // Safe update form logic to prevent infinite rendering
+  useEffect(() => {
+    if (newsConfig && !form.formState.isDirty) {
+      try {
+        form.reset({
+          source: newsConfig.source || NewsfeedSource.RSS,
+          url: newsConfig.url || defaultFormValues.url,
+          customName: newsConfig.customName || "",
+          displaySettings: {
+            showImages: newsConfig?.displaySettings?.showImages ?? true,
+            itemCount: Math.min(newsConfig?.displaySettings?.itemCount ?? 5, 10), // Ensure max 10
+            refreshInterval: newsConfig?.displaySettings?.refreshInterval ?? 60,
+            showCategories: newsConfig?.displaySettings?.showCategories ?? true,
+            showPublishDate: newsConfig?.displaySettings?.showPublishDate ?? true
+          }
+        });
+      } catch (e) {
+        console.error("Error resetting form with config:", e);
+        setErrorMessage("Unable to load newsfeed configuration");
       }
-    });
-  }
+    }
+  }, [newsConfig, form]);
   
   // Submit handler for config form
-  function onSubmit(values: ConfigFormValues) {
-    updateConfig({
-      ...values,
-      industry: industry
-    });
-    setConfigDialogOpen(false);
-  }
+  const onSubmit = useCallback((values: ConfigFormValues) => {
+    try {
+      updateConfig({
+        ...values,
+        industry: industry
+      });
+      setConfigDialogOpen(false);
+    } catch (e) {
+      console.error("Error submitting form:", e);
+      setErrorMessage("Failed to update newsfeed configuration");
+    }
+  }, [updateConfig, industry]);
   
   // Reset to predefined feed for current industry
-  function resetToPredefined() {
+  const resetToPredefined = useCallback(() => {
     if (!industry) return;
     
-    const predefinedFeed = PREDEFINED_FEEDS[industry];
-    if (predefinedFeed) {
-      updateConfig(predefinedFeed);
-      setConfigDialogOpen(false);
+    try {
+      const predefinedFeed = PREDEFINED_FEEDS[industry] || PREDEFINED_FEEDS[IndustryCategory.ACCOUNTING];
+      if (predefinedFeed) {
+        updateConfig(predefinedFeed);
+        setConfigDialogOpen(false);
+      }
+    } catch (e) {
+      console.error("Error resetting to predefined feed:", e);
+      setErrorMessage("Failed to reset to default configuration");
     }
-  }
+  }, [industry, updateConfig]);
   
-  // Handle refresh click
-  function handleRefresh() {
-    refetch();
-  }
+  // Handle refresh click with error handling
+  const handleRefresh = useCallback(() => {
+    try {
+      refetch();
+      setErrorMessage(null);
+    } catch (e) {
+      console.error("Error refreshing newsfeed:", e);
+      setErrorMessage("Failed to refresh newsfeed");
+    }
+  }, [refetch]);
+  
+  // Safe render for title
+  const getTitle = () => {
+    try {
+      return newsConfig?.customName ? 
+        newsConfig.customName : 
+        `${industry ? industry.charAt(0).toUpperCase() + industry.slice(1) : 'Industry'} News`;
+    } catch (e) {
+      return 'Industry News';
+    }
+  };
   
   return (
     <Card className="col-span-2 h-[450px] overflow-hidden">
@@ -113,9 +153,7 @@ export function IndustryNewsfeed() {
           <div>
             <CardTitle className="text-xl flex items-center gap-2">
               <Newspaper className="h-5 w-5" />
-              {newsConfig?.customName ? 
-                newsConfig.customName : 
-                `${industry ? industry.charAt(0).toUpperCase() + industry.slice(1) : 'Industry'} News`}
+              {getTitle()}
             </CardTitle>
             <CardDescription>
               Latest updates from your industry
@@ -142,6 +180,14 @@ export function IndustryNewsfeed() {
                     Customize your industry newsfeed settings
                   </DialogDescription>
                 </DialogHeader>
+                
+                {errorMessage && (
+                  <Alert variant="destructive" className="mb-4">
+                    <AlertTriangle className="h-4 w-4" />
+                    <AlertTitle>Error</AlertTitle>
+                    <AlertDescription>{errorMessage}</AlertDescription>
+                  </Alert>
+                )}
                 
                 <Form {...form}>
                   <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -217,14 +263,14 @@ export function IndustryNewsfeed() {
                           <FormControl>
                             <Slider
                               min={1}
-                              max={20}
+                              max={10} // Reduced to 10 items max
                               step={1}
                               value={[field.value]}
                               onValueChange={(value) => field.onChange(value[0])}
                             />
                           </FormControl>
                           <FormDescription>
-                            Number of news items to display
+                            Number of news items to display (max 10)
                           </FormDescription>
                           <FormMessage />
                         </FormItem>
@@ -331,9 +377,17 @@ export function IndustryNewsfeed() {
       </CardHeader>
       
       <CardContent className="pb-2 h-[390px] overflow-y-auto">
+        {errorMessage && (
+          <Alert variant="destructive" className="mb-4">
+            <AlertTriangle className="h-4 w-4" />
+            <AlertTitle>Error</AlertTitle>
+            <AlertDescription>{errorMessage}</AlertDescription>
+          </Alert>
+        )}
+        
         {isLoading ? (
           <div className="space-y-3">
-            {Array(5).fill(0).map((_, i) => (
+            {Array(3).fill(0).map((_, i) => (
               <div key={i} className="space-y-2">
                 <Skeleton className="h-4 w-2/3" />
                 <Skeleton className="h-14 w-full" />
@@ -346,12 +400,16 @@ export function IndustryNewsfeed() {
           </div>
         ) : error ? (
           <div className="p-4 text-center">
-            <p className="text-destructive">Failed to load news</p>
+            <p className="text-destructive">Unable to load industry news</p>
+            <p className="text-sm text-muted-foreground mt-2 mb-4">
+              The industry newsfeed could not be loaded. This could be due to a connection issue 
+              or the news source being temporarily unavailable.
+            </p>
             <Button variant="outline" onClick={handleRefresh} className="mt-2">
               Try Again
             </Button>
           </div>
-        ) : newsItems.length === 0 ? (
+        ) : !newsItems || newsItems.length === 0 ? (
           <div className="p-4 text-center">
             <p className="text-muted-foreground">No news items found</p>
             <Button variant="outline" onClick={handleRefresh} className="mt-2">
@@ -361,9 +419,14 @@ export function IndustryNewsfeed() {
         ) : (
           <div className="space-y-4">
             {newsItems.map((item, index) => (
-              <div key={index} className="space-y-2">
+              <div key={item.id || index} className="space-y-2">
                 <h3 className="font-medium hover:text-primary">
-                  <a href={item.link} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1">
+                  <a 
+                    href={item.link} 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="flex items-center gap-1"
+                  >
                     {item.title}
                     <ExternalLink className="h-3 w-3 inline" />
                   </a>
@@ -372,14 +435,14 @@ export function IndustryNewsfeed() {
                   {item.excerpt}
                 </p>
                 <div className="flex items-center justify-between text-xs text-muted-foreground">
-                  {newsConfig?.displaySettings.showCategories && item.category && (
+                  {newsConfig?.displaySettings?.showCategories && item.category && (
                     <span>{item.category}</span>
                   )}
-                  {newsConfig?.displaySettings.showPublishDate && item.publishDate && (
+                  {newsConfig?.displaySettings?.showPublishDate && item.publishDate && (
                     <span>{formatDate(item.publishDate)}</span>
                   )}
                 </div>
-                <Separator className="mt-2" />
+                {index < (newsItems?.length - 1) && <Separator />}
               </div>
             ))}
           </div>
@@ -389,13 +452,20 @@ export function IndustryNewsfeed() {
   );
 }
 
-// Helper to format dates
-function formatDate(dateString: string): string {
+// Helper for formatting date with error handling
+function formatDate(dateString: string) {
   try {
+    if (!dateString) return '';
+    
     const date = new Date(dateString);
+    // Check if the date is valid
+    if (isNaN(date.getTime())) {
+      return dateString;
+    }
     return format(date, 'MMM d, yyyy');
   } catch (e) {
-    return dateString;
+    console.error("Error formatting date:", e);
+    return dateString || '';
   }
 }
 
