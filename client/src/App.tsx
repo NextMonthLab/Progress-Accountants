@@ -31,6 +31,7 @@ import ClientDashboardPage2 from "@/pages/ClientDashboardPage2";
 import RedesignedDashboardPage from "@/pages/RedesignedDashboardPage";
 import AdminDashboardPage from "@/pages/AdminDashboardPage";
 import AdminDashboardPageSimple from "@/pages/AdminDashboardPage.simple";
+import DiagnosticDashboard from "@/pages/DiagnosticDashboard";
 import CRMViewPage from "@/pages/CRMViewPage";
 import CRMViewPageEnhanced from "@/pages/CRMViewPageEnhanced";
 import ToolsDashboardPage from "@/pages/ToolsDashboardPage";
@@ -152,7 +153,7 @@ function Router() {
       <Route path="/support/ticket" component={TicketPage} />
       <Route path="/support/digest" component={DigestPage} />
       
-      <Route path="/" component={HomePage} />
+      <Route path="/" component={DiagnosticDashboard} />
 
       {/* Super Admin routes (require super admin privileges) */}
       <ProtectedRoute 
@@ -453,6 +454,11 @@ const queryClient = new QueryClient({
 });
 
 function App() {
+  // TEMPORARY DIAGNOSTIC MODE: Bypass all contexts and providers
+  // This is a temporary fix to troubleshoot memory issues
+  return <DiagnosticDashboard />;
+  
+  /* NORMAL APP STRUCTURE - TEMPORARILY DISABLED
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider queryClient={queryClient}>
@@ -483,6 +489,7 @@ function App() {
       </AuthProvider>
     </QueryClientProvider>
   );
+  */
 }
 
 // Component to detect first-time users and redirect to onboarding
