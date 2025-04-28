@@ -103,7 +103,7 @@ const SidebarItemBadge = ({
     updated: "bg-blue-500 text-white",
     beta: "bg-purple-500 text-white",
     pro: "bg-gradient-to-r from-amber-500 to-orange-500 text-white",
-    default: "bg-gray-200 text-gray-800"
+    default: "bg-gray-200 text-[var(--navy)]"
   };
   
   return (
@@ -258,7 +258,7 @@ const DynamicSidebar: React.FC = () => {
             </span>
             <span className={cn(
               "font-medium",
-              isActive(item.href) ? "text-[var(--navy)]" : "text-gray-800"
+              isActive(item.href) ? "text-[var(--navy)]" : "text-[var(--navy)]"
             )}>{item.title}</span>
           </div>
           
@@ -378,7 +378,7 @@ const DynamicSidebar: React.FC = () => {
               )} />
             </span>
             <span className={cn(
-              isExpanded ? "text-[var(--navy)]" : "text-gray-800"
+              isExpanded ? "text-[var(--navy)]" : "text-[var(--navy)]"
             )}>{submenu.title}</span>
           </div>
           <ChevronDown
