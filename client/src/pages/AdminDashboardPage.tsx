@@ -8,6 +8,7 @@ import { Link } from "wouter";
 import { useAuth } from '@/hooks/use-auth';
 import { useTenant } from '@/hooks/use-tenant';
 import { useQuery } from '@tanstack/react-query';
+import IndustryNewsfeed from '@/components/dashboard/IndustryNewsfeed';
 import { 
   AlertTriangle,
   ArrowRight, 
@@ -391,36 +392,7 @@ export default function AdminDashboardPage() {
     },
   });
 
-  // Fetch industry news (mocked for now)
-  const { data: news, isLoading: isLoadingNews } = useQuery({
-    queryKey: ['/api/dashboard/news'],
-    queryFn: async () => {
-      // In production, this would fetch data from the backend
-      return [
-        { 
-          id: 1, 
-          title: 'New Tax Legislation Affecting Small Businesses', 
-          excerpt: 'Recent changes to tax legislation will impact how small businesses handle quarterly filings starting next month.',
-          category: 'Tax',
-          link: '#'
-        },
-        { 
-          id: 2, 
-          title: 'Digital Marketing Trends for Accountants', 
-          excerpt: 'Learn about emerging digital marketing strategies that are helping accounting firms connect with clients more effectively.',
-          category: 'Marketing',
-          link: '#'
-        },
-        { 
-          id: 3, 
-          title: 'Client Communication Best Practices', 
-          excerpt: 'Streamline your client communications with these expert-recommended approaches and templates.',
-          category: 'Client Relations',
-          link: '#'
-        }
-      ];
-    },
-  });
+  // We now use IndustryNewsfeed component for news, this legacy query can be removed
 
   // Fetch system health (mocked for now)
   const { data: systemHealth, isLoading: isLoadingSystemHealth } = useQuery({
