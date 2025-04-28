@@ -46,7 +46,7 @@ export default function ServicesSection() {
   const serviceIcons = {
     "Tax Planning & Preparation": { 
       icon: Calculator, 
-      description: "Strategic tax planning and preparation services to optimize your tax position and ensure compliance."
+      description: "Strategic tax planning and preparation services to optimise your tax position and ensure compliance."
     },
     "Bookkeeping": { 
       icon: FileText, 
@@ -74,7 +74,7 @@ export default function ServicesSection() {
     },
     "Custom Financial Dashboard": { 
       imageComponent: toolsDashboardMockup,
-      description: "We build you a live dashboard showing your business's financial health — key metrics, trends, cashflow, tax, and more."
+      description: "We build you a live dashboard showing your business's financial health — key metrics, trends, cash flow, tax, and more."
     },
     "Virtual Finance Director": { 
       imageComponent: toolsStrategySession,
@@ -169,7 +169,7 @@ export default function ServicesSection() {
                       variant="outline" 
                       className="hover:text-[var(--orange)] hover:border-[var(--orange)]"
                     >
-                      Learn More →
+                      Find Out More →
                     </Button>
                   </Link>
                 )}

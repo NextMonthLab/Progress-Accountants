@@ -63,7 +63,7 @@ export default function HomePage() {
                 🎙️ Podcast & Video Studio
               </h2>
               <p className="text-xl mb-4">
-                Purpose-built for businesses that want to sound and look professional without London prices.
+                Purpose-built for businesses that want to sound and look professional without metropolitan prices.
               </p>
               <ul className="space-y-2 mb-6">
                 <li className="flex items-center">
@@ -103,7 +103,7 @@ export default function HomePage() {
                 Get in Touch
               </h2>
               <p className="text-gray-600 max-w-2xl mx-auto">
-                Ready to take your accounting to the next level? Let's talk about how we can help your business thrive.
+                Ready to take your accounting to the next level? Let's talk about how we can help your business flourish.
               </p>
             </div>
             <ContactForm compact={true} className="max-w-3xl mx-auto" />

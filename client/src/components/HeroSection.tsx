@@ -96,7 +96,7 @@ export default function HeroSection() {
                 style={{ backgroundColor: 'var(--orange)' }}
                 className="px-8 py-6 text-lg glow-on-hover hover:-translate-y-[2px] transition duration-300"
               >
-                👉 Book Your Free Strategy Call
+                👉 Book Your Free Strategy Consultation
               </Button>
             </a>
           </div>

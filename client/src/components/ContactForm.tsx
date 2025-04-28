@@ -63,7 +63,7 @@ export default function ContactForm({ compact = false, className = "" }: Contact
       
       toast({
         title: "Message Sent",
-        description: "Thanks for reaching out! We'll get back to you shortly.",
+        description: "Thank you for your enquiry! We'll be in touch shortly.",
         variant: "default",
       });
     } catch (error) {
