@@ -137,17 +137,17 @@ export default function Navbar() {
   const renderDesktopDropdown = (group: MenuGroup) => {
     return (
       <DropdownMenu key={group.label}>
-        <DropdownMenuTrigger className="font-medium hover:text-[var(--orange)] transition duration-300 outline-none flex items-center">
+        <DropdownMenuTrigger className="font-medium text-[var(--navy)] hover:text-[var(--orange)] transition duration-300 outline-none flex items-center">
           {group.label} <ChevronDown className="h-4 w-4 ml-1 opacity-70" />
         </DropdownMenuTrigger>
         <DropdownMenuContent className="min-w-[200px]">
-          <DropdownMenuLabel>{group.label}</DropdownMenuLabel>
+          <DropdownMenuLabel className="text-[var(--navy)]">{group.label}</DropdownMenuLabel>
           <DropdownMenuSeparator />
           {group.items.map((item) => (
             <DropdownMenuItem key={item.label} asChild>
               <Link
                 href={item.href}
-                className={`flex items-center py-2 px-2 ${isActive(item.href) ? 'text-[var(--orange)]' : 'hover:text-[var(--orange)]'} transition duration-300 no-underline w-full`}
+                className={`flex items-center py-2 px-2 ${isActive(item.href) ? 'text-[var(--orange)]' : 'text-[var(--navy)] hover:text-[var(--orange)]'} transition duration-300 no-underline w-full`}
               >
                 {item.icon}
                 {item.label}
@@ -168,7 +168,7 @@ export default function Navbar() {
           <Link
             key={item.label}
             href={item.href}
-            className={`flex items-center py-2 px-2 font-medium ${isActive(item.href) ? 'text-[var(--orange)]' : 'hover:text-[var(--orange)]'} transition duration-300 no-underline`}
+            className={`flex items-center py-2 px-2 font-medium ${isActive(item.href) ? 'text-[var(--orange)]' : 'text-[var(--navy)] hover:text-[var(--orange)]'} transition duration-300 no-underline`}
             onClick={closeMenu}
           >
             {item.icon}
@@ -193,7 +193,7 @@ export default function Navbar() {
           {/* News link */}
           <Link 
             href="/news" 
-            className={`font-medium ${isActive('/news') ? 'text-[var(--orange)]' : 'hover:text-[var(--orange)]'} transition duration-300 no-underline flex items-center`}
+            className={`font-medium ${isActive('/news') ? 'text-[var(--orange)]' : 'text-[var(--navy)] hover:text-[var(--orange)]'} transition duration-300 no-underline flex items-center`}
           >
             <Newspaper className="h-4 w-4 mr-2" />
             News
@@ -202,7 +202,7 @@ export default function Navbar() {
           {/* Always show the Client Portal link */}
           <Link 
             href="/client-portal" 
-            className={`font-medium ${isActive('/client-portal') ? 'text-[var(--orange)]' : 'hover:text-[var(--orange)]'} transition duration-300 no-underline`}
+            className={`font-medium ${isActive('/client-portal') ? 'text-[var(--orange)]' : 'text-[var(--navy)] hover:text-[var(--orange)]'} transition duration-300 no-underline`}
           >
             Client Portal
           </Link>
@@ -296,7 +296,7 @@ export default function Navbar() {
             <h4 className="text-sm uppercase tracking-wider text-gray-500 mb-2 px-2">News</h4>
             <Link 
               href="/news" 
-              className="flex items-center py-2 px-2 font-medium hover:text-[var(--orange)] transition duration-300 no-underline"
+              className="flex items-center py-2 px-2 font-medium text-[var(--navy)] hover:text-[var(--orange)] transition duration-300 no-underline"
               onClick={closeMenu}
             >
               <Newspaper className="h-4 w-4 mr-2" />
@@ -309,7 +309,7 @@ export default function Navbar() {
             <h4 className="text-sm uppercase tracking-wider text-gray-500 mb-2 px-2">Portal</h4>
             <Link 
               href="/client-portal" 
-              className="flex items-center py-2 px-2 font-medium hover:text-[var(--orange)] transition duration-300 no-underline"
+              className="flex items-center py-2 px-2 font-medium text-[var(--navy)] hover:text-[var(--orange)] transition duration-300 no-underline"
               onClick={closeMenu}
             >
               <LayoutDashboard className="h-4 w-4 mr-2" />
