@@ -207,35 +207,71 @@ function QuickAction({
   isLoading = false
 }: QuickActionProps) {
   const variantStyles = {
-    primary: 'bg-gradient-to-br from-navy via-blue-900 to-blue-950 hover:shadow-lg hover:shadow-navy/20 text-white',
-    secondary: 'bg-gradient-to-br from-orange-50 via-orange-100 to-orange-200 hover:shadow-lg hover:shadow-orange-500/20 border border-orange-300 text-navy',
-    outline: 'border-2 border-navy/40 hover:border-navy/60 bg-white text-navy',
-    ghost: 'bg-gray-200 hover:bg-gray-300 text-navy',
+    primary: 'bg-gradient-to-br from-navy via-blue-900 to-blue-950 hover:shadow-lg hover:shadow-navy/20 text-white border border-navy/20',
+    secondary: 'bg-white hover:bg-orange-50 hover:shadow-lg hover:shadow-orange-500/10 border border-orange-200 text-navy',
+    outline: 'border-2 border-navy/20 hover:border-navy/40 bg-white text-navy hover:bg-blue-50',
+    ghost: 'bg-gray-100 hover:bg-gray-200 text-navy border border-gray-200',
   };
 
-  // Icon colors based on variant
-  const iconColor = variant === 'primary' ? 'text-white' : 'text-navy';
-  // Title colors based on variant
-  const titleColor = variant === 'primary' ? 'text-white' : 'text-navy';
-  // Description colors based on variant with better contrast
-  const descriptionColor = variant === 'primary' ? 'text-white/90' : 'text-navy/80';
+  // Colors based on variant for better contrast
+  const iconColor = {
+    primary: 'text-white bg-white/10 p-1.5 rounded-md',
+    secondary: 'text-orange-600 bg-orange-100 p-1.5 rounded-md',
+    outline: 'text-navy bg-blue-50 p-1.5 rounded-md',
+    ghost: 'text-navy bg-gray-200 p-1.5 rounded-md'
+  };
+  
+  const titleColor = {
+    primary: 'text-white font-medium',
+    secondary: 'text-navy font-medium',
+    outline: 'text-navy font-medium',
+    ghost: 'text-navy font-medium'
+  };
+  
+  const descriptionColor = {
+    primary: 'text-white/90',
+    secondary: 'text-gray-700',
+    outline: 'text-gray-700',
+    ghost: 'text-gray-700'
+  };
+
+  const arrowColor = {
+    primary: 'text-white/70',
+    secondary: 'text-orange-400',
+    outline: 'text-navy/40',
+    ghost: 'text-gray-500'
+  };
+
+  if (isLoading) {
+    return (
+      <div className="p-4 rounded-xl bg-gray-100 border border-gray-200 animate-pulse">
+        <div className="flex items-start gap-3">
+          <div className="h-8 w-8 rounded-md bg-gray-200"></div>
+          <div className="flex-1">
+            <div className="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
+            <div className="h-3 bg-gray-200 rounded w-full"></div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <Link href={link}>
-      <div className={`p-4 rounded-xl transition-all ${variantStyles[variant]} relative`}>
+      <div className={`p-4 rounded-xl transition-all ${variantStyles[variant]} relative group`}>
         <div className="flex items-start gap-3">
           {icon && (
-            <div className={iconColor}>
+            <div className={iconColor[variant]}>
               {icon}
             </div>
           )}
-          <div>
-            <h3 className={`font-medium ${titleColor}`}>{title}</h3>
-            <p className={`text-sm mt-1 ${descriptionColor}`}>{description}</p>
+          <div className="flex-1 pr-4">
+            <h3 className={titleColor[variant]}>{title}</h3>
+            <p className={`text-sm mt-1 ${descriptionColor[variant]}`}>{description}</p>
           </div>
         </div>
-        <div className="absolute bottom-4 right-4">
-          <ArrowUpRight className={`h-4 w-4 ${variant === 'primary' ? 'text-white/70' : 'text-navy/70'}`} />
+        <div className="absolute bottom-4 right-4 transition-all transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
+          <ArrowUpRight className={`h-4 w-4 ${arrowColor[variant]}`} />
         </div>
       </div>
     </Link>
@@ -496,24 +532,38 @@ export default function AdminDashboardPage() {
 
         {/* Tabs Navigation */}
         <Tabs defaultValue="overview" value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="bg-white rounded-lg shadow-sm border border-gray-100 mb-6 p-1 overflow-x-auto flex w-full md:w-auto">
-            <TabsTrigger value="overview" className="text-navy hover:text-navy/80 data-[state=active]:bg-orange-50 data-[state=active]:text-orange-600 data-[state=active]:border-b-2 data-[state=active]:border-orange-500 whitespace-nowrap">
-              <LayoutDashboard className="h-4 w-4 mr-2" />
-              Overview
-            </TabsTrigger>
-            <TabsTrigger value="content" className="text-navy hover:text-navy/80 data-[state=active]:bg-orange-50 data-[state=active]:text-orange-600 data-[state=active]:border-b-2 data-[state=active]:border-orange-500 whitespace-nowrap">
-              <FileText className="h-4 w-4 mr-2" />
-              Content
-            </TabsTrigger>
-            <TabsTrigger value="tools" className="text-navy hover:text-navy/80 data-[state=active]:bg-orange-50 data-[state=active]:text-orange-600 data-[state=active]:border-b-2 data-[state=active]:border-orange-500 whitespace-nowrap">
-              <Cpu className="h-4 w-4 mr-2" />
-              Tools
-            </TabsTrigger>
-            <TabsTrigger value="system" className="text-navy hover:text-navy/80 data-[state=active]:bg-orange-50 data-[state=active]:text-orange-600 data-[state=active]:border-b-2 data-[state=active]:border-orange-500 whitespace-nowrap">
-              <Settings className="h-4 w-4 mr-2" />
-              System
-            </TabsTrigger>
-          </TabsList>
+          <div className="overflow-x-auto pb-1 mb-1">
+            <TabsList className="bg-white rounded-lg shadow-sm border border-gray-100 mb-4 p-1 flex w-max min-w-full sm:w-auto">
+              <TabsTrigger 
+                value="overview" 
+                className="text-navy hover:text-navy/80 data-[state=active]:bg-orange-50 data-[state=active]:text-orange-600 data-[state=active]:border-b-2 data-[state=active]:border-orange-500 whitespace-nowrap text-sm"
+              >
+                <LayoutDashboard className="h-4 w-4 mr-1.5 inline-block" />
+                <span>Overview</span>
+              </TabsTrigger>
+              <TabsTrigger 
+                value="content" 
+                className="text-navy hover:text-navy/80 data-[state=active]:bg-orange-50 data-[state=active]:text-orange-600 data-[state=active]:border-b-2 data-[state=active]:border-orange-500 whitespace-nowrap text-sm"
+              >
+                <FileText className="h-4 w-4 mr-1.5 inline-block" />
+                <span>Content</span>
+              </TabsTrigger>
+              <TabsTrigger 
+                value="tools" 
+                className="text-navy hover:text-navy/80 data-[state=active]:bg-orange-50 data-[state=active]:text-orange-600 data-[state=active]:border-b-2 data-[state=active]:border-orange-500 whitespace-nowrap text-sm"
+              >
+                <Cpu className="h-4 w-4 mr-1.5 inline-block" />
+                <span>Tools</span>
+              </TabsTrigger>
+              <TabsTrigger 
+                value="system" 
+                className="text-navy hover:text-navy/80 data-[state=active]:bg-orange-50 data-[state=active]:text-orange-600 data-[state=active]:border-b-2 data-[state=active]:border-orange-500 whitespace-nowrap text-sm"
+              >
+                <Settings className="h-4 w-4 mr-1.5 inline-block" />
+                <span>System</span>
+              </TabsTrigger>
+            </TabsList>
+          </div>
 
           {/* Overview Tab Content */}
           <TabsContent value="overview" className="mt-0">
