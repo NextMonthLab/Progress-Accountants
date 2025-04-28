@@ -162,7 +162,7 @@ const HeroSection = () => {
               variants={itemVariants}
             >
               <span className="text-white">{businessName}</span>
-              <span className="block mt-2 bg-gradient-to-r from-orange-400 to-yellow-300 bg-clip-text text-transparent">
+              <span className="block mt-2 bg-gradient-to-r from-orange-400 to-orange-300 bg-clip-text text-transparent">
                 {tagline}
               </span>
             </motion.h1>
