@@ -53,6 +53,7 @@ import AboutPage from "@/pages/AboutPage";
 import ServicesPage from "@/pages/ServicesPage";
 import ServiceDetailPage from "@/pages/ServiceDetailPage";
 import IndustriesPage from "@/pages/IndustriesPage";
+import FilmIndustryPage from "@/pages/FilmIndustryPage";
 import WhyUsPage from "@/pages/WhyUsPage";
 import ContactPage from "@/pages/ContactPage";
 import TestimonialsPage from "@/pages/TestimonialsPage";
@@ -147,6 +148,7 @@ function Router() {
       <Route path="/services" component={ServicesPage} />
       <Route path="/services/:slug" component={ServiceDetailPage} />
       <Route path="/industries" component={IndustriesPage} />
+      <Route path="/industries/film" component={FilmIndustryPage} />
       <Route path="/why-us" component={WhyUsPage} />
       <Route path="/contact" component={ContactPage} />
       <Route path="/testimonials" component={TestimonialsPage} />

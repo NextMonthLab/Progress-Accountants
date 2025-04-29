@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { withMemo } from "@/lib/withMemo";
-import DefaultLayout from "@/components/layouts/DefaultLayout";
+import MainLayout from "@/layouts/MainLayout";
 import { Button } from "@/components/ui/button";
 import { OptimizedImage } from "@/components/ui/OptimizedImage";
 import { ArrowRight, CheckCircle, Film, PlayCircle, ArrowDown, Clock, Banknote, Award, Users } from "lucide-react";
@@ -136,7 +136,7 @@ const FilmIndustryPage = () => {
   }, []);
 
   return (
-    <DefaultLayout>
+    <MainLayout>
       <div className="bg-gray-50 pb-20">
         {/* Hero section */}
         <div 
@@ -414,7 +414,7 @@ const FilmIndustryPage = () => {
           </motion.div>
         </div>
       </div>
-    </DefaultLayout>
+    </MainLayout>
   );
 };
 
