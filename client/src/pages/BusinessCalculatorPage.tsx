@@ -3,7 +3,8 @@ import { motion } from "framer-motion";
 import { 
   ArrowRight, ArrowLeft, BarChart3, Calculator, CheckCircle, 
   LucideIcon, PieChart, Users, Building, MapPin, DollarSign, 
-  CreditCard, Briefcase, TrendingUp, Download, Mail
+  CreditCard, Briefcase, TrendingUp, Download, Mail,
+  Award, FileText, Sparkles, Shield, Clock, LifeBuoy, Zap
 } from "lucide-react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -44,6 +45,7 @@ import {
   CardHeader, 
   CardTitle 
 } from "@/components/ui/card";
+import calculatorBgImage from "@assets/calculator-pound-bg.png";
 
 // Define the form schema for each step
 const businessTypeSchema = z.object({
@@ -56,6 +58,7 @@ const businessTypeSchema = z.object({
   region: z.string().min(1, { message: "Please select your region" }),
 });
 
+// Continue copying the rest of the file here...
 const financialsSchema = z.object({
   monthlyIncome: z.string().min(1, { message: "Please enter your monthly income" }),
   fixedCosts: z.string().min(1, { message: "Please enter your fixed costs" }),
@@ -143,564 +146,11 @@ const BusinessTypeStep = ({ onNext, defaultValues }: StepProps) => {
     "West Midlands", "East Midlands", "Yorkshire and the Humber", 
     "North West", "North East", "Scotland", "Wales", "Northern Ireland"
   ];
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, x: 20 }}
-      animate={{ opacity: 1, x: 0 }}
-      exit={{ opacity: 0, x: -20 }}
-      className="space-y-6"
-    >
-      <div className="text-center">
-        <div className="bg-navy/10 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
-          <Building className="h-6 w-6 text-navy" />
-        </div>
-        <h2 className="text-2xl font-bold text-navy">Tell us about your business</h2>
-        <p className="text-gray-600 mt-2">Let's start with some basic information about your business</p>
-      </div>
-
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onNext)} className="space-y-6">
-          <FormField
-            control={form.control}
-            name="businessType"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Business Type</FormLabel>
-                <FormControl>
-                  <RadioGroup 
-                    onValueChange={field.onChange} 
-                    defaultValue={field.value} 
-                    className="grid grid-cols-1 md:grid-cols-3 gap-4"
-                  >
-                    <FormItem className="flex flex-col items-center space-y-3 p-4 border rounded-md">
-                      <FormControl>
-                        <RadioGroupItem value="limited" className="sr-only" />
-                      </FormControl>
-                      <div className={`w-full h-full flex flex-col items-center justify-center p-4 rounded-md ${field.value === "limited" ? "bg-orange-50 border-orange-500" : "bg-white"}`}>
-                        <Building className="h-8 w-8 mb-2 text-navy" />
-                        <FormLabel className="font-medium text-navy">Limited Company</FormLabel>
-                      </div>
-                    </FormItem>
-                    <FormItem className="flex flex-col items-center space-y-3 p-4 border rounded-md">
-                      <FormControl>
-                        <RadioGroupItem value="sole-trader" className="sr-only" />
-                      </FormControl>
-                      <div className={`w-full h-full flex flex-col items-center justify-center p-4 rounded-md ${field.value === "sole-trader" ? "bg-orange-50 border-orange-500" : "bg-white"}`}>
-                        <Users className="h-8 w-8 mb-2 text-navy" />
-                        <FormLabel className="font-medium text-navy">Sole Trader</FormLabel>
-                      </div>
-                    </FormItem>
-                    <FormItem className="flex flex-col items-center space-y-3 p-4 border rounded-md">
-                      <FormControl>
-                        <RadioGroupItem value="partnership" className="sr-only" />
-                      </FormControl>
-                      <div className={`w-full h-full flex flex-col items-center justify-center p-4 rounded-md ${field.value === "partnership" ? "bg-orange-50 border-orange-500" : "bg-white"}`}>
-                        <Users className="h-8 w-8 mb-2 text-navy" />
-                        <FormLabel className="font-medium text-navy">Partnership</FormLabel>
-                      </div>
-                    </FormItem>
-                  </RadioGroup>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <FormField
-              control={form.control}
-              name="industry"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Industry</FormLabel>
-                  <Select 
-                    onValueChange={field.onChange} 
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select your industry" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {industries.map((industry) => (
-                        <SelectItem key={industry} value={industry}>
-                          {industry}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="turnover"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Annual Turnover</FormLabel>
-                  <Select 
-                    onValueChange={field.onChange} 
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select turnover range" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {turnoverRanges.map((range) => (
-                        <SelectItem key={range} value={range}>
-                          {range}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="staffCount"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Number of Staff (including yourself)</FormLabel>
-                  <FormControl>
-                    <Input type="number" min="1" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="region"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Region</FormLabel>
-                  <Select 
-                    onValueChange={field.onChange} 
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select your region" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {regions.map((region) => (
-                        <SelectItem key={region} value={region}>
-                          {region}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-
-          <div className="flex justify-end pt-4">
-            <Button 
               type="submit" 
               className="bg-orange-500 hover:bg-orange-600 text-white"
             >
               Continue
-              <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
-          </div>
-        </form>
-      </Form>
-    </motion.div>
-  );
-};
-
-// Step 2: Financials
-const FinancialsStep = ({ onNext, onBack, defaultValues }: StepProps) => {
-  const form = useForm<FinancialsFormValues>({
-    resolver: zodResolver(financialsSchema),
-    defaultValues: defaultValues || {
-      monthlyIncome: "",
-      fixedCosts: "",
-      variableCosts: "",
-      paymentIssues: false,
-      vatRegistered: false,
-    },
-  });
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, x: 20 }}
-      animate={{ opacity: 1, x: 0 }}
-      exit={{ opacity: 0, x: -20 }}
-      className="space-y-6"
-    >
-      <div className="text-center">
-        <div className="bg-navy/10 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
-          <DollarSign className="h-6 w-6 text-navy" />
-        </div>
-        <h2 className="text-2xl font-bold text-navy">Financial Details</h2>
-        <p className="text-gray-600 mt-2">Let's understand your current financial situation</p>
-      </div>
-
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onNext)} className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <FormField
-              control={form.control}
-              name="monthlyIncome"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Average Monthly Income (£)</FormLabel>
-                  <FormControl>
-                    <Input type="text" placeholder="e.g. 10000" {...field} />
-                  </FormControl>
-                  <FormDescription>
-                    Your average monthly revenue before expenses
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="fixedCosts"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Monthly Fixed Costs (£)</FormLabel>
-                  <FormControl>
-                    <Input type="text" placeholder="e.g. 5000" {...field} />
-                  </FormControl>
-                  <FormDescription>
-                    Rent, salaries, subscriptions, etc.
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="variableCosts"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Monthly Variable Costs (£)</FormLabel>
-                  <FormControl>
-                    <Input type="text" placeholder="e.g. 2000" {...field} />
-                  </FormControl>
-                  <FormDescription>
-                    Materials, freelancers, utilities, etc.
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <FormField
-              control={form.control}
-              name="paymentIssues"
-              render={({ field }) => (
-                <FormItem className="flex flex-row items-start space-x-3 space-y-0 p-4 border rounded-md">
-                  <FormControl>
-                    <Checkbox
-                      checked={field.value}
-                      onCheckedChange={field.onChange}
-                    />
-                  </FormControl>
-                  <div className="space-y-1 leading-none">
-                    <FormLabel className="text-sm font-normal">
-                      Do you experience late payment issues?
-                    </FormLabel>
-                    <FormDescription>
-                      E.g. invoices regularly paid after 30 days
-                    </FormDescription>
-                  </div>
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="vatRegistered"
-              render={({ field }) => (
-                <FormItem className="flex flex-row items-start space-x-3 space-y-0 p-4 border rounded-md">
-                  <FormControl>
-                    <Checkbox
-                      checked={field.value}
-                      onCheckedChange={field.onChange}
-                    />
-                  </FormControl>
-                  <div className="space-y-1 leading-none">
-                    <FormLabel className="text-sm font-normal">
-                      Is your business VAT registered?
-                    </FormLabel>
-                    <FormDescription>
-                      UK VAT threshold is currently £85,000
-                    </FormDescription>
-                  </div>
-                </FormItem>
-              )}
-            />
-          </div>
-
-          <div className="flex justify-between pt-4">
-            <Button 
-              type="button" 
-              variant="outline"
-              onClick={onBack}
-            >
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              Back
-            </Button>
-            <Button 
-              type="submit" 
-              className="bg-orange-500 hover:bg-orange-600 text-white"
-            >
-              Continue
-              <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
-          </div>
-        </form>
-      </Form>
-    </motion.div>
-  );
-};
-
-// Step 3: Growth Plans
-const GrowthStep = ({ onNext, onBack, defaultValues }: StepProps) => {
-  const form = useForm<GrowthFormValues>({
-    resolver: zodResolver(growthSchema),
-    defaultValues: defaultValues || {
-      growthTarget: "",
-      plannedHires: "0",
-      averageSalary: "0",
-      plannedInvestment: false,
-      investmentType: "",
-      investmentAmount: "",
-      riskTolerance: 50,
-    },
-  });
-
-  const watchPlannedInvestment = form.watch("plannedInvestment");
-  const watchPlannedHires = form.watch("plannedHires");
-
-  const growthTargets = ["3% (Steady)", "10% (Moderate)", "25% (Ambitious)", "50%+ (Aggressive)"];
-  const investmentTypes = ["Equipment/Technology", "Marketing", "New Premises", "R&D", "Training", "Other"];
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, x: 20 }}
-      animate={{ opacity: 1, x: 0 }}
-      exit={{ opacity: 0, x: -20 }}
-      className="space-y-6"
-    >
-      <div className="text-center">
-        <div className="bg-navy/10 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
-          <TrendingUp className="h-6 w-6 text-navy" />
-        </div>
-        <h2 className="text-2xl font-bold text-navy">Growth & Scenarios</h2>
-        <p className="text-gray-600 mt-2">Help us understand your growth plans and risk appetite</p>
-      </div>
-
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onNext)} className="space-y-6">
-          <FormField
-            control={form.control}
-            name="growthTarget"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>What's your growth target for the next 12 months?</FormLabel>
-                <FormControl>
-                  <RadioGroup 
-                    onValueChange={field.onChange} 
-                    defaultValue={field.value} 
-                    className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4"
-                  >
-                    {growthTargets.map((target) => (
-                      <FormItem key={target} className="flex items-center space-x-3 space-y-0">
-                        <FormControl>
-                          <RadioGroupItem value={target} />
-                        </FormControl>
-                        <FormLabel className="font-normal">{target}</FormLabel>
-                      </FormItem>
-                    ))}
-                  </RadioGroup>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <FormField
-              control={form.control}
-              name="plannedHires"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Do you plan to hire in the next 12 months?</FormLabel>
-                  <FormControl>
-                    <Input 
-                      type="number" 
-                      min="0" 
-                      placeholder="Number of new employees" 
-                      {...field} 
-                    />
-                  </FormControl>
-                  <FormDescription>
-                    Enter 0 if you don't plan to hire
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            {parseInt(watchPlannedHires) > 0 && (
-              <FormField
-                control={form.control}
-                name="averageSalary"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Average Annual Salary (£)</FormLabel>
-                    <FormControl>
-                      <Input 
-                        type="text" 
-                        placeholder="e.g. 30000" 
-                        {...field} 
-                      />
-                    </FormControl>
-                    <FormDescription>
-                      Average salary per new hire
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            )}
-          </div>
-
-          <FormField
-            control={form.control}
-            name="plannedInvestment"
-            render={({ field }) => (
-              <FormItem className="flex flex-row items-start space-x-3 space-y-0 p-4 border rounded-md">
-                <FormControl>
-                  <Checkbox
-                    checked={field.value}
-                    onCheckedChange={field.onChange}
-                  />
-                </FormControl>
-                <div className="space-y-1 leading-none">
-                  <FormLabel className="text-sm font-normal">
-                    Do you plan any significant investments?
-                  </FormLabel>
-                  <FormDescription>
-                    New equipment, premises, marketing campaigns, etc.
-                  </FormDescription>
-                </div>
-              </FormItem>
-            )}
-          />
-
-          {watchPlannedInvestment && (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <FormField
-                control={form.control}
-                name="investmentType"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Type of Investment</FormLabel>
-                    <Select 
-                      onValueChange={field.onChange} 
-                      defaultValue={field.value}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select investment type" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {investmentTypes.map((type) => (
-                          <SelectItem key={type} value={type}>
-                            {type}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="investmentAmount"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Approximate Investment Amount (£)</FormLabel>
-                    <FormControl>
-                      <Input type="text" placeholder="e.g. 50000" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-          )}
-
-          <FormField
-            control={form.control}
-            name="riskTolerance"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Risk Tolerance</FormLabel>
-                <FormControl>
-                  <div className="pt-2">
-                    <Slider 
-                      defaultValue={[field.value]} 
-                      max={100} 
-                      step={1}
-                      onValueChange={(vals) => field.onChange(vals[0])}
-                    />
-                    <div className="flex justify-between mt-2 text-sm text-gray-500">
-                      <span>Play it safe</span>
-                      <span>Balanced</span>
-                      <span>Go big</span>
-                    </div>
-                  </div>
-                </FormControl>
-                <FormDescription>
-                  How comfortable are you with business risk?
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <div className="flex justify-between pt-4">
-            <Button 
-              type="button" 
-              variant="outline"
-              onClick={onBack}
-            >
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              Back
-            </Button>
-            <Button 
-              type="submit" 
-              className="bg-orange-500 hover:bg-orange-600 text-white"
-            >
-              Continue
-              <ArrowRight className="ml-2 h-4 w-4" />
+              <ArrowRight className="ml-2 h-4 w-4"/>
             </Button>
           </div>
         </form>
@@ -1077,17 +527,33 @@ const BusinessCalculatorPage = () => {
   };
 
   return (
-    <div className="py-12 md:py-16">
-      <div className="container mx-auto px-6 md:px-8">
-        {/* Header */}
-        <div className="text-center max-w-4xl mx-auto mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold text-navy mb-4">
-            Smart Business Forecast Calculator
-          </h1>
-          <p className="text-xl text-gray-600">
-            Think beyond spreadsheets. Get a real-time financial pulse check tailored to your business—plus actionable insights in under 3 minutes.
-          </p>
+    <div>
+      {/* Hero Section with Pound Sterling Background */}
+      <div 
+        className="relative py-16 md:py-24 mb-8" 
+        style={{ 
+          backgroundImage: `url(${calculatorBgImage})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center'
+        }}
+      >
+        {/* Dark overlay for better text readability */}
+        <div className="absolute inset-0 bg-[var(--navy)] opacity-80"></div>
+        
+        <div className="container mx-auto px-6 md:px-8 relative z-10">
+          {/* Header */}
+          <div className="text-center max-w-4xl mx-auto">
+            <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
+              Smart Business Forecast Calculator
+            </h1>
+            <p className="text-xl text-gray-200">
+              Think beyond spreadsheets. Get a real-time financial pulse check tailored to your business—plus actionable insights in under 3 minutes.
+            </p>
+          </div>
         </div>
+      </div>
+      
+      <div className="container mx-auto px-6 md:px-8 py-8">
 
         {/* Calculator Container */}
         <div className="max-w-3xl mx-auto bg-white p-6 md:p-8 rounded-xl shadow-lg">
