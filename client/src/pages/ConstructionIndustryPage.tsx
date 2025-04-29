@@ -5,7 +5,7 @@ import { OptimizedImage } from "@/components/ui/OptimizedImage";
 import { ArrowRight, CheckCircle, ArrowDown, Hammer, HardHat, Building2, Coins, Wrench, User, FileSpreadsheet, Home, Clock, Receipt, BarChart3 } from "lucide-react";
 
 // Import construction industry images
-import constructionBackgroundImg from "../assets/images/construction_industry.png";
+import constructionBackgroundImg from "../assets/images/construction_blueprint.png";
 import constructionFooterImg from "../assets/images/construction_industry.png";
 
 // Animation variants
@@ -149,7 +149,7 @@ const ConstructionIndustryPage = () => {
         <div className="absolute inset-0 z-0">
           <OptimizedImage
             src={constructionBackgroundImg}
-            alt="Construction site at dusk with lights and scaffolding"
+            alt="Construction worker in safety vest reviewing blueprints at night with lantern light"
             width={1920}
             height={1080}
             className="w-full h-full object-cover"
@@ -207,7 +207,7 @@ const ConstructionIndustryPage = () => {
                 <div className="rounded-xl shadow-lg w-full overflow-hidden">
                   <OptimizedImage
                     src={constructionBackgroundImg}
-                    alt="Construction industry blueprint"
+                    alt="Construction worker reviewing blueprints at night under lantern light"
                     width={600}
                     height={400}
                     className="rounded-xl shadow-lg w-full"
