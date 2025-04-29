@@ -6,9 +6,9 @@ import { OptimizedImage } from "@/components/ui/OptimizedImage";
 import { ArrowRight, CheckCircle, Music, PlayCircle, ArrowDown, Clock, Banknote, Award, Users, Headphones, Radio } from "lucide-react";
 
 // Import music industry images
-import musicStudioBackgroundImg from "../assets/images/music/hero_background.png";
+import musicStudioBackgroundImg from "../assets/images/music/hero_background_new.png";
 import musicCardImg from "../assets/images/music/card_image.png";
-import musicFooterImg from "../assets/images/music/footer_background.png";
+import musicFooterImg from "../assets/images/music/footer_background_new.png";
 
 // Animation variants
 const containerVariants = {
@@ -93,13 +93,13 @@ const CTASection = () => (
     <div className="absolute inset-0 z-0">
       <OptimizedImage
         src={musicFooterImg}
-        alt="Musician reviewing finances in a studio"
+        alt="Concert with band silhouette and audience"
         width={1920}
         height={1080}
         className="w-full h-full object-cover"
       />
       {/* Darker overlay for better text contrast */}
-      <div className="absolute inset-0 bg-navy opacity-80"></div>
+      <div className="absolute inset-0 bg-navy opacity-70"></div>
     </div>
     <div className="relative z-10">
       <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
@@ -151,13 +151,13 @@ const MusicIndustryPage = () => {
         <div className="absolute inset-0 z-0">
           <OptimizedImage
             src={musicStudioBackgroundImg}
-            alt="Music studio with moody lighting"
+            alt="Recording studio mixing console with musician silhouette"
             width={1920}
             height={1080}
             className="w-full h-full object-cover"
           />
           {/* Dark overlay for better text contrast */}
-          <div className="absolute inset-0 bg-navy opacity-90"></div>
+          <div className="absolute inset-0 bg-navy opacity-75"></div>
         </div>
         
         <div className="relative z-10 container mx-auto px-4 py-20 md:py-32">
