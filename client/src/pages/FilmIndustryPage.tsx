@@ -5,10 +5,10 @@ import { Button } from "@/components/ui/button";
 import { OptimizedImage } from "@/components/ui/OptimizedImage";
 import { ArrowRight, CheckCircle, Film, PlayCircle, ArrowDown, Clock, Banknote, Award, Users } from "lucide-react";
 
-// Import film industry images and podcast studio
+// Import film industry images
 import filmSetCinematicImg from "../assets/images/film_set_cinematic.png";
 import filmProductionImg from "../assets/images/film_industry.png";
-import podcastStudioImg from "../assets/images/podcast_studio.jpg";
+import filmMakeupArtistImg from "../assets/images/film_makeup_artist.png";
 
 // Animation variants
 const containerVariants = {
@@ -88,7 +88,7 @@ const Testimonial = ({ quote, author, role }: { quote: string; author: string; r
   </motion.div>
 );
 
-// Call to action section component
+// Call to action section component with makeup artist image 
 const CTASection = () => (
   <motion.div
     variants={itemVariants}
@@ -97,14 +97,14 @@ const CTASection = () => (
     {/* Background image with overlay for CTA */}
     <div className="absolute inset-0 z-0">
       <OptimizedImage
-        src={podcastStudioImg}
-        alt="Film studio background"
+        src={filmMakeupArtistImg}
+        alt="Film makeup artist in studio"
         width={1920}
         height={1080}
         className="w-full h-full object-cover"
       />
       {/* Darker overlay for better text contrast */}
-      <div className="absolute inset-0 bg-navy opacity-95"></div>
+      <div className="absolute inset-0 bg-navy opacity-80"></div>
     </div>
     <div className="relative z-10">
       <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
