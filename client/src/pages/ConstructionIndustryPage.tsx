@@ -159,7 +159,7 @@ const ConstructionIndustryPage = () => {
           <div className="absolute inset-0 bg-navy opacity-75"></div>
         </div>
         
-        <div className="relative z-10 container mx-auto px-4 py-20 md:py-32">
+        <div className="relative z-10 container mx-auto px-6 md:px-8 py-20 md:py-32">
           <div className="flex flex-col lg:flex-row items-center gap-12">
             <motion.div 
               initial="hidden"
@@ -247,7 +247,7 @@ const ConstructionIndustryPage = () => {
       </div>
       
       {/* Intro section */}
-      <div className="container mx-auto px-4 py-16">
+      <div className="container mx-auto px-6 md:px-8 py-16">
         <motion.div 
           initial="hidden"
           whileInView="visible"
@@ -278,7 +278,7 @@ const ConstructionIndustryPage = () => {
       </div>
       
       {/* Key features section */}
-      <div className="container mx-auto px-4 py-12">
+      <div className="container mx-auto px-6 md:px-8 py-12">
         <motion.div 
           initial="hidden"
           whileInView="visible"
@@ -322,7 +322,7 @@ const ConstructionIndustryPage = () => {
       </div>
       
       {/* Testimonial section */}
-      <div className="container mx-auto px-4 py-12">
+      <div className="container mx-auto px-6 md:px-8 py-12">
         <motion.div 
           initial="hidden"
           whileInView="visible"
@@ -349,7 +349,7 @@ const ConstructionIndustryPage = () => {
       </div>
       
       {/* Clients section */}
-      <div className="container mx-auto px-4 py-12">
+      <div className="container mx-auto px-6 md:px-8 py-12">
         <motion.div 
           initial="hidden"
           whileInView="visible"
@@ -374,7 +374,7 @@ const ConstructionIndustryPage = () => {
       </div>
       
       {/* Tech section */}
-      <div className="container mx-auto px-4 py-12">
+      <div className="container mx-auto px-6 md:px-8 py-12">
         <motion.div 
           initial="hidden"
           whileInView="visible"
