@@ -48,44 +48,46 @@ const itemVariants = {
 };
 
 // HeroSection component
-const HeroSection = () => (
-  <section className="relative py-16 md:py-24 overflow-hidden">
-    <div className="absolute inset-0 bg-navy">
-      <img 
-        src="/images/sme-support-hub-hero.png" 
-        alt="Business professional working with documents and laptop" 
-        className="w-full h-full object-cover opacity-60"
-      />
-      <div className="absolute inset-0 bg-navy bg-opacity-70"></div>
-    </div>
-    <div className="container mx-auto px-4 relative z-10">
-      <motion.div 
-        initial="hidden"
-        animate="visible"
-        variants={containerVariants}
-        className="max-w-3xl mx-auto text-center"
-      >
-        <motion.div variants={itemVariants}>
-          <Badge variant="outline" className="mb-4 bg-orange-100 text-orange-800 hover:bg-orange-200 border-orange-200">
-            RESOURCE HUB
-          </Badge>
+const HeroSection = () => {
+  return (
+    <section 
+      className="relative py-16 md:py-24 overflow-hidden" 
+      style={{
+        backgroundImage: "linear-gradient(rgba(3, 28, 64, 0.85), rgba(3, 28, 64, 0.85)), url('/images/sme-support-hub-hero.png')",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundColor: "#031c40" // Navy fallback
+      }}
+    >
+      <div className="container mx-auto px-4 relative z-10">
+        <motion.div 
+          initial="hidden"
+          animate="visible"
+          variants={containerVariants}
+          className="max-w-3xl mx-auto text-center"
+        >
+          <motion.div variants={itemVariants}>
+            <Badge variant="outline" className="mb-4 bg-orange-100 text-orange-800 hover:bg-orange-200 border-orange-200">
+              RESOURCE HUB
+            </Badge>
+          </motion.div>
+          <motion.h1 
+            variants={itemVariants}
+            className="text-3xl md:text-5xl font-bold text-white mb-6 leading-tight"
+          >
+            Everything Your Business Needs, All in One Place
+          </motion.h1>
+          <motion.p 
+            variants={itemVariants}
+            className="text-lg md:text-xl text-gray-200 mb-8"
+          >
+            From Companies House deadlines to HMRC contact details, this page keeps you compliant, informed, and in control.
+          </motion.p>
         </motion.div>
-        <motion.h1 
-          variants={itemVariants}
-          className="text-3xl md:text-5xl font-bold text-white mb-6 leading-tight"
-        >
-          Everything Your Business Needs, All in One Place
-        </motion.h1>
-        <motion.p 
-          variants={itemVariants}
-          className="text-lg md:text-xl text-gray-200 mb-8"
-        >
-          From Companies House deadlines to HMRC contact details, this page keeps you compliant, informed, and in control.
-        </motion.p>
-      </motion.div>
-    </div>
-  </section>
-);
+      </div>
+    </section>
+  );
+};
 
 // Introduction section
 const IntroSection = () => (
