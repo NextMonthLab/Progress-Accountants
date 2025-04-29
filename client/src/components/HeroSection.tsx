@@ -163,7 +163,7 @@ const HeroSection = () => {
             variants={containerVariants}
           >
             <motion.div
-              className="inline-block mb-4 bg-gradient-to-r from-orange-500/30 to-orange-400/20 backdrop-blur-sm px-4 py-1.5 rounded-full shadow-lg shadow-orange-900/10"
+              className="inline-block mb-4"
               variants={itemVariants}
             >
               <span className="text-orange-200 text-sm font-medium tracking-wide flex items-center">
@@ -179,7 +179,7 @@ const HeroSection = () => {
               <span className="text-white">{businessName}</span>
               <span className="relative block mt-3">
                 {/* Premium metallic gradient effect with text-shadow for enhanced visibility */}
-                <span className="relative inline bg-gradient-to-r from-[#f7b733] via-[#ffda79] to-[#f59b42] bg-clip-text text-transparent animate-pulse" style={{ textShadow: "0 1px 2px rgba(0,0,0,0.2), 0 1px 10px rgba(255,153,0,0.3)" }}>
+                <span className="relative inline-block bg-gradient-to-r from-[#f7b733] via-[#ffda79] to-[#f59b42] bg-clip-text text-transparent animate-pulse" style={{ textShadow: "0 1px 2px rgba(0,0,0,0.2), 0 1px 10px rgba(255,153,0,0.3)" }}>
                   {tagline}
                 </span>
                 
