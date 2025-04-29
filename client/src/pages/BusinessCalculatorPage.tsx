@@ -978,7 +978,7 @@ const BusinessCalculatorPage = () => {
     <div>
       {/* Hero Section with Pound Symbol Background */}
       <div 
-        className="relative py-16 md:py-24 mb-8" 
+        className="relative py-20 md:py-28 mb-12" 
         style={{ 
           backgroundImage: `url(${poundSymbolBg})`,
           backgroundSize: 'cover',
@@ -986,24 +986,50 @@ const BusinessCalculatorPage = () => {
         }}
       >
         {/* Dark overlay for better text readability */}
-        <div className="absolute inset-0 bg-[var(--navy)] opacity-50"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-[var(--navy)]/70 to-[var(--navy)]/40"></div>
         
         <div className="container mx-auto px-6 md:px-8 relative z-10">
           {/* Header */}
           <div className="text-center max-w-4xl mx-auto">
-            <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
+            <div className="inline-block mb-6 bg-orange-500/20 p-3 rounded-full backdrop-blur-sm">
+              <Calculator className="h-10 w-10 text-orange-500" />
+            </div>
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 drop-shadow-lg">
               Smart Business Forecast Calculator
             </h1>
-            <p className="text-xl text-gray-200">
+            <p className="text-xl md:text-2xl text-gray-100 mb-8 max-w-3xl mx-auto leading-relaxed">
               Think beyond spreadsheets. Get a real-time financial pulse check tailored to your business—plus actionable insights in under 3 minutes.
             </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 flex items-center">
+                <Clock className="text-orange-400 h-6 w-6 mr-3 flex-shrink-0" />
+                <span className="text-white text-sm">Takes just 3 minutes</span>
+              </div>
+              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 flex items-center">
+                <FileText className="text-orange-400 h-6 w-6 mr-3 flex-shrink-0" />
+                <span className="text-white text-sm">Detailed PDF report</span>
+              </div>
+              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 flex items-center">
+                <Shield className="text-orange-400 h-6 w-6 mr-3 flex-shrink-0" />
+                <span className="text-white text-sm">Expert insights</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
       
       <div className="container mx-auto px-6 md:px-8 py-8">
         {/* Calculator Container */}
-        <div className="max-w-3xl mx-auto bg-white p-6 md:p-8 rounded-xl shadow-lg">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="max-w-3xl mx-auto bg-white p-6 md:p-8 rounded-2xl border-t-4 border-orange-500 shadow-xl relative"
+        >
+          <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-orange-500 text-white p-3 rounded-full shadow-lg">
+            <DollarSign className="h-6 w-6" />
+          </div>
+          
           {/* Progress Stepper */}
           {currentStep <= totalSteps - 1 && (
             <ProgressStepper currentStep={currentStep} totalSteps={totalSteps - 1} />
@@ -1013,7 +1039,7 @@ const BusinessCalculatorPage = () => {
           <AnimatePresence mode="wait">
             {renderStep()}
           </AnimatePresence>
-        </div>
+        </motion.div>
         
         {/* Benefits Section - Show only on first step */}
         {currentStep === 1 && (
@@ -1021,7 +1047,7 @@ const BusinessCalculatorPage = () => {
             <h2 className="text-2xl font-bold text-navy text-center mb-6">Why Use Our Business Forecast Calculator?</h2>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <Card className="bg-gray-50 border-none">
+              <Card className="bg-gray-50 border-none shadow-md hover:shadow-lg transition-shadow">
                 <CardHeader className="pb-2">
                   <CardTitle className="text-lg flex items-center">
                     <Zap className="h-5 w-5 mr-2 text-orange-500" />
@@ -1033,7 +1059,7 @@ const BusinessCalculatorPage = () => {
                 </CardContent>
               </Card>
               
-              <Card className="bg-gray-50 border-none">
+              <Card className="bg-gray-50 border-none shadow-md hover:shadow-lg transition-shadow">
                 <CardHeader className="pb-2">
                   <CardTitle className="text-lg flex items-center">
                     <Shield className="h-5 w-5 mr-2 text-orange-500" />
@@ -1045,7 +1071,7 @@ const BusinessCalculatorPage = () => {
                 </CardContent>
               </Card>
               
-              <Card className="bg-gray-50 border-none">
+              <Card className="bg-gray-50 border-none shadow-md hover:shadow-lg transition-shadow">
                 <CardHeader className="pb-2">
                   <CardTitle className="text-lg flex items-center">
                     <FileText className="h-5 w-5 mr-2 text-orange-500" />
@@ -1066,7 +1092,7 @@ const BusinessCalculatorPage = () => {
             <h2 className="text-2xl font-bold text-navy text-center mb-6">What Our Clients Say</h2>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <Card>
+              <Card className="border-none shadow-lg">
                 <CardContent className="pt-6">
                   <p className="italic text-gray-600 mb-4">
                     "The calculator highlighted tax savings opportunities we'd never considered. We implemented the recommendations and saved over £15,000 in the first year alone."
@@ -1083,7 +1109,7 @@ const BusinessCalculatorPage = () => {
                 </CardContent>
               </Card>
               
-              <Card>
+              <Card className="border-none shadow-lg">
                 <CardContent className="pt-6">
                   <p className="italic text-gray-600 mb-4">
                     "As a growing construction business, cash flow is everything. This calculator gave us the clarity we needed to plan our expansion with confidence."
