@@ -49,8 +49,15 @@ const itemVariants = {
 
 // HeroSection component
 const HeroSection = () => (
-  <section className="relative bg-navy py-16 md:py-24">
-    <div className="absolute inset-0 bg-opacity-70 bg-gradient-to-r from-navy to-navy-800"></div>
+  <section className="relative py-16 md:py-24 overflow-hidden">
+    <div className="absolute inset-0 bg-navy">
+      <img 
+        src="/images/sme-support-hub-hero.png" 
+        alt="Business professional working with documents and laptop" 
+        className="w-full h-full object-cover opacity-60"
+      />
+      <div className="absolute inset-0 bg-navy bg-opacity-70"></div>
+    </div>
     <div className="container mx-auto px-4 relative z-10">
       <motion.div 
         initial="hidden"
