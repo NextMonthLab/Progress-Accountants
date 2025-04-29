@@ -56,6 +56,7 @@ import IndustriesPage from "@/pages/IndustriesPage";
 import FilmIndustryPage from "@/pages/FilmIndustryPage";
 import MusicIndustryPage from "@/pages/MusicIndustryPage";
 import ConstructionIndustryPage from "@/pages/ConstructionIndustryPage";
+import SMESupportHubPage from "@/pages/SMESupportHubPage";
 import TestFilmPage from "@/pages/TestFilmPage";
 import WhyUsPage from "@/pages/WhyUsPage";
 import ContactPage from "@/pages/ContactPage";
@@ -154,6 +155,7 @@ function Router() {
       <Route path="/industries/film" component={FilmIndustryPage} />
       <Route path="/industries/music" component={MusicIndustryPage} />
       <Route path="/industries/construction" component={ConstructionIndustryPage} />
+      <Route path="/sme-support-hub" component={SMESupportHubPage} />
       <Route path="/test-film" component={TestFilmPage} />
       <Route path="/why-us" component={WhyUsPage} />
       <Route path="/contact" component={ContactPage} />

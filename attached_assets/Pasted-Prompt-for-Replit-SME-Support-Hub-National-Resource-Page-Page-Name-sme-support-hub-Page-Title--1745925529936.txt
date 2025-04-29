@@ -1,0 +1,145 @@
+Prompt for Replit – SME Support Hub (National Resource Page)
+Page Name: sme-support-hub
+
+Page Title:
+Essential SME Contacts & Deadlines | Progress Accountants
+
+Purpose:
+Build a one-stop national resource hub for UK SMEs. This page should offer verified, up-to-date contact information and key deadlines from key organisations such as HMRC, Companies House, and others—helping small businesses stay compliant, informed, and in control.
+
+Page Layout & Content Instructions:
+1. Hero Section
+Title: “Everything Your Business Needs, All in One Place”
+
+Subtitle: “From Companies House deadlines to HMRC contact details, this page keeps you compliant, informed, and in control.”
+
+2. Intro Paragraph (Tone: Friendly, Professional, Supportive)
+“Running a business can feel like a full-time juggling act. That’s why we’ve created this page—to give you quick access to the essential contacts and key dates that every UK business owner should know. All the official resources in one place, updated regularly by our team.”
+
+3. National SME Directory (Main Table Format – Mobile Responsive)
+For each entry below, use a consistent card or row format that includes:
+
+Organisation Name (as header)
+
+Website (clickable)
+
+Phone (tel link)
+
+Email (if available)
+
+Opening Hours
+
+Brief Description
+
+Directory Data:
+
+HM Revenue & Customs (HMRC)
+Website: gov.uk/contact-hmrc
+
+General Enquiries: 0300 200 3300
+
+Self Assessment: 0300 200 3310
+
+VAT: 0300 200 3700
+
+CIS (Construction Industry Scheme): 0300 200 3210
+
+Hours: Mon–Fri 8am–8pm, Sat 8am–4pm
+
+Description: The UK’s tax authority for Self Assessment, PAYE, VAT, and business support services.
+
+Companies House
+Website: gov.uk/contact-companies-house
+
+General Enquiries: 0303 1234 500
+
+Email: enquiries@companieshouse.gov.uk
+
+Hours: Mon–Fri 8:30am–6pm
+
+Description: The registrar of companies in the UK, responsible for incorporation, annual filings, and compliance updates.
+
+Small Business Commissioner
+Website: smallbusinesscommissioner.gov.uk
+
+Phone: 0121 695 7770
+
+Email: enquiries@smallbusinesscommissioner.gov.uk
+
+Hours: Mon–Fri 9am–5pm
+
+Description: A government body that helps small businesses deal with late payments and dispute resolution with larger firms.
+
+Federation of Small Businesses (FSB)
+Website: fsb.org.uk
+
+Phone: 0808 20 20 888
+
+Email: customerservices@fsb.org.uk
+
+Hours: Mon–Fri 9am–5pm
+
+Description: A national membership organisation offering legal support, business banking, and advocacy for small businesses.
+
+British Business Bank
+Website: british-business-bank.co.uk
+
+Phone: 0114 206 2131 / 0203 772 1340
+
+Description: A government-owned bank that helps small businesses access finance, funding, and growth support.
+
+Information Commissioner’s Office (ICO)
+Website: ico.org.uk
+
+Phone: 0303 123 1113
+
+Textphone: 18001 0303 123 1113
+
+Hours: Mon–Fri 9am–5pm
+
+Description: UK authority for data protection, privacy, and GDPR compliance.
+
+4. Key Business Deadlines (Dynamic Section or Highlight Box)
+Suggested layout: collapsible list or upcoming deadlines ticker
+
+
+Date	Deadline
+31 Jan 2025	Self Assessment tax return and payment due
+5 Apr 2025	End of 2024/25 tax year
+6 Apr 2025	Start of 2025/26 tax year
+31 May 2025	Deadline for issuing P60s to employees
+6 Jul 2025	Deadline for reporting expenses and benefits (P11D)
+19 Jul 2025	Deadline for paying Class 1A National Insurance on benefits
+31 Oct 2025	Paper Self Assessment tax return deadline
+5. Optional Filters (UX Enhancement)
+Filters (if desired) could include:
+
+By organisation (dropdown)
+
+By function (e.g., “Tax”, “Compliance”, “Finance Access”)
+
+By deadline date range
+
+6. Call to Action
+Text:
+“Need help keeping track of what matters for your business? Book a call and we’ll guide you through it.”
+
+CTA Button:
+[Schedule a Call]
+
+SEO Metadata
+Title tag: “SME Support Hub | Essential Contacts & Tax Deadlines for UK Businesses”
+
+Meta description: “Everything UK small businesses need in one place—verified contact details for HMRC, Companies House, and more, plus key tax and filing deadlines.”
+
+Technical Instructions (for Replit Implementation)
+Store contact/dates data in a JSON file or dynamic data structure for ease of updates.
+
+Make tables responsive and mobile-friendly.
+
+Ensure tel/email links work on all devices.
+
+Use schema markup for FAQs, business contacts, and events where applicable.
+
+Optimise for accessibility and fast load speed.
+
