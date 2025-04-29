@@ -206,8 +206,8 @@ const ConstructionIndustryPage = () => {
               <div className="bg-orange-600 p-3 rounded-2xl shadow-2xl relative">
                 <div className="rounded-xl shadow-lg w-full overflow-hidden">
                   <OptimizedImage
-                    src={constructionBackgroundImg}
-                    alt="Construction worker reviewing blueprints at night under lantern light"
+                    src={constructionFooterImg}
+                    alt="Construction industry project"
                     width={600}
                     height={400}
                     className="rounded-xl shadow-lg w-full"
