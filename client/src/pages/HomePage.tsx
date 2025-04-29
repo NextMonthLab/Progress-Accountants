@@ -2,7 +2,6 @@ import HeroSection from "@/components/HeroSection";
 import ServicesSection from "@/components/ServicesSection";
 import IndustriesSection from "@/components/IndustriesSection";
 import WhyUsSection from "@/components/WhyUsSection";
-import SEOFooterSection from "@/components/SEOFooterSection";
 import ContactForm from "@/components/ContactForm";
 import { useEffect } from "react";
 import { Link } from "wouter";
@@ -163,8 +162,6 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-      
-      <SEOFooterSection />
       
       {/* Contact Section */}
       <section className="py-16 bg-gray-50" id="contact">
