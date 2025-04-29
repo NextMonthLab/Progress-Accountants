@@ -1,4 +1,7 @@
 import { useState, useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { organizations, deadlines, filters } from "@/data/smeSupport";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -6,8 +9,21 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter }
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
   Building2, Phone, Mail, Clock, Calendar, ExternalLink, 
-  Filter, Search, Info, ArrowRight, CheckCircle, Calendar as CalendarIcon 
+  Filter, Search, Info, ArrowRight, CheckCircle, Calendar as CalendarIcon,
+  Download, FileText
 } from "lucide-react";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Checkbox } from "@/components/ui/checkbox";
+import { useToast } from "@/hooks/use-toast";
 import { motion } from "framer-motion";
 
 // Animation variants
@@ -386,8 +402,206 @@ const SMESupportHubPage = () => {
           <DeadlinesSection />
         </TabsContent>
       </Tabs>
+      <DownloadResourcesSection />
       <CTASection />
     </div>
+  );
+};
+
+// Form schema for download resources
+const downloadFormSchema = z.object({
+  name: z.string().min(2, { message: "Name must be at least 2 characters" }),
+  email: z.string().email({ message: "Please enter a valid email address" }),
+  businessName: z.string().optional(),
+  consent: z.boolean().refine(value => value === true, {
+    message: "You must agree to receive updates to download resources",
+  }),
+});
+
+type DownloadFormValues = z.infer<typeof downloadFormSchema>;
+
+// Downloadable resources section
+const DownloadResourcesSection = () => {
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const { toast } = useToast();
+  
+  const form = useForm<DownloadFormValues>({
+    resolver: zodResolver(downloadFormSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+      businessName: "",
+      consent: false,
+    },
+  });
+
+  function onSubmit(data: DownloadFormValues) {
+    // In a real implementation, this would send the data to a server
+    console.log("Form submitted:", data);
+    
+    // Show success toast
+    toast({
+      title: "Success!",
+      description: "Your resources are now ready to download.",
+      variant: "default",
+    });
+    
+    // Set submitted state to show download links
+    setIsSubmitted(true);
+  }
+
+  return (
+    <section className="py-16 bg-gray-50">
+      <div className="container mx-auto px-4">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="max-w-5xl mx-auto"
+        >
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-navy mb-4">Download & Print Your Essentials</h2>
+            <p className="text-gray-600 max-w-3xl mx-auto text-lg">
+              Want a copy to keep? Download our ready-to-print PDFs to have your essential deadlines and contacts always at hand.
+            </p>
+          </div>
+          
+          <div className="bg-white p-6 md:p-8 rounded-xl shadow-md">
+            {!isSubmitted ? (
+              <div className="grid md:grid-cols-2 gap-8">
+                <div>
+                  <h3 className="text-xl font-semibold mb-4 text-navy">Available Resources</h3>
+                  <ul className="space-y-4">
+                    <li className="flex items-start">
+                      <FileText className="h-6 w-6 mr-3 text-orange-500 flex-shrink-0 mt-0.5" />
+                      <div>
+                        <h4 className="font-medium">Essential SME Contacts (2025)</h4>
+                        <p className="text-gray-600 text-sm">A comprehensive list of all important UK business support contacts.</p>
+                      </div>
+                    </li>
+                    <li className="flex items-start">
+                      <CalendarIcon className="h-6 w-6 mr-3 text-orange-500 flex-shrink-0 mt-0.5" />
+                      <div>
+                        <h4 className="font-medium">Key Business Deadlines (2025)</h4>
+                        <p className="text-gray-600 text-sm">All tax and reporting deadlines for the 2024/25 year.</p>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+                
+                <div>
+                  <h3 className="text-xl font-semibold mb-4 text-navy">Complete the form to download</h3>
+                  <Form {...form}>
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                      <FormField
+                        control={form.control}
+                        name="name"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Full Name</FormLabel>
+                            <FormControl>
+                              <Input placeholder="John Smith" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      
+                      <FormField
+                        control={form.control}
+                        name="email"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Email</FormLabel>
+                            <FormControl>
+                              <Input placeholder="you@example.com" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      
+                      <FormField
+                        control={form.control}
+                        name="businessName"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Business Name (Optional)</FormLabel>
+                            <FormControl>
+                              <Input placeholder="Your Business Ltd" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      
+                      <FormField
+                        control={form.control}
+                        name="consent"
+                        render={({ field }) => (
+                          <FormItem className="flex flex-row items-start space-x-3 space-y-0 pt-2">
+                            <FormControl>
+                              <Checkbox
+                                checked={field.value}
+                                onCheckedChange={field.onChange}
+                              />
+                            </FormControl>
+                            <div className="space-y-1 leading-none">
+                              <FormLabel className="text-sm font-normal">
+                                I agree to receive occasional updates and resources from Progress Accountants. You can unsubscribe anytime.
+                              </FormLabel>
+                              <FormMessage />
+                            </div>
+                          </FormItem>
+                        )}
+                      />
+                      
+                      <Button 
+                        type="submit" 
+                        className="w-full bg-navy hover:bg-orange-500 text-white transition-colors"
+                      >
+                        Get Access to Resources
+                      </Button>
+                    </form>
+                  </Form>
+                </div>
+              </div>
+            ) : (
+              <div className="text-center py-4">
+                <CheckCircle className="h-12 w-12 mx-auto text-green-500 mb-4" />
+                <h3 className="text-xl font-semibold mb-2 text-navy">Your resources are ready!</h3>
+                <p className="text-gray-600 mb-8">Thank you for your interest. You now have access to download both PDFs.</p>
+                
+                <div className="grid md:grid-cols-2 gap-6 max-w-2xl mx-auto">
+                  <a 
+                    href="/downloads/Progress_Accountants_SME_Contacts_2025.pdf" 
+                    target="_blank"
+                    className="flex items-center justify-center p-4 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100 transition-colors"
+                  >
+                    <Download className="h-5 w-5 mr-2 text-orange-500" />
+                    <span className="font-medium">Download SME Contacts</span>
+                  </a>
+                  
+                  <a 
+                    href="/downloads/Progress_Accountants_Key_Dates_2025.pdf" 
+                    target="_blank"
+                    className="flex items-center justify-center p-4 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100 transition-colors"
+                  >
+                    <Download className="h-5 w-5 mr-2 text-orange-500" />
+                    <span className="font-medium">Download Key Deadlines</span>
+                  </a>
+                </div>
+                
+                <p className="mt-8 text-sm text-gray-500">
+                  We've also sent these links to your email for future reference.
+                </p>
+              </div>
+            )}
+          </div>
+        </motion.div>
+      </div>
+    </section>
   );
 };
 
