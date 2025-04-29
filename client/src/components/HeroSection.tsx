@@ -177,8 +177,14 @@ const HeroSection = () => {
               variants={itemVariants}
             >
               <span className="text-white">{businessName}</span>
-              <span className="block mt-3 bg-gradient-to-r from-orange-400 via-amber-300 to-orange-300 bg-clip-text text-transparent">
-                {tagline}
+              <span className="relative block mt-3">
+                {/* Premium metallic gradient effect with text-shadow for enhanced visibility */}
+                <span className="relative block bg-gradient-to-r from-[#f7b733] via-[#ffda79] to-[#f59b42] bg-clip-text text-transparent" style={{ textShadow: "0 1px 2px rgba(0,0,0,0.2), 0 1px 10px rgba(255,153,0,0.3)" }}>
+                  {tagline}
+                </span>
+                
+                {/* Animated shimmer effect overlay */}
+                <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent bg-[length:200%_100%] animate-shimmer"></span>
               </span>
             </motion.h1>
             

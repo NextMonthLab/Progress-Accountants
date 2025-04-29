@@ -93,11 +93,32 @@ export default {
             transform: "translate(0px, 0px) scale(1)",
           },
         },
+        "shimmer": {
+          "0%": {
+            backgroundPosition: "-200% 0",
+          },
+          "100%": {
+            backgroundPosition: "200% 0",
+          },
+        },
+        "glow": {
+          "0%": {
+            opacity: 0.4,
+          },
+          "50%": {
+            opacity: 0.8,
+          },
+          "100%": {
+            opacity: 0.4,
+          },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         "blob": "blob 7s infinite",
+        "shimmer": "shimmer 4s ease-in-out infinite",
+        "glow": "glow 5s ease-in-out infinite",
       },
       transitionTimingFunction: {
         "in-expo": "cubic-bezier(0.95, 0.05, 0.795, 0.035)",
