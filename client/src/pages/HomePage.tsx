@@ -57,7 +57,7 @@ export default function HomePage() {
             backgroundColor: "#031c40" // Navy fallback
           }} 
         />
-        <div className="container mx-auto px-4 relative z-10">
+        <div className="container mx-auto px-6 md:px-8 relative z-10">
           <div className="flex flex-col md:flex-row items-center gap-8">
             <div className="md:w-1/2 text-white">
               <h2 className="text-3xl font-bold mb-4">
@@ -121,7 +121,7 @@ export default function HomePage() {
       
       {/* Studio Highlight Section */}
       <section className="py-16 relative overflow-hidden" style={{ backgroundColor: 'var(--navy)' }}>
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-6 md:px-8">
           <div className="flex flex-col md:flex-row items-center gap-8">
             <div className="md:w-1/2">
               <img 
@@ -168,7 +168,7 @@ export default function HomePage() {
       
       {/* Contact Section */}
       <section className="py-12 bg-gray-50" id="contact">
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-6 md:px-8">
           <div className="max-w-5xl mx-auto">
             <div className="text-center mb-8">
               <h2 className="text-3xl font-bold mb-2" style={{ color: 'var(--navy)' }}>
