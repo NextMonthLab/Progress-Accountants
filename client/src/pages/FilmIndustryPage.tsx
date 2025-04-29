@@ -6,7 +6,7 @@ import { OptimizedImage } from "@/components/ui/OptimizedImage";
 import { ArrowRight, CheckCircle, Film, PlayCircle, ArrowDown, Clock, Banknote, Award, Users } from "lucide-react";
 
 // Import film industry images and podcast studio
-import filmSetImg from "../assets/images/film_set.png";
+import filmSetCinematicImg from "../assets/images/film_set_cinematic.png";
 import filmProductionImg from "../assets/images/film_industry.png";
 import podcastStudioImg from "../assets/images/podcast_studio.jpg";
 
@@ -155,7 +155,7 @@ const FilmIndustryPage = () => {
         {/* Full-width background image with dark overlay */}
         <div className="absolute inset-0 z-0">
           <OptimizedImage
-            src={filmSetImg}
+            src={filmSetCinematicImg}
             alt="Film set with studio lights"
             width={1920}
             height={1080}
