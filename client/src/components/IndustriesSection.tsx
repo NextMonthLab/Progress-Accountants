@@ -8,6 +8,7 @@ import filmIndustryImage from "../assets/images/film_industry.png";
 import musicIndustryImage from "../assets/images/music_industry.png";
 import constructionIndustryImage from "../assets/images/construction_industry.png";
 import { Button } from "@/components/ui/button";
+import { Link, useLocation } from "wouter";
 
 // Animation variants
 const containerVariants = {
@@ -106,13 +107,15 @@ const IndustryCard = withMemo(({
             animate={{ y: isHovered ? 0 : 5, opacity: isHovered ? 1 : 0.7 }}
             transition={{ duration: 0.2 }}
           >
-            <Button 
-              variant="outline" 
-              className="text-sm border-orange-300 text-orange-600 hover:bg-orange-50 mt-2 group"
-            >
-              <span>Learn more</span>
-              <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-            </Button>
+            <Link to={`/industries/${title.toLowerCase().replace(/\s+/g, '-')}`}>
+              <Button 
+                variant="outline" 
+                className="text-sm border-orange-300 text-orange-600 hover:bg-orange-50 mt-2 group"
+              >
+                <span>Learn more</span>
+                <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+              </Button>
+            </Link>
           </motion.div>
         </div>
       </div>
