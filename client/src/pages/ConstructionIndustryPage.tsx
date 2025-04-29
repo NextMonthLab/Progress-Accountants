@@ -7,6 +7,7 @@ import { ArrowRight, CheckCircle, ArrowDown, Hammer, HardHat, Building2, Coins, 
 // Import construction industry images
 import constructionBackgroundImg from "../assets/images/construction_blueprint.png";
 import constructionFooterImg from "../assets/images/construction_industry.png";
+import constructionSiteImg from "../assets/images/construction_site_night.png";
 
 // Animation variants
 const containerVariants = {
@@ -90,8 +91,8 @@ const CTASection = () => (
     {/* Background image with overlay for CTA */}
     <div className="absolute inset-0 z-0">
       <OptimizedImage
-        src={constructionFooterImg}
-        alt="Construction tools and blueprints"
+        src={constructionSiteImg}
+        alt="Construction site at night with scaffolding and equipment"
         width={1920}
         height={1080}
         className="w-full h-full object-cover"
