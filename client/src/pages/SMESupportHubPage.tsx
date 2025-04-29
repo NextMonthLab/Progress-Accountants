@@ -59,7 +59,7 @@ const HeroSection = () => {
         backgroundColor: "#031c40" // Navy fallback
       }}
     >
-      <div className="container mx-auto px-4 relative z-10">
+      <div className="container mx-auto px-6 md:px-8 relative z-10">
         <motion.div 
           initial="hidden"
           animate="visible"
@@ -92,7 +92,7 @@ const HeroSection = () => {
 // Introduction section
 const IntroSection = () => (
   <section className="py-12 bg-white">
-    <div className="container mx-auto px-4">
+    <div className="container mx-auto px-6 md:px-8">
       <div className="max-w-3xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -235,7 +235,7 @@ const DirectorySection = () => {
 
   return (
     <section className="py-12 bg-gray-50">
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-6 md:px-8">
         <motion.div
           initial="hidden"
           whileInView="visible"
@@ -302,7 +302,7 @@ const DeadlinesSection = () => {
 
   return (
     <section className="py-12 bg-white">
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-6 md:px-8">
         <motion.div
           initial="hidden"
           whileInView="visible"
@@ -356,7 +356,7 @@ const CTASection = () => (
       backgroundPosition: "center",
       backgroundColor: "#031c40" // Navy fallback
     }} />
-    <div className="container mx-auto px-4 relative z-10">
+    <div className="container mx-auto px-6 md:px-8 relative z-10">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -396,7 +396,7 @@ const SMESupportHubPage = () => {
       <HeroSection />
       <IntroSection />
       <Tabs defaultValue="directory" className="w-full">
-        <div className="container mx-auto px-4 py-8">
+        <div className="container mx-auto px-6 md:px-8 py-8">
           <TabsList className="mx-auto w-full max-w-md grid grid-cols-2">
             <TabsTrigger value="directory" className="text-base">
               <Building2 className="h-5 w-5 mr-2" />
@@ -467,7 +467,7 @@ const DownloadResourcesSection = () => {
 
   return (
     <section className="py-16 bg-gray-50">
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-6 md:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
