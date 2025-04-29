@@ -6,6 +6,7 @@ import teamPhotoImage from '../../assets/images/team_photo.jpg';
 import filmIndustryImage from '../../assets/images/film_industry.png';
 import musicIndustryImage from '../../assets/images/music_industry.png';
 import constructionIndustryImage from '../../assets/images/construction_industry.png';
+import financialDashboardImage from '../../assets/images/financial_dashboard.png';
 
 // Optimized version of image placeholders
 export const OptimizedPodcastStudio = () => (
@@ -19,7 +20,13 @@ export const OptimizedPodcastStudio = () => (
 );
 
 export const OptimizedDashboardMockup = () => (
-  <ImagePlaceholder height="200px" text="Financial Dashboard" bgColor="#f27030" />
+  <OptimizedImage 
+    src={financialDashboardImage} 
+    alt="Financial Dashboard with Pound Sterling Symbol"
+    width={400}
+    height={200}
+    className="w-full h-full object-cover"
+  />
 );
 
 export const OptimizedStrategySession = () => (
