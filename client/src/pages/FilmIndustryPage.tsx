@@ -150,10 +150,10 @@ const FilmIndustryPage = () => {
       {/* Hero section */}
       <div 
         ref={headerRef}
-        className="relative overflow-hidden"
+        className="relative overflow-hidden w-full"
       >
         {/* Full-width background image with dark overlay */}
-        <div className="absolute inset-0 z-0">
+        <div className="absolute inset-0 z-0 w-full">
           <OptimizedImage
             src={filmSetCinematicImg}
             alt="Film set with studio lights"
