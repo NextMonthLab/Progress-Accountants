@@ -151,7 +151,7 @@ function Router() {
       <Route path="/services/:slug" component={ServiceDetailPage} />
       <Route path="/industries" component={IndustriesPage} />
       <Route path="/industries/film" component={FilmIndustryPage} />
-      <Route path="/services/music-industry-accounting" component={MusicIndustryPage} />
+      <Route path="/industries/music" component={MusicIndustryPage} />
       <Route path="/test-film" component={TestFilmPage} />
       <Route path="/why-us" component={WhyUsPage} />
       <Route path="/contact" component={ContactPage} />
