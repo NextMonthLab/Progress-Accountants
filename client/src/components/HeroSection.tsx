@@ -269,7 +269,8 @@ const HeroSection = () => {
               {/* Main image with premium styling */}
               <div className="relative z-10 bg-gradient-to-br from-gray-800/70 to-gray-900/70 backdrop-blur-md p-2 rounded-2xl overflow-hidden shadow-[0_20px_50px_rgba(8,_112,_184,_0.4)]">
                 <div className="overflow-hidden rounded-xl relative group">
-                  <div className="absolute inset-0 bg-gradient-to-t from-navy-900/80 to-transparent z-10"></div>
+                  {/* Reduced opacity gradient overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-navy-900/50 via-navy-900/20 to-transparent z-10"></div>
                   
                   <OptimizedImage 
                     src={teamPhotoImage} 
@@ -280,8 +281,8 @@ const HeroSection = () => {
                     priority={true} // This is above-the-fold content so load with priority
                   />
                   
-                  {/* Animated overlay pattern */}
-                  <div className="absolute inset-0 bg-navy-900/20 z-10 mix-blend-overlay opacity-40"></div>
+                  {/* Lighter overlay pattern */}
+                  <div className="absolute inset-0 bg-navy-900/10 z-10 mix-blend-overlay opacity-30"></div>
                   
                   {/* Floating badges */}
                   <div className="absolute top-4 right-4 z-20 bg-white/10 backdrop-blur-md px-3 py-1 rounded-full border border-white/20 shadow-xl">
