@@ -49,8 +49,9 @@ const itemVariants = {
 
 // Animated background pattern component
 const AnimatedPattern = () => (
-  <div className="absolute inset-0 overflow-hidden opacity-5 z-0">
-    <div className="absolute top-0 left-0 w-full h-full">
+  <div className="absolute inset-0 overflow-hidden z-0">
+    {/* Grid pattern overlay */}
+    <div className="absolute top-0 left-0 w-full h-full opacity-5">
       <svg viewBox="0 0 100 100" preserveAspectRatio="none" width="100%" height="100%">
         <defs>
           <pattern id="grid" width="3" height="3" patternUnits="userSpaceOnUse">
@@ -60,8 +61,19 @@ const AnimatedPattern = () => (
         <rect width="100%" height="100%" fill="url(#grid)" />
       </svg>
     </div>
-    <div className="absolute w-1/2 h-1/2 rounded-full bg-gradient-to-r from-orange-500/20 to-orange-400/10 blur-3xl -top-1/4 -right-1/4 animate-blob" />
-    <div className="absolute w-1/2 h-1/2 rounded-full bg-gradient-to-r from-blue-600/10 to-cyan-400/5 blur-3xl bottom-0 left-0 animate-blob animation-delay-2000" />
+    
+    {/* Dynamic gradient overlay */}
+    <div className="absolute inset-0 bg-gradient-to-br from-navy-900/80 via-navy-800/70 to-navy-950/90 mix-blend-multiply opacity-80"></div>
+    
+    {/* Animated color blobs */}
+    <div className="absolute w-1/2 h-1/2 rounded-full bg-gradient-to-r from-orange-500/30 to-orange-400/20 blur-3xl -top-1/4 -right-1/4 animate-blob" />
+    <div className="absolute w-1/2 h-1/2 rounded-full bg-gradient-to-r from-blue-600/20 to-cyan-400/10 blur-3xl bottom-0 left-0 animate-blob animation-delay-2000" />
+    <div className="absolute w-1/3 h-1/3 rounded-full bg-gradient-to-r from-purple-500/10 to-pink-400/5 blur-3xl top-1/2 left-1/4 animate-blob animation-delay-4000" />
+    
+    {/* Light streaks */}
+    <div className="absolute w-full h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent top-[30%] left-0 animate-glow"></div>
+    <div className="absolute w-full h-[1px] bg-gradient-to-r from-transparent via-white/5 to-transparent top-[60%] left-0 animate-glow animation-delay-2000"></div>
+    <div className="absolute w-[1px] h-full bg-gradient-to-b from-transparent via-white/5 to-transparent left-[25%] top-0 animate-glow animation-delay-1000"></div>
   </div>
 );
 
@@ -151,27 +163,30 @@ const HeroSection = () => {
             variants={containerVariants}
           >
             <motion.div
-              className="inline-block mb-4 bg-orange-500/20 backdrop-blur-sm px-3 py-1 rounded-full"
+              className="inline-block mb-4 bg-gradient-to-r from-orange-500/30 to-orange-400/20 backdrop-blur-sm px-4 py-1.5 rounded-full shadow-lg shadow-orange-900/10"
               variants={itemVariants}
             >
-              <span className="text-orange-300 text-sm font-medium">Innovative Accounting Solutions</span>
+              <span className="text-orange-200 text-sm font-medium tracking-wide flex items-center">
+                <span className="inline-block w-2 h-2 bg-orange-400 rounded-full mr-2 animate-pulse"></span>
+                Premium Financial Advisory
+              </span>
             </motion.div>
             
             <motion.h1 
-              className="font-poppins font-bold text-4xl md:text-5xl lg:text-6xl mb-6"
+              className="font-poppins font-bold text-4xl md:text-5xl lg:text-6xl mb-6 leading-tight"
               variants={itemVariants}
             >
               <span className="text-white">{businessName}</span>
-              <span className="block mt-2 bg-gradient-to-r from-orange-400 to-orange-300 bg-clip-text text-transparent">
+              <span className="block mt-3 bg-gradient-to-r from-orange-400 via-amber-300 to-orange-300 bg-clip-text text-transparent">
                 {tagline}
               </span>
             </motion.h1>
             
             <motion.p 
-              className="text-lg md:text-xl mb-6 text-gray-200 max-w-xl"
+              className="text-lg md:text-xl mb-8 text-gray-200 max-w-xl leading-relaxed"
               variants={itemVariants}
             >
-              {description}
+              Unlock your business potential with tailored financial strategies that drive growth and optimize tax efficiency. We blend traditional accounting expertise with innovative digital solutions.
             </motion.p>
             
             <motion.div 
@@ -210,54 +225,90 @@ const HeroSection = () => {
               className="flex flex-wrap gap-4"
               variants={itemVariants}
             >
-              <a href="#book-call">
+              <a href="#book-call" className="relative">
+                {/* Pulsing background effect */}
+                <div className="absolute inset-0 rounded-full bg-orange-500/40 animate-ping opacity-30"></div>
+                
                 <Button 
                   size="lg" 
-                  className="px-6 py-3 rounded-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white shadow-lg shadow-orange-800/20 hover:-translate-y-[2px] transition duration-300 group"
+                  className="relative px-6 py-3 rounded-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white shadow-lg shadow-orange-800/30 hover:-translate-y-[3px] transition-all duration-300 group overflow-hidden"
                 >
-                  <span>Book Your Free Strategy Consultation</span>
-                  <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                  {/* Shine effect on hover */}
+                  <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+                  
+                  <span className="font-medium relative z-10">Book Your Free Strategy Consultation</span>
+                  <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-2 duration-300 relative z-10" />
                 </Button>
               </a>
+              
               <Button 
                 variant="ghost" 
-                className="px-6 py-3 rounded-full text-white border border-white/20 hover:bg-white/10 transition duration-300"
+                className="px-6 py-3 rounded-full text-white border border-white/20 hover:bg-white/10 hover:border-white/40 transition-all duration-300 hover:shadow-lg hover:shadow-white/5"
                 onClick={scrollToContent}
               >
-                Explore Our Services
+                <span>Explore Our Services</span>
+                <span className="ml-2 text-orange-300">→</span>
               </Button>
             </motion.div>
           </motion.div>
           
-          {/* Right content - Image with effects */}
+          {/* Right content - Image with advanced effects */}
           <motion.div 
             className="md:w-1/2 mt-10 md:mt-0"
             variants={itemVariants}
           >
             <div className="relative">
-              {/* Decorative elements */}
-              <div className="absolute -top-4 -left-4 w-24 h-24 bg-orange-500/20 rounded-full blur-2xl z-0"></div>
-              <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-blue-600/20 rounded-full blur-2xl z-0"></div>
+              {/* Enhanced decorative elements */}
+              <div className="absolute -top-8 -left-8 w-32 h-32 bg-gradient-to-br from-orange-500/30 to-amber-400/20 rounded-full blur-2xl z-0 animate-blob animation-delay-2000"></div>
+              <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-gradient-to-tl from-blue-600/30 to-cyan-400/15 rounded-full blur-2xl z-0 animate-blob"></div>
               
-              {/* Main image with card-like styling */}
-              <div className="relative z-10 bg-gradient-to-br from-gray-800/50 to-gray-900/50 backdrop-blur-sm p-1 rounded-2xl overflow-hidden shadow-[0_20px_50px_rgba(8,_112,_184,_0.3)]">
-                <div className="overflow-hidden rounded-xl">
+              {/* Corner accents */}
+              <div className="absolute top-3 left-3 w-12 h-12 border-t-2 border-l-2 border-orange-300/30 -translate-x-2 -translate-y-2 z-20"></div>
+              <div className="absolute bottom-3 right-3 w-12 h-12 border-b-2 border-r-2 border-orange-300/30 translate-x-2 translate-y-2 z-20"></div>
+              
+              {/* Main image with premium styling */}
+              <div className="relative z-10 bg-gradient-to-br from-gray-800/70 to-gray-900/70 backdrop-blur-md p-2 rounded-2xl overflow-hidden shadow-[0_20px_50px_rgba(8,_112,_184,_0.4)]">
+                <div className="overflow-hidden rounded-xl relative group">
+                  <div className="absolute inset-0 bg-gradient-to-t from-navy-900/80 to-transparent z-10"></div>
+                  
                   <OptimizedImage 
                     src={teamPhotoImage} 
                     alt={`${businessName} Team`}
-                    className="w-full h-auto object-cover transform scale-[1.01] hover:scale-[1.03] transition-transform duration-700"
+                    className="w-full h-auto object-cover transform scale-[1.01] group-hover:scale-[1.05] transition-transform duration-1000"
                     width={800}
                     height={450}
                     priority={true} // This is above-the-fold content so load with priority
                   />
-                </div>
-                
-                {/* Glass-morphism info panel */}
-                <div className="absolute bottom-4 left-4 right-4 bg-white/10 backdrop-blur-md p-4 rounded-lg border border-white/20 shadow-xl">
-                  <p className="text-base md:text-lg font-medium">
-                    <span className="block text-sm text-orange-300 mb-1">Our Focus</span>
-                    Specialized in serving {targetAudience} across {geographicFocus}
-                  </p>
+                  
+                  {/* Animated overlay pattern */}
+                  <div className="absolute inset-0 bg-navy-900/20 z-10 mix-blend-overlay opacity-40"></div>
+                  
+                  {/* Floating badges */}
+                  <div className="absolute top-4 right-4 z-20 bg-white/10 backdrop-blur-md px-3 py-1 rounded-full border border-white/20 shadow-xl">
+                    <p className="text-sm font-medium text-white flex items-center">
+                      <span className="inline-block w-2 h-2 bg-green-400 rounded-full mr-2"></span>
+                      UK Certified Accountants
+                    </p>
+                  </div>
+                  
+                  {/* Main glassmorphism info panel */}
+                  <div className="absolute bottom-4 left-4 right-4 glass-dark p-4 rounded-lg border border-white/20 shadow-xl z-20 transform transition-transform duration-500 group-hover:translate-y-[-5px]">
+                    <div className="flex items-start">
+                      <div className="mr-3 mt-1">
+                        <div className="bg-orange-500/80 p-1.5 rounded-full">
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                          </svg>
+                        </div>
+                      </div>
+                      <div>
+                        <p className="text-base md:text-lg font-medium">
+                          <span className="block text-sm text-orange-300 mb-1 font-semibold">Industry Specialists</span>
+                          Focused expertise for {targetAudience} across {geographicFocus}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
