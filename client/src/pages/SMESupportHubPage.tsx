@@ -51,14 +51,18 @@ const itemVariants = {
 const HeroSection = () => {
   return (
     <section 
-      className="relative py-16 md:py-24 overflow-hidden" 
+      className="relative py-20 md:py-28 overflow-hidden" 
       style={{
-        backgroundImage: "linear-gradient(rgba(3, 28, 64, 0.85), rgba(3, 28, 64, 0.85)), url('/images/sme-support-hub-hero.png')",
+        backgroundImage: "linear-gradient(rgba(3, 28, 64, 0.87), rgba(3, 28, 64, 0.90)), url('/images/sme-support-hub-hero.png')",
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundColor: "#031c40" // Navy fallback
       }}
     >
+      {/* Add decorative elements */}
+      <div className="absolute top-0 right-0 w-64 h-64 bg-orange-500 opacity-10 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl"></div>
+      <div className="absolute bottom-0 left-0 w-96 h-96 bg-blue-600 opacity-10 rounded-full translate-y-1/3 -translate-x-1/3 blur-3xl"></div>
+      
       <div className="container mx-auto px-6 md:px-8 relative z-10">
         <motion.div 
           initial="hidden"
@@ -67,22 +71,53 @@ const HeroSection = () => {
           className="max-w-3xl mx-auto text-center"
         >
           <motion.div variants={itemVariants}>
-            <Badge variant="outline" className="mb-4 bg-orange-100 text-orange-800 hover:bg-orange-200 border-orange-200">
-              RESOURCE HUB
+            <Badge variant="outline" className="mb-4 bg-orange-100 text-orange-800 hover:bg-orange-200 border-orange-200 uppercase tracking-wide px-4 py-1 font-semibold text-sm shadow-sm">
+              Business Resource Hub
             </Badge>
           </motion.div>
           <motion.h1 
             variants={itemVariants}
-            className="text-3xl md:text-5xl font-bold text-white mb-6 leading-tight"
+            className="text-3xl md:text-5xl font-bold text-white mb-6 leading-tight drop-shadow-sm"
           >
             Everything Your Business Needs, All in One Place
           </motion.h1>
           <motion.p 
             variants={itemVariants}
-            className="text-lg md:text-xl text-gray-200 mb-8"
+            className="text-lg md:text-xl text-gray-200 mb-8 drop-shadow-sm max-w-2xl mx-auto"
           >
-            From Companies House deadlines to HMRC contact details, this page keeps you compliant, informed, and in control.
+            From Companies House deadlines to HMRC contact details, this page keeps you compliant, informed, and in control of your business obligations.
           </motion.p>
+          <motion.div
+            variants={itemVariants}
+            className="flex flex-col sm:flex-row gap-4 justify-center mt-8"
+          >
+            <Button 
+              variant="default" 
+              size="lg" 
+              className="bg-orange-500 hover:bg-orange-600 text-white shadow-lg hover:shadow-xl transition-all"
+              onClick={() => {
+                // Scroll to resources section
+                const resourcesSection = document.getElementById("resources-section");
+                resourcesSection?.scrollIntoView({ behavior: "smooth" });
+              }}
+            >
+              <Download className="mr-2 h-5 w-5" />
+              Download Resources
+            </Button>
+            <Button 
+              variant="outline" 
+              size="lg" 
+              className="bg-white/10 backdrop-blur-sm text-white border-white/30 hover:bg-white/20 hover:border-white/50 shadow-lg"
+              onClick={() => {
+                // Scroll to directory section
+                const directorySection = document.getElementById("directory-section");
+                directorySection?.scrollIntoView({ behavior: "smooth" });
+              }}
+            >
+              <Building2 className="mr-2 h-5 w-5" />
+              Browse Directory
+            </Button>
+          </motion.div>
         </motion.div>
       </div>
     </section>
@@ -91,18 +126,51 @@ const HeroSection = () => {
 
 // Introduction section
 const IntroSection = () => (
-  <section className="py-12 bg-white">
+  <section className="py-14 bg-white">
     <div className="container mx-auto px-6 md:px-8">
-      <div className="max-w-3xl mx-auto">
+      <div className="max-w-4xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="bg-gray-50 p-6 md:p-8 rounded-xl shadow-sm border border-gray-100"
+          className="bg-gradient-to-br from-gray-50 to-white p-6 md:p-8 rounded-xl shadow-md border border-gray-100 relative overflow-hidden"
         >
-          <p className="text-gray-700 text-lg leading-relaxed">
-            Running a business can feel like a full-time juggling act. That's why we've created this page—to give you quick access to the essential contacts and key dates that every UK business owner should know. All the official resources in one place, updated regularly by our team.
-          </p>
+          {/* Decorative elements */}
+          <div className="absolute top-0 right-0 h-24 w-24 bg-orange-50 rounded-full -translate-y-1/3 translate-x-1/3 z-0"></div>
+          <div className="absolute bottom-0 left-0 h-32 w-32 bg-blue-50 rounded-full translate-y-1/2 -translate-x-1/4 z-0"></div>
+          
+          <div className="relative z-10">
+            <div className="flex items-center mb-4">
+              <Info className="h-6 w-6 text-orange-500 mr-3 flex-shrink-0" />
+              <h3 className="text-xl font-semibold text-navy">Why We Built This Resource</h3>
+            </div>
+            <p className="text-gray-700 text-lg leading-relaxed mb-4">
+              Running a business can feel like a full-time juggling act. That's why we've created this page—to give you quick access to the essential contacts and key dates that every UK business owner should know. All the official resources in one place, updated regularly by our team.
+            </p>
+            <div className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div className="bg-blue-50 p-4 rounded-lg border border-blue-100">
+                <div className="flex items-center mb-2">
+                  <Building2 className="h-5 w-5 text-blue-500 mr-2" />
+                  <span className="font-medium text-navy">Directory</span>
+                </div>
+                <p className="text-sm text-gray-600">Critical business contacts all in one place</p>
+              </div>
+              <div className="bg-orange-50 p-4 rounded-lg border border-orange-100">
+                <div className="flex items-center mb-2">
+                  <Calendar className="h-5 w-5 text-orange-500 mr-2" />
+                  <span className="font-medium text-navy">Deadlines</span>
+                </div>
+                <p className="text-sm text-gray-600">Never miss important tax & filing dates</p>
+              </div>
+              <div className="bg-green-50 p-4 rounded-lg border border-green-100">
+                <div className="flex items-center mb-2">
+                  <Download className="h-5 w-5 text-green-500 mr-2" />
+                  <span className="font-medium text-navy">Downloads</span>
+                </div>
+                <p className="text-sm text-gray-600">Free printable resources to keep handy</p>
+              </div>
+            </div>
+          </div>
         </motion.div>
       </div>
     </div>
