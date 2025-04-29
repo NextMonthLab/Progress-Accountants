@@ -93,8 +93,8 @@ const CTASection = () => (
     variants={itemVariants}
     className="bg-gradient-to-br from-navy to-navy-700 rounded-2xl shadow-xl p-8 md:p-12 text-white relative overflow-hidden"
   >
-    {/* Darker overlay for better text contrast */}
-    <div className="absolute inset-0 bg-navy opacity-50 z-0"></div>
+    {/* Darker solid background for better text contrast */}
+    <div className="absolute inset-0 bg-navy opacity-90 z-0"></div>
     <div className="absolute top-0 right-0 w-1/3 h-full opacity-10 z-0">
       <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
         <path fill="#FFFFFF" d="M42.7,-62.9C56.4,-53.9,69.4,-42.2,75.3,-27.3C81.1,-12.4,79.9,5.5,73.8,21.2C67.8,36.9,57,50.4,43.3,59.1C29.6,67.8,13,71.5,-3.4,76.4C-19.9,81.3,-39.8,87.4,-53.2,80.2C-66.5,73,-73.2,52.5,-78.2,32.1C-83.1,11.8,-86.4,-8.4,-81,-25.2C-75.6,-41.9,-61.6,-55.2,-46.5,-64C-31.3,-72.7,-15.7,-77,0.3,-77.4C16.3,-77.8,32.6,-74.4,42.7,-62.9Z" transform="translate(100 100)" />
