@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { withMemo } from "@/lib/withMemo";
-// We render this inside the wrapper in App.tsx which already includes MainLayout
+import MainLayout from "@/layouts/MainLayout";
 import { Button } from "@/components/ui/button";
 import { OptimizedImage } from "@/components/ui/OptimizedImage";
 import { ArrowRight, CheckCircle, Film, PlayCircle, ArrowDown, Clock, Banknote, Award, Users } from "lucide-react";
@@ -141,8 +141,9 @@ const FilmIndustryPage = () => {
   }, []);
 
   return (
-    <div className="bg-gray-50 pb-20">
-      {/* Hero section */}
+    <MainLayout>
+      <div className="bg-gray-50 pb-20">
+        {/* Hero section */}
       <div 
         ref={headerRef}
         className="bg-navy relative overflow-hidden"
@@ -425,6 +426,7 @@ const FilmIndustryPage = () => {
         </motion.div>
       </div>
     </div>
+    </MainLayout>
   );
 };
 
