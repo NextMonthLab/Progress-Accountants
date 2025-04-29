@@ -275,7 +275,7 @@ const ServicesSection = () => {
         className="py-16 md:py-24 relative"
         style={{ backgroundColor: 'var(--light-grey)' }}
       >
-        <div className="container mx-auto px-4 relative z-10">
+        <div className="container mx-auto px-6 md:px-8 relative z-10">
           <FeaturesSkeleton count={3} />
         </div>
       </section>
@@ -305,7 +305,7 @@ const ServicesSection = () => {
       {/* Background pattern */}
       <ServicesBgPattern />
       
-      <div className="container mx-auto px-4 relative z-10">
+      <div className="container mx-auto px-6 md:px-8 relative z-10">
         <motion.div 
           initial="hidden"
           animate="visible"

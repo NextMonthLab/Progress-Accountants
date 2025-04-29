@@ -41,7 +41,7 @@ export default function WhyUsSection() {
       className="py-16 md:py-24 text-white fade-in-section" 
       style={{ backgroundColor: 'var(--navy)' }}
     >
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-6 md:px-8">
         <div className="text-center max-w-3xl mx-auto mb-16">
           <h2 className="font-poppins font-bold text-2xl md:text-4xl mb-4">
             Clarity. Confidence. Control.

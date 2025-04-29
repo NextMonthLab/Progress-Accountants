@@ -43,7 +43,7 @@ export default function SEOFooterSection() {
       className="py-16 md:py-24 fade-in-section"
       style={{ backgroundColor: 'var(--light-grey)' }}
     >
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-6 md:px-8">
         <div className="grid md:grid-cols-3 gap-8 items-start">
           <div className="md:col-span-2">
             <h2 

@@ -59,7 +59,7 @@ export default function MainLayout({ children }: MainLayoutProps) {
       <main className="flex-grow">
         {children}
       </main>
-      <div className="container mx-auto px-4 mb-6">
+      <div className="container mx-auto px-6 md:px-8 mb-6">
         <ProgressBanner />
       </div>
       <Footer />

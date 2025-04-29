@@ -1078,7 +1078,7 @@ const BusinessCalculatorPage = () => {
 
   return (
     <div className="py-12 md:py-16">
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-6 md:px-8">
         {/* Header */}
         <div className="text-center max-w-4xl mx-auto mb-12">
           <h1 className="text-4xl md:text-5xl font-bold text-navy mb-4">
