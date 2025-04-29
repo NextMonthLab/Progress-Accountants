@@ -880,22 +880,39 @@ const ResultsStep = ({ calculatorData }: { calculatorData: any }) => {
 // Progressive Stepper
 const ProgressStepper = ({ currentStep, totalSteps }: { currentStep: number; totalSteps: number }) => {
   return (
-    <div className="w-full mb-8">
-      <div className="flex justify-between mb-2">
-        {Array.from({ length: totalSteps }).map((_, index) => (
-          <div key={index} className={`w-8 h-8 rounded-full flex items-center justify-center ${index + 1 <= currentStep ? 'bg-orange-500 text-white' : 'bg-gray-200 text-gray-600'}`}>
-            {index + 1}
-          </div>
-        ))}
-      </div>
-      <div className="relative">
-        <div className="absolute top-0 h-1 bg-gray-200 w-full"></div>
+    <div className="w-full mb-10 mt-4">
+      <div className="flex justify-between mb-3 relative">
+        {/* Progress line */}
+        <div className="absolute top-4 left-0 h-1 bg-gray-200 w-full -z-10"></div>
         <div 
-          className="absolute top-0 h-1 bg-orange-500 transition-all duration-300" 
+          className="absolute top-4 left-0 h-1 bg-gradient-to-r from-orange-400 to-orange-600 transition-all duration-500 -z-10" 
           style={{ 
             width: `${((currentStep - 1) / (totalSteps - 1)) * 100}%` 
           }}
         ></div>
+        
+        {/* Step indicators */}
+        {Array.from({ length: totalSteps }).map((_, index) => (
+          <div key={index} className="text-center">
+            <div 
+              className={`w-10 h-10 rounded-full flex items-center justify-center mx-auto shadow-md border-2 
+              ${index + 1 <= currentStep 
+                ? 'bg-orange-500 border-orange-300 text-white' 
+                : 'bg-white border-gray-200 text-gray-400'}`}
+            >
+              {index + 1 < currentStep ? (
+                <CheckCircle className="h-5 w-5" />
+              ) : (
+                <span className="font-medium">{index + 1}</span>
+              )}
+            </div>
+            <div className={`text-xs mt-2 ${index + 1 <= currentStep ? 'text-orange-600 font-medium' : 'text-gray-500'}`}>
+              {index === 0 ? 'Business' : 
+               index === 1 ? 'Financial' : 
+               index === 2 ? 'Growth' : 'Contact'}
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );
@@ -986,7 +1003,7 @@ const BusinessCalculatorPage = () => {
         }}
       >
         {/* Dark overlay for better text readability */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[var(--navy)]/70 to-[var(--navy)]/40"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-[var(--navy)]/85 to-[var(--navy)]/60"></div>
         
         <div className="container mx-auto px-6 md:px-8 relative z-10">
           {/* Header */}
@@ -994,24 +1011,24 @@ const BusinessCalculatorPage = () => {
             <div className="inline-block mb-6 bg-orange-500/20 p-3 rounded-full backdrop-blur-sm">
               <Calculator className="h-10 w-10 text-orange-500" />
             </div>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 drop-shadow-lg">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 drop-shadow-xl" style={{ textShadow: "0 2px 10px rgba(0, 0, 0, 0.5)" }}>
               Smart Business Forecast Calculator
             </h1>
-            <p className="text-xl md:text-2xl text-gray-100 mb-8 max-w-3xl mx-auto leading-relaxed">
+            <p className="text-xl md:text-2xl text-gray-100 mb-8 max-w-3xl mx-auto leading-relaxed" style={{ textShadow: "0 1px 3px rgba(0, 0, 0, 0.5)" }}>
               Think beyond spreadsheets. Get a real-time financial pulse check tailored to your business—plus actionable insights in under 3 minutes.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 flex items-center">
+              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 flex items-center border border-white/10 shadow-lg">
                 <Clock className="text-orange-400 h-6 w-6 mr-3 flex-shrink-0" />
-                <span className="text-white text-sm">Takes just 3 minutes</span>
+                <span className="text-white text-sm" style={{ textShadow: "0 1px 2px rgba(0, 0, 0, 0.5)" }}>Takes just 3 minutes</span>
               </div>
-              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 flex items-center">
+              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 flex items-center border border-white/10 shadow-lg">
                 <FileText className="text-orange-400 h-6 w-6 mr-3 flex-shrink-0" />
-                <span className="text-white text-sm">Detailed PDF report</span>
+                <span className="text-white text-sm" style={{ textShadow: "0 1px 2px rgba(0, 0, 0, 0.5)" }}>Detailed PDF report</span>
               </div>
-              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 flex items-center">
+              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 flex items-center border border-white/10 shadow-lg">
                 <Shield className="text-orange-400 h-6 w-6 mr-3 flex-shrink-0" />
-                <span className="text-white text-sm">Expert insights</span>
+                <span className="text-white text-sm" style={{ textShadow: "0 1px 2px rgba(0, 0, 0, 0.5)" }}>Expert insights</span>
               </div>
             </div>
           </div>
