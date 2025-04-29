@@ -3,7 +3,7 @@ import { Link, useLocation } from "wouter";
 import { 
   Menu, X, LayoutDashboard, ChevronDown, Users, Briefcase, 
   Phone, Layout, BookOpen, FastForward, Sparkles, UserPlus,
-  ArrowLeftCircle, Newspaper
+  ArrowLeftCircle, Newspaper, Film, Music, Building2
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/use-auth";
@@ -99,8 +99,16 @@ export default function Navbar() {
       label: "Business",
       items: [
         { label: "Services", href: "/services", icon: <Briefcase className="h-4 w-4 mr-2" /> },
-        { label: "Industries", href: "/industries", icon: <FastForward className="h-4 w-4 mr-2" /> },
         { label: "Why Us", href: "/why-us", icon: <Sparkles className="h-4 w-4 mr-2" /> },
+      ]
+    },
+    {
+      label: "Industries",
+      items: [
+        { label: "All Industries", href: "/industries", icon: <FastForward className="h-4 w-4 mr-2" /> },
+        { label: "Film Industry", href: "/industries/film", icon: <Film className="h-4 w-4 mr-2" /> },
+        { label: "Music Industry", href: "/industries/music", icon: <Music className="h-4 w-4 mr-2" /> },
+        { label: "Construction Industry", href: "/industries/construction", icon: <Building2 className="h-4 w-4 mr-2" /> },
       ]
     },
     {

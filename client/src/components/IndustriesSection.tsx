@@ -107,7 +107,14 @@ const IndustryCard = withMemo(({
             animate={{ y: isHovered ? 0 : 5, opacity: isHovered ? 1 : 0.7 }}
             transition={{ duration: 0.2 }}
           >
-            <Link to={title === "Film Industry" ? "/industries/film" : `/industries/${title.toLowerCase().replace(/\s+/g, '-')}`}>
+            <Link 
+              to={
+                title === "Film Industry" ? "/industries/film" : 
+                title === "Music Industry" ? "/industries/music" : 
+                title === "Construction" ? "/industries/construction" : 
+                `/industries/${title.toLowerCase().replace(/\s+/g, '-')}`
+              }
+            >
               <Button 
                 variant="outline" 
                 className="text-sm border-orange-300 text-orange-600 hover:bg-orange-50 mt-2 group"
