@@ -148,7 +148,9 @@ function Router() {
       <Route path="/services" component={ServicesPage} />
       <Route path="/services/:slug" component={ServiceDetailPage} />
       <Route path="/industries" component={IndustriesPage} />
-      <Route path="/industries/film" component={FilmIndustryPage} />
+      <Route path="/industries/film">
+        {() => <FilmIndustryPage />}
+      </Route>
       <Route path="/why-us" component={WhyUsPage} />
       <Route path="/contact" component={ContactPage} />
       <Route path="/testimonials" component={TestimonialsPage} />
