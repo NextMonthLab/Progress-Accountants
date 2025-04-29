@@ -169,9 +169,10 @@ export default function HomePage() {
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-10">
               <h2 className="text-3xl font-bold mb-3" style={{ color: 'var(--navy)' }}>
-                Contact Us
+                Looking for a proactive accountant in United Kingdom?
               </h2>
               <p className="text-gray-600 max-w-3xl mx-auto">
+                We're based in Oxford, Banbury, and London, and proudly serve ambitious businesses across the United Kingdom and beyond.
                 Ready to take your accounting to the next level? Let's talk about how we can help your business flourish.
               </p>
             </div>
