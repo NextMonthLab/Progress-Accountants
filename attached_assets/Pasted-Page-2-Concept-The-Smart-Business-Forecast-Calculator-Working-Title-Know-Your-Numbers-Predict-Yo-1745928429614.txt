@@ -1,0 +1,87 @@
+Page 2 Concept: The Smart Business Forecast Calculator
+Working Title:
+"Know Your Numbers. Predict Your Growth."
+(Or alternatively: “The Smarter Way to Understand Your Business Finances”)
+
+Objective:
+Build the most advanced and user-personalised small business calculator in the industry. Not just a tax calculator or profit predictor—but an intelligent, context-aware business planner that:
+
+Gives insightful outputs tailored to the user's business model, size, goals, and challenges
+
+Helps users see where they are now, and what happens if they tweak cash flow, staffing, investment, or pricing
+
+Feels like sitting with a modern accountant, not using a glorified spreadsheet
+
+Acts as a high-quality lead magnet: users must enter their email to receive their full personalised report
+
+Core Features & Inputs:
+Business Snapshot (simple onboarding questions, 1 per step for UX)
+
+Type of business (Limited, Sole Trader, Partnership)
+
+Industry
+
+Approx. annual turnover
+
+Number of staff
+
+Region (to assess regional funding, cost differences)
+
+Revenue & Costs Breakdown
+
+Monthly income range
+
+Main fixed costs (rent, software, salaries)
+
+Typical variable costs (materials, freelance, etc.)
+
+Payment delays / late payment issues? (Yes/No slider)
+
+VAT-registered? (Y/N)
+
+Scenario Options (here’s where it gets clever)
+
+Want to grow? How fast? (3%, 10%, 25% target options)
+
+Hiring planned? (Number of hires, average salary)
+
+Any planned investments? (e.g. new gear, office, marketing)
+
+Comfortable with risk? (slider from “Play it safe” to “Go big”)
+
+Output Metrics (Calculated Behind the Scenes)
+
+Break-even point
+
+Cash flow forecast
+
+Gross profit margin
+
+Cost-to-income ratio
+
+Suggested tax set-aside %
+
+Forecasted impact of hiring/investment
+
+Recommended advisory areas (auto-personalised)
+
+Bonus Personalisation:
+AI-generated business insight paragraph:
+“Based on your inputs, it looks like you're running lean, but growth will need better cash flow planning. Your break-even point will shift significantly if you hire two people. We recommend reviewing your pricing strategy within the next quarter.”
+
+Downloadable PDF report emailed to the user (triggered post-email entry)
+
+Lead Gen Integration:
+Gate the final report: Ask for name/email at the final step with a CTA:
+“Want your full breakdown, cash flow forecast, and action plan? Pop in your email and we’ll send it to you instantly.”
+
+Optionally, offer a free 15-min review call once the report is delivered
+“Need help interpreting your numbers? Book a free Growth Call.”
+
+Page Name: business-calculator
+Page Title:
+Smart Business Forecast Calculator | Progress Accountants
+
+CTA Hook (Top of Page):
+“Think beyond spreadsheets. Get a real-time financial pulse check tailored to your business—plus actionable insights in under 3 minutes.”
+

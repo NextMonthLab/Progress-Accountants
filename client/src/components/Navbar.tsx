@@ -3,7 +3,8 @@ import { Link, useLocation } from "wouter";
 import { 
   Menu, X, LayoutDashboard, ChevronDown, Users, Briefcase, 
   Phone, Layout, BookOpen, FastForward, Sparkles, UserPlus,
-  ArrowLeftCircle, Newspaper, Film, Music, Building2, Building
+  ArrowLeftCircle, Newspaper, Film, Music, Building2, Building,
+  Calculator
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/use-auth";
@@ -101,6 +102,7 @@ export default function Navbar() {
         { label: "Services", href: "/services", icon: <Briefcase className="h-4 w-4 mr-2" /> },
         { label: "Why Us", href: "/why-us", icon: <Sparkles className="h-4 w-4 mr-2" /> },
         { label: "SME Support Hub", href: "/sme-support-hub", icon: <Building2 className="h-4 w-4 mr-2" /> },
+        { label: "Business Calculator", href: "/business-calculator", icon: <Calculator className="h-4 w-4 mr-2" /> },
       ]
     },
     {
