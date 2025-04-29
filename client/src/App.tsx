@@ -54,6 +54,7 @@ import ServicesPage from "@/pages/ServicesPage";
 import ServiceDetailPage from "@/pages/ServiceDetailPage";
 import IndustriesPage from "@/pages/IndustriesPage";
 import FilmIndustryPage from "@/pages/FilmIndustryPage";
+import MusicIndustryPage from "@/pages/MusicIndustryPage";
 import TestFilmPage from "@/pages/TestFilmPage";
 import WhyUsPage from "@/pages/WhyUsPage";
 import ContactPage from "@/pages/ContactPage";
@@ -150,6 +151,7 @@ function Router() {
       <Route path="/services/:slug" component={ServiceDetailPage} />
       <Route path="/industries" component={IndustriesPage} />
       <Route path="/industries/film" component={FilmIndustryPage} />
+      <Route path="/services/music-industry-accounting" component={MusicIndustryPage} />
       <Route path="/test-film" component={TestFilmPage} />
       <Route path="/why-us" component={WhyUsPage} />
       <Route path="/contact" component={ContactPage} />
