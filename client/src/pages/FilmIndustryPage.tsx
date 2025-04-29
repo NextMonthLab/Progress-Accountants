@@ -91,28 +91,32 @@ const Testimonial = ({ quote, author, role }: { quote: string; author: string; r
 const CTASection = () => (
   <motion.div
     variants={itemVariants}
-    className="bg-navy rounded-2xl p-8 md:p-12 text-white relative overflow-hidden"
+    className="rounded-2xl p-8 md:p-12 text-white relative overflow-hidden"
   >
-    {/* Background pattern with solid background */}
-    <div className="absolute top-0 right-0 w-1/3 h-full opacity-10 z-0">
-      <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-        <path fill="#FFFFFF" d="M42.7,-62.9C56.4,-53.9,69.4,-42.2,75.3,-27.3C81.1,-12.4,79.9,5.5,73.8,21.2C67.8,36.9,57,50.4,43.3,59.1C29.6,67.8,13,71.5,-3.4,76.4C-19.9,81.3,-39.8,87.4,-53.2,80.2C-66.5,73,-73.2,52.5,-78.2,32.1C-83.1,11.8,-86.4,-8.4,-81,-25.2C-75.6,-41.9,-61.6,-55.2,-46.5,-64C-31.3,-72.7,-15.7,-77,0.3,-77.4C16.3,-77.8,32.6,-74.4,42.7,-62.9Z" transform="translate(100 100)" />
-      </svg>
+    {/* Background image with overlay for CTA */}
+    <div className="absolute inset-0 z-0">
+      <OptimizedImage
+        src={filmProductionImg}
+        alt="Film production background"
+        width={1920}
+        height={1080}
+        className="w-full h-full object-cover"
+      />
+      {/* Dark overlay for better text contrast */}
+      <div className="absolute inset-0 bg-navy opacity-90"></div>
     </div>
     <div className="relative z-10">
-      <div className="bg-navy-700 px-6 py-4 rounded-lg mb-6 inline-block">
-        <h2 className="text-3xl md:text-4xl font-bold text-white">Ready to streamline your film production finances?</h2>
-      </div>
-      <div className="bg-navy-700 px-6 py-4 rounded-lg mb-8 inline-block">
-        <p className="text-white text-lg max-w-2xl">
-          Whether you're applying for Film Tax Relief or planning your next big pitch, book a call with our team to see how Progress can support your next production.
-        </p>
-      </div>
+      <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
+        Ready to streamline your film production finances?
+      </h2>
+      <p className="text-white text-lg max-w-2xl mb-8">
+        Whether you're applying for Film Tax Relief or planning your next big pitch, book a call with our team to see how Progress can support your next production.
+      </p>
       <div className="flex flex-col sm:flex-row gap-4">
         <Button size="lg" className="bg-orange-500 hover:bg-orange-600 text-white border-none font-medium">
           Book a consultation
         </Button>
-        <Button size="lg" className="bg-navy-600 border-navy-600 text-white hover:bg-navy-700 font-medium">
+        <Button size="lg" className="bg-white text-navy hover:bg-gray-100 font-medium">
           View our services
         </Button>
       </div>
@@ -146,19 +150,19 @@ const FilmIndustryPage = () => {
         {/* Hero section */}
       <div 
         ref={headerRef}
-        className="bg-navy relative overflow-hidden"
+        className="relative overflow-hidden"
       >
-        {/* Simple solid background for better text contrast */}
-        <div className="absolute inset-0 bg-navy z-0"></div>
-        <div className="absolute inset-0 z-0 opacity-10">
-          <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
-            <defs>
-              <pattern id="grid" width="8" height="8" patternUnits="userSpaceOnUse">
-                <path d="M 8 0 L 0 0 0 8" fill="none" stroke="white" strokeWidth="0.5" />
-              </pattern>
-            </defs>
-            <rect width="100%" height="100%" fill="url(#grid)" />
-          </svg>
+        {/* Full-width background image with dark overlay */}
+        <div className="absolute inset-0 z-0">
+          <OptimizedImage
+            src={filmProductionImg}
+            alt="Film production background"
+            width={1920}
+            height={1080}
+            className="w-full h-full object-cover"
+          />
+          {/* Dark overlay for better text contrast */}
+          <div className="absolute inset-0 bg-navy opacity-85"></div>
         </div>
         
         <div className="relative z-10 container mx-auto px-4 py-20 md:py-32">
@@ -176,7 +180,7 @@ const FilmIndustryPage = () => {
               </motion.div>
               <motion.div
                 variants={itemVariants}
-                className="bg-navy px-6 py-4 rounded-lg mb-6 inline-block"
+                className="mb-6"
               >
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
                   Expert Accounting for the Film Industry
@@ -184,7 +188,7 @@ const FilmIndustryPage = () => {
               </motion.div>
               <motion.div
                 variants={itemVariants}
-                className="bg-navy px-6 py-4 rounded-lg mb-8 inline-block"
+                className="mb-8"
               >
                 <p className="text-lg md:text-xl text-white">
                   Helping You Maximise Film Tax Relief, Manage Cash Flow, and Keep Production on Track
