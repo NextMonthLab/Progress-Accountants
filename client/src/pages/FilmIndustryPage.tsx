@@ -136,285 +136,285 @@ const FilmIndustryPage = () => {
   }, []);
 
   return (
-    <MainLayout>
-      <div className="bg-gray-50 pb-20">
-        {/* Hero section */}
-        <div 
-          ref={headerRef}
-          className="bg-navy relative overflow-hidden"
-        >
-          {/* Background pattern */}
-          <div className="absolute inset-0 z-0 opacity-20">
-            <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
-              <defs>
-                <pattern id="grid" width="8" height="8" patternUnits="userSpaceOnUse">
-                  <path d="M 8 0 L 0 0 0 8" fill="none" stroke="white" strokeWidth="0.5" />
-                </pattern>
-              </defs>
-              <rect width="100%" height="100%" fill="url(#grid)" />
-            </svg>
-          </div>
-          
-          <div className="relative z-10 container mx-auto px-4 py-20 md:py-32">
-            <div className="flex flex-col lg:flex-row items-center gap-12">
-              <motion.div 
-                initial="hidden"
-                animate="visible"
-                variants={containerVariants}
-                className="lg:w-1/2"
-              >
-                <motion.div variants={itemVariants}>
-                  <span className="inline-block px-4 py-1 rounded-full bg-orange-100 text-orange-700 font-medium text-sm mb-4">
-                    Industry Specialists
-                  </span>
-                </motion.div>
-                <motion.h1 
-                  variants={itemVariants}
-                  className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight"
-                >
-                  Expert Accounting for the Film Industry
-                </motion.h1>
-                <motion.p 
-                  variants={itemVariants}
-                  className="text-lg md:text-xl text-white mb-8"
-                >
-                  Helping You Maximise Film Tax Relief, Manage Cash Flow, and Keep Production on Track
-                </motion.p>
-                <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-4">
-                  <Button size="lg" className="bg-orange-500 hover:bg-orange-600 text-white font-medium">
-                    Book a free consultation
-                  </Button>
-                  <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/20 font-medium">
-                    Explore our services <ArrowRight className="ml-2 h-4 w-4" />
-                  </Button>
-                </motion.div>
+    <div className="bg-gray-50 pb-20">
+      {/* Hero section */}
+      <div 
+        ref={headerRef}
+        className="bg-navy relative overflow-hidden"
+      >
+        {/* Background pattern */}
+        <div className="absolute inset-0 z-0 opacity-20">
+          <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <defs>
+              <pattern id="grid" width="8" height="8" patternUnits="userSpaceOnUse">
+                <path d="M 8 0 L 0 0 0 8" fill="none" stroke="white" strokeWidth="0.5" />
+              </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#grid)" />
+          </svg>
+        </div>
+        
+        <div className="relative z-10 container mx-auto px-4 py-20 md:py-32">
+          <div className="flex flex-col lg:flex-row items-center gap-12">
+            <motion.div 
+              initial="hidden"
+              animate="visible"
+              variants={containerVariants}
+              className="lg:w-1/2"
+            >
+              <motion.div variants={itemVariants}>
+                <span className="inline-block px-4 py-1 rounded-full bg-orange-100 text-orange-700 font-medium text-sm mb-4">
+                  Industry Specialists
+                </span>
               </motion.div>
-              
-              <motion.div 
-                initial={{ opacity: 0, x: 50 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.8, delay: 0.4 }}
-                className="lg:w-1/2"
+              <motion.h1 
+                variants={itemVariants}
+                className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight"
               >
-                <div className="bg-gradient-to-br from-orange-600/10 to-orange-600/20 p-3 rounded-2xl shadow-2xl relative">
-                  <div className="absolute inset-0 bg-gradient-to-br from-orange-600/20 to-navy/30 rounded-2xl transform rotate-3 -z-10"></div>
-                  <OptimizedImage
-                    src={filmProductionImg}
-                    alt="Film production accounting"
-                    width={600}
-                    height={400}
-                    className="rounded-xl shadow-lg w-full"
-                  />
-                  
-                  {/* Animated badge */}
-                  <motion.div 
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.8, duration: 0.5 }}
-                    className="absolute -bottom-4 -right-4 bg-white rounded-xl shadow-lg p-3 flex items-center"
-                  >
-                    <div className="bg-orange-100 p-2 rounded-lg mr-3">
-                      <Award className="h-6 w-6 text-orange-600" />
-                    </div>
-                    <div>
-                      <p className="text-navy font-semibold text-sm">Film Tax Relief</p>
-                      <p className="text-xs text-gray-500">Maximise your returns</p>
-                    </div>
-                  </motion.div>
-                </div>
+                Expert Accounting for the Film Industry
+              </motion.h1>
+              <motion.p 
+                variants={itemVariants}
+                className="text-lg md:text-xl text-white mb-8"
+              >
+                Helping You Maximise Film Tax Relief, Manage Cash Flow, and Keep Production on Track
+              </motion.p>
+              <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-4">
+                <Button size="lg" className="bg-orange-500 hover:bg-orange-600 text-white font-medium">
+                  Book a free consultation
+                </Button>
+                <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/20 font-medium">
+                  Explore our services <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
               </motion.div>
-            </div>
+            </motion.div>
             
             <motion.div 
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1, duration: 0.5 }}
-              className="absolute bottom-5 left-1/2 transform -translate-x-1/2 flex flex-col items-center"
+              initial={{ opacity: 0, x: 50 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              className="lg:w-1/2"
             >
-              <p className="text-gray-400 mb-2 text-sm">Scroll to learn more</p>
-              <ArrowDown className="w-5 h-5 text-gray-400 animate-bounce" />
+              <div className="bg-gradient-to-br from-orange-600/10 to-orange-600/20 p-3 rounded-2xl shadow-2xl relative">
+                <div className="absolute inset-0 bg-gradient-to-br from-orange-600/20 to-navy/30 rounded-2xl transform rotate-3 -z-10"></div>
+                <OptimizedImage
+                  src={filmProductionImg}
+                  alt="Film production accounting"
+                  width={600}
+                  height={400}
+                  className="rounded-xl shadow-lg w-full"
+                />
+                
+                {/* Animated badge */}
+                <motion.div 
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.8, duration: 0.5 }}
+                  className="absolute -bottom-4 -right-4 bg-white rounded-xl shadow-lg p-3 flex items-center"
+                >
+                  <div className="bg-orange-100 p-2 rounded-lg mr-3">
+                    <Award className="h-6 w-6 text-orange-600" />
+                  </div>
+                  <div>
+                    <p className="text-navy font-semibold text-sm">Film Tax Relief</p>
+                    <p className="text-xs text-gray-500">Maximise your returns</p>
+                  </div>
+                </motion.div>
+              </div>
             </motion.div>
           </div>
-        </div>
-        
-        {/* Intro section */}
-        <div className="container mx-auto px-4 py-16">
+          
           <motion.div 
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
-            variants={containerVariants}
-            className="max-w-4xl mx-auto"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1, duration: 0.5 }}
+            className="absolute bottom-5 left-1/2 transform -translate-x-1/2 flex flex-col items-center"
           >
-            <motion.div variants={itemVariants} className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold text-navy mb-6">Why Choose Progress for Film Accounting?</h2>
-              <p className="text-lg text-gray-600">
-                Whether you're running an independent production, managing a freelance crew, or scaling up a creative studio, 
-                Progress Accountants brings clarity, confidence, and control to your film finances.
-              </p>
-            </motion.div>
-            
-            <motion.div variants={itemVariants} className="bg-white rounded-xl shadow-md p-6 md:p-8 mb-12 border border-gray-100">
-              <p className="text-lg text-gray-700 mb-4">
-                We specialise in supporting the film and TV sector with proactive, tech-savvy accounting solutions tailored to 
-                the unique challenges of the entertainment world.
-              </p>
-              <div className="flex items-center">
-                <div className="p-2 bg-orange-100 rounded-full mr-3">
-                  <Film className="h-5 w-5 text-orange-600" />
-                </div>
-                <p className="font-medium text-navy">Based in Banbury. Supporting film productions across the UK.</p>
-              </div>
-            </motion.div>
-          </motion.div>
-        </div>
-        
-        {/* Key features section */}
-        <div className="container mx-auto px-4 py-12">
-          <motion.div 
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
-            variants={containerVariants}
-          >
-            <motion.div variants={itemVariants} className="text-center mb-12">
-              <span className="inline-block px-3 py-1 rounded-full bg-blue-100 text-blue-700 font-medium text-sm mb-3">
-                Our Specialist Services
-              </span>
-              <h2 className="text-3xl md:text-4xl font-bold text-navy mb-6">Why Film & TV Companies Choose Progress</h2>
-            </motion.div>
-            
-            <div className="grid md:grid-cols-2 gap-8 mb-16">
-              <FeatureCard 
-                icon={Award}
-                title="Maximise Film Tax Relief"
-                description="We don't just know the rules—we know how to make them work for your budget. From qualifying production expenses to navigating Creative Industry Tax Reliefs, we ensure you're claiming everything you're entitled to."
-                accentColor="bg-orange-500"
-              />
-              <FeatureCard 
-                icon={Banknote}
-                title="Tame Complex Cash Flow Cycles"
-                description="Project-based revenue and unpredictable funding can make financial planning feel like a guessing game. We bring structure with real-time dashboards, forecasting tools, and monthly check-ins tailored to your production schedule."
-                accentColor="bg-blue-500"
-              />
-              <FeatureCard 
-                icon={Users}
-                title="Simplify Freelancer & Crew Payments"
-                description="We set up efficient payroll systems that handle contractor payments, PAYE obligations, and international workers—so you don't spend your time chasing tax forms."
-                accentColor="bg-green-500"
-              />
-              <FeatureCard 
-                icon={Clock}
-                title="Plan Across Borders"
-                description="Shooting internationally? We'll guide you through multi-jurisdiction tax planning and help keep you compliant at every stage of production."
-                accentColor="bg-purple-500"
-              />
-            </div>
-          </motion.div>
-        </div>
-        
-        {/* Testimonial section */}
-        <div className="container mx-auto px-4 py-12">
-          <motion.div 
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
-            variants={containerVariants}
-          >
-            <motion.div variants={itemVariants} className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold text-navy mb-6">What Our Clients Say</h2>
-            </motion.div>
-            
-            <div className="grid md:grid-cols-2 gap-8 mb-16">
-              <Testimonial 
-                quote="Progress helped us reclaim over £70,000 in Film Tax Relief—it made our next project possible."
-                author="Independent Producer"
-                role="London"
-              />
-              <Testimonial 
-                quote="Having accountants who understand the rhythm of production makes all the difference. Progress delivers insights we can actually use, when we need them."
-                author="Production Manager"
-                role="Manchester-based Studio"
-              />
-            </div>
-          </motion.div>
-        </div>
-        
-        {/* Clients section */}
-        <div className="container mx-auto px-4 py-12">
-          <motion.div 
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
-            variants={containerVariants}
-          >
-            <motion.div variants={itemVariants} className="text-center mb-12">
-              <h2 className="text-3xl font-bold text-navy mb-6">Trusted by Producers, Studios, and Freelancers</h2>
-              <p className="text-lg text-gray-600 max-w-3xl mx-auto mb-8">
-                Progress is more than a compliance service—we're your financial partner throughout development, production, and post. We've worked with:
-              </p>
-            </motion.div>
-            
-            <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-16">
-              <ClientType icon={Film} label="Independent film studios" />
-              <ClientType icon={PlayCircle} label="TV production companies" />
-              <ClientType icon={CheckCircle} label="Post-production houses" />
-              <ClientType icon={Users} label="Freelance producers and creatives" />
-              <ClientType icon={Award} label="Creative agencies offering branded content" />
-            </div>
-          </motion.div>
-        </div>
-        
-        {/* Tech approach section */}
-        <div className="container mx-auto px-4 py-12">
-          <motion.div 
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
-            variants={containerVariants}
-          >
-            <motion.div variants={itemVariants} className="max-w-4xl mx-auto bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden">
-              <div className="p-8 md:p-10">
-                <h2 className="text-2xl md:text-3xl font-bold text-navy mb-6">Our Tech-Savvy Approach</h2>
-                <p className="text-gray-700 mb-6">
-                  We use cloud-based systems like Xero and integrate your tools to deliver fast, accurate, and visual financial insights. 
-                  Prefer to stay hands-off? We'll automate what we can—and flag what needs your attention.
-                </p>
-                <p className="text-gray-700 mb-8">
-                  And yes, we speak your language. Our team understands the rhythm of production and keeps pace with it, offering:
-                </p>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {[
-                    "Digital dashboards",
-                    "Real-time cash burn tracking",
-                    "Budget variance reporting",
-                    "Expense categorisation tailored to film finance"
-                  ].map((feature, index) => (
-                    <div key={index} className="flex items-center">
-                      <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0" />
-                      <span className="text-gray-700">{feature}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </motion.div>
-          </motion.div>
-        </div>
-        
-        {/* CTA section */}
-        <div className="container mx-auto px-4 py-12">
-          <motion.div 
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
-            variants={fadeIn}
-          >
-            <CTASection />
+            <p className="text-gray-400 mb-2 text-sm">Scroll to learn more</p>
+            <ArrowDown className="w-5 h-5 text-gray-400 animate-bounce" />
           </motion.div>
         </div>
       </div>
-    </MainLayout>
+      
+      {/* Intro section */}
+      <div className="container mx-auto px-4 py-16">
+        <motion.div 
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+          variants={containerVariants}
+          className="max-w-4xl mx-auto"
+        >
+          <motion.div variants={itemVariants} className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-navy mb-6">Why Choose Progress for Film Accounting?</h2>
+            <p className="text-lg text-gray-600">
+              Whether you're running an independent production, managing a freelance crew, or scaling up a creative studio, 
+              Progress Accountants brings clarity, confidence, and control to your film finances.
+            </p>
+          </motion.div>
+          
+          <motion.div variants={itemVariants} className="bg-white rounded-xl shadow-md p-6 md:p-8 mb-12 border border-gray-100">
+            <p className="text-lg text-gray-700 mb-4">
+              We specialise in supporting the film and TV sector with proactive, tech-savvy accounting solutions tailored to 
+              the unique challenges of the entertainment world.
+            </p>
+            <div className="flex items-center">
+              <div className="p-2 bg-orange-100 rounded-full mr-3">
+                <Film className="h-5 w-5 text-orange-600" />
+              </div>
+              <p className="font-medium text-navy">Based in Banbury. Supporting film productions across the UK.</p>
+            </div>
+          </motion.div>
+        </motion.div>
+      </div>
+      
+      {/* Key features section */}
+      <div className="container mx-auto px-4 py-12">
+        <motion.div 
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+          variants={containerVariants}
+        >
+          <motion.div variants={itemVariants} className="text-center mb-12">
+            <span className="inline-block px-3 py-1 rounded-full bg-blue-100 text-blue-700 font-medium text-sm mb-3">
+              Our Specialist Services
+            </span>
+            <h2 className="text-3xl md:text-4xl font-bold text-navy mb-6">Why Film & TV Companies Choose Progress</h2>
+          </motion.div>
+          
+          <div className="grid md:grid-cols-2 gap-8 mb-16">
+            <FeatureCard 
+              icon={Award}
+              title="Maximise Film Tax Relief"
+              description="We don't just know the rules—we know how to make them work for your budget. From qualifying production expenses to navigating Creative Industry Tax Reliefs, we ensure you're claiming everything you're entitled to."
+              accentColor="bg-orange-500"
+            />
+            <FeatureCard 
+              icon={Banknote}
+              title="Tame Complex Cash Flow Cycles"
+              description="Project-based revenue and unpredictable funding can make financial planning feel like a guessing game. We bring structure with real-time dashboards, forecasting tools, and monthly check-ins tailored to your production schedule."
+              accentColor="bg-blue-500"
+            />
+            <FeatureCard 
+              icon={Users}
+              title="Simplify Freelancer & Crew Payments"
+              description="We set up efficient payroll systems that handle contractor payments, PAYE obligations, and international workers—so you don't spend your time chasing tax forms."
+              accentColor="bg-green-500"
+            />
+            <FeatureCard 
+              icon={Clock}
+              title="Plan Across Borders"
+              description="Shooting internationally? We'll guide you through multi-jurisdiction tax planning and help keep you compliant at every stage of production."
+              accentColor="bg-purple-500"
+            />
+          </div>
+        </motion.div>
+      </div>
+      
+      {/* Testimonial section */}
+      <div className="container mx-auto px-4 py-12">
+        <motion.div 
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+          variants={containerVariants}
+        >
+          <motion.div variants={itemVariants} className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-navy mb-6">What Our Clients Say</h2>
+          </motion.div>
+          
+          <div className="grid md:grid-cols-2 gap-8 mb-16">
+            <Testimonial 
+              quote="Progress helped us reclaim over £70,000 in Film Tax Relief—it made our next project possible."
+              author="Independent Producer"
+              role="London"
+            />
+            <Testimonial 
+              quote="Having accountants who understand the rhythm of production makes all the difference. Progress delivers insights we can actually use, when we need them."
+              author="Production Manager"
+              role="Manchester-based Studio"
+            />
+          </div>
+        </motion.div>
+      </div>
+      
+      {/* Clients section */}
+      <div className="container mx-auto px-4 py-12">
+        <motion.div 
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+          variants={containerVariants}
+        >
+          <motion.div variants={itemVariants} className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-navy mb-6">Trusted by Producers, Studios, and Freelancers</h2>
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto mb-8">
+              Progress is more than a compliance service—we're your financial partner throughout development, production, and post. We've worked with:
+            </p>
+          </motion.div>
+          
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-16">
+            <ClientType icon={Film} label="Independent film studios" />
+            <ClientType icon={PlayCircle} label="TV production companies" />
+            <ClientType icon={CheckCircle} label="Post-production houses" />
+            <ClientType icon={Users} label="Freelance producers and creatives" />
+            <ClientType icon={Award} label="Creative agencies offering branded content" />
+          </div>
+        </motion.div>
+      </div>
+      
+      {/* Tech approach section */}
+      <div className="container mx-auto px-4 py-12">
+        <motion.div 
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+          variants={containerVariants}
+        >
+          <motion.div variants={itemVariants} className="max-w-4xl mx-auto bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden">
+            <div className="p-8 md:p-10">
+              <h2 className="text-2xl md:text-3xl font-bold text-navy mb-6">Our Tech-Savvy Approach</h2>
+              <p className="text-gray-700 mb-6">
+                We use cloud-based systems like Xero and integrate your tools to deliver fast, accurate, and visual financial insights. 
+                Prefer to stay hands-off? We'll automate what we can—and flag what needs your attention.
+              </p>
+              <p className="text-gray-700 mb-8">
+                And yes, we speak your language. Our team understands the rhythm of production and keeps pace with it, offering:
+              </p>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {[
+                  "Digital dashboards",
+                  "Real-time cash burn tracking",
+                  "Budget variance reporting",
+                  "Expense categorisation tailored to film finance"
+                ].map((feature, index) => (
+                  <div key={index} className="flex items-center">
+                    <div className="h-8 w-8 rounded-full bg-green-100 flex items-center justify-center mr-3">
+                      <CheckCircle className="h-5 w-5 text-green-600" />
+                    </div>
+                    <span className="text-gray-700">{feature}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </motion.div>
+        </motion.div>
+      </div>
+      
+      {/* CTA section */}
+      <div className="container mx-auto px-4 py-12">
+        <motion.div 
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+          variants={fadeIn}
+        >
+          <CTASection />
+        </motion.div>
+      </div>
+    </div>
   );
 };
 
