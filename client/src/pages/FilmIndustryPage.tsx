@@ -143,9 +143,9 @@ const FilmIndustryPage = () => {
         ref={headerRef}
         className="bg-navy relative overflow-hidden"
       >
-        {/* Background pattern with darker overlay for better text contrast */}
-        <div className="absolute inset-0 bg-navy opacity-80 z-0"></div>
-        <div className="absolute inset-0 z-0 opacity-20">
+        {/* Simple solid background for better text contrast */}
+        <div className="absolute inset-0 bg-navy z-0"></div>
+        <div className="absolute inset-0 z-0 opacity-10">
           <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
             <defs>
               <pattern id="grid" width="8" height="8" patternUnits="userSpaceOnUse">
@@ -197,8 +197,7 @@ const FilmIndustryPage = () => {
               transition={{ duration: 0.8, delay: 0.4 }}
               className="lg:w-1/2"
             >
-              <div className="bg-gradient-to-br from-orange-600/10 to-orange-600/20 p-3 rounded-2xl shadow-2xl relative">
-                <div className="absolute inset-0 bg-gradient-to-br from-orange-600/20 to-navy/30 rounded-2xl transform rotate-3 -z-10"></div>
+              <div className="bg-orange-600 p-3 rounded-2xl shadow-2xl relative">
                 <OptimizedImage
                   src={filmProductionImg}
                   alt="Film production accounting"
