@@ -178,8 +178,8 @@ const HeroSection = () => {
             >
               <span className="text-white">{businessName}</span>
               <span className="relative block mt-3">
-                {/* Premium metallic gradient effect with text-shadow for enhanced visibility */}
-                <span className="relative inline-block bg-gradient-to-r from-[#f7b733] via-[#ffda79] to-[#f59b42] bg-clip-text text-transparent" style={{ textShadow: "0 1px 2px rgba(0,0,0,0.2), 0 1px 10px rgba(255,153,0,0.3)" }}>
+                {/* Simple brand orange color with slight text shadow for readability */}
+                <span className="relative inline-block text-orange-500" style={{ textShadow: "0 1px 2px rgba(0,0,0,0.2)" }}>
                   {tagline}
                 </span>
               </span>
