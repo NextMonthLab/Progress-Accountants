@@ -35,11 +35,11 @@ export default function ContactPage() {
               <div className="space-y-4">
                 <div className="flex items-start">
                   <Phone className="h-5 w-5 mr-3 mt-1 text-[var(--orange)]" />
-                  <p>01865 921 150</p>
+                  <p className="text-gray-800">01865 921 150</p>
                 </div>
                 <div className="flex items-start">
                   <MapPin className="h-5 w-5 mr-3 mt-1 text-[var(--orange)]" />
-                  <p>
+                  <p className="text-gray-800">
                     John Eccles House<br />
                     Robert Robinson Avenue<br />
                     Oxford Science Park<br />
@@ -68,11 +68,11 @@ export default function ContactPage() {
               <div className="space-y-4">
                 <div className="flex items-start">
                   <Phone className="h-5 w-5 mr-3 mt-1 text-[var(--orange)]" />
-                  <p>01295 477 250</p>
+                  <p className="text-gray-800">01295 477 250</p>
                 </div>
                 <div className="flex items-start">
                   <MapPin className="h-5 w-5 mr-3 mt-1 text-[var(--orange)]" />
-                  <p>
+                  <p className="text-gray-800">
                     1st Floor Beaumont House<br />
                     Beaumont Road<br />
                     Banbury<br />
@@ -100,11 +100,11 @@ export default function ContactPage() {
               <div className="space-y-4">
                 <div className="flex items-start">
                   <Phone className="h-5 w-5 mr-3 mt-1 text-[var(--orange)]" />
-                  <p>020 3005 7870</p>
+                  <p className="text-gray-800">020 3005 7870</p>
                 </div>
                 <div className="flex items-start">
                   <MapPin className="h-5 w-5 mr-3 mt-1 text-[var(--orange)]" />
-                  <p>
+                  <p className="text-gray-800">
                     107 Cheapside<br />
                     London<br />
                     EC2V 6DN
@@ -141,7 +141,7 @@ export default function ContactPage() {
                     <Clock className="h-5 w-5 mr-3 mt-1 text-[var(--orange)]" />
                     <div>
                       <h3 className="font-semibold mb-2" style={{ color: 'var(--navy)' }}>Business Hours</h3>
-                      <p className="text-gray-700">
+                      <p className="text-gray-800">
                         Monday - Friday: 9:00 AM - 5:30 PM<br />
                         Saturday - Sunday: Closed
                       </p>
@@ -152,7 +152,7 @@ export default function ContactPage() {
                     <Mail className="h-5 w-5 mr-3 mt-1 text-[var(--orange)]" />
                     <div>
                       <h3 className="font-semibold mb-2" style={{ color: 'var(--navy)' }}>Email Us</h3>
-                      <p className="text-gray-700">
+                      <p className="text-gray-800">
                         General Inquiries: info@progressaccountants.com<br />
                         Support: support@progressaccountants.com
                       </p>
