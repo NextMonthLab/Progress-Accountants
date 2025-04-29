@@ -4,7 +4,7 @@ import {
   Menu, X, LayoutDashboard, ChevronDown, Users, Briefcase, 
   Phone, Layout, BookOpen, FastForward, Sparkles, UserPlus,
   ArrowLeftCircle, Newspaper, Film, Music, Building2, Building,
-  Calculator
+  Calculator, Calendar, PhoneCall
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/use-auth";
@@ -97,36 +97,39 @@ export default function Navbar() {
   // Define public-facing menu items
   const publicMenuGroups: MenuGroup[] = [
     {
-      label: "Business",
+      label: "Services",
       items: [
-        { label: "Services", href: "/services", icon: <Briefcase className="h-4 w-4 mr-2" /> },
-        { label: "Why Us", href: "/why-us", icon: <Sparkles className="h-4 w-4 mr-2" /> },
-        { label: "SME Support Hub", href: "/sme-support-hub", icon: <Building2 className="h-4 w-4 mr-2" /> },
+        { label: "All Services", href: "/services", icon: <Briefcase className="h-4 w-4 mr-2" /> },
+        { label: "Why Choose Us", href: "/why-us", icon: <Sparkles className="h-4 w-4 mr-2" /> },
         { label: "Business Calculator", href: "/business-calculator", icon: <Calculator className="h-4 w-4 mr-2" /> },
+        { label: "SME Support Hub", href: "/sme-support-hub", icon: <Building2 className="h-4 w-4 mr-2" /> },
       ]
     },
     {
       label: "Industries",
       items: [
-        { label: "All Industries", href: "/industries", icon: <FastForward className="h-4 w-4 mr-2" /> },
-        { label: "Film Industry", href: "/industries/film", icon: <Film className="h-4 w-4 mr-2" /> },
-        { label: "Music Industry", href: "/industries/music", icon: <Music className="h-4 w-4 mr-2" /> },
-        { label: "Construction Industry", href: "/industries/construction", icon: <Building2 className="h-4 w-4 mr-2" /> },
+        { label: "Film & TV", href: "/industries/film", icon: <Film className="h-4 w-4 mr-2" /> },
+        { label: "Music", href: "/industries/music", icon: <Music className="h-4 w-4 mr-2" /> },
+        { label: "Construction", href: "/industries/construction", icon: <Building2 className="h-4 w-4 mr-2" /> },
+        { label: "Professional Services", href: "/industries/professional-services", icon: <Briefcase className="h-4 w-4 mr-2" /> },
       ]
     },
     {
-      label: "Company",
+      label: "Resources",
+      items: [
+        { label: "Business Calculator", href: "/business-calculator", icon: <Calculator className="h-4 w-4 mr-2" /> },
+        { label: "SME Support Hub", href: "/sme-support-hub", icon: <Building2 className="h-4 w-4 mr-2" /> },
+        { label: "News & Insights", href: "/news", icon: <Newspaper className="h-4 w-4 mr-2" /> },
+        { label: "Podcast Studio", href: "/studio-banbury", icon: <Layout className="h-4 w-4 mr-2" /> },
+      ]
+    },
+    {
+      label: "About",
       items: [
         { label: "About Us", href: "/about", icon: <BookOpen className="h-4 w-4 mr-2" /> },
         { label: "Our Team", href: "/team", icon: <Users className="h-4 w-4 mr-2" /> },
-        { label: "Contact", href: "/contact", icon: <Phone className="h-4 w-4 mr-2" /> },
-      ]
-    },
-    {
-      label: "Podcast Studio",
-      items: [
-        { label: "Studio Facilities", href: "/studio-banbury", icon: <Layout className="h-4 w-4 mr-2" /> },
-        { label: "Book Studio Time", href: "/studio-banbury#booking-form", icon: <Layout className="h-4 w-4 mr-2" /> },
+        { label: "Contact Us", href: "/contact", icon: <Phone className="h-4 w-4 mr-2" /> },
+        { label: "Podcast Studio", href: "/studio-banbury", icon: <Layout className="h-4 w-4 mr-2" /> },
       ]
     }
   ];
@@ -201,20 +204,12 @@ export default function Navbar() {
         <div className="hidden md:flex items-center space-x-6">
           {publicMenuGroups.map(renderDesktopDropdown)}
           
-          {/* News link */}
-          <Link 
-            href="/news" 
-            className={`font-medium ${isActive('/news') ? 'text-[var(--orange)]' : 'text-[var(--navy)] hover:text-[var(--orange)]'} transition duration-300 no-underline flex items-center`}
-          >
-            <Newspaper className="h-4 w-4 mr-2" />
-            News
-          </Link>
-          
           {/* Always show the Client Portal link */}
           <Link 
             href="/client-portal" 
-            className={`font-medium ${isActive('/client-portal') ? 'text-[var(--orange)]' : 'text-[var(--navy)] hover:text-[var(--orange)]'} transition duration-300 no-underline`}
+            className={`font-medium ${isActive('/client-portal') ? 'text-[var(--orange)]' : 'text-[var(--navy)] hover:text-[var(--orange)]'} transition duration-300 no-underline flex items-center`}
           >
+            <LayoutDashboard className="h-4 w-4 mr-2" />
             Client Portal
           </Link>
           
@@ -274,8 +269,9 @@ export default function Navbar() {
                 backgroundColor: 'var(--orange)',
                 color: 'white' 
               }}
-              className="hover:shadow-md hover:-translate-y-[2px] transition duration-300"
+              className="hover:shadow-md hover:-translate-y-[2px] transition duration-300 flex items-center"
             >
+              <PhoneCall className="h-4 w-4 mr-2" />
               Book a Call
             </Button>
           </a>
@@ -301,19 +297,6 @@ export default function Navbar() {
       >
         <div className="container mx-auto px-6 md:px-8 py-3 flex flex-col divide-y">
           {publicMenuGroups.map(renderMobileMenuGroup)}
-          
-          {/* News section */}
-          <div className="py-2">
-            <h4 className="text-sm uppercase tracking-wider text-gray-500 mb-2 px-2">News</h4>
-            <Link 
-              href="/news" 
-              className="flex items-center py-2 px-2 font-medium text-[var(--navy)] hover:text-[var(--orange)] transition duration-300 no-underline"
-              onClick={closeMenu}
-            >
-              <Newspaper className="h-4 w-4 mr-2" />
-              Latest News
-            </Link>
-          </div>
           
           {/* Client Portal section */}
           <div className="py-2">
@@ -395,12 +378,13 @@ export default function Navbar() {
               className="inline-block text-center w-full"
             >
               <Button 
-                className="w-full hover:shadow-md hover:-translate-y-[2px] transition duration-300"
+                className="w-full hover:shadow-md hover:-translate-y-[2px] transition duration-300 flex items-center justify-center"
                 style={{ 
                   backgroundColor: 'var(--orange)',
                   color: 'white' 
                 }}
               >
+                <PhoneCall className="h-4 w-4 mr-2" />
                 Book a Call
               </Button>
             </a>
