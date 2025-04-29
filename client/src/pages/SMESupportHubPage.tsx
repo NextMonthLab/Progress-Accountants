@@ -349,8 +349,14 @@ const DeadlinesSection = () => {
 
 // CTA section
 const CTASection = () => (
-  <section className="py-16 bg-navy">
-    <div className="container mx-auto px-4">
+  <section className="py-16 relative overflow-hidden">
+    <div className="absolute inset-0" style={{
+      backgroundImage: "linear-gradient(rgba(3, 28, 64, 0.7), rgba(3, 28, 64, 0.7)), url('/images/sme-support-cta.png')",
+      backgroundSize: "cover",
+      backgroundPosition: "center",
+      backgroundColor: "#031c40" // Navy fallback
+    }} />
+    <div className="container mx-auto px-4 relative z-10">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
