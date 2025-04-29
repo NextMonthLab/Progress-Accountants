@@ -283,10 +283,10 @@ const HeroSection = () => {
                   
                   {/* No additional overlay pattern - removed for clarity */}
                   
-                  {/* Floating badges */}
-                  <div className="absolute top-4 right-4 z-20 bg-white/10 backdrop-blur-md px-3 py-1 rounded-full border border-white/20 shadow-xl">
+                  {/* Floating badges - darker background */}
+                  <div className="absolute top-4 right-4 z-20 bg-navy-900/60 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/20 shadow-xl">
                     <p className="text-sm font-medium text-white flex items-center">
-                      <span className="inline-block w-2 h-2 bg-green-400 rounded-full mr-2"></span>
+                      <span className="inline-block w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></span>
                       UK Certified Accountants
                     </p>
                   </div>
