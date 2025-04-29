@@ -146,8 +146,7 @@ const FilmIndustryPage = () => {
   }, []);
 
   return (
-    <MainLayout>
-      <div className="bg-gray-50 pb-20">
+    <div className="bg-gray-50 pb-20">
         {/* Hero section */}
       <div 
         ref={headerRef}
@@ -431,7 +430,6 @@ const FilmIndustryPage = () => {
         </motion.div>
       </div>
     </div>
-    </MainLayout>
   );
 };
 
