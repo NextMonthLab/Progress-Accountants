@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { PublicLayout } from '@/layouts/PublicLayout';
+import PublicLayout from '@/layouts/PublicLayout';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -77,7 +77,7 @@ const NewsPage = () => {
   };
 
   return (
-    <MainLayout>
+    <PublicLayout>
       <div className="container mx-auto px-4 py-8 max-w-6xl">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-[var(--navy)] mb-4">News & Insights</h1>
@@ -386,7 +386,7 @@ const NewsPage = () => {
           </div>
         </div>
       </div>
-    </MainLayout>
+    </PublicLayout>
   );
 };
 
