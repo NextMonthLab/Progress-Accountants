@@ -146,14 +146,15 @@ const FilmIndustryPage = () => {
   }, []);
 
   return (
-    <div className="bg-gray-50 pb-20">
-      {/* Hero section */}
+    <div className="bg-gray-50 pb-20 w-full">
+      {/* Hero section - Full width header with no container constraints */}
       <div 
         ref={headerRef}
-        className="relative overflow-hidden w-full"
+        className="relative overflow-hidden w-full min-h-[500px]"
+        style={{ margin: "0 -9999rem", padding: "0 9999rem" }} /* Technique to force full width regardless of parent constraints */
       >
         {/* Full-width background image with dark overlay */}
-        <div className="absolute inset-0 z-0 w-full">
+        <div className="absolute inset-0 z-0">
           <OptimizedImage
             src={filmSetCinematicImg}
             alt="Film set with studio lights"
@@ -165,7 +166,7 @@ const FilmIndustryPage = () => {
           <div className="absolute inset-0 bg-navy opacity-90"></div>
         </div>
         
-        <div className="relative z-10 container mx-auto px-6 md:px-8 py-20 md:py-32">
+        <div className="relative z-10 mx-auto px-6 md:px-8 py-20 md:py-32 max-w-7xl">
           <div className="flex flex-col lg:flex-row items-center gap-12">
             <motion.div 
               initial="hidden"
