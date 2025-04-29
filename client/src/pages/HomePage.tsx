@@ -216,48 +216,44 @@ export default function HomePage() {
               </div>
               
               <div className="lg:col-span-3">
-                <div className="space-y-5">
-                  <div className="flex items-start">
-                    <div className="h-8 w-8 rounded-full bg-orange-100 flex items-center justify-center mr-3">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-[var(--orange)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                      </svg>
-                    </div>
-                    <div>
-                      <h3 className="text-sm font-semibold text-gray-500 mb-1">Office Addresses</h3>
-                      <div className="text-gray-800">
-                        <div className="mb-2">
-                          <strong>Oxford:</strong> John Eccles House, Oxford Science Park, OX4 4GP
-                        </div>
-                        <div className="mb-2">
-                          <strong>Banbury:</strong> 1st Floor Beaumont House, Beaumont Road, OX16 1RH
-                        </div>
-                        <div>
-                          <strong>London:</strong> 107 Cheapside, London, EC2V 6DN
+                <div className="bg-white p-8 rounded-lg shadow-md">
+                  <div className="mb-6">
+                    <div className="flex items-start mb-4">
+                      <div className="h-8 w-8 rounded-full bg-orange-100 flex items-center justify-center mr-3 mt-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-[var(--orange)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                      </div>
+                      <div>
+                        <h3 className="text-base font-semibold mb-2" style={{ color: 'var(--navy)' }}>Office Addresses</h3>
+                        <div className="text-gray-800 space-y-2">
+                          <p><strong>Oxford:</strong> John Eccles House, Oxford Science Park, OX4 4GP</p>
+                          <p><strong>Banbury:</strong> 1st Floor Beaumont House, Beaumont Road, OX16 1RH</p>
+                          <p><strong>London:</strong> 107 Cheapside, London, EC2V 6DN</p>
                         </div>
                       </div>
                     </div>
-                  </div>
 
-                  <div className="flex items-start">
-                    <div className="h-8 w-8 rounded-full bg-orange-100 flex items-center justify-center mr-3">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-[var(--orange)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                      </svg>
-                    </div>
-                    <div>
-                      <h3 className="text-sm font-semibold text-gray-500 mb-1">Phone</h3>
-                      <div className="grid grid-cols-1 gap-1">
-                        <div className="text-gray-800">Oxford: 01865 921 150</div>
-                        <div className="text-gray-800">Banbury: 01295 477 250</div>
-                        <div className="text-gray-800">London: 020 3005 7870</div>
+                    <div className="flex items-start">
+                      <div className="h-8 w-8 rounded-full bg-orange-100 flex items-center justify-center mr-3 mt-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-[var(--orange)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                        </svg>
+                      </div>
+                      <div>
+                        <h3 className="text-base font-semibold mb-2" style={{ color: 'var(--navy)' }}>Phone</h3>
+                        <div className="text-gray-800 space-y-2">
+                          <p>Oxford: 01865 921 150</p>
+                          <p>Banbury: 01295 477 250</p>
+                          <p>London: 020 3005 7870</p>
+                        </div>
                       </div>
                     </div>
                   </div>
                   
-                  <div className="grid grid-cols-3 gap-2 mt-5">
-                    <div className="relative overflow-hidden rounded-lg h-[100px] bg-[var(--navy)]">
+                  <div className="grid grid-cols-3 gap-3">
+                    <div className="relative overflow-hidden rounded-lg aspect-video">
                       <iframe 
                         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2470.4344456587906!2d-1.2230884233905215!3d51.71881997181775!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4876c6a3251dbacd%3A0xe44bbc8ac6c55c59!2sOxford%20Science%20Park!5e0!3m2!1sen!2suk!4v1651234567890!5m2!1sen!2suk" 
                         width="100%" 
@@ -268,9 +264,12 @@ export default function HomePage() {
                         referrerPolicy="no-referrer-when-downgrade"
                         title="Oxford Office Map"
                       ></iframe>
+                      <div className="absolute bottom-0 w-full bg-white bg-opacity-90 py-1 px-2 text-xs text-center">
+                        <span className="font-medium text-gray-800">View larger map</span>
+                      </div>
                     </div>
                     
-                    <div className="relative overflow-hidden rounded-lg h-[100px] bg-[var(--navy)]">
+                    <div className="relative overflow-hidden rounded-lg aspect-video">
                       <iframe 
                         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2452.9512290731844!2d-1.3498106233780232!3d52.0620696712133!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4870bbf9c1ec66d1%3A0x641f85d46eed55d!2sBeaumont%20Rd%2C%20Banbury!5e0!3m2!1sen!2suk!4v1651234567891!5m2!1sen!2suk" 
                         width="100%" 
@@ -281,9 +280,12 @@ export default function HomePage() {
                         referrerPolicy="no-referrer-when-downgrade"
                         title="Banbury Office Map"
                       ></iframe>
+                      <div className="absolute bottom-0 w-full bg-white bg-opacity-90 py-1 px-2 text-xs text-center">
+                        <span className="font-medium text-gray-800">View larger map</span>
+                      </div>
                     </div>
                     
-                    <div className="relative overflow-hidden rounded-lg h-[100px] bg-[var(--navy)]">
+                    <div className="relative overflow-hidden rounded-lg aspect-video">
                       <iframe 
                         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2482.9107610266914!2d-0.0954606234056257!3d51.51473417181649!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x487603548d6d9a3d%3A0x486b0b46b9d0b1e8!2s107%20Cheapside%2C%20London%20EC2V%206DN!5e0!3m2!1sen!2suk!4v1651234567892!5m2!1sen!2suk" 
                         width="100%" 
@@ -294,6 +296,9 @@ export default function HomePage() {
                         referrerPolicy="no-referrer-when-downgrade"
                         title="London Office Map"
                       ></iframe>
+                      <div className="absolute bottom-0 w-full bg-white bg-opacity-90 py-1 px-2 text-xs text-center">
+                        <span className="font-medium text-gray-800">View larger map</span>
+                      </div>
                     </div>
                   </div>
                 </div>
