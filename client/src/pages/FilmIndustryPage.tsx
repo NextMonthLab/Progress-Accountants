@@ -100,15 +100,19 @@ const CTASection = () => (
       </svg>
     </div>
     <div className="relative z-10">
-      <h2 className="text-3xl md:text-4xl font-bold mb-6 text-white">Ready to streamline your film production finances?</h2>
-      <p className="text-white text-lg mb-8 max-w-2xl">
-        Whether you're applying for Film Tax Relief or planning your next big pitch, book a call with our team to see how Progress can support your next production.
-      </p>
+      <div className="bg-navy-700 px-6 py-4 rounded-lg mb-6 inline-block">
+        <h2 className="text-3xl md:text-4xl font-bold text-white">Ready to streamline your film production finances?</h2>
+      </div>
+      <div className="bg-navy-700 px-6 py-4 rounded-lg mb-8 inline-block">
+        <p className="text-white text-lg max-w-2xl">
+          Whether you're applying for Film Tax Relief or planning your next big pitch, book a call with our team to see how Progress can support your next production.
+        </p>
+      </div>
       <div className="flex flex-col sm:flex-row gap-4">
         <Button size="lg" className="bg-orange-500 hover:bg-orange-600 text-white border-none font-medium">
           Book a consultation
         </Button>
-        <Button size="lg" variant="outline" className="bg-transparent border-white text-white hover:bg-white/20 font-medium">
+        <Button size="lg" className="bg-navy-600 border-navy-600 text-white hover:bg-navy-700 font-medium">
           View our services
         </Button>
       </div>
@@ -169,23 +173,27 @@ const FilmIndustryPage = () => {
                   Industry Specialists
                 </span>
               </motion.div>
-              <motion.h1 
+              <motion.div
                 variants={itemVariants}
-                className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight"
+                className="bg-navy px-6 py-4 rounded-lg mb-6 inline-block"
               >
-                Expert Accounting for the Film Industry
-              </motion.h1>
-              <motion.p 
+                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
+                  Expert Accounting for the Film Industry
+                </h1>
+              </motion.div>
+              <motion.div
                 variants={itemVariants}
-                className="text-lg md:text-xl text-white mb-8"
+                className="bg-navy px-6 py-4 rounded-lg mb-8 inline-block"
               >
-                Helping You Maximise Film Tax Relief, Manage Cash Flow, and Keep Production on Track
-              </motion.p>
+                <p className="text-lg md:text-xl text-white">
+                  Helping You Maximise Film Tax Relief, Manage Cash Flow, and Keep Production on Track
+                </p>
+              </motion.div>
               <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-4">
                 <Button size="lg" className="bg-orange-500 hover:bg-orange-600 text-white font-medium">
                   Book a free consultation
                 </Button>
-                <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/20 font-medium">
+                <Button size="lg" className="bg-navy-600 border-navy-600 text-white hover:bg-navy-700 font-medium">
                   Explore our services <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </motion.div>
