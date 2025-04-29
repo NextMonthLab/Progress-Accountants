@@ -149,12 +149,8 @@ function Router() {
       <Route path="/services" component={ServicesPage} />
       <Route path="/services/:slug" component={ServiceDetailPage} />
       <Route path="/industries" component={IndustriesPage} />
-      <Route path="/industries/film">
-        {() => <FilmIndustryPage />}
-      </Route>
-      <Route path="/test-film">
-        {() => <TestFilmPage />}
-      </Route>
+      <Route path="/industries/film" component={FilmIndustryPage} />
+      <Route path="/test-film" component={TestFilmPage} />
       <Route path="/why-us" component={WhyUsPage} />
       <Route path="/contact" component={ContactPage} />
       <Route path="/testimonials" component={TestimonialsPage} />
