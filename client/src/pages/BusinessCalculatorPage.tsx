@@ -46,6 +46,9 @@ import {
   CardTitle 
 } from "@/components/ui/card";
 
+// Import the pound symbol background image
+import poundSymbolBg from "../assets/pound-symbol-bg.png";
+
 // Type definitions
 type BusinessFormValues = {
   businessType: string;
@@ -977,7 +980,7 @@ const BusinessCalculatorPage = () => {
       <div 
         className="relative py-16 md:py-24 mb-8" 
         style={{ 
-          backgroundImage: `url('/images/pound-symbol-bg.png')`,
+          backgroundImage: `url(${poundSymbolBg})`,
           backgroundSize: 'cover',
           backgroundPosition: 'center'
         }}
