@@ -5,9 +5,10 @@ import { Button } from "@/components/ui/button";
 import { OptimizedImage } from "@/components/ui/OptimizedImage";
 import { ArrowRight, CheckCircle, Film, PlayCircle, ArrowDown, Clock, Banknote, Award, Users } from "lucide-react";
 
-// Import placeholder or try to get a real film production image
+// Import background images
 import filmProductionImg from "../assets/images/film_industry.png";
 import podcastStudioImg from "../assets/images/podcast_studio.jpg";
+import musicIndustryImg from "../assets/images/music_industry.png";
 
 // Animation variants
 const containerVariants = {
@@ -154,14 +155,14 @@ const FilmIndustryPage = () => {
         {/* Full-width background image with dark overlay */}
         <div className="absolute inset-0 z-0">
           <OptimizedImage
-            src={filmProductionImg}
+            src={musicIndustryImg}
             alt="Film production background"
             width={1920}
             height={1080}
             className="w-full h-full object-cover"
           />
           {/* Dark overlay for better text contrast */}
-          <div className="absolute inset-0 bg-navy opacity-90"></div>
+          <div className="absolute inset-0 bg-navy opacity-95"></div>
         </div>
         
         <div className="relative z-10 container mx-auto px-4 py-20 md:py-32">
@@ -211,7 +212,7 @@ const FilmIndustryPage = () => {
             >
               <div className="bg-orange-600 p-3 rounded-2xl shadow-2xl relative">
                 <OptimizedImage
-                  src={filmProductionImg}
+                  src={musicIndustryImg}
                   alt="Film production accounting"
                   width={600}
                   height={400}
