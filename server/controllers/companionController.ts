@@ -31,6 +31,12 @@ Your role:
 3. Provide recommendations for optimizing content and SEO
 4. Assist with administrative tasks like user management and settings
 
+Site Knowledge:
+- The site now features industry-specific pages for Film, Music, Construction, and Professional Services industries
+- There is a Business Calculator tool that helps visitors forecast their finances with a multi-step form
+- The SME Support Hub provides downloadable resources and a directory of contacts for UK businesses
+- All industry pages highlight specialized accounting services for that sector
+
 Always suggest using the platform's built-in tools rather than external solutions.
 Provide clear, step-by-step instructions for complex tasks.
 Never claim to be able to directly modify content - you can only advise and instruct.`;
@@ -46,6 +52,13 @@ Your role:
 3. Explain the benefits of working with professional accountants
 4. Help website visitors understand what makes this accounting firm unique
 5. Assist with finding appropriate contact information
+6. Guide users to the most relevant resources for their industry
+
+Site Features & Pages:
+- Industry-specific pages: We have specialized accounting services for Film (/industries/film), Music (/industries/music), Construction (/industries/construction), and Professional Services industries
+- Business Calculator (/business-calculator): An interactive tool to help businesses forecast their finances with a step-by-step approach
+- SME Support Hub (/sme-support-hub): Provides downloadable resources, key business deadline information, and a directory of essential contacts for UK businesses
+- Each industry page contains specialized information about accounting services tailored to that sector
 
 Stay focused on accounting topics. If asked about sensitive financial matters, suggest scheduling a consultation.
 Don't provide specific legal or financial advice - suggest speaking with an accountant for personalized guidance.
@@ -137,7 +150,8 @@ export const CompanionController = {
           usps: [
             "Specialized in digital business transformation",
             "Tech-forward accounting solutions",
-            "Personalized service with dedicated accountants"
+            "Personalized service with dedicated accountants",
+            "Industry-specific expertise in Film, Music, and Construction"
           ],
           missionStatement: "To empower businesses with financial clarity and strategic insights for sustainable growth."
         },
@@ -153,7 +167,39 @@ export const CompanionController = {
           "Business Advisory",
           "Financial Reporting",
           "Audit Services",
-          "Cloud Accounting"
+          "Cloud Accounting",
+          "Industry-Specific Accounting for Film, Music & Construction",
+          "Business Financial Forecasting",
+          "SME Support & Resources"
+        ],
+        industryPages: [
+          {
+            name: "Film Industry",
+            path: "/industries/film",
+            description: "Specialized accounting services for film production companies, including Film Tax Relief and production accounting."
+          },
+          {
+            name: "Music Industry",
+            path: "/industries/music",
+            description: "Financial services tailored for music artists, labels, and production companies."
+          },
+          {
+            name: "Construction Industry",
+            path: "/industries/construction",
+            description: "Specialized accounting and tax services for construction businesses, including CIS and compliance support."
+          }
+        ],
+        tools: [
+          {
+            name: "Business Calculator",
+            path: "/business-calculator",
+            description: "Interactive multi-step financial forecasting tool to help plan your business finances."
+          },
+          {
+            name: "SME Support Hub",
+            path: "/sme-support-hub",
+            description: "Comprehensive resource center with downloadable guides, critical contacts directory, and key business deadlines."
+          }
         ],
         lastUpdated: new Date().toISOString()
       });
@@ -180,7 +226,15 @@ export const CompanionController = {
         '/contact',
         '/blog',
         '/faq',
-        '/testimonials'
+        '/testimonials',
+        // Industry pages
+        '/industries/film',
+        '/industries/music',
+        '/industries/construction',
+        '/industries/professional-services',
+        // Tool pages
+        '/business-calculator',
+        '/sme-support-hub'
       ];
       
       return res.status(200).json(defaultPublicPages);
@@ -192,7 +246,12 @@ export const CompanionController = {
         '/services',
         '/team',
         '/contact',
-        '/blog'
+        '/blog',
+        '/industries/film',
+        '/industries/music',
+        '/industries/construction',
+        '/business-calculator',
+        '/sme-support-hub'
       ]);
     }
   }
