@@ -5,8 +5,8 @@ import { Button } from "@/components/ui/button";
 import { OptimizedImage } from "@/components/ui/OptimizedImage";
 import { ArrowRight, CheckCircle, Film, PlayCircle, ArrowDown, Clock, Banknote, Award, Users } from "lucide-react";
 
-// Import placeholder or try to get a real film production image
-import filmProductionImg from "../assets/images/film_industry.png";
+// Import film set and podcast studio images
+import filmSetImg from "../assets/images/film_set.png";
 import podcastStudioImg from "../assets/images/podcast_studio.jpg";
 
 // Animation variants
@@ -154,8 +154,8 @@ const FilmIndustryPage = () => {
         {/* Full-width background image with dark overlay */}
         <div className="absolute inset-0 z-0">
           <OptimizedImage
-            src={filmProductionImg}
-            alt="Film production background"
+            src={filmSetImg}
+            alt="Film set with studio lights"
             width={1920}
             height={1080}
             className="w-full h-full object-cover"
@@ -211,8 +211,8 @@ const FilmIndustryPage = () => {
             >
               <div className="bg-orange-600 p-3 rounded-2xl shadow-2xl relative">
                 <OptimizedImage
-                  src={filmProductionImg}
-                  alt="Film production accounting"
+                  src={filmSetImg}
+                  alt="Film set with studio lights"
                   width={600}
                   height={400}
                   className="rounded-xl shadow-lg w-full"
