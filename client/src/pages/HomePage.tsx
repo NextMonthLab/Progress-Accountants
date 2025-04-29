@@ -167,18 +167,141 @@ export default function HomePage() {
       <SEOFooterSection />
       
       {/* Contact Section */}
-      <section className="py-12 bg-gray-50" id="contact">
+      <section className="py-16 bg-gray-50" id="contact">
         <div className="container mx-auto px-6 md:px-8">
-          <div className="max-w-5xl mx-auto">
-            <div className="text-center mb-8">
-              <h2 className="text-3xl font-bold mb-2" style={{ color: 'var(--navy)' }}>
-                Get in Touch
+          <div className="max-w-7xl mx-auto">
+            <div className="text-center mb-10">
+              <h2 className="text-3xl font-bold mb-3" style={{ color: 'var(--navy)' }}>
+                Looking for a proactive accountant in United Kingdom?
               </h2>
-              <p className="text-gray-600 max-w-2xl mx-auto">
+              <p className="text-gray-600 max-w-3xl mx-auto">
+                We're based in Oxford, Banbury, and London, and proudly serve ambitious businesses across the United Kingdom and beyond.
                 Ready to take your accounting to the next level? Let's talk about how we can help your business flourish.
               </p>
             </div>
-            <ContactForm compact={true} className="max-w-3xl mx-auto" />
+            
+            <div className="grid grid-cols-1 lg:grid-cols-7 gap-8 mb-14">
+              <div className="lg:col-span-4">
+                <div className="bg-white p-8 rounded-lg shadow-md">
+                  <ContactForm compact={true} />
+                  
+                  <div className="mt-8 pt-8 border-t border-gray-100">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div className="flex items-start">
+                        <div className="h-8 w-8 rounded-full bg-orange-100 flex items-center justify-center mr-3">
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-[var(--orange)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          </svg>
+                        </div>
+                        <div>
+                          <h3 className="text-sm font-semibold text-gray-500 mb-1">Business Hours</h3>
+                          <p className="text-gray-800">
+                            Monday - Friday: 9:00 AM - 5:30 PM<br />
+                            Saturday - Sunday: Closed
+                          </p>
+                        </div>
+                      </div>
+                      
+                      <div className="flex items-start">
+                        <div className="h-8 w-8 rounded-full bg-orange-100 flex items-center justify-center mr-3">
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-[var(--orange)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                          </svg>
+                        </div>
+                        <div>
+                          <h3 className="text-sm font-semibold text-gray-500 mb-1">Contact Email</h3>
+                          <p className="text-gray-800">info@progressaccountants.com</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="lg:col-span-3">
+                <div className="space-y-5">
+                  <div className="flex items-start">
+                    <div className="h-8 w-8 rounded-full bg-orange-100 flex items-center justify-center mr-3">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-[var(--orange)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                      </svg>
+                    </div>
+                    <div>
+                      <h3 className="text-sm font-semibold text-gray-500 mb-1">Office Addresses</h3>
+                      <div className="text-gray-800">
+                        <div className="mb-2">
+                          <strong>Oxford:</strong> John Eccles House, Oxford Science Park, OX4 4GP
+                        </div>
+                        <div className="mb-2">
+                          <strong>Banbury:</strong> 1st Floor Beaumont House, Beaumont Road, OX16 1RH
+                        </div>
+                        <div>
+                          <strong>London:</strong> 107 Cheapside, London, EC2V 6DN
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start">
+                    <div className="h-8 w-8 rounded-full bg-orange-100 flex items-center justify-center mr-3">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-[var(--orange)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                      </svg>
+                    </div>
+                    <div>
+                      <h3 className="text-sm font-semibold text-gray-500 mb-1">Phone</h3>
+                      <div className="grid grid-cols-1 gap-1">
+                        <div className="text-gray-800">Oxford: 01865 921 150</div>
+                        <div className="text-gray-800">Banbury: 01295 477 250</div>
+                        <div className="text-gray-800">London: 020 3005 7870</div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="grid grid-cols-3 gap-2 mt-5">
+                    <div className="relative overflow-hidden rounded-lg h-[100px] bg-[var(--navy)]">
+                      <iframe 
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2470.4344456587906!2d-1.2230884233905215!3d51.71881997181775!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4876c6a3251dbacd%3A0xe44bbc8ac6c55c59!2sOxford%20Science%20Park!5e0!3m2!1sen!2suk!4v1651234567890!5m2!1sen!2suk" 
+                        width="100%" 
+                        height="100%" 
+                        style={{ border: 0 }} 
+                        allowFullScreen={false} 
+                        loading="lazy" 
+                        referrerPolicy="no-referrer-when-downgrade"
+                        title="Oxford Office Map"
+                      ></iframe>
+                    </div>
+                    
+                    <div className="relative overflow-hidden rounded-lg h-[100px] bg-[var(--navy)]">
+                      <iframe 
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2452.9512290731844!2d-1.3498106233780232!3d52.0620696712133!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4870bbf9c1ec66d1%3A0x641f85d46eed55d!2sBeaumont%20Rd%2C%20Banbury!5e0!3m2!1sen!2suk!4v1651234567891!5m2!1sen!2suk" 
+                        width="100%" 
+                        height="100%" 
+                        style={{ border: 0 }} 
+                        allowFullScreen={false} 
+                        loading="lazy" 
+                        referrerPolicy="no-referrer-when-downgrade"
+                        title="Banbury Office Map"
+                      ></iframe>
+                    </div>
+                    
+                    <div className="relative overflow-hidden rounded-lg h-[100px] bg-[var(--navy)]">
+                      <iframe 
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2482.9107610266914!2d-0.0954606234056257!3d51.51473417181649!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x487603548d6d9a3d%3A0x486b0b46b9d0b1e8!2s107%20Cheapside%2C%20London%20EC2V%206DN!5e0!3m2!1sen!2suk!4v1651234567892!5m2!1sen!2suk" 
+                        width="100%" 
+                        height="100%" 
+                        style={{ border: 0 }} 
+                        allowFullScreen={false} 
+                        loading="lazy" 
+                        referrerPolicy="no-referrer-when-downgrade"
+                        title="London Office Map"
+                      ></iframe>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
