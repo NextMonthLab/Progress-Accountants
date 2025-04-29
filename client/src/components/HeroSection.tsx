@@ -266,23 +266,22 @@ const HeroSection = () => {
               <div className="absolute top-3 left-3 w-12 h-12 border-t-2 border-l-2 border-orange-300/30 -translate-x-2 -translate-y-2 z-20"></div>
               <div className="absolute bottom-3 right-3 w-12 h-12 border-b-2 border-r-2 border-orange-300/30 translate-x-2 translate-y-2 z-20"></div>
               
-              {/* Main image with premium styling */}
-              <div className="relative z-10 bg-gradient-to-br from-gray-800/70 to-gray-900/70 backdrop-blur-md p-2 rounded-2xl overflow-hidden shadow-[0_20px_50px_rgba(8,_112,_184,_0.4)]">
+              {/* Main image with premium styling - lighter frame */}
+              <div className="relative z-10 bg-gradient-to-br from-gray-700/40 to-gray-800/50 backdrop-blur-sm p-2 rounded-2xl overflow-hidden shadow-[0_20px_50px_rgba(8,_112,_184,_0.4)]">
                 <div className="overflow-hidden rounded-xl relative group">
-                  {/* Reduced opacity gradient overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-navy-900/50 via-navy-900/20 to-transparent z-10"></div>
+                  {/* Much lighter gradient overlay - just at the bottom for text readability */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-navy-900/30 via-transparent to-transparent z-10"></div>
                   
                   <OptimizedImage 
                     src={teamPhotoImage} 
                     alt={`${businessName} Team`}
-                    className="w-full h-auto object-cover transform scale-[1.01] group-hover:scale-[1.05] transition-transform duration-1000"
+                    className="w-full h-auto object-cover transform scale-[1.01] group-hover:scale-[1.05] transition-transform duration-1000 brightness-105"
                     width={800}
                     height={450}
                     priority={true} // This is above-the-fold content so load with priority
                   />
                   
-                  {/* Lighter overlay pattern */}
-                  <div className="absolute inset-0 bg-navy-900/10 z-10 mix-blend-overlay opacity-30"></div>
+                  {/* No additional overlay pattern - removed for clarity */}
                   
                   {/* Floating badges */}
                   <div className="absolute top-4 right-4 z-20 bg-white/10 backdrop-blur-md px-3 py-1 rounded-full border border-white/20 shadow-xl">
@@ -292,8 +291,8 @@ const HeroSection = () => {
                     </p>
                   </div>
                   
-                  {/* Main glassmorphism info panel */}
-                  <div className="absolute bottom-4 left-4 right-4 glass-dark p-4 rounded-lg border border-white/20 shadow-xl z-20 transform transition-transform duration-500 group-hover:translate-y-[-5px]">
+                  {/* Main glassmorphism info panel - more transparent */}
+                  <div className="absolute bottom-4 left-4 right-4 p-4 rounded-lg border border-white/20 shadow-xl z-20 transform transition-transform duration-500 group-hover:translate-y-[-5px] bg-black/20 backdrop-blur-sm">
                     <div className="flex items-start">
                       <div className="mr-3 mt-1">
                         <div className="bg-orange-500/80 p-1.5 rounded-full">
