@@ -93,13 +93,15 @@ const CTASection = () => (
     variants={itemVariants}
     className="bg-gradient-to-br from-navy to-navy-700 rounded-2xl shadow-xl p-8 md:p-12 text-white relative overflow-hidden"
   >
-    <div className="absolute top-0 right-0 w-1/3 h-full opacity-10">
+    {/* Darker overlay for better text contrast */}
+    <div className="absolute inset-0 bg-navy opacity-50 z-0"></div>
+    <div className="absolute top-0 right-0 w-1/3 h-full opacity-10 z-0">
       <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
         <path fill="#FFFFFF" d="M42.7,-62.9C56.4,-53.9,69.4,-42.2,75.3,-27.3C81.1,-12.4,79.9,5.5,73.8,21.2C67.8,36.9,57,50.4,43.3,59.1C29.6,67.8,13,71.5,-3.4,76.4C-19.9,81.3,-39.8,87.4,-53.2,80.2C-66.5,73,-73.2,52.5,-78.2,32.1C-83.1,11.8,-86.4,-8.4,-81,-25.2C-75.6,-41.9,-61.6,-55.2,-46.5,-64C-31.3,-72.7,-15.7,-77,0.3,-77.4C16.3,-77.8,32.6,-74.4,42.7,-62.9Z" transform="translate(100 100)" />
       </svg>
     </div>
     <div className="relative z-10">
-      <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready to streamline your film production finances?</h2>
+      <h2 className="text-3xl md:text-4xl font-bold mb-6 text-white">Ready to streamline your film production finances?</h2>
       <p className="text-white text-lg mb-8 max-w-2xl">
         Whether you're applying for Film Tax Relief or planning your next big pitch, book a call with our team to see how Progress can support your next production.
       </p>
@@ -142,7 +144,8 @@ const FilmIndustryPage = () => {
         ref={headerRef}
         className="bg-navy relative overflow-hidden"
       >
-        {/* Background pattern */}
+        {/* Background pattern with darker overlay for better text contrast */}
+        <div className="absolute inset-0 bg-navy opacity-80 z-0"></div>
         <div className="absolute inset-0 z-0 opacity-20">
           <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
             <defs>
@@ -230,8 +233,8 @@ const FilmIndustryPage = () => {
             transition={{ delay: 1, duration: 0.5 }}
             className="absolute bottom-5 left-1/2 transform -translate-x-1/2 flex flex-col items-center"
           >
-            <p className="text-gray-400 mb-2 text-sm">Scroll to learn more</p>
-            <ArrowDown className="w-5 h-5 text-gray-400 animate-bounce" />
+            <p className="text-white mb-2 text-sm font-medium">Scroll to learn more</p>
+            <ArrowDown className="w-5 h-5 text-white animate-bounce" />
           </motion.div>
         </div>
       </div>
