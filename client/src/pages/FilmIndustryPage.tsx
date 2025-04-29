@@ -8,6 +8,7 @@ import { ArrowRight, CheckCircle, Film, PlayCircle, ArrowDown, Clock, Banknote, 
 
 // Import placeholder or try to get a real film production image
 import filmProductionImg from "../assets/images/film_industry.png";
+import podcastStudioImg from "../assets/images/podcast_studio.jpg";
 
 // Animation variants
 const containerVariants = {
@@ -96,14 +97,14 @@ const CTASection = () => (
     {/* Background image with overlay for CTA */}
     <div className="absolute inset-0 z-0">
       <OptimizedImage
-        src={filmProductionImg}
-        alt="Film production background"
+        src={podcastStudioImg}
+        alt="Film studio background"
         width={1920}
         height={1080}
         className="w-full h-full object-cover"
       />
-      {/* Dark overlay for better text contrast */}
-      <div className="absolute inset-0 bg-navy opacity-90"></div>
+      {/* Darker overlay for better text contrast */}
+      <div className="absolute inset-0 bg-navy opacity-95"></div>
     </div>
     <div className="relative z-10">
       <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
@@ -162,7 +163,7 @@ const FilmIndustryPage = () => {
             className="w-full h-full object-cover"
           />
           {/* Dark overlay for better text contrast */}
-          <div className="absolute inset-0 bg-navy opacity-85"></div>
+          <div className="absolute inset-0 bg-navy opacity-90"></div>
         </div>
         
         <div className="relative z-10 container mx-auto px-4 py-20 md:py-32">
