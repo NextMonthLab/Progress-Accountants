@@ -41,7 +41,7 @@ export default function AboutPage() {
 
         {/* Skeleton Content Sections */}
         <section className="py-16 md:py-24 bg-white">
-          <div className="container mx-auto px-4">
+          <div className="container mx-auto px-6 md:px-8">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
               <div className="space-y-4">
                 <div className="w-3/4">
@@ -59,14 +59,14 @@ export default function AboutPage() {
 
         {/* Skeleton Features */}
         <section className="py-16 md:py-24 bg-gray-50">
-          <div className="container mx-auto px-4">
+          <div className="container mx-auto px-6 md:px-8">
             <FeaturesSkeleton count={3} />
           </div>
         </section>
 
         {/* Skeleton Cards */}
         <section className="py-16 md:py-24 bg-white">
-          <div className="container mx-auto px-4">
+          <div className="container mx-auto px-6 md:px-8">
             <CardSkeleton count={4} />
           </div>
         </section>
@@ -121,7 +121,7 @@ export default function AboutPage() {
 
       {/* 2. What Makes Progress Different */}
       <section className="py-16 md:py-24 bg-white">
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-6 md:px-8">
           <div className="max-w-7xl mx-auto">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
               <div>
@@ -165,7 +165,7 @@ export default function AboutPage() {
 
       {/* 3. How We Work */}
       <section className="py-16 md:py-24 bg-gray-50">
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-6 md:px-8">
           <div className="max-w-7xl mx-auto">
             <h2 className="text-2xl md:text-3xl font-bold mb-6 text-center" style={{ color: 'var(--navy)' }}>
               How We Work
@@ -223,7 +223,7 @@ export default function AboutPage() {
 
       {/* 4. Who We Help */}
       <section className="py-16 md:py-24 bg-white">
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-6 md:px-8">
           <div className="max-w-3xl mx-auto">
             <h2 className="text-2xl md:text-3xl font-bold mb-8 text-center" style={{ color: 'var(--navy)' }}>
               Who We Help
@@ -281,7 +281,7 @@ export default function AboutPage() {
       {/* 5. Our Services */}
       {services.length > 0 && (
         <section className="py-16 md:py-24 bg-gray-50">
-          <div className="container mx-auto px-4">
+          <div className="container mx-auto px-6 md:px-8">
             <div className="max-w-7xl mx-auto">
               <h2 className="text-2xl md:text-3xl font-bold mb-8 text-center" style={{ color: 'var(--navy)' }}>
                 Our Core Services
@@ -340,7 +340,7 @@ export default function AboutPage() {
 
       {/* 6. Meet the Team */}
       <section className="py-16 md:py-20 bg-white">
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-6 md:px-8">
           <div className="max-w-3xl mx-auto text-center">
             <h2 className="text-2xl md:text-3xl font-bold mb-6" style={{ color: 'var(--navy)' }}>
               Meet the Team
@@ -367,7 +367,7 @@ export default function AboutPage() {
 
       {/* 7. The Tools We Use */}
       <section className="py-16 md:py-24 bg-gray-50">
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-6 md:px-8">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-2xl md:text-3xl font-bold mb-8 text-center" style={{ color: 'var(--navy)' }}>
               The Tools We Use
@@ -444,7 +444,7 @@ export default function AboutPage() {
 
       {/* 8. Call to Action */}
       <section className="py-16 md:py-24 bg-[var(--navy)] text-white">
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-6 md:px-8">
           <div className="max-w-3xl mx-auto text-center">
             <h2 className="text-2xl md:text-4xl font-bold mb-6">
               Ready to Make Progress?

@@ -109,14 +109,14 @@ export default function ServicesPage() {
         
         {/* Skeleton Hero Section */}
         <section className="bg-[var(--navy)] text-white py-16 md:py-24">
-          <div className="container mx-auto px-4">
+          <div className="container mx-auto px-6 md:px-8">
             <PageHeaderSkeleton />
           </div>
         </section>
         
         {/* Skeleton Services Section */}
         <section className="py-16">
-          <div className="container mx-auto px-4">
+          <div className="container mx-auto px-6 md:px-8">
             <div className="space-y-4 mb-16 max-w-3xl mx-auto">
               <div className="h-8 w-64 mx-auto bg-muted animate-pulse rounded-md"></div>
               <div className="h-4 w-full bg-muted animate-pulse rounded-md"></div>
@@ -130,20 +130,20 @@ export default function ServicesPage() {
         
         {/* Skeleton Feature Sections */}
         <section className="py-16 bg-gray-100">
-          <div className="container mx-auto px-4">
+          <div className="container mx-auto px-6 md:px-8">
             <CardSkeleton count={1} />
           </div>
         </section>
         
         <section className="py-16">
-          <div className="container mx-auto px-4">
+          <div className="container mx-auto px-6 md:px-8">
             <CardSkeleton count={1} />
           </div>
         </section>
         
         {/* Skeleton CTA */}
         <section className="py-16 bg-[var(--navy)]">
-          <div className="container mx-auto px-4">
+          <div className="container mx-auto px-6 md:px-8">
             <CtaSkeleton />
           </div>
         </section>
@@ -161,7 +161,7 @@ export default function ServicesPage() {
 
       {/* Hero Section */}
       <section className="bg-[var(--navy)] text-white py-16 md:py-24">
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-6 md:px-8">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-3xl md:text-5xl font-bold mb-6">Our Services</h1>
             <p className="text-xl text-gray-200">
@@ -173,7 +173,7 @@ export default function ServicesPage() {
 
       {/* Services Introduction */}
       <section className="py-16">
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-6 md:px-8">
           <div className="max-w-3xl mx-auto text-center mb-16">
             <h2 className="text-2xl md:text-3xl font-bold mb-6" style={{ color: 'var(--navy)' }}>How We Support Your Business</h2>
             <p className="text-gray-700 mb-4">
@@ -208,7 +208,7 @@ export default function ServicesPage() {
 
       {/* Podcast Studio Feature */}
       <section className="py-16 bg-gray-100">
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-6 md:px-8">
           <div className="bg-white rounded-lg shadow-lg overflow-hidden">
             <div className="grid md:grid-cols-2 gap-0">
               {/* Left: Image */}
@@ -275,7 +275,7 @@ export default function ServicesPage() {
 
       {/* Client Dashboard Feature */}
       <section className="py-16">
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-6 md:px-8">
           <div className="bg-white rounded-lg shadow-lg overflow-hidden">
             <div className="grid md:grid-cols-2 gap-0">
               {/* Left: Content */}
@@ -343,7 +343,7 @@ export default function ServicesPage() {
 
       {/* CTA Section */}
       <section className="py-16 bg-[var(--navy)] text-white">
-        <div className="container mx-auto px-4 text-center">
+        <div className="container mx-auto px-6 md:px-8 text-center">
           <h2 className="text-3xl font-bold mb-6">Ready to Take Your Business Further?</h2>
           <p className="text-xl text-gray-200 mb-8 max-w-3xl mx-auto">
             Schedule a consultation with our team to discuss how our services can be tailored to meet your specific needs.
