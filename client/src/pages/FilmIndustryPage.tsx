@@ -5,8 +5,9 @@ import { Button } from "@/components/ui/button";
 import { OptimizedImage } from "@/components/ui/OptimizedImage";
 import { ArrowRight, CheckCircle, Film, PlayCircle, ArrowDown, Clock, Banknote, Award, Users } from "lucide-react";
 
-// Import film set and podcast studio images
+// Import film industry images and podcast studio
 import filmSetImg from "../assets/images/film_set.png";
+import filmProductionImg from "../assets/images/film_industry.png";
 import podcastStudioImg from "../assets/images/podcast_studio.jpg";
 
 // Animation variants
@@ -211,8 +212,8 @@ const FilmIndustryPage = () => {
             >
               <div className="bg-orange-600 p-3 rounded-2xl shadow-2xl relative">
                 <OptimizedImage
-                  src={filmSetImg}
-                  alt="Film set with studio lights"
+                  src={filmProductionImg}
+                  alt="Film production accounting"
                   width={600}
                   height={400}
                   className="rounded-xl shadow-lg w-full"
