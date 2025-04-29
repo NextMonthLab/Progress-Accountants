@@ -379,7 +379,7 @@ const FilmIndustryPage = () => {
       </div>
       
       {/* Tech approach section */}
-      <div className="container mx-auto px-4 py-12">
+      <div className="container mx-auto px-6 md:px-8 py-12">
         <motion.div 
           initial="hidden"
           whileInView="visible"
@@ -418,7 +418,7 @@ const FilmIndustryPage = () => {
       </div>
       
       {/* CTA section */}
-      <div className="container mx-auto px-4 py-12">
+      <div className="container mx-auto px-6 md:px-8 py-12">
         <motion.div 
           initial="hidden"
           whileInView="visible"
