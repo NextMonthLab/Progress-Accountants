@@ -973,17 +973,17 @@ const BusinessCalculatorPage = () => {
 
   return (
     <div>
-      {/* Hero Section with Pound Sterling Background */}
+      {/* Hero Section with Pound Symbol Background */}
       <div 
         className="relative py-16 md:py-24 mb-8" 
         style={{ 
-          backgroundImage: `url('/images/calculator-pound-bg.png')`,
+          backgroundImage: `url('/images/pound-symbol-bg.png')`,
           backgroundSize: 'cover',
           backgroundPosition: 'center'
         }}
       >
         {/* Dark overlay for better text readability */}
-        <div className="absolute inset-0 bg-[var(--navy)] opacity-80"></div>
+        <div className="absolute inset-0 bg-[var(--navy)] opacity-50"></div>
         
         <div className="container mx-auto px-6 md:px-8 relative z-10">
           {/* Header */}
