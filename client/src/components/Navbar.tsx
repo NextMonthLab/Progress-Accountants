@@ -192,7 +192,7 @@ export default function Navbar() {
 
   return (
     <header className="bg-white sticky top-0 z-50 shadow-sm">
-      <nav className="container mx-auto px-4 py-4 flex justify-between items-center">
+      <nav className="container mx-auto px-6 md:px-8 py-4 flex justify-between items-center">
         <div className="flex items-center">
           <NavbarLogo />
         </div>
@@ -299,7 +299,7 @@ export default function Navbar() {
       <div 
         className={`md:hidden bg-white w-full absolute z-20 shadow-md overflow-y-auto max-h-[80vh] ${isMenuOpen ? '' : 'hidden'}`}
       >
-        <div className="container mx-auto px-4 py-3 flex flex-col divide-y">
+        <div className="container mx-auto px-6 md:px-8 py-3 flex flex-col divide-y">
           {publicMenuGroups.map(renderMobileMenuGroup)}
           
           {/* News section */}

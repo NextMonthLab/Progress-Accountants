@@ -150,7 +150,7 @@ const HeroSection = () => {
       {/* Animated background pattern */}
       <AnimatedPattern />
       
-      <div className="container mx-auto px-4 z-10 relative">
+      <div className="container mx-auto px-6 md:px-8 z-10 relative">
         <motion.div 
           className="flex flex-col md:flex-row items-center gap-8 lg:gap-16"
           initial="hidden"
