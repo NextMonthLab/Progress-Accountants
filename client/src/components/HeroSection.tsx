@@ -283,16 +283,16 @@ const HeroSection = () => {
                   
                   {/* No additional overlay pattern - removed for clarity */}
                   
-                  {/* Floating badges - darker background */}
-                  <div className="absolute top-4 right-4 z-20 bg-navy-900/60 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/20 shadow-xl">
+                  {/* Floating badges - solid dark background */}
+                  <div className="absolute top-4 right-4 z-20 bg-black/70 px-3 py-1.5 rounded-full border border-orange-500/30 shadow-xl">
                     <p className="text-sm font-medium text-white flex items-center">
                       <span className="inline-block w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></span>
                       UK Certified Accountants
                     </p>
                   </div>
                   
-                  {/* Main glassmorphism info panel - more transparent */}
-                  <div className="absolute bottom-4 left-4 right-4 p-4 rounded-lg border border-white/20 shadow-xl z-20 transform transition-transform duration-500 group-hover:translate-y-[-5px] bg-black/20 backdrop-blur-sm">
+                  {/* Main glassmorphism info panel - darker for readability */}
+                  <div className="absolute bottom-4 left-4 right-4 p-4 rounded-lg border border-orange-500/20 shadow-xl z-20 transform transition-transform duration-500 group-hover:translate-y-[-5px] bg-black/60 backdrop-blur-sm">
                     <div className="flex items-start">
                       <div className="mr-3 mt-1">
                         <div className="bg-orange-500/80 p-1.5 rounded-full">
