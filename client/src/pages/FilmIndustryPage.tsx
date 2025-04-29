@@ -100,14 +100,14 @@ const CTASection = () => (
     </div>
     <div className="relative z-10">
       <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready to streamline your film production finances?</h2>
-      <p className="text-white/80 text-lg mb-8 max-w-2xl">
+      <p className="text-white text-lg mb-8 max-w-2xl">
         Whether you're applying for Film Tax Relief or planning your next big pitch, book a call with our team to see how Progress can support your next production.
       </p>
       <div className="flex flex-col sm:flex-row gap-4">
-        <Button size="lg" className="bg-orange-500 hover:bg-orange-600 text-white border-none">
+        <Button size="lg" className="bg-orange-500 hover:bg-orange-600 text-white border-none font-medium">
           Book a consultation
         </Button>
-        <Button size="lg" variant="outline" className="bg-transparent border-white text-white hover:bg-white/10">
+        <Button size="lg" variant="outline" className="bg-transparent border-white text-white hover:bg-white/20 font-medium">
           View our services
         </Button>
       </div>
@@ -176,15 +176,15 @@ const FilmIndustryPage = () => {
                 </motion.h1>
                 <motion.p 
                   variants={itemVariants}
-                  className="text-lg md:text-xl text-gray-300 mb-8"
+                  className="text-lg md:text-xl text-white mb-8"
                 >
                   Helping You Maximise Film Tax Relief, Manage Cash Flow, and Keep Production on Track
                 </motion.p>
                 <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-4">
-                  <Button size="lg" className="bg-orange-500 hover:bg-orange-600 text-white">
+                  <Button size="lg" className="bg-orange-500 hover:bg-orange-600 text-white font-medium">
                     Book a free consultation
                   </Button>
-                  <Button size="lg" variant="outline" className="border-white/30 text-white hover:bg-white/10">
+                  <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/20 font-medium">
                     Explore our services <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
                 </motion.div>

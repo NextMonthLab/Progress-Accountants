@@ -80,7 +80,7 @@ const IndustryCard = withMemo(({
           </div>
           
           {/* Title on image */}
-          <div className="absolute bottom-0 left-0 right-0 p-4 z-20">
+          <div className="absolute bottom-0 left-0 right-0 p-4 z-20 bg-gradient-to-t from-navy/80 to-transparent">
             <h3 className="text-white font-bold text-xl mb-1">{title}</h3>
           </div>
         </div>

@@ -36,6 +36,7 @@ export default function MainLayout({ children }: MainLayoutProps) {
     '/testimonials',
     '/resources',
     '/studio-banbury',
+    '/industries/film',
     '/'
   ];
   
