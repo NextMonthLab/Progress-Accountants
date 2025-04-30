@@ -50,8 +50,8 @@ const itemVariants = {
 // Animated background pattern component
 const AnimatedPattern = () => (
   <div className="absolute inset-0 overflow-hidden z-0">
-    {/* Grid pattern overlay - with reduced transparency (doubled opacity from 5% to 10%) */}
-    <div className="absolute top-0 left-0 w-full h-full opacity-10">
+    {/* Grid pattern overlay - with very subtle opacity (3%) */}
+    <div className="absolute top-0 left-0 w-full h-full" style={{ opacity: 0.03 }}>
       <svg viewBox="0 0 100 100" preserveAspectRatio="none" width="100%" height="100%">
         <defs>
           <pattern id="grid" width="3" height="3" patternUnits="userSpaceOnUse">
