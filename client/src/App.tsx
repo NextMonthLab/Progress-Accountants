@@ -435,12 +435,17 @@ function Router() {
         allowedRoles={['admin', 'super_admin', 'editor']} 
       />
       <ProtectedRoute 
-        path="/page-builder/new" 
+        path="/page-builder/page/new" 
         component={PageBuilderPage} 
         allowedRoles={['admin', 'super_admin', 'editor']} 
       />
       <ProtectedRoute 
-        path="/page-builder/:id" 
+        path="/page-builder/:id(\d+)" 
+        component={PageBuilderPage} 
+        allowedRoles={['admin', 'super_admin', 'editor']} 
+      />
+      <ProtectedRoute 
+        path="/page-builder/templates" 
         component={PageBuilderPage} 
         allowedRoles={['admin', 'super_admin', 'editor']} 
       />

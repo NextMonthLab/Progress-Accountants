@@ -267,7 +267,7 @@ const PageBuilderListPage: React.FC = () => {
               Create and manage your website pages
             </p>
           </div>
-          <Button onClick={() => navigate("/page-builder/new")}>
+          <Button onClick={() => navigate("/page-builder/page/new")}>
             <Plus className="h-4 w-4 mr-2" />
             Create New Page
           </Button>
@@ -327,7 +327,7 @@ const PageBuilderListPage: React.FC = () => {
                 )}
                 <Button 
                   variant="outline" 
-                  onClick={() => navigate("/page-builder/new")}
+                  onClick={() => navigate("/page-builder/page/new")}
                 >
                   <Plus className="h-4 w-4 mr-2" />
                   Create your first page
