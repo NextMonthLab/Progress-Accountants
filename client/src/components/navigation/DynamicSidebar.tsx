@@ -599,7 +599,10 @@ const DynamicSidebar: React.FC = () => {
               <TooltipTrigger asChild>
                 <Button 
                   variant="outline"
-                  onClick={toggleFocusedMode}
+                  onClick={() => {
+                    toggleFocusedMode();
+                    console.log("DynamicSidebar (collapsed): toggleFocusedMode clicked, new state:", !focusedMode);
+                  }}
                   className={cn(
                     "w-full flex items-center justify-center transition-all duration-200 mb-2 p-2",
                     focusedMode 
@@ -617,7 +620,10 @@ const DynamicSidebar: React.FC = () => {
           ) : (
             <Button 
               variant="outline"
-              onClick={toggleFocusedMode}
+              onClick={() => {
+                toggleFocusedMode();
+                console.log("DynamicSidebar: toggleFocusedMode clicked, new state:", !focusedMode);
+              }}
               className={cn(
                 "w-full flex items-center justify-center transition-all duration-200 mb-2",
                 focusedMode 

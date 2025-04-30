@@ -73,6 +73,8 @@ const SmartContextBanner: React.FC = () => {
   }, [location]);
 
   // Don't show the banner if it's been dismissed, there's no context, or focused mode is enabled
+  // Added debug log to verify the focused mode state is working
+  console.log("SmartContextBanner: focusedMode =", navigationState.focusedMode);
   if (!isOpen || !smartContext || navigationState.focusedMode) return null;
 
   return (

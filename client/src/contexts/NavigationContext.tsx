@@ -160,10 +160,22 @@ export const NavigationProvider: React.FC<{ children: React.ReactNode }> = ({ ch
   };
   
   const toggleFocusedMode = () => {
-    setNavigationState(prev => ({
-      ...prev,
-      focusedMode: !prev.focusedMode
-    }));
+    setNavigationState(prev => {
+      const newState = {
+        ...prev,
+        focusedMode: !prev.focusedMode
+      };
+      console.log("NavigationContext: Toggling focused mode. Current:", prev.focusedMode, "New:", newState.focusedMode);
+      
+      // Force update localStorage
+      try {
+        window.localStorage.setItem('navigation_state', JSON.stringify(newState));
+      } catch (error) {
+        console.error("Failed to update localStorage:", error);
+      }
+      
+      return newState;
+    });
   };
 
   const getItemsForQuickSelect = (): NavigationItem[] => {
