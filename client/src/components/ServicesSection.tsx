@@ -1,14 +1,12 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "wouter";
 import { FeaturesSkeleton } from "@/components/ui/skeletons";
 import { useBusinessIdentity } from "@/hooks/use-business-identity";
 import { Calendar, BarChart3, FileText, Landmark, Calculator, Cloud, ArrowRight, CheckCircle2 } from "lucide-react";
 import { OptimizedPodcastStudio, OptimizedDashboardMockup, OptimizedStrategySession } from "@/components/ui/OptimizedImagePlaceholder";
-import { DeferredRender } from "@/components/ui/DeferredRender";
 import { withMemo } from "@/lib/withMemo";
-import { motion } from "framer-motion";
 
 // Define service icons and descriptions with TypeScript interface
 interface ServiceInfo {
@@ -25,44 +23,6 @@ interface BusinessIdentity {
   };
 }
 
-// Animation variants
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.15,
-      delayChildren: 0.2
-    }
-  }
-};
-
-const itemVariants = {
-  hidden: { y: 20, opacity: 0 },
-  visible: { 
-    y: 0, 
-    opacity: 1,
-    transition: { duration: 0.5, ease: "easeOut" }
-  }
-};
-
-// Background pattern component
-const ServicesBgPattern = () => (
-  <div className="absolute inset-0 z-0 overflow-hidden">
-    <div className="absolute inset-0 opacity-[0.02]">
-      <svg viewBox="0 0 100 100" width="100%" height="100%" preserveAspectRatio="none">
-        <defs>
-          <pattern id="circles" width="4" height="4" patternUnits="userSpaceOnUse">
-            <circle cx="2" cy="2" r="1" fill="currentColor" />
-          </pattern>
-        </defs>
-        <rect width="100%" height="100%" fill="url(#circles)" />
-      </svg>
-    </div>
-    <div className="absolute bottom-0 left-0 w-full h-64 bg-gradient-to-t from-white to-transparent"></div>
-  </div>
-);
-
 // Memoized ServiceCard component for better performance
 const ServiceCard = withMemo(({ 
   title, 
@@ -78,58 +38,48 @@ const ServiceCard = withMemo(({
   isPremium: boolean;
 }) => {
   return (
-    <motion.div 
-      variants={itemVariants}
-      whileHover={{ y: -5 }}
-      className="h-full"
-    >
-      <Card className="h-full transition duration-500 bg-[#101218] border border-[#2E2F3B] rounded-xl shadow-lg overflow-hidden hover:shadow-xl">
-        {ImageComponent && (
-          <div className="h-52 overflow-hidden bg-gray-100 relative">
-            <DeferredRender>
-              <ImageComponent />
-            </DeferredRender>
+    <Card className="h-full bg-[#101218] border border-[#2E2F3B] rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+      {ImageComponent && (
+        <div className="h-52 overflow-hidden bg-gray-100 relative">
+          <ImageComponent />
+        </div>
+      )}
+      <CardContent className="p-6 md:p-8">
+        <div className="flex items-center mb-4">
+          <div className="w-10 h-10 rounded-full bg-orange-500 flex items-center justify-center mr-3">
+            <span className="text-white text-sm">★</span>
           </div>
+          <h3 className="font-bold text-xl text-white">
+            {title}
+          </h3>
+        </div>
+        <p className="mb-5 leading-relaxed text-gray-300">
+          {description}
+        </p>
+        
+        {features.length > 0 && (
+          <ul className="mb-5 space-y-2">
+            {features.map((feature, idx) => (
+              <li key={idx} className="flex items-start">
+                <CheckCircle2 className="h-5 w-5 text-orange-500 mr-2 shrink-0 mt-0.5" />
+                <span className="text-gray-300 text-sm">{feature}</span>
+              </li>
+            ))}
+          </ul>
         )}
-        <CardContent className="p-6 md:p-8">
-          <div className="flex items-center mb-4">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-orange-500 to-orange-600 flex items-center justify-center mr-3 shadow-md">
-              <span className="text-white text-sm">★</span>
-            </div>
-            <h3 
-              className="font-poppins font-bold text-xl text-white"
+        
+        {title === "Podcast & Video Studio" && (
+          <Link href="/studio-banbury" className="inline-block mt-3">
+            <Button 
+              className="px-4 py-2 rounded-full bg-transparent border border-orange-500 text-orange-500 hover:bg-orange-500/10 transition-colors"
             >
-              {title}
-            </h3>
-          </div>
-          <p className="mb-5 leading-relaxed text-gray-300">
-            {description}
-          </p>
-          
-          {features.length > 0 && (
-            <ul className="mb-5 space-y-2">
-              {features.map((feature, idx) => (
-                <li key={idx} className="flex items-start">
-                  <CheckCircle2 className="h-5 w-5 text-orange-500 mr-2 shrink-0 mt-0.5" />
-                  <span className="text-gray-300 text-sm">{feature}</span>
-                </li>
-              ))}
-            </ul>
-          )}
-          
-          {title === "Podcast & Video Studio" && (
-            <Link href="/studio-banbury" className="inline-block mt-3">
-              <Button 
-                className="px-4 py-2 rounded-full bg-transparent border border-orange-500 text-orange-500 hover:bg-orange-500/10 transition-colors group"
-              >
-                <span>Find Out More</span>
-                <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-              </Button>
-            </Link>
-          )}
-        </CardContent>
-      </Card>
-    </motion.div>
+              <span>Find Out More</span>
+              <ArrowRight className="ml-2 h-4 w-4" />
+            </Button>
+          </Link>
+        )}
+      </CardContent>
+    </Card>
   );
 });
 
@@ -144,35 +94,29 @@ const StandardServiceCard = withMemo(({
   Icon: React.ComponentType<any>;
 }) => {
   return (
-    <motion.div
-      variants={itemVariants}
-      whileHover={{ y: -3 }}
-    >
-      <Card className="h-full transition duration-300 bg-white rounded-xl border border-gray-100 shadow hover:shadow-md">
-        <CardContent className="p-6">
-          <div className="flex items-center mb-3">
-            <div className="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center mr-3">
-              <Icon className="h-5 w-5 text-blue-500" />
-            </div>
-            <h3 
-              className="font-medium text-lg"
-              style={{ color: 'var(--navy)' }}
-            >
-              {title}
-            </h3>
+    <Card className="h-full bg-white rounded-xl border border-gray-100 shadow hover:shadow-md transition-all duration-300 hover:-translate-y-1">
+      <CardContent className="p-6">
+        <div className="flex items-center mb-3">
+          <div className="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center mr-3">
+            <Icon className="h-5 w-5 text-blue-500" />
           </div>
-          <p style={{ color: 'var(--dark-grey)' }} className="text-sm leading-relaxed">
-            {description}
-          </p>
-        </CardContent>
-      </Card>
-    </motion.div>
+          <h3 
+            className="font-medium text-lg"
+            style={{ color: 'var(--navy)' }}
+          >
+            {title}
+          </h3>
+        </div>
+        <p style={{ color: 'var(--dark-grey)' }} className="text-sm leading-relaxed">
+          {description}
+        </p>
+      </CardContent>
+    </Card>
   );
 });
 
 // Main component wrapped with memo for optimization
 const ServicesSection = () => {
-  const sectionRef = useRef<HTMLElement>(null);
   const [isLoading, setIsLoading] = useState(true);
   const { businessIdentity, isLoading: isLoadingIdentity } = useBusinessIdentity();
 
@@ -180,31 +124,10 @@ const ServicesSection = () => {
     // Simulate content loading
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, isLoadingIdentity ? 2200 : 1800); // Slightly longer than hero to create a cascading effect
+    }, isLoadingIdentity ? 2200 : 1800);
     
     return () => clearTimeout(timer);
   }, [isLoadingIdentity]);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("is-visible");
-        }
-      },
-      { threshold: 0.1 }
-    );
-
-    if (sectionRef.current && !isLoading) {
-      observer.observe(sectionRef.current);
-    }
-
-    return () => {
-      if (sectionRef.current) {
-        observer.unobserve(sectionRef.current);
-      }
-    };
-  }, [isLoading]);
 
   // Map service names to icons, descriptions, and features with type safety
   const serviceIcons: Record<string, ServiceInfo> = {
@@ -295,36 +218,26 @@ const ServicesSection = () => {
 
   return (
     <section 
-      ref={sectionRef}
       id="services" 
       className="py-16 md:py-24 relative" 
       style={{ backgroundColor: 'var(--light-grey)' }}
     >
-      {/* Background pattern */}
-      <ServicesBgPattern />
-      
       <div className="container mx-auto px-6 md:px-8 relative z-10">
-        <motion.div 
-          initial="hidden"
-          animate="visible"
-          variants={containerVariants}
-          className="mx-auto"
-        >
-          <motion.div variants={itemVariants} className="text-center max-w-3xl mx-auto mb-16">
-            <div className="inline-block mb-4 px-4 py-1 rounded-full bg-orange-100 text-orange-600 text-sm font-medium border border-orange-200/50 shadow-sm">
+        <div className="mx-auto">
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <div className="inline-block mb-4 px-4 py-1 rounded-full bg-orange-100 text-orange-600 text-sm font-medium">
               <span className="mr-1">✦</span> Designed for Modern Businesses <span className="ml-1">✦</span>
             </div>
             <h2 
-              className="font-poppins font-bold text-3xl md:text-4xl mb-4 relative inline-block"
+              className="font-bold text-3xl md:text-4xl mb-4"
               style={{ color: 'var(--navy)' }}
             >
               Our Premium Services
-              <div className="absolute h-1 w-1/3 bg-gradient-to-r from-orange-300 to-orange-500 bottom-0 left-1/3 rounded-full"></div>
             </h2>
             <p style={{ color: 'var(--dark-grey)' }} className="text-lg leading-relaxed">
-              {typedBusinessIdentity.core?.businessName || "Progress Accountants"} is different. We're not just your accountant — we're your growth partner. That's why we've built a system to help you scale your business from the inside out.
+              {typedBusinessIdentity.core?.businessName || "Progress Accountants"} is different. We're not just your accountant — we're your growth partner.
             </p>
-          </motion.div>
+          </div>
           
           {/* Premium Services Section */}
           <div className="grid md:grid-cols-3 gap-6 md:gap-8 mb-16">
@@ -350,35 +263,22 @@ const ServicesSection = () => {
           {/* Standard Services Section */}
           {standardServices.length > 0 && (
             <>
-              <motion.div 
-                variants={containerVariants}
-                initial="hidden"
-                animate="visible"
-                className="text-center max-w-3xl mx-auto mb-10 mt-16"
-              >
-                <motion.h2 
-                  variants={itemVariants}
-                  className="font-poppins font-bold text-2xl md:text-3xl mb-4 relative inline-block"
+              <div className="text-center max-w-3xl mx-auto mb-10 mt-16">
+                <h2 
+                  className="font-bold text-2xl md:text-3xl mb-4"
                   style={{ color: 'var(--navy)' }}
                 >
                   Standard Services
-                  <div className="absolute h-1 w-1/3 bg-gradient-to-r from-blue-300 to-blue-500 bottom-0 left-1/3 rounded-full"></div>
-                </motion.h2>
-                <motion.p 
-                  variants={itemVariants}
+                </h2>
+                <p 
                   style={{ color: 'var(--dark-grey)' }} 
                   className="text-md max-w-xl mx-auto"
                 >
-                  Our comprehensive range of accounting and financial services designed to meet all your business needs with precision and expertise.
-                </motion.p>
-              </motion.div>
+                  Our comprehensive range of accounting and financial services designed to meet all your business needs.
+                </p>
+              </div>
               
-              <motion.div 
-                variants={containerVariants}
-                initial="hidden"
-                animate="visible"
-                className="grid md:grid-cols-3 gap-6"
-              >
+              <div className="grid md:grid-cols-3 gap-6">
                 {standardServices.map((serviceName, index) => {
                   const service = serviceIcons[serviceName] || {
                     description: "Professional service tailored to your business needs."
@@ -394,10 +294,10 @@ const ServicesSection = () => {
                     />
                   );
                 })}
-              </motion.div>
+              </div>
             </>
           )}
-        </motion.div>
+        </div>
       </div>
     </section>
   );
