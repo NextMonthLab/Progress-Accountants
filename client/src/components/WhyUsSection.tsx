@@ -65,39 +65,26 @@ export default function WhyUsSection() {
           <Card className="bg-white text-black overflow-hidden shadow-lg hover-scale transition duration-500">
             <CardContent className="p-8">
               <div 
-                className="rounded-lg p-6 mb-6 shadow-md"
+                className="rounded-lg p-3 mb-6 shadow-md overflow-hidden"
                 style={{ backgroundColor: 'var(--light-grey)' }}
               >
-                {/* Dashboard mockup */}
-                <div className="h-48 flex flex-col">
+                {/* Dashboard image */}
+                <div className="flex flex-col">
                   <div 
-                    className="font-semibold mb-2"
+                    className="font-semibold mb-2 px-3 pt-2"
                     style={{ color: 'var(--navy)' }}
                   >
                     FINANCIAL DASHBOARD
                   </div>
-                  <div className="grid grid-cols-2 gap-4 mb-4">
-                    <div className="bg-white p-3 rounded shadow-sm">
-                      <div className="text-sm text-gray-500">Revenue</div>
-                      <div 
-                        className="text-lg font-semibold pulse-animation"
-                        style={{ color: 'var(--navy)' }}
-                      >
-                        £85,240
-                      </div>
-                    </div>
-                    <div className="bg-white p-3 rounded shadow-sm">
-                      <div className="text-sm text-gray-500">Expenses</div>
-                      <div 
-                        className="text-lg font-semibold pulse-animation"
-                        style={{ color: 'var(--navy)' }}
-                      >
-                        £42,350
-                      </div>
-                    </div>
+                  <div className="relative">
+                    <img 
+                      src="/images/financial-dashboard.png" 
+                      alt="Financial Dashboard" 
+                      className="w-full rounded shadow-sm"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
                   </div>
-                  <div className="h-16 bg-white rounded shadow-sm mb-2"></div>
-                  <div className="text-xs text-gray-500 italic flex items-center">
+                  <div className="mt-2 px-3 pb-2 text-xs text-gray-500 italic flex items-center">
                     <span className="mr-2">Your custom financial dashboard</span>
                     <span className="inline-flex items-center text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">
                       <span className="pulse-animation mr-1">•</span> 
