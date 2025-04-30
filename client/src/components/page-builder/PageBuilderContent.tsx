@@ -98,8 +98,8 @@ const PageBuilderContent: React.FC = () => {
   const id = params.id || '';
   console.log("PageBuilder route params:", params, "Current location:", location);
   
-  // New page detection handling
-  const isNewPage = id === "new" || location.endsWith('/page/new');
+  // New page detection handling (improved to catch all variants)
+  const isNewPage = id === "new" || location.includes('/page/new');
   
   // Handle template gallery view
   const isTemplateGallery = location.includes('/templates');

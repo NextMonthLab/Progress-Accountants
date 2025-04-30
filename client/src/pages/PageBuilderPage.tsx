@@ -30,9 +30,13 @@ const PageBuilderPage: React.FC = () => {
     }
   }, [params, navigate, location]);
 
+  // Check if this is a special route like templates or new page
+  const isTemplateGallery = location.includes('/templates');
+  
   // Validate ID parameter to prevent NaN issues
   const validId = useMemo(() => {
-    if (isNewPage) return null;
+    // Skip validation for special routes
+    if (isNewPage || isTemplateGallery) return null;
     
     if (!id) {
       console.error("No page ID provided");
@@ -46,7 +50,7 @@ const PageBuilderPage: React.FC = () => {
     }
     
     return parsedId;
-  }, [id, isNewPage]);
+  }, [id, isNewPage, isTemplateGallery, location]);
 
   // Check if page builder is initialized
   useEffect(() => {
@@ -96,8 +100,8 @@ const PageBuilderPage: React.FC = () => {
     }
   }, [validId, isNewPage]);
   
-  // Show error if invalid ID
-  if (!isNewPage && validId === null) {
+  // Show error if invalid ID (but not for special routes)
+  if (!isNewPage && !isTemplateGallery && validId === null) {
     return (
       <div className="p-8">
         <Card className="border-destructive">
