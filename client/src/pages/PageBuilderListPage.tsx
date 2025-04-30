@@ -58,24 +58,37 @@ const PageBuilderListPage: React.FC = () => {
     // Check if page builder is initialized
     const checkStatus = async () => {
       try {
+        console.log("Checking page builder status");
+        setIsInitializing(true);
+        
         const res = await fetch('/api/page-builder/status');
+        console.log("Status check response:", res.status);
+        
         if (!res.ok) {
           throw new Error(`Status check failed with status: ${res.status}`);
         }
+        
         const data = await res.json();
+        console.log("Page builder status data:", data);
         
         if (!data.initialized) {
-          setIsInitializing(true);
+          console.log("Page builder needs initialization");
+          
           // Initialize the page builder tables
           const initRes = await fetch('/api/page-builder/initialize', {
             method: 'POST'
           });
           
+          console.log("Initialization response:", initRes.status);
+          
           if (!initRes.ok) {
+            const errorText = await initRes.text();
+            console.error("Initialize error response:", errorText);
             throw new Error(`Initialization failed with status: ${initRes.status}`);
           }
           
           const initData = await initRes.json();
+          console.log("Initialization data:", initData);
           
           if (initData.success) {
             toast({
@@ -88,6 +101,8 @@ const PageBuilderListPage: React.FC = () => {
           } else {
             throw new Error(initData.message || "Failed to initialize page builder");
           }
+        } else {
+          console.log("Page builder is already initialized");
         }
       } catch (error) {
         console.error("Error checking or initializing page builder:", error);

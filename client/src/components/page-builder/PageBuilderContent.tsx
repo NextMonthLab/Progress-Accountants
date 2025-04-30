@@ -589,6 +589,7 @@ const PageBuilderContent: React.FC = () => {
 
   // Error state
   if (error || !page) {
+    console.error("Page builder error:", error);
     return (
       <div className="p-4">
         <Card className="border-destructive">
@@ -599,14 +600,32 @@ const PageBuilderContent: React.FC = () => {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <p>Failed to load page data. {error?.message}</p>
-            <Button 
-              className="mt-4" 
-              variant="outline" 
-              onClick={() => navigate("/page-builder")}
-            >
-              Back to Pages
-            </Button>
+            <p>Failed to load page data: <span className="font-mono text-red-600">{error?.message || "Unknown error"}</span></p>
+            <p className="mt-2 text-muted-foreground">Check the browser console for more details.</p>
+            
+            {isNewPage && (
+              <div className="mt-4 p-3 bg-amber-50 dark:bg-amber-950 border border-amber-200 dark:border-amber-800 rounded-md">
+                <h3 className="text-sm font-medium text-amber-800 dark:text-amber-300 mb-1">Creating New Page</h3>
+                <p className="text-sm text-amber-700 dark:text-amber-400">
+                  You are attempting to create a new page. Try refreshing and making sure the page builder system is properly initialized.
+                </p>
+              </div>
+            )}
+            
+            <div className="flex gap-3 mt-4">
+              <Button 
+                variant="outline" 
+                onClick={() => navigate("/page-builder")}
+              >
+                Back to Pages
+              </Button>
+              <Button 
+                variant="default" 
+                onClick={() => window.location.reload()}
+              >
+                Refresh Page
+              </Button>
+            </div>
           </CardContent>
         </Card>
       </div>
