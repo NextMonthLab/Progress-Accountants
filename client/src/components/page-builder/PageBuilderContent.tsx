@@ -240,7 +240,7 @@ const PageBuilderContent: React.FC = () => {
       // Redirect to the edit page with the new ID
       if (data.data && data.data.id) {
         console.log("Redirecting to new page:", data.data.id);
-        navigate(`/page-builder/${data.data.id}`);
+        navigate(`/page-builder/page/${data.data.id}`);
       } else {
         console.warn("No ID in response data:", data);
       }
