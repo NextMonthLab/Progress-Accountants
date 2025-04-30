@@ -83,11 +83,11 @@ const ServiceCard = withMemo(({
       whileHover={{ y: -5 }}
       className="h-full"
     >
-      <Card className="h-full transition duration-500 bg-white border border-gray-100 rounded-xl shadow-lg overflow-hidden hover:shadow-xl">
+      <Card className="h-full transition duration-500 bg-[#101218] border border-[#2E2F3B] rounded-xl shadow-lg overflow-hidden hover:shadow-xl">
         {ImageComponent && (
           <div className="h-52 overflow-hidden bg-gray-100 relative">
             <DeferredRender>
-              <div className="absolute inset-0 bg-gradient-to-b from-transparent to-navy/30 z-10"></div>
+              <div className="absolute inset-0 bg-[#191C26]/80 backdrop-blur-[1px] z-10"></div>
               <ImageComponent />
             </DeferredRender>
           </div>
@@ -98,13 +98,12 @@ const ServiceCard = withMemo(({
               <span className="text-white text-sm">★</span>
             </div>
             <h3 
-              className="font-poppins font-bold text-xl"
-              style={{ color: 'var(--navy)' }}
+              className="font-poppins font-bold text-xl text-white"
             >
               {title}
             </h3>
           </div>
-          <p style={{ color: 'var(--dark-grey)' }} className="mb-5 leading-relaxed">
+          <p className="mb-5 leading-relaxed text-gray-300">
             {description}
           </p>
           
@@ -113,7 +112,7 @@ const ServiceCard = withMemo(({
               {features.map((feature, idx) => (
                 <li key={idx} className="flex items-start">
                   <CheckCircle2 className="h-5 w-5 text-orange-500 mr-2 shrink-0 mt-0.5" />
-                  <span className="text-gray-600 text-sm">{feature}</span>
+                  <span className="text-gray-300 text-sm">{feature}</span>
                 </li>
               ))}
             </ul>
@@ -122,7 +121,7 @@ const ServiceCard = withMemo(({
           {title === "Podcast & Video Studio" && (
             <Link href="/studio-banbury" className="inline-block mt-3">
               <Button 
-                className="px-4 py-2 rounded-full bg-white border border-orange-500 text-orange-500 hover:bg-orange-50 transition-colors group"
+                className="px-4 py-2 rounded-full bg-transparent border border-orange-500 text-orange-500 hover:bg-orange-500/10 transition-colors group"
               >
                 <span>Find Out More</span>
                 <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />

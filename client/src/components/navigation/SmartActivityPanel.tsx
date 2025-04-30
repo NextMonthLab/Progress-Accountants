@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Brain, ArrowUpRight, Sparkles, BarChart3, UserCircle, Calendar, FileText } from 'lucide-react';
+import { Brain, ArrowUpRight, Sparkles, BarChart3, UserCircle, Calendar, FileText, ChevronUp, ChevronDown } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { cn } from '@/lib/utils';
 
 // Type for smart activity suggestions
 interface SmartSuggestion {
@@ -18,6 +19,11 @@ interface SmartSuggestion {
 const SmartActivityPanel: React.FC<{ collapsed?: boolean }> = ({ collapsed = false }) => {
   const [smartSuggestions, setSmartSuggestions] = useState<SmartSuggestion[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isPanelCollapsed, setIsPanelCollapsed] = useState(() => {
+    // Try to get saved preference from localStorage
+    const saved = localStorage.getItem('smartInsightsPanelCollapsed');
+    return saved ? saved === 'true' : false;
+  });
 
   // Simulated smart suggestions data
   useEffect(() => {
@@ -80,6 +86,13 @@ const SmartActivityPanel: React.FC<{ collapsed?: boolean }> = ({ collapsed = fal
     };
     
     return styleMap[priority] || '';
+  };
+  
+  // Toggle panel collapsed state
+  const togglePanel = () => {
+    const newState = !isPanelCollapsed;
+    setIsPanelCollapsed(newState);
+    localStorage.setItem('smartInsightsPanelCollapsed', newState.toString());
   };
 
   if (collapsed) {
