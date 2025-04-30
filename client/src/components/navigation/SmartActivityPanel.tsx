@@ -127,57 +127,70 @@ const SmartActivityPanel: React.FC<{ collapsed?: boolean }> = ({ collapsed = fal
         <Badge variant="outline" className="ml-auto text-[9px] py-0 h-4 border-[var(--orange)] text-[var(--orange)]">
           AI
         </Badge>
+        <Button 
+          variant="ghost" 
+          size="sm" 
+          onClick={togglePanel}
+          className="h-5 w-5 p-0 ml-1 text-gray-500 hover:text-[var(--navy)]"
+        >
+          {isPanelCollapsed ? <ChevronDown className="h-4 w-4" /> : <ChevronUp className="h-4 w-4" />}
+        </Button>
       </div>
       
-      {loading ? (
-        <div className="animate-pulse space-y-2">
-          <div className="h-12 bg-gray-100 rounded-md"></div>
-          <div className="h-12 bg-gray-100 rounded-md"></div>
-        </div>
-      ) : (
-        <div className="space-y-2">
-          {smartSuggestions.slice(0, 2).map((suggestion) => (
-            <div 
-              key={suggestion.id}
-              className="p-2 rounded-md bg-white/80 hover:bg-orange-50/50 border border-gray-100 transition-all duration-200"
-            >
-              <div className="flex items-start">
-                <div className="flex-shrink-0 mr-2 mt-0.5">
-                  {getIconComponent(suggestion.icon)}
+      <div className={cn(
+        "overflow-hidden transition-all duration-300",
+        isPanelCollapsed ? "max-h-0 opacity-0" : "max-h-[500px] opacity-100"
+      )}>
+        {loading ? (
+          <div className="animate-pulse space-y-2">
+            <div className="h-12 bg-gray-100 rounded-md"></div>
+            <div className="h-12 bg-gray-100 rounded-md"></div>
+          </div>
+        ) : (
+          <div className="space-y-2">
+            {smartSuggestions.slice(0, 2).map((suggestion) => (
+              <div 
+                key={suggestion.id}
+                className="p-2 rounded-md bg-white/80 hover:bg-orange-50/50 border border-gray-100 transition-all duration-200"
+              >
+                <div className="flex items-start">
+                  <div className="flex-shrink-0 mr-2 mt-0.5">
+                    {getIconComponent(suggestion.icon)}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-xs font-medium text-gray-900 truncate">
+                      {suggestion.title}
+                    </p>
+                    <p className="text-xs text-gray-500 truncate">
+                      {suggestion.description}
+                    </p>
+                  </div>
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    className="text-[10px] h-6 px-1.5 py-0 flex items-center text-[var(--orange)] hover:text-[var(--navy)]"
+                    asChild
+                  >
+                    <a href={suggestion.link}>
+                      {suggestion.action}
+                      <ArrowUpRight className="ml-1 h-3 w-3" />
+                    </a>
+                  </Button>
                 </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-xs font-medium text-gray-900 truncate">
-                    {suggestion.title}
-                  </p>
-                  <p className="text-xs text-gray-500 truncate">
-                    {suggestion.description}
-                  </p>
-                </div>
-                <Button 
-                  variant="ghost" 
-                  size="sm" 
-                  className="text-[10px] h-6 px-1.5 py-0 flex items-center text-[var(--orange)] hover:text-[var(--navy)]"
-                  asChild
-                >
-                  <a href={suggestion.link}>
-                    {suggestion.action}
-                    <ArrowUpRight className="ml-1 h-3 w-3" />
-                  </a>
-                </Button>
               </div>
-            </div>
-          ))}
-          
-          {smartSuggestions.length > 2 && (
-            <a 
-              href="/admin/smart-insights" 
-              className="block text-center text-xs text-[var(--navy)] hover:text-[var(--orange)] mt-2 transition-colors"
-            >
-              View all {smartSuggestions.length} insights
-            </a>
-          )}
-        </div>
-      )}
+            ))}
+            
+            {smartSuggestions.length > 2 && (
+              <a 
+                href="/admin/smart-insights" 
+                className="block text-center text-xs text-[var(--navy)] hover:text-[var(--orange)] mt-2 transition-colors"
+              >
+                View all {smartSuggestions.length} insights
+              </a>
+            )}
+          </div>
+        )}
+      </div>
     </div>
   );
 };
