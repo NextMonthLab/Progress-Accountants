@@ -56,41 +56,52 @@ const PageBuilderListPage: React.FC = () => {
   // Check and initialize page builder tables if needed
   useEffect(() => {
     // Check if page builder is initialized
-    fetch('/api/page-builder/status')
-      .then(res => res.json())
-      .then(data => {
+    const checkStatus = async () => {
+      try {
+        const res = await fetch('/api/page-builder/status');
+        if (!res.ok) {
+          throw new Error(`Status check failed with status: ${res.status}`);
+        }
+        const data = await res.json();
+        
         if (!data.initialized) {
           setIsInitializing(true);
           // Initialize the page builder tables
-          return fetch('/api/page-builder/initialize', {
+          const initRes = await fetch('/api/page-builder/initialize', {
             method: 'POST'
-          })
-            .then(res => res.json())
-            .then(initData => {
-              if (initData.success) {
-                toast({
-                  title: "Page Builder Initialized",
-                  description: "The page builder system has been set up successfully.",
-                });
-              } else if (initData.alreadyInitialized) {
-                // Tables already exist, that's fine
-                console.log("Page builder tables already initialized");
-              } else {
-                throw new Error(initData.message || "Failed to initialize page builder");
-              }
-              setIsInitializing(false);
+          });
+          
+          if (!initRes.ok) {
+            throw new Error(`Initialization failed with status: ${initRes.status}`);
+          }
+          
+          const initData = await initRes.json();
+          
+          if (initData.success) {
+            toast({
+              title: "Page Builder Initialized",
+              description: "The page builder system has been set up successfully.",
             });
+          } else if (initData.alreadyInitialized) {
+            // Tables already exist, that's fine
+            console.log("Page builder tables already initialized");
+          } else {
+            throw new Error(initData.message || "Failed to initialize page builder");
+          }
         }
-      })
-      .catch(error => {
-        console.error("Error initializing page builder:", error);
+      } catch (error) {
+        console.error("Error checking or initializing page builder:", error);
         toast({
           title: "Initialization Error",
-          description: "There was a problem setting up the page builder. Please try again.",
+          description: `There was a problem setting up the page builder: ${(error as Error).message}`,
           variant: "destructive"
         });
+      } finally {
         setIsInitializing(false);
-      });
+      }
+    };
+    
+    checkStatus();
   }, [toast]);
 
   // Fetch tenant starter type
@@ -119,9 +130,17 @@ const PageBuilderListPage: React.FC = () => {
   const { data: pagesData, isLoading } = useQuery({
     queryKey: ["/api/page-builder/pages"],
     queryFn: async () => {
-      const res = await fetch("/api/page-builder/pages");
-      if (!res.ok) throw new Error("Failed to fetch pages");
-      return res.json();
+      try {
+        const res = await fetch("/api/page-builder/pages");
+        if (!res.ok) {
+          console.error("Failed to fetch pages, status:", res.status);
+          throw new Error("Failed to fetch pages");
+        }
+        return res.json();
+      } catch (err) {
+        console.error("Error fetching pages:", err);
+        throw new Error(`Failed to fetch pages: ${(err as Error).message}`);
+      }
     },
   });
 

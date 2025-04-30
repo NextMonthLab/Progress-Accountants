@@ -567,7 +567,7 @@ const PageBuilderContent: React.FC = () => {
             <Button 
               className="mt-4" 
               variant="outline" 
-              onClick={() => navigate("/admin/content/pages")}
+              onClick={() => navigate("/page-builder")}
             >
               Back to Pages
             </Button>
