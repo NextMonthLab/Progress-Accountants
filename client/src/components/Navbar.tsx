@@ -204,15 +204,6 @@ export default function Navbar() {
         <div className="hidden md:flex items-center space-x-6">
           {publicMenuGroups.map(renderDesktopDropdown)}
           
-          {/* Always show the Client Portal link */}
-          <Link 
-            href="/client-portal" 
-            className={`font-medium ${isActive('/client-portal') ? 'text-[var(--orange)]' : 'text-[var(--navy)] hover:text-[var(--orange)]'} transition duration-300 no-underline flex items-center`}
-          >
-            <LayoutDashboard className="h-4 w-4 mr-2" />
-            Client Portal
-          </Link>
-          
           {/* Show login button and potentially client registration for non-authenticated users */}
           {!user && (
             <>
@@ -297,19 +288,6 @@ export default function Navbar() {
       >
         <div className="container mx-auto px-6 md:px-8 py-3 flex flex-col divide-y">
           {publicMenuGroups.map(renderMobileMenuGroup)}
-          
-          {/* Client Portal section */}
-          <div className="py-2">
-            <h4 className="text-sm uppercase tracking-wider text-gray-500 mb-2 px-2">Portal</h4>
-            <Link 
-              href="/client-portal" 
-              className="flex items-center py-2 px-2 font-medium text-[var(--navy)] hover:text-[var(--orange)] transition duration-300 no-underline"
-              onClick={closeMenu}
-            >
-              <LayoutDashboard className="h-4 w-4 mr-2" />
-              Client Portal
-            </Link>
-          </div>
           
           {/* Login section for non-authenticated users */}
           {!user && (
