@@ -434,19 +434,22 @@ function Router() {
         component={PageBuilderListPage} 
         allowedRoles={['admin', 'super_admin', 'editor']} 
       />
+      {/* Fix for the "Create New Page" route */}
       <ProtectedRoute 
         path="/page-builder/page/new" 
-        component={PageBuilderPage} 
+        component={() => <PageBuilderPage />}
         allowedRoles={['admin', 'super_admin', 'editor']} 
       />
+      {/* Route for existing pages with numeric IDs */}
       <ProtectedRoute 
-        path="/page-builder/page/:id(\d+)" 
+        path="/page-builder/page/:id" 
         component={PageBuilderPage} 
         allowedRoles={['admin', 'super_admin', 'editor']} 
       />
+      {/* Templates gallery view */}
       <ProtectedRoute 
         path="/page-builder/templates" 
-        component={PageBuilderPage} 
+        component={() => <PageBuilderPage />}
         allowedRoles={['admin', 'super_admin', 'editor']} 
       />
       
