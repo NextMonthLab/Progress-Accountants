@@ -135,12 +135,26 @@ const PageBuilderContent: React.FC = () => {
     queryKey: [`/api/page-builder/pages/${pageId}`],
     queryFn: async () => {
       try {
-        const res = await apiRequest("GET", `/api/page-builder/pages/${pageId}`);
-        if (!res.ok) throw new Error("Failed to fetch page");
+        console.log(`Attempting to fetch page with ID: ${pageId}, isNaN: ${isNaN(pageId)}`);
+        
+        if (isNaN(pageId)) {
+          console.error("Invalid page ID, not a number:", pageId);
+          throw new Error("Invalid page ID");
+        }
+        
+        const res = await fetch(`/api/page-builder/pages/${pageId}`);
+        console.log(`Response status for page ${pageId}:`, res.status);
+        
+        if (!res.ok) {
+          console.error(`Failed to fetch page ${pageId}, Status: ${res.status}`);
+          throw new Error(`Failed to fetch page: ${res.status}`);
+        }
+        
         const data = await res.json();
+        console.log(`Successfully fetched page ${pageId} data:`, data);
         return data.data;
       } catch (err) {
-        console.error("Error fetching page data:", err);
+        console.error(`Error fetching page ID ${pageId}:`, err);
         throw new Error(`Failed to fetch page: ${(err as Error).message}`);
       }
     },
@@ -169,12 +183,31 @@ const PageBuilderContent: React.FC = () => {
   const createPageMutation = useMutation({
     mutationFn: async (newPage: PageBuilderPage) => {
       try {
-        const res = await apiRequest("POST", `/api/page-builder/pages`, newPage);
+        console.log("Creating new page with data:", newPage);
+        
+        // Use direct fetch for debugging
+        const res = await fetch(`/api/page-builder/pages`, {
+          method: "POST", 
+          headers: {"Content-Type": "application/json"},
+          body: JSON.stringify(newPage)
+        });
+        
+        console.log("Create page response status:", res.status);
+        
         if (!res.ok) {
-          const errorData = await res.json();
-          throw new Error(errorData.message || "Failed to create page");
+          let errorMessage = "Failed to create page";
+          try {
+            const errorData = await res.json();
+            errorMessage = errorData.message || errorMessage;
+          } catch (e) {
+            console.error("Error parsing error response:", e);
+          }
+          throw new Error(errorMessage);
         }
-        return res.json();
+        
+        const data = await res.json();
+        console.log("Page created successfully:", data);
+        return data;
       } catch (err) {
         console.error("Error creating page:", err);
         throw err;
@@ -187,7 +220,10 @@ const PageBuilderContent: React.FC = () => {
       });
       // Redirect to the edit page with the new ID
       if (data.data && data.data.id) {
+        console.log("Redirecting to new page:", data.data.id);
         navigate(`/page-builder/${data.data.id}`);
+      } else {
+        console.warn("No ID in response data:", data);
       }
     },
     onError: (error) => {
