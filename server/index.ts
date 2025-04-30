@@ -22,6 +22,7 @@ import { migrateHealthMonitoringTables } from './db-migrate-health-monitoring';
 import { registerNavigationRoutes } from './controllers/navigationController';
 import { registerDomainMappingRoutes } from './controllers/domainMappingController';
 import { registerSotRoutes } from './routes/sot-routes';
+import { registerClientCheckInRoutes } from './routes/client-check-in-routes';
 import { registerAgentRoutes } from './controllers/agentController';
 import { registerSocialMediaRoutes } from './controllers/registerSocialMediaRoutes';
 import { registerAdvancedSeoRoutes } from './controllers/registerAdvancedSeoRoutes';
@@ -117,6 +118,9 @@ app.use((req, res, next) => {
   
   // Register SOT routes
   registerSotRoutes(app);
+  
+  // Register Client Check-In routes for NextMonth SOT
+  registerClientCheckInRoutes(app);
   
   // Register Progress Agent routes
   registerAgentRoutes(app);
