@@ -7,6 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { SotStatusIndicator } from '@/components/sot/SotStatusIndicator';
+import { ClientCheckInButton } from '@/components/sot/ClientCheckInButton';
 import { AlertCircle, CheckCircle, RefreshCw, Download, Upload, ArrowUpDown, FileCheck } from 'lucide-react';
 import AdminLayout from '@/layouts/AdminLayout';
 
@@ -357,6 +358,18 @@ export default function SotManagementPage() {
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
+                <div className="rounded-lg border p-4 bg-amber-50 dark:bg-amber-950/30">
+                  <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
+                    <div>
+                      <h3 className="font-semibold text-amber-800 dark:text-amber-400">NextMonth SOT Check-In</h3>
+                      <p className="text-sm text-amber-700 dark:text-amber-500 mt-1">
+                        Register with NextMonth SOT to unlock tools like Autopilot Mode, Lead Radar, and Smart Page Generator
+                      </p>
+                    </div>
+                    <ClientCheckInButton />
+                  </div>
+                </div>
+                
                 <div className="rounded-lg border p-4">
                   <div className="flex items-center gap-4">
                     <div className="rounded-full bg-primary/10 p-3">
