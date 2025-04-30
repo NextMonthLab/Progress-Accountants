@@ -119,11 +119,11 @@ const PageBuilderContent: React.FC = () => {
   console.log("PageBuilderContent rendering with ID:", id, "isNewPage:", isNewPage, "pageId:", pageId);
   
   // State
-  const [activeTab, setActiveTab] = useState<string>(isNewPage ? "templates" : "editor");
+  const [activeTab, setActiveTab] = useState<string>(isNewPage || isTemplateGallery ? "templates" : "editor");
   const [previewMode, setPreviewMode] = useState<boolean>(false);
   const [showAIAssistant, setShowAIAssistant] = useState<boolean>(false);
   const [versionHistoryOpen, setVersionHistoryOpen] = useState<boolean>(false);
-  const [page, setPage] = useState<PageBuilderPage | null>(isNewPage ? createEmptyPage() : null);
+  const [page, setPage] = useState<PageBuilderPage | null>(isNewPage || isTemplateGallery ? createEmptyPage() : null);
   const [deviceType, setDeviceType] = useState<"desktop" | "tablet" | "mobile">("desktop");
 
   // Create a default empty page
@@ -177,7 +177,7 @@ const PageBuilderContent: React.FC = () => {
         throw new Error(`Failed to fetch page: ${(err as Error).message}`);
       }
     },
-    enabled: !isNewPage && !!pageId && !isNaN(pageId),
+    enabled: !isNewPage && !isTemplateGallery && !!pageId && !isNaN(pageId),
     retry: 1,
   });
 
