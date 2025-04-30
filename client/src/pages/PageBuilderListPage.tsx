@@ -51,6 +51,47 @@ const PageBuilderListPage: React.FC = () => {
   const { tenant } = useTenant();
   const { toast } = useToast();
   const [tenantStarterType, setTenantStarterType] = useState<'blank' | 'pro' | null>(null);
+  const [isInitializing, setIsInitializing] = useState(false);
+
+  // Check and initialize page builder tables if needed
+  useEffect(() => {
+    // Check if page builder is initialized
+    fetch('/api/page-builder/status')
+      .then(res => res.json())
+      .then(data => {
+        if (!data.initialized) {
+          setIsInitializing(true);
+          // Initialize the page builder tables
+          return fetch('/api/page-builder/initialize', {
+            method: 'POST'
+          })
+            .then(res => res.json())
+            .then(initData => {
+              if (initData.success) {
+                toast({
+                  title: "Page Builder Initialized",
+                  description: "The page builder system has been set up successfully.",
+                });
+              } else if (initData.alreadyInitialized) {
+                // Tables already exist, that's fine
+                console.log("Page builder tables already initialized");
+              } else {
+                throw new Error(initData.message || "Failed to initialize page builder");
+              }
+              setIsInitializing(false);
+            });
+        }
+      })
+      .catch(error => {
+        console.error("Error initializing page builder:", error);
+        toast({
+          title: "Initialization Error",
+          description: "There was a problem setting up the page builder. Please try again.",
+          variant: "destructive"
+        });
+        setIsInitializing(false);
+      });
+  }, [toast]);
 
   // Fetch tenant starter type
   useEffect(() => {
@@ -121,6 +162,32 @@ const PageBuilderListPage: React.FC = () => {
     setSelectedPageId(id);
     setVersionHistoryOpen(true);
   };
+
+  // Render initializing state
+  if (isInitializing) {
+    return (
+      <AdminLayout>
+        <div className="container px-8 py-10">
+          <Card className="max-w-2xl mx-auto">
+            <CardHeader>
+              <CardTitle className="text-center">Setting Up Page Builder</CardTitle>
+              <CardDescription className="text-center">
+                We're initializing the page builder for the first time. This should only take a moment...
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="flex flex-col items-center justify-center pt-4 pb-8">
+              <div className="flex justify-center mb-6">
+                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+              </div>
+              <p className="text-muted-foreground text-center">
+                We're setting up the necessary database tables for the page builder feature.
+              </p>
+            </CardContent>
+          </Card>
+        </div>
+      </AdminLayout>
+    );
+  }
 
   // Render loading skeleton
   if (isLoading) {
