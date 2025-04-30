@@ -33,15 +33,34 @@ const OnboardingProgressRing: React.FC<OnboardingProgressRingProps> = ({
   
   useEffect(() => {
     if (data?.data) {
-      // Calculate progress based on completed stages
-      const completedStages = data.data.filter((stage: any) => stage.status === 'completed').length;
-      const totalStages = data.data.length || 10; // Default to 10 total stages if none found
-      
-      // Calculate percentage and round to nearest 5%
-      const calculatedProgress = Math.round((completedStages / totalStages) * 100 / 5) * 5;
-      
-      // Ensure there's always at least 5% progress to show the ring
-      setProgress(Math.max(5, calculatedProgress));
+      try {
+        // Check if data.data is an array
+        if (Array.isArray(data.data)) {
+          // Calculate progress based on completed stages
+          const completedStages = data.data.filter((stage: any) => stage.status === 'completed').length;
+          const totalStages = data.data.length || 10; // Default to 10 total stages if none found
+          
+          // Calculate percentage and round to nearest 5%
+          const calculatedProgress = Math.round((completedStages / totalStages) * 100 / 5) * 5;
+          
+          // Ensure there's always at least 5% progress to show the ring
+          setProgress(Math.max(5, calculatedProgress));
+        } else if (data.data.stages && Array.isArray(data.data.stages)) {
+          // If data.data has a 'stages' property that is an array
+          const completedStages = data.data.stages.filter((stage: any) => stage.status === 'completed').length;
+          const totalStages = data.data.stages.length || 10;
+          
+          const calculatedProgress = Math.round((completedStages / totalStages) * 100 / 5) * 5;
+          setProgress(Math.max(5, calculatedProgress));
+        } else {
+          // Fallback to default progress
+          console.log("Onboarding data structure not as expected:", data.data);
+          setProgress(10); // Default progress
+        }
+      } catch (error) {
+        console.error("Error calculating onboarding progress:", error);
+        setProgress(10); // Default progress on error
+      }
     }
   }, [data]);
   
