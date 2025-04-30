@@ -208,14 +208,14 @@ const ActivityItem: React.FC<ActivityItemProps> = ({
   isLoading = false 
 }) => {
   const statusColors = {
-    success: "text-emerald-500 bg-emerald-50",
-    warning: "text-amber-500 bg-amber-50",
-    error: "text-red-500 bg-red-50",
-    info: "text-blue-500 bg-blue-50"
+    success: "text-emerald-500 bg-emerald-100",
+    warning: "text-amber-500 bg-amber-100",
+    error: "text-red-500 bg-red-100",
+    info: "text-blue-500 bg-blue-100"
   };
 
   return (
-    <div className="flex gap-4 py-4 border-b border-gray-100 last:border-0">
+    <div className="flex gap-4 py-4 border-b border-gray-200 last:border-0 bg-white hover:bg-gray-50 transition-colors">
       {isLoading ? (
         <>
           <div className="h-10 w-10 rounded-full bg-gray-200 animate-pulse"></div>
@@ -226,13 +226,13 @@ const ActivityItem: React.FC<ActivityItemProps> = ({
         </>
       ) : (
         <>
-          <div className={`flex-shrink-0 h-10 w-10 rounded-full flex items-center justify-center ${statusColors[status]}`}>
+          <div className={`flex-shrink-0 h-10 w-10 rounded-full flex items-center justify-center ${statusColors[status]} shadow-sm`}>
             {icon}
           </div>
           <div className="flex-1">
-            <h3 className="font-medium text-navy">{title}</h3>
-            {description && <p className="text-sm text-gray-500 mt-0.5">{description}</p>}
-            <p className="text-xs text-gray-400 mt-1">{timestamp}</p>
+            <h3 className="font-medium text-navy-800">{title}</h3>
+            {description && <p className="text-sm text-gray-700 mt-0.5">{description}</p>}
+            <p className="text-xs text-gray-600 mt-1">{timestamp}</p>
           </div>
         </>
       )}
@@ -407,7 +407,7 @@ const NewsCard: React.FC<NewsCardProps> = ({
   isLoading = false 
 }) => {
   return (
-    <div className="border-b border-white/10 pb-4 mb-4 last:mb-0 last:pb-0 last:border-0">
+    <div className="border-b border-gray-200 pb-4 mb-4 last:mb-0 last:pb-0 last:border-0 bg-white hover:bg-gray-50 p-4 rounded-md shadow-sm">
       {isLoading ? (
         <div className="space-y-3">
           <div className="h-4 bg-gray-200 rounded w-3/4 animate-pulse"></div>
@@ -420,12 +420,12 @@ const NewsCard: React.FC<NewsCardProps> = ({
         </div>
       ) : (
         <>
-          <h3 className="font-semibold text-white">{title}</h3>
-          <p className="text-sm text-white/80 mt-1 mb-2 line-clamp-2">{excerpt}</p>
+          <h3 className="font-semibold text-navy-800">{title}</h3>
+          <p className="text-sm text-gray-700 mt-1 mb-2 line-clamp-2">{excerpt}</p>
           <div className="flex items-center gap-3 text-xs">
-            <span className="text-white/70">{date}</span>
+            <span className="text-gray-600">{date}</span>
             {category && (
-              <Badge variant="outline" className="px-1.5 py-0 h-5 font-normal text-white border-white/20 bg-white/10">
+              <Badge variant="outline" className="px-1.5 py-0 h-5 font-normal text-navy-700 border-navy-300 bg-navy-50">
                 {category}
               </Badge>
             )}
@@ -433,7 +433,7 @@ const NewsCard: React.FC<NewsCardProps> = ({
           {link && (
             <div className="mt-3">
               <Link href={link}>
-                <Button variant="ghost" size="sm" className="h-7 px-0 text-orange-300 hover:text-orange-200 font-medium">
+                <Button variant="ghost" size="sm" className="h-7 px-0 text-orange-600 hover:text-orange-700 font-medium">
                   Read more
                   <ArrowRight className="ml-1 h-3.5 w-3.5" />
                 </Button>
@@ -464,26 +464,26 @@ const HealthStatus: React.FC<HealthStatusProps> = ({
 }) => {
   const statusConfig = {
     good: {
-      color: "text-emerald-500",
-      bgColor: "bg-emerald-50",
+      color: "text-emerald-600",
+      bgColor: "bg-emerald-100",
       icon: <CheckCircle2 className="h-5 w-5" />,
       label: "Good"
     },
     warning: {
-      color: "text-amber-500",
-      bgColor: "bg-amber-50",
+      color: "text-amber-600",
+      bgColor: "bg-amber-100",
       icon: <AlertTriangle className="h-5 w-5" />,
       label: "Warning"
     },
     critical: {
-      color: "text-red-500",
-      bgColor: "bg-red-50",
+      color: "text-red-600",
+      bgColor: "bg-red-100",
       icon: <XCircle className="h-5 w-5" />,
       label: "Critical"
     },
     unknown: {
-      color: "text-gray-400",
-      bgColor: "bg-gray-50",
+      color: "text-gray-600",
+      bgColor: "bg-gray-100",
       icon: <AlertTriangle className="h-5 w-5" />,
       label: "Unknown"
     }
@@ -492,7 +492,7 @@ const HealthStatus: React.FC<HealthStatusProps> = ({
   const config = statusConfig[status];
 
   return (
-    <div className="flex items-center justify-between p-3 border-b last:border-0">
+    <div className="flex items-center justify-between p-4 border-b border-gray-200 last:border-0 bg-white hover:bg-gray-50 transition-colors">
       {isLoading ? (
         <div className="w-full flex justify-between">
           <div className="h-4 bg-gray-200 rounded w-1/3 animate-pulse"></div>
@@ -501,12 +501,12 @@ const HealthStatus: React.FC<HealthStatusProps> = ({
       ) : (
         <>
           <div className="flex items-center gap-2">
-            <span className="font-medium text-navy">{title}</span>
-            {details && <span className="text-xs text-gray-500">{details}</span>}
+            <span className="font-medium text-navy-800">{title}</span>
+            {details && <span className="text-xs text-gray-700 ml-2 bg-gray-100 px-2 py-1 rounded-full">{details}</span>}
           </div>
-          <div className="flex items-center gap-2">
-            {lastChecked && <span className="text-xs text-gray-400">{lastChecked}</span>}
-            <div className={`flex items-center gap-1 ${config.color} ${config.bgColor} px-2 py-1 rounded text-xs`}>
+          <div className="flex items-center gap-3">
+            {lastChecked && <span className="text-xs text-gray-600">{lastChecked}</span>}
+            <div className={`flex items-center gap-1 ${config.color} ${config.bgColor} px-3 py-1 rounded-full font-medium shadow-sm text-xs`}>
               {config.icon}
               <span>{config.label}</span>
             </div>
