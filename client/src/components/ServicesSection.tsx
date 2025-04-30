@@ -311,14 +311,15 @@ const ServicesSection = () => {
           className="mx-auto"
         >
           <motion.div variants={itemVariants} className="text-center max-w-3xl mx-auto mb-16">
-            <div className="inline-block mb-4 px-4 py-1 rounded-full bg-orange-100 text-orange-600 text-sm font-medium">
-              Designed for Modern Businesses
+            <div className="inline-block mb-4 px-4 py-1 rounded-full bg-orange-100 text-orange-600 text-sm font-medium border border-orange-200/50 shadow-sm">
+              <span className="mr-1">✦</span> Designed for Modern Businesses <span className="ml-1">✦</span>
             </div>
             <h2 
-              className="font-poppins font-bold text-3xl md:text-4xl mb-4"
+              className="font-poppins font-bold text-3xl md:text-4xl mb-4 relative inline-block"
               style={{ color: 'var(--navy)' }}
             >
               Our Premium Services
+              <div className="absolute h-1 w-1/3 bg-gradient-to-r from-orange-300 to-orange-500 bottom-0 left-1/3 rounded-full"></div>
             </h2>
             <p style={{ color: 'var(--dark-grey)' }} className="text-lg leading-relaxed">
               {typedBusinessIdentity.core?.businessName || "Progress Accountants"} is different. We're not just your accountant — we're your growth partner. That's why we've built a system to help you scale your business from the inside out.
@@ -357,17 +358,18 @@ const ServicesSection = () => {
               >
                 <motion.h2 
                   variants={itemVariants}
-                  className="font-poppins font-bold text-2xl md:text-3xl mb-4"
+                  className="font-poppins font-bold text-2xl md:text-3xl mb-4 relative inline-block"
                   style={{ color: 'var(--navy)' }}
                 >
                   Standard Services
+                  <div className="absolute h-1 w-1/3 bg-gradient-to-r from-blue-300 to-blue-500 bottom-0 left-1/3 rounded-full"></div>
                 </motion.h2>
                 <motion.p 
                   variants={itemVariants}
                   style={{ color: 'var(--dark-grey)' }} 
-                  className="text-md"
+                  className="text-md max-w-xl mx-auto"
                 >
-                  Our comprehensive range of accounting and financial services to meet your business needs.
+                  Our comprehensive range of accounting and financial services designed to meet all your business needs with precision and expertise.
                 </motion.p>
               </motion.div>
               

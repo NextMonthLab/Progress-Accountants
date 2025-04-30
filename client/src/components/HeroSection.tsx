@@ -50,8 +50,8 @@ const itemVariants = {
 // Animated background pattern component
 const AnimatedPattern = () => (
   <div className="absolute inset-0 overflow-hidden z-0">
-    {/* Grid pattern overlay */}
-    <div className="absolute top-0 left-0 w-full h-full opacity-5">
+    {/* Grid pattern overlay - with reduced transparency (doubled opacity from 5% to 10%) */}
+    <div className="absolute top-0 left-0 w-full h-full opacity-10">
       <svg viewBox="0 0 100 100" preserveAspectRatio="none" width="100%" height="100%">
         <defs>
           <pattern id="grid" width="3" height="3" patternUnits="userSpaceOnUse">
@@ -62,8 +62,9 @@ const AnimatedPattern = () => (
       </svg>
     </div>
     
-    {/* Dynamic gradient overlay */}
-    <div className="absolute inset-0 bg-gradient-to-br from-navy-900/80 via-navy-800/70 to-navy-950/90 mix-blend-multiply opacity-80"></div>
+    {/* Enhanced gradient overlay with improved depth perception */}
+    <div className="absolute inset-0 bg-gradient-to-br from-navy-900/80 via-navy-800/70 to-navy-950/90 mix-blend-multiply opacity-75"></div>
+    <div className="absolute inset-0 bg-gradient-to-t from-navy-950/40 to-transparent"></div>
     
     {/* Animated color blobs */}
     <div className="absolute w-1/2 h-1/2 rounded-full bg-gradient-to-r from-orange-500/30 to-orange-400/20 blur-3xl -top-1/4 -right-1/4 animate-blob" />
@@ -234,13 +235,16 @@ const HeroSection = () => {
                 
                 <Button 
                   size="lg" 
-                  className="relative px-6 py-3 rounded-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white shadow-lg shadow-orange-800/30 hover:-translate-y-[3px] transition-all duration-300 group overflow-hidden"
+                  className="relative px-6 py-3 rounded-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white shadow-lg shadow-orange-800/40 hover:-translate-y-[3px] transition-all duration-300 group overflow-hidden border border-orange-400/30"
                 >
-                  {/* Shine effect on hover */}
-                  <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+                  {/* Enhanced shine effect on hover */}
+                  <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
                   
-                  <span className="font-medium relative z-10">Book Your Free Strategy Consultation</span>
-                  <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-2 duration-300 relative z-10" />
+                  <span className="font-medium relative z-10 flex items-center">
+                    <span className="mr-1">✨</span>
+                    Book Your Free Strategy Consultation
+                    <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-2 duration-300 relative z-10" />
+                  </span>
                 </Button>
               </a>
               
