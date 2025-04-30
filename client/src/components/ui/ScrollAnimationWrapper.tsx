@@ -1,10 +1,10 @@
 import { ReactNode } from "react";
-import { motion, useAnimation, Variants } from "framer-motion";
+import { motion, useAnimation, Variants, HTMLMotionProps } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { useEffect } from "react";
 import { scrollAnimationConfig } from "@/lib/animations";
 
-interface ScrollAnimationWrapperProps {
+interface ScrollAnimationWrapperProps extends HTMLMotionProps<"div"> {
   children: ReactNode;
   variants?: Variants;
   className?: string;
@@ -12,7 +12,6 @@ interface ScrollAnimationWrapperProps {
   threshold?: number;
   rootMargin?: string;
   viewportOnce?: boolean;
-  as?: React.ElementType;
 }
 
 export function ScrollAnimationWrapper({
@@ -23,7 +22,7 @@ export function ScrollAnimationWrapper({
   threshold = scrollAnimationConfig.threshold,
   rootMargin = scrollAnimationConfig.rootMargin,
   viewportOnce = scrollAnimationConfig.once,
-  as = "div"
+  ...props
 }: ScrollAnimationWrapperProps) {
   const controls = useAnimation();
   const [ref, inView] = useInView({
@@ -51,23 +50,28 @@ export function ScrollAnimationWrapper({
     }
   };
 
-  const MotionComponent = motion[as as keyof typeof motion] || motion.div;
-
   return (
-    <MotionComponent
+    <motion.div
       ref={ref}
       animate={controls}
       initial="hidden"
       variants={variants || defaultVariants}
       className={className}
+      {...props}
     >
       {children}
-    </MotionComponent>
+    </motion.div>
   );
 }
 
 // Additional export for different animation types
-export function FadeInOnScroll({ children, className = "", delay = 0, ...props }) {
+interface AnimationProps extends Omit<ScrollAnimationWrapperProps, 'variants'> {
+  children: ReactNode;
+  className?: string;
+  delay?: number;
+}
+
+export function FadeInOnScroll({ children, className = "", delay = 0, ...props }: AnimationProps) {
   const variants: Variants = {
     hidden: { opacity: 0 },
     visible: {
@@ -92,7 +96,7 @@ export function FadeInOnScroll({ children, className = "", delay = 0, ...props }
   );
 }
 
-export function SlideUpOnScroll({ children, className = "", delay = 0, ...props }) {
+export function SlideUpOnScroll({ children, className = "", delay = 0, ...props }: AnimationProps) {
   const variants: Variants = {
     hidden: { opacity: 0, y: 50 },
     visible: {
@@ -119,7 +123,7 @@ export function SlideUpOnScroll({ children, className = "", delay = 0, ...props 
   );
 }
 
-export function SlideInFromLeftOnScroll({ children, className = "", delay = 0, ...props }) {
+export function SlideInFromLeftOnScroll({ children, className = "", delay = 0, ...props }: AnimationProps) {
   const variants: Variants = {
     hidden: { opacity: 0, x: -50 },
     visible: {
@@ -145,7 +149,7 @@ export function SlideInFromLeftOnScroll({ children, className = "", delay = 0, .
   );
 }
 
-export function SlideInFromRightOnScroll({ children, className = "", delay = 0, ...props }) {
+export function SlideInFromRightOnScroll({ children, className = "", delay = 0, ...props }: AnimationProps) {
   const variants: Variants = {
     hidden: { opacity: 0, x: 50 },
     visible: {
@@ -171,7 +175,7 @@ export function SlideInFromRightOnScroll({ children, className = "", delay = 0, 
   );
 }
 
-export function ScaleUpOnScroll({ children, className = "", delay = 0, ...props }) {
+export function ScaleUpOnScroll({ children, className = "", delay = 0, ...props }: AnimationProps) {
   const variants: Variants = {
     hidden: { opacity: 0, scale: 0.9 },
     visible: {

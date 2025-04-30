@@ -5,6 +5,13 @@ import WhyUsSection from "@/components/WhyUsSection";
 import ContactForm from "@/components/ContactForm";
 import { useEffect } from "react";
 import { Link } from "wouter";
+import { 
+  FadeIn, 
+  SlideUp, 
+  SlideInLeft, 
+  SlideInRight, 
+  ScaleIn 
+} from "@/components/ui/ScrollAnimation";
 
 export default function HomePage() {
   // Adding smooth scroll behavior for anchor links
@@ -45,7 +52,7 @@ export default function HomePage() {
       <ServicesSection />
       <IndustriesSection />
       
-      {/* SME Support Hub Section */}
+      {/* SME Support Hub Section with animations */}
       <section className="py-16 relative overflow-hidden">
         <div 
           className="absolute inset-0" 
@@ -59,58 +66,72 @@ export default function HomePage() {
         <div className="container mx-auto px-6 md:px-8 relative z-10">
           <div className="flex flex-col md:flex-row items-center gap-8">
             <div className="md:w-1/2 text-white">
-              <h2 className="text-3xl font-bold mb-4">
-                SME Support Hub
-              </h2>
-              <p className="text-xl mb-4">
-                Everything UK small businesses need in one place—contacts, deadlines, and downloadable resources.
-              </p>
+              <SlideInLeft delay={0.2}>
+                <h2 className="text-3xl font-bold mb-4">
+                  SME Support Hub
+                </h2>
+                <p className="text-xl mb-4">
+                  Everything UK small businesses need in one place—contacts, deadlines, and downloadable resources.
+                </p>
+              </SlideInLeft>
+              
               <ul className="space-y-2 mb-6">
-                <li className="flex items-center">
+                {/* Animated list items with staggered delay */}
+                <SlideUp className="flex items-center" delay={0.3}>
                   <span className="text-[var(--orange)] mr-2">✓</span> Essential HMRC & Companies House contact details
-                </li>
-                <li className="flex items-center">
+                </SlideUp>
+                <SlideUp className="flex items-center" delay={0.4}>
                   <span className="text-[var(--orange)] mr-2">✓</span> Key tax filing deadlines
-                </li>
-                <li className="flex items-center">
+                </SlideUp>
+                <SlideUp className="flex items-center" delay={0.5}>
                   <span className="text-[var(--orange)] mr-2">✓</span> Downloadable PDF resources
-                </li>
-                <li className="flex items-center">
+                </SlideUp>
+                <SlideUp className="flex items-center" delay={0.6}>
                   <span className="text-[var(--orange)] mr-2">✓</span> Regularly updated information
-                </li>
+                </SlideUp>
               </ul>
-              <Link href="/sme-support-hub" className="inline-block px-6 py-3 bg-[var(--orange)] text-white rounded-md hover:bg-[var(--orange)]/90 transition">
-                Access SME Support Hub
-              </Link>
+              
+              <FadeIn>
+                <Link href="/sme-support-hub" className="inline-block px-6 py-3 bg-[var(--orange)] text-white rounded-md hover:bg-[var(--orange)]/90 hover:-translate-y-1 transition-all duration-300">
+                  Access SME Support Hub
+                </Link>
+              </FadeIn>
             </div>
+            
             <div className="md:w-1/2 flex justify-center">
-              <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
-                <h3 className="text-xl font-bold mb-4 text-[var(--navy)]">Available Resources</h3>
-                <ul className="space-y-4">
-                  <li className="flex items-start">
-                    <div className="bg-orange-100 p-2 rounded-full mr-4">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                      </svg>
-                    </div>
-                    <div>
-                      <h4 className="font-medium text-[var(--navy)]">SME Contacts Directory</h4>
-                      <p className="text-gray-600 text-sm">All important UK business support contacts in one PDF.</p>
-                    </div>
-                  </li>
-                  <li className="flex items-start">
-                    <div className="bg-orange-100 p-2 rounded-full mr-4">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                      </svg>
-                    </div>
-                    <div>
-                      <h4 className="font-medium text-[var(--navy)]">Key Business Deadlines</h4>
-                      <p className="text-gray-600 text-sm">All tax and reporting deadlines for 2025 in a printable format.</p>
-                    </div>
-                  </li>
-                </ul>
-              </div>
+              <SlideInRight delay={0.4}>
+                <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full hover:shadow-xl transition-shadow duration-300">
+                  <ScaleIn delay={0.6}>
+                    <h3 className="text-xl font-bold mb-4 text-[var(--navy)]">Available Resources</h3>
+                  </ScaleIn>
+                  
+                  <ul className="space-y-4">
+                    <SlideUp className="flex items-start" delay={0.7}>
+                      <div className="bg-orange-100 p-2 rounded-full mr-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                      </div>
+                      <div>
+                        <h4 className="font-medium text-[var(--navy)]">SME Contacts Directory</h4>
+                        <p className="text-gray-600 text-sm">All important UK business support contacts in one PDF.</p>
+                      </div>
+                    </SlideUp>
+                    
+                    <SlideUp className="flex items-start" delay={0.8}>
+                      <div className="bg-orange-100 p-2 rounded-full mr-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
+                      </div>
+                      <div>
+                        <h4 className="font-medium text-[var(--navy)]">Key Business Deadlines</h4>
+                        <p className="text-gray-600 text-sm">All tax and reporting deadlines for 2025 in a printable format.</p>
+                      </div>
+                    </SlideUp>
+                  </ul>
+                </div>
+              </SlideInRight>
             </div>
           </div>
         </div>
@@ -118,63 +139,86 @@ export default function HomePage() {
       
       <WhyUsSection />
       
-      {/* Studio Highlight Section */}
+      {/* Studio Highlight Section with animations */}
       <section className="py-16 relative overflow-hidden" style={{ backgroundColor: 'var(--navy)' }}>
         <div className="container mx-auto px-6 md:px-8">
           <div className="flex flex-col md:flex-row items-center gap-8">
             <div className="md:w-1/2">
-              <img 
-                src="https://res.cloudinary.com/drl0fxrkq/image/upload/v1744815129/P1012279-Enhanced-NR_dgdlta.jpg" 
-                alt="Progress Podcast & Video Studio" 
-                className="rounded-lg shadow-xl"
-              />
+              <SlideInLeft delay={0.2}>
+                <div className="relative overflow-hidden rounded-lg shadow-2xl">
+                  <img 
+                    src="https://res.cloudinary.com/drl0fxrkq/image/upload/v1744815129/P1012279-Enhanced-NR_dgdlta.jpg" 
+                    alt="Progress Podcast & Video Studio" 
+                    className="w-full h-auto rounded-lg transform transition-transform duration-700 hover:scale-105"
+                  />
+                  <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-t from-black/20 to-transparent opacity-70"></div>
+                </div>
+              </SlideInLeft>
             </div>
+            
             <div className="md:w-1/2 text-white">
-              <h2 className="text-3xl font-bold mb-4">
-                🎙️ Podcast & Video Studio
-              </h2>
-              <p className="text-xl mb-4">
-                Purpose-built for businesses that want to sound and look professional without metropolitan prices.
-              </p>
-              <ul className="space-y-2 mb-6">
-                <li className="flex items-center">
-                  <span className="text-[var(--orange)] mr-2">✓</span> Professional DSLR cameras
-                </li>
-                <li className="flex items-center">
-                  <span className="text-[var(--orange)] mr-2">✓</span> Broadcast-quality microphones
-                </li>
-                <li className="flex items-center">
-                  <span className="text-[var(--orange)] mr-2">✓</span> Acoustically treated space
-                </li>
-                <li className="flex items-center">
-                  <span className="text-[var(--orange)] mr-2">✓</span> On-site technical support
-                </li>
-              </ul>
-              <div className="flex flex-wrap gap-4">
-                <Link href="/studio-banbury" className="inline-block px-6 py-3 bg-[var(--orange)] text-white rounded-md hover:bg-[var(--orange)]/90 transition">
-                  View Studio Details
-                </Link>
-                <Link href="/studio-banbury#booking-form" className="inline-block px-6 py-3 bg-white text-[var(--navy)] rounded-md hover:bg-gray-100 transition">
-                  Book Studio Time
-                </Link>
-              </div>
+              <SlideInRight delay={0.3}>
+                <ScaleIn delay={0.4}>
+                  <h2 className="text-3xl font-bold mb-4">
+                    🎙️ Podcast & Video Studio
+                  </h2>
+                </ScaleIn>
+                
+                <p className="text-xl mb-4">
+                  Purpose-built for businesses that want to sound and look professional without metropolitan prices.
+                </p>
+                
+                <ul className="space-y-2 mb-6">
+                  <SlideUp className="flex items-center" delay={0.5}>
+                    <span className="text-[var(--orange)] mr-2">✓</span> Professional DSLR cameras
+                  </SlideUp>
+                  <SlideUp className="flex items-center" delay={0.6}>
+                    <span className="text-[var(--orange)] mr-2">✓</span> Broadcast-quality microphones
+                  </SlideUp>
+                  <SlideUp className="flex items-center" delay={0.7}>
+                    <span className="text-[var(--orange)] mr-2">✓</span> Acoustically treated space
+                  </SlideUp>
+                  <SlideUp className="flex items-center" delay={0.8}>
+                    <span className="text-[var(--orange)] mr-2">✓</span> On-site technical support
+                  </SlideUp>
+                </ul>
+                
+                <div className="flex flex-wrap gap-4">
+                  <Link 
+                    href="/studio-banbury" 
+                    className="inline-block px-6 py-3 bg-[var(--orange)] text-white rounded-md hover:bg-[var(--orange)]/90 hover:-translate-y-1 transition-all duration-300"
+                  >
+                    View Studio Details
+                  </Link>
+                  <Link 
+                    href="/studio-banbury#booking-form" 
+                    className="inline-block px-6 py-3 bg-white text-[var(--navy)] rounded-md hover:bg-gray-100 hover:shadow-md transition-all duration-300"
+                  >
+                    Book Studio Time
+                  </Link>
+                </div>
+              </SlideInRight>
             </div>
           </div>
         </div>
       </section>
       
-      {/* Contact Section */}
+      {/* Contact Section with animations */}
       <section className="py-16 bg-gray-50" id="contact">
         <div className="container mx-auto px-6 md:px-8">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-10">
-              <h2 className="text-3xl font-bold mb-3" style={{ color: 'var(--navy)' }}>
-                Looking for a proactive accountant in United Kingdom?
-              </h2>
-              <p className="text-gray-600 max-w-3xl mx-auto">
-                We're based in Oxford, Banbury, and London, and proudly serve ambitious businesses across the United Kingdom and beyond.
-                Ready to take your accounting to the next level? Let's talk about how we can help your business flourish.
-              </p>
+              <ScaleIn delay={0.1}>
+                <h2 className="text-3xl font-bold mb-3" style={{ color: 'var(--navy)' }}>
+                  Looking for a proactive accountant in United Kingdom?
+                </h2>
+              </ScaleIn>
+              <SlideUp delay={0.3}>
+                <p className="text-gray-600 max-w-3xl mx-auto">
+                  We're based in Oxford, Banbury, and London, and proudly serve ambitious businesses across the United Kingdom and beyond.
+                  Ready to take your accounting to the next level? Let's talk about how we can help your business flourish.
+                </p>
+              </SlideUp>
             </div>
             
             {/* Contact Form Section */}
@@ -296,25 +340,25 @@ export default function HomePage() {
                     </div>
                   </div>
                 </div>
-                
-                {/* Banbury Office */}
-                <div className="bg-white p-6 rounded-lg shadow-md">
-                  <div className="mb-4">
-                    <h3 className="text-lg font-semibold text-[var(--navy)] mb-3">Banbury Office</h3>
-                    <div className="space-y-2 text-gray-600 mb-4">
-                      <p className="flex items-start">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-[var(--orange)] mr-2 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                        </svg>
-                        <span>1st Floor Beaumont House, Beaumont Road, OX16 1RH</span>
-                      </p>
-                      <p className="flex items-start">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-[var(--orange)] mr-2 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                        </svg>
-                        <span>01295 477 250</span>
-                      </p>
-                    </div>
+              </div>
+              
+              {/* Banbury Office */}
+              <div className="bg-white p-6 rounded-lg shadow-md">
+                <div className="mb-4">
+                  <h3 className="text-lg font-semibold text-[var(--navy)] mb-3">Banbury Office</h3>
+                  <div className="space-y-2 text-gray-600 mb-4">
+                    <p className="flex items-start">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-[var(--orange)] mr-2 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                      </svg>
+                      <span>1st Floor Beaumont House, Beaumont Road, OX16 1RH</span>
+                    </p>
+                    <p className="flex items-start">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-[var(--orange)] mr-2 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                      </svg>
+                      <span>01295 477 250</span>
+                    </p>
                   </div>
                   
                   <div className="space-y-2">
@@ -337,31 +381,31 @@ export default function HomePage() {
                     </div>
                   </div>
                 </div>
-                
-                {/* London Office */}
-                <div className="bg-white p-6 rounded-lg shadow-md">
-                  <div className="mb-4">
-                    <h3 className="text-lg font-semibold text-[var(--navy)] mb-3">London Office</h3>
-                    <div className="space-y-2 text-gray-600 mb-4">
-                      <p className="flex items-start">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-[var(--orange)] mr-2 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                        </svg>
-                        <span>107 Cheapside, London, EC2V 6DN</span>
-                      </p>
-                      <p className="flex items-start">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-[var(--orange)] mr-2 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                        </svg>
-                        <span>020 3005 7870</span>
-                      </p>
-                    </div>
+              </div>
+              
+              {/* London Office */}
+              <div className="bg-white p-6 rounded-lg shadow-md">
+                <div className="mb-4">
+                  <h3 className="text-lg font-semibold text-[var(--navy)] mb-3">London Office</h3>
+                  <div className="space-y-2 text-gray-600 mb-4">
+                    <p className="flex items-start">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-[var(--orange)] mr-2 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                      </svg>
+                      <span>2 Frederick's Place, Old Jewry, EC2R 8AE</span>
+                    </p>
+                    <p className="flex items-start">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-[var(--orange)] mr-2 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                      </svg>
+                      <span>020 3833 9950</span>
+                    </p>
                   </div>
                   
                   <div className="space-y-2">
                     <div className="relative overflow-hidden rounded-lg shadow-sm border border-gray-200 aspect-video">
                       <iframe 
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2482.9107610266914!2d-0.0954606234056257!3d51.51473417181649!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x487603548d6d9a3d%3A0x486b0b46b9d0b1e8!2s107%20Cheapside%2C%20London%20EC2V%206DN!5e0!3m2!1sen!2suk!4v1651234567892!5m2!1sen!2suk" 
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2483.118271413698!2d-0.09074622339802587!3d51.51427727181761!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x48760354ae0cf06f%3A0xee933e8203c1c8a!2sOld%20Jewry%2C%20London!5e0!3m2!1sen!2suk!4v1651234567892!5m2!1sen!2suk" 
                         width="100%" 
                         height="100%" 
                         style={{ border: 0 }} 
