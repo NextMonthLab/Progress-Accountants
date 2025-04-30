@@ -87,7 +87,6 @@ const ServiceCard = withMemo(({
         {ImageComponent && (
           <div className="h-52 overflow-hidden bg-gray-100 relative">
             <DeferredRender>
-              <div className="absolute inset-0 bg-[#191C26]/80 backdrop-blur-[1px] z-10"></div>
               <ImageComponent />
             </DeferredRender>
           </div>
