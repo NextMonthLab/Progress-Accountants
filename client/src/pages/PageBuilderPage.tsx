@@ -152,13 +152,28 @@ const PageBuilderPage: React.FC = () => {
     );
   }
 
+  // Log params for debugging
+  console.log("PageBuilder route params:", params, "Current location:", location);
+  
+  // Calculate actual values to pass to PageBuilderContent
+  const pageId = validId || 0;
+  const actualIsNewPage = isNewPage;
+  const actualIsTemplateGallery = isTemplateGallery;
+  
+  console.log("PageBuilderContent rendering with ID:", id, "isNewPage:", actualIsNewPage, "pageId:", pageId, "isTemplateGallery:", actualIsTemplateGallery);
+  
   return (
     <div className="flex h-screen overflow-hidden">
       <NavigationProvider>
         <DynamicSidebar />
         <div className="flex-1 flex flex-col overflow-hidden">
           <div className="flex-1 overflow-auto">
-            <PageBuilderContent />
+            <PageBuilderContent 
+              id={id}
+              pageId={pageId} 
+              isNewPage={actualIsNewPage}
+              isTemplateGallery={actualIsTemplateGallery}
+            />
           </div>
         </div>
       </NavigationProvider>
