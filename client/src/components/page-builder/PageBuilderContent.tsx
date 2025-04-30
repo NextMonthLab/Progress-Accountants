@@ -134,12 +134,18 @@ const PageBuilderContent: React.FC = () => {
   const { data: pageData, isLoading, error } = useQuery({
     queryKey: [`/api/page-builder/pages/${pageId}`],
     queryFn: async () => {
-      const res = await apiRequest("GET", `/api/page-builder/pages/${pageId}`);
-      if (!res.ok) throw new Error("Failed to fetch page");
-      const data = await res.json();
-      return data.data;
+      try {
+        const res = await apiRequest("GET", `/api/page-builder/pages/${pageId}`);
+        if (!res.ok) throw new Error("Failed to fetch page");
+        const data = await res.json();
+        return data.data;
+      } catch (err) {
+        console.error("Error fetching page data:", err);
+        throw new Error(`Failed to fetch page: ${(err as Error).message}`);
+      }
     },
     enabled: !isNewPage && !!pageId && !isNaN(pageId),
+    retry: 1,
   });
 
   // Update page in state when data changes for existing pages
@@ -162,9 +168,17 @@ const PageBuilderContent: React.FC = () => {
   // Create new page mutation
   const createPageMutation = useMutation({
     mutationFn: async (newPage: PageBuilderPage) => {
-      const res = await apiRequest("POST", `/api/page-builder/pages`, newPage);
-      if (!res.ok) throw new Error("Failed to create page");
-      return res.json();
+      try {
+        const res = await apiRequest("POST", `/api/page-builder/pages`, newPage);
+        if (!res.ok) {
+          const errorData = await res.json();
+          throw new Error(errorData.message || "Failed to create page");
+        }
+        return res.json();
+      } catch (err) {
+        console.error("Error creating page:", err);
+        throw err;
+      }
     },
     onSuccess: (data) => {
       toast({
@@ -188,9 +202,17 @@ const PageBuilderContent: React.FC = () => {
   // Update existing page mutation
   const updatePageMutation = useMutation({
     mutationFn: async (updatedPage: PageBuilderPage) => {
-      const res = await apiRequest("PATCH", `/api/page-builder/pages/${pageId}`, updatedPage);
-      if (!res.ok) throw new Error("Failed to update page");
-      return res.json();
+      try {
+        const res = await apiRequest("PATCH", `/api/page-builder/pages/${pageId}`, updatedPage);
+        if (!res.ok) {
+          const errorData = await res.json();
+          throw new Error(errorData.message || "Failed to update page");
+        }
+        return res.json();
+      } catch (err) {
+        console.error("Error updating page:", err);
+        throw err;
+      }
     },
     onSuccess: (data) => {
       toast({
@@ -545,7 +567,7 @@ const PageBuilderContent: React.FC = () => {
             <Button 
               className="mt-4" 
               variant="outline" 
-              onClick={() => navigate("/admin/pages")}
+              onClick={() => navigate("/admin/content/pages")}
             >
               Back to Pages
             </Button>
