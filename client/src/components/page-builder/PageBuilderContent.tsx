@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useParams, useLocation } from "wouter";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
@@ -91,13 +91,22 @@ interface PageBuilderPage {
 }
 
 const PageBuilderContent: React.FC = () => {
-  const { id } = useParams<{ id: string }>();
+  const params = useParams<{ id?: string }>();
+  const id = params.id || '';
   const isNewPage = id === "new";
-  const pageId = isNewPage ? 0 : parseInt(id);
+  // Handle potential NaN errors with fallback to 0
+  const pageId = useMemo(() => {
+    if (isNewPage) return 0;
+    const parsed = parseInt(id);
+    return isNaN(parsed) ? 0 : parsed;
+  }, [id, isNewPage]);
+  
   const [, navigate] = useLocation();
   const queryClient = useQueryClient();
   const { toast } = useToast();
   const { tenant } = useTenant();
+  
+  console.log("PageBuilderContent rendering with ID:", id, "isNewPage:", isNewPage, "pageId:", pageId);
   
   // State
   const [activeTab, setActiveTab] = useState<string>(isNewPage ? "templates" : "editor");

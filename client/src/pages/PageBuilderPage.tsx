@@ -10,15 +10,29 @@ import { AlertCircle } from "lucide-react";
 
 // Render directly without additional layouts 
 const PageBuilderPage: React.FC = () => {
-  const { id } = useParams<{ id: string }>();
+  const params = useParams<{ id?: string }>();
+  const id = params.id || '';
   const isNewPage = id === "new";
   const [, navigate] = useLocation();
   const [isStatusOk, setIsStatusOk] = useState(false);
   const [statusError, setStatusError] = useState<string | null>(null);
+  
+  // Redirect to page list if accessed without ID
+  useEffect(() => {
+    if (!params.id) {
+      console.log("No ID provided in URL, redirecting to page list");
+      navigate("/page-builder");
+    }
+  }, [params, navigate]);
 
   // Validate ID parameter to prevent NaN issues
   const validId = useMemo(() => {
     if (isNewPage) return null;
+    
+    if (!id) {
+      console.error("No page ID provided");
+      return null;
+    }
     
     const parsedId = parseInt(id);
     if (isNaN(parsedId)) {
