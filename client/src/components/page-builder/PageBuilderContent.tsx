@@ -92,14 +92,24 @@ interface PageBuilderPage {
 
 const PageBuilderContent: React.FC = () => {
   const params = useParams<{ id?: string }>();
+  const [location] = useLocation();
+  
+  // Parse ID from URL with enhanced debugging
   const id = params.id || '';
-  const isNewPage = id === "new";
+  console.log("PageBuilder route params:", params, "Current location:", location);
+  
+  // New page detection handling
+  const isNewPage = id === "new" || location.endsWith('/page/new');
+  
+  // Handle template gallery view
+  const isTemplateGallery = location.includes('/templates');
+  
   // Handle potential NaN errors with fallback to 0
   const pageId = useMemo(() => {
-    if (isNewPage) return 0;
+    if (isNewPage || isTemplateGallery) return 0;
     const parsed = parseInt(id);
     return isNaN(parsed) ? 0 : parsed;
-  }, [id, isNewPage]);
+  }, [id, isNewPage, isTemplateGallery]);
   
   const [, navigate] = useLocation();
   const queryClient = useQueryClient();

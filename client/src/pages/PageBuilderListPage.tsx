@@ -183,7 +183,7 @@ const PageBuilderListPage: React.FC = () => {
 
   // Handle navigation to edit page
   const handleEditPage = (id: number) => {
-    navigate(`/page-builder/${id}`);
+    navigate(`/page-builder/page/${id}`);
   };
 
   // Handle navigation to view page on frontend
@@ -426,7 +426,7 @@ const PageBuilderListPage: React.FC = () => {
                                           duration: 5000
                                         });
                                         // Navigate to the new page
-                                        navigate(`/page-builder/${data.data.id}`);
+                                        navigate(`/page-builder/page/${data.data.id}`);
                                       } else {
                                         throw new Error(data.message || "Failed to clone page");
                                       }

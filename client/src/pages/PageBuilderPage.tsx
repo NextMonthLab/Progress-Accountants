@@ -13,17 +13,22 @@ const PageBuilderPage: React.FC = () => {
   const params = useParams<{ id?: string }>();
   const id = params.id || '';
   const isNewPage = id === "new";
-  const [, navigate] = useLocation();
+  const [location, navigate] = useLocation();
   const [isStatusOk, setIsStatusOk] = useState(false);
   const [statusError, setStatusError] = useState<string | null>(null);
   
+  // Log current location for debugging
+  useEffect(() => {
+    console.log("Current page builder route:", location);
+  }, [location]);
+  
   // Redirect to page list if accessed without ID
   useEffect(() => {
-    if (!params.id) {
+    if (!params.id && !location.includes('/templates')) {
       console.log("No ID provided in URL, redirecting to page list");
       navigate("/page-builder");
     }
-  }, [params, navigate]);
+  }, [params, navigate, location]);
 
   // Validate ID parameter to prevent NaN issues
   const validId = useMemo(() => {
