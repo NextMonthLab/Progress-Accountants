@@ -23,6 +23,7 @@ import { registerNavigationRoutes } from './controllers/navigationController';
 import { registerDomainMappingRoutes } from './controllers/domainMappingController';
 import { registerSotRoutes } from './routes/sot-routes';
 import { registerClientCheckInRoutes } from './routes/client-check-in-routes';
+import { registerSiteInventoryRoutes } from './routes/site-inventory-routes';
 import { registerAgentRoutes } from './controllers/agentController';
 import { registerSocialMediaRoutes } from './controllers/registerSocialMediaRoutes';
 import { registerAdvancedSeoRoutes } from './controllers/registerAdvancedSeoRoutes';
@@ -121,6 +122,9 @@ app.use((req, res, next) => {
   
   // Register Client Check-In routes for NextMonth SOT
   registerClientCheckInRoutes(app);
+  
+  // Register Site Inventory routes for Agora integration
+  registerSiteInventoryRoutes(app);
   
   // Register Progress Agent routes
   registerAgentRoutes(app);

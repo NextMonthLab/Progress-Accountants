@@ -1,0 +1,69 @@
+Perfect. Here’s a Replit-ready prompt that will extract and expose the full website inventory and metadata for the Progress Accountants smart site. It’s designed to run as part of Agora Prime or the Progress agent instance.
+
+⸻
+
+Replit Prompt: Create Smart Site Inventory Snapshot for Progress Accountants
+
+Objective:
+Create an internal endpoint and structured metadata snapshot of the Progress Accountants smart site, exposing:
+	•	List of all currently live pages (e.g. /about, /services, /book-studio)
+	•	Page titles and slugs
+	•	Current on-page copy (plain text, not raw HTML)
+	•	Any visible CTAs (buttons/links)
+	•	SEO metadata (title, description)
+	•	Most recent visitors (from logs or basic IP/user-agent header capture)
+	•	Snapshot timestamp
+
+Instructions for Replit Agent:
+	1.	Scan Local Site Structure:
+	•	Recursively scan all HTML, JSON, or Markdown files in the /screens/ or equivalent render directory.
+	•	Extract:
+	•	URL route (based on file path or route config)
+	•	Page title
+	•	Visible copy (body text, headings, paragraphs)
+	•	CTA text + target
+	•	SEO metadata (if defined)
+	2.	Log Recent Visitors:
+	•	Append basic log parsing from the access logs (last 25 visitors if available).
+	•	Capture:
+	•	Timestamp
+	•	Route accessed
+	•	IP (masked is fine)
+	•	User-agent
+	3.	Structure Output in JSON Format:
+
+{
+  "site": "Progress Accountants",
+  "domain": "progress.nextmonth.ai",
+  "last_updated": "2025-05-05T14:00:00Z",
+  "pages": [
+    {
+      "url": "/about",
+      "title": "About Us",
+      "copy_summary": "Progress Accountants is a modern UK-based firm...",
+      "ctas": [
+        { "text": "Contact Us", "target": "/contact" }
+      ],
+      "seo": {
+        "title": "About Progress Accountants",
+        "description": "Learn more about our team and values"
+      }
+    }
+  ],
+  "recent_visitors": [
+    {
+      "time": "2025-05-05T13:52:00Z",
+      "url": "/book-studio",
+      "ip": "masked",
+      "user_agent": "Mozilla/5.0..."
+    }
+  ]
+}
+
+
+	4.	Save snapshot to:
+/attached_assets/progress_smartsite_snapshot.json
+
+⸻
+
+Once this is implemented and the snapshot is saved, I’ll ingest the structured data and weave it into the NextMonth master SOT for cross-site querying. Want me to prep the JSON structure in advance so we’re ready to receive it?
