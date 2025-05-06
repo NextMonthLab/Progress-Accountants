@@ -12,8 +12,11 @@ import { AlertCircle } from "lucide-react";
 const PageBuilderPage: React.FC = () => {
   const params = useParams<{ id?: string }>();
   const id = params.id || '';
-  const isNewPage = id === "new";
   const [location, navigate] = useLocation();
+  
+  // Check if this is a new page - detect from both param and URL
+  const isNewPage = id === "new" || location.endsWith("/new") || location === "/page-builder/page/new"; 
+  
   const [isStatusOk, setIsStatusOk] = useState(false);
   const [statusError, setStatusError] = useState<string | null>(null);
   
@@ -22,9 +25,9 @@ const PageBuilderPage: React.FC = () => {
     console.log("Current page builder route:", location);
   }, [location]);
   
-  // Redirect to page list if accessed without ID
+  // Redirect to page list if accessed without ID and not on a special route
   useEffect(() => {
-    if (!params.id && !location.includes('/templates')) {
+    if (!params.id && !location.includes('/templates') && !location.includes('/new')) {
       console.log("No ID provided in URL, redirecting to page list");
       navigate("/page-builder");
     }
@@ -168,12 +171,7 @@ const PageBuilderPage: React.FC = () => {
         <DynamicSidebar />
         <div className="flex-1 flex flex-col overflow-hidden">
           <div className="flex-1 overflow-auto">
-            <PageBuilderContent 
-              id={id}
-              pageId={pageId} 
-              isNewPage={actualIsNewPage}
-              isTemplateGallery={actualIsTemplateGallery}
-            />
+            <PageBuilderContent />
           </div>
         </div>
       </NavigationProvider>
