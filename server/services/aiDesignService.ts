@@ -283,7 +283,8 @@ export async function generateDesignSuggestions(pageType: string, businessType: 
       response_format: { type: "json_object" }
     });
 
-    const aiSuggestions = JSON.parse(response.choices[0].message.content);
+    const content = response.choices[0].message.content || '{}';
+    const aiSuggestions = JSON.parse(content);
 
     // Format and save the generated suggestions
     const suggestions = {
@@ -323,8 +324,8 @@ export async function generateDesignSuggestions(pageType: string, businessType: 
         metaDescription: "Professional accounting services for businesses of all sizes",
         titleFormat: "{Business Name} | Professional Accounting Services"
       },
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
+      createdAt: new Date(),
+      updatedAt: new Date()
     };
   }
 }
@@ -430,7 +431,8 @@ export async function generateColorPalettes(industry: string, mood: string, tena
       response_format: { type: "json_object" }
     });
 
-    const aiPalettes = JSON.parse(response.choices[0].message.content);
+    const content = response.choices[0].message.content || '[]';
+    const aiPalettes = JSON.parse(content);
     
     // Add tenant ID and timestamps
     const formattedPalettes = (Array.isArray(aiPalettes) ? aiPalettes : [aiPalettes]).map(palette => ({
@@ -584,7 +586,8 @@ export async function generateComponentRecommendations(pageId: number, context: 
       response_format: { type: "json_object" }
     });
 
-    const aiRecommendations = JSON.parse(response.choices[0].message.content);
+    const content = response.choices[0].message.content || '{"recommendations":[]}';
+    const aiRecommendations = JSON.parse(content);
 
     // Format and save the generated recommendations
     const recommendation = {
