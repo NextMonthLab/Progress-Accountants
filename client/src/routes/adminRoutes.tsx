@@ -32,6 +32,9 @@ const MediaManagementPage = lazy(() => import("@/pages/MediaManagementPage"));
 const PageBuilderListPage = lazy(() => import("@/pages/PageBuilderListPage"));
 const PageBuilderPage = lazy(() => import("@/pages/PageBuilderPage"));
 
+// Lead Intelligence pages
+const LeadRadarPage = lazy(() => import("@/pages/admin/leads/LeadRadarPage"));
+
 export function AdminRoutes() {
   return (
     <>
