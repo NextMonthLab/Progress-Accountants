@@ -6,6 +6,7 @@ import { cn } from '@/lib/utils';
 import { useNavigation } from '@/contexts/NavigationContext';
 import QuickActions from '@/components/QuickActions';
 import NotificationsPanel from '@/components/NotificationsPanel';
+import KeyboardShortcutsButton from '@/components/KeyboardShortcutsButton';
 
 interface SmartContext {
   context: string;
