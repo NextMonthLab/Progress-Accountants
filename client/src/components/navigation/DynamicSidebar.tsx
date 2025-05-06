@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'wouter';
 import { useAuth } from '@/hooks/use-auth';
 import { useNavigation } from '@/contexts/NavigationContext';
 import { cn } from '@/lib/utils';
@@ -11,25 +10,18 @@ import {
   X,
   ChevronRight,
   ChevronDown,
-  Pin,
-  PinOff,
-  Globe,
-  Circle,
-  Brain,
-  Sparkles
+  Circle
 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
+import { Badge } from '@/components/ui/badge';
 import { getSiteBranding } from '@/lib/api';
 import { defaultSiteBranding, SiteBranding } from '@shared/site_branding';
-import { NavigationItem, NavigationLink, NavigationSubmenu, NavigationGroup } from '@/types/navigation';
-import SmartActivityPanel from './SmartActivityPanel';
+import { NavigationLink, NavigationSubmenu } from '@/types/navigation';
 import OnboardingProgressRing from '@/components/onboarding/OnboardingProgressRing';
 
 // Admin sidebar logo component - similar to the current implementation
@@ -51,11 +43,11 @@ function SidebarLogo({ collapsed }: { collapsed: boolean }) {
   
   if (collapsed) {
     return (
-      <Link href="/admin/dashboard" className="no-underline">
+      <a href="/admin/dashboard" className="no-underline">
         <span className="font-poppins uppercase font-bold text-xl" style={{ color: 'var(--navy)' }}>
           {siteBranding.logo.text.charAt(0)}
         </span>
-      </Link>
+      </a>
     );
   }
   
@@ -64,7 +56,7 @@ function SidebarLogo({ collapsed }: { collapsed: boolean }) {
   const words = logoText.split(" ");
   
   return (
-    <Link href="/admin/dashboard" className="font-poppins font-bold text-xl no-underline" style={{ color: 'var(--navy)' }}>
+    <a href="/admin/dashboard" className="font-poppins font-bold text-xl no-underline" style={{ color: 'var(--navy)' }}>
       {words.length > 1 ? (
         <>
           <span>{words.slice(0, -1).join(" ")} </span>
@@ -74,7 +66,7 @@ function SidebarLogo({ collapsed }: { collapsed: boolean }) {
         <span>{logoText} </span>
       )}
       <span style={{ color: 'var(--orange)' }}>Admin</span>
-    </Link>
+    </a>
   );
 }
 
@@ -97,8 +89,7 @@ const SidebarItemBadge = ({
 };
 
 const DynamicSidebar: React.FC = () => {
-  const { user, logoutMutation } = useAuth();
-  const [location] = useLocation();
+  const { user } = useAuth();
   const { 
     navigationGroups, 
     navigationState, 
@@ -106,14 +97,11 @@ const DynamicSidebar: React.FC = () => {
     toggleSubmenu,
     toggleSidebar,
     toggleMobileSidebar,
-    toggleFocusedMode,
-    addPinnedItem,
-    removePinnedItem,
     getGroupItems,
     isMobile
   } = useNavigation();
   
-  const { sidebarCollapsed, mobileSidebarCollapsed, expandedGroups, expandedSubmenus, pinnedItems, focusedMode } = navigationState;
+  const { sidebarCollapsed, mobileSidebarCollapsed, expandedGroups, expandedSubmenus } = navigationState;
   
   // Check if user has staff privileges (admin, super_admin, or editor)
   const isStaff = user?.userType === 'admin' || user?.userType === 'super_admin' || user?.userType === 'editor' || user?.isSuperAdmin;
@@ -123,7 +111,7 @@ const DynamicSidebar: React.FC = () => {
   
   // Check if the current route is active
   const isActive = (href: string) => {
-    return location === href || location.startsWith(href + '/');
+    return window.location.pathname === href || window.location.pathname.startsWith(href + '/');
   };
 
   // Helper to render a navigation link
@@ -131,7 +119,6 @@ const DynamicSidebar: React.FC = () => {
     // Get the Lucide icon dynamically
     const IconComponent = (LucideIcons as any)[item.icon] || Circle;
     
-    // Simple version for now
     return (
       <div className="group" key={item.id}>
         <a
@@ -143,6 +130,12 @@ const DynamicSidebar: React.FC = () => {
               : "text-[var(--navy)] hover:bg-gray-100",
             isNested && "ml-6 text-sm"
           )}
+          onClick={(e) => {
+            // If on mobile, close the sidebar after clicking
+            if (isMobile) {
+              toggleMobileSidebar();
+            }
+          }}
         >
           <div className="flex items-center">
             <IconComponent className="h-5 w-5 mr-2" />
@@ -199,12 +192,56 @@ const DynamicSidebar: React.FC = () => {
       !isMobile && (sidebarCollapsed ? "w-[70px]" : "w-64"),
       isMobile && (mobileSidebarCollapsed ? "w-0 border-r-0" : "fixed w-[90%] max-w-[280px] shadow-lg z-50")
     )}>
+      {/* Desktop Smart Site Collapse Toggle */}
+      {!isMobile && (
+        <div className="absolute -right-3 top-24 z-10">
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <button
+                  onClick={toggleSidebar}
+                  className={cn(
+                    "flex items-center justify-center w-6 h-6 rounded-full bg-white border border-gray-200 shadow-sm hover:bg-orange-50 transition-all duration-150",
+                  )}
+                  aria-label={sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+                >
+                  <ChevronRight className={cn(
+                    "h-3 w-3 text-[var(--navy)] transition-transform duration-200",
+                    sidebarCollapsed ? "rotate-180" : ""
+                  )} />
+                </button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs">
+                {sidebarCollapsed ? "Expand Smart Navigation" : "Collapse Smart Navigation"}
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        </div>
+      )}
+      
+      {/* Mobile Menu Close Button */}
+      {isMobile && !mobileSidebarCollapsed && (
+        <div className="absolute top-4 right-4 z-20">
+          <button
+            onClick={toggleMobileSidebar}
+            className="p-2 rounded-full bg-white border border-gray-200 shadow-sm hover:bg-orange-50 transition-all duration-150"
+            aria-label="Close sidebar"
+          >
+            <X className="h-4 w-4 text-[var(--navy)]" />
+          </button>
+        </div>
+      )}
+      
       {/* Sidebar Header */}
-      <div className="px-4 py-3 flex items-center justify-between border-b border-gray-200">
+      <div className="px-4 py-3 flex items-center justify-between border-b border-gray-200 bg-gradient-to-r from-gray-100 to-orange-50/30">
         <SidebarLogo collapsed={sidebarCollapsed} />
         <button
           onClick={isMobile ? toggleMobileSidebar : toggleSidebar}
-          className="p-2 rounded-md hover:bg-gray-200 transition-colors"
+          className="p-2 rounded-md hover:bg-orange-100 transition-colors"
+          aria-label={isMobile 
+            ? mobileSidebarCollapsed ? "Open menu" : "Close menu" 
+            : sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"
+          }
         >
           {isMobile ? (
             <X className="h-5 w-5 text-[var(--navy)]" />
@@ -216,7 +253,38 @@ const DynamicSidebar: React.FC = () => {
         </button>
       </div>
       
-      {/* Sidebar Content */}
+      {/* User Profile & Onboarding Progress */}
+      {user && (user.userType === 'admin' || user.userType === 'super_admin') && (
+        <div className="px-4 py-3 flex items-center space-x-3 border-b border-gray-200 bg-gradient-to-r from-gray-100 to-blue-50/20">
+          <div className="relative flex-shrink-0">
+            <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-semibold">
+              {user.username ? user.username.charAt(0).toUpperCase() : 'U'}
+            </div>
+            {!sidebarCollapsed && (
+              <div className="absolute -bottom-1 -right-1">
+                <OnboardingProgressRing size={20} />
+              </div>
+            )}
+          </div>
+          {!sidebarCollapsed && (
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-medium truncate">{user.username}</p>
+              <p className="text-xs text-muted-foreground truncate">
+                {user.isSuperAdmin || user.userType === 'super_admin' 
+                  ? 'Super Admin' 
+                  : user.userType === 'admin' ? 'Admin' : 'User'}
+              </p>
+            </div>
+          )}
+          {sidebarCollapsed && (
+            <div className="absolute right-0 top-20">
+              <OnboardingProgressRing size={24} />
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Sidebar Content - Dynamic Navigation Groups */}
       <div className="flex-1 overflow-y-auto py-4 space-y-4">
         {navigationGroups.map((group) => {
           // Get all items for this group
