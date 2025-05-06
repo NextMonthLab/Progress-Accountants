@@ -1,6 +1,6 @@
 import OpenAI from "openai";
 import { storage } from "../storage";
-import { BusinessIdentity } from "@shared/schema";
+import { BusinessIdentity, aiDesignSuggestions, aiColorPalettes, aiComponentRecommendations, pageBuilderPages } from "@shared/schema";
 import { db } from "../db";
 import { eq } from "drizzle-orm";
 
@@ -175,8 +175,8 @@ export async function generateDesignSuggestions(pageType: string, businessType: 
       Business details:
       Name: ${businessIdentity?.name || "Progress Accountants"}
       Mission: ${businessIdentity?.mission || "To provide exceptional accounting services to businesses"}
-      Industry Type: ${businessIdentity?.industryType || "Accounting"}
-      Core Business: ${businessIdentity?.coreBusiness || "Accounting and Tax Services"}
+      Industry: ${businessIdentity?.brandPositioning || "Accounting"}
+      Values: ${businessIdentity?.mission || "Accounting and Tax Services"}
       
       Design principles to incorporate:
       1. Visual hierarchy - Prioritize the most important content with size, color, and positioning
@@ -462,7 +462,7 @@ export async function generateColorPalettes(industry: string, mood: string, tena
     
     // Try to save default palettes to database
     try {
-      await db.insert(db.table.ai_color_palettes).values(defaultPalettesWithTenant);
+      await db.insert(aiColorPalettes).values(defaultPalettesWithTenant);
     } catch (err) {
       console.error("Error saving default palettes:", err);
     }
@@ -601,7 +601,7 @@ export async function generateComponentRecommendations(pageId: number, context: 
     };
 
     // Save to database
-    const [savedRecommendation] = await db.insert(db.table.ai_component_recommendations).values(recommendation).returning();
+    const [savedRecommendation] = await db.insert(aiComponentRecommendations).values(recommendation).returning();
 
     return savedRecommendation;
   } catch (error) {
