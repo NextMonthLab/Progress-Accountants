@@ -413,7 +413,7 @@ function Router() {
       <ProtectedRoute path="/homepage-setup" component={HomepageSetupPage} />
       <ProtectedRoute path="/foundation-pages" component={FoundationPagesOverviewPage} />
       {/* Removed standalone page creation in favor of the Page Builder */}
-      {/* <ProtectedRoute path="/create-new-page" component={CreateNewPagePage} allowedRoles={['admin', 'super_admin', 'editor']} /> */}
+      <ProtectedRoute path="/create-new-page" component={CreateNewPagePage} allowedRoles={['admin', 'super_admin', 'editor']} />
       <ProtectedRoute path="/about-setup" component={AboutSetupPage} />
       <ProtectedRoute path="/services-setup" component={ServicesSetupPage} />
       <ProtectedRoute path="/contact-setup" component={ContactSetupPage} />
