@@ -82,19 +82,22 @@ const PageBuilderSeoPanel: React.FC<PageBuilderSeoPanelProps> = ({
 
   // Update local SEO title and description when page title/description change
   useEffect(() => {
-    const updatedSettings = { ...seoSettings };
-    
-    // Only update if not already set by the user
-    if (!seoSettings.title) {
-      updatedSettings.title = title;
+    // Only update if we have an onChange handler and settings exist
+    if (typeof onChange === 'function' && seoSettings) {
+      const updatedSettings = { ...seoSettings };
+      
+      // Only update if not already set by the user
+      if (!seoSettings.title) {
+        updatedSettings.title = title;
+      }
+      
+      if (!seoSettings.description) {
+        updatedSettings.description = description;
+      }
+      
+      onChange(updatedSettings);
     }
-    
-    if (!seoSettings.description) {
-      updatedSettings.description = description;
-    }
-    
-    onChange(updatedSettings);
-  }, [title, description]);
+  }, [title, description, seoSettings, onChange]);
 
   // Fetch SEO score
   const { 
@@ -232,11 +235,20 @@ const PageBuilderSeoPanel: React.FC<PageBuilderSeoPanelProps> = ({
       return updatedSettings;
     },
     onSuccess: (updatedSettings) => {
-      onChange(updatedSettings);
-      toast({
-        title: "Recommendation Applied",
-        description: "The recommendation has been applied to your SEO settings.",
-      });
+      if (typeof onChange === 'function') {
+        onChange(updatedSettings);
+        toast({
+          title: "Recommendation Applied",
+          description: "The recommendation has been applied to your SEO settings.",
+        });
+      } else {
+        console.error("onChange function is not defined");
+        toast({
+          title: "Error",
+          description: "Could not apply recommendation due to a technical error.",
+          variant: "destructive",
+        });
+      }
     },
     onError: (error) => {
       toast({
@@ -249,23 +261,29 @@ const PageBuilderSeoPanel: React.FC<PageBuilderSeoPanelProps> = ({
 
   // Add a keyword to the list
   const handleAddKeyword = () => {
-    if (!newKeyword.trim()) return;
+    if (!newKeyword.trim() || typeof onChange !== 'function') return;
     
-    const updatedKeywords = [...(seoSettings.keywords || []), newKeyword.trim()];
-    onChange({ ...seoSettings, keywords: updatedKeywords });
+    const updatedKeywords = [...(seoSettings?.keywords || []), newKeyword.trim()];
+    onChange({ ...(seoSettings || {}), keywords: updatedKeywords });
     setNewKeyword('');
   };
 
   // Remove a keyword from the list
   const handleRemoveKeyword = (index: number) => {
-    const updatedKeywords = [...(seoSettings.keywords || [])];
+    if (typeof onChange !== 'function') return;
+    
+    const updatedKeywords = [...(seoSettings?.keywords || [])];
     updatedKeywords.splice(index, 1);
-    onChange({ ...seoSettings, keywords: updatedKeywords });
+    onChange({ ...(seoSettings || {}), keywords: updatedKeywords });
   };
 
   // Update SEO settings
   const handleChange = (field: keyof SeoSettings, value: any) => {
-    onChange({ ...seoSettings, [field]: value });
+    if (typeof onChange !== 'function') {
+      console.error("onChange function is not defined");
+      return;
+    }
+    onChange({ ...(seoSettings || {}), [field]: value });
   };
 
   // Get SEO score color based on score value
@@ -311,15 +329,15 @@ const PageBuilderSeoPanel: React.FC<PageBuilderSeoPanelProps> = ({
                   <Label htmlFor="seo-title">SEO Title</Label>
                   <Input
                     id="seo-title"
-                    value={seoSettings.title || ''}
+                    value={seoSettings?.title || ''}
                     onChange={(e) => handleChange('title', e.target.value)}
                     placeholder="Enter SEO title (recommended 50-60 characters)"
                   />
-                  {seoSettings.title && (
+                  {seoSettings?.title && (
                     <div className="flex justify-between text-xs text-muted-foreground">
-                      <span>{seoSettings.title.length} characters</span>
-                      <span className={seoSettings.title.length > 60 ? "text-red-500" : (seoSettings.title.length < 30 ? "text-amber-500" : "text-green-500")}>
-                        {seoSettings.title.length > 60 ? "Too long" : (seoSettings.title.length < 30 ? "Could be longer" : "Good length")}
+                      <span>{seoSettings?.title?.length || 0} characters</span>
+                      <span className={seoSettings?.title?.length > 60 ? "text-red-500" : (seoSettings?.title?.length < 30 ? "text-amber-500" : "text-green-500")}>
+                        {seoSettings?.title?.length > 60 ? "Too long" : (seoSettings?.title?.length < 30 ? "Could be longer" : "Good length")}
                       </span>
                     </div>
                   )}
@@ -329,16 +347,16 @@ const PageBuilderSeoPanel: React.FC<PageBuilderSeoPanelProps> = ({
                   <Label htmlFor="seo-description">Meta Description</Label>
                   <Textarea
                     id="seo-description"
-                    value={seoSettings.description || ''}
+                    value={seoSettings?.description || ''}
                     onChange={(e) => handleChange('description', e.target.value)}
                     placeholder="Enter meta description (recommended 120-155 characters)"
                     rows={3}
                   />
-                  {seoSettings.description && (
+                  {seoSettings?.description && (
                     <div className="flex justify-between text-xs text-muted-foreground">
-                      <span>{seoSettings.description.length} characters</span>
-                      <span className={seoSettings.description.length > 160 ? "text-red-500" : (seoSettings.description.length < 70 ? "text-amber-500" : "text-green-500")}>
-                        {seoSettings.description.length > 160 ? "Too long" : (seoSettings.description.length < 70 ? "Could be longer" : "Good length")}
+                      <span>{seoSettings?.description?.length || 0} characters</span>
+                      <span className={seoSettings?.description?.length > 160 ? "text-red-500" : (seoSettings?.description?.length < 70 ? "text-amber-500" : "text-green-500")}>
+                        {seoSettings?.description?.length > 160 ? "Too long" : (seoSettings?.description?.length < 70 ? "Could be longer" : "Good length")}
                       </span>
                     </div>
                   )}
