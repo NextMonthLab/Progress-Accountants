@@ -33,6 +33,7 @@ const PageBuilderListPage = lazy(() => import("@/pages/PageBuilderListPage"));
 const PageBuilderPage = lazy(() => import("@/pages/PageBuilderPage"));
 
 // Lead Intelligence pages
+const LeadRadarPageWrapper = lazy(() => import("@/pages/admin/leads/LeadRadarPageWrapper"));
 const LeadRadarPage = lazy(() => import("@/pages/admin/leads/LeadRadarPage"));
 
 export function AdminRoutes() {
@@ -138,7 +139,7 @@ export function AdminRoutes() {
       />
       <ProtectedRoute 
         path="/admin/leads/radar" 
-        component={LeadRadarPage} 
+        component={LeadRadarPageWrapper} 
         allowedRoles={['admin', 'super_admin', 'editor']} 
       />
       <ProtectedRoute 
