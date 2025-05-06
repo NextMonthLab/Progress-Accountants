@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 import { useAuth } from '@/hooks/use-auth';
 import { useTenant } from '@/hooks/use-tenant';
 import { useQuery } from '@tanstack/react-query';
@@ -347,6 +347,7 @@ export default function AdminDashboardPage() {
   const { user } = useAuth();
   const { tenant } = useTenant();
   const [activeTab, setActiveTab] = useState('overview');
+  const [, navigate] = useLocation();
   
   // Fetch dashboard metrics (mocked for now)
   const { data: metrics, isLoading: isLoadingMetrics } = useQuery({
@@ -523,7 +524,10 @@ export default function AdminDashboardPage() {
               <Settings className="h-4 w-4" />
               Settings
             </Button>
-            <Button className="gap-2 bg-navy hover:bg-navy/90">
+            <Button 
+              className="gap-2 bg-navy hover:bg-navy/90"
+              onClick={() => navigate("/page-builder/page/new")}
+            >
               <Plus className="h-4 w-4" />
               Create New Page
             </Button>

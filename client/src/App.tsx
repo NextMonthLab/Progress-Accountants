@@ -434,6 +434,12 @@ function Router() {
         component={PageBuilderListPage} 
         allowedRoles={['admin', 'super_admin', 'editor']} 
       />
+      {/* Also support the old URL pattern for backwards compatibility */}
+      <ProtectedRoute 
+        path="/page-builder/new" 
+        component={() => <PageBuilderPage />}
+        allowedRoles={['admin', 'super_admin', 'editor']} 
+      />
       {/* Fix for the "Create New Page" route */}
       <ProtectedRoute 
         path="/page-builder/page/new" 
