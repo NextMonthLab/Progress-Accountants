@@ -118,6 +118,11 @@ const SmartContextBanner: React.FC = () => {
             <QuickActions />
           </div>
           
+          {/* Notifications Panel */}
+          <div className="mr-2">
+            <NotificationsPanel />
+          </div>
+          
           {/* View Website Button */}
           <a 
             href="/" 

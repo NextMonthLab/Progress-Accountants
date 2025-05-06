@@ -507,28 +507,26 @@ function App() {
           <PermissionsProvider>
             <ThemeProvider>
               <TenantProvider>
-                <NotificationsProvider>
-                  <CompanionContextProvider>
-                    <HelpProvider>
-                      <HealthProvider>
-                        <DocumentHead route="/" />
-                        <FirstTimeUserDetector>
-                          <MainLayout>
-                            <ErrorBoundary contentType="page">
-                              <Router />
-                            </ErrorBoundary>
-                          </MainLayout>
-                        </FirstTimeUserDetector>
-                        <DualModeCompanion />
-                        <UpgradeAnnouncement />
-                        <InstantHelpWidget />
-                        <ContextSuggestion />
-                        <HealthTracker />
-                        <Toaster />
-                      </HealthProvider>
-                    </HelpProvider>
-                  </CompanionContextProvider>
-                </NotificationsProvider>
+                <CompanionContextProvider>
+                  <HelpProvider>
+                    <HealthProvider>
+                      <DocumentHead route="/" />
+                      <FirstTimeUserDetector>
+                        <MainLayout>
+                          <ErrorBoundary contentType="page">
+                            <Router />
+                          </ErrorBoundary>
+                        </MainLayout>
+                      </FirstTimeUserDetector>
+                      <DualModeCompanion />
+                      <UpgradeAnnouncement />
+                      <InstantHelpWidget />
+                      <ContextSuggestion />
+                      <HealthTracker />
+                      <Toaster />
+                    </HealthProvider>
+                  </HelpProvider>
+                </CompanionContextProvider>
               </TenantProvider>
             </ThemeProvider>
           </PermissionsProvider>
