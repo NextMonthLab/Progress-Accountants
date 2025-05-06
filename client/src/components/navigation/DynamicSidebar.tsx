@@ -10,7 +10,8 @@ import {
   X,
   ChevronRight,
   ChevronDown,
-  Circle
+  Circle,
+  ExternalLink
 } from 'lucide-react';
 import {
   Tooltip,
@@ -122,17 +123,23 @@ const DynamicSidebar: React.FC = () => {
     // Get the Lucide icon dynamically
     const IconComponent = (LucideIcons as any)[item.icon] || Circle;
     
+    // Special handling for "View Website" link to open in a new tab
+    const isViewWebsiteLink = item.id === 'view_website';
+    
     return (
       <div className="group" key={item.id}>
         <a
           href={item.href}
           className={cn(
             "flex items-center justify-between rounded-md px-3 py-2 transition-all duration-200 no-underline",
-            isActive(item.href) 
+            isActive(item.href) && !isViewWebsiteLink
               ? "bg-gray-200 text-[var(--navy)] font-medium" 
               : "text-[var(--navy)] hover:bg-gray-100",
-            isNested && "ml-6 text-sm"
+            isNested && "ml-6 text-sm",
+            isViewWebsiteLink && "text-[var(--orange)] font-medium"
           )}
+          target={isViewWebsiteLink ? "_blank" : undefined}
+          rel={isViewWebsiteLink ? "noopener noreferrer" : undefined}
           onClick={(e) => {
             // If on mobile, close the sidebar after clicking
             if (isMobile) {
@@ -141,11 +148,16 @@ const DynamicSidebar: React.FC = () => {
           }}
         >
           <div className="flex items-center">
-            <IconComponent className="h-5 w-5 mr-2" />
+            <IconComponent className={cn("h-5 w-5 mr-2", isViewWebsiteLink && "text-[var(--orange)]")} />
             <span>{item.title}</span>
           </div>
           
           {item.badge && <SidebarItemBadge badge={item.badge} />}
+          
+          {/* Add external link icon for view website */}
+          {isViewWebsiteLink && (
+            <ExternalLink className="h-3 w-3 ml-2 text-[var(--orange)]" />
+          )}
         </a>
       </div>
     );

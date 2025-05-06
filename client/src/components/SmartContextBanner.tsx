@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Brain, X, Clock, ChevronDown, ChevronUp, LightbulbIcon } from 'lucide-react';
+import { Brain, X, Clock, ChevronDown, ChevronUp, LightbulbIcon, Globe, ExternalLink } from 'lucide-react';
 import { useLocation } from 'wouter';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -111,10 +111,21 @@ const SmartContextBanner: React.FC = () => {
             )}
           </div>
           
+          {/* View Website Button */}
+          <a 
+            href="/" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="h-7 px-3 mr-2 inline-flex items-center justify-center rounded-md text-xs font-medium text-white bg-[var(--orange)] hover:bg-[var(--orange)]/90 transition-colors"
+          >
+            <Globe className="h-3 w-3 mr-1" />
+            View Website
+          </a>
+          
           <Button 
             variant="ghost" 
             size="sm" 
-            className="h-7 px-2 text-xs text-gray-600 hover:bg-orange-100 hover:text-orange-700 transition-all ml-auto"
+            className="h-7 px-2 text-xs text-gray-600 hover:bg-orange-100 hover:text-orange-700 transition-all"
             onClick={() => setIsOpen(false)}
           >
             <X className="h-3 w-3 mr-1" />

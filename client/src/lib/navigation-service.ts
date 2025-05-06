@@ -14,6 +14,16 @@ export const mapSidebarToNavigation = (): NavigationItem[] => {
     // FREQUENTLY USED SECTION
     // ======================
     {
+      id: 'view_website',
+      title: 'View Website',
+      icon: 'Globe',
+      type: 'link',
+      href: '/',
+      description: 'Open your public website in a new tab',
+      category: 'frequently_used',
+      pinnedOrder: 1,
+    },
+    {
       id: 'dashboard',
       title: 'Dashboard',
       icon: 'LayoutDashboard',
@@ -22,7 +32,7 @@ export const mapSidebarToNavigation = (): NavigationItem[] => {
       description: 'View your site performance at a glance',
       badge: { text: 'Upgraded', variant: 'updated' },
       category: 'frequently_used',
-      pinnedOrder: 1,
+      pinnedOrder: 2,
     },
     {
       id: 'page_builder',
