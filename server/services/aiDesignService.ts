@@ -162,7 +162,7 @@ export async function getDesignSuggestions(pageType: string, businessType: strin
 export async function generateDesignSuggestions(pageType: string, businessType: string, tenantId: string) {
   try {
     // Get business identity to inform the AI
-    const businessIdentity = await storage.getBusinessIdentity(tenantId);
+    const businessIdentity = await storage.getBusinessIdentity();
     
     if (!process.env.OPENAI_API_KEY) {
       throw new Error("OpenAI API key not found");
@@ -350,8 +350,8 @@ export async function getColorPalettes(tenantId: string) {
       id: index,
       tenantId,
       ...palette,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
+      createdAt: new Date(),
+      updatedAt: new Date()
     }));
   } catch (error) {
     console.error("Error fetching color palettes:", error);
@@ -361,8 +361,8 @@ export async function getColorPalettes(tenantId: string) {
       id: index,
       tenantId,
       ...palette,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
+      createdAt: new Date(),
+      updatedAt: new Date()
     }));
   }
 }
@@ -456,8 +456,8 @@ export async function generateColorPalettes(industry: string, mood: string, tena
       ...palette,
       mood,
       industry,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
+      createdAt: new Date(),
+      updatedAt: new Date()
     }));
     
     // Try to save default palettes to database
@@ -504,7 +504,7 @@ export async function generateComponentRecommendations(pageId: number, context: 
       where: (table) => eq(table.id, pageId),
       columns: {
         id: true,
-        title: true,
+        name: true,
         description: true,
         pageType: true,
         tenantId: true
@@ -512,16 +512,14 @@ export async function generateComponentRecommendations(pageId: number, context: 
     });
 
     // Get business identity to inform the AI
-    const businessIdentity = page?.tenantId 
-      ? await storage.getBusinessIdentity(page.tenantId) 
-      : null;
+    const businessIdentity = await storage.getBusinessIdentity();
 
     // Prepare enhanced prompt for OpenAI with better component guidance
     const prompt = `
       Generate detailed component recommendations for a ${context} section on a web page.
       
       Page details:
-      ${page ? `Title: ${page.title}
+      ${page ? `Title: ${page.name}
       Description: ${page.description}
       Type: ${page.pageType}` : 'No page details available'}
       
@@ -616,8 +614,8 @@ export async function generateComponentRecommendations(pageId: number, context: 
       recommendations: defaultComponents,
       reasoning: "These are standard components that work well for most sections.",
       used: false,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
+      createdAt: new Date(),
+      updatedAt: new Date()
     };
   }
 }
