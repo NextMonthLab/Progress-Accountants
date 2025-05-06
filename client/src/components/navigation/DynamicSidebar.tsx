@@ -41,18 +41,21 @@ function SidebarLogo({ collapsed }: { collapsed: boolean }) {
     fetchBranding();
   }, []);
   
+  // Default text to use if branding is not available
+  const defaultText = "Progress";
+  
   if (collapsed) {
     return (
       <a href="/admin/dashboard" className="no-underline">
         <span className="font-poppins uppercase font-bold text-xl" style={{ color: 'var(--navy)' }}>
-          {siteBranding.logo.text.charAt(0)}
+          {siteBranding?.logo?.text ? siteBranding.logo.text.charAt(0) : defaultText.charAt(0)}
         </span>
       </a>
     );
   }
   
   // Default text logo with "Admin" suffix
-  const logoText = siteBranding.logo.text;
+  const logoText = siteBranding?.logo?.text || defaultText;
   const words = logoText.split(" ");
   
   return (
