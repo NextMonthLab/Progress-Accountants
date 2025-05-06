@@ -138,7 +138,7 @@ export function AdminLayout({
     { label: 'Blueprint Management', icon: <Shield className="h-4 w-4" />, href: '/admin/blueprint' },
   ];
 
-  const isSuperAdmin = user?.role === 'superadmin';
+  const isSuperAdmin = user?.isSuperAdmin || user?.userType === 'super_admin';
   
   const renderMenuItem = (item: MenuItemType) => {
     const isActive = location === item.href || (item.submenu && item.submenu.some(sub => location === sub.href));
@@ -249,7 +249,6 @@ export function AdminLayout({
             <div className="flex items-center gap-3 mb-3">
               <Avatar className="border-2 border-primary/20">
                 <AvatarFallback className="bg-primary/10 text-primary">{user?.username?.charAt(0).toUpperCase() || 'U'}</AvatarFallback>
-                {user?.avatar && <AvatarImage src={user.avatar} alt={user?.username || 'User'} />}
               </Avatar>
               <div>
                 <div className="font-medium text-sm">{user?.username || 'User'}</div>
@@ -305,7 +304,6 @@ export function AdminLayout({
               <div className="md:hidden">
                 <Avatar className="h-8 w-8 border-2 border-primary/20">
                   <AvatarFallback className="bg-primary/10 text-primary">{user?.username?.charAt(0).toUpperCase() || 'U'}</AvatarFallback>
-                  {user?.avatar && <AvatarImage src={user.avatar} alt={user?.username || 'User'} />}
                 </Avatar>
               </div>
             </div>
