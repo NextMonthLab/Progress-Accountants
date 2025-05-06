@@ -682,7 +682,7 @@ export default function AdminDashboardPage() {
                       title="Create New Page"
                       description="Design and publish a new page"
                       icon={<FileText className="h-5 w-5" />}
-                      link="/page-builder/new"
+                      link="/page-builder/page/new"
                       variant="outline"
                     />
                     <QuickAction
@@ -880,7 +880,11 @@ export default function AdminDashboardPage() {
                     <CardTitle>Quick Content Actions</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-3">
-                    <Button variant="outline" className="w-full justify-start">
+                    <Button 
+                      variant="outline" 
+                      className="w-full justify-start"
+                      onClick={() => navigate("/page-builder/page/new")}
+                    >
                       <Plus className="mr-2 h-4 w-4" />
                       Create New Page
                     </Button>
