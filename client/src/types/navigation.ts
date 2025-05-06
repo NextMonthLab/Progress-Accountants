@@ -1,5 +1,6 @@
 export type NavigationItemType = 'link' | 'submenu';
 export type NavigationItemCategory = 
+  | 'frequently_used'
   | 'creator_tools' 
   | 'admin_tools' 
   | 'page_builders' 
@@ -61,15 +62,21 @@ export interface NavigationState {
 // Default navigation groups
 export const DEFAULT_NAVIGATION_GROUPS: NavigationGroup[] = [
   {
+    id: 'frequently_used',
+    title: 'Frequently Used',
+    icon: 'Star',
+    category: 'frequently_used',
+  },
+  {
     id: 'creator_tools',
-    title: 'Creator Tools',
+    title: 'Content Creation',
     icon: 'Sparkles',
     category: 'creator_tools',
   },
   {
     id: 'admin_tools',
-    title: 'Command Center',
-    icon: 'Gauge',
+    title: 'Analytics & Insights',
+    icon: 'BarChart3',
     category: 'admin_tools',
   },
   {
@@ -79,8 +86,20 @@ export const DEFAULT_NAVIGATION_GROUPS: NavigationGroup[] = [
     category: 'page_builders',
   },
   {
+    id: 'website_setup',
+    title: 'Website Settings',
+    icon: 'Globe',
+    category: 'website_setup',
+  },
+  {
+    id: 'brand_center',
+    title: 'Brand Center',
+    icon: 'Palette',
+    category: 'brand_center',
+  },
+  {
     id: 'personal_growth',
-    title: 'Personal Growth',
+    title: 'Growth & Networking',
     icon: 'TrendingUp',
     category: 'personal_growth',
   },
@@ -91,20 +110,8 @@ export const DEFAULT_NAVIGATION_GROUPS: NavigationGroup[] = [
     category: 'marketplace',
   },
   {
-    id: 'brand_center',
-    title: 'Brand Center',
-    icon: 'Palette',
-    category: 'brand_center',
-  },
-  {
-    id: 'website_setup',
-    title: 'Website Setup',
-    icon: 'Globe',
-    category: 'website_setup',
-  },
-  {
     id: 'system',
-    title: 'System',
+    title: 'System & Administration',
     icon: 'Settings',
     category: 'system',
   }

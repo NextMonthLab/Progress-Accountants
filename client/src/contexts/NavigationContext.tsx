@@ -28,7 +28,7 @@ interface NavigationContextType {
 
 const DEFAULT_NAVIGATION_STATE: NavigationState = {
   pinnedItems: [],
-  expandedGroups: ['admin_tools', 'creator_tools'], // Default expanded groups
+  expandedGroups: ['frequently_used', 'creator_tools', 'system'], // Default expanded groups
   expandedSubmenus: [],
   sidebarCollapsed: false,
   mobileSidebarCollapsed: true, // Default to collapsed on mobile
