@@ -4,6 +4,7 @@ import { useLocation } from 'wouter';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { useNavigation } from '@/contexts/NavigationContext';
+import QuickActions from '@/components/QuickActions';
 
 interface SmartContext {
   context: string;
@@ -109,6 +110,11 @@ const SmartContextBanner: React.FC = () => {
             ) : (
               <span>Last activity: {smartContext.lastActivity}</span>
             )}
+          </div>
+          
+          {/* Quick Actions Dropdown */}
+          <div className="mr-2">
+            <QuickActions />
           </div>
           
           {/* View Website Button */}
