@@ -120,7 +120,7 @@ const defaultColorPalettes = [
 export async function getDesignSuggestions(pageType: string, businessType: string, tenantId: string) {
   try {
     // First check if we have saved suggestions for this combination
-    const existingSuggestions = await db.query.ai_design_suggestions.findFirst({
+    const existingSuggestions = await db.query.aiDesignSuggestions.findFirst({
       where: (table) => {
         return eq(table.tenantId, tenantId) && 
                eq(table.pageType, pageType) && 
@@ -303,7 +303,7 @@ export async function generateDesignSuggestions(pageType: string, businessType: 
     };
 
     // Save to database
-    const [savedSuggestion] = await db.insert(db.table.ai_design_suggestions).values(suggestions).returning();
+    const [savedSuggestion] = await db.insert(aiDesignSuggestions).values(suggestions).returning();
 
     return savedSuggestion;
   } catch (error) {
@@ -335,7 +335,7 @@ export async function generateDesignSuggestions(pageType: string, businessType: 
 export async function getColorPalettes(tenantId: string) {
   try {
     // Query saved color palettes for this tenant
-    const palettes = await db.query.ai_color_palettes.findMany({
+    const palettes = await db.query.aiColorPalettes.findMany({
       where: (table) => eq(table.tenantId, tenantId),
       orderBy: (table) => table.createdAt,
       limit: 10
@@ -442,7 +442,7 @@ export async function generateColorPalettes(industry: string, mood: string, tena
 
     // Save to database
     if (formattedPalettes.length > 0) {
-      const savedPalettes = await db.insert(db.table.ai_color_palettes).values(formattedPalettes).returning();
+      const savedPalettes = await db.insert(aiColorPalettes).values(formattedPalettes).returning();
       return savedPalettes;
     }
 
@@ -477,7 +477,7 @@ export async function generateColorPalettes(industry: string, mood: string, tena
 export async function getComponentRecommendations(pageId: number) {
   try {
     // Query saved recommendations for this page
-    const recommendations = await db.query.ai_component_recommendations.findMany({
+    const recommendations = await db.query.aiComponentRecommendations.findMany({
       where: (table) => eq(table.pageId, pageId),
       orderBy: (table) => table.createdAt,
       limit: 10
@@ -500,7 +500,7 @@ export async function generateComponentRecommendations(pageId: number, context: 
     }
 
     // Get page details if available
-    const page = await db.query.page_builder_pages.findFirst({
+    const page = await db.query.pageBuilderPages.findFirst({
       where: (table) => eq(table.id, pageId),
       columns: {
         id: true,
