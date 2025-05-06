@@ -37,7 +37,8 @@ import {
   Video,
   Mail,
   Layout,
-  Grid
+  Grid,
+  Loader as Spinner
 } from 'lucide-react';
 import PageBuilderComponentEditor from './PageBuilderComponentEditor';
 import { PageBuilderComponent, PageBuilderSection } from '@shared/advanced_page_builder';
@@ -242,11 +243,28 @@ const PageBuilderComponentPanel: React.FC<PageBuilderComponentPanelProps> = ({
     }
   };
 
+  // Render placeholder if section is undefined or null
+  if (!section) {
+    return (
+      <Card className="mb-6">
+        <CardHeader className="pb-3">
+          <CardTitle className="text-xl">Loading Section Content</CardTitle>
+          <CardDescription>Section data is being loaded...</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="flex justify-center p-6">
+            <Spinner className="h-8 w-8 animate-spin text-primary" />
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
   return (
     <Card className="mb-6">
       <CardHeader className="pb-3">
         <CardTitle className="text-xl">
-          {section.name || 'Section Content'}
+          {section?.name || 'Section Content'}
         </CardTitle>
         <CardDescription>
           Manage the components in this section
@@ -257,7 +275,7 @@ const PageBuilderComponentPanel: React.FC<PageBuilderComponentPanelProps> = ({
           <Label htmlFor="section-name">Section Name</Label>
           <Input
             id="section-name"
-            value={section.name || ''}
+            value={section?.name || ''}
             onChange={(e) => onUpdateSection(section.id, { ...section, name: e.target.value })}
             className="mt-1"
           />
