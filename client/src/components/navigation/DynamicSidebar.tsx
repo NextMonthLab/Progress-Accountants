@@ -252,7 +252,7 @@ const DynamicSidebar: React.FC = () => {
     // Normal expanded view
     return (
       <div className="relative group" key={item.id}>
-        <Link
+        <a
           href={item.href}
           className={cn(
             "flex items-center justify-between rounded-md px-3 py-2 transition-all duration-200",
@@ -279,24 +279,25 @@ const DynamicSidebar: React.FC = () => {
             )}>{item.title}</span>
           </div>
           
-          <div className="flex items-center z-10">
+          <div className="flex items-center" style={{ pointerEvents: 'none' }}>
             {item.badge && <SidebarItemBadge badge={item.badge} />}
-            
-            <button
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                isPinned ? removePinnedItem(item.id) : addPinnedItem(item.id);
-              }}
-              className={cn(
-                "ml-2 opacity-0 group-hover:opacity-100 transition-opacity",
-                isPinned ? "text-primary" : "text-muted-foreground hover:text-foreground"
-              )}
-            >
-              {isPinned ? <PinOff className="h-3.5 w-3.5" /> : <Pin className="h-3.5 w-3.5" />}
-            </button>
           </div>
-        </Link>
+        </a>
+        
+        {/* Pin button as a separate element */}
+        <button
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            isPinned ? removePinnedItem(item.id) : addPinnedItem(item.id);
+          }}
+          className={cn(
+            "absolute right-2 top-2 ml-2 opacity-0 group-hover:opacity-100 transition-opacity z-20",
+            isPinned ? "text-primary" : "text-muted-foreground hover:text-foreground"
+          )}
+        >
+          {isPinned ? <PinOff className="h-3.5 w-3.5" /> : <Pin className="h-3.5 w-3.5" />}
+        </button>
         
         {/* Marketplace item special handling - show upgrade CTAs */}
         {item.id === 'marketplace' && (
@@ -343,7 +344,7 @@ const DynamicSidebar: React.FC = () => {
               <p className="font-medium text-sm mb-1">{submenu.title}</p>
               <div className="flex flex-col gap-1 mt-1">
                 {submenu.items.map(item => (
-                  <Link
+                  <a
                     key={item.id}
                     href={item.href}
                     className={cn(
@@ -354,24 +355,25 @@ const DynamicSidebar: React.FC = () => {
                     )}
                   >
                     <span>{item.title}</span>
-                    {item.badge && (
-                      <Badge 
-                        className={cn(
-                          "text-[8px] py-0 h-3 ml-1 whitespace-nowrap px-1.5 leading-none flex items-center pointer-events-none",
-                          item.badge.variant === "new" ? "bg-emerald-500" :
-                          item.badge.variant === "updated" ? "bg-blue-500" :
-                          item.badge.variant === "beta" ? "bg-purple-500" :
-                          item.badge.variant === "pro" ? "bg-gradient-to-r from-amber-500 to-orange-500" :
-                          item.badge.text.toLowerCase().includes('ai') ? "bg-teal-500" :
-                          item.badge.text.toLowerCase().includes('real-time') ? "bg-indigo-500" :
-                          "bg-gray-200 text-[var(--navy)]"
-                        )}
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                        {item.badge.text}
-                      </Badge>
-                    )}
-                  </Link>
+                    <div style={{ pointerEvents: 'none' }}>
+                      {item.badge && (
+                        <Badge 
+                          className={cn(
+                            "text-[8px] py-0 h-3 ml-1 whitespace-nowrap px-1.5 leading-none flex items-center pointer-events-none",
+                            item.badge.variant === "new" ? "bg-emerald-500" :
+                            item.badge.variant === "updated" ? "bg-blue-500" :
+                            item.badge.variant === "beta" ? "bg-purple-500" :
+                            item.badge.variant === "pro" ? "bg-gradient-to-r from-amber-500 to-orange-500" :
+                            item.badge.text.toLowerCase().includes('ai') ? "bg-teal-500" :
+                            item.badge.text.toLowerCase().includes('real-time') ? "bg-indigo-500" :
+                            "bg-gray-200 text-[var(--navy)]"
+                          )}
+                        >
+                          {item.badge.text}
+                        </Badge>
+                      )}
+                    </div>
+                  </a>
                 ))}
               </div>
             </TooltipContent>
