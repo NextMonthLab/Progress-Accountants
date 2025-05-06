@@ -1,129 +1,155 @@
 import React from 'react';
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Progress } from "@/components/ui/progress";
 import { 
   Users, 
   Signal, 
   Building, 
   Mail,
-  ArrowUpRight
+  ArrowUpRight,
+  ArrowRight
 } from "lucide-react";
 
 export default function LeadRadarPage() {
   // Stats data similar to the reference image
   const stats = [
     { 
-      title: "Total Lead Profiles", 
-      value: "0", 
-      suffix: "profiles",
-      icon: <Users className="h-5 w-5 text-[#d65db1]" />,
-      subtext: "Across all sources"
+      title: "Tools Installed",
+      value: "5",
+      icon: <Signal className="h-5 w-5 text-white" />,
+      color: "bg-[#FF8A65]",
+      textColor: "text-[#FF8A65]"
     },
     { 
-      title: "Signals Generated", 
-      value: "0", 
-      suffix: "signals",
-      icon: <Signal className="h-5 w-5 text-[#5EB8B6]" />,
-      subtext: "Based on profile analysis"
+      title: "Latest Update",
+      value: "Apr 22, 2025",
+      icon: <Signal className="h-5 w-5 text-white" />,
+      color: "bg-[#26A69A]",
+      textColor: "text-[#26A69A]"
     },
     { 
-      title: "Business Matches", 
-      value: "0", 
-      suffix: "matches",
-      icon: <Building className="h-5 w-5 text-[#4E94F8]" />,
-      subtext: "Potential business matches"
+      title: "Security Status",
+      value: "Protected",
+      icon: <Signal className="h-5 w-5 text-white" />,
+      color: "bg-[#42A5F5]",
+      textColor: "text-[#42A5F5]"
+    }
+  ];
+
+  const quickActions = [
+    {
+      title: "Create New Page",
+      description: "Design and publish a new page",
+      icon: <FileIcon className="h-5 w-5 text-[#d65db1]" />
     },
-    { 
-      title: "Emails Parsed", 
-      value: "0", 
-      suffix: "emails",
-      icon: <Mail className="h-5 w-5 text-[#F8A84E]" />,
-      subtext: "From all sources"
+    {
+      title: "Install New Tool",
+      description: "Browse the tool marketplace",
+      icon: <DownloadIcon className="h-5 w-5 text-[#d65db1]" />
     }
   ];
 
   return (
     <div className="space-y-6">
-      {/* Lead Radar Card */}
-      <Card className="bg-white shadow-sm rounded-lg overflow-hidden relative border-0">
-        <div className="absolute top-0 right-0 w-64 h-64 opacity-[0.03] z-0">
-          <div className="w-full h-full bg-[#ff6987] transform rotate-12 translate-x-10 -translate-y-10 rounded-full"></div>
-        </div>
-        
-        <CardContent className="p-6 z-10 relative">
-          <div className="flex items-start mb-4">
-            <div className="flex-1">
-              <div className="flex justify-between items-center mb-1">
-                <h1 className="text-2xl font-bold">
-                  <span className="text-gray-800">Lead </span>
-                  <span className="text-[#5EB8B6]">Radar</span>
-                </h1>
-                <div className="text-sm text-gray-600 bg-slate-50 px-3 py-1 rounded-full">
-                  Credits <span className="font-medium">0/100</span>
-                </div>
-              </div>
-              <p className="text-gray-500 text-sm">Transform raw leads into intelligent signals with AI-powered business matching</p>
-            </div>
-          </div>
-          
-          <div className="flex gap-2 mt-4">
-            <Button size="sm" className="bg-gradient-to-r from-[#5EB8B6] to-[#4ca3a1] text-white hover:from-[#45a4a2] hover:to-[#389997] rounded-md flex items-center gap-1 px-4 h-9">
-              <Signal className="h-4 w-4 mr-1" /> Generate Signal
-            </Button>
-            <Button variant="outline" size="sm" className="text-gray-600 hover:bg-gray-50 rounded-md border-gray-200 flex items-center gap-1 px-4 h-9">
-              <span className="text-[#d65db1]">⚘</span> Documentation
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
-      
-      {/* Tab Navigation */}
-      <div className="flex">
-        <div className="bg-white shadow-sm rounded-full p-1 flex space-x-1 border">
-          <Button variant="ghost" className="bg-white shadow-sm rounded-full py-1 px-4 text-gray-700 flex items-center gap-2 h-auto">
-            <span className="text-gray-600">⚘</span> Overview
-          </Button>
-          <Button variant="ghost" className="py-1 px-4 text-gray-700 flex items-center gap-2 rounded-full h-auto">
-            <span className="text-gray-600">⚪</span> Lead Profiles
-          </Button>
-          <Button variant="ghost" className="py-1 px-4 text-gray-700 flex items-center gap-2 rounded-full h-auto">
-            <span className="text-gray-600">⚡</span> Signals
-          </Button>
-          <Button variant="ghost" className="py-1 px-4 text-gray-700 flex items-center gap-2 rounded-full h-auto">
-            <span className="text-gray-600">⇆</span> Matches
-          </Button>
-          <Button variant="ghost" className="py-1 px-4 text-gray-700 flex items-center gap-2 rounded-full h-auto">
-            <span className="text-gray-600">⊗</span> Insights
-          </Button>
-        </div>
-      </div>
-      
-      {/* Stat Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      {/* Stats Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
         {stats.map((stat, index) => (
-          <Card key={index} className="border-0 shadow-sm hover:shadow-md transition-shadow rounded-lg overflow-hidden">
-            <CardContent className="p-6">
+          <Card key={index} className="border-0 shadow-sm rounded-xl overflow-hidden">
+            <CardContent className="p-6 flex justify-between items-center">
               <div className="flex flex-col">
-                <div className="flex items-start justify-between">
-                  <div className="text-4xl font-bold">{stat.value}</div>
-                  <div className={`p-2 rounded-full ${
-                    index === 0 ? "bg-[#fde2ed]" : 
-                    index === 1 ? "bg-[#e3f7f7]" : 
-                    index === 2 ? "bg-[#e1edff]" : "bg-[#fff5e5]"
-                  }`}>
-                    {stat.icon}
-                  </div>
-                </div>
-                <div className="text-sm font-medium text-gray-500 mt-1">{stat.suffix}</div>
-                <div className="mt-4 flex items-center text-sm text-gray-500">
-                  {stat.subtext}
-                </div>
+                <div className="text-sm text-gray-500">{stat.title}</div>
+                <div className={`text-xl font-semibold mt-1 ${stat.textColor}`}>{stat.value}</div>
+              </div>
+              <div className={`rounded-full p-3 h-12 w-12 flex items-center justify-center ${stat.color}`}>
+                {stat.icon}
               </div>
             </CardContent>
           </Card>
         ))}
       </div>
+      
+      {/* Website Performance Card */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <Card className="border-0 shadow-sm rounded-xl col-span-2">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-lg font-medium">Website Performance</CardTitle>
+            <div className="text-sm text-gray-500">Traffic and engagement for the past 30 days</div>
+          </CardHeader>
+          <CardContent>
+            <div className="h-[200px] bg-slate-50 rounded-lg flex items-center justify-center">
+              <div className="text-gray-400 text-sm">Chart placeholder</div>
+            </div>
+          </CardContent>
+        </Card>
+        
+        {/* Quick Actions Card */}
+        <Card className="border-0 shadow-sm rounded-xl">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-lg font-medium">Quick Actions</CardTitle>
+            <div className="text-sm text-gray-500">Common tasks and actions</div>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {quickActions.map((action, index) => (
+              <div key={index} className="group border rounded-lg p-4 hover:border-[#d65db1]/30 cursor-pointer transition-all">
+                <div className="flex justify-between items-center">
+                  <div className="flex items-center gap-3">
+                    {action.icon}
+                    <div>
+                      <div className="font-medium text-gray-800 group-hover:text-[#d65db1]">{action.title}</div>
+                      <div className="text-xs text-gray-500">{action.description}</div>
+                    </div>
+                  </div>
+                  <ArrowRight className="h-4 w-4 text-gray-400 group-hover:text-[#d65db1] opacity-0 group-hover:opacity-100 transition-opacity" />
+                </div>
+              </div>
+            ))}
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
+}
+
+// Icons
+function FileIcon(props) {
+  return (
+    <svg
+      {...props}
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
+      <polyline points="14 2 14 8 20 8" />
+    </svg>
+  )
+}
+
+function DownloadIcon(props) {
+  return (
+    <svg
+      {...props}
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+      <polyline points="7 10 12 15 17 10" />
+      <line x1="12" x2="12" y1="15" y2="3" />
+    </svg>
+  )
 }

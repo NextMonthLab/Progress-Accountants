@@ -6,6 +6,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Separator } from '@/components/ui/separator';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Badge } from '@/components/ui/badge';
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
   Home, 
   Settings, 
@@ -23,7 +24,11 @@ import {
   RefreshCw,
   ChevronDown,
   CircleHelp,
-  LineChart
+  LineChart,
+  FileText,
+  ExternalLink,
+  Bell,
+  X
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
@@ -60,6 +65,7 @@ export function AdminLayout({
   const { user, logoutMutation } = useAuth();
   const { toast } = useToast();
   const [expandedMenus, setExpandedMenus] = useState<Record<string, boolean>>({});
+  const [activeTab, setActiveTab] = useState("overview");
   
   const handleLogout = () => {
     logoutMutation.mutate(undefined, {
@@ -81,6 +87,16 @@ export function AdminLayout({
   };
   
   const menuItems: MenuItemType[] = [
+    {
+      label: 'Dashboard',
+      icon: <Home className="h-4 w-4" />,
+      href: '/admin/dashboard',
+    },
+    { 
+      label: 'Page Builder', 
+      icon: <FileText className="h-4 w-4" />, 
+      href: '/page-builder'
+    },
     { 
       label: 'Lead Intelligence', 
       icon: <LineChart className="h-4 w-4" />, 
@@ -93,19 +109,15 @@ export function AdminLayout({
       ]
     },
     { 
-      label: 'Developer Tools', 
-      icon: <Settings className="h-4 w-4" />, 
-      href: '/admin/developer',
-      submenu: [
-        { label: 'API Manager', icon: <Database className="h-4 w-4" />, href: '/admin/developer/api' },
-        { label: 'Schema Builder', icon: <Database className="h-4 w-4" />, href: '/admin/developer/schema' }
-      ]
-    },
-    { 
       label: 'Marketplace', 
       icon: <Globe className="h-4 w-4" />, 
       href: '/admin/marketplace',
       badge: { text: 'New', variant: 'new' }
+    },
+    { 
+      label: 'Media Library', 
+      icon: <Globe className="h-4 w-4" />, 
+      href: '/media'
     },
     { 
       label: 'SOT Integration', 
@@ -116,16 +128,6 @@ export function AdminLayout({
       label: 'Analytics', 
       icon: <BarChart3 className="h-4 w-4" />, 
       href: '/admin/analytics' 
-    },
-    { 
-      label: 'Business Network', 
-      icon: <Network className="h-4 w-4" />, 
-      href: '/admin/network' 
-    },
-    { 
-      label: 'Financial', 
-      icon: <CreditCard className="h-4 w-4" />, 
-      href: '/admin/financial' 
     },
     { 
       label: 'Settings', 
@@ -152,14 +154,14 @@ export function AdminLayout({
           <>
             <Button 
               variant={isActive ? "secondary" : "ghost"} 
-              className={`w-full justify-between group ${isActive ? 'bg-[#fde2ed] text-[#d65db1] hover:bg-[#fbd8e8] hover:text-[#d65db1]' : ''}`}
+              className={`w-full justify-between group ${isActive ? 'bg-[#d65db1]/10 text-[#d65db1] hover:bg-[#d65db1]/10 hover:text-[#d65db1]' : ''}`}
               onClick={() => toggleSubmenu(item.label)}
             >
               <div className="flex items-center">
                 <span className="mr-2 text-[#d65db1]">{item.icon}</span>
                 <span>{item.label}</span>
                 {item.badge && (
-                  <Badge className="ml-2 px-1 py-0 h-4 bg-[#fde2ed] hover:bg-[#fbd8e8] text-[#d65db1] border-none text-[10px] rounded-full">
+                  <Badge className="ml-2 px-1 py-0 h-4 bg-[#d65db1]/10 hover:bg-[#d65db1]/20 text-[#d65db1] border-none text-[10px] rounded-full">
                     {item.badge.text}
                   </Badge>
                 )}
@@ -169,12 +171,12 @@ export function AdminLayout({
               />
             </Button>
             {isExpanded && item.submenu && (
-              <div className="ml-6 mt-1 space-y-1 border-l-2 border-[#fde2ed] pl-2">
+              <div className="ml-6 mt-1 space-y-1 border-l-2 border-[#d65db1]/10 pl-2">
                 {item.submenu.map(subItem => (
                   <Link key={subItem.href} href={subItem.href}>
                     <Button 
                       variant={location === subItem.href ? "secondary" : "ghost"} 
-                      className={`w-full justify-start ${location === subItem.href ? 'bg-[#fde2ed] text-[#d65db1] hover:bg-[#fbd8e8] hover:text-[#d65db1]' : ''}`}
+                      className={`w-full justify-start ${location === subItem.href ? 'bg-[#d65db1]/10 text-[#d65db1] hover:bg-[#d65db1]/10 hover:text-[#d65db1]' : ''}`}
                       size="sm"
                     >
                       <span className="mr-2 text-[#d65db1]">{subItem.icon}</span>
@@ -189,14 +191,14 @@ export function AdminLayout({
           <Link href={item.href}>
             <Button 
               variant={isActive ? "secondary" : "ghost"} 
-              className={`w-full justify-between group ${isActive ? 'bg-[#fde2ed] text-[#d65db1] hover:bg-[#fbd8e8] hover:text-[#d65db1]' : ''}`}
+              className={`w-full justify-between group ${isActive ? 'bg-[#d65db1]/10 text-[#d65db1] hover:bg-[#d65db1]/10 hover:text-[#d65db1]' : ''}`}
             >
               <div className="flex items-center">
                 <span className="mr-2 text-[#d65db1]">{item.icon}</span>
                 <span>{item.label}</span>
               </div>
               {item.badge && (
-                <Badge className="px-1 py-0 h-4 bg-[#fde2ed] hover:bg-[#fbd8e8] text-[#d65db1] border-none text-[10px] rounded-full">
+                <Badge className="px-1 py-0 h-4 bg-[#d65db1]/10 hover:bg-[#d65db1]/20 text-[#d65db1] border-none text-[10px] rounded-full">
                   {item.badge.text}
                 </Badge>
               )}
@@ -208,23 +210,86 @@ export function AdminLayout({
   };
   
   return (
-    <div className="flex h-screen bg-white">
-      {/* Sidebar */}
-      <div className="w-64 border-r hidden md:block bg-white">
-        <div className="h-full flex flex-col">
-          <div className="p-4 flex items-center">
-            {NextMonthLogo ? (
-              <img src={NextMonthLogo} alt="NextMonth" className="h-6" />
-            ) : (
-              <div className="font-bold text-xl text-[#d65db1]">
-                NextMonth
-              </div>
-            )}
+    <div className="flex h-screen bg-[#f5f5f7]">
+      {/* Header Bar */}
+      <div className="fixed top-0 left-0 right-0 h-14 bg-white border-b z-50 flex items-center justify-between px-4">
+        <div className="flex items-center gap-2">
+          <div className="font-semibold flex items-center">
+            <span className="text-[#d65db1] mr-2">Progress</span>
+            <span className="text-gray-500">Admin</span>
           </div>
-          <Separator />
+          <div className="w-px h-6 bg-gray-200 mx-2"></div>
+          <div className="text-sm text-gray-600 flex items-center gap-2">
+            <span>🔍 Smart Context</span>
+            <span className="text-gray-400">|</span>
+            <span>Dashboard Overview</span>
+          </div>
+        </div>
+        
+        <div className="flex items-center gap-4">
+          <div className="text-sm text-gray-500">Last activity: 2 minutes ago</div>
+          <Button size="sm" variant="secondary" className="h-8 gap-1 bg-[#f0d9fb] text-[#d65db1] hover:bg-[#e5cdf0] border-none">
+            <span>Quick Actions</span>
+          </Button>
+          <Button size="sm" variant="outline" className="h-8 gap-1 text-gray-700">
+            <Bell className="h-4 w-4" />
+            <span>Notifications</span>
+          </Button>
+          <Button size="sm" variant="outline" className="h-8 gap-1 text-gray-700 group">
+            <ExternalLink className="h-3.5 w-3.5 group-hover:text-[#d65db1]" />
+            <span className="group-hover:text-[#d65db1]">View Website</span>
+          </Button>
+          <Button size="sm" variant="ghost" className="h-8 w-8 p-0 rounded-full text-gray-500 hover:bg-gray-100">
+            <X className="h-4 w-4" />
+          </Button>
+        </div>
+      </div>
+      
+      {/* Sidebar */}
+      <div className="w-[180px] fixed top-14 bottom-0 left-0 border-r bg-white hidden md:block">
+        <div className="h-full flex flex-col">
+          <div className="mt-4">
+            <div className="flex justify-center mb-4">
+              <Avatar className="h-12 w-12 bg-[#d65db1] text-white">
+                <AvatarFallback className="font-semibold text-lg">
+                  {user?.username?.charAt(0).toUpperCase() || 'M'}
+                </AvatarFallback>
+              </Avatar>
+            </div>
+            <div className="text-center mb-2">
+              <div className="text-sm font-medium">{user?.username || 'manager'}</div>
+              <div className="text-xs text-gray-500">Admin</div>
+            </div>
+          </div>
           
-          <ScrollArea className="flex-1">
-            <nav className="p-2">
+          <div className="mt-4 px-3">
+            <div className="text-xs font-semibold text-gray-500 mb-2 uppercase tracking-wider">
+              FREQUENTLY USED
+            </div>
+            <div className="mb-4">
+              <Link href="/admin/dashboard">
+                <Button variant="ghost" className="w-full justify-start text-sm h-9 mb-1">
+                  <BarChart3 className="mr-2 h-4 w-4" /> 
+                  Dashboard
+                </Button>
+              </Link>
+              <Link href="/page-builder">
+                <Button variant="ghost" className="w-full justify-start text-sm h-9 mb-1">
+                  <FileText className="mr-2 h-4 w-4" /> 
+                  Page Builder
+                </Button>
+              </Link>
+              <Link href="/media">
+                <Button variant="ghost" className="w-full justify-start text-sm h-9">
+                  <Database className="mr-2 h-4 w-4" /> 
+                  Media Library
+                </Button>
+              </Link>
+            </div>
+          </div>
+          
+          <ScrollArea className="flex-1 px-3">
+            <nav className="py-2">
               <div className="space-y-1">
                 {menuItems.map(renderMenuItem)}
               </div>
@@ -233,7 +298,7 @@ export function AdminLayout({
                 <>
                   <Separator className="my-2" />
                   <div className="pt-2">
-                    <div className="px-3 text-xs font-semibold text-muted-foreground mb-2">
+                    <div className="px-3 text-xs font-semibold text-gray-500 mb-2">
                       Advanced
                     </div>
                     <div className="space-y-1">
@@ -245,29 +310,17 @@ export function AdminLayout({
             </nav>
           </ScrollArea>
           
-          <Separator />
-          <div className="p-4">
-            <div className="flex items-center gap-3 mb-3">
-              <Avatar className="border-2 border-[#d65db1]/20">
-                <AvatarFallback className="bg-[#d65db1]/10 text-[#d65db1]">{user?.username?.charAt(0).toUpperCase() || 'U'}</AvatarFallback>
-              </Avatar>
-              <div>
-                <div className="font-medium text-sm">{user?.username || 'User'}</div>
-                <div className="text-xs text-muted-foreground">{user?.email || 'No email'}</div>
-              </div>
-            </div>
-            <div className="flex gap-2">
-              <Button size="sm" variant="outline" className="w-full justify-start text-xs" asChild>
-                <Link href="/admin/help">
-                  <CircleHelp className="h-3 w-3 mr-1" />
-                  Help
-                </Link>
-              </Button>
-              <Button size="sm" variant="outline" className="w-full justify-start text-xs" onClick={handleLogout}>
-                <LogOut className="h-3 w-3 mr-1" />
-                Log Out
-              </Button>
-            </div>
+          <div className="p-3 mt-auto">
+            <Button variant="outline" size="sm" className="w-full justify-start text-sm mb-2" asChild>
+              <Link href="/admin/help">
+                <CircleHelp className="h-4 w-4 mr-2" />
+                Help
+              </Link>
+            </Button>
+            <Button variant="outline" size="sm" className="w-full justify-start text-sm" onClick={handleLogout}>
+              <LogOut className="h-4 w-4 mr-2" />
+              Log Out
+            </Button>
           </div>
         </div>
       </div>
@@ -280,75 +333,66 @@ export function AdminLayout({
       </div>
       
       {/* Floating Action Button */}
-      <div className="fixed bottom-4 right-4 z-50">
-        <Button size="icon" className="rounded-full h-12 w-12 shadow-lg bg-gradient-to-r from-[#d65db1] to-[#ff6987] text-white hover:from-[#c24ea0] hover:to-[#f05877]">
-          <span className="text-xl">+</span>
+      <div className="fixed bottom-6 right-6 z-50">
+        <Button size="icon" className="rounded-full h-14 w-14 shadow-lg bg-[#d65db1] text-white hover:bg-[#c452a5] flex items-center justify-center">
+          <span className="text-2xl font-light">+</span>
         </Button>
       </div>
       
       {/* Main Content */}
-      <div className="flex-1 overflow-auto bg-white">
-        {/* NextMonth Style Top Navigation */}
-        <header className="sticky top-0 z-30 bg-white border-b shadow-sm">
-          <div className="max-w-7xl mx-auto px-4 py-2">
-            <div className="flex justify-between items-center">
-              <div className="flex items-center space-x-8">
-                <div className="flex items-center">
-                  {NextMonthLogo ? (
-                    <img src={NextMonthLogo} alt="NextMonth" className="h-6" />
-                  ) : (
-                    <div className="font-bold text-lg text-[#d65db1]">NextMonth</div>
-                  )}
-                </div>
-                
-                <nav className="hidden md:flex space-x-8">
-                  <div className="relative group">
-                    <Button variant="ghost" className="text-gray-700 hover:text-[#d65db1] px-2 py-1 h-auto font-medium">
-                      Lead Intelligence <ChevronDown className="h-4 w-4 ml-1 opacity-60" />
-                    </Button>
-                  </div>
-                  <div className="relative group">
-                    <Button variant="ghost" className="text-gray-700 hover:text-[#d65db1] px-2 py-1 h-auto font-medium">
-                      Developer Tools <ChevronDown className="h-4 w-4 ml-1 opacity-60" />
-                    </Button>
-                  </div>
-                  <div className="relative group">
-                    <Button variant="ghost" className="text-gray-700 hover:text-[#d65db1] px-2 py-1 h-auto font-medium">
-                      Marketplace <ChevronDown className="h-4 w-4 ml-1 opacity-60" />
-                    </Button>
-                  </div>
-                  <Button variant="ghost" className="text-gray-700 hover:text-[#d65db1] flex items-center gap-1 px-2 py-1 h-auto font-medium">
-                    <span className="text-gray-400">⟳</span> SOT Integration
-                  </Button>
-                </nav>
+      <div className="ml-0 md:ml-[180px] mt-14 w-full md:w-[calc(100%-180px)] bg-[#f5f5f7]">
+        <main className="p-5 md:p-6">
+          <div className="mb-6">
+            <div className="flex justify-between items-start mb-4">
+              <div>
+                <h1 className="text-2xl font-bold mb-1">{title}</h1>
+                <p className="text-sm text-gray-500">Welcome back, {user?.username || 'manager'}</p>
               </div>
               
-              <div className="flex items-center space-x-4">
-                <Button size="sm" className="bg-[#5EB8B6] hover:bg-[#45a4a2] text-white text-xs font-medium rounded-md px-3 h-8">
-                  MC Login
-                </Button>
-                <Button variant="ghost" className="text-gray-700 hover:text-[#d65db1] flex items-center gap-1 px-2 py-1 h-auto font-medium">
-                  <span className="text-gray-400">$</span> Financial <ChevronDown className="h-4 w-4 ml-1 opacity-60" />
-                </Button>
-                <Button variant="ghost" className="text-gray-700 hover:text-[#d65db1] flex items-center gap-1 px-2 py-1 h-auto font-medium">
-                  <span className="text-gray-400">✧</span> Creative
-                </Button>
-              </div>
+              <Button size="sm" variant="outline" className="h-9 bg-white">
+                <Settings className="h-4 w-4 mr-2" />
+                Settings
+              </Button>
             </div>
+            
+            <Tabs defaultValue="overview" className="mb-6" onValueChange={setActiveTab}>
+              <TabsList className="bg-white border shadow-sm p-1 h-auto w-full justify-start">
+                <TabsTrigger 
+                  value="overview" 
+                  className={`py-1.5 px-6 h-auto text-sm data-[state=active]:bg-white data-[state=active]:text-[#d65db1] data-[state=active]:shadow rounded-md`}
+                >
+                  <span className="inline-flex items-center">
+                    Overview
+                  </span>
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="content" 
+                  className={`py-1.5 px-6 h-auto text-sm data-[state=active]:bg-white data-[state=active]:text-[#d65db1] data-[state=active]:shadow rounded-md`}
+                >
+                  <span className="inline-flex items-center">
+                    Content
+                  </span>
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="tools" 
+                  className={`py-1.5 px-6 h-auto text-sm data-[state=active]:bg-white data-[state=active]:text-[#d65db1] data-[state=active]:shadow rounded-md`}
+                >
+                  <span className="inline-flex items-center">
+                    Tools
+                  </span>
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="system" 
+                  className={`py-1.5 px-6 h-auto text-sm data-[state=active]:bg-white data-[state=active]:text-[#d65db1] data-[state=active]:shadow rounded-md`}
+                >
+                  <span className="inline-flex items-center">
+                    System
+                  </span>
+                </TabsTrigger>
+              </TabsList>
+            </Tabs>
           </div>
-        </header>
-        
-        {/* Page Progress Indicator */}
-        <div className="w-full bg-gray-100 h-0.5 relative">
-          <div className="max-w-7xl mx-auto px-4 flex">
-            <div className="bg-gradient-to-r from-[#d65db1] to-[#ff6987] w-1/6 h-0.5 relative">
-              <div className="absolute left-0 -top-1 h-2 w-2 rounded-full bg-[#d65db1]"></div>
-            </div>
-            <div className="absolute right-4 -top-1 h-2 w-2 rounded-full bg-gray-300"></div>
-          </div>
-        </div>
-        
-        <main className="p-6 max-w-7xl mx-auto">
+          
           {children}
         </main>
       </div>
