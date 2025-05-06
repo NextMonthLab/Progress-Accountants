@@ -122,9 +122,10 @@ const SidebarItemBadge = ({
   return (
     <Badge 
       className={cn(
-        "ml-auto text-[8px] py-0 h-4 whitespace-nowrap px-1.5 leading-none flex items-center",
+        "ml-auto text-[8px] py-0 h-4 whitespace-nowrap px-1.5 leading-none flex items-center pointer-events-none",
         variantClassMap[effectiveVariant]
       )}
+      onClick={(e) => e.stopPropagation()}
     >
       {badgeText}
     </Badge>
@@ -228,7 +229,7 @@ const DynamicSidebar: React.FC = () => {
               {item.badge && (
                 <Badge 
                   className={cn(
-                    "text-[8px] py-0 h-4 w-fit mt-1 whitespace-nowrap px-1.5 leading-none flex items-center",
+                    "text-[8px] py-0 h-4 w-fit mt-1 whitespace-nowrap px-1.5 leading-none flex items-center pointer-events-none",
                     item.badge.variant === "new" ? "bg-emerald-500" :
                     item.badge.variant === "updated" ? "bg-blue-500" :
                     item.badge.variant === "beta" ? "bg-purple-500" :
@@ -237,6 +238,7 @@ const DynamicSidebar: React.FC = () => {
                     item.badge.text.toLowerCase().includes('real-time') ? "bg-indigo-500" :
                     "bg-gray-200 text-[var(--navy)]"
                   )}
+                  onClick={(e) => e.stopPropagation()}
                 >
                   {item.badge.text}
                 </Badge>
@@ -277,7 +279,7 @@ const DynamicSidebar: React.FC = () => {
             )}>{item.title}</span>
           </div>
           
-          <div className="flex items-center">
+          <div className="flex items-center z-10">
             {item.badge && <SidebarItemBadge badge={item.badge} />}
             
             <button
@@ -355,7 +357,7 @@ const DynamicSidebar: React.FC = () => {
                     {item.badge && (
                       <Badge 
                         className={cn(
-                          "text-[8px] py-0 h-3 ml-1 whitespace-nowrap px-1.5 leading-none flex items-center",
+                          "text-[8px] py-0 h-3 ml-1 whitespace-nowrap px-1.5 leading-none flex items-center pointer-events-none",
                           item.badge.variant === "new" ? "bg-emerald-500" :
                           item.badge.variant === "updated" ? "bg-blue-500" :
                           item.badge.variant === "beta" ? "bg-purple-500" :
@@ -364,6 +366,7 @@ const DynamicSidebar: React.FC = () => {
                           item.badge.text.toLowerCase().includes('real-time') ? "bg-indigo-500" :
                           "bg-gray-200 text-[var(--navy)]"
                         )}
+                        onClick={(e) => e.stopPropagation()}
                       >
                         {item.badge.text}
                       </Badge>
