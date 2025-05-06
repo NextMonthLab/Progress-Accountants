@@ -65,6 +65,7 @@ interface PageBuilderSectionsProps {
   onUpdateComponent: (sectionId: number, componentId: number, updatedComponent: Partial<PageBuilderComponent>) => void;
   onRemoveComponent: (sectionId: number, componentId: number) => void;
   onReorderComponents: (sectionId: number, newOrder: PageBuilderComponent[]) => void;
+  isLocked?: boolean;
 }
 
 const PageBuilderSections: React.FC<PageBuilderSectionsProps> = ({
@@ -75,7 +76,8 @@ const PageBuilderSections: React.FC<PageBuilderSectionsProps> = ({
   onAddComponent,
   onUpdateComponent,
   onRemoveComponent,
-  onReorderComponents
+  onReorderComponents,
+  isLocked
 }) => {
   const [expandedSections, setExpandedSections] = useState<Record<number, boolean>>({});
   const [expandedComponents, setExpandedComponents] = useState<Record<string, boolean>>({});
