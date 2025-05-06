@@ -168,9 +168,9 @@ export async function generateDesignSuggestions(pageType: string, businessType: 
       throw new Error("OpenAI API key not found");
     }
 
-    // Prepare prompt for OpenAI
+    // Prepare enhanced prompt for OpenAI with clearer guidelines
     const prompt = `
-      Generate design suggestions for a ${pageType} page for a ${businessType} business website.
+      Generate professional design suggestions for a ${pageType} page for a ${businessType} business website.
       
       Business details:
       Name: ${businessIdentity?.name || "Progress Accountants"}
@@ -178,28 +178,105 @@ export async function generateDesignSuggestions(pageType: string, businessType: 
       Industry Type: ${businessIdentity?.industryType || "Accounting"}
       Core Business: ${businessIdentity?.coreBusiness || "Accounting and Tax Services"}
       
-      Please provide the following in a JSON format:
-      1. A list of recommended components with name, type, description, SEO impact, and structure
-      2. A list of recommended page layouts with names, descriptions, and section arrangements
-      3. A list of recommended color palettes with primary, secondary, accent, text, and background colors
-      4. SEO recommendations including keywords, meta description, and title format
+      Design principles to incorporate:
+      1. Visual hierarchy - Prioritize the most important content with size, color, and positioning
+      2. White space - Use ample spacing for readability and focus
+      3. Consistency - Maintain consistent styling across components
+      4. Accessibility - Ensure sufficient contrast ratios and readable font sizes
+      5. Conversion optimization - Position CTAs effectively
+      
+      Please provide the following in a detailed JSON format:
+      
+      1. A list of recommended components with:
+         - name: descriptive name
+         - type: component type (hero, services, etc.)
+         - description: detailed explanation
+         - seoImpact: impact on SEO (high/medium/low)
+         - conversionImpact: impact on conversions (high/medium/low)
+         - structure: nested object with component configuration
+         - bestPractices: array of 2-3 best practices specific to this component
+      
+      2. A list of recommended page layouts with:
+         - name: layout name
+         - description: detailed explanation
+         - conversionFocus: what this layout optimizes for
+         - sections: array of section objects
+         - responsiveConsiderations: array of responsive design considerations
+      
+      3. A list of recommended color palettes with:
+         - name: palette name
+         - primaryColor: hex code
+         - secondaryColor: hex code
+         - accentColor: hex code
+         - textColor: hex code
+         - backgroundColor: hex code
+         - additionalColors: array of hex codes
+         - mood: mood description
+         - industry: industry appropriateness
+         - accessibilityNote: note about contrast ratios
+      
+      4. SEO recommendations including:
+         - keywords: array of targeted keywords
+         - metaDescription: suggested meta description
+         - titleFormat: suggested title format
+         - headingStructure: advice on H1-H6 usage
+         - contentRecommendations: array of content suggestions
       
       The response should be valid JSON with the following structure:
       {
-        "components": [ /* component objects */ ],
-        "layouts": [ /* layout objects */ ],
-        "colorPalettes": [ /* palette objects */ ],
-        "seoRecommendations": { /* SEO object */ }
+        "components": [
+          {
+            "name": "string",
+            "type": "string",
+            "description": "string",
+            "seoImpact": "string",
+            "conversionImpact": "string",
+            "structure": {},
+            "bestPractices": ["string"]
+          }
+        ],
+        "layouts": [
+          {
+            "name": "string",
+            "description": "string",
+            "conversionFocus": "string",
+            "sections": [],
+            "responsiveConsiderations": ["string"]
+          }
+        ],
+        "colorPalettes": [
+          {
+            "name": "string",
+            "primaryColor": "string",
+            "secondaryColor": "string",
+            "accentColor": "string",
+            "textColor": "string",
+            "backgroundColor": "string",
+            "additionalColors": ["string"],
+            "mood": "string",
+            "industry": "string",
+            "accessibilityNote": "string"
+          }
+        ],
+        "seoRecommendations": {
+          "keywords": ["string"],
+          "metaDescription": "string",
+          "titleFormat": "string",
+          "headingStructure": "string",
+          "contentRecommendations": ["string"]
+        }
       }
+      
+      Focus on designs that are modern, professional, and optimized for conversions while maintaining strong accessibility standards.
     `;
 
-    // Make OpenAI API call
+    // Make OpenAI API call with enhanced system prompt
     const response = await openai.chat.completions.create({
       model: "gpt-4o", // the newest OpenAI model is "gpt-4o" which was released May 13, 2024. do not change this unless explicitly requested by the user
       messages: [
         { 
           role: "system", 
-          content: "You are an expert web designer and developer specializing in creating beautiful, on-brand website designs that convert well. You create JSON output only."
+          content: "You are an expert web designer and developer specializing in creating beautiful, on-brand website designs that convert well. You have deep knowledge of UI/UX best practices, accessibility standards (WCAG 2.1), conversion rate optimization, and modern design trends. You understand both aesthetics and functionality, creating designs that are visually appealing while serving business goals. You create JSON output only."
         },
         { role: "user", content: prompt }
       ],
@@ -299,18 +376,27 @@ export async function generateColorPalettes(industry: string, mood: string, tena
       throw new Error("OpenAI API key not found");
     }
 
-    // Prepare prompt for OpenAI
+    // Prepare enhanced prompt for OpenAI with color theory guidance
     const prompt = `
-      Generate 3 color palettes suitable for a ${industry} business website with a ${mood} mood.
+      Generate 3 professional color palettes suitable for a ${industry} business website with a ${mood} mood.
+      
+      Design considerations:
+      1. Accessibility - Ensure sufficient contrast ratios between text and background colors (WCAG AA compliance)
+      2. Brand psychology - Consider the psychological effects of colors in the ${industry} industry
+      3. Color harmony - Use complementary, analogous, or triadic color relationships
+      4. Cultural significance - Consider cultural associations with colors for the target audience
+      5. Visual hierarchy - Provide colors that can guide the user's focus appropriately
       
       For each palette, provide:
       1. A descriptive name
-      2. Primary color (hex)
-      3. Secondary color (hex)
-      4. Accent color (hex)
-      5. Text color (hex)
-      6. Background color (hex)
-      7. 3-5 additional complementary colors (hex array)
+      2. Primary color (hex) - The main brand color
+      3. Secondary color (hex) - A complementary or supporting color
+      4. Accent color (hex) - For calls-to-action and highlights
+      5. Text color (hex) - For body text (must have 4.5:1 contrast with background)
+      6. Background color (hex) - For page backgrounds
+      7. 3-5 additional complementary colors (hex array) - For various UI elements
+      8. Accessibility note - Comment on contrast ratio for critical color pairs
+      9. Usage recommendations - Brief guidance on where to use each color
       
       The response should be valid JSON with the following structure:
       [
@@ -323,19 +409,21 @@ export async function generateColorPalettes(industry: string, mood: string, tena
           "backgroundColor": "#hexcode",
           "additionalColors": ["#hexcode", "#hexcode", "#hexcode"],
           "mood": "${mood}",
-          "industry": "${industry}"
+          "industry": "${industry}",
+          "accessibilityNote": "Text on primary has 7:1 contrast ratio",
+          "usageRecommendations": ["Primary color for headers", "Accent for CTAs"]
         },
         // repeat for 3 palettes
       ]
     `;
 
-    // Make OpenAI API call
+    // Make OpenAI API call with enhanced system prompt
     const response = await openai.chat.completions.create({
       model: "gpt-4o", // the newest OpenAI model is "gpt-4o" which was released May 13, 2024. do not change this unless explicitly requested by the user
       messages: [
         { 
           role: "system", 
-          content: "You are an expert UI/UX designer specializing in color theory and brand identity. Generate beautiful, harmonious color palettes that work well together and match the specified mood and industry."
+          content: "You are an expert UI/UX designer specializing in color theory, brand identity, and accessibility. You understand color psychology, cultural color associations, and how different industries use color to communicate brand values. You can create beautiful, harmonious color palettes that work well together, satisfy accessibility requirements, and match the specified mood and industry. You know how to achieve appropriate contrast ratios between text and background colors to ensure readability. You understand how to use color to create visual hierarchy and guide user attention. You create JSON output only."
         },
         { role: "user", content: prompt }
       ],
@@ -428,9 +516,9 @@ export async function generateComponentRecommendations(pageId: number, context: 
       ? await storage.getBusinessIdentity(page.tenantId) 
       : null;
 
-    // Prepare prompt for OpenAI
+    // Prepare enhanced prompt for OpenAI with better component guidance
     const prompt = `
-      Generate component recommendations for a ${context} section on a web page.
+      Generate detailed component recommendations for a ${context} section on a web page.
       
       Page details:
       ${page ? `Title: ${page.title}
@@ -441,14 +529,24 @@ export async function generateComponentRecommendations(pageId: number, context: 
       ${businessIdentity ? `Name: ${businessIdentity.name}
       Mission: ${businessIdentity.mission}` : 'No business details available'}
       
+      Design considerations for this ${context} section:
+      1. Conversion optimization - Focus on components that drive user actions
+      2. Engagement - Create visually appealing and interactive elements
+      3. Information hierarchy - Present content in a logical, scannable way
+      4. Accessibility - Ensure all components are accessible to all users
+      5. Mobile responsiveness - Components should adapt gracefully to all screen sizes
+      
       Please provide 3-5 component recommendations specifically for a ${context} section.
-      Each component should have:
-      1. Name
-      2. Type (e.g., hero, text, image, form, gallery, etc.)
-      3. Description
-      4. SEO impact (high, medium, low)
-      5. Content suggestions
-      6. Preview description
+      Each component should include:
+      1. Name - Clear descriptive name
+      2. Type - Specific component category (hero, carousel, form, etc.)
+      3. Description - Detailed explanation of the component's purpose and appearance
+      4. SEO impact - Rating of high/medium/low with brief explanation
+      5. Conversion impact - Rating of high/medium/low with brief explanation
+      6. Content suggestions - Specific content recommendations with examples
+      7. Implementation notes - Technical considerations or special features
+      8. Preview description - Detailed visual description
+      9. Related components - 1-2 components that work well with this one
       
       The response should be valid JSON with the following structure:
       {
@@ -456,26 +554,32 @@ export async function generateComponentRecommendations(pageId: number, context: 
           {
             "name": "Component Name",
             "type": "component-type",
-            "description": "Description of the component",
+            "description": "Detailed description of component purpose and appearance",
             "seoImpact": "high|medium|low",
+            "seoImpactReason": "Brief explanation of SEO impact",
+            "conversionImpact": "high|medium|low",
+            "conversionImpactReason": "Brief explanation of conversion impact",
             "content": {
-              // Suggested content fields
+              // Suggested content fields with examples
             },
-            "preview": "Description of how this would look"
+            "implementationNotes": ["Technical considerations", "Special features"],
+            "preview": "Detailed visual description",
+            "relatedComponents": ["Component 1", "Component 2"]
           }
           // More components...
         ],
-        "reasoning": "Brief explanation of why these components were chosen"
+        "reasoning": "Detailed explanation of why these components were chosen for this context",
+        "sectionStructure": "Advice on how to arrange multiple components in this section"
       }
     `;
 
-    // Make OpenAI API call
+    // Make OpenAI API call with enhanced system prompt
     const response = await openai.chat.completions.create({
       model: "gpt-4o", // the newest OpenAI model is "gpt-4o" which was released May 13, 2024. do not change this unless explicitly requested by the user
       messages: [
         { 
           role: "system", 
-          content: "You are an expert web designer and developer specializing in creating high-converting components for websites. You create JSON output only."
+          content: "You are an expert web designer and developer specializing in creating high-converting components for websites. You have deep knowledge of UI/UX principles, accessibility standards, conversion rate optimization, and user psychology. You understand modern web development frameworks, component architecture, and responsive design. You excel at creating targeted recommendations that balance aesthetics with functionality and business goals. You create JSON output only."
         },
         { role: "user", content: prompt }
       ],
