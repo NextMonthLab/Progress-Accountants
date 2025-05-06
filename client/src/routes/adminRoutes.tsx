@@ -137,6 +137,11 @@ export function AdminRoutes() {
         allowedRoles={['admin', 'super_admin', 'editor']} 
       />
       <ProtectedRoute 
+        path="/admin/leads/radar" 
+        component={LeadRadarPage} 
+        allowedRoles={['admin', 'super_admin', 'editor']} 
+      />
+      <ProtectedRoute 
         path="/admin/insights-dashboard" 
         component={InsightsDashboardPage} 
         allowedRoles={['admin', 'super_admin', 'editor']} 

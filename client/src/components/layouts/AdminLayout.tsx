@@ -279,6 +279,13 @@ export function AdminLayout({
         </Button>
       </div>
       
+      {/* Floating Action Button */}
+      <div className="fixed bottom-4 right-4 z-50">
+        <Button size="icon" className="rounded-full h-12 w-12 shadow-lg bg-gradient-to-r from-[#d65db1] to-[#ff6987] text-white hover:from-[#c24ea0] hover:to-[#f05877]">
+          <span className="text-xl">+</span>
+        </Button>
+      </div>
+      
       {/* Main Content */}
       <div className="flex-1 overflow-auto bg-white">
         {/* NextMonth Style Top Navigation */}
