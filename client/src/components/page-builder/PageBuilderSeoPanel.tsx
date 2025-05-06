@@ -366,7 +366,7 @@ const PageBuilderSeoPanel: React.FC<PageBuilderSeoPanelProps> = ({
                   <Label htmlFor="primary-keyword">Primary Keyword</Label>
                   <Input
                     id="primary-keyword"
-                    value={seoSettings.primaryKeyword || ''}
+                    value={seoSettings?.primaryKeyword || ''}
                     onChange={(e) => handleChange('primaryKeyword', e.target.value)}
                     placeholder="Enter primary keyword or phrase"
                   />
@@ -378,7 +378,7 @@ const PageBuilderSeoPanel: React.FC<PageBuilderSeoPanelProps> = ({
                 <div className="space-y-2">
                   <Label>Keywords</Label>
                   <div className="flex flex-wrap gap-2 mb-2">
-                    {(seoSettings.keywords || []).map((keyword, index) => (
+                    {(seoSettings?.keywords || []).map((keyword, index) => (
                       <Badge key={index} variant="secondary" className="py-1 px-2">
                         {keyword}
                         <X 
@@ -387,7 +387,7 @@ const PageBuilderSeoPanel: React.FC<PageBuilderSeoPanelProps> = ({
                         />
                       </Badge>
                     ))}
-                    {(seoSettings.keywords || []).length === 0 && (
+                    {(seoSettings?.keywords || []).length === 0 && (
                       <span className="text-sm text-muted-foreground">No keywords added yet</span>
                     )}
                   </div>
@@ -415,7 +415,7 @@ const PageBuilderSeoPanel: React.FC<PageBuilderSeoPanelProps> = ({
                 <div className="space-y-2">
                   <Label htmlFor="seo-goal">SEO Goal</Label>
                   <Select
-                    value={seoSettings.seoGoal || 'conversion'}
+                    value={seoSettings?.seoGoal || 'conversion'}
                     onValueChange={(value) => handleChange('seoGoal', value)}
                   >
                     <SelectTrigger id="seo-goal">
@@ -438,7 +438,7 @@ const PageBuilderSeoPanel: React.FC<PageBuilderSeoPanelProps> = ({
                   <div className="flex items-center gap-2">
                     <Input
                       id="canonical-url"
-                      value={seoSettings.canonical || ''}
+                      value={seoSettings?.canonical || ''}
                       onChange={(e) => handleChange('canonical', e.target.value)}
                       placeholder="Enter canonical URL (if different from page URL)"
                     />
@@ -455,7 +455,7 @@ const PageBuilderSeoPanel: React.FC<PageBuilderSeoPanelProps> = ({
                   <Label htmlFor="og-image">Social Media Image URL</Label>
                   <Input
                     id="og-image"
-                    value={seoSettings.ogImage || ''}
+                    value={seoSettings?.ogImage || ''}
                     onChange={(e) => handleChange('ogImage', e.target.value)}
                     placeholder="Enter URL for social media sharing image"
                   />
@@ -682,13 +682,13 @@ const PageBuilderSeoPanel: React.FC<PageBuilderSeoPanelProps> = ({
           <CardContent>
             <div className="border rounded-md p-4 space-y-2">
               <div className="text-blue-600 text-xl font-medium">
-                {seoSettings.title || title || "Page Title"}
+                {seoSettings?.title || title || "Page Title"}
               </div>
               <div className="text-green-700 text-sm">
-                {`https://example.com/${seoSettings.canonical?.replace(/^\//, '') || ''}`}
+                {`https://example.com/${seoSettings?.canonical?.replace(/^\//, '') || ''}`}
               </div>
               <div className="text-sm text-muted-foreground">
-                {seoSettings.description || description || "A description of your page will appear here. Make sure to write a compelling meta description to improve click-through rates."}
+                {seoSettings?.description || description || "A description of your page will appear here. Make sure to write a compelling meta description to improve click-through rates."}
               </div>
             </div>
           </CardContent>
