@@ -6,6 +6,8 @@ const SuperAdminDashboard = lazy(() => import("@/pages/super-admin/SuperAdminDas
 const CRMViewPage = lazy(() => import("@/pages/CRMViewPage"));
 const CRMViewPageEnhanced = lazy(() => import("@/pages/CRMViewPageEnhanced"));
 const AdminDashboardPage = lazy(() => import("@/pages/AdminDashboardPage"));
+const AdminDashboardPageSimple = lazy(() => import("@/pages/AdminDashboardPage.simple"));
+const NextMonthStylePage = lazy(() => import("@/pages/admin/NextMonthStylePage"));
 const AdminSettingsPage = lazy(() => import("@/pages/AdminSettingsPage"));
 const SEOConfigManagerPage = lazy(() => import("@/pages/SEOConfigManagerPage"));
 const BrandManagerPage = lazy(() => import("@/pages/BrandManagerPage"));
@@ -119,6 +121,16 @@ export function AdminRoutes() {
       <ProtectedRoute 
         path="/admin/dashboard" 
         component={AdminDashboardPage} 
+        allowedRoles={['admin', 'super_admin', 'editor']} 
+      />
+      <ProtectedRoute 
+        path="/admin/dashboard-simple" 
+        component={AdminDashboardPageSimple} 
+        allowedRoles={['admin', 'super_admin', 'editor']} 
+      />
+      <ProtectedRoute 
+        path="/admin/nextmonth-style" 
+        component={NextMonthStylePage} 
         allowedRoles={['admin', 'super_admin', 'editor']} 
       />
       <ProtectedRoute 
