@@ -15,6 +15,7 @@ import { UpgradeAnnouncement } from "@/components/UpgradeAnnouncement";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { HelpProvider } from "@/contexts/HelpContext";
 import { HealthProvider } from "@/contexts/HealthContext";
+import { NotificationsProvider } from "@/contexts/NotificationsContext";
 import InstantHelpWidget from "@/components/support/InstantHelpWidget";
 import ContextSuggestion from "@/components/support/ContextSuggestion";
 import HealthTracker from "@/components/health/HealthTracker";

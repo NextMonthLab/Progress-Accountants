@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { useNavigation } from '@/contexts/NavigationContext';
 import QuickActions from '@/components/QuickActions';
+import NotificationsPanel from '@/components/NotificationsPanel';
 
 interface SmartContext {
   context: string;
