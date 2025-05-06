@@ -1120,11 +1120,7 @@ const PageBuilderSections: React.FC<PageBuilderSectionsProps> = ({
       {sections.length === 0 && (
         <div className="text-center p-12 border border-dashed rounded-lg">
           <h3 className="font-medium mb-2">No sections yet</h3>
-          <p className="text-muted-foreground mb-4">Add a section to start building your page</p>
-          <Button onClick={() => onAddComponent(0, 'hero')}>
-            <PlusCircle className="h-4 w-4 mr-2" />
-            Add Hero Section
-          </Button>
+          <p className="text-muted-foreground mb-4">Use the "Add New Section" button below to start building your page</p>
         </div>
       )}
     </div>

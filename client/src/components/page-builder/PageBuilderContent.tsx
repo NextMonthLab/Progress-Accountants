@@ -126,8 +126,23 @@ const PageBuilderContent: React.FC = () => {
   const [page, setPage] = useState<PageBuilderPage | null>(isNewPage || isTemplateGallery ? createEmptyPage() : null);
   const [deviceType, setDeviceType] = useState<"desktop" | "tablet" | "mobile">("desktop");
 
-  // Create a default empty page
+  // Create a default empty page with an initial section
   function createEmptyPage(): PageBuilderPage {
+    // Create a default section with a unique ID
+    const initialSectionId = Date.now();
+    const initialSection: PageBuilderSection = {
+      id: initialSectionId,
+      name: "Main Content",
+      type: "content",
+      pageId: 0,
+      order: 0,
+      layout: "single",
+      settings: {},
+      components: [],
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+
     return {
       id: 0,
       tenantId: tenant?.id || '00000000-0000-0000-0000-000000000000',
@@ -143,7 +158,7 @@ const PageBuilderContent: React.FC = () => {
       },
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
-      sections: [],
+      sections: [initialSection], // Initialize with one section
       isLocked: false,
       origin: 'manual'
     };
@@ -188,15 +203,7 @@ const PageBuilderContent: React.FC = () => {
     }
   }, [pageData]);
 
-  // Initialize page with empty sections if needed
-  useEffect(() => {
-    if (page && (!page.sections || page.sections.length === 0)) {
-      setPage({
-        ...page,
-        sections: []
-      });
-    }
-  }, [page]);
+  // No need to initialize page with empty sections anymore since we already do it in createEmptyPage
 
   // Create new page mutation
   const createPageMutation = useMutation({
