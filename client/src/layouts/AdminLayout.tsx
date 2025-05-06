@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
 import SimpleSidebar from "@/components/navigation/SimpleSidebar";
 import SmartContextBanner from "@/components/SmartContextBanner";
+import EmergencyNavigation from "@/components/navigation/EmergencyNavigation";
 
 interface AdminLayoutProps {
   children: ReactNode;
@@ -10,11 +11,11 @@ interface AdminLayoutProps {
 export default function AdminLayout({ children, useNewNavigation = true }: AdminLayoutProps) {
   return (
     <div className="flex h-screen overflow-hidden">
-      {/* Use Simple Sidebar for now to ensure functionality */}
-      <SimpleSidebar />
+      {/* Fallback emergency navigation always accessible */}
+      <EmergencyNavigation />
       
       {/* Main Content */}
-      <div className="flex-1 overflow-y-auto flex flex-col">
+      <div className="flex-1 overflow-y-auto flex flex-col ml-0">
         <SmartContextBanner />
         
         <main className="flex-1 px-6">
