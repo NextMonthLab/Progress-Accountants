@@ -252,14 +252,14 @@ const DynamicSidebar: React.FC = () => {
     // Normal expanded view
     return (
       <div className="relative group" key={item.id}>
-        <a
+        <Link
           href={item.href}
           className={cn(
             "flex items-center justify-between rounded-md px-3 py-2 transition-all duration-200",
             isActive(item.href) 
               ? "bg-gradient-to-r from-orange-100 to-orange-50 text-[var(--navy)] font-medium shadow-sm" 
               : "text-[var(--navy)] hover:bg-orange-50/50 hover:text-[var(--orange)]",
-            "no-underline group",
+            "no-underline group block",  // Added block display
             isNested && "ml-6 text-sm"
           )}
         >
@@ -279,10 +279,10 @@ const DynamicSidebar: React.FC = () => {
             )}>{item.title}</span>
           </div>
           
-          <div className="flex items-center" style={{ pointerEvents: 'none' }}>
+          <div className="pointer-events-none">
             {item.badge && <SidebarItemBadge badge={item.badge} />}
           </div>
-        </a>
+        </Link>
         
         {/* Pin button as a separate element */}
         <button
@@ -344,18 +344,18 @@ const DynamicSidebar: React.FC = () => {
               <p className="font-medium text-sm mb-1">{submenu.title}</p>
               <div className="flex flex-col gap-1 mt-1">
                 {submenu.items.map(item => (
-                  <a
+                  <Link
                     key={item.id}
                     href={item.href}
                     className={cn(
-                      "flex items-center justify-between px-2 py-1 rounded-sm text-xs",
+                      "flex items-center justify-between px-2 py-1 rounded-sm text-xs block",
                       isActive(item.href) 
                         ? "bg-primary/10 text-primary" 
                         : "hover:bg-muted"
                     )}
                   >
                     <span>{item.title}</span>
-                    <div style={{ pointerEvents: 'none' }}>
+                    <div className="pointer-events-none">
                       {item.badge && (
                         <Badge 
                           className={cn(
@@ -373,7 +373,7 @@ const DynamicSidebar: React.FC = () => {
                         </Badge>
                       )}
                     </div>
-                  </a>
+                  </Link>
                 ))}
               </div>
             </TooltipContent>
