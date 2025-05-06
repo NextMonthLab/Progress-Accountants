@@ -22,7 +22,7 @@ interface NotificationsContextType {
   addNotification: (notification: Omit<Notification, 'id' | 'timestamp' | 'read'>) => void;
 }
 
-const NotificationsContext = createContext<NotificationsContextType | undefined>(undefined);
+export const NotificationsContext = createContext<NotificationsContextType | undefined>(undefined);
 
 export const useNotifications = () => {
   const context = useContext(NotificationsContext);

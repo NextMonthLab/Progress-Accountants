@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useNotifications, Notification } from '@/contexts/NotificationsContext';
+import React, { useState, useContext } from 'react';
+import { NotificationsContext, Notification } from '@/contexts/NotificationsContext';
 import { Bell, X, Check, Info, AlertCircle, CheckCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useLocation } from 'wouter';
@@ -88,13 +88,14 @@ const NotificationItem: React.FC<{
 
 const NotificationsPanel: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const { 
-    notifications,
-    unreadCount,
-    markAsRead,
-    markAllAsRead,
-    dismissNotification 
-  } = useNotifications();
+  const notificationsContext = useContext(NotificationsContext);
+  
+  // Default values if context is not available
+  const notifications: Notification[] = notificationsContext?.notifications || [];
+  const unreadCount: number = notificationsContext?.unreadCount || 0;
+  const markAsRead: (id: string) => void = notificationsContext?.markAsRead || ((id: string) => {});
+  const markAllAsRead: () => void = notificationsContext?.markAllAsRead || (() => {});
+  const dismissNotification: (id: string) => void = notificationsContext?.dismissNotification || ((id: string) => {});
   
   const handleOpenChange = (open: boolean) => {
     setIsOpen(open);
@@ -144,7 +145,7 @@ const NotificationsPanel: React.FC = () => {
               <p className="text-xs mt-1">You're all caught up!</p>
             </div>
           ) : (
-            notifications.map(notification => (
+            notifications.map((notification: Notification) => (
               <NotificationItem 
                 key={notification.id}
                 notification={notification}
