@@ -81,7 +81,9 @@ interface TemplatePreviews {
 }
 
 interface PageBuilderTemplateGalleryProps {
-  onSelectTemplate: (template: any) => void;
+  onApplyTemplate: (template: any) => void;
+  currentPageType?: string;
+  isLocked?: boolean;
 }
 
 // Create descriptive SVG previews for templates
@@ -1768,7 +1770,9 @@ function createPortfolioPageTemplate(type: string) {
 }
 
 const PageBuilderTemplateGallery: React.FC<PageBuilderTemplateGalleryProps> = ({
-  onSelectTemplate
+  onApplyTemplate,
+  currentPageType,
+  isLocked
 }) => {
   const [selectedTemplate, setSelectedTemplate] = useState<PageTemplate | null>(null);
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
@@ -1784,7 +1788,7 @@ const PageBuilderTemplateGallery: React.FC<PageBuilderTemplateGalleryProps> = ({
   
   // Handle template selection
   const handleSelectTemplate = (template: PageTemplate) => {
-    onSelectTemplate(template.template);
+    onApplyTemplate(template.template);
   };
 
   // Handle template preview
