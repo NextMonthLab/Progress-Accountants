@@ -103,17 +103,30 @@ const SidebarItemBadge = ({
     updated: "bg-blue-500 text-white",
     beta: "bg-purple-500 text-white",
     pro: "bg-gradient-to-r from-amber-500 to-orange-500 text-white",
-    default: "bg-gray-200 text-[var(--navy)]"
+    default: "bg-gray-200 text-[var(--navy)]",
+    ai: "bg-teal-500 text-white",
+    realtime: "bg-indigo-500 text-white"
   };
+  
+  // Special treatment for known badge texts to avoid wrapping
+  const badgeText = badge.text;
+  const badgeVariant = badge.variant as keyof typeof variantClassMap || "default";
+  
+  // Determine if this is an AI badge
+  const isAiBadge = badgeText.toLowerCase().includes('ai');
+  const isRealtimeBadge = badgeText.toLowerCase().includes('real-time') || badgeText.toLowerCase().includes('realtime');
+  
+  // Use custom variants for special cases
+  const effectiveVariant = isAiBadge ? 'ai' : isRealtimeBadge ? 'realtime' : badgeVariant;
   
   return (
     <Badge 
       className={cn(
-        "ml-auto text-[9px] py-0 h-4",
-        variantClassMap[badge.variant as keyof typeof variantClassMap || "default"]
+        "ml-auto text-[8px] py-0 h-4 whitespace-nowrap px-1.5 leading-none flex items-center",
+        variantClassMap[effectiveVariant]
       )}
     >
-      {badge.text}
+      {badgeText}
     </Badge>
   );
 };
@@ -215,11 +228,13 @@ const DynamicSidebar: React.FC = () => {
               {item.badge && (
                 <Badge 
                   className={cn(
-                    "text-[9px] py-0 h-4 w-fit mt-1",
+                    "text-[8px] py-0 h-4 w-fit mt-1 whitespace-nowrap px-1.5 leading-none flex items-center",
                     item.badge.variant === "new" ? "bg-emerald-500" :
                     item.badge.variant === "updated" ? "bg-blue-500" :
                     item.badge.variant === "beta" ? "bg-purple-500" :
                     item.badge.variant === "pro" ? "bg-gradient-to-r from-amber-500 to-orange-500" :
+                    item.badge.text.toLowerCase().includes('ai') ? "bg-teal-500" :
+                    item.badge.text.toLowerCase().includes('real-time') ? "bg-indigo-500" :
                     "bg-gray-200 text-[var(--navy)]"
                   )}
                 >
@@ -340,9 +355,13 @@ const DynamicSidebar: React.FC = () => {
                     {item.badge && (
                       <Badge 
                         className={cn(
-                          "text-[8px] py-0 h-3 ml-1",
+                          "text-[8px] py-0 h-3 ml-1 whitespace-nowrap px-1.5 leading-none flex items-center",
                           item.badge.variant === "new" ? "bg-emerald-500" :
                           item.badge.variant === "updated" ? "bg-blue-500" :
+                          item.badge.variant === "beta" ? "bg-purple-500" :
+                          item.badge.variant === "pro" ? "bg-gradient-to-r from-amber-500 to-orange-500" :
+                          item.badge.text.toLowerCase().includes('ai') ? "bg-teal-500" :
+                          item.badge.text.toLowerCase().includes('real-time') ? "bg-indigo-500" :
                           "bg-gray-200 text-[var(--navy)]"
                         )}
                       >
