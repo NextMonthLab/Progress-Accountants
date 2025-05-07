@@ -93,8 +93,8 @@ function StatCard({
       <div className={`${isGradient ? 'bg-gradient-to-br ' + scheme[color].bg : scheme[color].bg} p-4 sm:p-6`}>
         <div className="flex justify-between items-center">
           <div>
-            <p className={`text-sm font-medium ${isGradient ? 'text-white/90' : 'text-gray-700'}`}>{label}</p>
-            <h3 className={`text-xl sm:text-2xl font-bold mt-1 ${isGradient ? 'text-white' : 'text-navy'}`}>{value}</h3>
+            <p className={`text-sm font-medium ${isGradient ? 'text-white/90' : 'text-gray-700 dark:text-gray-300'}`}>{label}</p>
+            <h3 className={`text-xl sm:text-2xl font-bold mt-1 ${isGradient ? 'text-white' : 'text-gray-800 dark:text-white'}`}>{value}</h3>
             {change && (
               <p className={`text-xs font-medium mt-1 flex items-center ${isPositive ? (isGradient ? 'text-white' : 'text-emerald-600') : (isGradient ? 'text-white' : 'text-red-600')}`}>
                 {isPositive ? '↑' : '↓'} {change}
@@ -123,8 +123,8 @@ function Section({ title, description, children, className = '' }: SectionProps)
     <div className={`mb-8 ${className}`}>
       <div className="flex justify-between items-center mb-4">
         <div>
-          <h2 className="text-xl font-bold text-navy">{title}</h2>
-          {description && <p className="text-sm text-gray-700 mt-1">{description}</p>}
+          <h2 className="text-xl font-bold text-gray-800 dark:text-white">{title}</h2>
+          {description && <p className="text-sm text-gray-700 dark:text-gray-300 mt-1">{description}</p>}
         </div>
       </div>
       {children}
@@ -159,9 +159,9 @@ function ActivityItem({ icon, title, description, time, isLoading = false }: Act
           </div>
           <div className="flex-1">
             <p className="font-medium text-gray-800 dark:text-white">{title}</p>
-            <p className="text-sm text-gray-700">{description}</p>
+            <p className="text-sm text-gray-700 dark:text-gray-300">{description}</p>
           </div>
-          <div className="text-xs text-gray-600">{time}</div>
+          <div className="text-xs text-gray-600 dark:text-gray-400">{time}</div>
         </>
       )}
     </div>
@@ -298,9 +298,9 @@ function SystemHealth({ components = [], isLoading = false }: SystemHealthProps)
     return (
       <div className="space-y-4">
         {[1, 2, 3, 4].map((_, i) => (
-          <div key={i} className="flex items-center justify-between p-3 bg-gray-50 rounded-md animate-pulse">
-            <div className="h-4 bg-gray-200 rounded w-1/3"></div>
-            <div className="h-4 bg-gray-200 rounded w-1/4"></div>
+          <div key={i} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-md animate-pulse">
+            <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/3"></div>
+            <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/4"></div>
           </div>
         ))}
       </div>
@@ -310,32 +310,32 @@ function SystemHealth({ components = [], isLoading = false }: SystemHealthProps)
   return (
     <div className="space-y-4">
       {components.map((component, index) => (
-        <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-md">
+        <div key={index} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-md">
           <div className="flex items-center gap-2">
             {component.status === 'good' ? (
-              <CheckCircle2 className="h-4 w-4 text-emerald-600" />
+              <CheckCircle2 className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
             ) : component.status === 'warning' ? (
-              <AlertTriangle className="h-4 w-4 text-amber-600" />
+              <AlertTriangle className="h-4 w-4 text-amber-600 dark:text-amber-400" />
             ) : (
-              <XCircle className="h-4 w-4 text-red-600" />
+              <XCircle className="h-4 w-4 text-red-600 dark:text-red-400" />
             )}
             <div>
-              <p className="font-medium">{component.name}</p>
-              {component.details && <p className="text-xs text-gray-700">{component.details}</p>}
+              <p className="font-medium text-gray-800 dark:text-white">{component.name}</p>
+              {component.details && <p className="text-xs text-gray-700 dark:text-gray-300">{component.details}</p>}
             </div>
           </div>
           <div className="flex items-center gap-2">
             <Badge variant="outline" className={
               component.status === 'good' 
-                ? 'bg-emerald-50 text-emerald-700 hover:bg-emerald-50 border-0'
+                ? 'bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-900/30 border-0'
                 : component.status === 'warning'
-                ? 'bg-amber-50 text-amber-700 hover:bg-amber-50 border-0'
-                : 'bg-red-50 text-red-700 hover:bg-red-50 border-0'
+                ? 'bg-amber-50 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 hover:bg-amber-50 dark:hover:bg-amber-900/30 border-0'
+                : 'bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 border-0'
             }>
               {component.status === 'good' ? 'Good' : 
                 component.status === 'warning' ? 'Warning' : 'Error'}
             </Badge>
-            <span className="text-xs text-gray-600">{component.lastChecked}</span>
+            <span className="text-xs text-gray-600 dark:text-gray-400">{component.lastChecked}</span>
           </div>
         </div>
       ))}
@@ -1269,8 +1269,8 @@ export default function AdminDashboardPage() {
                     
                     <div>
                       <div className="flex justify-between mb-1">
-                        <span className="text-sm font-medium">Backups</span>
-                        <span className="text-sm font-medium">15%</span>
+                        <span className="text-sm font-medium text-gray-800 dark:text-white">Backups</span>
+                        <span className="text-sm font-medium text-gray-800 dark:text-white">15%</span>
                       </div>
                       <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
                         <div className="h-full bg-gradient-to-r from-[#3CBFAE] to-[#F65C9A] rounded-full" style={{ width: '15%' }} />
@@ -1279,8 +1279,8 @@ export default function AdminDashboardPage() {
                     
                     <div>
                       <div className="flex justify-between mb-1">
-                        <span className="text-sm font-medium">Other</span>
-                        <span className="text-sm font-medium">10%</span>
+                        <span className="text-sm font-medium text-gray-800 dark:text-white">Other</span>
+                        <span className="text-sm font-medium text-gray-800 dark:text-white">10%</span>
                       </div>
                       <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
                         <div className="h-full bg-gradient-to-r from-[#3CBFAE] to-[#F65C9A] rounded-full" style={{ width: '10%' }} />
@@ -1288,7 +1288,7 @@ export default function AdminDashboardPage() {
                     </div>
                   </CardContent>
                   <CardFooter>
-                    <p className="text-xs text-gray-500">Total Storage: 800 MB used of 3 GB</p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400">Total Storage: 800 MB used of 3 GB</p>
                   </CardFooter>
                 </Card>
               </div>
