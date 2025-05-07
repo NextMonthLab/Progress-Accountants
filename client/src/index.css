@@ -19,7 +19,8 @@
 
 :root {
   --navy: #1a365d;
-  --orange: #f27030;
+  --primary-gradient-start: #3CBFAE;
+  --primary-gradient-end: #F65C9A;
   --light-grey: #f5f7fa;
   --dark-grey: #4a5568;
 }
