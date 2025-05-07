@@ -61,7 +61,7 @@ function NavbarLogo() {
     <Link href="/" className="font-poppins font-bold text-2xl no-underline" style={{ color: 'var(--navy)' }}>
       {siteBranding.logo.text.includes(" ") 
         ? siteBranding.logo.text.split(" ").map((word, index, arr) => (
-            <span key={index} style={{ color: index === arr.length - 1 ? 'var(--orange)' : 'var(--navy)' }}>
+            <span key={index} style={{ color: index === arr.length - 1 ? '#F65C9A' : 'var(--navy)' }}>
               {word}{index < arr.length - 1 ? " " : ""}
             </span>
           ))
@@ -151,7 +151,7 @@ export default function Navbar() {
   const renderDesktopDropdown = (group: MenuGroup) => {
     return (
       <DropdownMenu key={group.label}>
-        <DropdownMenuTrigger className="font-medium text-[var(--navy)] hover:text-[var(--orange)] transition duration-300 outline-none flex items-center">
+        <DropdownMenuTrigger className="font-medium text-[var(--navy)] hover:text-[#F65C9A] transition duration-300 outline-none flex items-center">
           {group.label} <ChevronDown className="h-4 w-4 ml-1 opacity-70" />
         </DropdownMenuTrigger>
         <DropdownMenuContent className="min-w-[200px]">
@@ -161,7 +161,7 @@ export default function Navbar() {
             <DropdownMenuItem key={item.label} asChild>
               <Link
                 href={item.href}
-                className={`flex items-center py-2 px-2 ${isActive(item.href) ? 'text-[var(--orange)]' : 'text-[var(--navy)] hover:text-[var(--orange)]'} transition duration-300 no-underline w-full`}
+                className={`flex items-center py-2 px-2 ${isActive(item.href) ? 'text-[#F65C9A]' : 'text-[var(--navy)] hover:text-[#F65C9A]'} transition duration-300 no-underline w-full`}
               >
                 {item.icon}
                 {item.label}
@@ -182,7 +182,7 @@ export default function Navbar() {
           <Link
             key={item.label}
             href={item.href}
-            className={`flex items-center py-2 px-2 font-medium ${isActive(item.href) ? 'text-[var(--orange)]' : 'text-[var(--navy)] hover:text-[var(--orange)]'} transition duration-300 no-underline`}
+            className={`flex items-center py-2 px-2 font-medium ${isActive(item.href) ? 'text-[#F65C9A]' : 'text-[var(--navy)] hover:text-[#F65C9A]'} transition duration-300 no-underline`}
             onClick={closeMenu}
           >
             {item.icon}
@@ -224,7 +224,7 @@ export default function Navbar() {
               )}
               <Button 
                 variant="outline"
-                className="border-[var(--orange)] text-[var(--orange)] hover:bg-[var(--orange)] hover:text-white"
+                className="border-[#F65C9A] text-[#F65C9A] hover:bg-[#F65C9A] hover:text-white"
                 asChild
               >
                 <Link 
@@ -241,7 +241,7 @@ export default function Navbar() {
           {isStaff && (
             <Button 
               variant="default"
-              className="bg-[var(--navy)] text-white hover:bg-[var(--orange)] transition-colors font-medium shadow-sm"
+              className="bg-[var(--navy)] text-white hover:bg-gradient-to-r hover:from-[#3CBFAE] hover:to-[#F65C9A] transition-colors font-medium shadow-sm"
               asChild
             >
               <Link 
@@ -256,11 +256,7 @@ export default function Navbar() {
           
           <a href="#book-call">
             <Button 
-              style={{ 
-                backgroundColor: 'var(--orange)',
-                color: 'white' 
-              }}
-              className="hover:shadow-md hover:-translate-y-[2px] transition duration-300 flex items-center"
+              className="hover:shadow-md hover:-translate-y-[2px] transition duration-300 flex items-center bg-gradient-to-r from-[#3CBFAE] to-[#F65C9A] text-white"
             >
               <PhoneCall className="h-4 w-4 mr-2" />
               Book a Call
@@ -313,7 +309,7 @@ export default function Navbar() {
               
               <Button 
                 variant="outline"
-                className="w-full border-[var(--orange)] text-[var(--orange)] hover:bg-[var(--orange)] hover:text-white"
+                className="w-full border-[#F65C9A] text-[#F65C9A] hover:bg-[#F65C9A] hover:text-white"
                 onClick={closeMenu}
                 asChild
               >
@@ -356,11 +352,7 @@ export default function Navbar() {
               className="inline-block text-center w-full"
             >
               <Button 
-                className="w-full hover:shadow-md hover:-translate-y-[2px] transition duration-300 flex items-center justify-center"
-                style={{ 
-                  backgroundColor: 'var(--orange)',
-                  color: 'white' 
-                }}
+                className="w-full hover:shadow-md hover:-translate-y-[2px] transition duration-300 flex items-center justify-center bg-gradient-to-r from-[#3CBFAE] to-[#F65C9A] text-white"
               >
                 <PhoneCall className="h-4 w-4 mr-2" />
                 Book a Call
