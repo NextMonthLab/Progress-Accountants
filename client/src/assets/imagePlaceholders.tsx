@@ -72,7 +72,7 @@ export const toolsPodcastStudio = () => (
 );
 
 export const toolsDashboardMockup = () => (
-  <ImagePlaceholder height="200px" text="Financial Dashboard" bgColor="#f27030" /> // Burnt orange
+  <ImagePlaceholder height="200px" text="Financial Dashboard" bgColor="#F65C9A" /> // NextMonth Pink
 );
 
 export const toolsStrategySession = () => (
@@ -136,5 +136,5 @@ export const footerBanburyTown = () => (
 );
 
 export const footerOfficeFront = () => (
-  <ImagePlaceholder height="180px" text="Office Front" bgColor="#f27030" /> // Burnt orange
+  <ImagePlaceholder height="180px" text="Office Front" bgColor="#3CBFAE" /> // NextMonth Teal
 );

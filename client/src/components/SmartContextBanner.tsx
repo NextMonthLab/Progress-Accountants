@@ -134,7 +134,7 @@ const SmartContextBanner: React.FC = () => {
             href="/" 
             target="_blank" 
             rel="noopener noreferrer" 
-            className="h-7 px-3 mr-2 inline-flex items-center justify-center rounded-md text-xs font-medium text-white bg-[var(--orange)] hover:bg-[var(--orange)]/90 transition-colors"
+            className="h-7 px-3 mr-2 inline-flex items-center justify-center rounded-md text-xs font-medium text-white bg-gradient-to-r from-[#3CBFAE] to-[#F65C9A] hover:opacity-90 transition-opacity"
           >
             <Globe className="h-3 w-3 mr-1" />
             View Website
@@ -143,7 +143,7 @@ const SmartContextBanner: React.FC = () => {
           <Button 
             variant="ghost" 
             size="sm" 
-            className="h-7 px-2 text-xs text-gray-600 hover:bg-orange-100 hover:text-orange-700 transition-all"
+            className="h-7 px-2 text-xs text-gray-600 hover:bg-[#F65C9A]/10 hover:text-[#F65C9A] transition-all"
             onClick={() => setIsOpen(false)}
           >
             <X className="h-3 w-3 mr-1" />
@@ -163,7 +163,7 @@ const SmartContextBanner: React.FC = () => {
           </div>
           <ul className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4 mt-2 sm:mt-0 ml-6 sm:ml-0">
             {smartContext.suggestions.map((suggestion, index) => (
-              <li key={index} className="text-navy hover:text-orange-600 transition-colors bg-gray-50 py-1 px-2 sm:py-0.5 sm:px-2 rounded-md">
+              <li key={index} className="text-navy hover:text-[#F65C9A] transition-colors bg-gray-50 py-1 px-2 sm:py-0.5 sm:px-2 rounded-md">
                 {suggestion}
               </li>
             ))}
