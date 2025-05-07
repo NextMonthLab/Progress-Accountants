@@ -6,6 +6,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Progress } from '@/components/ui/progress';
 import { NavItem, GradientButton } from './AdminButtons';
 import { ThemeToggle } from './AdminCard';
+import { SmartContextBanner } from './SmartContextBanner';
 import { 
   Settings, 
   LayoutDashboard,
@@ -96,7 +97,7 @@ export function AdminLayoutV2({
             {/* Logo or brand */}
             <div className="mr-8">
               <span className="font-bold text-lg dark:text-white text-gray-900">
-                Next<span className="bg-gradient-to-r from-[#3CBFAE] to-[#F65C9A] bg-clip-text text-transparent">Month</span>
+                Progress <span className="bg-gradient-to-r from-[#3CBFAE] to-[#F65C9A] bg-clip-text text-transparent">Accountants</span>
               </span>
             </div>
             
@@ -203,6 +204,9 @@ export function AdminLayoutV2({
       <div className="relative h-1 dark:bg-[#1D1D1D] bg-gray-200">
         <div className="absolute inset-y-0 left-0 bg-gradient-to-r from-[#3CBFAE] to-[#F65C9A]" style={{ width: `${siteProgress}%` }}></div>
       </div>
+      
+      {/* Smart Context Banner */}
+      <SmartContextBanner />
       
       {/* Main Content */}
       <div className="flex-1 py-8">
