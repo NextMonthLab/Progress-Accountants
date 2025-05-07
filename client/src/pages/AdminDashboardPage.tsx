@@ -64,17 +64,17 @@ function StatCard({
   isGradient = false,
   className = ''
 }: StatCardProps) {
-  // Define the color scheme with proper type
+  // Define the color scheme with proper type - using NextMonth Gold colors
   const scheme = {
     navy: {
-      bg: isGradient ? 'from-navy via-blue-900 to-blue-950' : 'bg-white',
-      icon: isGradient ? 'bg-white/40 text-white' : 'bg-navy/10 text-navy',
-      border: isGradient ? 'border-navy/10' : 'border-navy/10'
+      bg: isGradient ? 'from-[#3CBFAE] to-[#F65C9A]' : 'bg-white',
+      icon: isGradient ? 'bg-white/40 text-white' : 'bg-[#3CBFAE]/10 text-[#3CBFAE]',
+      border: isGradient ? 'border-[#3CBFAE]/10' : 'border-[#3CBFAE]/10'
     },
     orange: {
-      bg: isGradient ? 'from-orange-500 via-orange-600 to-orange-800' : 'bg-white', 
-      icon: isGradient ? 'bg-white/40 text-white' : 'bg-orange-500/10 text-orange-500',
-      border: isGradient ? 'border-orange-500/10' : 'border-orange-500/10'
+      bg: isGradient ? 'from-[#3CBFAE] to-[#F65C9A]' : 'bg-white', 
+      icon: isGradient ? 'bg-white/40 text-white' : 'bg-[#F65C9A]/10 text-[#F65C9A]',
+      border: isGradient ? 'border-[#F65C9A]/10' : 'border-[#F65C9A]/10'
     },
     emerald: {
       bg: isGradient ? 'from-emerald-500 via-emerald-600 to-emerald-800' : 'bg-white',
@@ -154,11 +154,11 @@ function ActivityItem({ icon, title, description, time, isLoading = false }: Act
         </>
       ) : (
         <>
-          <div className="h-10 w-10 rounded-full bg-navy/10 flex items-center justify-center text-navy">
+          <div className="h-10 w-10 rounded-full bg-[#3CBFAE]/10 flex items-center justify-center text-[#3CBFAE]">
             {icon}
           </div>
           <div className="flex-1">
-            <p className="font-medium text-navy">{title}</p>
+            <p className="font-medium text-gray-800 dark:text-white">{title}</p>
             <p className="text-sm text-gray-700">{description}</p>
           </div>
           <div className="text-xs text-gray-600">{time}</div>
