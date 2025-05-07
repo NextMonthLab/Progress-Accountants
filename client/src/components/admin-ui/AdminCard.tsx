@@ -1,120 +1,109 @@
-import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
-import { cn } from "@/lib/utils";
+import React, { ReactNode } from 'react';
+import { cn } from '@/lib/utils';
 
-interface AdminCardProps extends React.HTMLAttributes<HTMLDivElement> {
-  title?: string;
-  description?: string;
-  footer?: React.ReactNode;
-  children?: React.ReactNode;
+interface AdminCardProps {
+  children: ReactNode;
   className?: string;
-  contentClassName?: string;
-  gradient?: boolean;
+  title?: string;
+  icon?: ReactNode;
+  footer?: ReactNode;
 }
 
 /**
- * AdminCard component that follows the Lead Radar design system
+ * AdminCard component following the NextMonth Gold UI design system
  */
-export function AdminCard({
-  title,
-  description,
-  footer,
-  children,
-  className,
-  contentClassName,
-  gradient = false,
-  ...props
-}: AdminCardProps) {
+export function AdminCard({ children, className, title, icon, footer }: AdminCardProps) {
   return (
-    <Card 
-      className={cn(
-        "border shadow-sm rounded-lg overflow-hidden", 
-        gradient && "bg-gradient-to-br from-white to-gray-50",
-        className
-      )} 
-      {...props}
-    >
-      {(title || description) && (
-        <CardHeader className="pb-2">
-          {title && <CardTitle className="text-lg font-medium">{title}</CardTitle>}
-          {description && <CardDescription className="text-sm text-gray-500">{description}</CardDescription>}
-        </CardHeader>
+    <div className={cn(
+      "dark:bg-[#0A0A0A] bg-white dark:border-[#1D1D1D] border-gray-200 rounded-xl shadow-md overflow-hidden",
+      className
+    )}>
+      {(title || icon) && (
+        <div className="px-6 py-5 border-b dark:border-[#1D1D1D] border-gray-200">
+          <div className="flex items-center gap-3">
+            {icon && (
+              <div className="w-9 h-9 rounded-lg flex items-center justify-center bg-gradient-to-r from-[#3CBFAE] to-[#F65C9A] text-white">
+                {icon}
+              </div>
+            )}
+            {title && (
+              <h3 className="font-semibold text-lg dark:text-[#F9F9F9] text-gray-900">
+                {title}
+              </h3>
+            )}
+          </div>
+        </div>
       )}
-      
-      <CardContent className={cn("p-5", contentClassName)}>
+      <div className="p-6">
         {children}
-      </CardContent>
-      
-      {footer && <CardFooter className="border-t p-4">{footer}</CardFooter>}
-    </Card>
+      </div>
+      {footer && (
+        <div className="flex items-center justify-between p-6 pt-0 mt-4 border-t dark:border-[#3A3A3A] border-gray-200">
+          {footer}
+        </div>
+      )}
+    </div>
   );
 }
 
-interface StatCardProps {
-  title: string;
-  value: string | number;
-  suffix?: string;
-  icon?: React.ReactNode;
-  description?: string;
-  className?: string;
-  iconColor?: string;
-}
-
 /**
- * StatCard component for displaying statistics in the Lead Radar design system
+ * StatCard component for displaying statistics with the NextMonth Gold UI design
  */
 export function StatCard({
   title,
   value,
   suffix,
   icon,
-  description,
-  className,
-  iconColor = "text-[#d65db1]"
-}: StatCardProps) {
+  description
+}: {
+  title: string;
+  value: string | number;
+  suffix?: string;
+  icon?: ReactNode;
+  description?: string;
+}) {
   return (
-    <Card className={cn("border shadow-sm rounded-lg overflow-hidden", className)}>
-      <CardContent className="p-5">
-        <div className="flex flex-col">
-          <div className="font-medium text-gray-700 mb-4">{title}</div>
-          <div className="text-3xl font-bold mb-1">{value}</div>
-          {suffix && <div className="text-xs text-gray-500 mb-5">{suffix}</div>}
-          {(icon || description) && (
-            <div className="flex items-center text-xs text-gray-500">
-              {icon && <span className={cn("mr-2", iconColor)}>{icon}</span>}
-              {description && <span>{description}</span>}
-            </div>
-          )}
+    <div className="dark:bg-[#0A0A0A] bg-white dark:border-[#1D1D1D] border-gray-200 p-5 rounded-xl shadow-md relative overflow-hidden group hover:dark:border-[#3A3A3A] hover:border-gray-300 transition-all duration-300">
+      <div className="absolute top-0 right-0 p-2 opacity-10">
+        {icon && React.cloneElement(icon as React.ReactElement, { className: 'h-16 w-16 text-[#F65C9A]' })}
+      </div>
+      <div className="relative">
+        <h3 className="dark:text-[#9E9E9E] text-gray-500 text-sm font-medium">{title}</h3>
+        <div className="mt-2 flex items-baseline">
+          <span className="text-3xl font-bold dark:text-white text-gray-900">{value}</span>
+          {suffix && <span className="ml-1 text-xs dark:text-[#9E9E9E] text-gray-500">{suffix}</span>}
         </div>
-      </CardContent>
-    </Card>
+        {description && (
+          <div className="mt-3 text-xs dark:text-[#9E9E9E] text-gray-500 flex items-center gap-1.5">
+            {icon && React.cloneElement(icon as React.ReactElement, { className: 'h-3.5 w-3.5 text-[#F65C9A]' })}
+            <span>{description}</span>
+          </div>
+        )}
+      </div>
+    </div>
   );
 }
 
-interface TextGradientProps {
-  text: string;
-  className?: string;
-  gradient?: "pink-teal" | "pink-purple" | "blue-purple";
-}
-
 /**
- * TextGradient component for displaying gradient text in the Lead Radar design system
+ * TextGradient component for gradient text following the NextMonth Gold UI design
  */
 export function TextGradient({ 
   text, 
-  className,
-  gradient = "pink-teal" 
-}: TextGradientProps) {
-  const gradientClass = {
-    "pink-teal": "bg-gradient-to-r from-[#d65db1] to-[#5EB8B6]",
-    "pink-purple": "bg-gradient-to-r from-[#d65db1] to-[#9c60ff]",
-    "blue-purple": "bg-gradient-to-r from-[#5E8AB8] to-[#9c60ff]"
-  }[gradient];
+  gradient = "primary",
+  className
+}: { 
+  text: string;
+  gradient?: "primary" | "pink-teal";
+  className?: string;
+}) {
+  const gradientClasses = {
+    "primary": "from-[#3CBFAE] to-[#F65C9A]",
+    "pink-teal": "from-[#3CBFAE] to-[#F65C9A]"
+  };
 
   return (
     <span className={cn(
-      gradientClass,
-      "bg-clip-text text-transparent",
+      `bg-gradient-to-r ${gradientClasses[gradient]} bg-clip-text text-transparent`,
       className
     )}>
       {text}
@@ -122,26 +111,75 @@ export function TextGradient({
   );
 }
 
-export function CreditsDisplay({
-  current = 0,
-  total = 100,
-  className
-}: {
-  current?: number;
-  total?: number;
-  className?: string;
+/**
+ * CreditsDisplay component for showing credits in the NextMonth Gold UI design
+ */
+export function CreditsDisplay({ 
+  current, 
+  total 
+}: { 
+  current: number;
+  total: number;
 }) {
-  const percentage = Math.min(100, Math.max(0, (current / total) * 100));
-  
   return (
-    <div className={cn("text-sm text-gray-600 bg-gray-50 rounded-full px-3 py-1 inline-flex items-center", className)}>
-      Credits <span className="font-medium ml-1">{current}/{total}</span>
-      <div className="relative w-16 h-1 bg-gray-200 rounded-full ml-2 overflow-hidden">
-        <div
-          className="absolute inset-y-0 left-0 bg-gradient-to-r from-[#d65db1] to-[#5EB8B6] rounded-full"
-          style={{ width: `${percentage}%` }}
-        ></div>
-      </div>
+    <div className="flex items-center gap-4 dark:bg-[#121212] bg-gray-100 backdrop-blur-sm p-5 rounded-lg shadow-inner dark:border-[#3A3A3A] border-gray-300">
+      <div className="text-sm font-medium dark:text-[#E0E0E0] text-gray-700">Credits</div>
+      <div className="text-sm font-semibold tabular-nums dark:text-white text-gray-900">{current}/{total}</div>
     </div>
+  );
+}
+
+/**
+ * ThemeToggle component for toggling between light and dark mode
+ */
+export function ThemeToggle({
+  isDarkTheme = false,
+  toggleTheme
+}: {
+  isDarkTheme?: boolean;
+  toggleTheme?: () => void;
+}) {
+  return (
+    <button
+      onClick={toggleTheme}
+      className={`h-9 w-9 rounded-full flex items-center justify-center ${
+        isDarkTheme 
+          ? "bg-[#F65C9A]/20 hover:bg-[#F65C9A]/30 shadow-md" 
+          : "bg-gray-200 hover:bg-gray-300 border border-gray-300 shadow-md"
+      } transition-all duration-200`}
+      title={`Switch to ${isDarkTheme ? "light" : "dark"} mode`}
+    >
+      {isDarkTheme ? (
+        <svg 
+          xmlns="http://www.w3.org/2000/svg" 
+          className="h-5 w-5 text-yellow-300" 
+          fill="none" 
+          viewBox="0 0 24 24" 
+          stroke="currentColor"
+        >
+          <path 
+            strokeLinecap="round" 
+            strokeLinejoin="round" 
+            strokeWidth={2} 
+            d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" 
+          />
+        </svg>
+      ) : (
+        <svg 
+          xmlns="http://www.w3.org/2000/svg" 
+          className="h-5 w-5 text-blue-700" 
+          fill="none" 
+          viewBox="0 0 24 24" 
+          stroke="currentColor"
+        >
+          <path 
+            strokeLinecap="round" 
+            strokeLinejoin="round" 
+            strokeWidth={2} 
+            d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" 
+          />
+        </svg>
+      )}
+    </button>
   );
 }

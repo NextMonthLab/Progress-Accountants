@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { AdminCard, StatCard, TextGradient, CreditsDisplay } from "@/components/admin-ui/AdminCard";
-import { GradientButton, ActionButton, TabsNav } from "@/components/admin-ui/AdminButtons";
+import { GradientButton, ActionButton, TabsNav, Badge } from "@/components/admin-ui/AdminButtons";
 import { AdminLayoutV2 } from "@/components/admin-ui/AdminLayout";
 import { 
   Users, 
@@ -11,7 +11,8 @@ import {
   LayoutDashboard,
   Activity,
   Briefcase,
-  BookOpen
+  BookOpen,
+  LineChart
 } from "lucide-react";
 
 export default function LeadRadarPage() {
@@ -55,45 +56,49 @@ export default function LeadRadarPage() {
     { id: 'profiles', label: 'Lead Profiles', icon: <Users className="h-4 w-4" /> },
     { id: 'signals', label: 'Signals', icon: <Activity className="h-4 w-4" /> },
     { id: 'matches', label: 'Matches', icon: <Briefcase className="h-4 w-4" /> },
-    { id: 'insights', label: 'Insights', icon: <BarChart className="h-4 w-4" /> }
+    { id: 'insights', label: 'Insights', icon: <LineChart className="h-4 w-4" /> }
   ];
 
-  // If using the new AdminLayoutV2, return just the content
-  // Otherwise, wrap in the old AdminLayout
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {/* Lead Radar Header */}
-      <AdminCard className="relative border">
-        <div className="absolute top-0 right-0 w-32 h-32 opacity-5">
-          <div className="w-full h-full bg-pink-500 rounded-full"></div>
-        </div>
+      <div className="relative overflow-hidden rounded-xl dark:bg-[#0A0A0A] bg-white p-8 shadow-md dark:border-[#1D1D1D] border-gray-200">
+        {/* Grid pattern */}
+        <div className="absolute inset-0 dark:bg-grid-white/[0.02] bg-grid-black/[0.02] [mask-image:linear-gradient(to_bottom,white,transparent)]"></div>
         
-        <div className="max-w-3xl relative z-10">
-          <div className="flex justify-between items-start">
-            <div>
-              <h1 className="text-2xl font-bold mb-2">
-                <span>Lead </span>
-                <TextGradient text="Radar" gradient="pink-teal" />
-              </h1>
-              <p className="text-gray-600 text-sm">
-                Transform raw leads into intelligent signals with AI-powered business matching
-              </p>
+        <div className="relative flex flex-col md:flex-row justify-between md:items-center gap-6">
+          <div>
+            <h1 className="text-4xl font-bold tracking-tight dark:text-white text-gray-900">
+              Lead <span className="bg-gradient-to-r from-[#3CBFAE] to-[#F65C9A] bg-clip-text text-transparent">Radar</span>
+            </h1>
+            <p className="dark:text-[#E0E0E0] text-gray-700 mt-2 text-lg max-w-xl">
+              Transform raw leads into intelligent signals with AI-powered business matching
+            </p>
+            
+            <div className="flex flex-wrap gap-4 mt-6">
+              <GradientButton size="sm">
+                <Signal className="mr-2 h-4 w-4" />
+                Generate Signal
+              </GradientButton>
+              
+              <ActionButton size="sm">
+                <BookOpen className="mr-2 h-4 w-4" />
+                Documentation
+              </ActionButton>
             </div>
-            <CreditsDisplay current={0} total={100} />
           </div>
           
-          <div className="flex gap-3 mt-6">
-            <GradientButton size="sm" gradient="pink-teal">
-              <Signal className="mr-2 h-4 w-4" />
-              Generate Signal
-            </GradientButton>
-            <ActionButton size="sm">
-              <BookOpen className="mr-2 h-4 w-4" />
-              Documentation
-            </ActionButton>
+          <div className="flex items-center gap-4 dark:bg-[#121212] bg-gray-100 backdrop-blur-sm p-5 rounded-lg shadow-inner dark:border-[#3A3A3A] border-gray-300">
+            <div className="text-sm font-medium dark:text-[#E0E0E0] text-gray-700">Credits</div>
+            <div className="text-sm font-semibold tabular-nums dark:text-white text-gray-900">0/100</div>
           </div>
         </div>
-      </AdminCard>
+        
+        {/* Background decoration */}
+        <div className="absolute bottom-0 right-0 opacity-10">
+          <Activity className="h-60 w-60 text-[#F65C9A]" />
+        </div>
+      </div>
       
       {/* Tab Navigation */}
       <TabsNav 
@@ -104,7 +109,7 @@ export default function LeadRadarPage() {
       />
       
       {/* Stat Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
         {stats.map((stat, index) => (
           <StatCard
             key={index}
@@ -115,6 +120,20 @@ export default function LeadRadarPage() {
             description={stat.description}
           />
         ))}
+      </div>
+      
+      {/* Content area (for demonstration) */}
+      <div className="dark:bg-[#0A0A0A] bg-white dark:border-[#1D1D1D] border-gray-200 rounded-xl shadow-md p-6">
+        <div className="mb-4 flex items-center justify-between">
+          <h2 className="text-xl font-semibold dark:text-white text-gray-900">Recent Activity</h2>
+          <div className="flex space-x-2">
+            <Badge text="New" variant="primary" />
+            <Badge text="Active" variant="success" />
+          </div>
+        </div>
+        <p className="dark:text-[#E0E0E0] text-gray-700">
+          Get started by generating your first signal. Lead Radar will analyze your data sources and create intelligent business matching profiles.
+        </p>
       </div>
     </div>
   );

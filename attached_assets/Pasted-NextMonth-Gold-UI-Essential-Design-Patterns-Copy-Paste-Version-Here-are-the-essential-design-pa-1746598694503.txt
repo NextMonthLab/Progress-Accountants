@@ -1,0 +1,226 @@
+NextMonth Gold UI - Essential Design Patterns (Copy/Paste Version)
+Here are the essential design patterns from the NextMonth Gold UI blueprint that you can copy and paste into another Replit instance:
+
+Core Theme Properties
+Dark Mode Colors
+Page Background: dark:bg-black
+Containers/Cards: dark:bg-[#0A0A0A]
+Borders: dark:border-[#1D1D1D]
+Emphasized Borders: dark:border-[#3A3A3A]
+Text (Headings): dark:text-white
+Text (Body): dark:text-[#E0E0E0]
+Text (Muted): dark:text-[#9E9E9E]
+Interactive Elements: dark:bg-[#121212]
+Light Mode Colors
+Page Background: bg-white or bg-gray-50
+Containers/Cards: bg-white
+Borders: border-gray-200
+Emphasized Borders: border-gray-300
+Text (Headings): text-gray-900
+Text (Body): text-gray-700
+Text (Muted): text-gray-500
+Interactive Elements: bg-gray-50
+Brand Colors & Gradients
+Primary Pink: #F65C9A
+Primary Teal: #3CBFAE
+Primary Gradient: bg-gradient-to-r from-[#3CBFAE] to-[#F65C9A]
+Gradient Text: bg-gradient-to-r from-[#3CBFAE] to-[#F65C9A] bg-clip-text text-transparent
+Essential Components
+Page Header
+<div className="relative overflow-hidden rounded-xl dark:bg-[#0A0A0A] bg-white p-8 shadow-md dark:border-[#1D1D1D] border-gray-200">
+  {/* Grid pattern */}
+  <div className="absolute inset-0 dark:bg-grid-white/[0.02] bg-grid-black/[0.02] [mask-image:linear-gradient(to_bottom,white,transparent)]"></div>
+  
+  {/* Theme toggle position */}
+  <div className="absolute top-4 right-4 z-10">
+    <ThemeToggle />
+  </div>
+  
+  <div className="relative flex flex-col md:flex-row justify-between md:items-center gap-6">
+    <div>
+      <h1 className="text-4xl font-bold tracking-tight dark:text-white text-gray-900">
+        Product <span className="bg-gradient-to-r from-[#3CBFAE] to-[#F65C9A] bg-clip-text text-transparent">Name</span>
+      </h1>
+      <p className="dark:text-[#E0E0E0] text-gray-700 mt-2 text-lg max-w-xl">
+        Product description here
+      </p>
+      
+      <div className="flex flex-wrap gap-4 mt-6">
+        {/* Primary button */}
+        <Button className="bg-gradient-to-r from-[#3CBFAE] to-[#F65C9A] hover:opacity-90 text-white border-0 shadow-lg hover:shadow-[0_4px_16px_rgba(246,92,154,0.25)] transition-all duration-300">
+          <Icon className="mr-2 h-4 w-4" />
+          Primary Action
+        </Button>
+        
+        {/* Secondary button */}
+        <Button variant="outline" className="dark:border-[#3A3A3A] border-gray-300 dark:bg-[#121212]/80 bg-gray-50 dark:hover:bg-[#1D1D1D] hover:bg-gray-100 transition-all dark:text-white text-gray-800">
+          <Icon className="mr-2 h-4 w-4 text-[#F65C9A]" />
+          Secondary Action
+        </Button>
+      </div>
+    </div>
+    
+    <div className="flex items-center gap-4 dark:bg-[#121212] bg-gray-100 backdrop-blur-sm p-5 rounded-lg shadow-inner dark:border-[#3A3A3A] border-gray-300">
+      <div className="text-sm font-medium dark:text-[#E0E0E0] text-gray-700">Credits</div>
+      <div className="text-sm font-semibold tabular-nums dark:text-white text-gray-900">35/100</div>
+    </div>
+  </div>
+  
+  {/* Background decoration */}
+  <div className="absolute bottom-0 right-0 opacity-10">
+    <Icon className="h-60 w-60 text-[#F65C9A]" />
+  </div>
+</div>
+Stat Card
+<div className="dark:bg-[#0A0A0A] bg-white dark:border-[#1D1D1D] border-gray-200 p-5 rounded-xl shadow-md relative overflow-hidden group hover:dark:border-[#3A3A3A] hover:border-gray-300 transition-all duration-300">
+  <div className="absolute top-0 right-0 p-2 opacity-10">
+    <Icon className="h-16 w-16 text-[#F65C9A]" />
+  </div>
+  <div className="relative">
+    <h3 className="dark:text-[#9E9E9E] text-gray-500 text-sm font-medium">Stat Label</h3>
+    <div className="mt-2 flex items-baseline">
+      <span className="text-3xl font-bold dark:text-white text-gray-900">123</span>
+      <span className="ml-1 text-xs dark:text-[#9E9E9E] text-gray-500">items</span>
+    </div>
+    <div className="mt-3 text-xs dark:text-[#9E9E9E] text-gray-500 flex items-center gap-1.5">
+      <Icon className="h-3.5 w-3.5 text-[#F65C9A]" />
+      <span>Descriptive text</span>
+    </div>
+  </div>
+</div>
+Card Component
+<div className="dark:bg-[#0A0A0A] bg-white dark:border-[#1D1D1D] border-gray-200 rounded-xl shadow-md overflow-hidden">
+  <div className="px-6 py-5 border-b dark:border-[#1D1D1D] border-gray-200">
+    <div className="flex items-center gap-3">
+      <div className="w-9 h-9 rounded-lg flex items-center justify-center bg-[#3A3A3A] text-white">
+        <Icon className="h-5 w-5" />
+      </div>
+      <h3 className="font-semibold text-lg dark:text-[#F9F9F9] text-gray-900">
+        Card Title
+      </h3>
+    </div>
+  </div>
+  <div className="p-6">
+    <p className="dark:text-[#E0E0E0] text-gray-700">
+      Card content goes here
+    </p>
+  </div>
+  <div className="flex items-center justify-between p-6 pt-0 mt-4 border-t dark:border-[#3A3A3A] border-gray-200">
+    <button className="text-xs font-medium rounded-md px-3 py-1.5 bg-primary/5 hover:bg-primary/10 text-primary">
+      Action Button
+    </button>
+  </div>
+</div>
+Navigation Tabs
+<div className="dark:bg-[#0A0A0A] bg-white dark:border-[#1D1D1D] border-gray-200 grid grid-cols-5 w-full rounded-lg overflow-hidden shadow-sm">
+  <button 
+    className={`dark:text-white text-gray-800 py-3 px-4 flex items-center gap-2 text-sm font-medium transition-colors 
+      ${ activeTab === 'overview' 
+        ? 'dark:bg-[#121212] bg-gray-50 dark:text-white text-gray-900 border-b-2 border-[#F65C9A]' 
+        : 'dark:text-[#9E9E9E] text-gray-600 border-b-2 border-transparent' }`}
+  >
+    <Icon className="w-4 h-4" />
+    Overview
+  </button>
+  
+  <button 
+    className={`dark:text-white text-gray-800 py-3 px-4 flex items-center gap-2 text-sm font-medium transition-colors 
+      ${ activeTab === 'tab2' 
+        ? 'dark:bg-[#121212] bg-gray-50 dark:text-white text-gray-900 border-b-2 border-[#F65C9A]' 
+        : 'dark:text-[#9E9E9E] text-gray-600 border-b-2 border-transparent' }`}
+  >
+    <Icon className="w-4 h-4" />
+    Tab 2
+  </button>
+  
+  {/* Additional tabs */}
+</div>
+Badge/Tag Component
+<div 
+  className={`text-xs font-medium px-3 py-1.5 rounded-full 
+    ${variant === 'primary' 
+      ? 'bg-[#F65C9A] text-white' 
+      : variant === 'success' 
+        ? 'bg-[#3CBFAE] text-white' 
+        : 'dark:bg-[#3A3A3A] dark:text-[#E0E0E0] bg-gray-300 text-gray-800 font-medium'}`}
+>
+  Badge Text
+</div>
+Theme Toggle Button
+<button
+  onClick={toggleTheme}
+  className={`h-9 w-9 rounded-full flex items-center justify-center ${
+    isDarkTheme 
+      ? "bg-nextmonth-purple/20 hover:bg-nextmonth-purple/30 shadow-md" 
+      : "bg-gray-200 hover:bg-gray-300 border border-gray-300 shadow-md"
+  } transition-all duration-200`}
+  title={`Switch to ${isDarkTheme ? "light" : "dark"} mode`}
+>
+  {isDarkTheme ? (
+    <Sun className="h-5 w-5 text-yellow-300" />
+  ) : (
+    <Moon className="h-5 w-5 text-blue-700" />
+  )}
+</button>
+Layout Structure and Spacing
+Page Layout
+<div className="container mx-auto py-8 space-y-8 dark:bg-black bg-gray-50">
+  {/* Hero Section */}
+  <div className="hero-section">...</div>
+  
+  {/* Navigation */}
+  <div className="navigation-tabs">...</div>
+  
+  {/* Content grid */}
+  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+    {/* Stat cards */}
+  </div>
+  
+  {/* Main content area */}
+  <div className="dark:bg-[#0A0A0A] bg-white dark:border-[#1D1D1D] border-gray-200 rounded-xl shadow-md p-6">
+    {/* Page content */}
+  </div>
+</div>
+Responsive Card Grid
+<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+  {/* Grid items */}
+</div>
+Animation Patterns
+Entrance Animation
+<motion.div
+  initial={{ opacity: 0, y: 20 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ 
+    duration: 0.5, 
+    ease: [0.22, 1, 0.36, 1]
+  }}
+>
+  {content}
+</motion.div>
+Button Hover Animation
+<motion.button 
+  whileHover={{ scale: 1.03 }}
+  whileTap={{ scale: 0.98 }}
+  className="your-button-classes"
+>
+  Button Text
+</motion.button>
+Theme Configuration
+{
+  "primary": "#F65C9A",
+  "variant": "professional",
+  "appearance": "system",
+  "radius": 0.75
+}
+Implementation Best Practices
+Always implement both dark and light mode using the dark: prefix for dark mode styles
+Use the primary gradient for main CTA buttons and important highlights
+Place theme toggle in the top right corner of page header
+Use consistent border colors: dark:border-[#1D1D1D] in dark mode, border-gray-200 in light mode
+Text hierarchy: Bold headings, medium weight for subtitles, regular for body text
+Use grid pattern overlay in hero sections for depth
+Include subtle animations for user interactions
+Maintain consistent spacing (container: p-8, cards: p-6, elements: gap-4)
+Use Lucide icons or similar with consistent sizing (h-4 w-4 for small icons)
+Include hover states on interactive elements (cards, buttons)
+This concise summary includes the most important elements from the Design Reference Blueprint that you can directly copy and paste into another Replit instance. It covers the core themes, component patterns, and implementation guidelines.

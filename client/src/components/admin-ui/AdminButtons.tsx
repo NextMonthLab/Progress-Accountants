@@ -3,30 +3,30 @@ import { Button, ButtonProps } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 interface GradientButtonProps extends ButtonProps {
-  gradient?: "pink-teal" | "pink-purple" | "blue-purple";
+  gradient?: "primary" | "secondary" | "pink-teal";
   children: React.ReactNode;
 }
 
 /**
- * GradientButton component for primary actions in the Lead Radar design system
+ * GradientButton component for primary actions in the NextMonth Gold UI design system
  */
 export function GradientButton({
-  gradient = "pink-teal",
+  gradient = "primary",
   className,
   children,
   ...props
 }: GradientButtonProps) {
   const gradientClass = {
-    "pink-teal": "bg-gradient-to-r from-[#d65db1] to-[#5EB8B6] hover:from-[#c44ca0] hover:to-[#4da7a5]",
-    "pink-purple": "bg-gradient-to-r from-[#d65db1] to-[#9c60ff] hover:from-[#c44ca0] hover:to-[#8d56e6]",
-    "blue-purple": "bg-gradient-to-r from-[#5E8AB8] to-[#9c60ff] hover:from-[#4d79a7] hover:to-[#8d56e6]"
+    "primary": "bg-gradient-to-r from-[#3CBFAE] to-[#F65C9A] hover:opacity-90",
+    "secondary": "bg-gradient-to-r from-[#3CBFAE] to-[#F65C9A] hover:opacity-90",
+    "pink-teal": "bg-gradient-to-r from-[#3CBFAE] to-[#F65C9A] hover:opacity-90"
   }[gradient];
 
   return (
     <Button
       className={cn(
         gradientClass,
-        "text-white font-medium shadow-sm transition-all",
+        "text-white font-medium shadow-lg hover:shadow-[0_4px_16px_rgba(246,92,154,0.25)] transition-all duration-300 border-0",
         className
       )}
       {...props}
@@ -37,7 +37,7 @@ export function GradientButton({
 }
 
 /**
- * ActionButton component for secondary actions in the Lead Radar design system
+ * ActionButton component for secondary actions in the NextMonth Gold UI design system
  */
 export function ActionButton({
   className,
@@ -49,8 +49,7 @@ export function ActionButton({
     <Button
       variant={variant}
       className={cn(
-        "font-medium border border-gray-200 shadow-sm transition-all",
-        variant === "outline" && "hover:border-[#d65db1]/30 hover:text-[#d65db1]",
+        "font-medium dark:border-[#3A3A3A] border-gray-300 dark:bg-[#121212]/80 bg-gray-50 dark:hover:bg-[#1D1D1D] hover:bg-gray-100 transition-all dark:text-white text-gray-800",
         className
       )}
       {...props}
@@ -61,7 +60,7 @@ export function ActionButton({
 }
 
 /**
- * TabsNav component for pill-style tab navigation in the Lead Radar design system
+ * TabsNav component for tab navigation in the NextMonth Gold UI design system
  */
 export function TabsNav({
   tabs,
@@ -75,27 +74,33 @@ export function TabsNav({
   className?: string;
 }) {
   return (
-    <div className={cn("flex bg-white rounded-full p-1 border shadow-sm overflow-x-auto", className)}>
-      {tabs.map((tab) => (
-        <Button
-          key={tab.id}
-          variant="ghost"
-          className={cn(
-            "rounded-full text-gray-700 flex items-center px-4 whitespace-nowrap",
-            activeTab === tab.id && "bg-white shadow-sm"
-          )}
-          onClick={() => onChange(tab.id)}
-        >
-          {tab.icon && <span className="mr-2">{tab.icon}</span>}
-          {tab.label}
-        </Button>
-      ))}
+    <div className={cn(
+      "dark:bg-[#0A0A0A] bg-white dark:border-[#1D1D1D] border-gray-200 grid w-full rounded-lg overflow-hidden shadow-sm",
+      className
+    )}>
+      <div className="flex">
+        {tabs.map((tab) => (
+          <button
+            key={tab.id}
+            className={cn(
+              "dark:text-white text-gray-800 py-3 px-4 flex items-center gap-2 text-sm font-medium transition-colors",
+              activeTab === tab.id 
+                ? "dark:bg-[#121212] bg-gray-50 dark:text-white text-gray-900 border-b-2 border-[#F65C9A]" 
+                : "dark:text-[#9E9E9E] text-gray-600 border-b-2 border-transparent"
+            )}
+            onClick={() => onChange(tab.id)}
+          >
+            {tab.icon && <span className="h-4 w-4">{tab.icon}</span>}
+            {tab.label}
+          </button>
+        ))}
+      </div>
     </div>
   );
 }
 
 /**
- * NavItem component for top navigation items in the Lead Radar design system
+ * NavItem component for top navigation items in the NextMonth Gold UI design system
  */
 export function NavItem({
   label,
@@ -117,13 +122,14 @@ export function NavItem({
       <Button
         variant="ghost"
         className={cn(
-          "text-gray-700 font-medium px-2 py-1 h-auto flex items-center",
-          active && "text-[#d65db1]",
+          "dark:text-white text-gray-800 font-medium px-3 py-2 h-auto flex items-center gap-2 text-sm transition-colors",
+          active && "dark:bg-[#121212] bg-gray-50 dark:text-white text-gray-900 border-b-2 border-[#F65C9A]",
+          !active && "dark:text-[#9E9E9E] text-gray-600 border-b-2 border-transparent",
           className
         )}
         onClick={onClick}
       >
-        {icon && <span className="mr-1">{icon}</span>}
+        {icon && <span className="h-4 w-4">{icon}</span>}
         {label}
         {children && (
           <svg 
@@ -135,7 +141,7 @@ export function NavItem({
             strokeWidth="2" 
             strokeLinecap="round" 
             strokeLinejoin="round" 
-            className="ml-1 opacity-60 h-4 w-4"
+            className="h-4 w-4"
           >
             <path d="m6 9 6 6 6-6" />
           </svg>
@@ -143,10 +149,36 @@ export function NavItem({
       </Button>
       
       {children && (
-        <div className="absolute left-0 mt-1 w-48 bg-white border rounded-md shadow-lg p-2 invisible group-hover:visible z-50">
+        <div className="absolute left-0 mt-1 w-48 dark:bg-[#0A0A0A] bg-white dark:border-[#1D1D1D] border-gray-200 rounded-lg shadow-lg p-2 invisible group-hover:visible z-50">
           {children}
         </div>
       )}
+    </div>
+  );
+}
+
+/**
+ * Badge component for tags and badges in the NextMonth Gold UI design system
+ */
+export function Badge({
+  text,
+  variant = "default"
+}: {
+  text: string;
+  variant?: "primary" | "success" | "default";
+}) {
+  const variantClass = {
+    "primary": "bg-[#F65C9A] text-white",
+    "success": "bg-[#3CBFAE] text-white",
+    "default": "dark:bg-[#3A3A3A] dark:text-[#E0E0E0] bg-gray-300 text-gray-800 font-medium"
+  }[variant];
+
+  return (
+    <div className={cn(
+      "text-xs font-medium px-3 py-1.5 rounded-full",
+      variantClass
+    )}>
+      {text}
     </div>
   );
 }

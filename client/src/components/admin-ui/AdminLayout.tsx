@@ -4,7 +4,8 @@ import { useAuth } from '@/hooks/use-auth';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Progress } from '@/components/ui/progress';
-import { NavItem } from './AdminButtons';
+import { NavItem, GradientButton } from './AdminButtons';
+import { ThemeToggle } from './AdminCard';
 import { 
   Settings, 
   LayoutDashboard,
@@ -20,7 +21,9 @@ import {
   PaintBucket,
   LineChart,
   Database,
-  Briefcase
+  Briefcase,
+  Sun,
+  Moon
 } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
@@ -35,7 +38,7 @@ interface AdminLayoutProps {
 }
 
 /**
- * AdminLayout component following the Lead Radar design system
+ * AdminLayout component following the NextMonth Gold UI design system
  */
 export function AdminLayoutV2({ 
   children, 
@@ -49,6 +52,7 @@ export function AdminLayoutV2({
   const { user, logoutMutation } = useAuth();
   const [activePage, setActivePage] = useState('');
   const [activeTab, setActiveTab] = useState('overview');
+  const [isDarkTheme, setIsDarkTheme] = useState(false);
   
   // Set active page based on location
   useEffect(() => {
@@ -75,17 +79,29 @@ export function AdminLayoutV2({
     });
   };
   
+  const toggleTheme = () => {
+    setIsDarkTheme(!isDarkTheme);
+    // This would typically toggle a class on the document or use a context
+  };
+  
   // Site progress for the progress indicator
   const siteProgress = 40; // This would be calculated based on completed tasks
 
   return (
-    <div className="flex flex-col min-h-screen bg-white">
+    <div className={`flex flex-col min-h-screen ${isDarkTheme ? 'dark bg-black' : 'bg-gray-50'}`}>
       {/* Top Navigation */}
-      <header className="border-b z-10">
+      <header className="dark:border-[#1D1D1D] border-gray-200 z-10">
         <div className="max-w-screen-xl mx-auto px-4">
           <div className="flex items-center h-16">
+            {/* Logo or brand */}
+            <div className="mr-8">
+              <span className="font-bold text-lg dark:text-white text-gray-900">
+                Next<span className="bg-gradient-to-r from-[#3CBFAE] to-[#F65C9A] bg-clip-text text-transparent">Month</span>
+              </span>
+            </div>
+            
             {/* Left navigation */}
-            <nav className="flex space-x-8">
+            <nav className="flex space-x-2">
               <NavItem 
                 label="Lead Intelligence"
                 active={activePage === 'lead-intelligence'}
@@ -137,7 +153,7 @@ export function AdminLayoutV2({
               
               <NavItem 
                 label="SOT Integration"
-                icon={<span className="text-[#5EB8B6]">⟳</span>}
+                icon={<RefreshCcw className="h-4 w-4 text-[#3CBFAE]" />}
                 active={activePage === 'sot-integration'}
                 onClick={() => navigate('/admin/sot')}
               />
@@ -145,59 +161,73 @@ export function AdminLayoutV2({
             
             {/* Right navigation */}
             <div className="flex items-center ml-auto space-x-4">
-              <Button 
+              <GradientButton 
                 size="sm" 
-                className="bg-[#5EB8B6] hover:bg-[#45a4a2] text-white font-medium rounded px-4 h-9"
+                className="text-white font-medium rounded-md px-4 h-9"
                 onClick={() => window.open('https://marketplace.nextmonth.ai', '_blank')}
               >
                 MC Login
-              </Button>
+              </GradientButton>
               
               <NavItem 
                 label="Financial"
-                icon={<span className="text-gray-500">$</span>}
+                icon={<Wallet className="h-4 w-4" />}
                 active={activePage === 'financial'}
                 onClick={() => navigate('/admin/financial')}
               />
               
               <NavItem 
                 label="Creative"
-                icon={<span className="text-gray-500">✧</span>}
+                icon={<PaintBucket className="h-4 w-4" />}
                 active={activePage === 'creative'}
                 onClick={() => navigate('/admin/creative')}
               />
               
               <NavItem 
                 label="Sales"
-                icon={<span className="text-gray-500">⚏</span>}
+                icon={<ShoppingBag className="h-4 w-4" />}
                 active={activePage === 'sales'}
                 onClick={() => navigate('/admin/sales')}
               />
+              
+              {/* Theme toggle */}
+              <div className="ml-2">
+                <ThemeToggle isDarkTheme={isDarkTheme} toggleTheme={toggleTheme} />
+              </div>
             </div>
           </div>
         </div>
       </header>
       
       {/* Progress Bar */}
-      <div className="relative h-1 bg-gray-100">
-        <div className="absolute inset-y-0 left-0 bg-gradient-to-r from-[#d65db1] to-[#5EB8B6]" style={{ width: `${siteProgress}%` }}></div>
-        <div className="absolute inset-y-0 left-0 flex items-center justify-between w-full px-4">
-          <div className="h-2 w-2 rounded-full bg-[#d65db1] -mt-0.5"></div>
-          <div className="h-2 w-2 rounded-full bg-gray-300 -mt-0.5"></div>
-        </div>
+      <div className="relative h-1 dark:bg-[#1D1D1D] bg-gray-200">
+        <div className="absolute inset-y-0 left-0 bg-gradient-to-r from-[#3CBFAE] to-[#F65C9A]" style={{ width: `${siteProgress}%` }}></div>
       </div>
       
       {/* Main Content */}
-      <div className="flex-1">
+      <div className="flex-1 py-8">
         <div className={cn(
-          "mx-auto px-6 py-6",
+          "mx-auto px-6",
           fullWidth ? "w-full" : "max-w-screen-xl"
         )}>
-          {/* Page header */}
+          {/* Page header - only show if not hidden */}
           {!hideHeader && (title || description) && (
-            <div className="mb-6">
-              {title && <h1 className="text-2xl font-bold mb-1">{title}</h1>}
-              {description && <p className="text-gray-600">{description}</p>}
+            <div className="mb-8 relative overflow-hidden rounded-xl dark:bg-[#0A0A0A] bg-white p-8 shadow-md dark:border-[#1D1D1D] border-gray-200">
+              {/* Grid pattern */}
+              <div className="absolute inset-0 dark:bg-grid-white/[0.02] bg-grid-black/[0.02] [mask-image:linear-gradient(to_bottom,white,transparent)]"></div>
+              
+              <div className="relative">
+                {title && (
+                  <h1 className="text-3xl font-bold tracking-tight dark:text-white text-gray-900">
+                    {title.split(' ').map((word, i) => 
+                      i === title.split(' ').length - 1 ? 
+                        <span key={i} className="bg-gradient-to-r from-[#3CBFAE] to-[#F65C9A] bg-clip-text text-transparent">{word} </span> : 
+                        <span key={i}>{word} </span>
+                    )}
+                  </h1>
+                )}
+                {description && <p className="dark:text-[#E0E0E0] text-gray-700 mt-2">{description}</p>}
+              </div>
             </div>
           )}
           
