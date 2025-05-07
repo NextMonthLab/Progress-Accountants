@@ -1194,7 +1194,7 @@ export default function AdminDashboardPage() {
                         <Button size="sm" variant="outline" className="border-[#3CBFAE] text-[#3CBFAE] hover:bg-[#3CBFAE]/5">Download</Button>
                       </div>
                       
-                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-md">
+                      <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-md">
                         <div className="flex items-center gap-3">
                           <Database className="h-5 w-5 text-[#3CBFAE]" />
                           <div>
@@ -1202,12 +1202,12 @@ export default function AdminDashboardPage() {
                             <p className="text-xs text-gray-500 dark:text-gray-400">Apr 21, 2:45 PM • 1.2 GB</p>
                           </div>
                         </div>
-                        <Button size="sm" variant="outline">Download</Button>
+                        <Button size="sm" variant="outline" className="border-[#3CBFAE] text-[#3CBFAE] hover:bg-[#3CBFAE]/5">Download</Button>
                       </div>
                     </div>
                   </CardContent>
                   <CardFooter>
-                    <Button variant="outline" className="w-full">
+                    <Button variant="outline" className="w-full border-[#F65C9A] text-[#F65C9A] hover:bg-[#F65C9A]/5">
                       View All Backups
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Button>
@@ -1222,15 +1222,15 @@ export default function AdminDashboardPage() {
                     <CardDescription className="text-gray-700 dark:text-gray-300">Maintenance and system operations</CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-3">
-                    <Button variant="outline" className="w-full justify-start">
+                    <Button variant="outline" className="w-full justify-start border-[#3CBFAE] text-[#3CBFAE] hover:bg-[#3CBFAE]/5">
                       <HardDrive className="mr-2 h-4 w-4" />
                       Create Backup Now
                     </Button>
-                    <Button variant="outline" className="w-full justify-start">
+                    <Button variant="outline" className="w-full justify-start border-[#3CBFAE] text-[#3CBFAE] hover:bg-[#3CBFAE]/5">
                       <Rocket className="mr-2 h-4 w-4" />
                       Deploy Website
                     </Button>
-                    <Button variant="outline" className="w-full justify-start">
+                    <Button variant="outline" className="w-full justify-start border-[#3CBFAE] text-[#3CBFAE] hover:bg-[#3CBFAE]/5">
                       <Settings className="mr-2 h-4 w-4" />
                       System Settings
                     </Button>
@@ -1249,18 +1249,22 @@ export default function AdminDashboardPage() {
                   <CardContent className="space-y-4">
                     <div>
                       <div className="flex justify-between mb-1">
-                        <span className="text-sm font-medium">Media Files</span>
-                        <span className="text-sm font-medium">45%</span>
+                        <span className="text-sm font-medium text-gray-800 dark:text-white">Media Files</span>
+                        <span className="text-sm font-medium text-gray-800 dark:text-white">45%</span>
                       </div>
-                      <Progress value={45} className="h-2" />
+                      <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                        <div className="h-full bg-gradient-to-r from-[#3CBFAE] to-[#F65C9A] rounded-full" style={{ width: '45%' }} />
+                      </div>
                     </div>
                     
                     <div>
                       <div className="flex justify-between mb-1">
-                        <span className="text-sm font-medium">Database</span>
-                        <span className="text-sm font-medium">30%</span>
+                        <span className="text-sm font-medium text-gray-800 dark:text-white">Database</span>
+                        <span className="text-sm font-medium text-gray-800 dark:text-white">30%</span>
                       </div>
-                      <Progress value={30} className="h-2" />
+                      <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                        <div className="h-full bg-gradient-to-r from-[#3CBFAE] to-[#F65C9A] rounded-full" style={{ width: '30%' }} />
+                      </div>
                     </div>
                     
                     <div>
@@ -1268,7 +1272,9 @@ export default function AdminDashboardPage() {
                         <span className="text-sm font-medium">Backups</span>
                         <span className="text-sm font-medium">15%</span>
                       </div>
-                      <Progress value={15} className="h-2" />
+                      <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                        <div className="h-full bg-gradient-to-r from-[#3CBFAE] to-[#F65C9A] rounded-full" style={{ width: '15%' }} />
+                      </div>
                     </div>
                     
                     <div>
@@ -1276,7 +1282,9 @@ export default function AdminDashboardPage() {
                         <span className="text-sm font-medium">Other</span>
                         <span className="text-sm font-medium">10%</span>
                       </div>
-                      <Progress value={10} className="h-2" />
+                      <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                        <div className="h-full bg-gradient-to-r from-[#3CBFAE] to-[#F65C9A] rounded-full" style={{ width: '10%' }} />
+                      </div>
                     </div>
                   </CardContent>
                   <CardFooter>
