@@ -207,38 +207,38 @@ function QuickAction({
   isLoading = false
 }: QuickActionProps) {
   const variantStyles = {
-    primary: 'bg-gradient-to-br from-navy via-blue-900 to-blue-950 hover:shadow-lg hover:shadow-navy/20 text-white border border-navy/20',
-    secondary: 'bg-white hover:bg-orange-50 hover:shadow-lg hover:shadow-orange-500/10 border border-orange-200 text-navy',
-    outline: 'border-2 border-navy/20 hover:border-navy/40 bg-white text-navy hover:bg-blue-50',
-    ghost: 'bg-gray-100 hover:bg-gray-200 text-navy border border-gray-200',
+    primary: 'bg-gradient-to-br from-[#3CBFAE] to-[#F65C9A] hover:shadow-lg hover:shadow-[#F65C9A]/20 text-white border border-[#3CBFAE]/20',
+    secondary: 'bg-white hover:bg-[#F65C9A]/5 hover:shadow-lg hover:shadow-[#F65C9A]/10 border border-[#F65C9A]/20 text-gray-800 dark:text-white',
+    outline: 'border-2 border-[#3CBFAE]/20 hover:border-[#3CBFAE]/40 bg-white text-gray-800 dark:text-white hover:bg-[#3CBFAE]/5',
+    ghost: 'bg-gray-100 hover:bg-gray-200 text-gray-800 dark:text-white border border-gray-200',
   };
 
   // Colors based on variant for better contrast
   const iconColor = {
     primary: 'text-white bg-white/10 p-1.5 rounded-md',
-    secondary: 'text-orange-600 bg-orange-100 p-1.5 rounded-md',
-    outline: 'text-navy bg-blue-50 p-1.5 rounded-md',
-    ghost: 'text-navy bg-gray-200 p-1.5 rounded-md'
+    secondary: 'text-[#F65C9A] bg-[#F65C9A]/10 p-1.5 rounded-md',
+    outline: 'text-[#3CBFAE] bg-[#3CBFAE]/10 p-1.5 rounded-md',
+    ghost: 'text-[#3CBFAE] bg-gray-200 p-1.5 rounded-md'
   };
   
   const titleColor = {
     primary: 'text-white font-medium',
-    secondary: 'text-navy font-medium',
-    outline: 'text-navy font-medium',
-    ghost: 'text-navy font-medium'
+    secondary: 'text-gray-800 dark:text-white font-medium',
+    outline: 'text-gray-800 dark:text-white font-medium',
+    ghost: 'text-gray-800 dark:text-white font-medium'
   };
   
   const descriptionColor = {
     primary: 'text-white/90',
-    secondary: 'text-gray-700',
-    outline: 'text-gray-700',
-    ghost: 'text-gray-700'
+    secondary: 'text-gray-700 dark:text-gray-300',
+    outline: 'text-gray-700 dark:text-gray-300',
+    ghost: 'text-gray-700 dark:text-gray-300'
   };
 
   const arrowColor = {
     primary: 'text-white/70',
-    secondary: 'text-orange-400',
-    outline: 'text-navy/40',
+    secondary: 'text-[#F65C9A]',
+    outline: 'text-[#3CBFAE]/80',
     ghost: 'text-gray-500'
   };
 
@@ -514,18 +514,18 @@ export default function AdminDashboardPage() {
   return (
       <div className="space-y-6 p-2 sm:p-4 md:p-6 bg-background">
         {/* Page Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-4 rounded-lg shadow-sm border border-gray-100">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-4 rounded-lg shadow-sm border border-gray-100 dark:bg-gray-900 dark:border-gray-800">
           <div>
-            <h1 className="text-2xl font-bold text-navy">Admin Dashboard</h1>
-            <p className="text-gray-700">Welcome back, {user?.username || 'User'}</p>
+            <h1 className="text-2xl font-bold bg-gradient-to-r from-[#3CBFAE] to-[#F65C9A] bg-clip-text text-transparent">Admin Dashboard</h1>
+            <p className="text-gray-700 dark:text-gray-300">Welcome back, {user?.username || 'User'}</p>
           </div>
           <div className="flex flex-wrap gap-2 mt-2 sm:mt-0">
-            <Button variant="outline" className="gap-2 border-navy/30 text-navy">
+            <Button variant="outline" className="gap-2 border-[#3CBFAE]/30 text-[#3CBFAE] hover:bg-[#3CBFAE]/5">
               <Settings className="h-4 w-4" />
               Settings
             </Button>
             <Button 
-              className="gap-2 bg-navy hover:bg-navy/90"
+              className="gap-2 bg-gradient-to-r from-[#3CBFAE] to-[#F65C9A] hover:shadow-md hover:opacity-90"
               onClick={() => navigate("/page-builder/page/new")}
             >
               <Plus className="h-4 w-4" />
@@ -537,31 +537,31 @@ export default function AdminDashboardPage() {
         {/* Tabs Navigation */}
         <Tabs defaultValue="overview" value={activeTab} onValueChange={setActiveTab} className="w-full">
           <div className="overflow-x-auto pb-1 mb-1">
-            <TabsList className="bg-white rounded-lg shadow-sm border border-gray-100 mb-4 p-1 flex w-max min-w-full sm:w-auto">
+            <TabsList className="bg-white dark:bg-gray-900 rounded-lg shadow-sm border border-gray-100 dark:border-gray-800 mb-4 p-1 flex w-max min-w-full sm:w-auto">
               <TabsTrigger 
                 value="overview" 
-                className="text-navy hover:text-navy/80 data-[state=active]:bg-orange-50 data-[state=active]:text-orange-600 data-[state=active]:border-b-2 data-[state=active]:border-orange-500 whitespace-nowrap text-sm"
+                className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white data-[state=active]:bg-gradient-to-r data-[state=active]:from-[#3CBFAE]/10 data-[state=active]:to-[#F65C9A]/10 data-[state=active]:text-[#F65C9A] data-[state=active]:border-b-2 data-[state=active]:border-[#F65C9A] whitespace-nowrap text-sm"
               >
                 <LayoutDashboard className="h-4 w-4 mr-1.5 inline-block" />
                 <span>Overview</span>
               </TabsTrigger>
               <TabsTrigger 
                 value="content" 
-                className="text-navy hover:text-navy/80 data-[state=active]:bg-orange-50 data-[state=active]:text-orange-600 data-[state=active]:border-b-2 data-[state=active]:border-orange-500 whitespace-nowrap text-sm"
+                className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white data-[state=active]:bg-gradient-to-r data-[state=active]:from-[#3CBFAE]/10 data-[state=active]:to-[#F65C9A]/10 data-[state=active]:text-[#F65C9A] data-[state=active]:border-b-2 data-[state=active]:border-[#F65C9A] whitespace-nowrap text-sm"
               >
                 <FileText className="h-4 w-4 mr-1.5 inline-block" />
                 <span>Content</span>
               </TabsTrigger>
               <TabsTrigger 
                 value="tools" 
-                className="text-navy hover:text-navy/80 data-[state=active]:bg-orange-50 data-[state=active]:text-orange-600 data-[state=active]:border-b-2 data-[state=active]:border-orange-500 whitespace-nowrap text-sm"
+                className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white data-[state=active]:bg-gradient-to-r data-[state=active]:from-[#3CBFAE]/10 data-[state=active]:to-[#F65C9A]/10 data-[state=active]:text-[#F65C9A] data-[state=active]:border-b-2 data-[state=active]:border-[#F65C9A] whitespace-nowrap text-sm"
               >
                 <Cpu className="h-4 w-4 mr-1.5 inline-block" />
                 <span>Tools</span>
               </TabsTrigger>
               <TabsTrigger 
                 value="system" 
-                className="text-navy hover:text-navy/80 data-[state=active]:bg-orange-50 data-[state=active]:text-orange-600 data-[state=active]:border-b-2 data-[state=active]:border-orange-500 whitespace-nowrap text-sm"
+                className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white data-[state=active]:bg-gradient-to-r data-[state=active]:from-[#3CBFAE]/10 data-[state=active]:to-[#F65C9A]/10 data-[state=active]:text-[#F65C9A] data-[state=active]:border-b-2 data-[state=active]:border-[#F65C9A] whitespace-nowrap text-sm"
               >
                 <Settings className="h-4 w-4 mr-1.5 inline-block" />
                 <span>System</span>
@@ -585,7 +585,7 @@ export default function AdminDashboardPage() {
                 label="Tools Installed"
                 value={metrics?.totalToolsInstalled || 0}
                 icon={<Cpu className="h-5 w-5" />}
-                color="orange"
+                color="navy"
                 isGradient={true}
               />
               <StatCard
@@ -772,7 +772,7 @@ export default function AdminDashboardPage() {
                 label="Draft Pages"
                 value="3"
                 icon={<FileText className="h-5 w-5" />}
-                color="orange"
+                color="navy"
               />
               <StatCard
                 label="Media Files"
@@ -923,7 +923,7 @@ export default function AdminDashboardPage() {
                 label="Available Updates"
                 value="2"
                 icon={<Sparkles className="h-5 w-5" />}
-                color="orange"
+                color="navy"
               />
               <StatCard
                 label="Data Usage"
@@ -1011,32 +1011,32 @@ export default function AdminDashboardPage() {
               </div>
               
               <div className="space-y-6">
-                <Card className="border-navy border-2">
-                  <CardHeader className="bg-navy">
+                <Card className="border-[#3CBFAE] border-2">
+                  <CardHeader className="bg-gradient-to-r from-[#3CBFAE] to-[#F65C9A]">
                     <CardTitle className="text-white">Tool Marketplace</CardTitle>
                     <CardDescription className="text-white/90">Discover new tools to enhance your business</CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-4 pt-4">
-                    <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
-                      <h3 className="font-medium text-navy mb-1">Featured Tool</h3>
-                      <p className="text-gray-700 text-sm mb-3">Advanced Analytics Dashboard</p>
-                      <Button className="w-full bg-navy text-white hover:bg-navy/90">
+                    <div className="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-4">
+                      <h3 className="font-medium text-gray-800 dark:text-white mb-1">Featured Tool</h3>
+                      <p className="text-gray-700 dark:text-gray-300 text-sm mb-3">Advanced Analytics Dashboard</p>
+                      <Button className="w-full bg-gradient-to-r from-[#3CBFAE] to-[#F65C9A] text-white hover:opacity-90">
                         Learn More
                       </Button>
                     </div>
                     
-                    <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
-                      <h3 className="font-medium text-navy mb-1">Popular Categories</h3>
+                    <div className="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-4">
+                      <h3 className="font-medium text-gray-800 dark:text-white mb-1">Popular Categories</h3>
                       <div className="flex flex-wrap gap-2 mt-2">
-                        <Badge variant="outline" className="bg-navy/10 text-navy hover:bg-navy/20 border-0">Analytics</Badge>
-                        <Badge variant="outline" className="bg-navy/10 text-navy hover:bg-navy/20 border-0">Marketing</Badge>
-                        <Badge variant="outline" className="bg-navy/10 text-navy hover:bg-navy/20 border-0">Finance</Badge>
-                        <Badge variant="outline" className="bg-navy/10 text-navy hover:bg-navy/20 border-0">Productivity</Badge>
+                        <Badge variant="outline" className="bg-[#3CBFAE]/10 text-[#3CBFAE] hover:bg-[#3CBFAE]/20 border-0">Analytics</Badge>
+                        <Badge variant="outline" className="bg-[#F65C9A]/10 text-[#F65C9A] hover:bg-[#F65C9A]/20 border-0">Marketing</Badge>
+                        <Badge variant="outline" className="bg-[#3CBFAE]/10 text-[#3CBFAE] hover:bg-[#3CBFAE]/20 border-0">Finance</Badge>
+                        <Badge variant="outline" className="bg-[#F65C9A]/10 text-[#F65C9A] hover:bg-[#F65C9A]/20 border-0">Productivity</Badge>
                       </div>
                     </div>
                   </CardContent>
                   <CardFooter>
-                    <Button variant="outline" className="w-full text-navy hover:bg-navy/5">
+                    <Button variant="outline" className="w-full text-[#3CBFAE] hover:bg-[#3CBFAE]/5">
                       Explore Marketplace
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Button>
@@ -1049,74 +1049,74 @@ export default function AdminDashboardPage() {
                     <CardDescription className="text-gray-700">Available updates for your tools</CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-4">
-                    <div className="flex items-center justify-between p-3 bg-gray-50 rounded-md">
+                    <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-md">
                       <div className="flex items-center gap-3">
-                        <div className="h-8 w-8 rounded-full bg-orange-500/10 flex items-center justify-center text-orange-500">
+                        <div className="h-8 w-8 rounded-full bg-[#F65C9A]/10 flex items-center justify-center text-[#F65C9A]">
                           <PenTool className="h-4 w-4" />
                         </div>
                         <div>
-                          <p className="font-medium">Social Media Generator</p>
-                          <p className="text-xs text-gray-500">v2.1.0 available</p>
+                          <p className="font-medium text-gray-800 dark:text-white">Social Media Generator</p>
+                          <p className="text-xs text-gray-500 dark:text-gray-400">v2.1.0 available</p>
                         </div>
                       </div>
-                      <Button size="sm" variant="outline">Update</Button>
+                      <Button size="sm" variant="outline" className="border-[#F65C9A] text-[#F65C9A] hover:bg-[#F65C9A]/5">Update</Button>
                     </div>
                     
-                    <div className="flex items-center justify-between p-3 bg-gray-50 rounded-md">
+                    <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-md">
                       <div className="flex items-center gap-3">
-                        <div className="h-8 w-8 rounded-full bg-blue-500/10 flex items-center justify-center text-blue-500">
+                        <div className="h-8 w-8 rounded-full bg-[#3CBFAE]/10 flex items-center justify-center text-[#3CBFAE]">
                           <BarChart3 className="h-4 w-4" />
                         </div>
                         <div>
-                          <p className="font-medium">SEO Analyzer</p>
-                          <p className="text-xs text-gray-500">v1.5.2 available</p>
+                          <p className="font-medium text-gray-800 dark:text-white">SEO Analyzer</p>
+                          <p className="text-xs text-gray-500 dark:text-gray-400">v1.5.2 available</p>
                         </div>
                       </div>
-                      <Button size="sm" variant="outline">Update</Button>
+                      <Button size="sm" variant="outline" className="border-[#3CBFAE] text-[#3CBFAE] hover:bg-[#3CBFAE]/5">Update</Button>
                     </div>
                   </CardContent>
                 </Card>
                 
                 {/* Insights Dashboard Card */}
-                <Card className="mt-6 border-orange-500 border-2">
-                  <CardHeader>
-                    <CardTitle>Insights Dashboard</CardTitle>
-                    <CardDescription className="text-gray-700">Track and analyze user feedback</CardDescription>
+                <Card className="mt-6 border-[#F65C9A] border-2">
+                  <CardHeader className="bg-gradient-to-r from-[#3CBFAE]/10 to-[#F65C9A]/10">
+                    <CardTitle className="bg-gradient-to-r from-[#3CBFAE] to-[#F65C9A] bg-clip-text text-transparent">Insights Dashboard</CardTitle>
+                    <CardDescription className="text-gray-700 dark:text-gray-300">Track and analyze user feedback</CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-4">
-                    <div className="flex items-center justify-between p-3 bg-gray-50 rounded-md">
+                    <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-md">
                       <div className="flex items-center gap-3">
-                        <div className="h-10 w-10 rounded-full bg-orange-500/10 flex items-center justify-center text-orange-500">
+                        <div className="h-10 w-10 rounded-full bg-[#F65C9A]/10 flex items-center justify-center text-[#F65C9A]">
                           <BarChart3 className="h-6 w-6" />
                         </div>
                         <div>
-                          <p className="font-medium">Track User Insights</p>
-                          <p className="text-xs text-gray-500">View leaderboard and track engagement</p>
+                          <p className="font-medium text-gray-800 dark:text-white">Track User Insights</p>
+                          <p className="text-xs text-gray-500 dark:text-gray-400">View leaderboard and track engagement</p>
                         </div>
                       </div>
                       <Link href="/admin/insights-dashboard">
-                        <Button size="sm">Open</Button>
+                        <Button size="sm" className="bg-gradient-to-r from-[#3CBFAE] to-[#F65C9A] hover:opacity-90">Open</Button>
                       </Link>
                     </div>
                     
-                    <div className="flex items-center justify-between p-3 bg-gray-50 rounded-md">
+                    <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-md">
                       <div className="flex items-center gap-3">
-                        <div className="h-10 w-10 rounded-full bg-navy/10 flex items-center justify-center text-navy">
+                        <div className="h-10 w-10 rounded-full bg-[#3CBFAE]/10 flex items-center justify-center text-[#3CBFAE]">
                           <Users className="h-6 w-6" />
                         </div>
                         <div>
-                          <p className="font-medium">Manage Users</p>
-                          <p className="text-xs text-gray-500">Add and edit insight contributors</p>
+                          <p className="font-medium text-gray-800 dark:text-white">Manage Users</p>
+                          <p className="text-xs text-gray-500 dark:text-gray-400">Add and edit insight contributors</p>
                         </div>
                       </div>
                       <Link href="/admin/insight-users">
-                        <Button size="sm" variant="outline">Manage</Button>
+                        <Button size="sm" variant="outline" className="border-[#3CBFAE] text-[#3CBFAE] hover:bg-[#3CBFAE]/5">Manage</Button>
                       </Link>
                     </div>
                   </CardContent>
                   <CardFooter>
                     <Link href="/admin/insights-dashboard" className="w-full">
-                      <Button variant="outline" className="w-full">
+                      <Button variant="outline" className="w-full border-[#F65C9A] text-[#F65C9A] hover:bg-[#F65C9A]/5">
                         View Insights Dashboard
                         <ArrowRight className="ml-2 h-4 w-4" />
                       </Button>
@@ -1146,7 +1146,7 @@ export default function AdminDashboardPage() {
                 label="Storage Used"
                 value="28%"
                 icon={<Database className="h-5 w-5" />}
-                color="orange"
+                color="navy"
               />
             </div>
             
