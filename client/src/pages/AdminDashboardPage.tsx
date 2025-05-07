@@ -1155,7 +1155,7 @@ export default function AdminDashboardPage() {
                 <Card>
                   <CardHeader>
                     <CardTitle>System Health</CardTitle>
-                    <CardDescription className="text-gray-700">Status of system components</CardDescription>
+                    <CardDescription className="text-gray-700 dark:text-gray-300">Status of system components</CardDescription>
                   </CardHeader>
                   <CardContent>
                     <SystemHealth 
@@ -1168,38 +1168,38 @@ export default function AdminDashboardPage() {
                 <Card className="mt-6">
                   <CardHeader>
                     <CardTitle>Recent Backups</CardTitle>
-                    <CardDescription className="text-gray-700">Latest system backups</CardDescription>
+                    <CardDescription className="text-gray-700 dark:text-gray-300">Latest system backups</CardDescription>
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-4">
-                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-md">
+                      <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-md">
                         <div className="flex items-center gap-3">
-                          <Database className="h-5 w-5 text-navy" />
+                          <Database className="h-5 w-5 text-[#3CBFAE]" />
                           <div>
-                            <p className="font-medium">Daily Backup</p>
-                            <p className="text-xs text-gray-500">Today, 2:45 AM • 840 MB</p>
+                            <p className="font-medium text-gray-800 dark:text-white">Daily Backup</p>
+                            <p className="text-xs text-gray-500 dark:text-gray-400">Today, 2:45 AM • 840 MB</p>
                           </div>
                         </div>
-                        <Button size="sm" variant="outline">Download</Button>
+                        <Button size="sm" variant="outline" className="border-[#3CBFAE] text-[#3CBFAE] hover:bg-[#3CBFAE]/5">Download</Button>
+                      </div>
+                      
+                      <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-md">
+                        <div className="flex items-center gap-3">
+                          <Database className="h-5 w-5 text-[#3CBFAE]" />
+                          <div>
+                            <p className="font-medium text-gray-800 dark:text-white">Daily Backup</p>
+                            <p className="text-xs text-gray-500 dark:text-gray-400">Yesterday, 2:45 AM • 825 MB</p>
+                          </div>
+                        </div>
+                        <Button size="sm" variant="outline" className="border-[#3CBFAE] text-[#3CBFAE] hover:bg-[#3CBFAE]/5">Download</Button>
                       </div>
                       
                       <div className="flex items-center justify-between p-3 bg-gray-50 rounded-md">
                         <div className="flex items-center gap-3">
-                          <Database className="h-5 w-5 text-navy" />
+                          <Database className="h-5 w-5 text-[#3CBFAE]" />
                           <div>
-                            <p className="font-medium">Daily Backup</p>
-                            <p className="text-xs text-gray-500">Yesterday, 2:45 AM • 825 MB</p>
-                          </div>
-                        </div>
-                        <Button size="sm" variant="outline">Download</Button>
-                      </div>
-                      
-                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-md">
-                        <div className="flex items-center gap-3">
-                          <Database className="h-5 w-5 text-navy" />
-                          <div>
-                            <p className="font-medium">Weekly Backup</p>
-                            <p className="text-xs text-gray-500">Apr 21, 2:45 PM • 1.2 GB</p>
+                            <p className="font-medium text-gray-800 dark:text-white">Weekly Backup</p>
+                            <p className="text-xs text-gray-500 dark:text-gray-400">Apr 21, 2:45 PM • 1.2 GB</p>
                           </div>
                         </div>
                         <Button size="sm" variant="outline">Download</Button>
@@ -1219,7 +1219,7 @@ export default function AdminDashboardPage() {
                 <Card>
                   <CardHeader>
                     <CardTitle>System Actions</CardTitle>
-                    <CardDescription className="text-gray-700">Maintenance and system operations</CardDescription>
+                    <CardDescription className="text-gray-700 dark:text-gray-300">Maintenance and system operations</CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-3">
                     <Button variant="outline" className="w-full justify-start">
@@ -1244,7 +1244,7 @@ export default function AdminDashboardPage() {
                 <Card>
                   <CardHeader>
                     <CardTitle>Storage Usage</CardTitle>
-                    <CardDescription className="text-gray-700">Distribution of system storage</CardDescription>
+                    <CardDescription className="text-gray-700 dark:text-gray-300">Distribution of system storage</CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div>
