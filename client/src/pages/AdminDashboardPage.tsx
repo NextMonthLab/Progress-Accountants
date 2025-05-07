@@ -143,13 +143,13 @@ interface ActivityItemProps {
 
 function ActivityItem({ icon, title, description, time, isLoading = false }: ActivityItemProps) {
   return (
-    <div className="flex gap-4 py-4 border-b border-gray-100 last:border-0">
+    <div className="flex gap-4 py-4 border-b border-gray-100 dark:border-gray-800 last:border-0">
       {isLoading ? (
         <>
-          <div className="h-10 w-10 rounded-full bg-gray-200 animate-pulse"></div>
+          <div className="h-10 w-10 rounded-full bg-gray-200 dark:bg-gray-700 animate-pulse"></div>
           <div className="flex-1 space-y-2">
-            <div className="h-4 bg-gray-200 rounded w-3/4 animate-pulse"></div>
-            <div className="h-3 bg-gray-100 rounded w-full animate-pulse"></div>
+            <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4 animate-pulse"></div>
+            <div className="h-3 bg-gray-100 dark:bg-gray-800 rounded w-full animate-pulse"></div>
           </div>
         </>
       ) : (
@@ -178,7 +178,7 @@ function ChartPlaceholder({ height = 240, isLoading = false }: ChartPlaceholderP
   return (
     <div className="relative" style={{ height: `${height}px` }}>
       {isLoading ? (
-        <div className="absolute inset-0 bg-gray-100 animate-pulse rounded"></div>
+        <div className="absolute inset-0 bg-gray-100 dark:bg-gray-800 animate-pulse rounded"></div>
       ) : (
         <div className="absolute inset-0">
           <AnalyticsChart />
@@ -208,17 +208,17 @@ function QuickAction({
 }: QuickActionProps) {
   const variantStyles = {
     primary: 'bg-gradient-to-br from-[#3CBFAE] to-[#F65C9A] hover:shadow-lg hover:shadow-[#F65C9A]/20 text-white border border-[#3CBFAE]/20',
-    secondary: 'bg-white hover:bg-[#F65C9A]/5 hover:shadow-lg hover:shadow-[#F65C9A]/10 border border-[#F65C9A]/20 text-gray-800 dark:text-white',
-    outline: 'border-2 border-[#3CBFAE]/20 hover:border-[#3CBFAE]/40 bg-white text-gray-800 dark:text-white hover:bg-[#3CBFAE]/5',
-    ghost: 'bg-gray-100 hover:bg-gray-200 text-gray-800 dark:text-white border border-gray-200',
+    secondary: 'bg-white dark:bg-gray-800 hover:bg-[#F65C9A]/5 dark:hover:bg-[#F65C9A]/10 hover:shadow-lg hover:shadow-[#F65C9A]/10 border border-[#F65C9A]/20 dark:border-[#F65C9A]/30 text-gray-800 dark:text-white',
+    outline: 'border-2 border-[#3CBFAE]/20 dark:border-[#3CBFAE]/30 hover:border-[#3CBFAE]/40 bg-white dark:bg-gray-800 text-gray-800 dark:text-white hover:bg-[#3CBFAE]/5 dark:hover:bg-[#3CBFAE]/10',
+    ghost: 'bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-800 dark:text-white border border-gray-200 dark:border-gray-700',
   };
 
   // Colors based on variant for better contrast
   const iconColor = {
     primary: 'text-white bg-white/10 p-1.5 rounded-md',
-    secondary: 'text-[#F65C9A] bg-[#F65C9A]/10 p-1.5 rounded-md',
-    outline: 'text-[#3CBFAE] bg-[#3CBFAE]/10 p-1.5 rounded-md',
-    ghost: 'text-[#3CBFAE] bg-gray-200 p-1.5 rounded-md'
+    secondary: 'text-[#F65C9A] dark:text-[#F65C9A] bg-[#F65C9A]/10 dark:bg-[#F65C9A]/20 p-1.5 rounded-md',
+    outline: 'text-[#3CBFAE] dark:text-[#3CBFAE] bg-[#3CBFAE]/10 dark:bg-[#3CBFAE]/20 p-1.5 rounded-md',
+    ghost: 'text-[#3CBFAE] dark:text-[#3CBFAE] bg-gray-200 dark:bg-gray-700 p-1.5 rounded-md'
   };
   
   const titleColor = {
@@ -237,19 +237,19 @@ function QuickAction({
 
   const arrowColor = {
     primary: 'text-white/70',
-    secondary: 'text-[#F65C9A]',
-    outline: 'text-[#3CBFAE]/80',
-    ghost: 'text-gray-500'
+    secondary: 'text-[#F65C9A] dark:text-[#F65C9A]/90',
+    outline: 'text-[#3CBFAE]/80 dark:text-[#3CBFAE]/90',
+    ghost: 'text-gray-500 dark:text-gray-400'
   };
 
   if (isLoading) {
     return (
-      <div className="p-4 rounded-xl bg-gray-100 border border-gray-200 animate-pulse">
+      <div className="p-4 rounded-xl bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 animate-pulse">
         <div className="flex items-start gap-3">
-          <div className="h-8 w-8 rounded-md bg-gray-200"></div>
+          <div className="h-8 w-8 rounded-md bg-gray-200 dark:bg-gray-700"></div>
           <div className="flex-1">
-            <div className="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
-            <div className="h-3 bg-gray-200 rounded w-full"></div>
+            <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4 mb-2"></div>
+            <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-full"></div>
           </div>
         </div>
       </div>
