@@ -224,7 +224,7 @@ export default function Navbar() {
               )}
               <Button 
                 variant="outline"
-                className="border-[#F65C9A] text-[#F65C9A] hover:bg-[#F65C9A] hover:text-white"
+                className="border-[var(--orange)] text-[var(--orange)] hover:bg-[var(--orange)] hover:text-white"
                 asChild
               >
                 <Link 
@@ -256,7 +256,7 @@ export default function Navbar() {
           
           <a href="#book-call">
             <Button 
-              className="hover:shadow-md hover:-translate-y-[2px] transition duration-300 flex items-center bg-gradient-to-r from-[#3CBFAE] to-[#F65C9A] text-white"
+              className="hover:shadow-md hover:-translate-y-[2px] transition duration-300 flex items-center bg-[var(--orange)] text-white"
             >
               <PhoneCall className="h-4 w-4 mr-2" />
               Book a Call
@@ -293,7 +293,7 @@ export default function Navbar() {
               {clientRegistrationEnabled && tenant?.id && (
                 <Button 
                   variant="outline"
-                  className="w-full mb-2 border-[var(--navy)] text-[var(--navy)] hover:bg-[#3CBFAE] hover:text-white hover:border-[#3CBFAE]"
+                  className="w-full mb-2 border-[var(--navy)] text-[var(--navy)] hover:bg-[var(--navy)] hover:text-white hover:border-[var(--navy)]"
                   onClick={closeMenu}
                   asChild
                 >
@@ -309,7 +309,7 @@ export default function Navbar() {
               
               <Button 
                 variant="outline"
-                className="w-full border-[#F65C9A] text-[#F65C9A] hover:bg-[#F65C9A] hover:text-white"
+                className="w-full border-[var(--orange)] text-[var(--orange)] hover:bg-[var(--orange)] hover:text-white"
                 onClick={closeMenu}
                 asChild
               >
@@ -352,7 +352,7 @@ export default function Navbar() {
               className="inline-block text-center w-full"
             >
               <Button 
-                className="w-full hover:shadow-md hover:-translate-y-[2px] transition duration-300 flex items-center justify-center bg-gradient-to-r from-[#3CBFAE] to-[#F65C9A] text-white"
+                className="w-full hover:shadow-md hover:-translate-y-[2px] transition duration-300 flex items-center justify-center bg-[var(--orange)] text-white"
               >
                 <PhoneCall className="h-4 w-4 mr-2" />
                 Book a Call
