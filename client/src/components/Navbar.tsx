@@ -223,8 +223,8 @@ export default function Navbar() {
                 </Button>
               )}
               <Button 
-                variant="outline"
-                className="border-[var(--orange)] text-[var(--orange)] hover:bg-[var(--orange)] hover:text-white"
+                variant="default"
+                className="bg-[var(--orange)] text-white hover:bg-[var(--orange)]/90"
                 asChild
               >
                 <Link 
@@ -308,8 +308,8 @@ export default function Navbar() {
               )}
               
               <Button 
-                variant="outline"
-                className="w-full border-[var(--orange)] text-[var(--orange)] hover:bg-[var(--orange)] hover:text-white"
+                variant="default"
+                className="w-full bg-[var(--orange)] text-white hover:bg-[var(--orange)]/90"
                 onClick={closeMenu}
                 asChild
               >
