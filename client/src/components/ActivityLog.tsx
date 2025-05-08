@@ -128,7 +128,7 @@ export default function ActivityLog({
   return (
     <Card className="w-full">
       <CardHeader className="pb-2">
-        <CardTitle className="text-lg" style={{ color: 'var(--navy)' }}>{title}</CardTitle>
+        <CardTitle className="text-lg text-gray-800 dark:text-white">{title}</CardTitle>
       </CardHeader>
       <CardContent>
         {sortedLogs.length === 0 && showEmpty ? (
