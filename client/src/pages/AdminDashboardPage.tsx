@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, lazy, Suspense } from 'react';
 import { Button } from "@/components/ui/button";
 import { GradientButton, ActionButton } from "@/components/admin-ui/AdminButtons";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -9,7 +9,11 @@ import { Link, useLocation } from "wouter";
 import { useAuth } from '@/hooks/use-auth';
 import { useTenant } from '@/hooks/use-tenant';
 import { useQuery } from '@tanstack/react-query';
-import { LightweightNewsfeed } from '@/components/dashboard/LightweightNewsfeed';
+
+// Lazy load the newsfeed component for better performance
+const LightweightNewsfeed = lazy(() => import('@/components/dashboard/LightweightNewsfeed').then(
+  module => ({ default: module.LightweightNewsfeed })
+));
 import { 
   AlertTriangle,
   ArrowRight, 
@@ -30,6 +34,7 @@ import {
   LayoutDashboard, 
   LineChart,
   ListChecks, 
+  Loader2,
   Newspaper,
   Palette, 
   PenTool,
@@ -41,7 +46,9 @@ import {
   XCircle,
   Zap
 } from "lucide-react";
-import AnalyticsChart from '@/components/dashboard/AnalyticsChart';
+
+// Lazy load chart component for better performance
+const AnalyticsChart = lazy(() => import('@/components/dashboard/AnalyticsChart'));
 
 // Stat Card Component
 interface StatCardProps {
@@ -182,7 +189,13 @@ function ChartPlaceholder({ height = 240, isLoading = false }: ChartPlaceholderP
         <div className="absolute inset-0 bg-gray-100 dark:bg-gray-800 animate-pulse rounded"></div>
       ) : (
         <div className="absolute inset-0">
-          <AnalyticsChart />
+          <Suspense fallback={
+            <div className="h-full w-full flex items-center justify-center bg-gray-50 dark:bg-gray-800 rounded">
+              <Loader2 className="h-8 w-8 animate-spin text-[#36d1dc]" />
+            </div>
+          }>
+            <AnalyticsChart />
+          </Suspense>
         </div>
       )}
     </div>

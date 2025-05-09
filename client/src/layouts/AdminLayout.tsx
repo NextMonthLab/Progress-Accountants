@@ -1,12 +1,15 @@
-import { ReactNode } from "react";
+import { ReactNode, lazy, Suspense } from "react";
+import { Loader2 } from "lucide-react";
 import AdminSidebar from "@/components/AdminSidebar";
 import DynamicSidebar from "@/components/navigation/DynamicSidebar";
 import MobileSidebarToggle from "@/components/navigation/MobileSidebarToggle";
 import MobileOverlay from "@/components/navigation/MobileOverlay";
-import QuickSelectMenu from "@/components/navigation/QuickSelectMenu";
 import SmartContextBanner from "@/components/SmartContextBanner";
-import SmartCommandBar from "@/components/SmartCommandBar";
 import { NavigationProvider } from "@/contexts/NavigationContext";
+
+// Lazy load non-critical components
+const QuickSelectMenu = lazy(() => import("@/components/navigation/QuickSelectMenu"));
+const SmartCommandBar = lazy(() => import("@/components/SmartCommandBar"));
 
 interface AdminLayoutProps {
   children: ReactNode;
@@ -57,10 +60,14 @@ export default function AdminLayout({ children, useNewNavigation = true }: Admin
             </div>
             
             {/* Quick Select Menu - floating UI */}
-            <QuickSelectMenu />
+            <Suspense fallback={null}>
+              <QuickSelectMenu />
+            </Suspense>
             
             {/* Smart Command Bar - intelligent command interface */}
-            <SmartCommandBar />
+            <Suspense fallback={null}>
+              <SmartCommandBar />
+            </Suspense>
           </div>
         </NavigationProvider>
       ) : (
