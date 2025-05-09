@@ -1,4 +1,4 @@
-import React, { useState, lazy, Suspense } from 'react';
+import React, { useState, lazy, Suspense, useTransition } from 'react';
 import { Button } from "@/components/ui/button";
 import { GradientButton, ActionButton } from "@/components/admin-ui/AdminButtons";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -361,7 +361,15 @@ export default function AdminDashboardPage() {
   const { user } = useAuth();
   const { tenant } = useTenant();
   const [activeTab, setActiveTab] = useState('overview');
+  const [isPending, startTransition] = useTransition();
   const [, navigate] = useLocation();
+  
+  // Handle tab changes with startTransition to prevent UI suspension errors
+  const handleTabChange = (value: string) => {
+    startTransition(() => {
+      setActiveTab(value);
+    });
+  };
   
   // Fetch dashboard metrics (mocked for now)
   const { data: metrics, isLoading: isLoadingMetrics } = useQuery({
@@ -550,7 +558,7 @@ export default function AdminDashboardPage() {
         </div>
 
         {/* Tabs Navigation */}
-        <Tabs defaultValue="overview" value={activeTab} onValueChange={setActiveTab} className="w-full">
+        <Tabs defaultValue="overview" value={activeTab} onValueChange={handleTabChange} className="w-full">
           <div className="overflow-x-auto pb-1 mb-1">
             <TabsList className="bg-white dark:bg-gray-900 rounded-lg shadow-sm border border-gray-100 dark:border-gray-800 mb-4 p-1 flex w-max min-w-full sm:w-auto">
               <TabsTrigger 
