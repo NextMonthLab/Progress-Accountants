@@ -326,12 +326,12 @@ function SystemHealth({ components = [], isLoading = false }: SystemHealthProps)
             </div>
           </div>
           <div className="flex items-center gap-2">
-            <Badge variant="outline" className={
+            <Badge className={
               component.status === 'good' 
-                ? 'bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-900/30 border-0'
+                ? 'bg-gradient-to-r from-[#36d1dc] to-[#5b86e5] text-white border-0'
                 : component.status === 'warning'
-                ? 'bg-amber-50 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 hover:bg-amber-50 dark:hover:bg-amber-900/30 border-0'
-                : 'bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 border-0'
+                ? 'bg-gradient-to-r from-[#f953c6] to-[#ff6b6b] text-white border-0 opacity-75'
+                : 'bg-gradient-to-r from-[#f953c6] to-[#ff6b6b] text-white border-0'
             }>
               {component.status === 'good' ? 'Good' : 
                 component.status === 'warning' ? 'Warning' : 'Error'}
