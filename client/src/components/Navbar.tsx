@@ -241,7 +241,7 @@ export default function Navbar() {
           {isStaff && (
             <Button 
               variant="default"
-              className="bg-[var(--navy)] text-white hover:bg-gradient-to-r hover:from-[#3CBFAE] hover:to-[#F65C9A] transition-colors font-medium shadow-sm"
+              className="bg-[var(--navy)] text-white hover:bg-[var(--navy-dark)] transition-colors font-medium shadow-sm"
               asChild
             >
               <Link 
@@ -329,7 +329,7 @@ export default function Navbar() {
               <h4 className="text-sm uppercase tracking-wider text-gray-500 mb-2 px-2">Admin</h4>
               <Button 
                 variant="default"
-                className="w-full bg-[var(--navy)] text-white hover:bg-gradient-to-r hover:from-[#3CBFAE] hover:to-[#F65C9A] transition-colors font-medium shadow-sm"
+                className="w-full bg-[var(--navy)] text-white hover:bg-[var(--navy-dark)] transition-colors font-medium shadow-sm"
                 onClick={closeMenu}
                 asChild
               >

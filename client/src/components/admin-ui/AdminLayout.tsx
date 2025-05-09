@@ -224,9 +224,7 @@ export function AdminLayoutV2({
                 {title && (
                   <h1 className="text-3xl font-bold tracking-tight dark:text-white text-gray-900">
                     {title.split(' ').map((word, i) => 
-                      i === title.split(' ').length - 1 ? 
-                        <span key={i} className="bg-gradient-to-r from-[#3CBFAE] to-[#F65C9A] bg-clip-text text-transparent">{word} </span> : 
-                        <span key={i}>{word} </span>
+                      <span key={i}>{word} </span>
                     )}
                   </h1>
                 )}
