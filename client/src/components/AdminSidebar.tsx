@@ -105,7 +105,7 @@ function AdminSidebarLogo({ collapsed }: { collapsed: boolean }) {
 
 type SidebarItemBadge = {
   text: string;
-  variant?: "default" | "new" | "updated" | "beta" | "pro";
+  variant?: "default" | "new" | "updated" | "beta" | "pro" | "teal-blue" | "pink-coral";
 }
 
 type SidebarItem = {
@@ -417,20 +417,20 @@ export default function AdminSidebar() {
 
   // Render badge component for menu items
   const SidebarItemBadgeComponent = ({ badge }: { badge: SidebarItemBadge }) => {
-    const variantClassMap = {
-      new: "bg-emerald-500 text-white",
-      updated: "bg-blue-500 text-white",
-      beta: "bg-purple-500 text-white",
-      pro: "bg-gradient-to-r from-amber-500 to-orange-500 text-white",
-      default: "bg-gray-200 text-gray-800"
-    };
+    // Map existing badge variants to the supported badge variants
+    let badgeVariant: "default" | "secondary" | "destructive" | "outline" | "teal-blue" | "pink-coral" = "default";
+
+    // Map existing variants to gradient variants
+    if (badge.variant === "new" || badge.variant === "beta" || badge.variant === "pro") {
+      badgeVariant = "pink-coral";
+    } else if (badge.variant === "updated") {
+      badgeVariant = "teal-blue";
+    }
     
     return (
       <Badge 
-        className={cn(
-          "ml-auto text-[9px] py-0 h-4",
-          variantClassMap[badge.variant || "default"]
-        )}
+        variant={badgeVariant}
+        className="ml-auto text-[9px] py-0 h-4"
       >
         {badge.text}
       </Badge>
@@ -473,18 +473,7 @@ export default function AdminSidebar() {
                 <p className="text-xs text-gray-500">{item.description}</p>
               )}
               {item.badge && (
-                <Badge 
-                  className={cn(
-                    "text-[9px] py-0 h-4 w-fit",
-                    item.badge.variant === "new" ? "bg-emerald-500" :
-                    item.badge.variant === "updated" ? "bg-blue-500" :
-                    item.badge.variant === "beta" ? "bg-purple-500" :
-                    item.badge.variant === "pro" ? "bg-gradient-to-r from-amber-500 to-orange-500" :
-                    "bg-gray-200 text-gray-800"
-                  )}
-                >
-                  {item.badge.text}
-                </Badge>
+                <SidebarItemBadgeComponent badge={item.badge} />
               )}
             </TooltipContent>
           </Tooltip>
