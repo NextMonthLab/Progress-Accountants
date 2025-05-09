@@ -67,22 +67,22 @@ function StatCard({
   // Define the color scheme with proper type - using NextMonth Gold colors
   const scheme = {
     navy: {
-      bg: isGradient ? 'from-[#3CBFAE] to-[#F65C9A]' : 'bg-white',
+      bg: isGradient ? 'bg-[#3CBFAE]' : 'bg-white',
       icon: isGradient ? 'bg-white/40 text-white' : 'bg-[#3CBFAE]/10 text-[#3CBFAE]',
       border: isGradient ? 'border-[#3CBFAE]/10' : 'border-[#3CBFAE]/10'
     },
     orange: {
-      bg: isGradient ? 'from-[#3CBFAE] to-[#F65C9A]' : 'bg-white', 
+      bg: isGradient ? 'bg-[#F65C9A]' : 'bg-white', 
       icon: isGradient ? 'bg-white/40 text-white' : 'bg-[#F65C9A]/10 text-[#F65C9A]',
       border: isGradient ? 'border-[#F65C9A]/10' : 'border-[#F65C9A]/10'
     },
     emerald: {
-      bg: isGradient ? 'from-emerald-500 via-emerald-600 to-emerald-800' : 'bg-white',
+      bg: isGradient ? 'bg-emerald-600' : 'bg-white',
       icon: isGradient ? 'bg-white/40 text-white' : 'bg-emerald-500/10 text-emerald-500',
       border: isGradient ? 'border-emerald-500/10' : 'border-emerald-500/10'
     },
     indigo: {
-      bg: isGradient ? 'from-indigo-500 via-indigo-600 to-indigo-800' : 'bg-white',
+      bg: isGradient ? 'bg-indigo-600' : 'bg-white',
       icon: isGradient ? 'bg-white/40 text-white' : 'bg-indigo-500/10 text-indigo-500',
       border: isGradient ? 'border-indigo-500/10' : 'border-indigo-500/10'
     }
@@ -90,7 +90,7 @@ function StatCard({
 
   return (
     <Card className={`overflow-hidden border ${isGradient ? 'shadow-lg shadow-' + color + '/10 border-0' : 'shadow-sm border ' + scheme[color].border} ${className} hover:shadow-md transition-all`}>
-      <div className={`${isGradient ? 'bg-gradient-to-br ' + scheme[color].bg : scheme[color].bg} p-4 sm:p-6`}>
+      <div className={`${scheme[color].bg} p-4 sm:p-6`}>
         <div className="flex justify-between items-center">
           <div>
             <p className={`text-sm font-medium ${isGradient ? 'text-white/90' : 'text-gray-700 dark:text-gray-300'}`}>{label}</p>
