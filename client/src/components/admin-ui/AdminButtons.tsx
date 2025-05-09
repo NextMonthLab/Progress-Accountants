@@ -25,11 +25,21 @@ export function GradientButton({
     "pink-coral": "bg-gradient-to-r from-[#f953c6] to-[#ff6b6b] hover:opacity-90"
   }[gradient];
 
+  // Define shadow based on gradient type
+  const shadowStyle = {
+    "teal-blue": "hover:shadow-[0_4px_16px_rgba(54,209,220,0.3)]",
+    "pink-coral": "hover:shadow-[0_4px_16px_rgba(249,83,198,0.3)]",
+    "primary": "hover:shadow-[0_4px_16px_rgba(246,92,154,0.25)]",
+    "secondary": "hover:shadow-[0_4px_16px_rgba(246,92,154,0.25)]",
+    "pink-teal": "hover:shadow-[0_4px_16px_rgba(246,92,154,0.25)]"
+  }[gradient];
+
   return (
     <Button
       className={cn(
         gradientClass,
-        "text-white font-medium shadow-lg hover:shadow-[0_4px_16px_rgba(246,92,154,0.25)] transition-all duration-300 border-0",
+        "text-white font-medium shadow-lg transition-all duration-300 border-0 rounded-xl px-6 py-3",
+        shadowStyle,
         className
       )}
       {...props}
@@ -40,7 +50,8 @@ export function GradientButton({
 }
 
 /**
- * ActionButton component for secondary actions in the NextMonth Gold UI design system
+ * ActionButton component for secondary/informational actions in the NextMonth Gold UI design system
+ * Uses the teal-blue gradient styling for informational actions by default
  */
 export function ActionButton({
   className,
@@ -48,11 +59,16 @@ export function ActionButton({
   children,
   ...props
 }: ButtonProps) {
+  // Decide whether to use gradient or outline style
+  const isGradient = variant === "default" || variant === undefined;
+  
   return (
     <Button
-      variant={variant}
+      variant={isGradient ? "default" : variant}
       className={cn(
-        "font-medium dark:border-[#3A3A3A] border-gray-300 dark:bg-[#121212]/80 bg-gray-50 dark:hover:bg-[#1D1D1D] hover:bg-gray-100 transition-all dark:text-white text-gray-800",
+        isGradient ? 
+          "bg-gradient-to-r from-[#36d1dc] to-[#5b86e5] text-white font-medium shadow-lg hover:shadow-[0_4px_16px_rgba(54,209,220,0.3)] hover:opacity-90 transition-all duration-300 border-0 rounded-xl px-6 py-3" : 
+          "font-medium border-[#36d1dc] bg-gray-50 hover:bg-[#36d1dc]/10 transition-all text-gray-800 rounded-xl px-6 py-3",
         className
       )}
       {...props}
@@ -168,12 +184,14 @@ export function Badge({
   variant = "default"
 }: {
   text: string;
-  variant?: "primary" | "success" | "default";
+  variant?: "primary" | "success" | "default" | "teal-blue" | "pink-coral";
 }) {
   const variantClass = {
-    "primary": "bg-[#F65C9A] text-white",
+    "primary": "bg-gradient-to-r from-[#f953c6] to-[#ff6b6b] text-white",
     "success": "bg-[#3CBFAE] text-white",
-    "default": "dark:bg-[#3A3A3A] dark:text-[#E0E0E0] bg-gray-300 text-gray-800 font-medium"
+    "default": "dark:bg-[#3A3A3A] dark:text-[#E0E0E0] bg-gray-300 text-gray-800 font-medium",
+    "teal-blue": "bg-gradient-to-r from-[#36d1dc] to-[#5b86e5] text-white",
+    "pink-coral": "bg-gradient-to-r from-[#f953c6] to-[#ff6b6b] text-white"
   }[variant];
 
   return (

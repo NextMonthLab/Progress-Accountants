@@ -207,16 +207,16 @@ function QuickAction({
   isLoading = false
 }: QuickActionProps) {
   const variantStyles = {
-    primary: 'bg-[#008080] hover:bg-[#006666] hover:shadow-lg hover:shadow-[#008080]/20 text-white border border-[#008080]/20',
-    secondary: 'bg-white dark:bg-gray-800 hover:bg-[#F4A261]/5 dark:hover:bg-[#F4A261]/10 hover:shadow-lg hover:shadow-[#F4A261]/10 border border-[#F4A261]/20 dark:border-[#F4A261]/30 text-gray-800 dark:text-white',
+    primary: 'bg-gradient-to-r from-[#f953c6] to-[#ff6b6b] hover:opacity-90 hover:shadow-lg hover:shadow-[#f953c6]/20 text-white border-0',
+    secondary: 'bg-gradient-to-r from-[#36d1dc] to-[#5b86e5] hover:opacity-90 hover:shadow-lg hover:shadow-[#36d1dc]/20 text-white border-0',
     outline: 'border-2 border-[#008080]/20 dark:border-[#008080]/30 hover:border-[#008080]/40 bg-white dark:bg-gray-800 text-gray-800 dark:text-white hover:bg-[#008080]/5 dark:hover:bg-[#008080]/10',
     ghost: 'bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-800 dark:text-white border border-gray-200 dark:border-gray-700',
   };
 
   // Colors based on variant for better contrast
   const iconColor = {
-    primary: 'text-white bg-white/10 p-1.5 rounded-md',
-    secondary: 'text-[#008080] dark:text-[#008080] bg-[#008080]/10 dark:bg-[#008080]/20 p-1.5 rounded-md',
+    primary: 'text-white bg-white/20 p-1.5 rounded-md',
+    secondary: 'text-white bg-white/20 p-1.5 rounded-md',
     outline: 'text-[#008080] dark:text-[#008080] bg-[#008080]/10 dark:bg-[#008080]/20 p-1.5 rounded-md',
     ghost: 'text-[#008080] dark:text-[#008080] bg-gray-200 dark:bg-gray-700 p-1.5 rounded-md'
   };
