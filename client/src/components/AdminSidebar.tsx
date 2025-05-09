@@ -79,7 +79,7 @@ function AdminSidebarLogo({ collapsed }: { collapsed: boolean }) {
           alt={siteBranding.logo.altText} 
           className="max-h-8 object-contain"
         />
-        <span className="ml-2 font-bold text-[var(--orange)]">Admin</span>
+        <span className="ml-2 font-bold text-[var(--nextmonth-teal)]">Admin</span>
       </Link>
     );
   }
@@ -98,7 +98,7 @@ function AdminSidebarLogo({ collapsed }: { collapsed: boolean }) {
       ) : (
         <span>{logoText} </span>
       )}
-      <span style={{ color: 'var(--orange)' }}>Admin</span>
+      <span style={{ color: 'var(--nextmonth-teal)' }}>Admin</span>
     </Link>
   );
 }
