@@ -540,28 +540,28 @@ export default function AdminDashboardPage() {
             <TabsList className="bg-white dark:bg-gray-900 rounded-lg shadow-sm border border-gray-100 dark:border-gray-800 mb-4 p-1 flex w-max min-w-full sm:w-auto">
               <TabsTrigger 
                 value="overview" 
-                className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white data-[state=active]:bg-gradient-to-r data-[state=active]:from-[#3CBFAE]/10 data-[state=active]:to-[#F65C9A]/10 data-[state=active]:text-[#F65C9A] data-[state=active]:border-b-2 data-[state=active]:border-[#F65C9A] whitespace-nowrap text-sm"
+                className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white data-[state=active]:bg-[#008080]/10 data-[state=active]:text-[#008080] data-[state=active]:border-b-2 data-[state=active]:border-[#008080] whitespace-nowrap text-sm"
               >
                 <LayoutDashboard className="h-4 w-4 mr-1.5 inline-block" />
                 <span>Overview</span>
               </TabsTrigger>
               <TabsTrigger 
                 value="content" 
-                className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white data-[state=active]:bg-gradient-to-r data-[state=active]:from-[#3CBFAE]/10 data-[state=active]:to-[#F65C9A]/10 data-[state=active]:text-[#F65C9A] data-[state=active]:border-b-2 data-[state=active]:border-[#F65C9A] whitespace-nowrap text-sm"
+                className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white data-[state=active]:bg-[#008080]/10 data-[state=active]:text-[#008080] data-[state=active]:border-b-2 data-[state=active]:border-[#008080] whitespace-nowrap text-sm"
               >
                 <FileText className="h-4 w-4 mr-1.5 inline-block" />
                 <span>Content</span>
               </TabsTrigger>
               <TabsTrigger 
                 value="tools" 
-                className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white data-[state=active]:bg-gradient-to-r data-[state=active]:from-[#3CBFAE]/10 data-[state=active]:to-[#F65C9A]/10 data-[state=active]:text-[#F65C9A] data-[state=active]:border-b-2 data-[state=active]:border-[#F65C9A] whitespace-nowrap text-sm"
+                className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white data-[state=active]:bg-[#008080]/10 data-[state=active]:text-[#008080] data-[state=active]:border-b-2 data-[state=active]:border-[#008080] whitespace-nowrap text-sm"
               >
                 <Cpu className="h-4 w-4 mr-1.5 inline-block" />
                 <span>Tools</span>
               </TabsTrigger>
               <TabsTrigger 
                 value="system" 
-                className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white data-[state=active]:bg-gradient-to-r data-[state=active]:from-[#3CBFAE]/10 data-[state=active]:to-[#F65C9A]/10 data-[state=active]:text-[#F65C9A] data-[state=active]:border-b-2 data-[state=active]:border-[#F65C9A] whitespace-nowrap text-sm"
+                className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white data-[state=active]:bg-[#008080]/10 data-[state=active]:text-[#008080] data-[state=active]:border-b-2 data-[state=active]:border-[#008080] whitespace-nowrap text-sm"
               >
                 <Settings className="h-4 w-4 mr-1.5 inline-block" />
                 <span>System</span>
