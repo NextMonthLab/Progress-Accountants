@@ -3,7 +3,7 @@ import { Button, ButtonProps } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 interface GradientButtonProps extends ButtonProps {
-  gradient?: "primary" | "secondary" | "pink-teal";
+  gradient?: "primary" | "secondary" | "pink-teal" | "teal-blue" | "pink-coral";
   children: React.ReactNode;
 }
 
@@ -19,7 +19,10 @@ export function GradientButton({
   const gradientClass = {
     "primary": "bg-gradient-to-r from-[#3CBFAE] to-[#F65C9A] hover:opacity-90",
     "secondary": "bg-gradient-to-r from-[#3CBFAE] to-[#F65C9A] hover:opacity-90",
-    "pink-teal": "bg-gradient-to-r from-[#3CBFAE] to-[#F65C9A] hover:opacity-90"
+    "pink-teal": "bg-gradient-to-r from-[#3CBFAE] to-[#F65C9A] hover:opacity-90",
+    // New gradients for NextMonth UI
+    "teal-blue": "bg-gradient-to-r from-[#36d1dc] to-[#5b86e5] hover:opacity-90",
+    "pink-coral": "bg-gradient-to-r from-[#f953c6] to-[#ff6b6b] hover:opacity-90"
   }[gradient];
 
   return (

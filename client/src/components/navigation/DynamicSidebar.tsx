@@ -133,10 +133,10 @@ const DynamicSidebar: React.FC = () => {
           className={cn(
             "flex items-center justify-between rounded-md px-3 py-2 transition-all duration-200 no-underline",
             isActive(item.href) && !isViewWebsiteLink
-              ? "bg-gray-200 text-[var(--navy)] font-medium" 
-              : "text-[var(--navy)] hover:bg-gray-100",
+              ? "bg-[#008080]/10 text-[#008080] font-medium" 
+              : "text-[var(--navy)] hover:bg-[#008080]/10 hover:text-[#008080]",
             isNested && "ml-6 text-sm",
-            isViewWebsiteLink && "text-[var(--orange)] font-medium"
+            isViewWebsiteLink && "text-[#008080] font-medium"
           )}
           target={isViewWebsiteLink ? "_blank" : undefined}
           rel={isViewWebsiteLink ? "noopener noreferrer" : undefined}
@@ -148,7 +148,7 @@ const DynamicSidebar: React.FC = () => {
           }}
         >
           <div className="flex items-center">
-            <IconComponent className={cn("h-5 w-5 mr-2", isViewWebsiteLink && "text-[var(--orange)]")} />
+            <IconComponent className={cn("h-5 w-5 mr-2", isViewWebsiteLink && "text-[#008080]")} />
             <span>{item.title}</span>
           </div>
           
@@ -172,8 +172,8 @@ const DynamicSidebar: React.FC = () => {
       <div key={submenu.id} className="space-y-1">
         <button
           className={cn(
-            "flex items-center justify-between w-full rounded-md px-3 py-2 transition-all duration-200 text-[var(--navy)] hover:bg-gray-100 text-left font-medium",
-            isExpanded && "bg-gray-200"
+            "flex items-center justify-between w-full rounded-md px-3 py-2 transition-all duration-200 text-[var(--navy)] hover:bg-[#008080]/10 hover:text-[#008080] text-left font-medium",
+            isExpanded && "bg-[#008080]/10 text-[#008080]"
           )}
           onClick={(e) => {
             e.preventDefault();
@@ -216,7 +216,7 @@ const DynamicSidebar: React.FC = () => {
                 <button
                   onClick={toggleSidebar}
                   className={cn(
-                    "flex items-center justify-center w-6 h-6 rounded-full bg-white border border-gray-200 shadow-sm hover:bg-orange-50 transition-all duration-150",
+                    "flex items-center justify-center w-6 h-6 rounded-full bg-white border border-gray-200 shadow-sm hover:bg-[#008080]/10 transition-all duration-150",
                   )}
                   aria-label={sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
                 >
@@ -239,7 +239,7 @@ const DynamicSidebar: React.FC = () => {
         <div className="absolute top-4 right-4 z-20">
           <button
             onClick={toggleMobileSidebar}
-            className="p-2 rounded-full bg-white border border-gray-200 shadow-sm hover:bg-orange-50 transition-all duration-150"
+            className="p-2 rounded-full bg-white border border-gray-200 shadow-sm hover:bg-[#008080]/10 transition-all duration-150"
             aria-label="Close sidebar"
           >
             <X className="h-4 w-4 text-[var(--navy)]" />
@@ -248,7 +248,7 @@ const DynamicSidebar: React.FC = () => {
       )}
       
       {/* Sidebar Header */}
-      <div className="px-4 py-3 flex items-center justify-between border-b border-gray-200 bg-gradient-to-r from-gray-100 to-teal-50/30">
+      <div className="px-4 py-3 flex items-center justify-between border-b border-gray-200 bg-gradient-to-r from-gray-100 to-[#008080]/5">
         <SidebarLogo collapsed={sidebarCollapsed} />
         <button
           onClick={isMobile ? toggleMobileSidebar : toggleSidebar}
@@ -270,7 +270,7 @@ const DynamicSidebar: React.FC = () => {
       
       {/* User Profile & Onboarding Progress */}
       {user && (user.userType === 'admin' || user.userType === 'super_admin') && (
-        <div className="px-4 py-3 flex items-center space-x-3 border-b border-gray-200 bg-gradient-to-r from-gray-100 to-blue-50/20">
+        <div className="px-4 py-3 flex items-center space-x-3 border-b border-gray-200 bg-gradient-to-r from-gray-100 to-[#008080]/5">
           <div className="relative flex-shrink-0">
             <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-semibold">
               {user.username ? user.username.charAt(0).toUpperCase() : 'U'}
