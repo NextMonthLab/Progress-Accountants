@@ -450,8 +450,8 @@ export default function AdminSidebar() {
                 className={cn(
                   "flex items-center justify-center rounded-md p-2 transition-all duration-200",
                   isActive(item.href) 
-                    ? "bg-gradient-to-r from-orange-100 to-orange-50 text-[var(--orange)]" 
-                    : "text-[var(--navy)] hover:bg-orange-50/50 hover:text-[var(--orange)]",
+                    ? "bg-[#008080]/10 text-[#008080]" 
+                    : "text-[var(--navy)] hover:bg-[#008080]/10 hover:text-[#008080]",
                   "no-underline relative",
                   isNested && "ml-2"
                 )}
@@ -500,8 +500,8 @@ export default function AdminSidebar() {
         className={cn(
           "flex items-center justify-between rounded-md px-3 py-2 transition-all duration-200",
           isActive(item.href) 
-            ? "bg-gradient-to-r from-orange-100 to-orange-50 text-[var(--orange)]" 
-            : "text-[var(--navy)] hover:bg-orange-50/50 hover:text-[var(--orange)]",
+            ? "bg-[#008080]/10 text-[#008080]" 
+            : "text-[var(--navy)] hover:bg-[#008080]/10 hover:text-[#008080]",
           "no-underline group",
           isNested && "ml-6 text-sm"
         )}
@@ -532,7 +532,7 @@ export default function AdminSidebar() {
           <Tooltip>
             <TooltipTrigger asChild>
               <div 
-                className="flex items-center justify-center rounded-md p-2 text-[var(--navy)] hover:bg-orange-50/50 hover:text-[var(--orange)] relative cursor-pointer"
+                className="flex items-center justify-center rounded-md p-2 text-[var(--navy)] hover:bg-[#008080]/10 hover:text-[#008080] relative cursor-pointer"
               >
                 <div className="relative">
                   {submenu.icon}
@@ -549,7 +549,7 @@ export default function AdminSidebar() {
                   <Link
                     key={item.title}
                     href={item.href}
-                    className="flex items-center justify-between rounded-md px-2 py-1 text-sm hover:bg-orange-50 no-underline text-[var(--navy)]"
+                    className="flex items-center justify-between rounded-md px-2 py-1 text-sm hover:bg-[#008080]/10 hover:text-[#008080] no-underline text-[var(--navy)]"
                   >
                     <div className="flex items-center">
                       <span className="mr-2">{item.icon}</span>
@@ -572,7 +572,7 @@ export default function AdminSidebar() {
           onClick={(e) => toggleSubMenu(submenu.title, e)}
           className={cn(
             "w-full flex items-center justify-between rounded-md px-3 py-2",
-            "text-[var(--navy)] hover:bg-orange-50/50 hover:text-[var(--orange)]",
+            "text-[var(--navy)] hover:bg-[#008080]/10 hover:text-[#008080]",
             "transition-all duration-200 focus:outline-none"
           )}
         >
@@ -701,7 +701,7 @@ export default function AdminSidebar() {
               className={cn(
                 "w-full flex items-center justify-center transition-all duration-200",
                 collapsed ? "p-2" : "",
-                "border-[var(--navy)] bg-white text-[var(--navy)] hover:text-[var(--orange)] hover:border-[var(--orange)]"
+                "border-[var(--navy)] bg-white text-[var(--navy)] hover:text-[#008080] hover:border-[#008080]"
               )}
             >
               <Globe className={cn("h-5 w-5", collapsed ? "" : "mr-2")} />

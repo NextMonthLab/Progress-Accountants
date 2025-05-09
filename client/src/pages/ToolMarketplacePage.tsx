@@ -422,7 +422,10 @@ export default function ToolMarketplacePage() {
                     <p className="text-muted-foreground mb-4">
                       You haven't installed any tools yet
                     </p>
-                    <Button onClick={() => document.querySelector('[data-value="marketplace"]')?.click()}>
+                    <Button 
+                      onClick={() => document.querySelector('[data-value="marketplace"]')?.click()}
+                      className="bg-[#008080] hover:bg-[#006666]"
+                    >
                       Browse Marketplace
                     </Button>
                   </div>
