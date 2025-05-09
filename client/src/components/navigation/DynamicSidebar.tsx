@@ -69,7 +69,7 @@ function SidebarLogo({ collapsed }: { collapsed: boolean }) {
       ) : (
         <span>{logoText} </span>
       )}
-      <span style={{ color: 'var(--orange)' }}>Admin</span>
+      <span style={{ color: '#008080' }}>Admin</span>
     </a>
   );
 }

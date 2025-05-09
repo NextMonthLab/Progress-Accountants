@@ -134,7 +134,7 @@ const SmartContextBanner: React.FC = () => {
             href="/" 
             target="_blank" 
             rel="noopener noreferrer" 
-            className="h-7 px-3 mr-2 inline-flex items-center justify-center rounded-md text-xs font-medium text-white bg-gradient-to-r from-[#3CBFAE] to-[#F65C9A] hover:opacity-90 transition-opacity"
+            className="h-7 px-3 mr-2 inline-flex items-center justify-center rounded-md text-xs font-medium text-white bg-gradient-to-r from-[#36d1dc] to-[#5b86e5] hover:opacity-90 transition-opacity"
           >
             <Globe className="h-3 w-3 mr-1" />
             View Website
