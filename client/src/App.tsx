@@ -26,57 +26,63 @@ import MainLayout from "@/layouts/MainLayout";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import ErrorBoundary from "@/components/error/ErrorBoundary";
 import ContentLoader from "@/components/error/ContentLoader";
-import SuperAdminDashboard from "@/pages/super-admin/SuperAdminDashboard";
+
+// Eagerly loaded components for critical paths
 import HomePage from "@/pages/HomePage";
-import StudioPage from "@/pages/StudioPage";
-import DashboardPage from "@/pages/DashboardPage";
 import AuthPage from "@/pages/AuthPage";
-import ClientRegistrationPage from "@/pages/ClientRegistrationPage";
-import ClientDashboardPage from "@/pages/ClientDashboardPage";
-import ClientDashboardPage2 from "@/pages/ClientDashboardPage2";
-import RedesignedDashboardPage from "@/pages/RedesignedDashboardPage";
-import AdminDashboardPage from "@/pages/AdminDashboardPage";
-import AdminDashboardPageSimple from "@/pages/AdminDashboardPage.simple";
-import DiagnosticDashboard from "@/pages/DiagnosticDashboard";
-// DocumentHead imported elsewhere
-import CRMViewPage from "@/pages/CRMViewPage";
-import CRMViewPageEnhanced from "@/pages/CRMViewPageEnhanced";
-import ToolsDashboardPage from "@/pages/ToolsDashboardPage";
-import BlueprintOnboardingPage from "@/pages/BlueprintOnboardingPage";
-import ToolsLandingPage from "@/pages/ToolsLandingPage";
-import ToolMarketplaceBrowserPage from "@/pages/ToolMarketplaceBrowserPage";
-import ComponentDemo from "@/pages/ComponentDemo";
-import TeamPage from "@/pages/TeamPage";
-import InsightUsersPage from "@/pages/InsightUsersPage";
-import InsightsDashboardPage from "@/pages/InsightsDashboardPage";
-import SotManagerPage from "@/pages/admin/SotManagerPage";
-import AboutPage from "@/pages/AboutPage";
-import ServicesPage from "@/pages/ServicesPage";
-import ServiceDetailPage from "@/pages/ServiceDetailPage";
-import IndustriesPage from "@/pages/IndustriesPage";
-import FilmIndustryPage from "@/pages/FilmIndustryPage";
-import MusicIndustryPage from "@/pages/MusicIndustryPage";
-import ConstructionIndustryPage from "@/pages/ConstructionIndustryPage";
-import SMESupportHubPage from "@/pages/SMESupportHubPage";
-import BusinessCalculatorPage from "@/pages/BusinessCalculatorPage";
-import TestFilmPage from "@/pages/TestFilmPage";
-import WhyUsPage from "@/pages/WhyUsPage";
-import ContactPage from "@/pages/ContactPage";
-import TestimonialsPage from "@/pages/TestimonialsPage";
-import ScopeRequestPage from "@/pages/ScopeRequestPage";
-import ModuleGalleryPage from "@/pages/ModuleGalleryPage";
-import ModuleLibraryPage from "@/pages/ModuleLibraryPage";
-import InstalledToolsPage from "@/pages/InstalledToolsPage";
-import MarketplacePage from "@/pages/MarketplacePage";
-import EnhancedMarketplacePage from "@/pages/EnhancedMarketplacePage";
-import BrandGuidelinesPage from "@/pages/BrandGuidelinesPage";
-import BusinessIdentityPage from "@/pages/BusinessIdentityPage";
-import HomepageSetupPage from "@/pages/HomepageSetupPage";
-import FoundationPagesOverviewPage from "@/pages/FoundationPagesOverviewPage";
-import AboutSetupPage from "@/pages/AboutSetupPage";
-import ServicesSetupPage from "@/pages/ServicesSetupPage";
-import ContactSetupPage from "@/pages/ContactSetupPage";
-import TestimonialsSetupPage from "@/pages/TestimonialsSetupPage";
+
+// Lazy loaded components for better performance
+const SuperAdminDashboard = lazy(() => import("@/pages/super-admin/SuperAdminDashboard"));
+const StudioPage = lazy(() => import("@/pages/StudioPage"));
+const DashboardPage = lazy(() => import("@/pages/DashboardPage"));
+const ClientRegistrationPage = lazy(() => import("@/pages/ClientRegistrationPage"));
+const ClientDashboardPage = lazy(() => import("@/pages/ClientDashboardPage"));
+const ClientDashboardPage2 = lazy(() => import("@/pages/ClientDashboardPage2"));
+const RedesignedDashboardPage = lazy(() => import("@/pages/RedesignedDashboardPage"));
+const AdminDashboardPage = lazy(() => import("@/pages/AdminDashboardPage"));
+const AdminDashboardPageSimple = lazy(() => import("@/pages/AdminDashboardPage.simple"));
+const DiagnosticDashboard = lazy(() => import("@/pages/DiagnosticDashboard"));
+const CRMViewPage = lazy(() => import("@/pages/CRMViewPage"));
+const CRMViewPageEnhanced = lazy(() => import("@/pages/CRMViewPageEnhanced"));
+const ToolsDashboardPage = lazy(() => import("@/pages/ToolsDashboardPage"));
+const BlueprintOnboardingPage = lazy(() => import("@/pages/BlueprintOnboardingPage"));
+const ToolsLandingPage = lazy(() => import("@/pages/ToolsLandingPage"));
+const ToolMarketplaceBrowserPage = lazy(() => import("@/pages/ToolMarketplaceBrowserPage"));
+const ComponentDemo = lazy(() => import("@/pages/ComponentDemo"));
+// More lazy loaded components - public pages
+const TeamPage = lazy(() => import("@/pages/TeamPage"));
+const AboutPage = lazy(() => import("@/pages/AboutPage"));
+const ServicesPage = lazy(() => import("@/pages/ServicesPage"));
+const ServiceDetailPage = lazy(() => import("@/pages/ServiceDetailPage"));
+const IndustriesPage = lazy(() => import("@/pages/IndustriesPage"));
+const FilmIndustryPage = lazy(() => import("@/pages/FilmIndustryPage"));
+const MusicIndustryPage = lazy(() => import("@/pages/MusicIndustryPage"));
+const ConstructionIndustryPage = lazy(() => import("@/pages/ConstructionIndustryPage"));
+const SMESupportHubPage = lazy(() => import("@/pages/SMESupportHubPage"));
+const BusinessCalculatorPage = lazy(() => import("@/pages/BusinessCalculatorPage"));
+const TestFilmPage = lazy(() => import("@/pages/TestFilmPage"));
+const WhyUsPage = lazy(() => import("@/pages/WhyUsPage"));
+const ContactPage = lazy(() => import("@/pages/ContactPage"));
+const TestimonialsPage = lazy(() => import("@/pages/TestimonialsPage"));
+
+// Admin interface pages
+const InsightUsersPage = lazy(() => import("@/pages/InsightUsersPage"));
+const InsightsDashboardPage = lazy(() => import("@/pages/InsightsDashboardPage"));
+const SotManagerPage = lazy(() => import("@/pages/admin/SotManagerPage"));
+const ScopeRequestPage = lazy(() => import("@/pages/ScopeRequestPage"));
+const ModuleGalleryPage = lazy(() => import("@/pages/ModuleGalleryPage"));
+const ModuleLibraryPage = lazy(() => import("@/pages/ModuleLibraryPage"));
+const InstalledToolsPage = lazy(() => import("@/pages/InstalledToolsPage"));
+const MarketplacePage = lazy(() => import("@/pages/MarketplacePage"));
+const EnhancedMarketplacePage = lazy(() => import("@/pages/EnhancedMarketplacePage"));
+const BrandGuidelinesPage = lazy(() => import("@/pages/BrandGuidelinesPage"));
+const BusinessIdentityPage = lazy(() => import("@/pages/BusinessIdentityPage"));
+const HomepageSetupPage = lazy(() => import("@/pages/HomepageSetupPage"));
+const FoundationPagesOverviewPage = lazy(() => import("@/pages/FoundationPagesOverviewPage"));
+const AboutSetupPage = lazy(() => import("@/pages/AboutSetupPage"));
+const ServicesSetupPage = lazy(() => import("@/pages/ServicesSetupPage"));
+const ContactSetupPage = lazy(() => import("@/pages/ContactSetupPage"));
+const TestimonialsSetupPage = lazy(() => import("@/pages/TestimonialsSetupPage"));
 import FAQSetupPage from "@/pages/FAQSetupPage";
 import LaunchReadyPage from "@/pages/LaunchReadyPage";
 import OnboardingWelcomePage from "@/pages/OnboardingWelcomePage";
@@ -142,27 +148,94 @@ const ProtectedBlueprintManager = withAuth(BlueprintManagerPage, 'staff');
 const ProtectedTenantCustomization = withAuth(TenantCustomizationPage, 'staff');
 const ProtectedThemeManagement = withAuth(ThemeManagementPage, 'staff');
 
+// Loading fallback component for Suspense
+const LoadingFallback = () => (
+  <div className="flex items-center justify-center min-h-[40vh]">
+    <Loader2 className="h-8 w-8 animate-spin text-[#36d1dc]" />
+  </div>
+);
+
 // Router for all application routes
 function Router() {
   return (
     <Switch>
       {/* Public routes */}
       <Route path="/auth" component={AuthPage} />
-      <Route path="/client-register/:tenantId" component={ClientRegistrationPage} />
-      <Route path="/team" component={TeamPage} />
-      <Route path="/about" component={AboutPage} />
-      <Route path="/services" component={ServicesPage} />
-      <Route path="/services/:slug" component={ServiceDetailPage} />
-      <Route path="/industries" component={IndustriesPage} />
-      <Route path="/industries/film" component={FilmIndustryPage} />
-      <Route path="/industries/music" component={MusicIndustryPage} />
-      <Route path="/industries/construction" component={ConstructionIndustryPage} />
-      <Route path="/sme-support-hub" component={SMESupportHubPage} />
-      <Route path="/business-calculator" component={BusinessCalculatorPage} />
-      <Route path="/test-film" component={TestFilmPage} />
-      <Route path="/why-us" component={WhyUsPage} />
-      <Route path="/contact" component={ContactPage} />
-      <Route path="/testimonials" component={TestimonialsPage} />
+      <Route path="/client-register/:tenantId">
+        <Suspense fallback={<LoadingFallback />}>
+          <ClientRegistrationPage />
+        </Suspense>
+      </Route>
+      <Route path="/team">
+        <Suspense fallback={<LoadingFallback />}>
+          <TeamPage />
+        </Suspense>
+      </Route>
+      <Route path="/about">
+        <Suspense fallback={<LoadingFallback />}>
+          <AboutPage />
+        </Suspense>
+      </Route>
+      <Route path="/services">
+        <Suspense fallback={<LoadingFallback />}>
+          <ServicesPage />
+        </Suspense>
+      </Route>
+      <Route path="/services/:slug">
+        <Suspense fallback={<LoadingFallback />}>
+          <ServiceDetailPage />
+        </Suspense>
+      </Route>
+      <Route path="/industries">
+        <Suspense fallback={<LoadingFallback />}>
+          <IndustriesPage />
+        </Suspense>
+      </Route>
+      <Route path="/industries/film">
+        <Suspense fallback={<LoadingFallback />}>
+          <FilmIndustryPage />
+        </Suspense>
+      </Route>
+      <Route path="/industries/music">
+        <Suspense fallback={<LoadingFallback />}>
+          <MusicIndustryPage />
+        </Suspense>
+      </Route>
+      <Route path="/industries/construction">
+        <Suspense fallback={<LoadingFallback />}>
+          <ConstructionIndustryPage />
+        </Suspense>
+      </Route>
+      <Route path="/sme-support-hub">
+        <Suspense fallback={<LoadingFallback />}>
+          <SMESupportHubPage />
+        </Suspense>
+      </Route>
+      <Route path="/business-calculator">
+        <Suspense fallback={<LoadingFallback />}>
+          <BusinessCalculatorPage />
+        </Suspense>
+      </Route>
+      <Route path="/test-film">
+        <Suspense fallback={<LoadingFallback />}>
+          <TestFilmPage />
+        </Suspense>
+      </Route>
+      <Route path="/why-us">
+        <Suspense fallback={<LoadingFallback />}>
+          <WhyUsPage />
+        </Suspense>
+      </Route>
+      <Route path="/contact">
+        <Suspense fallback={<LoadingFallback />}>
+          <ContactPage />
+        </Suspense>
+      </Route>
+      <Route path="/testimonials">
+        <Suspense fallback={<LoadingFallback />}>
+          <TestimonialsPage />
+        </Suspense>
+      </Route>
       <Route path="/resources" component={ResourcesPage} />
       <Route path="/news" component={NewsPage} />
       
@@ -284,7 +357,11 @@ function Router() {
       />
       <ProtectedRoute 
         path="/admin/dashboard" 
-        component={AdminDashboardPage} 
+        component={(props) => (
+          <Suspense fallback={<LoadingFallback />}>
+            <AdminDashboardPage {...props} />
+          </Suspense>
+        )}
         allowedRoles={['admin', 'super_admin', 'editor']} 
       />
       <ProtectedRoute 
