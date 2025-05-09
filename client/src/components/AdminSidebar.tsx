@@ -613,12 +613,12 @@ export default function AdminSidebar() {
         {/* Sidebar Header */}
         <div className={cn(
           "h-16 border-b border-gray-200 flex items-center justify-between px-4",
-          "bg-gradient-to-r from-white to-orange-50/30"
+          "bg-gradient-to-r from-white to-[#008080]/5"
         )}>
           <AdminSidebarLogo collapsed={collapsed} />
           <button
             onClick={toggleSidebar}
-            className="p-2 rounded-md hover:bg-orange-100 transition-colors"
+            className="p-2 rounded-md hover:bg-[#008080]/10 transition-colors"
             aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
           >
             {collapsed ? (
@@ -694,7 +694,7 @@ export default function AdminSidebar() {
         </div>
 
         {/* Sidebar Footer */}
-        <div className="p-3 border-t border-gray-200 bg-gradient-to-r from-white to-orange-50/30">
+        <div className="p-3 border-t border-gray-200 bg-gradient-to-r from-white to-[#008080]/5">
           <Link href="/">
             <Button 
               variant="outline"
