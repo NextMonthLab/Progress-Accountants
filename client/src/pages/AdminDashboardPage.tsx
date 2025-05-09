@@ -9,6 +9,7 @@ import { Link, useLocation } from "wouter";
 import { useAuth } from '@/hooks/use-auth';
 import { useTenant } from '@/hooks/use-tenant';
 import { useQuery } from '@tanstack/react-query';
+import { ContentGenerationControls } from '@/components/admin-ui/ContentGenerationControls';
 
 // Lazy load the newsfeed component for better performance
 const LightweightNewsfeed = lazy(() => import('@/components/dashboard/LightweightNewsfeed').then(
@@ -363,6 +364,10 @@ export default function AdminDashboardPage() {
   const [activeTab, setActiveTab] = useState('overview');
   const [isPending, startTransition] = useTransition();
   const [, navigate] = useLocation();
+  
+  // Content generation controls state
+  const [lengthValue, setLengthValue] = useState<number[]>([50]); // Default to moderate
+  const [toneValue, setToneValue] = useState<number[]>([25]); // Default to professional
   
   // Handle tab changes with startTransition to prevent UI suspension errors
   const handleTabChange = (value: string) => {
@@ -941,6 +946,16 @@ export default function AdminDashboardPage() {
                     </Button>
                   </CardContent>
                 </Card>
+
+                {/* Add the content generation controls below the templates */}
+                <div className="mt-6">
+                  <ContentGenerationControls
+                    lengthValue={lengthValue}
+                    setLengthValue={setLengthValue}
+                    toneValue={toneValue}
+                    setToneValue={setToneValue}
+                  />
+                </div>
               </div>
             </div>
           </TabsContent>
