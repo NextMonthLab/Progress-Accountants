@@ -216,7 +216,7 @@ function QuickAction({
   // Colors based on variant for better contrast
   const iconColor = {
     primary: 'text-white bg-white/10 p-1.5 rounded-md',
-    secondary: 'text-[#F4A261] dark:text-[#F4A261] bg-[#F4A261]/10 dark:bg-[#F4A261]/20 p-1.5 rounded-md',
+    secondary: 'text-[#008080] dark:text-[#008080] bg-[#008080]/10 dark:bg-[#008080]/20 p-1.5 rounded-md',
     outline: 'text-[#008080] dark:text-[#008080] bg-[#008080]/10 dark:bg-[#008080]/20 p-1.5 rounded-md',
     ghost: 'text-[#008080] dark:text-[#008080] bg-gray-200 dark:bg-gray-700 p-1.5 rounded-md'
   };
@@ -237,7 +237,7 @@ function QuickAction({
 
   const arrowColor = {
     primary: 'text-white/70',
-    secondary: 'text-[#F4A261] dark:text-[#F4A261]/90',
+    secondary: 'text-[#008080] dark:text-[#008080]/90',
     outline: 'text-[#008080]/80 dark:text-[#008080]/90',
     ghost: 'text-gray-500 dark:text-gray-400'
   };

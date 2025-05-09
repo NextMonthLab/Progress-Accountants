@@ -156,7 +156,7 @@ const DynamicSidebar: React.FC = () => {
           
           {/* Add external link icon for view website */}
           {isViewWebsiteLink && (
-            <ExternalLink className="h-3 w-3 ml-2 text-[var(--orange)]" />
+            <ExternalLink className="h-3 w-3 ml-2 text-[var(--nextmonth-teal)]" />
           )}
         </a>
       </div>
@@ -248,11 +248,11 @@ const DynamicSidebar: React.FC = () => {
       )}
       
       {/* Sidebar Header */}
-      <div className="px-4 py-3 flex items-center justify-between border-b border-gray-200 bg-gradient-to-r from-gray-100 to-orange-50/30">
+      <div className="px-4 py-3 flex items-center justify-between border-b border-gray-200 bg-gradient-to-r from-gray-100 to-teal-50/30">
         <SidebarLogo collapsed={sidebarCollapsed} />
         <button
           onClick={isMobile ? toggleMobileSidebar : toggleSidebar}
-          className="p-2 rounded-md hover:bg-orange-100 transition-colors"
+          className="p-2 rounded-md hover:bg-teal-100/50 transition-colors"
           aria-label={isMobile 
             ? mobileSidebarCollapsed ? "Open menu" : "Close menu" 
             : sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"
