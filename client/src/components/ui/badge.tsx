@@ -15,6 +15,11 @@ const badgeVariants = cva(
         destructive:
           "border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80",
         outline: "text-foreground",
+        // NextMonth Gold UI design system gradient variants
+        "teal-blue": 
+          "border-0 bg-gradient-to-r from-[#36d1dc] to-[#5b86e5] text-white hover:opacity-90",
+        "pink-coral": 
+          "border-0 bg-gradient-to-r from-[#f953c6] to-[#ff6b6b] text-white hover:opacity-90",
       },
     },
     defaultVariants: {

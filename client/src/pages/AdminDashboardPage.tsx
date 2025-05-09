@@ -805,7 +805,7 @@ export default function AdminDashboardPage() {
                             <p className="text-xs text-gray-500">Last updated 2 days ago</p>
                           </div>
                         </div>
-                        <Badge variant="outline" className="bg-emerald-100 text-emerald-700 border-0">Published</Badge>
+                        <Badge variant="teal-blue">Published</Badge>
                       </div>
                       
                       <div className="flex items-center justify-between p-3 bg-gray-50 rounded-md">
@@ -816,7 +816,7 @@ export default function AdminDashboardPage() {
                             <p className="text-xs text-gray-500">Last updated 3 days ago</p>
                           </div>
                         </div>
-                        <Badge variant="outline" className="bg-emerald-100 text-emerald-700 border-0">Published</Badge>
+                        <Badge variant="teal-blue">Published</Badge>
                       </div>
                       
                       <div className="flex items-center justify-between p-3 bg-gray-50 rounded-md">
@@ -827,7 +827,7 @@ export default function AdminDashboardPage() {
                             <p className="text-xs text-gray-500">Last updated 1 day ago</p>
                           </div>
                         </div>
-                        <Badge variant="outline" className="bg-emerald-100 text-emerald-700 border-0">Published</Badge>
+                        <Badge variant="teal-blue">Published</Badge>
                       </div>
                       
                       <div className="flex items-center justify-between p-3 bg-gray-50 rounded-md">
@@ -838,7 +838,7 @@ export default function AdminDashboardPage() {
                             <p className="text-xs text-gray-500">Created 5 hours ago</p>
                           </div>
                         </div>
-                        <Badge variant="outline" className="bg-orange-100 text-orange-700 border-0">Draft</Badge>
+                        <Badge variant="pink-coral">Draft</Badge>
                       </div>
                     </div>
                   </CardContent>
@@ -996,11 +996,8 @@ export default function AdminDashboardPage() {
                               </div>
                             </div>
                             <Badge 
-                              variant="outline" 
-                              className={tool.status === 'active' 
-                                ? 'bg-emerald-100 text-emerald-700 border-0' 
-                                : 'bg-gray-100 text-gray-700 border-0'
-                              }
+                              variant={tool.status === 'active' ? 'teal-blue' : 'outline'}
+                              className={tool.status !== 'active' ? 'bg-gray-100 text-gray-700 border-0' : ''}
                             >
                               {tool.status === 'active' ? 'Active' : 'Inactive'}
                             </Badge>
