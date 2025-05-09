@@ -1057,7 +1057,7 @@ export default function AdminDashboardPage() {
                   <CardContent className="space-y-4">
                     <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-md">
                       <div className="flex items-center gap-3">
-                        <div className="h-8 w-8 rounded-full bg-[#F65C9A]/10 flex items-center justify-center text-[#F65C9A]">
+                        <div className="h-8 w-8 rounded-full bg-[#008080]/10 flex items-center justify-center text-[#008080]">
                           <PenTool className="h-4 w-4" />
                         </div>
                         <div>
@@ -1065,12 +1065,12 @@ export default function AdminDashboardPage() {
                           <p className="text-xs text-gray-500 dark:text-gray-400">v2.1.0 available</p>
                         </div>
                       </div>
-                      <Button size="sm" variant="outline" className="border-[#F65C9A] text-[#F65C9A] hover:bg-[#F65C9A]/5">Update</Button>
+                      <Button size="sm" variant="outline" className="border-[#008080] text-[#008080] hover:bg-[#008080]/5">Update</Button>
                     </div>
                     
                     <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-md">
                       <div className="flex items-center gap-3">
-                        <div className="h-8 w-8 rounded-full bg-[#3CBFAE]/10 flex items-center justify-center text-[#3CBFAE]">
+                        <div className="h-8 w-8 rounded-full bg-[#008080]/10 flex items-center justify-center text-[#008080]">
                           <BarChart3 className="h-4 w-4" />
                         </div>
                         <div>
@@ -1078,7 +1078,7 @@ export default function AdminDashboardPage() {
                           <p className="text-xs text-gray-500 dark:text-gray-400">v1.5.2 available</p>
                         </div>
                       </div>
-                      <Button size="sm" variant="outline" className="border-[#3CBFAE] text-[#3CBFAE] hover:bg-[#3CBFAE]/5">Update</Button>
+                      <Button size="sm" variant="outline" className="border-[#008080] text-[#008080] hover:bg-[#008080]/5">Update</Button>
                     </div>
                   </CardContent>
                 </Card>
@@ -1216,7 +1216,7 @@ export default function AdminDashboardPage() {
                     </div>
                   </CardContent>
                   <CardFooter>
-                    <Button variant="outline" className="w-full border-[#F65C9A] text-[#F65C9A] hover:bg-[#F65C9A]/5">
+                    <Button variant="outline" className="w-full border-[#008080] text-[#008080] hover:bg-[#008080]/5">
                       View All Backups
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Button>
@@ -1231,15 +1231,15 @@ export default function AdminDashboardPage() {
                     <CardDescription className="text-gray-700 dark:text-gray-300">Maintenance and system operations</CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-3">
-                    <Button variant="outline" className="w-full justify-start border-[#3CBFAE] text-[#3CBFAE] hover:bg-[#3CBFAE]/5">
+                    <Button variant="outline" className="w-full justify-start border-[#008080] text-[#008080] hover:bg-[#008080]/5">
                       <HardDrive className="mr-2 h-4 w-4" />
                       Create Backup Now
                     </Button>
-                    <Button variant="outline" className="w-full justify-start border-[#3CBFAE] text-[#3CBFAE] hover:bg-[#3CBFAE]/5">
+                    <Button variant="outline" className="w-full justify-start border-[#008080] text-[#008080] hover:bg-[#008080]/5">
                       <Rocket className="mr-2 h-4 w-4" />
                       Deploy Website
                     </Button>
-                    <Button variant="outline" className="w-full justify-start border-[#3CBFAE] text-[#3CBFAE] hover:bg-[#3CBFAE]/5">
+                    <Button variant="outline" className="w-full justify-start border-[#008080] text-[#008080] hover:bg-[#008080]/5">
                       <Settings className="mr-2 h-4 w-4" />
                       System Settings
                     </Button>
@@ -1262,7 +1262,7 @@ export default function AdminDashboardPage() {
                         <span className="text-sm font-medium text-gray-800 dark:text-white">45%</span>
                       </div>
                       <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
-                        <div className="h-full bg-gradient-to-r from-[#3CBFAE] to-[#F65C9A] rounded-full" style={{ width: '45%' }} />
+                        <div className="h-full bg-[#008080] rounded-full" style={{ width: '45%' }} />
                       </div>
                     </div>
                     
@@ -1272,7 +1272,7 @@ export default function AdminDashboardPage() {
                         <span className="text-sm font-medium text-gray-800 dark:text-white">30%</span>
                       </div>
                       <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
-                        <div className="h-full bg-gradient-to-r from-[#3CBFAE] to-[#F65C9A] rounded-full" style={{ width: '30%' }} />
+                        <div className="h-full bg-[#008080] rounded-full" style={{ width: '30%' }} />
                       </div>
                     </div>
                     
@@ -1282,7 +1282,7 @@ export default function AdminDashboardPage() {
                         <span className="text-sm font-medium text-gray-800 dark:text-white">15%</span>
                       </div>
                       <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
-                        <div className="h-full bg-gradient-to-r from-[#3CBFAE] to-[#F65C9A] rounded-full" style={{ width: '15%' }} />
+                        <div className="h-full bg-[#008080] rounded-full" style={{ width: '15%' }} />
                       </div>
                     </div>
                     
@@ -1292,7 +1292,7 @@ export default function AdminDashboardPage() {
                         <span className="text-sm font-medium text-gray-800 dark:text-white">10%</span>
                       </div>
                       <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
-                        <div className="h-full bg-gradient-to-r from-[#3CBFAE] to-[#F65C9A] rounded-full" style={{ width: '10%' }} />
+                        <div className="h-full bg-[#008080] rounded-full" style={{ width: '10%' }} />
                       </div>
                     </div>
                   </CardContent>

@@ -133,7 +133,7 @@ const ToolCard = ({
           </div>
         ) : (
           <Button 
-            className="w-full" 
+            className="w-full bg-[#008080] hover:bg-[#006666]" 
             variant="default"
             onClick={() => onInstall(tool.id)}
           >
