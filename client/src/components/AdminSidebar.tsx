@@ -417,19 +417,9 @@ export default function AdminSidebar() {
 
   // Render badge component for menu items
   const SidebarItemBadgeComponent = ({ badge }: { badge: SidebarItemBadge }) => {
-    // Map existing badge variants to the supported badge variants
-    let badgeVariant: "default" | "secondary" | "destructive" | "outline" | "teal-blue" | "pink-coral" = "default";
-
-    // Map existing variants to gradient variants
-    if (badge.variant === "new" || badge.variant === "beta" || badge.variant === "pro") {
-      badgeVariant = "pink-coral";
-    } else if (badge.variant === "updated") {
-      badgeVariant = "teal-blue";
-    }
-    
     return (
       <Badge 
-        variant={badgeVariant}
+        variant={badge.variant}
         className="ml-auto text-[9px] py-0 h-4"
       >
         {badge.text}

@@ -20,6 +20,15 @@ const badgeVariants = cva(
           "border-0 bg-gradient-to-r from-[#36d1dc] to-[#5b86e5] text-white hover:opacity-90",
         "pink-coral": 
           "border-0 bg-gradient-to-r from-[#f953c6] to-[#ff6b6b] text-white hover:opacity-90",
+        // Legacy badge variants mapped to gradients (for backward compatibility)
+        "new": 
+          "border-0 bg-gradient-to-r from-[#f953c6] to-[#ff6b6b] text-white hover:opacity-90",
+        "updated": 
+          "border-0 bg-gradient-to-r from-[#36d1dc] to-[#5b86e5] text-white hover:opacity-90",
+        "beta": 
+          "border-0 bg-gradient-to-r from-[#f953c6] to-[#ff6b6b] text-white hover:opacity-90",
+        "pro": 
+          "border-0 bg-gradient-to-r from-[#f953c6] to-[#ff6b6b] text-white hover:opacity-90",
       },
     },
     defaultVariants: {
