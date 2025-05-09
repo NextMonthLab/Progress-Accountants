@@ -29,13 +29,15 @@ const AnalyticsChart: React.FC<AnalyticsChartProps> = ({ height = 300, data }) =
         margin={{ top: 5, right: 20, left: 0, bottom: 5 }}
       >
         <defs>
+          {/* Teal-Blue gradient for pages */}
           <linearGradient id="colorPages" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="5%" stopColor="#3CBFAE" stopOpacity={0.8} />
-            <stop offset="95%" stopColor="#3CBFAE" stopOpacity={0} />
+            <stop offset="5%" stopColor="#36d1dc" stopOpacity={0.8} />
+            <stop offset="95%" stopColor="#5b86e5" stopOpacity={0} />
           </linearGradient>
+          {/* Pink-Coral gradient for updates */}
           <linearGradient id="colorUpdates" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="5%" stopColor="#F65C9A" stopOpacity={0.8} />
-            <stop offset="95%" stopColor="#F65C9A" stopOpacity={0} />
+            <stop offset="5%" stopColor="#f953c6" stopOpacity={0.8} />
+            <stop offset="95%" stopColor="#ff6b6b" stopOpacity={0} />
           </linearGradient>
         </defs>
         <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
@@ -64,7 +66,7 @@ const AnalyticsChart: React.FC<AnalyticsChartProps> = ({ height = 300, data }) =
         <Area 
           type="monotone" 
           dataKey="pages" 
-          stroke="#3CBFAE" 
+          stroke="#36d1dc" 
           fillOpacity={1} 
           fill="url(#colorPages)" 
           strokeWidth={2}
@@ -73,7 +75,7 @@ const AnalyticsChart: React.FC<AnalyticsChartProps> = ({ height = 300, data }) =
         <Area 
           type="monotone" 
           dataKey="updates" 
-          stroke="#F65C9A" 
+          stroke="#f953c6" 
           fillOpacity={1} 
           fill="url(#colorUpdates)" 
           strokeWidth={2} 

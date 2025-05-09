@@ -21,28 +21,28 @@ export default function NextMonthStylePage() {
       value: "124", 
       change: "+8%",
       icon: <Users className="h-5 w-5 text-white" />,
-      color: "bg-pink-500"
+      color: "bg-gradient-to-r from-[#f953c6] to-[#ff6b6b]" // Pink-Coral gradient
     },
     { 
       title: "Conversion Rate", 
       value: "3.2%", 
       change: "+0.8%",
       icon: <Zap className="h-5 w-5 text-white" />,
-      color: "bg-teal-500"
+      color: "bg-gradient-to-r from-[#36d1dc] to-[#5b86e5]" // Teal-Blue gradient
     },
     { 
       title: "Companies", 
       value: "57", 
       change: "+12",
       icon: <Database className="h-5 w-5 text-white" />,
-      color: "bg-blue-500"
+      color: "bg-gradient-to-r from-[#36d1dc] to-[#5b86e5]" // Teal-Blue gradient
     },
     { 
       title: "Avg. Session Duration", 
       value: "4:32", 
       change: "+0:46",
       icon: <LineChart className="h-5 w-5 text-white" />,
-      color: "bg-amber-500"
+      color: "bg-gradient-to-r from-[#f953c6] to-[#ff6b6b]" // Pink-Coral gradient
     }
   ];
 
