@@ -750,14 +750,23 @@ export default function AdminDashboardPage() {
                 </Card>
 
                 {/* Industry News - Now using LightweightNewsfeed component */}
-                <LightweightNewsfeed />
+                <Suspense fallback={
+                  <div className="p-6 bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
+                    <div className="h-6 w-40 bg-gray-200 dark:bg-gray-700 animate-pulse rounded mb-4"></div>
+                    <div className="h-4 bg-gray-100 dark:bg-gray-600 animate-pulse rounded w-full mb-2"></div>
+                    <div className="h-4 bg-gray-100 dark:bg-gray-600 animate-pulse rounded w-5/6 mb-2"></div>
+                    <div className="h-4 bg-gray-100 dark:bg-gray-600 animate-pulse rounded w-4/6"></div>
+                  </div>
+                }>
+                  <LightweightNewsfeed />
+                </Suspense>
 
                 {/* System Health */}
                 <Card>
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                       System Health
-                      <Badge variant="secondary" className="ml-2 bg-gradient-to-r from-[#36d1dc] to-[#5b86e5] hover:opacity-90 text-white border-0">
+                      <Badge variant="teal-blue" className="ml-2">
                         Healthy
                       </Badge>
                     </CardTitle>
@@ -1046,10 +1055,10 @@ export default function AdminDashboardPage() {
                     <div className="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-4">
                       <h3 className="font-medium text-gray-800 dark:text-white mb-1">Popular Categories</h3>
                       <div className="flex flex-wrap gap-2 mt-2">
-                        <Badge variant="outline" className="bg-[#008080]/10 text-[#008080] hover:bg-[#008080]/20 border-0">Analytics</Badge>
-                        <Badge variant="outline" className="bg-[#008080]/10 text-[#008080] hover:bg-[#008080]/20 border-0">Marketing</Badge>
-                        <Badge variant="outline" className="bg-[#008080]/10 text-[#008080] hover:bg-[#008080]/20 border-0">Finance</Badge>
-                        <Badge variant="outline" className="bg-[#008080]/10 text-[#008080] hover:bg-[#008080]/20 border-0">Productivity</Badge>
+                        <Badge variant="teal-tag">Analytics</Badge>
+                        <Badge variant="teal-tag">Marketing</Badge>
+                        <Badge variant="teal-tag">Finance</Badge>
+                        <Badge variant="teal-tag">Productivity</Badge>
                       </div>
                     </div>
                   </CardContent>

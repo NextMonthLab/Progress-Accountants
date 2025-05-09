@@ -20,6 +20,10 @@ const badgeVariants = cva(
           "border-0 bg-gradient-to-r from-[#36d1dc] to-[#5b86e5] text-white hover:opacity-90",
         "pink-coral": 
           "border-0 bg-gradient-to-r from-[#f953c6] to-[#ff6b6b] text-white hover:opacity-90",
+        // NextMonth Gold UI specialized variants
+        "teal-tag": 
+          "border-0 bg-[#008080]/10 text-[#008080] hover:bg-[#008080]/20",
+        
         // Legacy badge variants mapped to gradients (for backward compatibility)
         "new": 
           "border-0 bg-gradient-to-r from-[#f953c6] to-[#ff6b6b] text-white hover:opacity-90",
