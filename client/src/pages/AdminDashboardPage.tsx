@@ -578,7 +578,7 @@ export default function AdminDashboardPage() {
                 value={metrics?.totalPages || 0}
                 icon={<FileText className="h-5 w-5" />}
                 color="navy"
-                isGradient={true}
+                isGradient={false}
                 className="shadow-lg"
               />
               <StatCard
@@ -586,21 +586,21 @@ export default function AdminDashboardPage() {
                 value={metrics?.totalToolsInstalled || 0}
                 icon={<Cpu className="h-5 w-5" />}
                 color="navy"
-                isGradient={true}
+                isGradient={false}
               />
               <StatCard
                 label="Latest Update"
                 value={metrics?.lastUpdated ? formatDate(metrics.lastUpdated) : 'N/A'}
                 icon={<Clock className="h-5 w-5" />}
-                color="emerald"
-                isGradient={true}
+                color="navy"
+                isGradient={false}
               />
               <StatCard
                 label="Security Status"
                 value="Protected"
                 icon={<ShieldCheck className="h-5 w-5" />}
-                color="indigo"
-                isGradient={true}
+                color="navy"
+                isGradient={false}
               />
             </div>
 
@@ -767,18 +767,21 @@ export default function AdminDashboardPage() {
                 value="8"
                 icon={<FileText className="h-5 w-5" />}
                 color="navy"
+                isGradient={false}
               />
               <StatCard
                 label="Draft Pages"
                 value="3"
                 icon={<FileText className="h-5 w-5" />}
                 color="navy"
+                isGradient={false}
               />
               <StatCard
                 label="Media Files"
                 value="42"
                 icon={<ImageIcon className="h-5 w-5" />}
-                color="emerald"
+                color="navy"
+                isGradient={false}
               />
             </div>
             
@@ -918,18 +921,21 @@ export default function AdminDashboardPage() {
                 value={tools?.length || 0}
                 icon={<Cpu className="h-5 w-5" />}
                 color="navy"
+                isGradient={false}
               />
               <StatCard
                 label="Available Updates"
                 value="2"
                 icon={<Sparkles className="h-5 w-5" />}
                 color="navy"
+                isGradient={false}
               />
               <StatCard
                 label="Data Usage"
                 value="28%"
                 icon={<Database className="h-5 w-5" />}
-                color="emerald"
+                color="navy"
+                isGradient={false}
               />
             </div>
             
@@ -1011,8 +1017,8 @@ export default function AdminDashboardPage() {
               </div>
               
               <div className="space-y-6">
-                <Card className="border-[#3CBFAE] border-2">
-                  <CardHeader className="bg-gradient-to-r from-[#3CBFAE] to-[#F65C9A]">
+                <Card className="border-[#008080] border">
+                  <CardHeader className="bg-[#008080]">
                     <CardTitle className="text-white">Tool Marketplace</CardTitle>
                     <CardDescription className="text-white/90">Discover new tools to enhance your business</CardDescription>
                   </CardHeader>
@@ -1020,7 +1026,7 @@ export default function AdminDashboardPage() {
                     <div className="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-4">
                       <h3 className="font-medium text-gray-800 dark:text-white mb-1">Featured Tool</h3>
                       <p className="text-gray-700 dark:text-gray-300 text-sm mb-3">Advanced Analytics Dashboard</p>
-                      <Button className="w-full bg-gradient-to-r from-[#3CBFAE] to-[#F65C9A] text-white hover:opacity-90">
+                      <Button className="w-full bg-[#008080] hover:bg-[#006666] text-white">
                         Learn More
                       </Button>
                     </div>
@@ -1028,15 +1034,15 @@ export default function AdminDashboardPage() {
                     <div className="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-4">
                       <h3 className="font-medium text-gray-800 dark:text-white mb-1">Popular Categories</h3>
                       <div className="flex flex-wrap gap-2 mt-2">
-                        <Badge variant="outline" className="bg-[#3CBFAE]/10 text-[#3CBFAE] hover:bg-[#3CBFAE]/20 border-0">Analytics</Badge>
-                        <Badge variant="outline" className="bg-[#F65C9A]/10 text-[#F65C9A] hover:bg-[#F65C9A]/20 border-0">Marketing</Badge>
-                        <Badge variant="outline" className="bg-[#3CBFAE]/10 text-[#3CBFAE] hover:bg-[#3CBFAE]/20 border-0">Finance</Badge>
-                        <Badge variant="outline" className="bg-[#F65C9A]/10 text-[#F65C9A] hover:bg-[#F65C9A]/20 border-0">Productivity</Badge>
+                        <Badge variant="outline" className="bg-[#008080]/10 text-[#008080] hover:bg-[#008080]/20 border-0">Analytics</Badge>
+                        <Badge variant="outline" className="bg-[#008080]/10 text-[#008080] hover:bg-[#008080]/20 border-0">Marketing</Badge>
+                        <Badge variant="outline" className="bg-[#008080]/10 text-[#008080] hover:bg-[#008080]/20 border-0">Finance</Badge>
+                        <Badge variant="outline" className="bg-[#008080]/10 text-[#008080] hover:bg-[#008080]/20 border-0">Productivity</Badge>
                       </div>
                     </div>
                   </CardContent>
                   <CardFooter>
-                    <Button variant="outline" className="w-full text-[#3CBFAE] hover:bg-[#3CBFAE]/5">
+                    <Button variant="outline" className="w-full text-[#008080] hover:bg-[#008080]/5">
                       Explore Marketplace
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Button>
@@ -1078,15 +1084,15 @@ export default function AdminDashboardPage() {
                 </Card>
                 
                 {/* Insights Dashboard Card */}
-                <Card className="mt-6 border-[#F65C9A] border-2">
-                  <CardHeader className="bg-gradient-to-r from-[#3CBFAE]/10 to-[#F65C9A]/10">
-                    <CardTitle className="bg-gradient-to-r from-[#3CBFAE] to-[#F65C9A] bg-clip-text text-transparent">Insights Dashboard</CardTitle>
-                    <CardDescription className="text-gray-700 dark:text-gray-300">Track and analyze user feedback</CardDescription>
+                <Card className="mt-6 border-[#008080] border">
+                  <CardHeader className="bg-[#008080]">
+                    <CardTitle className="text-white">Insights Dashboard</CardTitle>
+                    <CardDescription className="text-white/90">Track and analyze user feedback</CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-md">
                       <div className="flex items-center gap-3">
-                        <div className="h-10 w-10 rounded-full bg-[#F65C9A]/10 flex items-center justify-center text-[#F65C9A]">
+                        <div className="h-10 w-10 rounded-full bg-[#008080]/10 flex items-center justify-center text-[#008080]">
                           <BarChart3 className="h-6 w-6" />
                         </div>
                         <div>
@@ -1095,13 +1101,13 @@ export default function AdminDashboardPage() {
                         </div>
                       </div>
                       <Link href="/admin/insights-dashboard">
-                        <Button size="sm" className="bg-gradient-to-r from-[#3CBFAE] to-[#F65C9A] hover:opacity-90">Open</Button>
+                        <Button size="sm" className="bg-[#008080] hover:bg-[#006666]">Open</Button>
                       </Link>
                     </div>
                     
                     <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-md">
                       <div className="flex items-center gap-3">
-                        <div className="h-10 w-10 rounded-full bg-[#3CBFAE]/10 flex items-center justify-center text-[#3CBFAE]">
+                        <div className="h-10 w-10 rounded-full bg-[#008080]/10 flex items-center justify-center text-[#008080]">
                           <Users className="h-6 w-6" />
                         </div>
                         <div>
@@ -1110,13 +1116,13 @@ export default function AdminDashboardPage() {
                         </div>
                       </div>
                       <Link href="/admin/insight-users">
-                        <Button size="sm" variant="outline" className="border-[#3CBFAE] text-[#3CBFAE] hover:bg-[#3CBFAE]/5">Manage</Button>
+                        <Button size="sm" variant="outline" className="border-[#008080] text-[#008080] hover:bg-[#008080]/5">Manage</Button>
                       </Link>
                     </div>
                   </CardContent>
                   <CardFooter>
                     <Link href="/admin/insights-dashboard" className="w-full">
-                      <Button variant="outline" className="w-full border-[#F65C9A] text-[#F65C9A] hover:bg-[#F65C9A]/5">
+                      <Button variant="outline" className="w-full border-[#008080] text-[#008080] hover:bg-[#008080]/5">
                         View Insights Dashboard
                         <ArrowRight className="ml-2 h-4 w-4" />
                       </Button>
@@ -1134,19 +1140,22 @@ export default function AdminDashboardPage() {
                 label="System Status"
                 value="Healthy"
                 icon={<CheckCircle2 className="h-5 w-5" />}
-                color="emerald"
+                color="navy"
+                isGradient={false}
               />
               <StatCard
                 label="Last Backup"
                 value="Today, 2:45 AM"
                 icon={<HardDrive className="h-5 w-5" />}
                 color="navy"
+                isGradient={false}
               />
               <StatCard
                 label="Storage Used"
                 value="28%"
                 icon={<Database className="h-5 w-5" />}
                 color="navy"
+                isGradient={false}
               />
             </div>
             
@@ -1174,35 +1183,35 @@ export default function AdminDashboardPage() {
                     <div className="space-y-4">
                       <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-md">
                         <div className="flex items-center gap-3">
-                          <Database className="h-5 w-5 text-[#3CBFAE]" />
+                          <Database className="h-5 w-5 text-[#008080]" />
                           <div>
                             <p className="font-medium text-gray-800 dark:text-white">Daily Backup</p>
                             <p className="text-xs text-gray-500 dark:text-gray-400">Today, 2:45 AM • 840 MB</p>
                           </div>
                         </div>
-                        <Button size="sm" variant="outline" className="border-[#3CBFAE] text-[#3CBFAE] hover:bg-[#3CBFAE]/5">Download</Button>
+                        <Button size="sm" variant="outline" className="border-[#008080] text-[#008080] hover:bg-[#008080]/5">Download</Button>
                       </div>
                       
                       <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-md">
                         <div className="flex items-center gap-3">
-                          <Database className="h-5 w-5 text-[#3CBFAE]" />
+                          <Database className="h-5 w-5 text-[#008080]" />
                           <div>
                             <p className="font-medium text-gray-800 dark:text-white">Daily Backup</p>
                             <p className="text-xs text-gray-500 dark:text-gray-400">Yesterday, 2:45 AM • 825 MB</p>
                           </div>
                         </div>
-                        <Button size="sm" variant="outline" className="border-[#3CBFAE] text-[#3CBFAE] hover:bg-[#3CBFAE]/5">Download</Button>
+                        <Button size="sm" variant="outline" className="border-[#008080] text-[#008080] hover:bg-[#008080]/5">Download</Button>
                       </div>
                       
                       <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-md">
                         <div className="flex items-center gap-3">
-                          <Database className="h-5 w-5 text-[#3CBFAE]" />
+                          <Database className="h-5 w-5 text-[#008080]" />
                           <div>
                             <p className="font-medium text-gray-800 dark:text-white">Weekly Backup</p>
                             <p className="text-xs text-gray-500 dark:text-gray-400">Apr 21, 2:45 PM • 1.2 GB</p>
                           </div>
                         </div>
-                        <Button size="sm" variant="outline" className="border-[#3CBFAE] text-[#3CBFAE] hover:bg-[#3CBFAE]/5">Download</Button>
+                        <Button size="sm" variant="outline" className="border-[#008080] text-[#008080] hover:bg-[#008080]/5">Download</Button>
                       </div>
                     </div>
                   </CardContent>
