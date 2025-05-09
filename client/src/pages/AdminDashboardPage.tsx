@@ -67,24 +67,24 @@ function StatCard({
   // Define the color scheme with proper type - using NextMonth Gold colors
   const scheme = {
     navy: {
-      bg: isGradient ? 'bg-[#3CBFAE]' : 'bg-white',
-      icon: isGradient ? 'bg-white/40 text-white' : 'bg-[#3CBFAE]/10 text-[#3CBFAE]',
-      border: isGradient ? 'border-[#3CBFAE]/10' : 'border-[#3CBFAE]/10'
+      bg: isGradient ? 'bg-[#008080]' : 'bg-white',
+      icon: isGradient ? 'bg-white/40 text-white' : 'bg-[#008080]/10 text-[#008080]',
+      border: isGradient ? 'border-[#008080]/10' : 'border-[#008080]/10'
     },
     orange: {
-      bg: isGradient ? 'bg-[#F65C9A]' : 'bg-white', 
-      icon: isGradient ? 'bg-white/40 text-white' : 'bg-[#F65C9A]/10 text-[#F65C9A]',
-      border: isGradient ? 'border-[#F65C9A]/10' : 'border-[#F65C9A]/10'
+      bg: isGradient ? 'bg-[#F4A261]' : 'bg-white', 
+      icon: isGradient ? 'bg-white/40 text-white' : 'bg-[#F4A261]/10 text-[#F4A261]',
+      border: isGradient ? 'border-[#F4A261]/10' : 'border-[#F4A261]/10'
     },
     emerald: {
-      bg: isGradient ? 'bg-emerald-600' : 'bg-white',
-      icon: isGradient ? 'bg-white/40 text-white' : 'bg-emerald-500/10 text-emerald-500',
-      border: isGradient ? 'border-emerald-500/10' : 'border-emerald-500/10'
+      bg: isGradient ? 'bg-[#10B981]' : 'bg-white',
+      icon: isGradient ? 'bg-white/40 text-white' : 'bg-[#10B981]/10 text-[#10B981]',
+      border: isGradient ? 'border-[#10B981]/10' : 'border-[#10B981]/10'
     },
     indigo: {
-      bg: isGradient ? 'bg-indigo-600' : 'bg-white',
-      icon: isGradient ? 'bg-white/40 text-white' : 'bg-indigo-500/10 text-indigo-500',
-      border: isGradient ? 'border-indigo-500/10' : 'border-indigo-500/10'
+      bg: isGradient ? 'bg-[#6366F1]' : 'bg-white',
+      icon: isGradient ? 'bg-white/40 text-white' : 'bg-[#6366F1]/10 text-[#6366F1]',
+      border: isGradient ? 'border-[#6366F1]/10' : 'border-[#6366F1]/10'
     }
   };
 
@@ -154,7 +154,7 @@ function ActivityItem({ icon, title, description, time, isLoading = false }: Act
         </>
       ) : (
         <>
-          <div className="h-10 w-10 rounded-full bg-[#3CBFAE]/10 flex items-center justify-center text-[#3CBFAE]">
+          <div className="h-10 w-10 rounded-full bg-[#008080]/10 flex items-center justify-center text-[#008080]">
             {icon}
           </div>
           <div className="flex-1">
@@ -207,18 +207,18 @@ function QuickAction({
   isLoading = false
 }: QuickActionProps) {
   const variantStyles = {
-    primary: 'bg-gradient-to-br from-[#3CBFAE] to-[#F65C9A] hover:shadow-lg hover:shadow-[#F65C9A]/20 text-white border border-[#3CBFAE]/20',
-    secondary: 'bg-white dark:bg-gray-800 hover:bg-[#F65C9A]/5 dark:hover:bg-[#F65C9A]/10 hover:shadow-lg hover:shadow-[#F65C9A]/10 border border-[#F65C9A]/20 dark:border-[#F65C9A]/30 text-gray-800 dark:text-white',
-    outline: 'border-2 border-[#3CBFAE]/20 dark:border-[#3CBFAE]/30 hover:border-[#3CBFAE]/40 bg-white dark:bg-gray-800 text-gray-800 dark:text-white hover:bg-[#3CBFAE]/5 dark:hover:bg-[#3CBFAE]/10',
+    primary: 'bg-[#008080] hover:bg-[#006666] hover:shadow-lg hover:shadow-[#008080]/20 text-white border border-[#008080]/20',
+    secondary: 'bg-white dark:bg-gray-800 hover:bg-[#F4A261]/5 dark:hover:bg-[#F4A261]/10 hover:shadow-lg hover:shadow-[#F4A261]/10 border border-[#F4A261]/20 dark:border-[#F4A261]/30 text-gray-800 dark:text-white',
+    outline: 'border-2 border-[#008080]/20 dark:border-[#008080]/30 hover:border-[#008080]/40 bg-white dark:bg-gray-800 text-gray-800 dark:text-white hover:bg-[#008080]/5 dark:hover:bg-[#008080]/10',
     ghost: 'bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-800 dark:text-white border border-gray-200 dark:border-gray-700',
   };
 
   // Colors based on variant for better contrast
   const iconColor = {
     primary: 'text-white bg-white/10 p-1.5 rounded-md',
-    secondary: 'text-[#F65C9A] dark:text-[#F65C9A] bg-[#F65C9A]/10 dark:bg-[#F65C9A]/20 p-1.5 rounded-md',
-    outline: 'text-[#3CBFAE] dark:text-[#3CBFAE] bg-[#3CBFAE]/10 dark:bg-[#3CBFAE]/20 p-1.5 rounded-md',
-    ghost: 'text-[#3CBFAE] dark:text-[#3CBFAE] bg-gray-200 dark:bg-gray-700 p-1.5 rounded-md'
+    secondary: 'text-[#F4A261] dark:text-[#F4A261] bg-[#F4A261]/10 dark:bg-[#F4A261]/20 p-1.5 rounded-md',
+    outline: 'text-[#008080] dark:text-[#008080] bg-[#008080]/10 dark:bg-[#008080]/20 p-1.5 rounded-md',
+    ghost: 'text-[#008080] dark:text-[#008080] bg-gray-200 dark:bg-gray-700 p-1.5 rounded-md'
   };
   
   const titleColor = {
@@ -237,8 +237,8 @@ function QuickAction({
 
   const arrowColor = {
     primary: 'text-white/70',
-    secondary: 'text-[#F65C9A] dark:text-[#F65C9A]/90',
-    outline: 'text-[#3CBFAE]/80 dark:text-[#3CBFAE]/90',
+    secondary: 'text-[#F4A261] dark:text-[#F4A261]/90',
+    outline: 'text-[#008080]/80 dark:text-[#008080]/90',
     ghost: 'text-gray-500 dark:text-gray-400'
   };
 
@@ -516,16 +516,16 @@ export default function AdminDashboardPage() {
         {/* Page Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-4 rounded-lg shadow-sm border border-gray-100 dark:bg-gray-900 dark:border-gray-800">
           <div>
-            <h1 className="text-2xl font-bold bg-gradient-to-r from-[#3CBFAE] to-[#F65C9A] bg-clip-text text-transparent">Admin Dashboard</h1>
+            <h1 className="text-2xl font-bold text-[#008080]">Admin Dashboard</h1>
             <p className="text-gray-700 dark:text-gray-300">Welcome back, {user?.username || 'User'}</p>
           </div>
           <div className="flex flex-wrap gap-2 mt-2 sm:mt-0">
-            <Button variant="outline" className="gap-2 border-[#3CBFAE]/30 text-[#3CBFAE] hover:bg-[#3CBFAE]/5">
+            <Button variant="outline" className="gap-2 border-[#008080]/30 text-[#008080] hover:bg-[#008080]/5">
               <Settings className="h-4 w-4" />
               Settings
             </Button>
             <Button 
-              className="gap-2 bg-gradient-to-r from-[#3CBFAE] to-[#F65C9A] hover:shadow-md hover:opacity-90"
+              className="gap-2 bg-[#008080] hover:bg-[#006666] hover:shadow-md"
               onClick={() => navigate("/page-builder/page/new")}
             >
               <Plus className="h-4 w-4" />
