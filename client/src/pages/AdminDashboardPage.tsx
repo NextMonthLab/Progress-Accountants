@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
+import { GradientButton, ActionButton } from "@/components/admin-ui/AdminButtons";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
@@ -520,17 +521,18 @@ export default function AdminDashboardPage() {
             <p className="text-gray-700 dark:text-gray-300">Welcome back, {user?.username || 'User'}</p>
           </div>
           <div className="flex flex-wrap gap-2 mt-2 sm:mt-0">
-            <Button variant="outline" className="gap-2 border-[#008080]/30 text-[#008080] hover:bg-[#008080]/5">
+            <ActionButton variant="default" className="gap-2">
               <Settings className="h-4 w-4" />
               Settings
-            </Button>
-            <Button 
-              className="gap-2 bg-[#008080] hover:bg-[#006666] hover:shadow-md"
+            </ActionButton>
+            <GradientButton 
+              gradient="pink-coral"
+              className="gap-2"
               onClick={() => navigate("/page-builder/page/new")}
             >
               <Plus className="h-4 w-4" />
               Create New Page
-            </Button>
+            </GradientButton>
           </div>
         </div>
 
@@ -687,7 +689,7 @@ export default function AdminDashboardPage() {
                       description="Design and publish a new page"
                       icon={<FileText className="h-5 w-5" />}
                       link="/page-builder/page/new"
-                      variant="outline"
+                      variant="primary" 
                     />
                     <QuickAction
                       title="Install New Tool"
@@ -701,7 +703,7 @@ export default function AdminDashboardPage() {
                       description="Track and analyze user feedback"
                       icon={<BarChart3 className="h-5 w-5" />}
                       link="/admin/insights-dashboard"
-                      variant="outline"
+                      variant="secondary"
                     />
                     <QuickAction
                       title="Manage Insight Users"
@@ -715,7 +717,7 @@ export default function AdminDashboardPage() {
                       description="See your live website"
                       icon={<Globe className="h-5 w-5" />}
                       link="/"
-                      variant="outline"
+                      variant="secondary"
                     />
                     <QuickAction
                       title="Media Library"
@@ -742,7 +744,7 @@ export default function AdminDashboardPage() {
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                       System Health
-                      <Badge variant="outline" className="ml-2 bg-emerald-100 text-emerald-700 hover:bg-emerald-100 border-0">
+                      <Badge variant="secondary" className="ml-2 bg-gradient-to-r from-[#36d1dc] to-[#5b86e5] hover:opacity-90 text-white border-0">
                         Healthy
                       </Badge>
                     </CardTitle>

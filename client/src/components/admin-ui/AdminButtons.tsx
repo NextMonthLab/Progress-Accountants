@@ -17,20 +17,20 @@ export function GradientButton({
   ...props
 }: GradientButtonProps) {
   const gradientClass = {
-    "primary": "bg-gradient-to-r from-[#3CBFAE] to-[#F65C9A] hover:opacity-90",
-    "secondary": "bg-gradient-to-r from-[#3CBFAE] to-[#F65C9A] hover:opacity-90",
-    "pink-teal": "bg-gradient-to-r from-[#3CBFAE] to-[#F65C9A] hover:opacity-90",
-    // New gradients for NextMonth UI
-    "teal-blue": "bg-gradient-to-r from-[#36d1dc] to-[#5b86e5] hover:opacity-90",
-    "pink-coral": "bg-gradient-to-r from-[#f953c6] to-[#ff6b6b] hover:opacity-90"
+    // Updated gradients to match NextMonth Gold UI design system
+    "primary": "bg-gradient-to-r from-[#f953c6] to-[#ff6b6b] hover:opacity-90", // Pink-Coral for primary actions
+    "secondary": "bg-gradient-to-r from-[#36d1dc] to-[#5b86e5] hover:opacity-90", // Teal-Blue for secondary actions
+    "pink-teal": "bg-gradient-to-r from-[#3CBFAE] to-[#F65C9A] hover:opacity-90", // Legacy gradient
+    "teal-blue": "bg-gradient-to-r from-[#36d1dc] to-[#5b86e5] hover:opacity-90", // Informational actions
+    "pink-coral": "bg-gradient-to-r from-[#f953c6] to-[#ff6b6b] hover:opacity-90"  // Primary actions
   }[gradient];
 
   // Define shadow based on gradient type
   const shadowStyle = {
     "teal-blue": "hover:shadow-[0_4px_16px_rgba(54,209,220,0.3)]",
     "pink-coral": "hover:shadow-[0_4px_16px_rgba(249,83,198,0.3)]",
-    "primary": "hover:shadow-[0_4px_16px_rgba(246,92,154,0.25)]",
-    "secondary": "hover:shadow-[0_4px_16px_rgba(246,92,154,0.25)]",
+    "primary": "hover:shadow-[0_4px_16px_rgba(249,83,198,0.3)]", // Updated to match pink-coral
+    "secondary": "hover:shadow-[0_4px_16px_rgba(54,209,220,0.3)]", // Updated to match teal-blue
     "pink-teal": "hover:shadow-[0_4px_16px_rgba(246,92,154,0.25)]"
   }[gradient];
 
