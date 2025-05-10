@@ -326,4 +326,64 @@ export const registerToolMarketplaceRoutes = (app: Express) => {
     
     res.json(filteredTools);
   });
+  
+  // Get tool usage statistics
+  app.get('/api/tools/stats', async (req: Request, res: Response) => {
+    try {
+      // Count installations
+      const installCounts = new Map<number, number>();
+      const previewCounts = new Map<number, number>();
+      
+      // Read from the log file to get statistics
+      if (fs.existsSync(LOG_FILE_PATH)) {
+        const logContent = fs.readFileSync(LOG_FILE_PATH, 'utf-8');
+        const logs: ToolInteraction[] = JSON.parse(logContent);
+        
+        logs.forEach(log => {
+          if (log.action === 'install') {
+            const currentCount = installCounts.get(log.toolId) || 0;
+            installCounts.set(log.toolId, currentCount + 1);
+          } else if (log.action === 'preview') {
+            const currentCount = previewCounts.get(log.toolId) || 0;
+            previewCounts.set(log.toolId, currentCount + 1);
+          }
+        });
+      }
+      
+      // Get top tools
+      const topInstalledTools = Array.from(installCounts.entries())
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 5)
+        .map(([toolId, count]) => {
+          const tool = mockTools.find(t => t.id === toolId);
+          return {
+            toolId,
+            title: tool?.title || 'Unknown Tool',
+            count
+          };
+        });
+        
+      const topPreviewedTools = Array.from(previewCounts.entries())
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 5)
+        .map(([toolId, count]) => {
+          const tool = mockTools.find(t => t.id === toolId);
+          return {
+            toolId,
+            title: tool?.title || 'Unknown Tool',
+            count
+          };
+        });
+      
+      res.json({
+        totalInstallations: Array.from(installCounts.values()).reduce((a, b) => a + b, 0),
+        totalPreviews: Array.from(previewCounts.values()).reduce((a, b) => a + b, 0),
+        topInstalledTools,
+        topPreviewedTools
+      });
+    } catch (error) {
+      console.error('Error getting tool statistics:', error);
+      res.status(500).json({ error: 'Failed to get tool statistics' });
+    }
+  });
 };

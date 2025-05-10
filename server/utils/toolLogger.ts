@@ -1,9 +1,20 @@
 import fs from 'fs';
 import path from 'path';
 
-const LOG_FILE_PATH = path.join(process.cwd(), 'logs', 'tool_interactions.json');
+const LOG_DIR = path.join(process.cwd(), 'logs');
+const LOG_FILE_PATH = path.join(LOG_DIR, 'tool_interactions.json');
 
-interface ToolInteraction {
+// Ensure logs directory exists
+if (!fs.existsSync(LOG_DIR)) {
+  fs.mkdirSync(LOG_DIR, { recursive: true });
+}
+
+// Create empty JSON array file if it doesn't exist
+if (!fs.existsSync(LOG_FILE_PATH)) {
+  fs.writeFileSync(LOG_FILE_PATH, '[]', 'utf-8');
+}
+
+export interface ToolInteraction {
   id: string;
   userId: number;
   toolId: number;
@@ -11,6 +22,9 @@ interface ToolInteraction {
   timestamp: string;
   metadata?: Record<string, any>;
 }
+
+// Export constants
+export { LOG_FILE_PATH };
 
 /**
  * Logs a tool interaction to the tool_interactions.json file

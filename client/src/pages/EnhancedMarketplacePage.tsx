@@ -85,15 +85,15 @@ export default function EnhancedMarketplacePage() {
   
   // Fetch installed tools
   const { 
-    data: installedToolsData = { tools: [] }, 
+    data: installedToolsData = { tools: [], count: 0 } as InstalledToolsResponse, 
     isLoading: isLoadingInstalled,
-  } = useQuery({
+  } = useQuery<InstalledToolsResponse>({
     queryKey: ['/api/tools/access/installed'],
     enabled: !!user,
   });
   
   // Extract just the tool IDs for easier access checking
-  const installedTools = (installedToolsData.tools || []).map((tool: any) => tool.id);
+  const installedTools = installedToolsData.tools.map(tool => tool.id);
   
   // Fetch tool categories
   const {
@@ -120,7 +120,7 @@ export default function EnhancedMarketplacePage() {
       return await response.json();
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['/api/tools/access'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/tools/access/installed'] });
       toast({
         title: "Tool installed",
         description: "The tool has been installed successfully",
@@ -147,8 +147,7 @@ export default function EnhancedMarketplacePage() {
       return await response.json();
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['/api/tools/access'] });
-      queryClient.invalidateQueries({ queryKey: ['/api/tools'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/tools/access/installed'] });
       toast({
         title: "Tool uninstalled",
         description: "The tool has been uninstalled successfully",
@@ -284,7 +283,14 @@ export default function EnhancedMarketplacePage() {
         </div>
         
         <div className="text-center mb-6 sm:mb-8 px-4">
-          <h1 className="text-3xl sm:text-4xl font-bold mb-2 sm:mb-3 text-[var(--navy)]">Marketplace</h1>
+          <div className="flex items-center justify-center gap-3 mb-2">
+            <h1 className="text-3xl sm:text-4xl font-bold text-[var(--navy)]">Marketplace</h1>
+            {!isLoadingInstalled && installedToolsData.count > 0 && (
+              <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200 text-sm py-1 px-3">
+                {installedToolsData.count} Tool{installedToolsData.count !== 1 ? 's' : ''} Installed
+              </Badge>
+            )}
+          </div>
           <p className="text-base sm:text-xl text-gray-600 max-w-3xl mx-auto">
             Add new tools and automations to enhance your accounting platform. No code. No friction.
           </p>
