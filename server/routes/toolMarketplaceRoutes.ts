@@ -182,11 +182,18 @@ export const registerToolMarketplaceRoutes = (app: Express) => {
   app.get('/api/tools/access/:toolId', (req: Request, res: Response) => {
     const toolId = parseInt(req.params.toolId);
     const userId = req.query.userId ? parseInt(req.query.userId as string) : (req.user?.id as number || 0);
+    const action = req.query.action as string || null;
     
     // Check if the toolId is valid
     const tool = mockTools.find(t => t.id === toolId);
     if (!tool) {
       return res.status(404).json({ message: 'Tool not found' });
+    }
+    
+    // If this is a tracking request for preview
+    if (action === 'preview' && typeof userId === 'number') {
+      logToolInteraction(userId, toolId, 'preview');
+      return res.json({ success: true });
     }
     
     // Check if userId has access to this tool
@@ -201,7 +208,7 @@ export const registerToolMarketplaceRoutes = (app: Express) => {
     });
   });
 
-  // Grant access to a tool
+  // Grant access to a tool (install)
   app.post('/api/tools/access/:toolId', (req: Request, res: Response) => {
     const toolId = parseInt(req.params.toolId);
     const userId = req.user?.id as number || 0;
@@ -223,15 +230,80 @@ export const registerToolMarketplaceRoutes = (app: Express) => {
     
     // Log the access interaction
     if (typeof userId === 'number') {
-      logToolInteraction(userId, toolId, 'access', { method: 'purchase' });
+      logToolInteraction(userId, toolId, 'install', { 
+        method: 'marketplace',
+        toolName: tool.title,
+        price: tool.price,
+        timestamp: new Date().toISOString()
+      });
     }
     
     return res.json({ 
       success: true,
-      message: 'Access granted successfully'
+      message: 'Tool installed successfully',
+      installationId: Date.now() // Use a timestamp as a simple installation ID
+    });
+  });
+  
+  // Revoke access to a tool (uninstall)
+  app.delete('/api/tools/access/:toolId', (req: Request, res: Response) => {
+    const toolId = parseInt(req.params.toolId);
+    const userId = req.user?.id as number || 0;
+    
+    // Check if the toolId is valid
+    const tool = mockTools.find(t => t.id === toolId);
+    if (!tool) {
+      return res.status(404).json({ message: 'Tool not found' });
+    }
+    
+    // Revoke access if it exists
+    if (toolAccess.has(toolId) && typeof userId === 'number') {
+      toolAccess.get(toolId)?.delete(userId);
+      
+      // Log the uninstall interaction
+      logToolInteraction(userId, toolId, 'access', { 
+        method: 'uninstall',
+        toolName: tool.title,
+        timestamp: new Date().toISOString()
+      });
+    }
+    
+    return res.json({
+      success: true,
+      message: 'Tool uninstalled successfully'
     });
   });
 
+  // Get all installed tools for the current user
+  app.get('/api/tools/access/installed', (req: Request, res: Response) => {
+    const userId = req.user?.id as number || 0;
+    
+    // Get all tools that the user has access to
+    const installedToolIds: number[] = [];
+    toolAccess.forEach((users, toolId) => {
+      if (users.has(userId)) {
+        installedToolIds.push(toolId);
+      }
+    });
+    
+    // Get the full tool details for each installed tool
+    const installedTools = mockTools
+      .filter(tool => installedToolIds.includes(tool.id) || tool.price === 'Free to Preview')
+      .map(tool => ({
+        id: tool.id,
+        title: tool.title,
+        description: tool.description,
+        installedAt: new Date().toISOString(),
+        builder: tool.builder,
+        isFree: tool.price === 'Free to Preview'
+      }));
+    
+    res.json({ 
+      tools: installedTools,
+      count: installedTools.length
+    });
+  });
+  
   // Get tool categories
   app.get('/api/tools/categories', (req: Request, res: Response) => {
     // Extract unique categories from tools' tags

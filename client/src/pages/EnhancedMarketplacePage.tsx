@@ -54,6 +54,18 @@ interface ToolInstallation {
   };
 }
 
+interface InstalledToolsResponse {
+  tools: Array<{
+    id: number;
+    title: string;
+    description: string;
+    installedAt: string;
+    builder: string;
+    isFree: boolean;
+  }>;
+  count: number;
+}
+
 export default function EnhancedMarketplacePage() {
   const { toast } = useToast();
   const { user } = useAuth();
@@ -73,12 +85,15 @@ export default function EnhancedMarketplacePage() {
   
   // Fetch installed tools
   const { 
-    data: installedTools = [], 
+    data: installedToolsData = { tools: [] }, 
     isLoading: isLoadingInstalled,
   } = useQuery({
-    queryKey: ['/api/tools/access'],
+    queryKey: ['/api/tools/access/installed'],
     enabled: !!user,
   });
+  
+  // Extract just the tool IDs for easier access checking
+  const installedTools = (installedToolsData.tools || []).map((tool: any) => tool.id);
   
   // Fetch tool categories
   const {
