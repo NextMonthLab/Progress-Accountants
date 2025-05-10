@@ -25,7 +25,9 @@ import {
   Copy,
   Sparkles,
   Edit,
-  AlertCircle
+  AlertCircle, 
+  Eye,
+  Trash2
 } from 'lucide-react';
 
 type ToolCategory = 'page_templates' | 'tools' | 'calculators' | 'dashboards' | string;
@@ -275,15 +277,26 @@ export default function EnhancedMarketplacePage() {
         
         {/* Tool Tier Filter Tabs */}
         <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mb-8">
-          <div className="text-xl font-semibold text-gray-800">Tool Categories</div>
+          <div className="text-xl font-semibold text-gray-800">Select Tool Type</div>
           <Tabs defaultValue="all" value={tierFilter} onValueChange={setTierFilter} className="flex-shrink-0">
-            <TabsList>
-              <TabsTrigger value="all">All Tools</TabsTrigger>
-              <TabsTrigger value="blank" className="flex items-center">
+            <TabsList className="p-1 bg-gray-50 border border-gray-100 rounded-lg">
+              <TabsTrigger 
+                value="all"
+                className="rounded-md data-[state=active]:bg-gradient-to-r data-[state=active]:from-[var(--teal)] data-[state=active]:to-[#5b86e5] data-[state=active]:text-white"
+              >
+                All Types
+              </TabsTrigger>
+              <TabsTrigger 
+                value="blank" 
+                className="flex items-center rounded-md data-[state=active]:bg-gradient-to-r data-[state=active]:from-[var(--teal)] data-[state=active]:to-[#5b86e5] data-[state=active]:text-white"
+              >
                 <Edit className="h-4 w-4 mr-1.5" /> Blank Canvas
               </TabsTrigger>
-              <TabsTrigger value="pro" className="flex items-center">
-                <Sparkles className="h-4 w-4 mr-1.5" /> Pre-Built
+              <TabsTrigger 
+                value="pro" 
+                className="flex items-center rounded-md data-[state=active]:bg-gradient-to-r data-[state=active]:from-[#f953c6] data-[state=active]:to-[#ff6b6b] data-[state=active]:text-white"
+              >
+                <Sparkles className="h-4 w-4 mr-1.5" /> Pro Templates
               </TabsTrigger>
             </TabsList>
           </Tabs>
@@ -299,11 +312,21 @@ export default function EnhancedMarketplacePage() {
               
               {/* Scrollable tabs container */}
               <div className="overflow-x-auto pb-3 px-1 -mx-1 hide-scrollbar">
-                <TabsList className="inline-flex w-auto min-w-full sm:min-w-0 max-w-none justify-start sm:justify-center space-x-2">
-                  <TabsTrigger value="all" className="whitespace-nowrap">All</TabsTrigger>
+                <TabsList className="inline-flex w-auto min-w-full sm:min-w-0 max-w-none justify-start sm:justify-center space-x-2 p-1 bg-gray-50 border border-gray-100 rounded-lg">
+                  <TabsTrigger 
+                    value="all" 
+                    className="whitespace-nowrap rounded-md px-4 py-2 text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-[var(--teal)] focus:ring-offset-2 data-[state=active]:bg-[var(--teal)] data-[state=active]:text-white"
+                  >
+                    All Tools
+                  </TabsTrigger>
+                  
                   {getCategories().map((category) => (
-                    <TabsTrigger key={category} value={category} className="whitespace-nowrap">
-                      {category.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                    <TabsTrigger 
+                      key={category} 
+                      value={category} 
+                      className="whitespace-nowrap rounded-md px-4 py-2 text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-[var(--teal)] focus:ring-offset-2 data-[state=active]:bg-[var(--teal)] data-[state=active]:text-white"
+                    >
+                      {category.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
                     </TabsTrigger>
                   ))}
                 </TabsList>
@@ -437,16 +460,26 @@ export default function EnhancedMarketplacePage() {
                   )}
                 </CardContent>
                 
-                <CardFooter className="p-4 sm:p-6 pt-3 sm:pt-4">
+                <CardFooter className="p-4 sm:p-6 pt-3 sm:pt-4 flex flex-col gap-3">
+                  {/* Preview button */}
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    className="w-full text-xs sm:text-sm py-1.5 sm:py-2 h-auto"
+                    onClick={() => previewTool(tool.id)}
+                  >
+                    <Eye className="h-3 w-3 sm:h-4 sm:w-4 mr-1.5 sm:mr-2" /> Preview Tool
+                  </Button>
+                  
                   {/* If tool is installed, show Uninstall button */}
                   {isToolInstalled(tool.id) ? (
                     <Button 
                       variant="outline" 
                       size="sm" 
-                      className="ml-auto text-xs sm:text-sm py-1 sm:py-1.5 h-auto"
+                      className="w-full text-xs sm:text-sm py-1.5 sm:py-2 h-auto border-red-200 text-red-600 hover:bg-red-50"
                       onClick={() => handleUninstallTool(tool.id)}
                     >
-                      Uninstall
+                      <Trash2 className="h-3 w-3 sm:h-4 sm:w-4 mr-1.5 sm:mr-2" /> Uninstall
                     </Button>
                   ) : (
                     // If tool is not installed, show appropriate action buttons based on tier
