@@ -53,12 +53,21 @@ export default function MyToolsPage() {
   // Track tool usage
   const launchToolMutation = useMutation({
     mutationFn: async (toolId: number) => {
-      const response = await apiRequest('GET', `/api/tools/render/${toolId}`);
-      if (!response.ok) {
-        const errorData = await response.json();
+      // First, log the tool launch
+      const logResponse = await apiRequest('POST', `/api/tools/launch/${toolId}`);
+      if (!logResponse.ok) {
+        const errorData = await logResponse.json();
+        throw new Error(errorData.error || "Failed to log tool launch");
+      }
+      
+      // Then get the tool content
+      const renderResponse = await apiRequest('GET', `/api/tools/render/${toolId}`);
+      if (!renderResponse.ok) {
+        const errorData = await renderResponse.json();
         throw new Error(errorData.error || "Failed to launch tool");
       }
-      return await response.json();
+      
+      return await renderResponse.json();
     },
     onSuccess: (data, toolId) => {
       setActiveTool(toolId);
@@ -67,6 +76,9 @@ export default function MyToolsPage() {
         description: "The tool has been launched successfully",
         variant: "default"
       });
+      
+      // Invalidate the installed tools query to refresh lastUsed data
+      queryClient.invalidateQueries({ queryKey: ['/api/tools/access/installed'] });
     },
     onError: (error: any) => {
       toast({

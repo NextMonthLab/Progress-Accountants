@@ -358,7 +358,7 @@ function Router() {
       />
       <ProtectedRoute 
         path="/admin/dashboard" 
-        component={(props) => (
+        component={(props: Record<string, any>) => (
           <Suspense fallback={<LoadingFallback />}>
             <AdminDashboardPage {...props} />
           </Suspense>

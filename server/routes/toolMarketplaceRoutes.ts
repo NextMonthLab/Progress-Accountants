@@ -279,6 +279,17 @@ export const registerToolMarketplaceRoutes = (app: Express) => {
   app.get('/api/tools/access/installed', (req: Request, res: Response) => {
     const userId = req.user?.id as number || 0;
     
+    // Get all tool interactions for stats
+    let toolInteractions: ToolInteraction[] = [];
+    if (fs.existsSync(LOG_FILE_PATH)) {
+      const logContent = fs.readFileSync(LOG_FILE_PATH, 'utf-8');
+      try {
+        toolInteractions = JSON.parse(logContent);
+      } catch (error) {
+        console.error('Error parsing tool interactions log:', error);
+      }
+    }
+    
     // Get all tools that the user has access to
     const installedToolIds: number[] = [];
     toolAccess.forEach((users, toolId) => {
@@ -290,14 +301,42 @@ export const registerToolMarketplaceRoutes = (app: Express) => {
     // Get the full tool details for each installed tool
     const installedTools = mockTools
       .filter(tool => installedToolIds.includes(tool.id) || tool.price === 'Free to Preview')
-      .map(tool => ({
-        id: tool.id,
-        title: tool.title,
-        description: tool.description,
-        installedAt: new Date().toISOString(),
-        builder: tool.builder,
-        isFree: tool.price === 'Free to Preview'
-      }));
+      .map(tool => {
+        // Get install date from logs
+        const installEvent = toolInteractions.find(
+          log => log.toolId === tool.id && 
+                log.userId === userId && 
+                log.action === 'install'
+        );
+        
+        // Get last used timestamp
+        const launchEvents = toolInteractions.filter(
+          log => log.toolId === tool.id && 
+                log.userId === userId && 
+                log.action === 'launch'
+        );
+        
+        const lastUsed = launchEvents.length > 0 
+          ? launchEvents.sort((a, b) => 
+              new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
+            )[0].timestamp 
+          : undefined;
+        
+        // Extract tags from tool
+        const tags = tool.tags || [];
+        
+        return {
+          id: tool.id,
+          title: tool.title,
+          description: tool.description,
+          installedAt: installEvent?.timestamp || new Date().toISOString(),
+          builder: tool.builder,
+          isFree: tool.price === 'Free to Preview',
+          lastUsed,
+          tags,
+          isUpdated: Math.random() > 0.8 // Simulate some tools having updates
+        };
+      });
     
     res.json({ 
       tools: installedTools,
@@ -419,11 +458,40 @@ export const registerToolMarketplaceRoutes = (app: Express) => {
           };
         });
       
+      // Get top launched tools
+      const topLaunchedTools = Array.from(launchCounts.entries())
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 5)
+        .map(([toolId, count]) => {
+          const tool = mockTools.find(t => t.id === toolId);
+          return {
+            toolId,
+            title: tool?.title || 'Unknown Tool',
+            count,
+            lastUsed: lastUsed.get(toolId)
+          };
+        });
+      
+      // Prepare tool usage details for all tools
+      const toolUsageDetails = mockTools.map(tool => {
+        return {
+          id: tool.id,
+          title: tool.title,
+          installCount: installCounts.get(tool.id) || 0,
+          previewCount: previewCounts.get(tool.id) || 0,
+          launchCount: launchCounts.get(tool.id) || 0,
+          lastUsed: lastUsed.get(tool.id) || null
+        };
+      });
+      
       res.json({
         totalInstallations: Array.from(installCounts.values()).reduce((a, b) => a + b, 0),
         totalPreviews: Array.from(previewCounts.values()).reduce((a, b) => a + b, 0),
+        totalLaunches: Array.from(launchCounts.values()).reduce((a, b) => a + b, 0),
         topInstalledTools,
-        topPreviewedTools
+        topPreviewedTools,
+        topLaunchedTools,
+        toolUsageDetails
       });
     } catch (error) {
       console.error('Error getting tool statistics:', error);
