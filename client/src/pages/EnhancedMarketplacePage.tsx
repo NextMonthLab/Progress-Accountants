@@ -90,7 +90,7 @@ export default function EnhancedMarketplacePage() {
   // Install a tool mutation
   const installToolMutation = useMutation({
     mutationFn: async (toolId: number) => {
-      const response = await apiRequest("POST", `/api/tools/marketplace/install/${toolId}`, {
+      const response = await apiRequest("POST", `/api/tools/access/${toolId}`, {
         configuration: { 
           business_name: "Progress Accountants",
           notification_email: user ? (user as any).email : null
@@ -103,7 +103,7 @@ export default function EnhancedMarketplacePage() {
       return await response.json();
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['/api/tools/installed'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/tools/access'] });
       toast({
         title: "Tool installed",
         description: "The tool has been installed successfully",
@@ -121,8 +121,8 @@ export default function EnhancedMarketplacePage() {
 
   // Uninstall a tool mutation
   const uninstallToolMutation = useMutation({
-    mutationFn: async (installationId: number) => {
-      const response = await apiRequest("POST", `/api/tools/uninstall/${installationId}`, {});
+    mutationFn: async (toolId: number) => {
+      const response = await apiRequest("DELETE", `/api/tools/access/${toolId}`, {});
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.error || "Failed to uninstall tool");
@@ -130,7 +130,8 @@ export default function EnhancedMarketplacePage() {
       return await response.json();
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['/api/tools/installed'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/tools/access'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/tools'] });
       toast({
         title: "Tool uninstalled",
         description: "The tool has been uninstalled successfully",
@@ -167,14 +168,14 @@ export default function EnhancedMarketplacePage() {
   // Clone a tool (for pro tools)
   const cloneTool = async (toolId: number) => {
     try {
-      const response = await apiRequest("POST", `/api/tools/marketplace/clone/${toolId}`, {});
+      const response = await apiRequest("POST", `/api/tools/${toolId}/clone`, {});
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.error || "Failed to clone tool");
       }
       
-      queryClient.invalidateQueries({ queryKey: ['/api/tools/installed'] });
-      queryClient.invalidateQueries({ queryKey: ['/api/tools/marketplace'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/tools/access'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/tools'] });
       
       toast({
         title: "Tool cloned",
@@ -192,34 +193,22 @@ export default function EnhancedMarketplacePage() {
     }
   };
   
+  // Preview a tool in a modal or new window
+  const previewTool = (toolId: number) => {
+    const url = `/api/tools/render/${toolId}`;
+    window.open(url, '_blank', 'width=1024,height=768');
+    
+    // Log the preview interaction
+    apiRequest("GET", `/api/tools/access/${toolId}?action=preview`, {})
+      .catch(error => console.error("Failed to log preview interaction:", error));
+  };
+  
   // Check if a tool is installed
   const isToolInstalled = (toolId: number) => {
     if (!Array.isArray(installedTools) || installedTools.length === 0) return false;
     
-    // Handle different response formats
-    if (installedTools[0] && installedTools[0].tool) {
-      // If installedTools has the expected structure with tool property
-      return installedTools.some((item: any) => item.tool && item.tool.id === toolId);
-    } else {
-      // If installedTools is a simple array of installation objects
-      return installedTools.some((item: any) => item.toolId === toolId);
-    }
-  };
-  
-  // Get installation ID for a tool
-  const getInstallationId = (toolId: number) => {
-    if (!Array.isArray(installedTools) || installedTools.length === 0) return null;
-    
-    // Handle different response formats
-    if (installedTools[0] && installedTools[0].tool) {
-      // If installedTools has the expected structure with tool and installation properties
-      const installation = installedTools.find((item: any) => item.tool && item.tool.id === toolId);
-      return installation ? installation.installation.id : null;
-    } else {
-      // If installedTools is a simple array of installation objects
-      const installation = installedTools.find((item: any) => item.toolId === toolId);
-      return installation ? installation.id : null;
-    }
+    // New API returns a simple array of tool IDs that the user has access to
+    return installedTools.includes(toolId);
   };
   
   // Handle tool installation
@@ -228,8 +217,8 @@ export default function EnhancedMarketplacePage() {
   };
   
   // Handle tool uninstallation
-  const handleUninstallTool = (installationId: number) => {
-    uninstallToolMutation.mutate(installationId);
+  const handleUninstallTool = (toolId: number) => {
+    uninstallToolMutation.mutate(toolId);
   };
   
   // Get categories from API or from tools as fallback
@@ -455,7 +444,7 @@ export default function EnhancedMarketplacePage() {
                       variant="outline" 
                       size="sm" 
                       className="ml-auto text-xs sm:text-sm py-1 sm:py-1.5 h-auto"
-                      onClick={() => handleUninstallTool(getInstallationId(tool.id) || 0)}
+                      onClick={() => handleUninstallTool(tool.id)}
                     >
                       Uninstall
                     </Button>
