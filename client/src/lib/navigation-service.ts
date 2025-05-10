@@ -96,6 +96,17 @@ export const mapSidebarToNavigation = (): NavigationItem[] => {
       category: 'frequently_used',
       pinnedOrder: 4,
     },
+    {
+      id: 'my_tools',
+      title: 'My Tools',
+      icon: 'Toolbox',
+      type: 'link',
+      href: '/my-tools',
+      description: 'Access your installed tools',
+      badge: { text: 'New', variant: 'new' },
+      category: 'frequently_used', 
+      pinnedOrder: 5,
+    },
     
     // CONTENT CREATION
     // ===============
