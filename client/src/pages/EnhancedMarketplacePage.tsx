@@ -65,7 +65,7 @@ export default function EnhancedMarketplacePage() {
     isLoading: isLoadingMarketplace, 
     error: marketplaceError 
   } = useQuery({
-    queryKey: ['/api/tools/marketplace'],
+    queryKey: ['/api/tools'],
     enabled: !!user,
   });
   
@@ -74,7 +74,7 @@ export default function EnhancedMarketplacePage() {
     data: installedTools = [], 
     isLoading: isLoadingInstalled,
   } = useQuery({
-    queryKey: ['/api/tools/installed'],
+    queryKey: ['/api/tools/access'],
     enabled: !!user,
   });
   

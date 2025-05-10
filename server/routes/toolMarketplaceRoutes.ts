@@ -181,7 +181,7 @@ export const registerToolMarketplaceRoutes = (app: Express) => {
   // Check if a user has access to a tool
   app.get('/api/tools/access/:toolId', (req: Request, res: Response) => {
     const toolId = parseInt(req.params.toolId);
-    const userId = parseInt(req.query.userId as string) || (req.user?.id || 0);
+    const userId = req.query.userId ? parseInt(req.query.userId as string) : (req.user?.id as number || 0);
     
     // Check if the toolId is valid
     const tool = mockTools.find(t => t.id === toolId);
@@ -204,7 +204,7 @@ export const registerToolMarketplaceRoutes = (app: Express) => {
   // Grant access to a tool
   app.post('/api/tools/access/:toolId', (req: Request, res: Response) => {
     const toolId = parseInt(req.params.toolId);
-    const userId = req.user?.id || 0;
+    const userId = req.user?.id as number || 0;
     
     // Check if the toolId is valid
     const tool = mockTools.find(t => t.id === toolId);
@@ -217,10 +217,14 @@ export const registerToolMarketplaceRoutes = (app: Express) => {
       toolAccess.set(toolId, new Set());
     }
     
-    toolAccess.get(toolId)?.add(userId);
+    if (typeof userId === 'number') {
+      toolAccess.get(toolId)?.add(userId);
+    }
     
     // Log the access interaction
-    logToolInteraction(userId, toolId, 'access', { method: 'purchase' });
+    if (typeof userId === 'number') {
+      logToolInteraction(userId, toolId, 'access', { method: 'purchase' });
+    }
     
     return res.json({ 
       success: true,

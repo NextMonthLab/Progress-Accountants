@@ -384,7 +384,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
   registerResourcesRoutes(app);
   
   // Register tool marketplace routes
+  // Register the old marketplace routes (will be deprecated)
   registerToolMarketplaceRoutes(app);
+  
+  // Register the new enhanced marketplace routes
+  registerNewToolMarketplaceRoutes(app);
   
   // Register page builder routes
   registerPageBuilderApiRoutes(app);
