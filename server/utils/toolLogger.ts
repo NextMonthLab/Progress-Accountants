@@ -18,7 +18,7 @@ export interface ToolInteraction {
   id: string;
   userId: number;
   toolId: number;
-  action: 'preview' | 'access' | 'install';
+  action: 'preview' | 'access' | 'install' | 'launch';
   timestamp: string;
   metadata?: Record<string, any>;
 }
@@ -28,23 +28,41 @@ export { LOG_FILE_PATH };
 
 /**
  * Logs a tool interaction to the tool_interactions.json file
+ * @param arg1 Either a userId or a complete ToolInteraction object
+ * @param toolId The ID of the tool being interacted with
+ * @param action The type of interaction
+ * @param metadata Additional metadata for the interaction
  */
 export async function logToolInteraction(
-  userId: number,
-  toolId: number,
-  action: 'preview' | 'access' | 'install',
+  arg1: number | Partial<ToolInteraction>,
+  toolId?: number,
+  action?: 'preview' | 'access' | 'install' | 'launch',
   metadata?: Record<string, any>
 ): Promise<void> {
   try {
-    // Create a new interaction entry
-    const interaction: ToolInteraction = {
-      id: `${Date.now()}-${Math.random().toString(36).substring(2, 9)}`,
-      userId,
-      toolId,
-      action,
-      timestamp: new Date().toISOString(),
-      metadata
-    };
+    let interaction: ToolInteraction;
+    
+    // Check if the first argument is a ToolInteraction object
+    if (typeof arg1 === 'object') {
+      interaction = {
+        id: `${Date.now()}-${Math.random().toString(36).substring(2, 9)}`,
+        userId: arg1.userId || 0,
+        toolId: arg1.toolId || 0,
+        action: arg1.action || 'access',
+        timestamp: new Date().toISOString(),
+        metadata: arg1.metadata
+      };
+    } else {
+      // Create a new interaction entry with separate arguments
+      interaction = {
+        id: `${Date.now()}-${Math.random().toString(36).substring(2, 9)}`,
+        userId: arg1,
+        toolId: toolId || 0,
+        action: action || 'access',
+        timestamp: new Date().toISOString(),
+        metadata
+      };
+    }
 
     // Read existing logs
     let logs: ToolInteraction[] = [];
@@ -64,7 +82,7 @@ export async function logToolInteraction(
     // Write back to file
     fs.writeFileSync(LOG_FILE_PATH, JSON.stringify(logs, null, 2));
     
-    console.log(`Tool interaction logged: ${action} for tool ${toolId} by user ${userId}`);
+    console.log(`Tool interaction logged: ${interaction.action} for tool ${interaction.toolId} by user ${interaction.userId}`);
   } catch (error) {
     console.error('Error logging tool interaction:', error);
   }

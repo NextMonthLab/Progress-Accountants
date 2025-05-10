@@ -328,12 +328,45 @@ export const registerToolMarketplaceRoutes = (app: Express) => {
     res.json(filteredTools);
   });
   
+  // Record a tool launch/usage
+  app.post('/api/tools/launch/:toolId', (req: Request, res: Response) => {
+    const toolId = parseInt(req.params.toolId);
+    const userId = req.user?.id as number || 0;
+    
+    if (!userId) {
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
+    
+    const tool = mockTools.find(t => t.id === toolId);
+    if (!tool) {
+      return res.status(404).json({ error: 'Tool not found' });
+    }
+    
+    // If the user has access to the tool
+    const users = toolAccess.get(toolId);
+    if (!users?.has(userId) && tool.price !== 'Free to Preview') {
+      return res.status(403).json({ error: 'Access denied' });
+    }
+    
+    // Log the tool interaction
+    logToolInteraction({
+      toolId,
+      userId,
+      action: 'launch',
+      metadata: { timestamp: new Date().toISOString() }
+    });
+    
+    res.json({ success: true });
+  });
+  
   // Get tool usage statistics
   app.get('/api/tools/stats', async (req: Request, res: Response) => {
     try {
-      // Count installations
+      // Count installations, previews, and launches
       const installCounts = new Map<number, number>();
       const previewCounts = new Map<number, number>();
+      const launchCounts = new Map<number, number>();
+      const lastUsed = new Map<number, string>();
       
       // Read from the log file to get statistics
       if (fs.existsSync(LOG_FILE_PATH)) {
@@ -347,6 +380,16 @@ export const registerToolMarketplaceRoutes = (app: Express) => {
           } else if (log.action === 'preview') {
             const currentCount = previewCounts.get(log.toolId) || 0;
             previewCounts.set(log.toolId, currentCount + 1);
+          } else if (log.action === 'launch') {
+            const currentCount = launchCounts.get(log.toolId) || 0;
+            launchCounts.set(log.toolId, currentCount + 1);
+            
+            // Update last used timestamp for this tool
+            const currentTimestamp = lastUsed.get(log.toolId);
+            const logTimestamp = log.timestamp;
+            if (!currentTimestamp || new Date(logTimestamp) > new Date(currentTimestamp)) {
+              lastUsed.set(log.toolId, logTimestamp);
+            }
           }
         });
       }
