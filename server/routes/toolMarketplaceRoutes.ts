@@ -1,7 +1,8 @@
 import { Express, Request, Response } from 'express';
-import { logToolInteraction } from '../utils/toolLogger';
+import { logToolInteraction, ToolInteraction, LOG_FILE_PATH } from '../utils/toolLogger';
 import fs from 'fs';
 import path from 'path';
+import { v4 as uuidv4 } from 'uuid';
 
 // Mock data for the tools (in a real app, this would come from a database or external API)
 const mockTools = [
