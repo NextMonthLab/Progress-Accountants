@@ -75,6 +75,7 @@ const ModuleLibraryPage = lazy(() => import("@/pages/ModuleLibraryPage"));
 const InstalledToolsPage = lazy(() => import("@/pages/InstalledToolsPage"));
 const MarketplacePage = lazy(() => import("@/pages/MarketplacePage"));
 const EnhancedMarketplacePage = lazy(() => import("@/pages/EnhancedMarketplacePage"));
+const MyToolsPage = lazy(() => import("@/pages/MyToolsPage"));
 const BrandGuidelinesPage = lazy(() => import("@/pages/BrandGuidelinesPage"));
 const BusinessIdentityPage = lazy(() => import("@/pages/BusinessIdentityPage"));
 const HomepageSetupPage = lazy(() => import("@/pages/HomepageSetupPage"));
@@ -475,6 +476,7 @@ function Router() {
         allowedRoles={['admin', 'super_admin']} 
       />
       <ProtectedRoute path="/marketplace" component={EnhancedMarketplacePage} />
+      <ProtectedRoute path="/my-tools" component={MyToolsPage} />
       <ProtectedRoute path="/installed-tools" component={InstalledToolsPage} />
       <ProtectedRoute path="/module-gallery" component={MarketplacePage} />
       <ProtectedRoute path="/module-library" component={ModuleLibraryPage} />
