@@ -76,6 +76,7 @@ const InstalledToolsPage = lazy(() => import("@/pages/InstalledToolsPage"));
 const MarketplacePage = lazy(() => import("@/pages/MarketplacePage"));
 const EnhancedMarketplacePage = lazy(() => import("@/pages/EnhancedMarketplacePage"));
 const MyToolsPage = lazy(() => import("@/pages/MyToolsPage"));
+const BanburyEarthMockupPage = lazy(() => import("@/pages/BanburyEarthMockupPage"));
 const BrandGuidelinesPage = lazy(() => import("@/pages/BrandGuidelinesPage"));
 const BusinessIdentityPage = lazy(() => import("@/pages/BusinessIdentityPage"));
 const HomepageSetupPage = lazy(() => import("@/pages/HomepageSetupPage"));
@@ -165,6 +166,13 @@ function Router() {
       <Route path="/client-register/:tenantId">
         <Suspense fallback={<LoadingFallback />}>
           <ClientRegistrationPage />
+        </Suspense>
+      </Route>
+      
+      {/* Theme mockup route - non-production visualization */}
+      <Route path="/theme-mockup/banbury-earth">
+        <Suspense fallback={<LoadingFallback />}>
+          <BanburyEarthMockupPage />
         </Suspense>
       </Route>
       <Route path="/team">
