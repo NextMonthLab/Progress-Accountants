@@ -18,6 +18,7 @@ import {
   Shield,
   Star
 } from 'lucide-react';
+import teamPhotoImage from '../assets/images/team_photo.jpg';
 
 // Banbury Earth Theme colors
 const colors = {
