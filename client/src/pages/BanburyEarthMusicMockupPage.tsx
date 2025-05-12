@@ -16,6 +16,7 @@ import {
   Star,
   User
 } from 'lucide-react';
+import podcastStudioImage from '@assets/Podcast Studio.jpg';
 
 // Banbury Earth Theme colors
 const colors = {
@@ -125,14 +126,12 @@ export default function BanburyEarthMusicMockupPage() {
             <div className="md:w-1/2 relative">
               <div 
                 className="rounded-lg overflow-hidden shadow-xl relative aspect-[4/3]"
-                style={{ backgroundColor: colors.accent }}
               >
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-center p-6">
-                    <Music className="w-16 h-16 mx-auto mb-4" style={{ color: colors.ctaButton }} />
-                    <p className="italic" style={{ color: colors.text }}>Image: Music studio setup</p>
-                  </div>
-                </div>
+                <img 
+                  src={podcastStudioImage} 
+                  alt="Progress Podcast & Music Studio" 
+                  className="w-full h-full object-cover"
+                />
               </div>
               
               <div className="absolute -bottom-6 -right-6 rounded-lg p-4 shadow-lg z-10 max-w-[260px]" style={{ backgroundColor: 'white' }}>
@@ -300,13 +299,19 @@ export default function BanburyEarthMusicMockupPage() {
             <div className="lg:w-1/2">
               <div 
                 className="rounded-lg overflow-hidden shadow-xl relative aspect-video"
-                style={{ backgroundColor: colors.accent }}
               >
-                <div className="absolute inset-0 flex flex-col items-center justify-center p-6">
-                  <PlayCircle className="w-16 h-16 mb-4" style={{ color: colors.ctaButton }} />
-                  <p className="text-center italic" style={{ color: colors.text }}>
-                    Video Case Study: How we helped Sunrise Records optimize their financial operations
-                  </p>
+                <div className="relative w-full h-full">
+                  <img 
+                    src={podcastStudioImage} 
+                    alt="Music Studio Case Study" 
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-black bg-opacity-40 flex flex-col items-center justify-center p-6">
+                    <PlayCircle className="w-16 h-16 mb-4 text-white" />
+                    <p className="text-center italic text-white font-medium">
+                      Video Case Study: How we helped Sunrise Records optimize their financial operations
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
