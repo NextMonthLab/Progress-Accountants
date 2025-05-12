@@ -19,6 +19,7 @@ import {
   Star
 } from 'lucide-react';
 import teamPhotoImage from '../assets/images/team_photo.jpg';
+import podcastStudioImage from '../assets/images/podcast_studio.jpg';
 
 // Banbury Earth Theme colors
 const colors = {
@@ -202,13 +203,11 @@ export default function BanburyEarthMockupPage() {
             <div className="md:w-1/2 mt-10 md:mt-0">
               <div className="relative">
                 <div className="relative overflow-hidden rounded-xl shadow-xl transform hover:scale-[1.02] transition-transform duration-500">
-                  <div 
-                    className="w-full h-[450px] bg-cover bg-center" 
-                    style={{ 
-                      backgroundImage: "url('https://placehold.co/800x450/F1E6DD/A85D3D?text=Team+Photo')",
-                      backgroundColor: colors.accent
-                    }}
-                  ></div>
+                  <img 
+                    src={teamPhotoImage} 
+                    alt="Progress Accountants Team" 
+                    className="w-full h-[450px] object-cover"
+                  />
                   
                   {/* Simple badge */}
                   <div className="absolute top-4 right-4 px-3 py-1 rounded-full shadow-md" style={{ backgroundColor: colors.ctaButton }}>
@@ -512,14 +511,12 @@ export default function BanburyEarthMockupPage() {
             <div className="md:w-1/2">
               <SlideInLeft delay={0.2}>
                 <div className="relative overflow-hidden rounded-lg shadow-2xl">
-                  <div 
-                    className="w-full h-[350px] bg-cover bg-center" 
-                    style={{ 
-                      backgroundImage: "url('https://placehold.co/800x450/F1E6DD/A85D3D?text=Podcast+Studio')",
-                      backgroundColor: colors.accent
-                    }}
-                  ></div>
-                  <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-t opacity-70"></div>
+                  <img 
+                    src={podcastStudioImage} 
+                    alt="Progress Accountants Podcast Studio" 
+                    className="w-full h-[350px] object-cover"
+                  />
+                  <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-t from-black/20 to-transparent opacity-70"></div>
                 </div>
               </SlideInLeft>
             </div>
