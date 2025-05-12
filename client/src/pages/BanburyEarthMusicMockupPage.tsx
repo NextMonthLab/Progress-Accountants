@@ -127,7 +127,7 @@ export default function BanburyEarthMusicMockupPage() {
                 className="rounded-lg overflow-hidden shadow-xl relative aspect-[4/3]"
               >
                 <img 
-                  src={musicStudioImage} 
+                  src="/images/music_studio.png" 
                   alt="Progress Music Studio" 
                   className="w-full h-full object-cover"
                 />
@@ -301,7 +301,7 @@ export default function BanburyEarthMusicMockupPage() {
               >
                 <div className="relative w-full h-full">
                   <img 
-                    src={musicStudioImage} 
+                    src="/images/music_studio.png" 
                     alt="Music Studio Case Study" 
                     className="w-full h-full object-cover"
                   />
