@@ -16,7 +16,6 @@ import {
   Star,
   User
 } from 'lucide-react';
-import podcastStudioImage from '@assets/Podcast Studio.jpg';
 
 // Banbury Earth Theme colors
 const colors = {
@@ -128,8 +127,8 @@ export default function BanburyEarthMusicMockupPage() {
                 className="rounded-lg overflow-hidden shadow-xl relative aspect-[4/3]"
               >
                 <img 
-                  src={podcastStudioImage} 
-                  alt="Progress Podcast & Music Studio" 
+                  src={musicStudioImage} 
+                  alt="Progress Music Studio" 
                   className="w-full h-full object-cover"
                 />
               </div>
@@ -302,7 +301,7 @@ export default function BanburyEarthMusicMockupPage() {
               >
                 <div className="relative w-full h-full">
                   <img 
-                    src={podcastStudioImage} 
+                    src={musicStudioImage} 
                     alt="Music Studio Case Study" 
                     className="w-full h-full object-cover"
                   />
