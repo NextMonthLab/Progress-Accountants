@@ -29,31 +29,48 @@ const colors = {
 };
 
 // This function mimics the animations used in the real homepage
-const FadeIn = ({ children, className = "", delay = 0 }) => (
+const FadeIn: React.FC<{ children: React.ReactNode; className?: string; delay?: number }> = ({ 
+  children, 
+  className = "", 
+  delay = 0 
+}) => (
   <div className={`opacity-100 ${className}`} style={{ animationDelay: `${delay}s` }}>
     {children}
   </div>
 );
 
-const SlideUp = ({ children, className = "", delay = 0 }) => (
+const SlideUp: React.FC<{ children: React.ReactNode; className?: string; delay?: number }> = ({ 
+  children, 
+  className = "", 
+  delay = 0 
+}) => (
   <div className={`opacity-100 ${className}`} style={{ animationDelay: `${delay}s` }}>
     {children}
   </div>
 );
 
-const SlideInLeft = ({ children, delay = 0 }) => (
+const SlideInLeft: React.FC<{ children: React.ReactNode; delay?: number }> = ({ 
+  children, 
+  delay = 0 
+}) => (
   <div className="opacity-100" style={{ animationDelay: `${delay}s` }}>
     {children}
   </div>
 );
 
-const SlideInRight = ({ children, delay = 0 }) => (
+const SlideInRight: React.FC<{ children: React.ReactNode; delay?: number }> = ({ 
+  children, 
+  delay = 0 
+}) => (
   <div className="opacity-100" style={{ animationDelay: `${delay}s` }}>
     {children}
   </div>
 );
 
-const ScaleIn = ({ children, delay = 0 }) => (
+const ScaleIn: React.FC<{ children: React.ReactNode; delay?: number }> = ({ 
+  children, 
+  delay = 0 
+}) => (
   <div className="opacity-100" style={{ animationDelay: `${delay}s` }}>
     {children}
   </div>
