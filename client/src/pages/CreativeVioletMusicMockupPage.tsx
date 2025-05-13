@@ -19,7 +19,7 @@ import {
   BarChart3,
   CreditCard
 } from 'lucide-react';
-import musicStudioImage from '../assets/images/podcast_studio.jpg';
+import musicStudioImage from '@assets/image_1747065541266.png';
 import teamPhotoImage from '../assets/images/team_photo.jpg';
 
 // Creative Violet Theme colors
