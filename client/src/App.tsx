@@ -81,6 +81,7 @@ const BanburyEarthMusicMockupPage = lazy(() => import("@/pages/BanburyEarthMusic
 const CreativeVioletMusicMockupPage = lazy(() => import("@/pages/CreativeVioletMusicMockupPage"));
 const CreativeVioletHomeMockupPage = lazy(() => import("@/pages/CreativeVioletHomeMockupPage"));
 const GrowthGreenHomeMockupPage = lazy(() => import("@/pages/GrowthGreenHomeMockupPage"));
+const GrowthGreenMusicMockupPage = lazy(() => import("@/pages/GrowthGreenMusicMockupPage"));
 const BrandGuidelinesPage = lazy(() => import("@/pages/BrandGuidelinesPage"));
 const BusinessIdentityPage = lazy(() => import("@/pages/BusinessIdentityPage"));
 const HomepageSetupPage = lazy(() => import("@/pages/HomepageSetupPage"));
@@ -197,6 +198,11 @@ function Router() {
       <Route path="/theme-mockup/growth-green/home">
         <Suspense fallback={<LoadingFallback />}>
           <GrowthGreenHomeMockupPage />
+        </Suspense>
+      </Route>
+      <Route path="/theme-mockup/growth-green/music-industry">
+        <Suspense fallback={<LoadingFallback />}>
+          <GrowthGreenMusicMockupPage />
         </Suspense>
       </Route>
       <Route path="/team">
