@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "@/hooks/use-auth";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2, RefreshCw, Copy, Download, Trash2, Send, Image, CheckCircle, AlertTriangle } from "lucide-react";
+import { Loader2, RefreshCw, Copy, Download, Trash2, Send, Image, CheckCircle, AlertTriangle, Volume2, AlignLeft } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -11,6 +11,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
+import { Slider } from "@/components/ui/slider";
 import { apiRequest } from "@/lib/queryClient";
 import AdminLayout from "@/layouts/AdminLayout";
 
@@ -46,6 +47,8 @@ export default function SocialMediaGeneratorPage() {
   const [isGeneratingImage, setIsGeneratingImage] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [contentLength, setContentLength] = useState([2]); // Default medium length (1=short, 2=medium, 3=long)
+  const [toneOfVoice, setToneOfVoice] = useState([3]); // Default professional tone (1=casual, 3=professional, 5=formal)
 
   // Fetch user's saved posts
   useEffect(() => {
@@ -90,7 +93,9 @@ export default function SocialMediaGeneratorPage() {
       setIsGeneratingText(true);
       const response = await apiRequest("POST", "/api/social-media/generate-post", {
         prompt,
-        platform
+        platform,
+        contentLength: contentLength[0],
+        toneOfVoice: toneOfVoice[0]
       });
       
       const data = await response.json();
@@ -258,6 +263,8 @@ export default function SocialMediaGeneratorPage() {
     setImagePrompt("");
     setGeneratedText("");
     setGeneratedImage("");
+    setContentLength([2]);  // Reset to default medium length
+    setToneOfVoice([3]);    // Reset to default professional tone
   };
 
   return (
@@ -322,6 +329,65 @@ export default function SocialMediaGeneratorPage() {
                     <p className="text-sm text-muted-foreground">
                       Example: "A post highlighting our new tax planning services for small businesses with a professional tone"
                     </p>
+                  </div>
+                  
+                  <div className="space-y-6 py-4">
+                    <div className="space-y-3">
+                      <div className="flex justify-between items-center">
+                        <Label htmlFor="content-length" className="flex items-center">
+                          <AlignLeft className="h-4 w-4 mr-2" />
+                          Content Length
+                        </Label>
+                        <span className="text-sm text-muted-foreground">
+                          {contentLength[0] === 1 ? "Short" : contentLength[0] === 2 ? "Medium" : "Long"}
+                        </span>
+                      </div>
+                      <Slider
+                        id="content-length"
+                        min={1}
+                        max={3}
+                        step={1}
+                        value={contentLength}
+                        onValueChange={setContentLength}
+                        className="w-full"
+                      />
+                      <div className="flex justify-between text-xs text-muted-foreground">
+                        <span>Concise</span>
+                        <span>Balanced</span>
+                        <span>Detailed</span>
+                      </div>
+                    </div>
+                    
+                    <div className="space-y-3">
+                      <div className="flex justify-between items-center">
+                        <Label htmlFor="tone-of-voice" className="flex items-center">
+                          <Volume2 className="h-4 w-4 mr-2" />
+                          Tone of Voice
+                        </Label>
+                        <span className="text-sm text-muted-foreground">
+                          {toneOfVoice[0] === 1 ? "Casual" : 
+                           toneOfVoice[0] === 2 ? "Conversational" : 
+                           toneOfVoice[0] === 3 ? "Professional" : 
+                           toneOfVoice[0] === 4 ? "Business" : "Formal"}
+                        </span>
+                      </div>
+                      <Slider
+                        id="tone-of-voice"
+                        min={1}
+                        max={5}
+                        step={1}
+                        value={toneOfVoice}
+                        onValueChange={setToneOfVoice}
+                        className="w-full"
+                      />
+                      <div className="flex justify-between text-xs text-muted-foreground">
+                        <span>Casual</span>
+                        <span>Conversational</span>
+                        <span>Professional</span>
+                        <span>Business</span>
+                        <span>Formal</span>
+                      </div>
+                    </div>
                   </div>
                   
                   <Button
