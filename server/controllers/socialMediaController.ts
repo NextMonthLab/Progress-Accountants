@@ -95,7 +95,7 @@ export const socialMediaController = {
     }
     
     try {
-      const { prompt, platform } = req.body;
+      const { prompt, platform, contentLength, toneOfVoice } = req.body;
       
       if (!prompt || !platform) {
         return res.status(400).json({ 
@@ -107,8 +107,14 @@ export const socialMediaController = {
       // Get business identity for tone of voice customization
       const businessIdentity = await socialMediaController.getBusinessIdentity();
       
-      // Generate post with business identity context
-      const result = await generateSocialMediaPost(prompt, platform, businessIdentity);
+      // Generate post with business identity context and user preferences
+      const result = await generateSocialMediaPost(
+        prompt, 
+        platform, 
+        businessIdentity,
+        contentLength,
+        toneOfVoice
+      );
       
       res.status(200).json({
         success: true,

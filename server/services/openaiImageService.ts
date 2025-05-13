@@ -26,7 +26,8 @@ export async function generateImage(prompt: string): Promise<{ url: string }> {
       quality: "standard",
     });
     
-    const imageUrl = response.data[0].url;
+    // Safely extract URL with TypeScript null checks
+    const imageUrl = response?.data?.[0]?.url;
     
     if (!imageUrl) {
       throw new Error("No image was generated");
@@ -44,15 +45,19 @@ export async function generateImage(prompt: string): Promise<{ url: string }> {
  * @param prompt User prompt for post generation
  * @param platform Target social media platform
  * @param businessIdentity Optional business identity data for tone customization
+ * @param contentLength Optional content length preference (1=short, 2=medium, 3=long)
+ * @param toneOfVoice Optional tone of voice preference (1=casual, 3=professional, 5=formal)
  * @returns Object containing generated text
  */
 export async function generateSocialMediaPost(
   prompt: string, 
   platform: string,
-  businessIdentity?: any
+  businessIdentity?: any,
+  contentLength?: number,
+  toneOfVoice?: number
 ): Promise<{ text: string }> {
   try {
-    const systemPrompt = getSystemPromptForPlatform(platform, businessIdentity);
+    const systemPrompt = getSystemPromptForPlatform(platform, businessIdentity, contentLength, toneOfVoice);
     
     const response = await openai.chat.completions.create({
       model: "gpt-4o", // the newest OpenAI model is "gpt-4o" which was released May 13, 2024
@@ -106,25 +111,61 @@ function enhanceImagePrompt(prompt: string): string {
 }
 
 /**
- * Get the appropriate system prompt based on platform and business identity
+ * Get the appropriate system prompt based on platform, business identity, and user preferences
  * @param platform Social media platform
  * @param businessIdentity Optional business identity data
+ * @param contentLength Optional content length preference (1=short, 2=medium, 3=long)
+ * @param toneOfVoice Optional tone of voice preference (1=casual, 3=professional, 5=formal)
  * @returns Customized system prompt
  */
-function getSystemPromptForPlatform(platform: string, businessIdentity?: any): string {
+function getSystemPromptForPlatform(
+  platform: string, 
+  businessIdentity?: any, 
+  contentLength?: number,
+  toneLevel?: number
+): string {
   // Extract business information if available
   const businessName = businessIdentity?.core?.businessName || "Progress Accountants";
   const industry = businessIdentity?.market?.primaryIndustry || "accounting";
   const targetAudience = businessIdentity?.market?.targetAudience || "business owners";
-  let toneOfVoice = businessIdentity?.personality?.toneOfVoice || [];
   
-  // Default to professional tone if no tones specified
-  if (!toneOfVoice || toneOfVoice.length === 0) {
-    toneOfVoice = ["professional", "friendly", "authoritative"];
+  // Determine tone based on user preference if provided
+  let toneWords: string[];
+  
+  if (toneLevel !== undefined) {
+    // Map numeric tone to descriptive words
+    switch(toneLevel) {
+      case 1:
+        toneWords = ["casual", "friendly", "conversational"];
+        break;
+      case 2:
+        toneWords = ["conversational", "approachable", "clear"];
+        break;
+      case 3:
+        toneWords = ["professional", "balanced", "informative"];
+        break;
+      case 4:
+        toneWords = ["professional", "business-like", "authoritative"];
+        break;
+      case 5:
+        toneWords = ["formal", "technical", "authoritative"];
+        break;
+      default:
+        // Default to professional tone if invalid or not provided
+        toneWords = ["professional", "informative", "authoritative"];
+    }
+  } else {
+    // Use business identity tones if user preference not provided
+    toneWords = businessIdentity?.personality?.toneOfVoice || [];
+    
+    // Default to professional tone if no tones specified
+    if (!toneWords || toneWords.length === 0) {
+      toneWords = ["professional", "friendly", "authoritative"];
+    }
   }
   
   // Format the tones for the prompt
-  const tonesText = toneOfVoice.join(", ");
+  const tonesText = toneWords.join(", ");
   
   // Build the base prompt with dynamic business information
   const basePrompt = `You are an expert social media content creator for ${businessName}. ` +
@@ -132,30 +173,69 @@ function getSystemPromptForPlatform(platform: string, businessIdentity?: any): s
     `The content should be appropriate for ${targetAudience} and maintain a ${tonesText} tone. ` +
     `Focus on creating value for the reader while showcasing ${industry} expertise.`;
   
+  // Determine content length requirements based on user preference
+  let linkedinLength, twitterLength, facebookLength, instagramLength;
+  
+  if (contentLength !== undefined) {
+    // Adjust content length based on user preference
+    switch(contentLength) {
+      case 1: // Short
+        linkedinLength = "500-700 characters";
+        twitterLength = "under 200 characters";
+        facebookLength = "50-100 words";
+        instagramLength = "80-120 words";
+        break;
+      case 2: // Medium
+        linkedinLength = "800-1000 characters";
+        twitterLength = "200-280 characters";
+        facebookLength = "100-180 words";
+        instagramLength = "120-180 words";
+        break;
+      case 3: // Long
+        linkedinLength = "1100-1500 characters";
+        twitterLength = "260-280 characters";
+        facebookLength = "200-280 words";
+        instagramLength = "180-250 words";
+        break;
+      default:
+        // Default medium length
+        linkedinLength = "800-1000 characters";
+        twitterLength = "200-280 characters";
+        facebookLength = "100-180 words";
+        instagramLength = "120-180 words";
+    }
+  } else {
+    // Default lengths if not specified
+    linkedinLength = "1000-1300 characters";
+    twitterLength = "under 280 characters";
+    facebookLength = "80-250 words";
+    instagramLength = "150-200 words";
+  }
+  
   // Platform-specific instructions
   const platformSpecificPrompts: Record<string, string> = {
     linkedin: 
       basePrompt + 
       ` For LinkedIn, write with a ${tonesText} tone with business insights. ` +
-      "Include relevant hashtags (3-5) at the end. Keep the post between 1000-1300 characters. " +
+      `Include relevant hashtags (3-5) at the end. Keep the post between ${linkedinLength}. ` +
       "Focus on thought leadership, industry insights, and professional development.",
       
     twitter: 
       basePrompt + 
       " For Twitter/X, be concise and direct. " +
-      "Keep the post under 280 characters. " +
+      `Keep the post ${twitterLength}. ` +
       `Include 1-2 relevant hashtags. Use ${tonesText}, attention-grabbing language.`,
       
     facebook: 
       basePrompt + 
       ` For Facebook, use a ${tonesText} tone. ` +
-      "Keep the post between 80-250 words. " +
+      `Keep the post between ${facebookLength}. ` +
       "Ask a question at the end to encourage engagement.",
       
     instagram: 
       basePrompt + 
       ` For Instagram, write visually descriptive content with a ${tonesText} tone. ` +
-      "Keep the post between 150-200 words. " + 
+      `Keep the post between ${instagramLength}. ` + 
       "Include a clear call-to-action and 5-10 relevant hashtags at the end. " +
       "Focus on visual storytelling that complements an image."
   };
