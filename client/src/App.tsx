@@ -76,12 +76,7 @@ const InstalledToolsPage = lazy(() => import("@/pages/InstalledToolsPage"));
 const MarketplacePage = lazy(() => import("@/pages/MarketplacePage"));
 const EnhancedMarketplacePage = lazy(() => import("@/pages/EnhancedMarketplacePage"));
 const MyToolsPage = lazy(() => import("@/pages/MyToolsPage"));
-const BanburyEarthMockupPage = lazy(() => import("@/pages/BanburyEarthMockupPage"));
-const BanburyEarthMusicMockupPage = lazy(() => import("@/pages/BanburyEarthMusicMockupPage"));
-const CreativeVioletMusicMockupPage = lazy(() => import("@/pages/CreativeVioletMusicMockupPage"));
-const CreativeVioletHomeMockupPage = lazy(() => import("@/pages/CreativeVioletHomeMockupPage"));
-const GrowthGreenHomeMockupPage = lazy(() => import("@/pages/GrowthGreenHomeMockupPage"));
-const GrowthGreenMusicMockupPage = lazy(() => import("@/pages/GrowthGreenMusicMockupPage"));
+
 const BrandGuidelinesPage = lazy(() => import("@/pages/BrandGuidelinesPage"));
 const BusinessIdentityPage = lazy(() => import("@/pages/BusinessIdentityPage"));
 const HomepageSetupPage = lazy(() => import("@/pages/HomepageSetupPage"));
@@ -174,37 +169,7 @@ function Router() {
         </Suspense>
       </Route>
       
-      {/* Theme mockup routes - non-production visualization */}
-      <Route path="/theme-mockup/banbury-earth">
-        <Suspense fallback={<LoadingFallback />}>
-          <BanburyEarthMockupPage />
-        </Suspense>
-      </Route>
-      <Route path="/theme-mockup/banbury-earth/music-industry">
-        <Suspense fallback={<LoadingFallback />}>
-          <BanburyEarthMusicMockupPage />
-        </Suspense>
-      </Route>
-      <Route path="/theme-mockup/creative-violet/music-industry">
-        <Suspense fallback={<LoadingFallback />}>
-          <CreativeVioletMusicMockupPage />
-        </Suspense>
-      </Route>
-      <Route path="/theme-mockup/creative-violet/home">
-        <Suspense fallback={<LoadingFallback />}>
-          <CreativeVioletHomeMockupPage />
-        </Suspense>
-      </Route>
-      <Route path="/theme-mockup/growth-green/home">
-        <Suspense fallback={<LoadingFallback />}>
-          <GrowthGreenHomeMockupPage />
-        </Suspense>
-      </Route>
-      <Route path="/theme-mockup/growth-green/music-industry">
-        <Suspense fallback={<LoadingFallback />}>
-          <GrowthGreenMusicMockupPage />
-        </Suspense>
-      </Route>
+
 
       <Route path="/team">
         <Suspense fallback={<LoadingFallback />}>
