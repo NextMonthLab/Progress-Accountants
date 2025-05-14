@@ -10,6 +10,9 @@ export const ExternalToolSchema = z.object({
   version: z.string(),
   builder: z.string(),
   price: z.number().optional(), // Price in credits
+  credits: z.number().optional(), // Alternative to price
+  isFree: z.boolean().optional().default(false),
+  publisher: z.string().optional(),
   category: z.string().optional(),
   tags: z.array(z.string()).optional(),
   publishedAt: z.string(), // ISO date string
@@ -42,3 +45,35 @@ export const SmartSiteRegistrationSchema = z.object({
 });
 
 export type SmartSiteRegistration = z.infer<typeof SmartSiteRegistrationSchema>;
+
+// Tool installation record
+export const ToolInstallationSchema = z.object({
+  id: z.number(),
+  toolId: z.number(),
+  tenantId: z.string(),
+  installedBy: z.number().nullable(),
+  installationDate: z.date(),
+  installationStatus: z.string(),
+  customSettings: z.unknown(),
+  usageCount: z.number().nullable(),
+  lastUsed: z.date().nullable(),
+  version: z.string(),
+  createdAt: z.date(),
+  updatedAt: z.date(),
+});
+
+export type ToolInstallation = z.infer<typeof ToolInstallationSchema>;
+
+// Credit usage log record
+export const CreditUsageLogSchema = z.object({
+  id: z.number(),
+  toolId: z.number(),
+  tenantId: z.string(),
+  userId: z.number(),
+  credits: z.number(),
+  timestamp: z.date(),
+  status: z.string(),
+  details: z.string().optional(),
+});
+
+export type CreditUsageLog = z.infer<typeof CreditUsageLogSchema>;
