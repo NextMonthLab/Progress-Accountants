@@ -267,6 +267,20 @@ export interface IStorage {
   updateClientProfileSyncStatus(id: number, status: string, message?: string): Promise<SotClientProfile | undefined>;
   getPages(): Promise<{path: string}[]>;
   getInstalledTools(): Promise<{id: string}[]>;
+  
+  // Tool installation operations
+  createTool(tool: Partial<Tool>): Promise<Tool>;
+  getToolInstallation(id: number): Promise<ToolInstallation | undefined>;
+  getToolInstallationsForTenant(tenantId: string): Promise<ToolInstallation[]>;
+  getToolInstallationByToolAndTenant(toolId: number, tenantId: string): Promise<ToolInstallation | undefined>;
+  createToolInstallation(installation: Partial<ToolInstallation>): Promise<ToolInstallation>;
+  updateToolInstallation(id: number, data: Partial<ToolInstallation>): Promise<ToolInstallation | undefined>;
+  deleteToolInstallation(id: number): Promise<boolean>;
+  
+  // Credit usage operations
+  createCreditUsageLog(log: Partial<CreditUsageLog>): Promise<CreditUsageLog>;
+  getCreditUsageLogs(businessId: string, limit?: number): Promise<CreditUsageLog[]>;
+  getCreditUsageTotal(businessId: string): Promise<number>;
 }
 
 // Database-backed implementation of IStorage
@@ -1759,18 +1773,162 @@ export class DatabaseStorage implements IStorage {
   
   async getInstalledTools(): Promise<{id: string}[]> {
     try {
-      // This is a placeholder - you should replace it with your actual tools table query
-      // For demonstration purposes, returning a list of common tools
-      return [
-        { id: "crm" },
-        { id: "financial_dashboard" },
-        { id: "social_media_generator" },
-        { id: "blog_post_generator" },
-        { id: "content_studio" }
-      ];
+      // Get tools from installed tools table
+      const installations = await db
+        .select({ id: tools.id })
+        .from(toolInstallations)
+        .innerJoin(tools, eq(toolInstallations.toolId, tools.id))
+        .where(eq(toolInstallations.installationStatus, "active"));
+      
+      return installations.map(tool => ({ id: tool.id.toString() }));
     } catch (error) {
       console.error("Error fetching installed tools:", error);
       return [];
+    }
+  }
+
+  // Tool installation operations
+  async createTool(tool: Partial<Tool>): Promise<Tool> {
+    try {
+      const [savedTool] = await db
+        .insert(tools)
+        .values(tool as any)
+        .returning();
+      
+      return savedTool;
+    } catch (error) {
+      console.error("Error creating tool:", error);
+      throw new Error("Failed to create tool");
+    }
+  }
+
+  async getToolInstallation(id: number): Promise<ToolInstallation | undefined> {
+    try {
+      const [installation] = await db
+        .select()
+        .from(toolInstallations)
+        .where(eq(toolInstallations.id, id));
+      
+      return installation;
+    } catch (error) {
+      console.error("Error fetching tool installation:", error);
+      return undefined;
+    }
+  }
+
+  async getToolInstallationsForTenant(tenantId: string): Promise<ToolInstallation[]> {
+    try {
+      return await db
+        .select()
+        .from(toolInstallations)
+        .where(eq(toolInstallations.tenantId, tenantId));
+    } catch (error) {
+      console.error("Error fetching tool installations for tenant:", error);
+      return [];
+    }
+  }
+
+  async getToolInstallationByToolAndTenant(toolId: number, tenantId: string): Promise<ToolInstallation | undefined> {
+    try {
+      const [installation] = await db
+        .select()
+        .from(toolInstallations)
+        .where(
+          and(
+            eq(toolInstallations.toolId, toolId),
+            eq(toolInstallations.tenantId, tenantId)
+          )
+        );
+      
+      return installation;
+    } catch (error) {
+      console.error("Error fetching tool installation by tool and tenant:", error);
+      return undefined;
+    }
+  }
+
+  async createToolInstallation(installation: Partial<ToolInstallation>): Promise<ToolInstallation> {
+    try {
+      const [savedInstallation] = await db
+        .insert(toolInstallations)
+        .values(installation as any)
+        .returning();
+      
+      return savedInstallation;
+    } catch (error) {
+      console.error("Error creating tool installation:", error);
+      throw new Error("Failed to create tool installation");
+    }
+  }
+
+  async updateToolInstallation(id: number, data: Partial<ToolInstallation>): Promise<ToolInstallation | undefined> {
+    try {
+      const [updatedInstallation] = await db
+        .update(toolInstallations)
+        .set(data as any)
+        .where(eq(toolInstallations.id, id))
+        .returning();
+      
+      return updatedInstallation;
+    } catch (error) {
+      console.error("Error updating tool installation:", error);
+      return undefined;
+    }
+  }
+
+  async deleteToolInstallation(id: number): Promise<boolean> {
+    try {
+      const result = await db
+        .delete(toolInstallations)
+        .where(eq(toolInstallations.id, id));
+      
+      return true;
+    } catch (error) {
+      console.error("Error deleting tool installation:", error);
+      return false;
+    }
+  }
+
+  // Credit usage operations
+  async createCreditUsageLog(log: Partial<CreditUsageLog>): Promise<CreditUsageLog> {
+    try {
+      const [savedLog] = await db
+        .insert(creditUsageLog)
+        .values(log as any)
+        .returning();
+      
+      return savedLog;
+    } catch (error) {
+      console.error("Error creating credit usage log:", error);
+      throw new Error("Failed to create credit usage log");
+    }
+  }
+
+  async getCreditUsageLogs(businessId: string, limit: number = 50): Promise<CreditUsageLog[]> {
+    try {
+      return await db
+        .select()
+        .from(creditUsageLog)
+        .where(eq(creditUsageLog.businessId, businessId))
+        .orderBy(desc(creditUsageLog.timestamp))
+        .limit(limit);
+    } catch (error) {
+      console.error("Error fetching credit usage logs:", error);
+      return [];
+    }
+  }
+
+  async getCreditUsageTotal(businessId: string): Promise<number> {
+    try {
+      const result = await db
+        .select({ total: sql`SUM(${creditUsageLog.credits})` })
+        .from(creditUsageLog)
+        .where(eq(creditUsageLog.businessId, businessId));
+      
+      return result[0]?.total || 0;
+    } catch (error) {
+      console.error("Error calculating credit usage total:", error);
+      return 0;
     }
   }
 }
