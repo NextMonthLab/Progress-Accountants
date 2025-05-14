@@ -198,7 +198,8 @@ class MarketplaceService {
    */
   async getToolInstallation(toolId: number, tenantId: string): Promise<ToolInstallation | null> {
     try {
-      return await storage.getToolInstallationByToolAndTenant(toolId, tenantId);
+      const installation = await storage.getToolInstallationByToolAndTenant(toolId, tenantId);
+      return installation || null; // Ensure we return null instead of undefined
     } catch (error) {
       console.error("Error getting tool installation:", error);
       return null;
