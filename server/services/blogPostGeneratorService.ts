@@ -40,7 +40,7 @@ export async function generateBlogPost(
   businessIdentity?: BusinessIdentity
 ): Promise<{ title: string; content: string; metaDescription: string }> {
   try {
-    const systemPrompt = getBlogSystemPrompt(targetAudience, contentLength, toneOfVoice);
+    const systemPrompt = getBlogSystemPrompt(targetAudience, contentLength, toneOfVoice, businessIdentity);
     
     const response = await openai.chat.completions.create({
       model: "gpt-4o", // the newest OpenAI model is "gpt-4o" which was released May 13, 2024
@@ -93,12 +93,14 @@ export function generateImagePrompt(topic: string, targetAudience: string): stri
  * @param targetAudience Target audience for the blog post
  * @param contentLength Optional content length preference (1=short, 2=medium, 3=long)
  * @param toneLevel Optional tone of voice preference (1=casual, 3=professional, 5=formal)
+ * @param businessIdentity Optional business identity information
  * @returns Customized system prompt
  */
 function getBlogSystemPrompt(
   targetAudience: string,
   contentLength?: number,
-  toneLevel?: number
+  toneLevel?: number,
+  businessIdentity?: BusinessIdentity
 ): string {
   // Determine word count based on content length
   let wordCount: string;
@@ -150,7 +152,19 @@ function getBlogSystemPrompt(
   // Format the tones for the prompt
   const tonesText = toneWords.join(", ");
   
-  const systemPrompt = `You are an expert business blog writer for Progress Accountants. Create a high-quality, engaging blog post that's approximately ${wordCount} in length and tailored for ${targetAudience}. Use a ${tonesText} tone throughout the article.
+  // Use business identity if available
+  const businessName = businessIdentity?.core?.businessName || "Progress Accountants";
+  
+  // Use business identity tone of voice if available and no explicit tone was requested
+  if (toneLevel === undefined && businessIdentity?.personality?.toneOfVoice && businessIdentity.personality.toneOfVoice.length > 0) {
+    toneWords = businessIdentity.personality.toneOfVoice.slice(0, 3);
+  }
+  
+  // Get industry if available
+  const industry = businessIdentity?.market?.primaryIndustry ? 
+    `with expertise in the ${businessIdentity.market.primaryIndustry} industry` : "";
+  
+  const systemPrompt = `You are an expert business blog writer for ${businessName} ${industry}. Create a high-quality, engaging blog post that's approximately ${wordCount} in length and tailored for ${targetAudience}. Use a ${tonesText} tone throughout the article.
 
 Your blog post should be well-structured with clear headings, concise paragraphs, and a logical flow. Include:
 1. An attention-grabbing title

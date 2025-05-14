@@ -74,13 +74,17 @@ export const blogPostGeneratorController = {
         });
       }
       
+      // Get business identity if provided in the request
+      const { businessIdentity } = req.body;
+      
       // Generate blog post content
       const result = await generateBlogPost(
         topic, 
         keywords || '',
         targetAudience || 'business owners',
         contentLength,
-        toneOfVoice
+        toneOfVoice,
+        businessIdentity
       );
       
       // Generate image prompt if requested
