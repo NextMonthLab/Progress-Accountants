@@ -28,8 +28,8 @@ import { registerTenantRoutes } from "./controllers/tenantController";
 import { registerSystemRoutes } from "./controllers/systemController";
 import { registerClientRoutes } from "./controllers/clientController";
 import { registerBlogRoutes } from "./controllers/registerBlogRoutes";
+import { registerToolMarketplaceRoutes as registerNewMarketplaceRoutes } from "./routes/toolMarketplaceRoutes";
 import MarketplaceApiRouter from "./routes/marketplace";
-import { registerToolMarketplaceRoutes as registerNewToolMarketplaceRoutes } from "./routes/toolMarketplaceRoutes";
 import { registerOpenAIRoutes } from "./controllers/openai/registerOpenAIRoutes";
 import { registerVersionControlRoutes } from "./controllers/registerVersionControlRoutes";
 import { registerAiDesignRoutes } from "./controllers/registerAiDesignRoutes";
@@ -393,7 +393,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   registerToolMarketplaceRoutes(app);
   
   // Register the new enhanced marketplace routes
-  registerNewToolMarketplaceRoutes(app);
+  registerNewMarketplaceRoutes(app);
   
   // Register page builder routes
   registerPageBuilderApiRoutes(app);

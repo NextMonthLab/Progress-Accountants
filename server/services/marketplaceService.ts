@@ -178,10 +178,11 @@ class MarketplaceService {
 
       // Log the installation in the activity log
       await storage.logActivity({
-        type: 'TOOL_INSTALLED',
+        userType: 'admin',
+        actionType: 'install',
+        entityType: 'tool',
         userId: userId,
-        details: `Installed tool: ${tool.name}`,
-        metadata: { toolId, toolName: tool.name }
+        details: `Installed tool: ${tool.name}`
       });
 
       return newInstallation;
@@ -215,7 +216,7 @@ class MarketplaceService {
   /**
    * Log credit usage for a tool
    */
-  async logCreditUsage(log: Omit<CreditUsageLog, 'id' | 'timestamp' | 'status' | 'toolName'>): Promise<void> {
+  async logCreditUsage(log: { toolId: string, installedBy: string, installedAt: Date, smartSiteId: string, creditsUsed: number }): Promise<void> {
     try {
       // Get the tool name
       const tool = this.marketplaceTools.find(t => t.id === log.toolId);
