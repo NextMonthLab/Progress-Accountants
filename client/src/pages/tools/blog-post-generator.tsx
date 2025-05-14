@@ -21,6 +21,7 @@ import {
   SelectTrigger, 
   SelectValue 
 } from '@/components/ui/select';
+import { Slider } from '@/components/ui/slider';
 import { 
   Loader2, 
   FileText, 
@@ -29,7 +30,9 @@ import {
   Image as ImageIcon,
   RefreshCw,
   Check,
-  Sparkles
+  Sparkles,
+  AlignLeft,
+  Volume2
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
@@ -37,9 +40,7 @@ import { cn } from '@/lib/utils';
 type BlogPostForm = {
   topic: string;
   keywords: string;
-  tone: string;
   targetAudience: string;
-  length: string;
   includeImage: boolean;
 };
 
@@ -57,14 +58,14 @@ const BlogPostGenerator = () => {
   const [generatedContent, setGeneratedContent] = useState<GeneratedContent | null>(null);
   const [isCopied, setIsCopied] = useState(false);
   const [isImageGenerating, setIsImageGenerating] = useState(false);
+  const [contentLength, setContentLength] = useState([2]); // Default medium length (1=short, 2=medium, 3=long)
+  const [toneOfVoice, setToneOfVoice] = useState([3]); // Default professional tone (1=casual, 3=professional, 5=formal)
   
   const { register, handleSubmit, watch, formState: { errors } } = useForm<BlogPostForm>({
     defaultValues: {
       topic: '',
       keywords: '',
-      tone: 'professional',
       targetAudience: 'business owners',
-      length: 'medium',
       includeImage: true
     }
   });
@@ -74,6 +75,13 @@ const BlogPostGenerator = () => {
     try {
       // Simulate API call to OpenAI for blog post generation
       await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      // In a real implementation, we would pass contentLength and toneOfVoice to the API
+      console.log("Generating blog post with:", {
+        ...data,
+        contentLength: contentLength[0],
+        toneOfVoice: toneOfVoice[0]
+      });
       
       // Sample generated content
       const content = {
@@ -252,20 +260,35 @@ As we've explored, ${data.topic} represents a significant opportunity for ${data
                     </div>
 
                     <div className="grid gap-4 md:grid-cols-2">
-                      <div className="space-y-2">
-                        <Label htmlFor="tone">Content Tone</Label>
-                        <Select defaultValue="professional" {...register("tone")}>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select tone" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="professional">Professional</SelectItem>
-                            <SelectItem value="conversational">Conversational</SelectItem>
-                            <SelectItem value="authoritative">Authoritative</SelectItem>
-                            <SelectItem value="educational">Educational</SelectItem>
-                            <SelectItem value="persuasive">Persuasive</SelectItem>
-                          </SelectContent>
-                        </Select>
+                      <div className="space-y-3">
+                        <div className="flex justify-between items-center">
+                          <Label htmlFor="tone-of-voice" className="flex items-center">
+                            <Volume2 className="h-4 w-4 mr-2" />
+                            Tone of Voice
+                          </Label>
+                          <span className="text-sm text-muted-foreground">
+                            {toneOfVoice[0] === 1 ? "Casual" : 
+                             toneOfVoice[0] === 2 ? "Conversational" : 
+                             toneOfVoice[0] === 3 ? "Professional" : 
+                             toneOfVoice[0] === 4 ? "Business" : "Formal"}
+                          </span>
+                        </div>
+                        <Slider
+                          id="tone-of-voice"
+                          min={1}
+                          max={5}
+                          step={1}
+                          value={toneOfVoice}
+                          onValueChange={setToneOfVoice}
+                          className="w-full"
+                        />
+                        <div className="flex justify-between text-xs text-muted-foreground">
+                          <span>Casual</span>
+                          <span>Conversational</span>
+                          <span>Professional</span>
+                          <span>Business</span>
+                          <span>Formal</span>
+                        </div>
                       </div>
 
                       <div className="space-y-2">
@@ -286,18 +309,30 @@ As we've explored, ${data.topic} represents a significant opportunity for ${data
                     </div>
 
                     <div className="grid gap-4 md:grid-cols-2">
-                      <div className="space-y-2">
-                        <Label htmlFor="length">Article Length</Label>
-                        <Select defaultValue="medium" {...register("length")}>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select length" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="short">Short (500 words)</SelectItem>
-                            <SelectItem value="medium">Medium (1000 words)</SelectItem>
-                            <SelectItem value="long">Long (1500+ words)</SelectItem>
-                          </SelectContent>
-                        </Select>
+                      <div className="space-y-3">
+                        <div className="flex justify-between items-center">
+                          <Label htmlFor="content-length" className="flex items-center">
+                            <AlignLeft className="h-4 w-4 mr-2" />
+                            Content Length
+                          </Label>
+                          <span className="text-sm text-muted-foreground">
+                            {contentLength[0] === 1 ? "Short" : contentLength[0] === 2 ? "Medium" : "Long"}
+                          </span>
+                        </div>
+                        <Slider
+                          id="content-length"
+                          min={1}
+                          max={3}
+                          step={1}
+                          value={contentLength}
+                          onValueChange={setContentLength}
+                          className="w-full"
+                        />
+                        <div className="flex justify-between text-xs text-muted-foreground">
+                          <span>Short (500 words)</span>
+                          <span>Medium (1000 words)</span>
+                          <span>Long (1500+ words)</span>
+                        </div>
                       </div>
                     </div>
                   </div>
