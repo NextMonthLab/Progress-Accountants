@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
 import AdminLayout from '@/layouts/AdminLayout';
 import { 
   Card, 
@@ -95,6 +97,24 @@ const BlogPostGenerator = () => {
     fetchBusinessIdentity();
   }, []);
   
+  // Initialize form first so we can use setValue below
+  const { register, handleSubmit, watch, setValue, formState: { errors } } = useForm<BlogPostForm>({
+    resolver: zodResolver(
+      z.object({
+        topic: z.string().min(3, { message: "Topic must be at least 3 characters" }),
+        keywords: z.string().optional(),
+        targetAudience: z.string().min(3, { message: "Target audience must be at least 3 characters" }),
+        includeImage: z.boolean().default(true),
+      })
+    ),
+    defaultValues: {
+      topic: '',
+      keywords: '',
+      targetAudience: businessIdentity?.market?.targetAudience || 'business owners',
+      includeImage: true
+    }
+  });
+  
   // Check for social media post data to convert
   useEffect(() => {
     // Check for source parameter and data in localStorage
@@ -149,14 +169,7 @@ const BlogPostGenerator = () => {
     }
   }, [setValue, toast]);
 
-  const { register, handleSubmit, watch, setValue, formState: { errors } } = useForm<BlogPostForm>({
-    defaultValues: {
-      topic: '',
-      keywords: '',
-      targetAudience: businessIdentity?.market?.targetAudience || 'business owners',
-      includeImage: true
-    }
-  });
+  // Form already initialized above
   
   // Update target audience when business identity is loaded
   useEffect(() => {
