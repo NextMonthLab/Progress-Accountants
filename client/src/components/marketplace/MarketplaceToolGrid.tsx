@@ -1,245 +1,271 @@
 import React, { useState } from 'react';
+import { ExternalTool } from '@shared/marketplace';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Input } from '@/components/ui/input';
+import { Loader2, Download, Star, Tag, Search, Filter } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Skeleton } from "@/components/ui/skeleton";
-import { useToast } from "@/hooks/use-toast";
-import { Loader2, Download, Check, AlertCircle } from "lucide-react";
-import { apiRequest } from "@/lib/queryClient";
-import { ExternalTool, ToolInstallation } from '@shared/marketplace';
 
 const MarketplaceToolGrid = () => {
-  const [visibility, setVisibility] = useState<'public' | 'private'>('public');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [categoryFilter, setCategoryFilter] = useState('all');
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
   // Get all available tools
-  const { data: availableTools, isLoading: toolsLoading, error: toolsError } = useQuery({
-    queryKey: ['/api/marketplace/tools', visibility],
+  const { data: tools, isLoading } = useQuery({
+    queryKey: ['/api/marketplace/tools'],
     queryFn: async () => {
-      const response = await fetch(`/api/marketplace/tools?visibility=${visibility}`);
+      const response = await fetch('/api/marketplace/tools');
       if (!response.ok) {
-        throw new Error('Failed to fetch marketplace tools');
+        throw new Error('Failed to fetch tools');
       }
-      return response.json() as Promise<ExternalTool[]>;
-    }
+      return response.json();
+    },
   });
 
-  // Get installed tools
-  const { data: installedTools, isLoading: installationsLoading } = useQuery({
+  // Get installed tools to show installation status
+  const { data: installedTools } = useQuery({
     queryKey: ['/api/marketplace/tools/installed'],
     queryFn: async () => {
       const response = await fetch('/api/marketplace/tools/installed');
       if (!response.ok) {
-        throw new Error('Failed to fetch installed tools');
+        return []; // Return empty array if not installed yet
       }
-      return response.json() as Promise<ToolInstallation[]>;
-    }
+      return response.json();
+    },
   });
 
   // Install tool mutation
   const installMutation = useMutation({
-    mutationFn: async ({ toolId, userId }: { toolId: string, userId: number }) => {
-      const response = await apiRequest('POST', '/api/marketplace/tools/install', { toolId, userId });
+    mutationFn: async (toolId: string) => {
+      const response = await fetch('/api/marketplace/tools/install', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ toolId }),
+      });
+      
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to install tool');
+      }
+      
       return response.json();
     },
     onSuccess: () => {
-      toast({
-        title: "Tool installed",
-        description: "The tool has been installed successfully.",
-      });
-      // Invalidate installed tools query
+      // Invalidate queries to refetch the installed tools
       queryClient.invalidateQueries({ queryKey: ['/api/marketplace/tools/installed'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/marketplace/credits/usage'] });
+      
+      toast({
+        title: 'Tool installed successfully',
+        description: 'The tool has been added to your installed tools.',
+      });
     },
     onError: (error: Error) => {
       toast({
-        title: "Installation failed",
+        title: 'Installation failed',
         description: error.message,
-        variant: "destructive",
+        variant: 'default',
       });
-    }
+    },
   });
 
-  // Uninstall tool mutation
-  const uninstallMutation = useMutation({
-    mutationFn: async (installationId: number) => {
-      const response = await apiRequest('POST', '/api/marketplace/tools/uninstall', { installationId });
-      return response.json();
-    },
-    onSuccess: () => {
-      toast({
-        title: "Tool uninstalled",
-        description: "The tool has been uninstalled successfully.",
-      });
-      // Invalidate installed tools query
-      queryClient.invalidateQueries({ queryKey: ['/api/marketplace/tools/installed'] });
-    },
-    onError: (error: Error) => {
-      toast({
-        title: "Uninstallation failed",
-        description: error.message,
-        variant: "destructive",
-      });
-    }
-  });
+  // Filter and sort the tools based on search query and category filter
+  const filteredTools = React.useMemo(() => {
+    if (!tools) return [];
+    
+    return tools.filter((tool: ExternalTool) => {
+      const matchesSearch = 
+        tool.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+        tool.description.toLowerCase().includes(searchQuery.toLowerCase());
+      
+      const matchesCategory = 
+        categoryFilter === 'all' || 
+        (tool.category && tool.category.toLowerCase() === categoryFilter.toLowerCase());
+      
+      return matchesSearch && matchesCategory;
+    });
+  }, [tools, searchQuery, categoryFilter]);
 
-  // Check if a tool is installed
+  // Extract unique categories for the filter dropdown
+  const categories = React.useMemo(() => {
+    if (!tools) return [];
+    
+    const uniqueCategories = new Set<string>();
+    tools.forEach((tool: ExternalTool) => {
+      if (tool.category) {
+        uniqueCategories.add(tool.category);
+      }
+    });
+    
+    return Array.from(uniqueCategories).sort();
+  }, [tools]);
+
+  // Check if a tool is already installed
   const isToolInstalled = (toolId: string) => {
     if (!installedTools) return false;
-    return installedTools.some(installation => installation.toolId.toString() === toolId);
-  };
-
-  // Get the installation ID for a tool
-  const getInstallationId = (toolId: string): number | undefined => {
-    if (!installedTools) return undefined;
-    const installation = installedTools.find(
-      installation => installation.toolId.toString() === toolId
-    );
-    return installation?.id;
+    return installedTools.some((installation: any) => installation.toolId === toolId);
   };
 
   // Handle tool installation
   const handleInstall = (tool: ExternalTool) => {
-    // Use a dummy userId of 1 for now, in a real app this would come from the auth context
-    installMutation.mutate({ toolId: tool.id.toString(), userId: 1 });
-  };
-
-  // Handle tool uninstallation
-  const handleUninstall = (toolId: string) => {
-    const installationId = getInstallationId(toolId);
-    if (installationId) {
-      uninstallMutation.mutate(installationId);
+    if (isToolInstalled(tool.id)) {
+      toast({
+        title: 'Tool already installed',
+        description: 'This tool is already installed on your site.',
+        variant: 'default',
+      });
+      return;
     }
+    
+    installMutation.mutate(tool.id);
   };
 
-  // Loading states
-  if (toolsLoading || installationsLoading) {
+  if (isLoading) {
     return (
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {[1, 2, 3, 4, 5, 6].map((i) => (
-          <Card key={i} className="overflow-hidden">
-            <CardHeader>
-              <Skeleton className="h-6 w-3/4 mb-2" />
-              <Skeleton className="h-4 w-1/2" />
-            </CardHeader>
-            <CardContent>
-              <Skeleton className="h-28 w-full" />
-            </CardContent>
-            <CardFooter className="flex justify-between">
-              <Skeleton className="h-4 w-1/4" />
-              <Skeleton className="h-10 w-1/3" />
-            </CardFooter>
-          </Card>
-        ))}
+      <div className="flex items-center justify-center p-12">
+        <Loader2 className="h-12 w-12 animate-spin text-primary" />
       </div>
     );
   }
 
-  // Error state
-  if (toolsError) {
+  if (!tools || tools.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center p-8 border rounded-lg bg-red-50">
-        <AlertCircle className="h-10 w-10 text-red-500 mb-4" />
-        <h3 className="text-xl font-semibold mb-2">Failed to load marketplace tools</h3>
-        <p className="text-gray-600">{(toolsError as Error).message}</p>
-        <Button 
-          onClick={() => queryClient.invalidateQueries({ queryKey: ['/api/marketplace/tools'] })} 
-          variant="outline" 
-          className="mt-4"
-        >
-          Try Again
-        </Button>
+      <div className="text-center p-12 border rounded-lg bg-muted/20">
+        <p className="text-xl font-medium mb-2">No tools available</p>
+        <p className="text-muted-foreground">
+          There are currently no tools available in the marketplace. Please check back later.
+        </p>
       </div>
     );
   }
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <h2 className="text-3xl font-bold tracking-tight">NextMonth Marketplace</h2>
-        <div className="flex gap-2">
-          <Button 
-            variant={visibility === 'public' ? "default" : "outline"} 
-            onClick={() => setVisibility('public')}
-          >
-            Public Tools
-          </Button>
-          <Button 
-            variant={visibility === 'private' ? "default" : "outline"} 
-            onClick={() => setVisibility('private')}
-          >
-            Private Tools
-          </Button>
+      <div className="flex flex-col md:flex-row gap-4 items-start md:items-center">
+        <div className="relative flex-1">
+          <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+          <Input
+            placeholder="Search for tools..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="pl-10"
+          />
+        </div>
+        <div className="flex items-center gap-2 min-w-[200px]">
+          <Filter className="h-4 w-4 text-muted-foreground" />
+          <Select value={categoryFilter} onValueChange={setCategoryFilter}>
+            <SelectTrigger>
+              <SelectValue placeholder="All Categories" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Categories</SelectItem>
+              {categories.map((category) => (
+                <SelectItem key={category} value={category.toLowerCase()}>
+                  {category}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {availableTools?.map((tool) => {
-          const installed = isToolInstalled(tool.id.toString());
-          return (
-            <Card key={tool.id} className="overflow-hidden border-2 hover:border-primary/50 transition-all">
-              <CardHeader>
-                <div className="flex justify-between items-start">
-                  <CardTitle className="text-xl">{tool.name}</CardTitle>
-                  <Badge variant={tool.isFree ? "outline" : "default"}>
-                    {tool.isFree ? 'Free' : `${tool.credits} Credits`}
+        {filteredTools.map((tool: ExternalTool) => (
+          <Card key={tool.id} className="overflow-hidden">
+            <CardHeader className="relative pb-2">
+              <div className="flex justify-between items-start">
+                <CardTitle className="text-xl">{tool.name}</CardTitle>
+                {tool.rating && (
+                  <Badge 
+                    variant="outline" 
+                    className="flex items-center gap-1 bg-amber-50 text-amber-800 border-amber-200"
+                  >
+                    <Star className="h-3 w-3 fill-amber-500 text-amber-500" />
+                    {tool.rating.toFixed(1)}
                   </Badge>
-                </div>
-                <CardDescription>
-                  {tool.publisher || "NextMonth Dev"}
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p className="line-clamp-4 text-muted-foreground">{tool.description}</p>
-                {tool.tags && tool.tags.length > 0 && (
-                  <div className="flex flex-wrap gap-2 mt-4">
-                    {tool.tags.map((tag, idx) => (
-                      <Badge key={idx} variant="secondary" className="text-xs">
-                        {tag}
-                      </Badge>
-                    ))}
+                )}
+              </div>
+              <div className="flex items-center text-xs text-muted-foreground mt-1">
+                <span>By {tool.publisher || tool.builder}</span>
+                {tool.downloads && (
+                  <span className="ml-2 flex items-center">
+                    <Download className="h-3 w-3 mr-1" /> 
+                    {tool.downloads}
+                  </span>
+                )}
+              </div>
+            </CardHeader>
+            <CardContent>
+              <p className="text-muted-foreground text-sm mb-4">{tool.description}</p>
+              <div className="flex flex-wrap gap-2">
+                {tool.tags && tool.tags.slice(0, 3).map((tag) => (
+                  <Badge key={tag} variant="secondary" className="flex items-center gap-1">
+                    <Tag className="h-3 w-3" />
+                    {tag}
+                  </Badge>
+                ))}
+                {tool.category && (
+                  <Badge className="bg-primary/10 hover:bg-primary/20 text-primary border-primary/20">
+                    {tool.category}
+                  </Badge>
+                )}
+              </div>
+            </CardContent>
+            <CardFooter className="flex justify-between pt-2 border-t">
+              <div>
+                {tool.isFree ? (
+                  <Badge variant="outline" className="bg-green-50 text-green-800 border-green-200">
+                    Free
+                  </Badge>
+                ) : (
+                  <div className="font-medium">
+                    {tool.credits || tool.price} credits
                   </div>
                 )}
-              </CardContent>
-              <CardFooter className="flex justify-between items-center">
-                <div className="text-sm text-muted-foreground">
-                  v{tool.version || '1.0.0'}
-                </div>
-                {installed ? (
-                  <Button
-                    variant="destructive"
-                    size="sm"
-                    onClick={() => handleUninstall(tool.id.toString())}
-                    disabled={uninstallMutation.isPending}
-                  >
-                    {uninstallMutation.isPending ? (
-                      <Loader2 className="h-4 w-4 mr-1 animate-spin" />
-                    ) : (
-                      <Check className="h-4 w-4 mr-1" />
-                    )}
-                    Installed
-                  </Button>
+              </div>
+              <Button
+                onClick={() => handleInstall(tool)}
+                disabled={
+                  installMutation.isPending || 
+                  isToolInstalled(tool.id)
+                }
+                className={`${
+                  isToolInstalled(tool.id)
+                    ? 'bg-muted hover:bg-muted text-muted-foreground cursor-not-allowed'
+                    : ''
+                }`}
+              >
+                {installMutation.isPending && installMutation.variables === tool.id ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Installing...
+                  </>
+                ) : isToolInstalled(tool.id) ? (
+                  'Installed'
                 ) : (
-                  <Button
-                    variant="default"
-                    size="sm"
-                    onClick={() => handleInstall(tool)}
-                    disabled={installMutation.isPending}
-                  >
-                    {installMutation.isPending ? (
-                      <Loader2 className="h-4 w-4 mr-1 animate-spin" />
-                    ) : (
-                      <Download className="h-4 w-4 mr-1" />
-                    )}
-                    Install
-                  </Button>
+                  'Install'
                 )}
-              </CardFooter>
-            </Card>
-          );
-        })}
+              </Button>
+            </CardFooter>
+          </Card>
+        ))}
       </div>
+
+      {filteredTools.length === 0 && (
+        <div className="text-center p-8 border rounded-lg bg-muted/20">
+          <p className="text-xl font-medium mb-2">No results found</p>
+          <p className="text-muted-foreground">
+            No tools match your search. Try using different keywords or filters.
+          </p>
+        </div>
+      )}
     </div>
   );
 };

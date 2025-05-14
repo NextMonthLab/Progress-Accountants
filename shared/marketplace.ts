@@ -11,7 +11,7 @@ export const ExternalToolSchema = z.object({
   builder: z.string(),
   price: z.number().optional(), // Price in credits
   credits: z.number().optional(), // Alternative to price
-  isFree: z.boolean().optional().default(false),
+  isFree: z.boolean().optional(),
   publisher: z.string().optional(),
   category: z.string().optional(),
   tags: z.array(z.string()).optional(),
