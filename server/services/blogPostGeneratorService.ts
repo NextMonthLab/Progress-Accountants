@@ -17,12 +17,27 @@ if (!process.env.OPENAI_API_KEY) {
  * @param toneOfVoice Optional tone of voice preference (1=casual, 3=professional, 5=formal)
  * @returns Object containing generated title, content and meta description
  */
+// Business identity interface
+interface BusinessIdentity {
+  core?: {
+    businessName?: string;
+  };
+  market?: {
+    primaryIndustry?: string;
+    targetAudience?: string;
+  };
+  personality?: {
+    toneOfVoice?: string[];
+  };
+}
+
 export async function generateBlogPost(
   topic: string,
   keywords: string,
   targetAudience: string,
   contentLength?: number,
-  toneOfVoice?: number
+  toneOfVoice?: number,
+  businessIdentity?: BusinessIdentity
 ): Promise<{ title: string; content: string; metaDescription: string }> {
   try {
     const systemPrompt = getBlogSystemPrompt(targetAudience, contentLength, toneOfVoice);

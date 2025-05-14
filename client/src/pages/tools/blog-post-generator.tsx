@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import AdminLayout from '@/layouts/AdminLayout';
 import { 
@@ -52,6 +52,19 @@ type GeneratedContent = {
   imageUrl?: string;
 };
 
+interface BusinessIdentity {
+  core?: {
+    businessName?: string;
+  };
+  market?: {
+    primaryIndustry?: string;
+    targetAudience?: string;
+  };
+  personality?: {
+    toneOfVoice?: string[];
+  };
+}
+
 const BlogPostGenerator = () => {
   const { toast } = useToast();
   const [isGenerating, setIsGenerating] = useState(false);
@@ -60,24 +73,50 @@ const BlogPostGenerator = () => {
   const [isImageGenerating, setIsImageGenerating] = useState(false);
   const [contentLength, setContentLength] = useState([2]); // Default medium length (1=short, 2=medium, 3=long)
   const [toneOfVoice, setToneOfVoice] = useState([3]); // Default professional tone (1=casual, 3=professional, 5=formal)
+  const [businessIdentity, setBusinessIdentity] = useState<BusinessIdentity | null>(null);
   
-  const { register, handleSubmit, watch, formState: { errors } } = useForm<BlogPostForm>({
+  // Fetch business identity when component mounts
+  useEffect(() => {
+    const fetchBusinessIdentity = async () => {
+      try {
+        const response = await fetch('/api/business-identity');
+        if (response.ok) {
+          const data = await response.json();
+          setBusinessIdentity(data);
+        }
+      } catch (error) {
+        console.error('Error fetching business identity:', error);
+      }
+    };
+
+    fetchBusinessIdentity();
+  }, []);
+
+  const { register, handleSubmit, watch, setValue, formState: { errors } } = useForm<BlogPostForm>({
     defaultValues: {
       topic: '',
       keywords: '',
-      targetAudience: 'business owners',
+      targetAudience: businessIdentity?.market?.targetAudience || 'business owners',
       includeImage: true
     }
   });
+  
+  // Update target audience when business identity is loaded
+  useEffect(() => {
+    if (businessIdentity?.market?.targetAudience) {
+      setValue('targetAudience', businessIdentity.market.targetAudience);
+    }
+  }, [businessIdentity, setValue]);
 
   const onSubmit = async (data: BlogPostForm) => {
     setIsGenerating(true);
     try {
-      // Prepare request data with slider values
+      // Prepare request data with slider values and business identity (if available)
       const requestData = {
         ...data,
         contentLength: contentLength[0],
-        toneOfVoice: toneOfVoice[0]
+        toneOfVoice: toneOfVoice[0],
+        businessIdentity: businessIdentity || undefined
       };
       
       console.log("Generating blog post with:", requestData);
@@ -328,8 +367,15 @@ As we've explored, ${data.topic} represents a significant opportunity for ${data
                       </div>
 
                       <div className="space-y-2">
-                        <Label htmlFor="targetAudience">Target Audience</Label>
-                        <Select defaultValue="business owners" {...register("targetAudience")}>
+                        <div className="flex items-center justify-between">
+                          <Label htmlFor="targetAudience">Target Audience</Label>
+                          {businessIdentity?.market?.targetAudience && (
+                            <span className="text-xs text-muted-foreground rounded-full bg-primary/10 px-2 py-1">
+                              From Business Identity
+                            </span>
+                          )}
+                        </div>
+                        <Select defaultValue={businessIdentity?.market?.targetAudience || "business owners"} {...register("targetAudience")}>
                           <SelectTrigger>
                             <SelectValue placeholder="Select audience" />
                           </SelectTrigger>
@@ -339,6 +385,12 @@ As we've explored, ${data.topic} represents a significant opportunity for ${data
                             <SelectItem value="finance professionals">Finance Professionals</SelectItem>
                             <SelectItem value="small business owners">Small Business Owners</SelectItem>
                             <SelectItem value="corporate executives">Corporate Executives</SelectItem>
+                            {businessIdentity?.market?.targetAudience && 
+                              !["business owners", "entrepreneurs", "finance professionals", "small business owners", "corporate executives"].includes(businessIdentity.market.targetAudience) && (
+                              <SelectItem value={businessIdentity.market.targetAudience}>
+                                {businessIdentity.market.targetAudience}
+                              </SelectItem>
+                            )}
                           </SelectContent>
                         </Select>
                       </div>
