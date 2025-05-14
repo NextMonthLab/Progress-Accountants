@@ -26,6 +26,20 @@ interface Post {
   createdAt: string;
 }
 
+// Business identity interface
+interface BusinessIdentity {
+  core?: {
+    businessName?: string;
+  };
+  market?: {
+    primaryIndustry?: string;
+    targetAudience?: string;
+  };
+  personality?: {
+    toneOfVoice?: string[];
+  };
+}
+
 const PLATFORMS = [
   { id: "linkedin", name: "LinkedIn", description: "Professional network" },
   { id: "twitter", name: "Twitter/X", description: "Short, concise messages" },
@@ -49,6 +63,42 @@ export default function SocialMediaGeneratorPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [contentLength, setContentLength] = useState([2]); // Default medium length (1=short, 2=medium, 3=long)
   const [toneOfVoice, setToneOfVoice] = useState([3]); // Default professional tone (1=casual, 3=professional, 5=formal)
+  const [businessIdentity, setBusinessIdentity] = useState<BusinessIdentity | null>(null);
+
+  // Fetch business identity when component mounts
+  useEffect(() => {
+    const fetchBusinessIdentity = async () => {
+      try {
+        const response = await fetch('/api/business-identity');
+        if (response.ok) {
+          const data = await response.json();
+          setBusinessIdentity(data);
+          
+          // If business identity has tone of voice preferences, use them
+          if (data?.personality?.toneOfVoice?.length > 0) {
+            // Map tone of voice strings to slider values
+            const toneMap: Record<string, number> = {
+              'casual': 1,
+              'conversational': 2,
+              'professional': 3,
+              'business': 4,
+              'formal': 5
+            };
+            
+            // Get the first tone from the business identity that matches our map
+            const matchedTone = data.personality.toneOfVoice.find((tone: string) => toneMap[tone.toLowerCase()]);
+            if (matchedTone) {
+              setToneOfVoice([toneMap[matchedTone.toLowerCase()]]);
+            }
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching business identity:', error);
+      }
+    };
+
+    fetchBusinessIdentity();
+  }, []);
 
   // Fetch user's saved posts
   useEffect(() => {
@@ -326,9 +376,33 @@ export default function SocialMediaGeneratorPage() {
                       rows={3}
                       className="resize-none"
                     />
-                    <p className="text-sm text-muted-foreground">
-                      Example: "A post highlighting our new tax planning services for small businesses with a professional tone"
-                    </p>
+                    <div className="flex flex-col gap-1">
+                      <p className="text-sm text-muted-foreground">
+                        Example: "A post highlighting our new tax planning services for small businesses with a professional tone"
+                      </p>
+                      
+                      {businessIdentity && (
+                        <div className="flex flex-col gap-2 p-3 mt-2 border border-amber-200 bg-amber-50 rounded-md">
+                          <div className="flex items-center gap-2">
+                            <CheckCircle className="h-4 w-4 text-amber-600" />
+                            <p className="text-sm font-medium text-amber-800">
+                              Using business identity data
+                            </p>
+                          </div>
+                          <div className="text-xs text-amber-700 space-y-1">
+                            {businessIdentity.core?.businessName && (
+                              <p>• Business Name: {businessIdentity.core.businessName}</p>
+                            )}
+                            {businessIdentity.market?.primaryIndustry && (
+                              <p>• Industry: {businessIdentity.market.primaryIndustry}</p>
+                            )}
+                            {businessIdentity.market?.targetAudience && (
+                              <p>• Target Audience: {businessIdentity.market.targetAudience}</p>
+                            )}
+                          </div>
+                        </div>
+                      )}
+                    </div>
                   </div>
                   
                   <div className="space-y-6 py-4">
