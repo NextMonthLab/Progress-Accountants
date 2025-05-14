@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "@/hooks/use-auth";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2, RefreshCw, Copy, Download, Trash2, Send, Image, CheckCircle, AlertTriangle, Volume2, AlignLeft } from "lucide-react";
+import { Loader2, RefreshCw, Copy, Download, Trash2, Send, Image, CheckCircle, AlertTriangle, Volume2, AlignLeft, FileText } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useLocation } from "wouter";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -50,6 +51,7 @@ const PLATFORMS = [
 export default function SocialMediaGeneratorPage() {
   const { user } = useAuth();
   const { toast } = useToast();
+  const [, navigate] = useLocation();
   const [activeTab, setActiveTab] = useState("create");
   const [platform, setPlatform] = useState("linkedin");
   const [prompt, setPrompt] = useState("");
@@ -299,6 +301,36 @@ export default function SocialMediaGeneratorPage() {
       toast({
         title: "Delete failed",
         description: (error as Error).message || "An error occurred while deleting your post.",
+        variant: "destructive"
+      });
+    }
+  };
+
+  // Convert social media post to blog post
+  const convertToBlogPost = async (post: Post) => {
+    try {
+      // Store post data in localStorage to pass to blog post generator
+      localStorage.setItem('convertedPost', JSON.stringify({
+        platform: post.platform,
+        prompt: post.prompt,
+        text: post.text,
+        imageUrl: post.imageUrl,
+        imagePrompt: post.imagePrompt
+      }));
+      
+      // Navigate to blog post generator with source parameter
+      navigate('/tools/blog-post-generator?source=social');
+      
+      toast({
+        title: "Opening blog post generator",
+        description: "Creating a blog post from your social media content",
+        variant: "default"
+      });
+    } catch (error) {
+      console.error("Error converting to blog post:", error);
+      toast({
+        title: "Conversion failed",
+        description: "Could not convert social media post to blog",
         variant: "destructive"
       });
     }
