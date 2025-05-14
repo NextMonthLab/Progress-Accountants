@@ -73,20 +73,40 @@ const BlogPostGenerator = () => {
   const onSubmit = async (data: BlogPostForm) => {
     setIsGenerating(true);
     try {
-      // Simulate API call to OpenAI for blog post generation
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      // In a real implementation, we would pass contentLength and toneOfVoice to the API
-      console.log("Generating blog post with:", {
+      // Prepare request data with slider values
+      const requestData = {
         ...data,
         contentLength: contentLength[0],
         toneOfVoice: toneOfVoice[0]
+      };
+      
+      console.log("Generating blog post with:", requestData);
+      
+      // Make API call to backend
+      const response = await fetch('/api/blog-post-generator/generate-post', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestData),
       });
       
-      // Sample generated content
+      if (!response.ok) {
+        throw new Error(`API error: ${response.statusText}`);
+      }
+      
+      const result = await response.json();
+      
+      if (!result.success) {
+        throw new Error(result.message || 'Failed to generate blog post');
+      }
+      
+      const generatedData = result.data;
+      
+      // Use the generated content from the API
       const content = {
-        title: `How ${data.topic} is Transforming Modern Business`,
-        content: `
+        title: generatedData.title || `How ${data.topic} is Transforming Modern Business`,
+        content: generatedData.content || `
 ## Introduction
 
 In today's rapidly evolving business landscape, ${data.topic} has emerged as a pivotal force driving transformation and innovation. This article explores how businesses are leveraging ${data.topic} to gain competitive advantages and streamline operations.
@@ -155,13 +175,28 @@ As we've explored, ${data.topic} represents a significant opportunity for ${data
     
     setIsImageGenerating(true);
     try {
-      // Simulate API call to image generation service
-      await new Promise(resolve => setTimeout(resolve, 3000));
+      // Make API call to backend for image generation
+      const response = await fetch('/api/blog-post-generator/generate-image', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ prompt: generatedContent.imagePrompt }),
+      });
       
-      // For demo, use a placeholder image
+      if (!response.ok) {
+        throw new Error(`API error: ${response.statusText}`);
+      }
+      
+      const result = await response.json();
+      
+      if (!result.success) {
+        throw new Error(result.message || 'Failed to generate image');
+      }
+      
       setGeneratedContent({
         ...generatedContent,
-        imageUrl: 'https://placehold.co/600x400/e6f7ff/0a558c?text=Blog+Post+Image'
+        imageUrl: result.data.imageUrl
       });
       
       toast({
@@ -169,6 +204,7 @@ As we've explored, ${data.topic} represents a significant opportunity for ${data
         description: "Featured image has been created for your blog post.",
       });
     } catch (error) {
+      console.error("Error generating image:", error);
       toast({
         title: "Image generation failed",
         description: "There was an error generating the image. Please try again.",

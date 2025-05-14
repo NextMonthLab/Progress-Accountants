@@ -60,6 +60,7 @@ import {
   updateToolConfiguration
 } from "./controllers/marketplaceController";
 import { registerSocialMediaRoutes } from "./controllers/registerSocialMediaRoutes";
+import { registerBlogPostGeneratorRoutes } from "./controllers/registerBlogPostGeneratorRoutes";
 import { setupAuth, hashPassword } from "./auth";
 import { simpleStorage } from "./simpleStorage";
 import { 
@@ -249,6 +250,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
   
   // Register social media endpoints
   registerSocialMediaRoutes(app);
+  
+  // Register blog post generator endpoints
+  registerBlogPostGeneratorRoutes(app);
   
   // Register blueprint API endpoints
   registerLegacyBlueprintRoutes(app);
