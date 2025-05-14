@@ -141,12 +141,20 @@ export default function SocialMediaGeneratorPage() {
 
     try {
       setIsGeneratingText(true);
-      const response = await apiRequest("POST", "/api/social-media/generate-post", {
+      
+      // Track if we're using business identity data
+      const isUsingBusinessIdentity = !!businessIdentity;
+      
+      // Create request payload with business identity if available
+      const payload = {
         prompt,
         platform,
         contentLength: contentLength[0],
-        toneOfVoice: toneOfVoice[0]
-      });
+        toneOfVoice: toneOfVoice[0],
+        businessIdentity
+      };
+      
+      const response = await apiRequest("POST", "/api/social-media/generate-post", payload);
       
       const data = await response.json();
       
@@ -154,7 +162,7 @@ export default function SocialMediaGeneratorPage() {
         setGeneratedText(data.data.text);
         toast({
           title: "Post generated",
-          description: "Your social media post has been generated successfully.",
+          description: `Your social media post has been generated successfully${isUsingBusinessIdentity ? ' using your business identity' : ''}.`,
           variant: "default"
         });
       } else {
@@ -187,9 +195,18 @@ export default function SocialMediaGeneratorPage() {
 
     try {
       setIsGeneratingImage(true);
-      const response = await apiRequest("POST", "/api/social-media/generate-image", {
-        prompt: finalImagePrompt
-      });
+      
+      // Track if we're using business identity data
+      const isUsingBusinessIdentity = !!businessIdentity;
+      
+      // Include business identity in the request if available
+      const payload = {
+        prompt: finalImagePrompt,
+        businessIdentity, // Pass business identity to help with image generation context
+        platform // Pass platform to help with image format/style customization
+      };
+      
+      const response = await apiRequest("POST", "/api/social-media/generate-image", payload);
       
       const data = await response.json();
       
@@ -197,7 +214,7 @@ export default function SocialMediaGeneratorPage() {
         setGeneratedImage(data.data.url);
         toast({
           title: "Image generated",
-          description: "Your image has been generated successfully.",
+          description: `Your image has been generated successfully${isUsingBusinessIdentity ? ' with business context' : ''}.`,
           variant: "default"
         });
       } else {
