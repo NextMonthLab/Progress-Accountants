@@ -76,6 +76,7 @@ const BlogPostGenerator = () => {
   const [contentLength, setContentLength] = useState([2]); // Default medium length (1=short, 2=medium, 3=long)
   const [toneOfVoice, setToneOfVoice] = useState([3]); // Default professional tone (1=casual, 3=professional, 5=formal)
   const [businessIdentity, setBusinessIdentity] = useState<BusinessIdentity | null>(null);
+  const [isConvertingFromSocial, setIsConvertingFromSocial] = useState(false);
   
   // Fetch business identity when component mounts
   useEffect(() => {
@@ -101,6 +102,9 @@ const BlogPostGenerator = () => {
     const source = urlParams.get('source');
     
     if (source === 'social') {
+      // Set conversion mode
+      setIsConvertingFromSocial(true);
+      
       try {
         const storedData = localStorage.getItem('convertedPost');
         if (storedData) {
@@ -164,12 +168,31 @@ const BlogPostGenerator = () => {
   const onSubmit = async (data: BlogPostForm) => {
     setIsGenerating(true);
     try {
-      // Prepare request data with slider values and business identity (if available)
+      // Check if this is coming from a social media post conversion
+      const urlParams = new URLSearchParams(window.location.search);
+      const isFromSocial = urlParams.get('source') === 'social';
+      let socialContent = null;
+      
+      // If this is from social media, get the stored data
+      if (isFromSocial) {
+        try {
+          const storedData = sessionStorage.getItem('convertedPost');
+          if (storedData) {
+            socialContent = JSON.parse(storedData);
+          }
+        } catch (e) {
+          console.error('Error retrieving social media data:', e);
+        }
+      }
+      
+      // Prepare request data with slider values, business identity, and social content if available
       const requestData = {
         ...data,
         contentLength: contentLength[0],
         toneOfVoice: toneOfVoice[0],
-        businessIdentity: businessIdentity || undefined
+        businessIdentity: businessIdentity || undefined,
+        socialContent,
+        isFromSocial
       };
       
       console.log("Generating blog post with:", requestData);
@@ -247,9 +270,23 @@ As we've explored, ${data.topic} represents a significant opportunity for ${data
       };
       
       setGeneratedContent(content);
+      
+      // Determine the appropriate success message
+      let successTitle = "Blog post generated successfully";
+      let successDesc = "Your AI-generated content is ready to review and publish.";
+      
+      // Check if this was a conversion from social media
+      if (isFromSocial && socialContent) {
+        // Clear the session storage to prevent accidental reuse
+        sessionStorage.removeItem('convertedPost');
+        
+        successTitle = "Social media post expanded!";
+        successDesc = `Your ${socialContent.platform} post has been successfully expanded into a full blog article.`;
+      }
+      
       toast({
-        title: "Blog post generated successfully",
-        description: "Your AI-generated content is ready to review and publish.",
+        title: successTitle,
+        description: successDesc,
       });
     } catch (error) {
       toast({
@@ -359,6 +396,19 @@ As we've explored, ${data.topic} represents a significant opportunity for ${data
                 <CardDescription>
                   Define the parameters for your AI-generated blog post.
                 </CardDescription>
+                
+                {/* Social media conversion banner */}
+                {isConvertingFromSocial && (
+                  <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-md">
+                    <div className="flex items-center gap-2">
+                      <FileText size={18} className="text-blue-500" />
+                      <span className="font-medium text-blue-700">Social Media Conversion Mode</span>
+                    </div>
+                    <p className="text-sm text-blue-600 mt-1">
+                      Expanding your social media post into a full blog article. The original content will be enhanced with more details and depth.
+                    </p>
+                  </div>
+                )}
               </CardHeader>
               <CardContent>
                 {businessIdentity && (
