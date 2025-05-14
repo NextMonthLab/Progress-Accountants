@@ -309,14 +309,31 @@ export default function SocialMediaGeneratorPage() {
   // Convert social media post to blog post
   const convertToBlogPost = async (post: Post) => {
     try {
-      // Store post data in localStorage to pass to blog post generator
-      localStorage.setItem('convertedPost', JSON.stringify({
+      // Create the post data object for conversion
+      const postData = {
         platform: post.platform,
         prompt: post.prompt,
         text: post.text,
         imageUrl: post.imageUrl,
-        imagePrompt: post.imagePrompt
-      }));
+        imagePrompt: post.imagePrompt,
+        timestamp: new Date().toISOString() // Add timestamp for tracking purposes
+      };
+      
+      // Store post data in both localStorage and sessionStorage for redundancy
+      const postDataString = JSON.stringify(postData);
+      
+      try {
+        localStorage.setItem('convertedPost', postDataString);
+      } catch (storageError) {
+        console.warn('Could not save to localStorage, falling back to sessionStorage only');
+      }
+      
+      // Always try sessionStorage as a backup
+      try {
+        sessionStorage.setItem('convertedPost', postDataString);
+      } catch (sessionStorageError) {
+        console.warn('Could not save to sessionStorage');
+      }
       
       // Navigate to blog post generator with source parameter
       navigate('/tools/blog-post-generator?source=social');

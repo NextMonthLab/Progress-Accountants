@@ -128,7 +128,7 @@ const BlogPostGenerator = () => {
   
   // Check for social media post data to convert
   useEffect(() => {
-    // Check for source parameter and data in localStorage
+    // Check for source parameter and data in localStorage or sessionStorage
     const urlParams = new URLSearchParams(window.location.search);
     const source = urlParams.get('source');
     
@@ -137,7 +137,14 @@ const BlogPostGenerator = () => {
       setIsConvertingFromSocial(true);
       
       try {
-        const storedData = localStorage.getItem('convertedPost');
+        // Try getting data from localStorage first, then sessionStorage as fallback
+        let storedData = localStorage.getItem('convertedPost');
+        
+        // If not in localStorage, try sessionStorage
+        if (!storedData) {
+          storedData = sessionStorage.getItem('convertedPost');
+        }
+        
         if (storedData) {
           const postData = JSON.parse(storedData);
           
@@ -190,14 +197,38 @@ const BlogPostGenerator = () => {
       // If this is from social media, get the stored data
       if (isFromSocial) {
         try {
-          // Try localStorage first, then sessionStorage as backup
-          const storedData = localStorage.getItem('convertedPost') || 
-                             sessionStorage.getItem('convertedPost');
+          // Try getting data from localStorage first
+          let storedData = localStorage.getItem('convertedPost');
+          
+          // If not in localStorage, try sessionStorage
+          if (!storedData) {
+            storedData = sessionStorage.getItem('convertedPost');
+          }
+          
           if (storedData) {
             socialContent = JSON.parse(storedData);
+            
+            // Add a visual indicator that we've loaded the post
+            toast({
+              title: "Social Media Content Loaded",
+              description: `Content from ${socialContent.platform} has been imported`,
+              variant: "default",
+            });
+          } else {
+            // No data found - show error message
+            toast({
+              title: "Content Not Found",
+              description: "The social media content could not be retrieved",
+              variant: "destructive",
+            });
           }
         } catch (e) {
           console.error('Error retrieving social media data:', e);
+          toast({
+            title: "Error Loading Content",
+            description: "There was a problem importing the social media content",
+            variant: "destructive",
+          });
         }
       }
       
