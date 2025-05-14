@@ -322,9 +322,10 @@ export default function SocialMediaGeneratorPage() {
       navigate('/tools/blog-post-generator?source=social');
       
       toast({
-        title: "Opening blog post generator",
-        description: "Creating a blog post from your social media content",
-        variant: "default"
+        title: "Converting to Blog Post",
+        description: "Transforming your social media content into a blog post draft...",
+        variant: "default",
+        duration: 5000 // Show the toast for 5 seconds
       });
     } catch (error) {
       console.error("Error converting to blog post:", error);
@@ -761,6 +762,18 @@ export default function SocialMediaGeneratorPage() {
                               />
                             </div>
                           )}
+                          
+                          {/* Convert to Blog Button - More prominent placement */}
+                          <div className="flex justify-end mt-3">
+                            <Button
+                              onClick={() => convertToBlogPost(post)}
+                              variant="outline"
+                              className="flex items-center gap-2 text-blue-600 border-blue-200 hover:bg-blue-50 hover:text-blue-700 hover:border-blue-300"
+                            >
+                              <FileText className="h-4 w-4" />
+                              <span>Convert to Blog Post</span>
+                            </Button>
+                          </div>
                         </div>
                       ))}
                     </div>
