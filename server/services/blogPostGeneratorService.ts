@@ -31,16 +31,40 @@ interface BusinessIdentity {
   };
 }
 
+// Interface for social media content
+interface SocialMediaContent {
+  platform: string;
+  prompt: string;
+  text: string;
+  imageUrl?: string;
+  imagePrompt?: string;
+}
+
 export async function generateBlogPost(
   topic: string,
   keywords: string,
   targetAudience: string,
   contentLength?: number,
   toneOfVoice?: number,
-  businessIdentity?: BusinessIdentity
+  businessIdentity?: BusinessIdentity,
+  socialContent?: SocialMediaContent
 ): Promise<{ title: string; content: string; metaDescription: string }> {
   try {
     const systemPrompt = getBlogSystemPrompt(targetAudience, contentLength, toneOfVoice, businessIdentity);
+    
+    // Prepare user message - check if this is from social media
+    let userMessage = '';
+    
+    if (socialContent) {
+      userMessage = `Expand this social media post from ${socialContent.platform} into a full blog post:
+      
+Original Post: "${socialContent.text}"
+Original Topic: "${topic}"
+
+The blog post should be a comprehensive expansion of this social media content, thoroughly exploring the ideas presented in the original post while maintaining the same voice and perspective. Include these keywords: ${keywords}.`;
+    } else {
+      userMessage = `Generate a blog post about "${topic}". Include these keywords: ${keywords}.`;
+    }
     
     const response = await openai.chat.completions.create({
       model: "gpt-4o", // the newest OpenAI model is "gpt-4o" which was released May 13, 2024
@@ -51,7 +75,7 @@ export async function generateBlogPost(
         },
         {
           role: "user",
-          content: `Generate a blog post about "${topic}". Include these keywords: ${keywords}.`
+          content: userMessage
         }
       ],
       temperature: 0.7,

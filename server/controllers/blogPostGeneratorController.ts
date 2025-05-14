@@ -75,7 +75,10 @@ export const blogPostGeneratorController = {
       }
       
       // Get business identity if provided in the request
-      const { businessIdentity } = req.body;
+      const { businessIdentity, socialContent, isFromSocial } = req.body;
+      
+      // Check if this is a conversion from social media post
+      const isSocialConversion = isFromSocial && socialContent;
       
       // Generate blog post content
       const result = await generateBlogPost(
@@ -84,7 +87,8 @@ export const blogPostGeneratorController = {
         targetAudience || 'business owners',
         contentLength,
         toneOfVoice,
-        businessIdentity
+        businessIdentity,
+        isSocialConversion ? socialContent : undefined
       );
       
       // Generate image prompt if requested
