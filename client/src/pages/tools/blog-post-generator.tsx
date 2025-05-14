@@ -13,6 +13,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
+import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { 
   Select, 
@@ -337,10 +338,19 @@ As we've explored, ${data.topic} represents a significant opportunity for ${data
                     <div className="grid gap-4 md:grid-cols-2">
                       <div className="space-y-3">
                         <div className="flex justify-between items-center">
-                          <Label htmlFor="tone-of-voice" className="flex items-center">
-                            <Volume2 className="h-4 w-4 mr-2" />
-                            Tone of Voice
-                          </Label>
+                          <div className="flex items-center gap-2">
+                            <Label htmlFor="tone-of-voice" className="flex items-center">
+                              <Volume2 className="h-4 w-4 mr-2" />
+                              Tone of Voice
+                            </Label>
+                            
+                            {/* Show badge if tone was set from business identity */}
+                            {businessIdentity?.personality?.toneOfVoice && businessIdentity.personality.toneOfVoice.length > 0 && (
+                              <Badge variant="outline" className="bg-amber-100 border-amber-300 text-amber-800 text-[10px]">
+                                From Business Identity
+                              </Badge>
+                            )}
+                          </div>
                           <span className="text-sm text-muted-foreground">
                             {toneOfVoice[0] === 1 ? "Casual" : 
                              toneOfVoice[0] === 2 ? "Conversational" : 
@@ -370,9 +380,9 @@ As we've explored, ${data.topic} represents a significant opportunity for ${data
                         <div className="flex items-center justify-between">
                           <Label htmlFor="targetAudience">Target Audience</Label>
                           {businessIdentity?.market?.targetAudience && (
-                            <span className="text-xs text-muted-foreground rounded-full bg-primary/10 px-2 py-1">
+                            <Badge variant="outline" className="bg-amber-100 border-amber-300 text-amber-800 text-[10px]">
                               From Business Identity
-                            </span>
+                            </Badge>
                           )}
                         </div>
                         <Select defaultValue={businessIdentity?.market?.targetAudience || "business owners"} {...register("targetAudience")}>
