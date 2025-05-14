@@ -493,6 +493,7 @@ function Router() {
       <ProtectedRoute path="/module-gallery" component={MarketplacePage} />
       <ProtectedRoute path="/module-library" component={ModuleLibraryPage} />
       <ProtectedRoute path="/tool-marketplace" component={ToolMarketplaceBrowserPage} allowedRoles={['admin', 'super_admin', 'editor']} />
+      <ProtectedRoute path="/tools/marketplace" component={lazy(() => import('./pages/tools/marketplace'))} allowedRoles={['admin', 'super_admin', 'editor']} />
       
       {/* Onboarding and setup routes */}
       <ProtectedRoute path="/onboarding" component={OnboardingWelcomePage} />
