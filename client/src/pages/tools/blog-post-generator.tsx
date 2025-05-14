@@ -450,14 +450,28 @@ As we've explored, ${data.topic} represents a significant opportunity for ${data
                 
                 {/* Social media conversion banner */}
                 {isConvertingFromSocial && (
-                  <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-md">
+                  <div className="mt-4 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-md shadow-sm">
                     <div className="flex items-center gap-2">
-                      <FileText size={18} className="text-blue-500" />
-                      <span className="font-medium text-blue-700">Social Media Conversion Mode</span>
+                      <div className="flex items-center justify-center w-8 h-8 rounded-full bg-blue-500 text-white">
+                        <FileText size={16} />
+                      </div>
+                      <div>
+                        <span className="font-semibold text-blue-700">Social Media Conversion Mode</span>
+                        <div className="text-xs text-blue-500 mt-0.5">Cross-Generator Workflow Active</div>
+                      </div>
                     </div>
-                    <p className="text-sm text-blue-600 mt-1">
-                      Expanding your social media post into a full blog article. The original content will be enhanced with more details and depth.
-                    </p>
+                    <div className="flex mt-3">
+                      <div className="w-8 flex-shrink-0"></div>
+                      <div className="flex-grow">
+                        <p className="text-sm text-blue-700">
+                          Expanding your social media post into a full blog article. The original content will be enhanced with more details, context, and depth while maintaining your brand voice.
+                        </p>
+                        <div className="mt-2 text-xs text-blue-600 flex items-center">
+                          <RefreshCw size={12} className="mr-1" /> 
+                          <span>Content synchronization is active</span>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 )}
               </CardHeader>
