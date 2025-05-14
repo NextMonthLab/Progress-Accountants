@@ -80,25 +80,14 @@ const BlogPostGenerator = () => {
   const [businessIdentity, setBusinessIdentity] = useState<BusinessIdentity | null>(null);
   const [isConvertingFromSocial, setIsConvertingFromSocial] = useState(false);
   
-  // Fetch business identity when component mounts
-  useEffect(() => {
-    const fetchBusinessIdentity = async () => {
-      try {
-        const response = await fetch('/api/business-identity');
-        if (response.ok) {
-          const data = await response.json();
-          setBusinessIdentity(data);
-        }
-      } catch (error) {
-        console.error('Error fetching business identity:', error);
-      }
-    };
-
-    fetchBusinessIdentity();
-  }, []);
-  
-  // Initialize form first so we can use setValue below
-  const { register, handleSubmit, watch, setValue, formState: { errors } } = useForm<BlogPostForm>({
+  // Initialize form with validation
+  const { 
+    register, 
+    handleSubmit, 
+    watch, 
+    setValue, 
+    formState: { errors } 
+  } = useForm<BlogPostForm>({
     resolver: zodResolver(
       z.object({
         topic: z.string().min(3, { message: "Topic must be at least 3 characters" }),
@@ -110,10 +99,32 @@ const BlogPostGenerator = () => {
     defaultValues: {
       topic: '',
       keywords: '',
-      targetAudience: businessIdentity?.market?.targetAudience || 'business owners',
+      targetAudience: 'business owners',
       includeImage: true
     }
   });
+  
+  // Fetch business identity when component mounts
+  useEffect(() => {
+    const fetchBusinessIdentity = async () => {
+      try {
+        const response = await fetch('/api/business-identity');
+        if (response.ok) {
+          const data = await response.json();
+          setBusinessIdentity(data);
+          
+          // Update target audience if available from business identity
+          if (data?.market?.targetAudience) {
+            setValue('targetAudience', data.market.targetAudience);
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching business identity:', error);
+      }
+    };
+
+    fetchBusinessIdentity();
+  }, [setValue]);
   
   // Check for social media post data to convert
   useEffect(() => {
@@ -169,27 +180,19 @@ const BlogPostGenerator = () => {
     }
   }, [setValue, toast]);
 
-  // Form already initialized above
-  
-  // Update target audience when business identity is loaded
-  useEffect(() => {
-    if (businessIdentity?.market?.targetAudience) {
-      setValue('targetAudience', businessIdentity.market.targetAudience);
-    }
-  }, [businessIdentity, setValue]);
-
   const onSubmit = async (data: BlogPostForm) => {
     setIsGenerating(true);
     try {
-      // Check if this is coming from a social media post conversion
-      const urlParams = new URLSearchParams(window.location.search);
-      const isFromSocial = urlParams.get('source') === 'social';
+      // Use our component state to determine if we're in conversion mode
+      const isFromSocial = isConvertingFromSocial;
       let socialContent = null;
       
       // If this is from social media, get the stored data
       if (isFromSocial) {
         try {
-          const storedData = sessionStorage.getItem('convertedPost');
+          // Try localStorage first, then sessionStorage as backup
+          const storedData = localStorage.getItem('convertedPost') || 
+                             sessionStorage.getItem('convertedPost');
           if (storedData) {
             socialContent = JSON.parse(storedData);
           }
@@ -290,11 +293,15 @@ As we've explored, ${data.topic} represents a significant opportunity for ${data
       
       // Check if this was a conversion from social media
       if (isFromSocial && socialContent) {
-        // Clear the session storage to prevent accidental reuse
+        // Clear both localStorage and sessionStorage to prevent accidental reuse
+        localStorage.removeItem('convertedPost');
         sessionStorage.removeItem('convertedPost');
         
-        successTitle = "Social media post expanded!";
-        successDesc = `Your ${socialContent.platform} post has been successfully expanded into a full blog article.`;
+        // Reset conversion mode flag
+        setIsConvertingFromSocial(false);
+        
+        successTitle = "Social Media Expansion Complete! 🎉";
+        successDesc = `Your ${socialContent.platform} post has been successfully transformed into a full-length blog article with expanded details and depth.`;
       }
       
       toast({
