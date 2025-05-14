@@ -114,10 +114,14 @@ const BlogPostGenerator = () => {
           // Set keywords from platform and prompt content
           const keywordsFromPrompt = postData.prompt
             .split(' ')
-            .filter(word => word.length > 4)
+            .filter((word: string) => word.length > 4)
             .slice(0, 5)
             .join(', ');
           setValue('keywords', keywordsFromPrompt);
+          
+          // Also store the post data in sessionStorage for backend processing
+          // This provides a backup in case localStorage gets cleared
+          sessionStorage.setItem('convertedPost', storedData);
           
           // Notify the user
           toast({
@@ -126,7 +130,8 @@ const BlogPostGenerator = () => {
             variant: 'default'
           });
           
-          // Clear the localStorage data after using it
+          // Clear the localStorage data after using it but keep session storage
+          // This prevents accidental reuse if user visits the page again
           localStorage.removeItem('convertedPost');
         }
       } catch (error) {
