@@ -76,6 +76,7 @@ const ModuleLibraryPage = lazy(() => import("@/pages/ModuleLibraryPage"));
 const InstalledToolsPage = lazy(() => import("@/pages/InstalledToolsPage"));
 const MarketplacePage = lazy(() => import("@/pages/MarketplacePage"));
 const EnhancedMarketplacePage = lazy(() => import("@/pages/EnhancedMarketplacePage"));
+const AdminMarketplacePage = lazy(() => import("@/pages/admin/marketplace"));
 const MyToolsPage = lazy(() => import("@/pages/MyToolsPage"));
 
 const BrandGuidelinesPage = lazy(() => import("@/pages/BrandGuidelinesPage"));
@@ -317,6 +318,11 @@ function Router() {
         path="/admin/blueprint" 
         component={BlueprintManagerPage} 
         allowedRoles={['admin', 'super_admin']} 
+      />
+      <ProtectedRoute 
+        path="/admin/marketplace" 
+        component={AdminMarketplacePage} 
+        allowedRoles={['admin', 'super_admin', 'editor']} 
       />
       <ProtectedRoute 
         path="/admin/blueprint-management" 
