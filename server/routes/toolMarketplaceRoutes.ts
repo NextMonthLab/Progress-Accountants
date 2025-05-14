@@ -1,5 +1,7 @@
 import { Express, Request, Response } from 'express';
 import { logToolInteraction, ToolInteraction, LOG_FILE_PATH } from '../utils/toolLogger';
+import { marketplaceService } from '../services/marketplaceService';
+import { storage } from '../storage';
 import fs from 'fs';
 import path from 'path';
 import { v4 as uuidv4 } from 'uuid';
@@ -116,11 +118,17 @@ const mockTools = [
 const toolAccess = new Map<number, Set<number>>();
 
 export const registerToolMarketplaceRoutes = (app: Express) => {
-  // Get all tools from dev.nextmonth.io
-  app.get('/api/tools', (req: Request, res: Response) => {
-    // In a real app, this would hit the external API: https://dev.nextmonth.io/api/tools
-    // For now, we'll use our mock data
-    res.json(mockTools);
+  // Get all tools from NextMonth Dev
+  app.get('/api/tools', async (req: Request, res: Response) => {
+    try {
+      const visibility = req.query.visibility as "public" | "private" || "public";
+      const tools = await marketplaceService.getAvailableTools(visibility);
+      res.json(tools);
+    } catch (error) {
+      console.error("Error fetching marketplace tools:", error);
+      // Fallback to mock tools if there's an error
+      res.json(mockTools);
+    }
   });
 
   // Get a specific tool by ID
@@ -210,40 +218,72 @@ export const registerToolMarketplaceRoutes = (app: Express) => {
   });
 
   // Grant access to a tool (install)
-  app.post('/api/tools/access/:toolId', (req: Request, res: Response) => {
-    const toolId = parseInt(req.params.toolId);
+  app.post('/api/tools/access/:toolId', async (req: Request, res: Response) => {
+    const toolId = req.params.toolId;
     const userId = req.user?.id as number || 0;
     
-    // Check if the toolId is valid
-    const tool = mockTools.find(t => t.id === toolId);
-    if (!tool) {
-      return res.status(404).json({ message: 'Tool not found' });
-    }
-    
-    // Grant access
-    if (!toolAccess.has(toolId)) {
-      toolAccess.set(toolId, new Set());
-    }
-    
-    if (typeof userId === 'number') {
-      toolAccess.get(toolId)?.add(userId);
-    }
-    
-    // Log the access interaction
-    if (typeof userId === 'number') {
-      logToolInteraction(userId, toolId, 'install', { 
+    try {
+      // For backward compatibility, check if the toolId is a number (from mockTools)
+      if (!isNaN(parseInt(toolId))) {
+        const numericToolId = parseInt(toolId);
+        const tool = mockTools.find(t => t.id === numericToolId);
+        
+        if (!tool) {
+          return res.status(404).json({ message: 'Tool not found' });
+        }
+        
+        // Grant access using the old method for mock tools
+        if (!toolAccess.has(numericToolId)) {
+          toolAccess.set(numericToolId, new Set());
+        }
+        
+        if (typeof userId === 'number') {
+          toolAccess.get(numericToolId)?.add(userId);
+        }
+        
+        // Log the access interaction
+        if (typeof userId === 'number') {
+          logToolInteraction(userId, numericToolId, 'install', { 
+            method: 'marketplace',
+            toolName: tool.title,
+            price: tool.price,
+            timestamp: new Date().toISOString()
+          });
+        }
+        
+        return res.json({ 
+          success: true,
+          message: 'Tool installed successfully',
+          installationId: Date.now() // Use a timestamp as a simple installation ID
+        });
+      }
+      
+      // For real external tools, use the marketplace service
+      const installation = await marketplaceService.installTool(toolId, userId);
+      
+      if (!installation) {
+        return res.status(400).json({ message: 'Failed to install tool' });
+      }
+      
+      // Log the installation in the tool logger as well
+      logToolInteraction(userId, parseInt(toolId) || 0, 'install', { 
         method: 'marketplace',
-        toolName: tool.title,
-        price: tool.price,
+        toolName: "External tool",
         timestamp: new Date().toISOString()
       });
+      
+      return res.json({ 
+        success: true,
+        message: 'Tool installed successfully',
+        installationId: installation.id
+      });
+    } catch (error) {
+      console.error("Error installing tool:", error);
+      return res.status(500).json({ 
+        message: 'Failed to install tool',
+        error: (error as Error).message
+      });
     }
-    
-    return res.json({ 
-      success: true,
-      message: 'Tool installed successfully',
-      installationId: Date.now() // Use a timestamp as a simple installation ID
-    });
   });
   
   // Revoke access to a tool (uninstall)

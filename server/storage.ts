@@ -83,10 +83,18 @@ import {
 } from "@shared/sot";
 import { NewsfeedConfig } from "@shared/newsfeed_types";
 import { db } from "./db";
-import { eq, desc, asc, and } from "drizzle-orm";
+import { eq, desc, asc, and, sql } from "drizzle-orm";
 import connectPg from "connect-pg-simple";
 import session from "express-session";
 import crypto from "crypto";
+import { 
+  toolInstallations, 
+  type ToolInstallation, 
+  type InsertToolInstallation,
+  creditUsageLog,
+  type CreditUsageLog,
+  type InsertCreditUsageLog
+} from "@shared/schema";
 
 // Define the payload types for feature requests
 type StandardPayload = {

@@ -28,6 +28,7 @@ import { registerTenantRoutes } from "./controllers/tenantController";
 import { registerSystemRoutes } from "./controllers/systemController";
 import { registerClientRoutes } from "./controllers/clientController";
 import { registerBlogRoutes } from "./controllers/registerBlogRoutes";
+import MarketplaceApiRouter from "./routes/marketplace";
 import { registerToolMarketplaceRoutes as registerNewToolMarketplaceRoutes } from "./routes/toolMarketplaceRoutes";
 import { registerOpenAIRoutes } from "./controllers/openai/registerOpenAIRoutes";
 import { registerVersionControlRoutes } from "./controllers/registerVersionControlRoutes";
