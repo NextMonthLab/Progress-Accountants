@@ -33,7 +33,8 @@ import {
   Check,
   Sparkles,
   AlignLeft,
-  Volume2
+  Volume2,
+  CheckCircle
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
@@ -574,6 +575,12 @@ As we've explored, ${data.topic} represents a significant opportunity for ${data
                         <p className="text-sm text-gray-600">
                           {generatedContent.imagePrompt}
                         </p>
+                        {businessIdentity && (
+                          <div className="flex items-center gap-2 mt-2 pt-2 border-t border-green-200 text-xs text-green-700">
+                            <CheckCircle className="h-3 w-3 text-green-600" />
+                            <p>Image prompt optimized for {businessIdentity.core?.businessName || 'your business'} brand identity</p>
+                          </div>
+                        )}
                       </div>
                     )}
                     
