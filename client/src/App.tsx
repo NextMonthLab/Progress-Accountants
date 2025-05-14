@@ -18,6 +18,7 @@ import { HealthProvider } from "@/contexts/HealthContext";
 import { NotificationsProvider } from "@/contexts/NotificationsContext";
 import InstantHelpWidget from "@/components/support/InstantHelpWidget";
 import ContextSuggestion from "@/components/support/ContextSuggestion";
+import ConversionDemo from "@/components/ConversionDemo";
 import HealthTracker from "@/components/health/HealthTracker";
 import AdminLayout from "@/layouts/AdminLayout";
 import { testLogin } from "@/lib/test-login";
@@ -209,6 +210,13 @@ function Router() {
       <Route path="/industries/construction">
         <Suspense fallback={<LoadingFallback />}>
           <ConstructionIndustryPage />
+        </Suspense>
+      </Route>
+      
+      {/* Temporary demo route */}
+      <Route path="/conversion-demo">
+        <Suspense fallback={<LoadingFallback />}>
+          <ConversionDemo />
         </Suspense>
       </Route>
       <Route path="/sme-support-hub">
