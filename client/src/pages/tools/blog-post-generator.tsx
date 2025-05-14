@@ -93,6 +93,52 @@ const BlogPostGenerator = () => {
 
     fetchBusinessIdentity();
   }, []);
+  
+  // Check for social media post data to convert
+  useEffect(() => {
+    // Check for source parameter and data in localStorage
+    const urlParams = new URLSearchParams(window.location.search);
+    const source = urlParams.get('source');
+    
+    if (source === 'social') {
+      try {
+        const storedData = localStorage.getItem('convertedPost');
+        if (storedData) {
+          const postData = JSON.parse(storedData);
+          
+          // Populate the form with the social media post data
+          setValue('topic', `Expanded from ${
+            postData.platform.charAt(0).toUpperCase() + postData.platform.slice(1)
+          } post: ${postData.prompt}`);
+          
+          // Set keywords from platform and prompt content
+          const keywordsFromPrompt = postData.prompt
+            .split(' ')
+            .filter(word => word.length > 4)
+            .slice(0, 5)
+            .join(', ');
+          setValue('keywords', keywordsFromPrompt);
+          
+          // Notify the user
+          toast({
+            title: 'Social Media Post Loaded',
+            description: `Converting your ${postData.platform} post into a full blog post`,
+            variant: 'default'
+          });
+          
+          // Clear the localStorage data after using it
+          localStorage.removeItem('convertedPost');
+        }
+      } catch (error) {
+        console.error('Error loading social media post data:', error);
+        toast({
+          title: 'Error',
+          description: 'Could not load social media post data',
+          variant: 'destructive'
+        });
+      }
+    }
+  }, [setValue, toast]);
 
   const { register, handleSubmit, watch, setValue, formState: { errors } } = useForm<BlogPostForm>({
     defaultValues: {
