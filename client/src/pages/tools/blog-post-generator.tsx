@@ -309,6 +309,42 @@ As we've explored, ${data.topic} represents a significant opportunity for ${data
                 </CardDescription>
               </CardHeader>
               <CardContent>
+                {businessIdentity && (
+                  <div className="mb-6 p-4 border rounded-lg bg-amber-50 border-amber-200">
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center gap-2">
+                        <Badge variant="outline" className="bg-amber-100 border-amber-300 text-amber-800">
+                          Business Identity Active
+                        </Badge>
+                      </div>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="text-amber-800 hover:text-amber-900 hover:bg-amber-100"
+                        onClick={() => window.location.href = '/business-identity'}
+                      >
+                        View/Edit
+                      </Button>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4 text-sm">
+                      <div>
+                        <span className="text-muted-foreground">Business Name:</span>{' '}
+                        <span className="font-medium">{businessIdentity.core?.businessName || 'Not set'}</span>
+                      </div>
+                      <div>
+                        <span className="text-muted-foreground">Industry:</span>{' '}
+                        <span className="font-medium">{businessIdentity.market?.primaryIndustry || 'Not set'}</span>
+                      </div>
+                      <div>
+                        <span className="text-muted-foreground">Target Audience:</span>{' '}
+                        <span className="font-medium">{businessIdentity.market?.targetAudience || 'Not set'}</span>
+                      </div>
+                    </div>
+                    <p className="text-xs text-amber-700 mt-2">
+                      Content will be personalized based on this business identity
+                    </p>
+                  </div>
+                )}
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                   <div className="space-y-4">
                     <div className="grid gap-4 md:grid-cols-2">
@@ -409,10 +445,17 @@ As we've explored, ${data.topic} represents a significant opportunity for ${data
                     <div className="grid gap-4 md:grid-cols-2">
                       <div className="space-y-3">
                         <div className="flex justify-between items-center">
-                          <Label htmlFor="content-length" className="flex items-center">
-                            <AlignLeft className="h-4 w-4 mr-2" />
-                            Content Length
-                          </Label>
+                          <div className="flex items-center gap-2">
+                            <Label htmlFor="content-length" className="flex items-center">
+                              <AlignLeft className="h-4 w-4 mr-2" />
+                              Content Length
+                            </Label>
+                            {businessIdentity && (
+                              <Badge variant="outline" className="bg-green-100 border-green-300 text-green-800 text-[10px]">
+                                Optimized
+                              </Badge>
+                            )}
+                          </div>
                           <span className="text-sm text-muted-foreground">
                             {contentLength[0] === 1 ? "Short" : contentLength[0] === 2 ? "Medium" : "Long"}
                           </span>
@@ -460,14 +503,31 @@ As we've explored, ${data.topic} represents a significant opportunity for ${data
           <TabsContent value="preview" className="mt-6">
             {generatedContent && (
               <div className="space-y-6">
-                <Card>
-                  <CardHeader>
-                    <CardTitle>
-                      {generatedContent.title}
-                    </CardTitle>
-                    <CardDescription>
-                      Meta Description: {generatedContent.metaDescription}
-                    </CardDescription>
+                <Card className={businessIdentity ? 'border-green-200' : ''}>
+                  <CardHeader className={businessIdentity ? 'border-b border-green-200 bg-green-50' : ''}>
+                    <div className="flex justify-between items-start">
+                      <div>
+                        <CardTitle>
+                          {generatedContent.title}
+                        </CardTitle>
+                        <CardDescription>
+                          Meta Description: {generatedContent.metaDescription}
+                        </CardDescription>
+                      </div>
+                      {businessIdentity && (
+                        <Badge variant="outline" className="bg-green-100 border-green-300 text-green-800">
+                          Business Optimized
+                        </Badge>
+                      )}
+                    </div>
+                    {businessIdentity && (
+                      <div className="flex items-center gap-2 mt-2 pt-2 text-xs text-green-700">
+                        <CheckCircle className="h-4 w-4 text-green-600" />
+                        <p>
+                          Content optimized for <span className="font-semibold">{businessIdentity.core?.businessName || 'your business'}</span> and tailored to {businessIdentity.market?.targetAudience || 'your audience'}
+                        </p>
+                      </div>
+                    )}
                   </CardHeader>
                   <CardContent>
                     {generatedContent.imageUrl && (
@@ -481,14 +541,22 @@ As we've explored, ${data.topic} represents a significant opportunity for ${data
                     )}
                     
                     {!generatedContent.imageUrl && generatedContent.imagePrompt && (
-                      <div className="mb-4 p-4 border border-dashed border-gray-300 rounded-lg bg-gray-50">
+                      <div className={`mb-4 p-4 border border-dashed rounded-lg ${businessIdentity ? 'border-green-300 bg-green-50' : 'border-gray-300 bg-gray-50'}`}>
                         <div className="flex justify-between items-center mb-2">
-                          <h3 className="font-medium">Featured Image</h3>
+                          <div className="flex items-center gap-2">
+                            <h3 className="font-medium">Featured Image</h3>
+                            {businessIdentity && (
+                              <Badge variant="outline" className="bg-green-100 border-green-300 text-green-800 text-[10px]">
+                                Brand Optimized
+                              </Badge>
+                            )}
+                          </div>
                           <Button 
                             variant="outline" 
                             size="sm" 
                             onClick={generateImage}
                             disabled={isImageGenerating}
+                            className={businessIdentity ? 'bg-green-100 hover:bg-green-200 text-green-800' : ''}
                           >
                             {isImageGenerating ? (
                               <>
