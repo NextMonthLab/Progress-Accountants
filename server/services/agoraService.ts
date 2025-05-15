@@ -1,5 +1,5 @@
-import { db } from '@/server/db';
-import { storage } from '@/server/storage';
+import { db } from '../db';
+import { storage } from '../storage';
 import { v4 as uuidv4 } from 'uuid';
 import {
   Pillar,
@@ -9,7 +9,11 @@ import {
   InsertPillar,
   InsertSpace,
   InsertSpaceNote,
-  InsertSpaceAction
+  InsertSpaceAction,
+  pillars,
+  spaces,
+  spaceNotes,
+  spaceActions
 } from '@shared/agora';
 
 class AgoraService {

@@ -36,6 +36,7 @@ import { registerAiDesignRoutes } from "./controllers/registerAiDesignRoutes";
 import { registerEnhancedSeoRoutes } from "./controllers/registerEnhancedSeoRoutes";
 import { registerBusinessNetworkRoutes } from "./controllers/registerBusinessNetworkRoutes";
 import { registerBusinessDiscoverRoutes } from "./controllers/registerBusinessDiscoverRoutes";
+import { registerAgoraRoutes } from "./routes/agoraRoutes";
 import { 
   getAllResources, 
   getPublicResources, 
@@ -412,6 +413,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
   
   // Register business discover routes
   registerBusinessDiscoverRoutes(app);
+  
+  // Register Agora business intelligence routes
+  registerAgoraRoutes(app);
   
   // Newsfeed routes
   app.get("/api/newsfeed/industry", getIndustryNews);
