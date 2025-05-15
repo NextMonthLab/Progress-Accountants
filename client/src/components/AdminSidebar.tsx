@@ -32,7 +32,8 @@ import {
   Cpu,
   Newspaper,
   User,
-  TrendingUp
+  TrendingUp,
+  Brain
 } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import { useState, useEffect, useRef } from "react";
@@ -175,6 +176,13 @@ export default function AdminSidebar() {
           icon: <LayoutDashboard className="h-5 w-5" />,
           description: "Modern dashboard with enhanced UI and improved contrast",
           badge: { text: "Upgraded", variant: "updated" }
+        },
+        { 
+          title: "Agora Profile", 
+          href: "/agora-profile", 
+          icon: <Brain className="h-5 w-5" />,
+          description: "Business intelligence and management platform",
+          badge: { text: "New", variant: "new" }
         },
         { 
           title: "Client CRM", 
