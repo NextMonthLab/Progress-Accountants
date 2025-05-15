@@ -35,6 +35,17 @@ export const mapSidebarToNavigation = (): NavigationItem[] => {
       pinnedOrder: 2,
     },
     {
+      id: 'agora_profile',
+      title: 'Agora Profile',
+      icon: 'Brain',
+      type: 'link',
+      href: '/admin/agora-profile',
+      description: 'Business intelligence and management platform',
+      badge: { text: 'New', variant: 'new' },
+      category: 'frequently_used',
+      pinnedOrder: 3,
+    },
+    {
       id: 'page_builder',
       title: 'Page Builder',
       icon: 'Layers',
@@ -71,7 +82,7 @@ export const mapSidebarToNavigation = (): NavigationItem[] => {
       ],
       requiresStaff: true,
       category: 'frequently_used',
-      pinnedOrder: 2,
+      pinnedOrder: 4,
     },
     {
       id: 'media_hub',
@@ -83,7 +94,7 @@ export const mapSidebarToNavigation = (): NavigationItem[] => {
       description: 'Manage images, videos and documents',
       badge: { text: 'Enhanced', variant: 'updated' },
       category: 'frequently_used',
-      pinnedOrder: 3,
+      pinnedOrder: 5,
     },
     {
       id: 'marketplace',
@@ -94,7 +105,7 @@ export const mapSidebarToNavigation = (): NavigationItem[] => {
       badge: { text: 'New Tools', variant: 'new' },
       description: 'Discover and install powerful tools',
       category: 'frequently_used',
-      pinnedOrder: 4,
+      pinnedOrder: 6,
     },
     {
       id: 'my_tools',
@@ -105,7 +116,7 @@ export const mapSidebarToNavigation = (): NavigationItem[] => {
       description: 'Access your installed tools',
       badge: { text: 'New', variant: 'new' },
       category: 'frequently_used', 
-      pinnedOrder: 5,
+      pinnedOrder: 7,
     },
     
     // CONTENT CREATION
@@ -174,6 +185,17 @@ export const mapSidebarToNavigation = (): NavigationItem[] => {
       requiresStaff: true,
       description: 'Traffic, user behavior and conversions',
       badge: { text: 'Real-time', variant: 'new' },
+      category: 'admin_tools',
+    },
+    {
+      id: 'agora_profile_analytics',
+      title: 'Agora Profile',
+      icon: 'Brain',
+      type: 'link',
+      href: '/admin/agora-profile',
+      requiresStaff: true,
+      description: 'Business intelligence and management platform',
+      badge: { text: 'New', variant: 'new' },
       category: 'admin_tools',
     },
     {
