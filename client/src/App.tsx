@@ -37,6 +37,7 @@ const SuperAdminDashboard = lazy(() => import("@/pages/super-admin/SuperAdminDas
 const StudioPage = lazy(() => import("@/pages/StudioPage"));
 const DashboardPage = lazy(() => import("@/pages/DashboardPage"));
 const AgoraProfilePage = lazy(() => import("@/pages/agora-profile"));
+const AgoraProfileTestPage = lazy(() => import("@/pages/agora-profile-test"));
 const ClientRegistrationPage = lazy(() => import("@/pages/ClientRegistrationPage"));
 const ClientDashboardPage = lazy(() => import("@/pages/ClientDashboardPage"));
 const ClientDashboardPage2 = lazy(() => import("@/pages/ClientDashboardPage2"));
@@ -492,6 +493,11 @@ function Router() {
       <Route path="/agora-profile">
         <Suspense fallback={<LoadingFallback />}>
           <AgoraProfilePage />
+        </Suspense>
+      </Route>
+      <Route path="/agora-profile-test">
+        <Suspense fallback={<LoadingFallback />}>
+          <AgoraProfileTestPage />
         </Suspense>
       </Route>
       <ProtectedRoute 
