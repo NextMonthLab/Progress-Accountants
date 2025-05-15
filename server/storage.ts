@@ -28,6 +28,18 @@ import {
   type InsertModuleActivation,
   pageComplexityTriage,
   type PageComplexityTriage,
+  pillars as agoraPillars,
+  type Pillar,
+  type InsertPillar,
+  spaces as agoraSpaces,
+  type Space,
+  type InsertSpace,
+  spaceNotes as agoraSpaceNotes,
+  type SpaceNote,
+  type InsertSpaceNote,
+  spaceActions as agoraSpaceActions,
+  type SpaceAction,
+  type InsertSpaceAction,
   tenants,
   type Tenant,
   type InsertTenant,
@@ -178,6 +190,35 @@ export interface IStorage {
   getPageComplexityTriage(id: number): Promise<PageComplexityTriage | undefined>;
   getPageComplexityTriagesByUser(userId: number): Promise<PageComplexityTriage[]>;
   updatePageComplexitySyncStatus(id: number, vaultSynced?: boolean, guardianSynced?: boolean): Promise<PageComplexityTriage | undefined>;
+  
+  // Agora Pillars
+  getPillars(businessId: string): Promise<Pillar[]>;
+  getPillar(id: string): Promise<Pillar | undefined>;
+  createPillar(data: InsertPillar): Promise<Pillar>;
+  updatePillar(id: string, data: Partial<InsertPillar>): Promise<Pillar | undefined>;
+  archivePillar(id: string): Promise<Pillar | undefined>;
+  
+  // Agora Spaces
+  getSpaces(businessId: string): Promise<Space[]>;
+  getSpacesByPillar(pillarId: string): Promise<Space[]>;
+  getSpace(id: string): Promise<Space | undefined>;
+  createSpace(data: InsertSpace): Promise<Space>;
+  updateSpace(id: string, data: Partial<InsertSpace>): Promise<Space | undefined>;
+  updateSpaceProgress(id: string, progress: number): Promise<Space | undefined>;
+  archiveSpace(id: string): Promise<Space | undefined>;
+  
+  // Agora Space Notes
+  getSpaceNotes(spaceId: string): Promise<SpaceNote[]>;
+  createSpaceNote(data: InsertSpaceNote): Promise<SpaceNote>;
+  updateSpaceNote(id: string, content: string): Promise<SpaceNote | undefined>;
+  archiveSpaceNote(id: string): Promise<SpaceNote | undefined>;
+  
+  // Agora Space Actions
+  getSpaceActions(spaceId: string): Promise<SpaceAction[]>;
+  createSpaceAction(data: InsertSpaceAction): Promise<SpaceAction>;
+  updateSpaceAction(id: string, data: Partial<InsertSpaceAction>): Promise<SpaceAction | undefined>;
+  completeSpaceAction(id: string): Promise<SpaceAction | undefined>;
+  archiveSpaceAction(id: string): Promise<SpaceAction | undefined>;
   
   // SEO Configuration operations
   getSeoConfiguration(routePath: string): Promise<SeoConfiguration | undefined>;
