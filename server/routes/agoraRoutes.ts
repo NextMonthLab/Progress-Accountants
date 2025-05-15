@@ -11,7 +11,7 @@ export const registerAgoraRoutes = (app: Express) => {
 };
 
 // Authentication middleware to ensure user is logged in
-const ensureAuthenticated = (req, res, next) => {
+const ensureAuthenticated = (req: Express.Request, res: Express.Response, next: Express.NextFunction) => {
   if (req.isAuthenticated()) {
     return next();
   }
@@ -19,7 +19,7 @@ const ensureAuthenticated = (req, res, next) => {
 };
 
 // Get the tenant or business ID for the current request
-const getBusinessId = (req): string => {
+const getBusinessId = (req: Express.Request): string => {
   // In a real scenario, this would come from the authenticated user's context
   // For demo purposes, we'll use a hardcoded value or from query params
   return req.query.businessId || '00000000-0000-0000-0000-000000000000';

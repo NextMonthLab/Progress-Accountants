@@ -170,7 +170,16 @@ class AgoraService {
         );
 
       if (pillarId) {
-        query = query.where(eq(spaces.pillarId, pillarId));
+        query = db
+          .select()
+          .from(spaces)
+          .where(
+            and(
+              eq(spaces.businessId, businessId),
+              eq(spaces.isArchived, false),
+              eq(spaces.pillarId, pillarId)
+            )
+          );
       }
 
       return await query.orderBy(desc(spaces.updatedAt));
