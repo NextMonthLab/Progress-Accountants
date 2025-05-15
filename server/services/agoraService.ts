@@ -238,10 +238,11 @@ class AgoraService {
 
       // Log the activity
       await storage.logActivity({
-        action: 'space_updated',
-        userId: 0,
+        userType: 'system',
+        actionType: 'updated',
+        entityType: 'space',
+        entityId: space.id,
         details: { 
-          spaceId: space.id, 
           spaceName: space.name 
         }
       });
@@ -273,9 +274,11 @@ class AgoraService {
 
       // Log the activity
       await storage.logActivity({
-        action: 'space_archived',
-        userId: 0,
-        details: { spaceId: space.id, spaceName: space.name }
+        userType: 'system',
+        actionType: 'archived',
+        entityType: 'space',
+        entityId: space.id,
+        details: { spaceName: space.name }
       });
 
       return true;
