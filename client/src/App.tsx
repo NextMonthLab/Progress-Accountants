@@ -36,6 +36,7 @@ import AuthPage from "@/pages/AuthPage";
 const SuperAdminDashboard = lazy(() => import("@/pages/super-admin/SuperAdminDashboard"));
 const StudioPage = lazy(() => import("@/pages/StudioPage"));
 const DashboardPage = lazy(() => import("@/pages/DashboardPage"));
+const AgoraProfilePage = lazy(() => import("@/pages/agora-profile"));
 const ClientRegistrationPage = lazy(() => import("@/pages/ClientRegistrationPage"));
 const ClientDashboardPage = lazy(() => import("@/pages/ClientDashboardPage"));
 const ClientDashboardPage2 = lazy(() => import("@/pages/ClientDashboardPage2"));
@@ -486,6 +487,11 @@ function Router() {
       <ProtectedRoute 
         path="/entrepreneur-support" 
         component={EntrepreneurSupportPage}
+        allowedRoles={['client', 'admin', 'super_admin']} 
+      />
+      <ProtectedRoute 
+        path="/agora-profile" 
+        component={AgoraProfilePage}
         allowedRoles={['client', 'admin', 'super_admin']} 
       />
       <ProtectedRoute 
