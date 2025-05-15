@@ -1,4 +1,4 @@
-import { Router, Express } from 'express';
+import { Router, Express, Request, Response, NextFunction } from 'express';
 import { agoraService } from '../services/agoraService';
 import { z } from 'zod';
 import { insertPillarSchema, insertSpaceSchema } from '@shared/agora';
@@ -11,7 +11,7 @@ export const registerAgoraRoutes = (app: Express) => {
 };
 
 // Authentication middleware to ensure user is logged in
-const ensureAuthenticated = (req: Express.Request, res: Express.Response, next: Express.NextFunction) => {
+const ensureAuthenticated = (req: Request, res: Response, next: NextFunction) => {
   if (req.isAuthenticated()) {
     return next();
   }
@@ -19,10 +19,10 @@ const ensureAuthenticated = (req: Express.Request, res: Express.Response, next: 
 };
 
 // Get the tenant or business ID for the current request
-const getBusinessId = (req: Express.Request): string => {
+const getBusinessId = (req: Request): string => {
   // In a real scenario, this would come from the authenticated user's context
   // For demo purposes, we'll use a hardcoded value or from query params
-  return req.query.businessId || '00000000-0000-0000-0000-000000000000';
+  return (req.query.businessId as string) || '00000000-0000-0000-0000-000000000000';
 };
 
 // Get all pillars

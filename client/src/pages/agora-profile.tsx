@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { 
   Card, 
@@ -22,7 +22,7 @@ import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { BookOpen, Calendar, Clock, Edit, Plus, AlertCircle, X, Bookmark, ExternalLink } from 'lucide-react';
+import { BookOpen, Calendar, Clock, Edit, Plus, AlertCircle, X, Bookmark, ExternalLink, Loader2 } from 'lucide-react';
 
 // Placeholder types (will be imported from @shared/agora later)
 type Pillar = {
@@ -62,32 +62,38 @@ const AgoraProfilePage: React.FC = () => {
   const [dismissedNudges, setDismissedNudges] = useState<Set<number>>(new Set());
 
   // Fetch pillars for the business
-  const { data: pillars = [] } = useQuery<Pillar[]>({
+  const { 
+    data: pillars = [], 
+    isLoading: isPillarsLoading, 
+    error: pillarsError 
+  } = useQuery<Pillar[]>({
     queryKey: ['/api/agora/pillars'],
-    // On error, return empty array
-    onError: (error) => {
-      console.error('Failed to fetch pillars:', error);
-    }
+    retry: 1,
+    refetchOnWindowFocus: false
   });
 
   // Fetch spaces for the business, filtered by pillar if selected
-  const { data: spaces = [] } = useQuery<Space[]>({
+  const { 
+    data: spaces = [], 
+    isLoading: isSpacesLoading,
+    error: spacesError
+  } = useQuery<Space[]>({
     queryKey: selectedPillar 
       ? ['/api/agora/pillars', selectedPillar, 'spaces'] 
       : ['/api/agora/spaces'],
-    // On error, return empty array
-    onError: (error) => {
-      console.error('Failed to fetch spaces:', error);
-    }
+    retry: 1,
+    refetchOnWindowFocus: false
   });
 
   // Fetch nudge suggestions
-  const { data: nudges = [] } = useQuery<Nudge[]>({
+  const { 
+    data: nudges = [], 
+    isLoading: isNudgesLoading,
+    error: nudgesError
+  } = useQuery<Nudge[]>({
     queryKey: ['/api/agora/nudges'],
-    // On error, return empty array
-    onError: (error) => {
-      console.error('Failed to fetch nudges:', error);
-    }
+    retry: 1,
+    refetchOnWindowFocus: false
   });
 
   // Filter out dismissed nudges
@@ -126,6 +132,34 @@ const AgoraProfilePage: React.FC = () => {
   const getPillarColor = (pillar: Pillar) => {
     return pillar.color || '#008080'; // Default to teal if no color specified
   };
+
+  // Show a loading state when any of the critical data is loading
+  const isLoading = isPillarsLoading || isSpacesLoading || isNudgesLoading;
+  const hasError = pillarsError || spacesError || nudgesError;
+
+  if (isLoading) {
+    return (
+      <div className="container mx-auto px-4 py-8 flex flex-col items-center justify-center min-h-[60vh]">
+        <Loader2 className="h-12 w-12 animate-spin text-primary mb-4" />
+        <h2 className="text-xl font-medium">Loading your Agora Profile...</h2>
+      </div>
+    );
+  }
+
+  if (hasError) {
+    return (
+      <div className="container mx-auto px-4 py-8 flex flex-col items-center justify-center min-h-[60vh]">
+        <Alert variant="destructive" className="mb-4 w-full max-w-lg">
+          <AlertCircle className="h-5 w-5" />
+          <AlertTitle>Error</AlertTitle>
+          <AlertDescription>
+            There was a problem loading your Agora Profile. Please try again later.
+          </AlertDescription>
+        </Alert>
+        <Button onClick={() => window.location.reload()}>Retry</Button>
+      </div>
+    );
+  }
 
   return (
     <div className="container mx-auto px-4 py-8">
