@@ -15,416 +15,312 @@ import {
   spaceNotes,
   spaceActions
 } from '@shared/agora';
+import { eq, and, desc } from 'drizzle-orm';
+
+// Type for whisper nudges
+export interface WhisperNudge {
+  id: string;
+  message: string;
+  actionText?: string;
+  actionId?: string;
+  targetResourceType?: string;
+  targetResourceId?: string;
+  priority: number;
+  createdAt: Date;
+}
 
 class AgoraService {
-  // Pillar operations
+  /**
+   * Get all pillars for a business
+   */
   async getPillars(businessId: string): Promise<Pillar[]> {
     try {
-      // Return pillars for this business that are not archived
-      return await db.query.agoraPillars.findMany({
-        where: (pillar, { and, eq }) => 
-          and(eq(pillar.businessId, businessId), eq(pillar.isArchived, false)),
-        orderBy: (pillar, { desc }) => [desc(pillar.updatedAt)]
-      });
+      return await db
+        .select()
+        .from(pillars)
+        .where(
+          and(
+            eq(pillars.businessId, businessId),
+            eq(pillars.isArchived, false)
+          )
+        )
+        .orderBy(desc(pillars.updatedAt));
     } catch (error) {
-      console.error('Error fetching pillars:', error);
+      console.error('Error getting pillars:', error);
       return [];
     }
   }
 
-  async getPillar(id: string): Promise<Pillar | null> {
-    try {
-      return await db.query.agoraPillars.findFirst({
-        where: (pillar, { eq }) => eq(pillar.id, id)
-      });
-    } catch (error) {
-      console.error(`Error fetching pillar ${id}:`, error);
-      return null;
-    }
-  }
-
+  /**
+   * Create a new pillar
+   */
   async createPillar(data: InsertPillar): Promise<Pillar> {
     try {
-      const id = uuidv4();
+      const id = data.id || uuidv4();
       const now = new Date();
       
-      const [pillar] = await db.insert(agoraPillars)
+      const [pillar] = await db
+        .insert(pillars)
         .values({
+          ...data,
           id,
-          name: data.name,
-          description: data.description,
-          color: data.color,
-          businessId: data.businessId,
           createdAt: now,
-          updatedAt: now
+          updatedAt: now,
+          isArchived: false
         })
         .returning();
-      
+
+      // Log the activity
+      await storage.logActivity({
+        userType: 'system',
+        actionType: 'created',
+        entityType: 'pillar',
+        entityId: pillar.id,
+        details: { pillarName: pillar.name }
+      });
+
       return pillar;
     } catch (error) {
       console.error('Error creating pillar:', error);
-      throw new Error('Failed to create pillar');
+      throw error;
     }
   }
 
-  async updatePillar(id: string, data: Partial<InsertPillar>): Promise<Pillar | null> {
+  /**
+   * Update an existing pillar
+   */
+  async updatePillar(pillarId: string, data: Partial<InsertPillar>): Promise<Pillar | null> {
     try {
-      const [updatedPillar] = await db.update(agoraPillars)
+      const [pillar] = await db
+        .update(pillars)
         .set({
           ...data,
           updatedAt: new Date()
         })
-        .where(pillar => pillar.id.equals(id))
+        .where(eq(pillars.id, pillarId))
         .returning();
-      
-      return updatedPillar || null;
+
+      if (!pillar) {
+        return null;
+      }
+
+      // Log the activity
+      await storage.logActivity({
+        userType: 'system',
+        actionType: 'updated',
+        entityType: 'pillar',
+        entityId: pillar.id,
+        details: { pillarName: pillar.name }
+      });
+
+      return pillar;
     } catch (error) {
-      console.error(`Error updating pillar ${id}:`, error);
-      return null;
+      console.error('Error updating pillar:', error);
+      throw error;
     }
   }
 
-  async archivePillar(id: string): Promise<Pillar | null> {
+  /**
+   * Archive a pillar (soft delete)
+   */
+  async archivePillar(pillarId: string): Promise<boolean> {
     try {
-      const [archivedPillar] = await db.update(agoraPillars)
+      const [pillar] = await db
+        .update(pillars)
         .set({
           isArchived: true,
           updatedAt: new Date()
         })
-        .where(pillar => pillar.id.equals(id))
+        .where(eq(pillars.id, pillarId))
         .returning();
-      
-      return archivedPillar || null;
+
+      if (!pillar) {
+        return false;
+      }
+
+      // Log the activity
+      await storage.logActivity({
+        userType: 'system',
+        actionType: 'archived',
+        entityType: 'pillar',
+        entityId: pillar.id,
+        details: { pillarName: pillar.name }
+      });
+
+      return true;
     } catch (error) {
-      console.error(`Error archiving pillar ${id}:`, error);
-      return null;
+      console.error('Error archiving pillar:', error);
+      return false;
     }
   }
 
-  // Space operations
-  async getSpaces(businessId: string): Promise<Space[]> {
+  /**
+   * Get all spaces for a business, optionally filtered by pillar
+   */
+  async getSpaces(businessId: string, pillarId?: string): Promise<Space[]> {
     try {
-      return await db.query.agoraSpaces.findMany({
-        where: (space, { and, eq }) => 
-          and(eq(space.businessId, businessId), eq(space.isArchived, false)),
-        orderBy: (space, { desc }) => [desc(space.updatedAt)]
-      });
+      let query = db
+        .select()
+        .from(spaces)
+        .where(
+          and(
+            eq(spaces.businessId, businessId),
+            eq(spaces.isArchived, false)
+          )
+        );
+
+      if (pillarId) {
+        query = query.where(eq(spaces.pillarId, pillarId));
+      }
+
+      return await query.orderBy(desc(spaces.updatedAt));
     } catch (error) {
-      console.error('Error fetching spaces:', error);
+      console.error('Error getting spaces:', error);
       return [];
     }
   }
 
-  async getSpacesByPillar(pillarId: string): Promise<Space[]> {
-    try {
-      return await db.query.agoraSpaces.findMany({
-        where: (space, { and, eq }) => 
-          and(eq(space.pillarId, pillarId), eq(space.isArchived, false)),
-        orderBy: (space, { desc }) => [desc(space.updatedAt)]
-      });
-    } catch (error) {
-      console.error(`Error fetching spaces for pillar ${pillarId}:`, error);
-      return [];
-    }
-  }
-
-  async getSpace(id: string): Promise<Space | null> {
-    try {
-      return await db.query.agoraSpaces.findFirst({
-        where: (space, { eq }) => eq(space.id, id)
-      });
-    } catch (error) {
-      console.error(`Error fetching space ${id}:`, error);
-      return null;
-    }
-  }
-
+  /**
+   * Create a new space
+   */
   async createSpace(data: InsertSpace): Promise<Space> {
     try {
-      const id = uuidv4();
+      const id = data.id || uuidv4();
       const now = new Date();
-      
-      const [space] = await db.insert(agoraSpaces)
+
+      const [space] = await db
+        .insert(spaces)
         .values({
+          ...data,
           id,
-          name: data.name,
-          description: data.description,
-          pillarId: data.pillarId,
-          businessId: data.businessId,
-          status: 'active',
-          priority: data.priority || 0,
-          progress: 0,
           createdAt: now,
           updatedAt: now,
-          dueDate: data.dueDate
+          isArchived: false
         })
         .returning();
-      
+
+      // Log the activity
+      await storage.logActivity({
+        userType: 'system',
+        actionType: 'created',
+        entityType: 'space',
+        entityId: space.id,
+        details: { 
+          spaceName: space.name,
+          pillarId: space.pillarId || 'none'
+        }
+      });
+
       return space;
     } catch (error) {
       console.error('Error creating space:', error);
-      throw new Error('Failed to create space');
+      throw error;
     }
   }
 
-  async updateSpace(id: string, data: Partial<InsertSpace>): Promise<Space | null> {
+  /**
+   * Update an existing space
+   */
+  async updateSpace(spaceId: string, data: Partial<InsertSpace>): Promise<Space | null> {
     try {
-      const [updatedSpace] = await db.update(agoraSpaces)
+      const [space] = await db
+        .update(spaces)
         .set({
           ...data,
           updatedAt: new Date()
         })
-        .where(space => space.id.equals(id))
+        .where(eq(spaces.id, spaceId))
         .returning();
-      
-      return updatedSpace || null;
-    } catch (error) {
-      console.error(`Error updating space ${id}:`, error);
-      return null;
-    }
-  }
 
-  async updateSpaceProgress(id: string, progress: number): Promise<Space | null> {
-    try {
-      const [updatedSpace] = await db.update(agoraSpaces)
-        .set({
-          progress: Math.min(Math.max(progress, 0), 100), // Ensure progress is between 0-100
-          updatedAt: new Date()
-        })
-        .where(space => space.id.equals(id))
-        .returning();
-      
-      return updatedSpace || null;
-    } catch (error) {
-      console.error(`Error updating space progress ${id}:`, error);
-      return null;
-    }
-  }
-
-  async archiveSpace(id: string): Promise<Space | null> {
-    try {
-      const [archivedSpace] = await db.update(agoraSpaces)
-        .set({
-          isArchived: true,
-          updatedAt: new Date()
-        })
-        .where(space => space.id.equals(id))
-        .returning();
-      
-      return archivedSpace || null;
-    } catch (error) {
-      console.error(`Error archiving space ${id}:`, error);
-      return null;
-    }
-  }
-
-  // Space Notes operations
-  async getSpaceNotes(spaceId: string): Promise<SpaceNote[]> {
-    try {
-      return await db.query.agoraSpaceNotes.findMany({
-        where: (note, { and, eq }) => 
-          and(eq(note.spaceId, spaceId), eq(note.isArchived, false)),
-        orderBy: (note, { desc }) => [desc(note.createdAt)]
-      });
-    } catch (error) {
-      console.error(`Error fetching notes for space ${spaceId}:`, error);
-      return [];
-    }
-  }
-
-  async createSpaceNote(data: InsertSpaceNote): Promise<SpaceNote> {
-    try {
-      const id = uuidv4();
-      const now = new Date();
-      
-      const [note] = await db.insert(agoraSpaceNotes)
-        .values({
-          id,
-          spaceId: data.spaceId,
-          content: data.content,
-          userId: data.userId,
-          createdAt: now,
-          updatedAt: now
-        })
-        .returning();
-      
-      return note;
-    } catch (error) {
-      console.error('Error creating space note:', error);
-      throw new Error('Failed to create space note');
-    }
-  }
-
-  async updateSpaceNote(id: string, content: string): Promise<SpaceNote | null> {
-    try {
-      const [updatedNote] = await db.update(agoraSpaceNotes)
-        .set({
-          content,
-          updatedAt: new Date()
-        })
-        .where(note => note.id.equals(id))
-        .returning();
-      
-      return updatedNote || null;
-    } catch (error) {
-      console.error(`Error updating space note ${id}:`, error);
-      return null;
-    }
-  }
-
-  async archiveSpaceNote(id: string): Promise<SpaceNote | null> {
-    try {
-      const [archivedNote] = await db.update(agoraSpaceNotes)
-        .set({
-          isArchived: true,
-          updatedAt: new Date()
-        })
-        .where(note => note.id.equals(id))
-        .returning();
-      
-      return archivedNote || null;
-    } catch (error) {
-      console.error(`Error archiving space note ${id}:`, error);
-      return null;
-    }
-  }
-
-  // Space Actions operations
-  async getSpaceActions(spaceId: string): Promise<SpaceAction[]> {
-    try {
-      return await db.query.agoraSpaceActions.findMany({
-        where: (action, { and, eq }) => 
-          and(eq(action.spaceId, spaceId), eq(action.isArchived, false)),
-        orderBy: (action, { desc }) => [desc(action.createdAt)]
-      });
-    } catch (error) {
-      console.error(`Error fetching actions for space ${spaceId}:`, error);
-      return [];
-    }
-  }
-
-  async createSpaceAction(data: InsertSpaceAction): Promise<SpaceAction> {
-    try {
-      const id = uuidv4();
-      const now = new Date();
-      
-      const [action] = await db.insert(agoraSpaceActions)
-        .values({
-          id,
-          spaceId: data.spaceId,
-          title: data.title,
-          description: data.description,
-          status: 'pending',
-          dueDate: data.dueDate,
-          assignedTo: data.assignedTo,
-          createdBy: data.createdBy,
-          createdAt: now,
-          updatedAt: now
-        })
-        .returning();
-      
-      return action;
-    } catch (error) {
-      console.error('Error creating space action:', error);
-      throw new Error('Failed to create space action');
-    }
-  }
-
-  async updateSpaceAction(id: string, data: Partial<InsertSpaceAction>): Promise<SpaceAction | null> {
-    try {
-      const [updatedAction] = await db.update(agoraSpaceActions)
-        .set({
-          ...data,
-          updatedAt: new Date()
-        })
-        .where(action => action.id.equals(id))
-        .returning();
-      
-      return updatedAction || null;
-    } catch (error) {
-      console.error(`Error updating space action ${id}:`, error);
-      return null;
-    }
-  }
-
-  async completeSpaceAction(id: string): Promise<SpaceAction | null> {
-    try {
-      const now = new Date();
-      const [completedAction] = await db.update(agoraSpaceActions)
-        .set({
-          status: 'completed',
-          updatedAt: now,
-          completedAt: now
-        })
-        .where(action => action.id.equals(id))
-        .returning();
-      
-      return completedAction || null;
-    } catch (error) {
-      console.error(`Error completing space action ${id}:`, error);
-      return null;
-    }
-  }
-
-  async archiveSpaceAction(id: string): Promise<SpaceAction | null> {
-    try {
-      const [archivedAction] = await db.update(agoraSpaceActions)
-        .set({
-          isArchived: true,
-          updatedAt: new Date()
-        })
-        .where(action => action.id.equals(id))
-        .returning();
-      
-      return archivedAction || null;
-    } catch (error) {
-      console.error(`Error archiving space action ${id}:`, error);
-      return null;
-    }
-  }
-
-  // Get suggested nudges based on business data and spaces
-  async getSuggestedNudges(businessId: string): Promise<Array<{ message: string; actionId?: string; priority: number }>> {
-    try {
-      // In a real implementation, this would analyze business data, spaces, and activity
-      // to generate personalized nudges. For now, return some example nudges.
-      
-      const spaces = await this.getSpaces(businessId);
-      const incompleteTasks = spaces.filter(space => space.status === 'active' && space.progress < 100).length;
-      
-      const nudges = [];
-      
-      if (incompleteTasks > 3) {
-        nudges.push({
-          message: `You have ${incompleteTasks} active spaces that need attention. Consider focusing on fewer priorities at once.`,
-          priority: 8
-        });
+      if (!space) {
+        return null;
       }
-      
-      if (spaces.length === 0) {
-        nudges.push({
-          message: "Get started with Agora by creating your first business Space to track an important initiative.",
-          priority: 10
-        });
-      }
-      
-      // Add some generic nudges as examples
-      nudges.push({
-        message: "Review your Client Trust pillar. When did you last request feedback from top clients?",
-        priority: 5
+
+      // Log the activity
+      await storage.logActivity({
+        action: 'space_updated',
+        userId: 0,
+        details: { 
+          spaceId: space.id, 
+          spaceName: space.name 
+        }
       });
-      
-      nudges.push({
-        message: "Staff Culture spaces haven't been updated in 2 weeks. Schedule a team check-in?",
-        priority: 6
-      });
-      
-      return nudges.sort((a, b) => b.priority - a.priority);
+
+      return space;
     } catch (error) {
-      console.error(`Error generating nudges for business ${businessId}:`, error);
-      return [];
+      console.error('Error updating space:', error);
+      throw error;
     }
   }
+
+  /**
+   * Archive a space (soft delete)
+   */
+  async archiveSpace(spaceId: string): Promise<boolean> {
+    try {
+      const [space] = await db
+        .update(spaces)
+        .set({
+          isArchived: true,
+          updatedAt: new Date()
+        })
+        .where(eq(spaces.id, spaceId))
+        .returning();
+
+      if (!space) {
+        return false;
+      }
+
+      // Log the activity
+      await storage.logActivity({
+        action: 'space_archived',
+        userId: 0,
+        details: { spaceId: space.id, spaceName: space.name }
+      });
+
+      return true;
+    } catch (error) {
+      console.error('Error archiving space:', error);
+      return false;
+    }
+  }
+
+  /**
+   * Get whisper nudges for a business
+   * In a real implementation, this would involve AI processing of business data
+   * For now, we'll return sample nudges
+   */
+  async getWhisperNudges(businessId: string): Promise<WhisperNudge[]> {
+    // In a real implementation, these would be generated by an AI based on business data
+    // and stored in the database. For now, we'll return sample static data.
+    const sampleNudges: WhisperNudge[] = [
+      {
+        id: uuidv4(),
+        message: "You've mentioned 'client retention' 5 times in recent meetings. Create a Space to track your retention strategies?",
+        actionText: "Create Retention Space",
+        targetResourceType: "space",
+        priority: 3,
+        createdAt: new Date()
+      },
+      {
+        id: uuidv4(),
+        message: "It's been 30 days since you reviewed your 'Team Culture' Pillar. Would you like to schedule a team feedback session?",
+        actionText: "Schedule Session",
+        priority: 2,
+        createdAt: new Date()
+      },
+      {
+        id: uuidv4(),
+        message: "A new month is beginning. Time for a fresh perspective!",
+        priority: 1,
+        createdAt: new Date()
+      }
+    ];
+
+    return sampleNudges;
+  }
+
+  // Additional methods for managing space notes and actions could be added here
 }
 
 export const agoraService = new AgoraService();
