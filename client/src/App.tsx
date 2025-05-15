@@ -489,11 +489,11 @@ function Router() {
         component={EntrepreneurSupportPage}
         allowedRoles={['client', 'admin', 'super_admin']} 
       />
-      <ProtectedRoute 
-        path="/agora-profile" 
-        component={AgoraProfilePage}
-        allowedRoles={['client', 'admin', 'super_admin']} 
-      />
+      <Route path="/agora-profile">
+        <Suspense fallback={<LoadingFallback />}>
+          <AgoraProfilePage />
+        </Suspense>
+      </Route>
       <ProtectedRoute 
         path="/navigation-demo" 
         component={NavigationDemoPage}

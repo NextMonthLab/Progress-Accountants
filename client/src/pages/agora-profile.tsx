@@ -59,7 +59,7 @@ type Nudge = {
 
 const AgoraProfilePage: React.FC = () => {
   const [selectedPillar, setSelectedPillar] = useState<string | null>(null);
-  const [dismissedNudges, setDismissedNudges] = useState<Set<number>>(new Set());
+  const [dismissedNudges, setDismissedNudges] = useState<number[]>([]);
 
   // Fetch pillars for the business
   const { 
@@ -97,11 +97,11 @@ const AgoraProfilePage: React.FC = () => {
   });
 
   // Filter out dismissed nudges
-  const activeNudges = nudges.filter((_, index) => !dismissedNudges.has(index));
+  const activeNudges = nudges.filter((_, index) => !dismissedNudges.includes(index));
 
   // Handle nudge dismissal
   const dismissNudge = (index: number) => {
-    setDismissedNudges(prev => new Set([...prev, index]));
+    setDismissedNudges(prev => [...prev, index]);
   };
 
   // Get count of spaces for each pillar
