@@ -179,7 +179,7 @@ export default function AdminSidebar() {
         },
         { 
           title: "Agora Profile", 
-          href: "/agora-profile", 
+          href: "/admin/agora-profile", 
           icon: <Brain className="h-5 w-5" />,
           description: "Business intelligence and management platform",
           badge: { text: "New", variant: "new" }

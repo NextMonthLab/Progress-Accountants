@@ -352,6 +352,11 @@ function Router() {
         allowedRoles={['admin', 'super_admin']} 
       />
       <ProtectedRoute 
+        path="/admin/agora-profile" 
+        component={AgoraProfilePage} 
+        allowedRoles={['admin', 'super_admin', 'editor']} 
+      />
+      <ProtectedRoute 
         path="/admin/menu-management" 
         component={MenuManagementPage} 
         allowedRoles={['admin', 'super_admin', 'editor']} 
@@ -490,11 +495,7 @@ function Router() {
         component={EntrepreneurSupportPage}
         allowedRoles={['client', 'admin', 'super_admin']} 
       />
-      <Route path="/agora-profile">
-        <Suspense fallback={<LoadingFallback />}>
-          <AgoraProfilePage />
-        </Suspense>
-      </Route>
+      {/* Moved to protected route at /admin/agora-profile */}
       <Route path="/agora-profile-test">
         <Suspense fallback={<LoadingFallback />}>
           <AgoraProfileTestPage />
