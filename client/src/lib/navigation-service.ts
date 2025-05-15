@@ -110,7 +110,7 @@ export const mapSidebarToNavigation = (): NavigationItem[] => {
     {
       id: 'my_tools',
       title: 'My Tools',
-      icon: 'Toolbox',
+      icon: 'AppWindow',
       type: 'link',
       href: '/my-tools',
       description: 'Access your installed tools',
