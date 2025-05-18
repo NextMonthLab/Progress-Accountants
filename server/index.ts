@@ -33,6 +33,7 @@ import { registerCrmRoutes } from './controllers/crmController';
 import { registerOnboardingRoutes } from './controllers/onboardingController';
 import { registerHealthRoutes } from './health-routes';
 import { initScheduler } from './scheduler';
+import path from 'path';
 
 const app = express();
 app.use(express.json());
@@ -110,43 +111,43 @@ app.use((req, res, next) => {
 
   // Register API routes
   const server = await registerRoutes(app);
-  
+
   // Register navigation routes
   registerNavigationRoutes(app);
-  
+
   // Register domain mapping routes
   registerDomainMappingRoutes(app);
-  
+
   // Register SOT routes
   registerSotRoutes(app);
-  
+
   // Register Client Check-In routes for NextMonth SOT
   registerClientCheckInRoutes(app);
-  
+
   // Register Site Inventory routes for Agora integration
   registerSiteInventoryRoutes(app);
-  
+
   // Register Progress Agent routes
   registerAgentRoutes(app);
-  
+
   // Register Social Media Post Generator routes
   registerSocialMediaRoutes(app);
-  
+
   // Register Advanced SEO Intelligence routes
   registerAdvancedSeoRoutes(app);
-  
+
   // Register Insights Dashboard routes
   registerInsightsRoutes(app);
-  
+
   // Register Blueprint routes
   registerBlueprintRoutes(app);
-  
+
   // Register Starter CRM routes
   registerCrmRoutes(app);
-  
+
   // Register Onboarding routes
   registerOnboardingRoutes(app);
-  
+
   // Register Health Monitoring routes
   await registerHealthRoutes(app);
 
@@ -164,7 +165,8 @@ app.use((req, res, next) => {
   if (app.get("env") === "development") {
     await setupVite(app, server);
   } else {
-    serveStatic(app);
+    const publicPath = path.join(__dirname, '../public');
+    app.use(express.static(publicPath));
   }
 
   // ALWAYS serve the app on port 5000
@@ -177,15 +179,15 @@ app.use((req, res, next) => {
     reusePort: true,
   }, () => {
     log(`serving on port ${port}`);
-    
+
     // Schedule daily backup at 6pm UTC (18:00)
     cron.schedule('0 18 * * *', async () => {
       log('Running scheduled backup...');
       await triggerBackup();
     });
-    
+
     log('Backup scheduler initialized');
-    
+
     // Initialize insights summary scheduler
     initScheduler();
   });
