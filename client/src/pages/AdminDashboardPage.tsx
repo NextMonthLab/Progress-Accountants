@@ -16,6 +16,7 @@ const LightweightNewsfeed = lazy(() => import('@/components/dashboard/Lightweigh
   module => ({ default: module.LightweightNewsfeed })
 ));
 import { 
+  Activity,
   AlertTriangle,
   ArrowRight, 
   ArrowUpRight,
@@ -650,69 +651,45 @@ export default function AdminDashboardPage() {
             {/* Two-column layout for main content */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               <div className="lg:col-span-2 space-y-6">
-                {/* Performance Charts */}
+                {/* Analytics Coming Soon Placeholder */}
                 <Card>
                   <CardHeader>
                     <CardTitle>Website Performance</CardTitle>
-                    <CardDescription className="text-gray-700">Traffic and engagement for the past 30 days</CardDescription>
+                    <CardDescription className="text-gray-700">Analytics will be available after launch</CardDescription>
                   </CardHeader>
-                  <CardContent>
-                    <ChartPlaceholder height={280} isLoading={isLoadingMetrics} />
+                  <CardContent className="p-10">
+                    <div className="flex flex-col items-center justify-center text-center space-y-4">
+                      <div className="w-16 h-16 bg-indigo-50 rounded-full flex items-center justify-center">
+                        <BarChart3 className="h-8 w-8 text-indigo-400" />
+                      </div>
+                      <div>
+                        <h3 className="text-lg font-medium text-gray-800">Analytics Coming Soon</h3>
+                        <p className="text-sm text-gray-500 max-w-md mt-2">
+                          Your website analytics will appear here once your site launches. Track visitors, page views, and engagement metrics.
+                        </p>
+                      </div>
+                    </div>
                   </CardContent>
                 </Card>
 
-                {/* Recent Activity */}
+                {/* Activity Feature Coming Soon */}
                 <Card>
-                  <CardHeader className="flex flex-row items-center justify-between pb-2">
-                    <div>
-                      <CardTitle>Recent Activity</CardTitle>
-                      <CardDescription className="text-gray-700">Latest actions and system updates</CardDescription>
-                    </div>
-                    <Link href="/activity-log">
-                      <Button variant="ghost" size="sm" className="gap-1">
-                        View all
-                        <ArrowRight className="h-4 w-4" />
-                      </Button>
-                    </Link>
+                  <CardHeader>
+                    <CardTitle>Activity Log</CardTitle>
+                    <CardDescription className="text-gray-700">Track website activities and updates</CardDescription>
                   </CardHeader>
-                  <CardContent>
-                    {isLoadingActivities ? (
-                      // Loading skeleton
-                      <>
-                        <ActivityItem
-                          icon={<></>}
-                          title=""
-                          description=""
-                          time=""
-                          isLoading={true}
-                        />
-                        <ActivityItem
-                          icon={<></>}
-                          title=""
-                          description=""
-                          time=""
-                          isLoading={true}
-                        />
-                        <ActivityItem
-                          icon={<></>}
-                          title=""
-                          description=""
-                          time=""
-                          isLoading={true}
-                        />
-                      </>
-                    ) : (
-                      // Actual activity items
-                      activities?.map(activity => (
-                        <ActivityItem
-                          key={activity.id}
-                          icon={getActivityIcon(activity.type)}
-                          title={activity.title}
-                          description={activity.description}
-                          time={timeAgo(activity.timestamp)}
-                        />
-                      ))
-                    )}
+                  <CardContent className="p-8">
+                    <div className="flex flex-col items-center justify-center text-center space-y-4">
+                      <div className="w-16 h-16 bg-blue-50 rounded-full flex items-center justify-center">
+                        <Activity className="h-8 w-8 text-blue-400" />
+                      </div>
+                      <div>
+                        <h3 className="text-lg font-medium text-gray-800">Activity Tracking Coming Soon</h3>
+                        <p className="text-sm text-gray-500 max-w-md mt-2">
+                          This feature will track all changes made to your website, including page updates, tool installations, and system changes.
+                        </p>
+                      </div>
+                    </div>
                   </CardContent>
                 </Card>
               </div>
@@ -799,6 +776,7 @@ export default function AdminDashboardPage() {
                       </Badge>
                     </CardTitle>
                     <CardDescription className="text-gray-700">Current system status</CardDescription>
+                    <p className="text-xs text-slate-500 mt-1">Demo data shown</p>
                   </CardHeader>
                   <CardContent>
                     <SystemHealth 
