@@ -601,14 +601,14 @@ export default function AdminDashboardPage() {
           {/* Overview Tab Content */}
           <TabsContent value="overview" className="mt-0">
             {/* Welcome summary */}
-            <div className="mb-6 bg-white p-5 rounded-lg border border-gray-100 shadow-sm">
+            <div className="mb-6 bg-white dark:bg-gray-800 p-5 rounded-lg border border-gray-100 dark:border-gray-700 shadow-sm">
               <div className="flex items-start gap-4">
-                <div className="p-3 bg-indigo-50 rounded-md">
-                  <Sparkles className="h-6 w-6 text-indigo-600" />
+                <div className="p-3 bg-indigo-50 dark:bg-indigo-900/30 rounded-md">
+                  <Sparkles className="h-6 w-6 text-indigo-600 dark:text-indigo-400" />
                 </div>
                 <div>
-                  <h2 className="text-lg font-medium text-gray-800">Welcome back, {user?.username || 'Admin'}</h2>
-                  <p className="text-gray-600 mt-1">
+                  <h2 className="text-lg font-medium text-gray-800 dark:text-white">Welcome back, {user?.username || 'Admin'}</h2>
+                  <p className="text-gray-600 dark:text-gray-300 mt-1">
                     Your website is performing well. You have {metrics?.totalPages || 0} pages published and {metrics?.totalToolsInstalled || 0} tools installed.
                   </p>
                 </div>
@@ -912,28 +912,28 @@ export default function AdminDashboardPage() {
                   </CardContent>
                 </Card>
                 
-                <Card>
+                <Card className="dark:bg-gray-800 dark:border-gray-700">
                   <CardHeader>
-                    <CardTitle>Quick Content Actions</CardTitle>
+                    <CardTitle className="dark:text-white">Quick Content Actions</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-3">
                     <Button 
                       variant="outline" 
-                      className="w-full justify-start"
+                      className="w-full justify-start dark:bg-gray-700 dark:border-gray-600 dark:text-white hover:dark:bg-gray-600"
                       onClick={() => navigate("/page-builder/page/new")}
                     >
                       <Plus className="mr-2 h-4 w-4" />
                       Create New Page
                     </Button>
-                    <Button variant="outline" className="w-full justify-start">
+                    <Button variant="outline" className="w-full justify-start dark:bg-gray-700 dark:border-gray-600 dark:text-white hover:dark:bg-gray-600">
                       <ImageIcon className="mr-2 h-4 w-4" />
                       Upload Media
                     </Button>
-                    <Button variant="outline" className="w-full justify-start">
+                    <Button variant="outline" className="w-full justify-start dark:bg-gray-700 dark:border-gray-600 dark:text-white hover:dark:bg-gray-600">
                       <Palette className="mr-2 h-4 w-4" />
                       Edit Brand Guidelines
                     </Button>
-                    <Button variant="outline" className="w-full justify-start">
+                    <Button variant="outline" className="w-full justify-start dark:bg-gray-700 dark:border-gray-600 dark:text-white hover:dark:bg-gray-600">
                       <BookOpen className="mr-2 h-4 w-4" />
                       Manage Templates
                     </Button>
