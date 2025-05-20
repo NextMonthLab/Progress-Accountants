@@ -184,9 +184,15 @@ export function AdminRoutes() {
         component={PageBuilderPage} 
         allowedRoles={['admin', 'super_admin', 'editor']} 
       />
+      
+      {/* Page Builder route with origin protection */}
       <ProtectedRoute 
         path="/page-builder/:id" 
-        component={PageBuilderPage} 
+        component={() => (
+          <ProtectedPageBuilderRoute>
+            <PageBuilderPage />
+          </ProtectedPageBuilderRoute>
+        )}
         allowedRoles={['admin', 'super_admin', 'editor']} 
       />
     </>
