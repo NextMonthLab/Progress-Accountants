@@ -652,19 +652,19 @@ export default function AdminDashboardPage() {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               <div className="lg:col-span-2 space-y-6">
                 {/* Analytics Coming Soon Placeholder */}
-                <Card>
+                <Card className="dark:bg-gray-800 dark:border-gray-700">
                   <CardHeader>
-                    <CardTitle>Website Performance</CardTitle>
-                    <CardDescription className="text-gray-700">Analytics will be available after launch</CardDescription>
+                    <CardTitle className="dark:text-gray-100">Website Performance</CardTitle>
+                    <CardDescription className="text-gray-700 dark:text-gray-400">Analytics will be available after launch</CardDescription>
                   </CardHeader>
                   <CardContent className="p-10">
                     <div className="flex flex-col items-center justify-center text-center space-y-4">
-                      <div className="w-16 h-16 bg-indigo-50 rounded-full flex items-center justify-center">
-                        <BarChart3 className="h-8 w-8 text-indigo-400" />
+                      <div className="w-16 h-16 bg-indigo-50 dark:bg-indigo-900/20 rounded-full flex items-center justify-center">
+                        <BarChart3 className="h-8 w-8 text-indigo-400 dark:text-indigo-300" />
                       </div>
                       <div>
-                        <h3 className="text-lg font-medium text-gray-800">Analytics Coming Soon</h3>
-                        <p className="text-sm text-gray-500 max-w-md mt-2">
+                        <h3 className="text-lg font-medium text-gray-800 dark:text-gray-200">Analytics Coming Soon</h3>
+                        <p className="text-sm text-gray-500 dark:text-gray-400 max-w-md mt-2">
                           Your website analytics will appear here once your site launches. Track visitors, page views, and engagement metrics.
                         </p>
                       </div>
@@ -673,19 +673,19 @@ export default function AdminDashboardPage() {
                 </Card>
 
                 {/* Activity Feature Coming Soon */}
-                <Card>
+                <Card className="dark:bg-gray-800 dark:border-gray-700">
                   <CardHeader>
-                    <CardTitle>Activity Log</CardTitle>
-                    <CardDescription className="text-gray-700">Track website activities and updates</CardDescription>
+                    <CardTitle className="dark:text-gray-100">Activity Log</CardTitle>
+                    <CardDescription className="text-gray-700 dark:text-gray-400">Track website activities and updates</CardDescription>
                   </CardHeader>
                   <CardContent className="p-8">
                     <div className="flex flex-col items-center justify-center text-center space-y-4">
-                      <div className="w-16 h-16 bg-blue-50 rounded-full flex items-center justify-center">
-                        <Activity className="h-8 w-8 text-blue-400" />
+                      <div className="w-16 h-16 bg-blue-50 dark:bg-blue-900/20 rounded-full flex items-center justify-center">
+                        <Activity className="h-8 w-8 text-blue-400 dark:text-blue-300" />
                       </div>
                       <div>
-                        <h3 className="text-lg font-medium text-gray-800">Activity Tracking Coming Soon</h3>
-                        <p className="text-sm text-gray-500 max-w-md mt-2">
+                        <h3 className="text-lg font-medium text-gray-800 dark:text-gray-200">Activity Tracking Coming Soon</h3>
+                        <p className="text-sm text-gray-500 dark:text-gray-400 max-w-md mt-2">
                           This feature will track all changes made to your website, including page updates, tool installations, and system changes.
                         </p>
                       </div>
@@ -767,16 +767,16 @@ export default function AdminDashboardPage() {
                 </Suspense>
 
                 {/* System Health */}
-                <Card>
+                <Card className="dark:bg-gray-800 dark:border-gray-700">
                   <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
+                    <CardTitle className="flex items-center gap-2 dark:text-gray-100">
                       System Health
                       <Badge variant="teal-blue" className="ml-2">
                         Healthy
                       </Badge>
                     </CardTitle>
-                    <CardDescription className="text-gray-700">Current system status</CardDescription>
-                    <p className="text-xs text-slate-500 mt-1">Demo data shown</p>
+                    <CardDescription className="text-gray-700 dark:text-gray-400">Current system status</CardDescription>
+                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">Demo data shown</p>
                   </CardHeader>
                   <CardContent>
                     <SystemHealth 
