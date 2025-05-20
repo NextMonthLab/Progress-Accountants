@@ -329,29 +329,29 @@ function SystemHealth({ components = [], isLoading = false }: SystemHealthProps)
         <div key={index} className="flex items-center justify-between p-2 bg-gray-50 dark:bg-gray-800 rounded-md">
           <div className="flex items-center gap-2">
             {component.status === 'good' ? (
-              <CheckCircle2 className="h-4 w-4 text-emerald-600" />
+              <CheckCircle2 className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
             ) : component.status === 'warning' ? (
-              <AlertTriangle className="h-4 w-4 text-yellow-600" />
+              <AlertTriangle className="h-4 w-4 text-yellow-600 dark:text-yellow-400" />
             ) : (
-              <XCircle className="h-4 w-4 text-red-600" />
+              <XCircle className="h-4 w-4 text-red-600 dark:text-red-400" />
             )}
             <div>
-              <p className="font-medium text-slate-800 text-sm">{component.name}</p>
-              {component.details && <p className="text-xs text-slate-500">{component.details}</p>}
+              <p className="font-medium text-slate-800 dark:text-white text-sm">{component.name}</p>
+              {component.details && <p className="text-xs text-slate-500 dark:text-slate-400">{component.details}</p>}
             </div>
           </div>
           <div className="flex items-center gap-2">
             <Badge className={
               component.status === 'good' 
-                ? 'bg-emerald-50 text-emerald-600 border border-emerald-100'
+                ? 'bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 border border-emerald-100 dark:border-emerald-700'
                 : component.status === 'warning'
-                ? 'bg-yellow-50 text-yellow-600 border border-yellow-100'
-                : 'bg-red-50 text-red-600 border border-red-100'
+                ? 'bg-yellow-50 dark:bg-yellow-900/30 text-yellow-600 dark:text-yellow-400 border border-yellow-100 dark:border-yellow-700'
+                : 'bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400 border border-red-100 dark:border-red-700'
             }>
               {component.status === 'good' ? 'Good' : 
                 component.status === 'warning' ? 'Warning' : 'Error'}
             </Badge>
-            <span className="text-xs text-slate-500">{component.lastChecked}</span>
+            <span className="text-xs text-slate-500 dark:text-slate-400">{component.lastChecked}</span>
           </div>
         </div>
       ))}
@@ -1198,9 +1198,9 @@ export default function AdminDashboardPage() {
             
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               <div className="lg:col-span-2">
-                <Card>
+                <Card className="dark:bg-gray-800 dark:border-gray-700">
                   <CardHeader>
-                    <CardTitle>System Health</CardTitle>
+                    <CardTitle className="dark:text-white">System Health</CardTitle>
                     <CardDescription className="text-gray-700 dark:text-gray-300">Status of system components</CardDescription>
                   </CardHeader>
                   <CardContent>
@@ -1211,49 +1211,49 @@ export default function AdminDashboardPage() {
                   </CardContent>
                 </Card>
                 
-                <Card className="mt-6">
+                <Card className="mt-6 dark:bg-gray-800 dark:border-gray-700">
                   <CardHeader>
-                    <CardTitle>Recent Backups</CardTitle>
+                    <CardTitle className="dark:text-white">Recent Backups</CardTitle>
                     <CardDescription className="text-gray-700 dark:text-gray-300">Latest system backups</CardDescription>
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-4">
-                      <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-md">
+                      <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-md">
                         <div className="flex items-center gap-3">
-                          <Database className="h-5 w-5 text-[#008080]" />
+                          <Database className="h-5 w-5 text-[#008080] dark:text-[#4fd1d1]" />
                           <div>
                             <p className="font-medium text-gray-800 dark:text-white">Daily Backup</p>
                             <p className="text-xs text-gray-500 dark:text-gray-400">Today, 2:45 AM • 840 MB</p>
                           </div>
                         </div>
-                        <Button size="sm" variant="outline" className="border-[#008080] text-[#008080] hover:bg-[#008080]/5">Download</Button>
+                        <Button size="sm" variant="outline" className="border-[#008080] text-[#008080] dark:border-[#4fd1d1] dark:text-[#4fd1d1] hover:bg-[#008080]/5 dark:hover:bg-[#008080]/20">Download</Button>
                       </div>
                       
-                      <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-md">
+                      <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-md">
                         <div className="flex items-center gap-3">
-                          <Database className="h-5 w-5 text-[#008080]" />
+                          <Database className="h-5 w-5 text-[#008080] dark:text-[#4fd1d1]" />
                           <div>
                             <p className="font-medium text-gray-800 dark:text-white">Daily Backup</p>
                             <p className="text-xs text-gray-500 dark:text-gray-400">Yesterday, 2:45 AM • 825 MB</p>
                           </div>
                         </div>
-                        <Button size="sm" variant="outline" className="border-[#008080] text-[#008080] hover:bg-[#008080]/5">Download</Button>
+                        <Button size="sm" variant="outline" className="border-[#008080] text-[#008080] dark:border-[#4fd1d1] dark:text-[#4fd1d1] hover:bg-[#008080]/5 dark:hover:bg-[#008080]/20">Download</Button>
                       </div>
                       
-                      <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-md">
+                      <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-md">
                         <div className="flex items-center gap-3">
-                          <Database className="h-5 w-5 text-[#008080]" />
+                          <Database className="h-5 w-5 text-[#008080] dark:text-[#4fd1d1]" />
                           <div>
                             <p className="font-medium text-gray-800 dark:text-white">Weekly Backup</p>
                             <p className="text-xs text-gray-500 dark:text-gray-400">Apr 21, 2:45 PM • 1.2 GB</p>
                           </div>
                         </div>
-                        <Button size="sm" variant="outline" className="border-[#008080] text-[#008080] hover:bg-[#008080]/5">Download</Button>
+                        <Button size="sm" variant="outline" className="border-[#008080] text-[#008080] dark:border-[#4fd1d1] dark:text-[#4fd1d1] hover:bg-[#008080]/5 dark:hover:bg-[#008080]/20">Download</Button>
                       </div>
                     </div>
                   </CardContent>
                   <CardFooter>
-                    <Button variant="outline" className="w-full border-[#008080] text-[#008080] hover:bg-[#008080]/5">
+                    <Button variant="outline" className="w-full border-[#008080] text-[#008080] dark:border-[#4fd1d1] dark:text-[#4fd1d1] hover:bg-[#008080]/5 dark:hover:bg-[#008080]/20">
                       View All Backups
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Button>
