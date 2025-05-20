@@ -412,6 +412,12 @@ function Router() {
         component={HealthDashboardPage} 
         allowedRoles={['admin', 'super_admin']} 
       />
+      {/* Add dedicated route for /system-health */}
+      <ProtectedRoute 
+        path="/system-health" 
+        component={HealthDashboardPage} 
+        allowedRoles={['admin', 'super_admin']} 
+      />
       <ProtectedRoute 
         path="/admin/support-digests" 
         component={DigestPage} 
