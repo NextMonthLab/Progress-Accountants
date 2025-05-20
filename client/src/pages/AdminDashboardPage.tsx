@@ -223,10 +223,10 @@ function QuickAction({
   isLoading = false
 }: QuickActionProps) {
   const variantStyles = {
-    primary: 'bg-[#4F46E5] hover:bg-[#6366F1] shadow-sm hover:shadow-md text-white border-0',
-    secondary: 'bg-[#E0F2FE] text-[#0284C7] hover:bg-[#BAE6FD] shadow-sm hover:shadow-md border-0',
-    outline: 'border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 hover:shadow-sm',
-    ghost: 'bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 border border-gray-200 dark:border-gray-700',
+    primary: 'bg-[#4F46E5] hover:bg-[#6366F1] dark:bg-[#4338ca] dark:hover:bg-[#4f46e5] shadow-sm hover:shadow-md text-white border-0 dark:shadow-[0_2px_5px_rgba(79,70,229,0.3)]',
+    secondary: 'bg-[#E0F2FE] text-[#0284C7] hover:bg-[#BAE6FD] dark:bg-[#1e3a46] dark:text-[#38bdf8] dark:hover:bg-[#164e63] shadow-sm hover:shadow-md border-0 dark:shadow-[0_2px_3px_rgba(0,0,0,0.3)]',
+    outline: 'border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 hover:shadow-sm dark:shadow-[0_2px_3px_rgba(0,0,0,0.2)]',
+    ghost: 'bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 border border-gray-200 dark:border-gray-700 dark:shadow-none',
   };
 
   // Colors based on variant for better contrast - modernized with dark mode support

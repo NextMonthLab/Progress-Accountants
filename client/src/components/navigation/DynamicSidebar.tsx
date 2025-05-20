@@ -343,9 +343,12 @@ const DynamicSidebar: React.FC = () => {
               // If any group is expanded, collapse all; otherwise, expand all
               const anyExpanded = navigationGroups.some(group => expandedGroups.includes(group.id));
               if (anyExpanded) {
-                toggleAllGroups(false);
+                setNavigationState(prev => ({ ...prev, expandedGroups: [] }));
               } else {
-                toggleAllGroups(true);
+                setNavigationState(prev => ({ 
+                  ...prev, 
+                  expandedGroups: navigationGroups.map(g => g.id) 
+                }));
               }
             }}
             className="text-xs w-full flex items-center justify-between px-3 py-1.5 rounded-md bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
