@@ -216,25 +216,11 @@ function Router() {
         component={MenuManagementPage} 
         allowedRoles={['admin', 'super_admin', 'editor']} 
       />
+      {/* Domain mapping retained as essential for Hetzner deployment */}
       <ProtectedRoute 
         path="/admin/domain-mapping" 
         component={DomainMappingPage} 
         allowedRoles={['admin', 'super_admin']} 
-      />
-      <ProtectedRoute 
-        path="/admin/sot-management" 
-        component={SotManagementPage} 
-        allowedRoles={['admin', 'super_admin']} 
-      />
-      <ProtectedRoute 
-        path="/admin/sot" 
-        component={SotManagerPage}
-        allowedRoles={['admin', 'super_admin']} 
-      />
-      <ProtectedRoute 
-        path="/admin/conversation-insights" 
-        component={ConversationInsightsPage} 
-        allowedRoles={['admin', 'super_admin', 'editor']} 
       />
       <ProtectedRoute 
         path="/admin/dashboard" 
@@ -255,62 +241,18 @@ function Router() {
         component={InsightUsersPage} 
         allowedRoles={['admin', 'super_admin']} 
       />
-      <ProtectedRoute 
-        path="/admin/support-requests" 
-        component={SupportRequestsPage} 
-        allowedRoles={['admin', 'super_admin']} 
-      />
-      <ProtectedRoute 
-        path="/admin/health-dashboard" 
-        component={HealthDashboardPage} 
-        allowedRoles={['admin', 'super_admin']} 
-      />
-      <ProtectedRoute 
-        path="/admin/support-digests" 
-        component={DigestPage} 
-        allowedRoles={['admin', 'super_admin']} 
-      />
-      <ProtectedRoute 
-        path="/admin/system-readiness" 
-        component={SystemReadinessPage} 
-        allowedRoles={['admin', 'super_admin']} 
-      />
+      {/* Only essential admin tools retained for Hetzner v1 */}
       <ProtectedRoute 
         path="/admin/analytics" 
         component={AnalyticsPage} 
         allowedRoles={['admin', 'super_admin', 'editor']} 
       />
-      <ProtectedRoute 
-        path="/admin/new-request" 
-        component={ScopeRequestPage} 
-        allowedRoles={['admin', 'super_admin', 'editor']} 
-      />
-      <ProtectedRoute 
-        path="/admin/clone-template" 
-        component={CloneTemplatePage} 
-        allowedRoles={['admin', 'super_admin']} 
-      />
-      <ProtectedRoute 
-        path="/admin/onboarding" 
-        component={BlueprintOnboardingPage} 
-        allowedRoles={['admin', 'super_admin']} 
-      />
       
-      {/* Client dashboard routes - financial dashboard for Progress clients */}
+      {/* Essential client portal route for Hetzner v1 */}
       <ProtectedRoute 
         path="/client-dashboard" 
         component={ClientDashboardPage} 
         allowedRoles={['client', 'admin', 'super_admin']} 
-      />
-      <ProtectedRoute 
-        path="/client-portal" 
-        component={ClientDashboardPage} 
-        allowedRoles={['client', 'admin', 'super_admin']} 
-      />
-      <ProtectedRoute 
-        path="/account" 
-        component={AccountPage} 
-        allowedRoles={['client', 'admin', 'super_admin']}
       />
       
       {/* Only essential content creation tools retained for Hetzner v1 */}
