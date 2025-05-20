@@ -1,4 +1,4 @@
-import { useState, Suspense } from 'react';
+import { useState, Suspense, useTransition } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import AdminLayout from '@/layouts/AdminLayout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -42,6 +42,7 @@ function LoadingSpinner() {
 
 export default function InsightsDashboardPage() {
   const [period, setPeriod] = useState('week');
+  const [isPending, startTransition] = useTransition();
   
   // Set suspense:false to prevent React from suspending during data fetching
   const { data: leaderboard, isLoading: loadingLeaderboard } = useQuery<LeaderboardEntry[]>({
@@ -115,21 +116,39 @@ export default function InsightsDashboardPage() {
             <div className="flex bg-muted rounded-md p-1">
               <button
                 className={`px-3 py-1 text-sm rounded-md ${period === 'day' ? 'bg-white shadow-sm' : ''}`}
-                onClick={() => setPeriod('day')}
+                onClick={() => startTransition(() => setPeriod('day'))}
+                disabled={isPending && period !== 'day'}
               >
-                Daily
+                {isPending && period === 'day' ? (
+                  <span className="flex items-center">
+                    <Loader2 className="h-3 w-3 mr-1 animate-spin" />
+                    Daily
+                  </span>
+                ) : "Daily"}
               </button>
               <button
                 className={`px-3 py-1 text-sm rounded-md ${period === 'week' ? 'bg-white shadow-sm' : ''}`}
-                onClick={() => setPeriod('week')}
+                onClick={() => startTransition(() => setPeriod('week'))}
+                disabled={isPending && period !== 'week'}
               >
-                Weekly
+                {isPending && period === 'week' ? (
+                  <span className="flex items-center">
+                    <Loader2 className="h-3 w-3 mr-1 animate-spin" />
+                    Weekly
+                  </span>
+                ) : "Weekly"}
               </button>
               <button
                 className={`px-3 py-1 text-sm rounded-md ${period === 'month' ? 'bg-white shadow-sm' : ''}`}
-                onClick={() => setPeriod('month')}
+                onClick={() => startTransition(() => setPeriod('month'))}
+                disabled={isPending && period !== 'month'}
               >
-                Monthly
+                {isPending && period === 'month' ? (
+                  <span className="flex items-center">
+                    <Loader2 className="h-3 w-3 mr-1 animate-spin" />
+                    Monthly
+                  </span>
+                ) : "Monthly"}
               </button>
             </div>
           </div>
