@@ -20,6 +20,7 @@ import PageBuilderPreview from "./PageBuilderPreview";
 import PageBuilderTemplateGallery from "./PageBuilderTemplateGallery";
 import { PageVersionHistory } from "./PageVersionHistory";
 import PageLockIndicator from "./PageLockIndicator";
+import NextMonthPageWarning from "./NextMonthPageWarning";
 import AIDesignAssistantPanel from "./AIDesignAssistantPanel";
 import AIColorPaletteGenerator from "./AIColorPaletteGenerator";
 import AIComponentRecommendations from "./AIComponentRecommendations";
@@ -34,7 +35,8 @@ import {
   Cpu,
   PaintBucket,
   AlertCircle,
-  Plus
+  Plus,
+  Copy
 } from "lucide-react";
 import { useTenant } from "@/hooks/use-tenant";
 
@@ -126,6 +128,7 @@ const PageBuilderContent: React.FC = () => {
   const [versionHistoryOpen, setVersionHistoryOpen] = useState<boolean>(false);
   const [page, setPage] = useState<PageBuilderPage | null>(isNewPage || isTemplateGallery ? createEmptyPage() : null);
   const [deviceType, setDeviceType] = useState<"desktop" | "tablet" | "mobile">("desktop");
+  const [isNextMonthPage, setIsNextMonthPage] = useState<boolean>(false);
 
   // Create a default empty page with an initial section
   function createEmptyPage(): PageBuilderPage {
@@ -149,6 +152,8 @@ const PageBuilderContent: React.FC = () => {
       tenantId: tenant?.id || '00000000-0000-0000-0000-000000000000',
       title: 'New Page',
       path: '',
+      origin: 'user',
+      createdBy: 'user',
       description: '',
       pageType: 'custom',
       isPublished: false,
@@ -160,8 +165,7 @@ const PageBuilderContent: React.FC = () => {
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
       sections: [initialSection], // Initialize with one section
-      isLocked: false,
-      origin: 'manual'
+      isLocked: false
     };
   }
 
@@ -197,10 +201,18 @@ const PageBuilderContent: React.FC = () => {
     retry: 1,
   });
 
-  // Update page in state when data changes for existing pages
+  // Update page in state when data changes for existing pages and check for NextMonth pages
   useEffect(() => {
     if (pageData) {
       setPage(pageData);
+      
+      // Check if this is a NextMonth foundation page
+      const isNextMonth = pageData.origin === 'nextmonth' || 
+                         pageData.createdBy === 'nextmonth' || 
+                         pageData.pageType === 'core';
+      
+      setIsNextMonthPage(isNextMonth);
+      console.log(`Page origin detected: ${isNextMonth ? 'NextMonth' : 'User-created'}`);
     }
   }, [pageData]);
 
@@ -296,6 +308,16 @@ const PageBuilderContent: React.FC = () => {
   // Handle save
   const handleSave = () => {
     if (!page) return;
+    
+    // Prevent saving NextMonth foundation pages
+    if (isNextMonthPage) {
+      toast({
+        title: "Cannot Save Changes",
+        description: "This page was designed by NextMonth and cannot be edited directly. Please duplicate it first.",
+        variant: "destructive"
+      });
+      return;
+    }
     
     if (isNewPage) {
       // Create a new page
@@ -655,7 +677,28 @@ const PageBuilderContent: React.FC = () => {
   }
 
   return (
-    <div className="p-4 space-y-4">
+    <div className={`p-4 space-y-4 ${isNextMonthPage ? 'grayscale-[0.5] opacity-90' : ''}`}>
+      {/* NextMonth Foundation Page Warning */}
+      {isNextMonthPage && (
+        <NextMonthPageWarning 
+          pageTitle={page.title}
+          onDuplicateClick={() => {
+            // Create a duplicate of this page that the user can edit
+            if (page) {
+              const duplicatePage = {
+                ...page,
+                id: 0, // New page
+                title: `${page.title} (Custom)`,
+                path: `${page.path}-custom`,
+                origin: 'user',
+                createdBy: 'user'
+              };
+              createPageMutation.mutate(duplicatePage);
+            }
+          }}
+        />
+      )}
+      
       {/* Page Builder Header */}
       <div className="flex flex-col md:flex-row justify-between gap-4">
         <div>
@@ -664,7 +707,7 @@ const PageBuilderContent: React.FC = () => {
         </div>
         
         <div className="flex items-center gap-2">
-          {page.isLocked && <PageLockIndicator origin={page.origin || 'unknown'} />}
+          {page.isLocked && <PageLockIndicator origin={page.origin || 'user'} />}
           
           <Button
             variant={previewMode ? "default" : "outline"}
