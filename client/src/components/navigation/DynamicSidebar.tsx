@@ -322,8 +322,39 @@ const DynamicSidebar: React.FC = () => {
         </div>
       )}
 
+      {/* Collapse All Toggle */}
+      {!sidebarCollapsed && (
+        <div className="px-4 pt-2 pb-1">
+          <button 
+            onClick={() => {
+              // If any group is expanded, collapse all; otherwise, expand all
+              const anyExpanded = navigationGroups.some(group => expandedGroups.includes(group.id));
+              if (anyExpanded) {
+                setNavigationState(prev => ({ ...prev, expandedGroups: [] }));
+              } else {
+                setNavigationState(prev => ({ 
+                  ...prev, 
+                  expandedGroups: navigationGroups.map(g => g.id) 
+                }));
+              }
+            }}
+            className="text-xs w-full flex items-center justify-between px-3 py-1.5 rounded-md bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
+          >
+            <span className="font-medium text-gray-600 dark:text-gray-300">
+              {expandedGroups.length > 0 ? 'Collapse All Sections' : 'Expand All Sections'}
+            </span>
+            <ChevronDown 
+              className={cn(
+                "h-3 w-3 text-gray-500 dark:text-gray-400 transition-transform duration-200",
+                expandedGroups.length > 0 ? "" : "transform rotate-180"
+              )} 
+            />
+          </button>
+        </div>
+      )}
+      
       {/* Sidebar Content - Dynamic Navigation Groups */}
-      <div className="flex-1 overflow-y-auto py-4 space-y-4">
+      <div className="flex-1 overflow-y-auto py-2 space-y-4">
         {navigationGroups.map((group) => {
           // Get all items for this group
           const groupItems = getGroupItems(group.id);
@@ -368,21 +399,73 @@ const DynamicSidebar: React.FC = () => {
           const isMarketplaceGroup = group.id === 'marketplace';
           const isGroupExpanded = expandedGroups.includes(group.id) || isMarketplaceGroup;
           
+          // Get accent color based on group id
+          const getGroupAccentColor = (groupId: string) => {
+            switch(groupId) {
+              case 'quick_actions':
+                return 'text-indigo-500 dark:text-indigo-400';
+              case 'create_publish':
+                return 'text-emerald-500 dark:text-emerald-400';
+              case 'manage_monitor':
+                return 'text-blue-500 dark:text-blue-400';
+              case 'settings_advanced':
+                return 'text-amber-500 dark:text-amber-400';
+              default:
+                return 'text-gray-500 dark:text-gray-400';
+            }
+          };
+          
+          // Get background hover color based on group id
+          const getGroupHoverBg = (groupId: string) => {
+            switch(groupId) {
+              case 'quick_actions':
+                return 'hover:bg-indigo-50 dark:hover:bg-indigo-900/20';
+              case 'create_publish':
+                return 'hover:bg-emerald-50 dark:hover:bg-emerald-900/20';
+              case 'manage_monitor':
+                return 'hover:bg-blue-50 dark:hover:bg-blue-900/20';
+              case 'settings_advanced':
+                return 'hover:bg-amber-50 dark:hover:bg-amber-900/20';
+              default:
+                return 'hover:bg-gray-50 dark:hover:bg-gray-700';
+            }
+          };
+          
+          // Get icon color based on group id
+          const getGroupIconColor = (groupId: string) => {
+            switch(groupId) {
+              case 'quick_actions':
+                return 'text-indigo-500 dark:text-indigo-400';
+              case 'create_publish':
+                return 'text-emerald-500 dark:text-emerald-400';
+              case 'manage_monitor':
+                return 'text-blue-500 dark:text-blue-400';
+              case 'settings_advanced':
+                return 'text-amber-500 dark:text-amber-400';
+              default:
+                return 'text-[var(--text-body)] dark:text-gray-300';
+            }
+          };
+          
           // Section header
           const groupHeader = !sidebarCollapsed ? (
             <div 
-              className="flex items-center px-4 mb-2 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 rounded-md py-1.5 transition-colors"
+              className={cn(
+                "flex items-center px-4 mb-2 cursor-pointer rounded-md py-1.5 transition-colors",
+                getGroupHoverBg(group.id)
+              )}
               onClick={() => toggleGroup(group.id)}
             >
-              <span className="mr-2 text-[var(--text-body)] dark:text-gray-300">
+              <span className={cn("mr-2", getGroupIconColor(group.id))}>
                 <GroupIconComponent className="h-5 w-5" />
               </span>
-              <h3 className="text-xs font-semibold text-[var(--text-body)] dark:text-gray-300 uppercase tracking-wider">
+              <h3 className={cn("text-xs font-semibold uppercase tracking-wider", getGroupAccentColor(group.id))}>
                 {group.title}
               </h3>
               <ChevronDown 
                 className={cn(
-                  "ml-auto h-4 w-4 text-[var(--text-body)] dark:text-gray-300 transition-transform duration-200",
+                  "ml-auto h-4 w-4 transition-transform duration-200",
+                  getGroupAccentColor(group.id),
                   isGroupExpanded ? "transform rotate-180" : ""
                 )} 
               />
@@ -390,6 +473,9 @@ const DynamicSidebar: React.FC = () => {
           ) : (
             <div className="border-t border-gray-100 dark:border-gray-700 mx-2 my-3"></div>
           );
+          
+          // Add divider after each major group
+          const needsDivider = group.id !== 'settings_advanced'; // No divider after the last group
           
           return (
             <div key={group.id} className="px-2">
@@ -403,6 +489,11 @@ const DynamicSidebar: React.FC = () => {
                       : renderSubmenu(item as NavigationSubmenu)
                   ))}
                 </div>
+              )}
+              
+              {/* Divider between major groups */}
+              {needsDivider && !sidebarCollapsed && (
+                <div className="mt-4 mb-3 border-b border-gray-100 dark:border-gray-700"></div>
               )}
             </div>
           );
