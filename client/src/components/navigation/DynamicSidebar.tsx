@@ -131,12 +131,12 @@ const DynamicSidebar: React.FC = () => {
         <a
           href={item.href}
           className={cn(
-            "flex items-center justify-between rounded-md px-3 py-2 transition-all duration-200 no-underline",
+            "flex items-center justify-between rounded-lg px-3 py-2 transition-all duration-200 no-underline nav-item",
             isActive(item.href) && !isViewWebsiteLink
-              ? "bg-[#008080]/10 text-[#008080] font-medium" 
-              : "text-[#1c3668] hover:bg-[#008080]/10 hover:text-[#008080]",
+              ? "active font-medium" 
+              : "text-[var(--text-headline)] hover:bg-gray-50",
             isNested && "ml-6 text-sm",
-            isViewWebsiteLink && "text-[#008080] font-medium"
+            isViewWebsiteLink && "text-[var(--secondary-text)] bg-[var(--secondary-bg)] hover:bg-[var(--secondary-hover)]"
           )}
           target={isViewWebsiteLink ? "_blank" : undefined}
           rel={isViewWebsiteLink ? "noopener noreferrer" : undefined}
@@ -172,8 +172,8 @@ const DynamicSidebar: React.FC = () => {
       <div key={submenu.id} className="space-y-1">
         <button
           className={cn(
-            "flex items-center justify-between w-full rounded-md px-3 py-2 transition-all duration-200 text-[#1c3668] hover:bg-[#008080]/10 hover:text-[#008080] text-left font-medium",
-            isExpanded && "bg-[#008080]/10 text-[#008080]"
+            "flex items-center justify-between w-full rounded-lg px-3 py-2 transition-all duration-200 text-[var(--text-headline)] hover:bg-gray-50 text-left font-medium nav-item",
+            isExpanded && "active"
           )}
           onClick={(e) => {
             e.preventDefault();
@@ -216,7 +216,7 @@ const DynamicSidebar: React.FC = () => {
                 <button
                   onClick={toggleSidebar}
                   className={cn(
-                    "flex items-center justify-center w-6 h-6 rounded-full bg-white border border-gray-200 shadow-sm hover:bg-[#008080]/10 transition-all duration-150",
+                    "flex items-center justify-center w-6 h-6 rounded-full bg-white border border-gray-100 shadow-sm hover:bg-[var(--secondary-bg)] transition-all duration-150",
                   )}
                   aria-label={sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
                 >
@@ -348,18 +348,18 @@ const DynamicSidebar: React.FC = () => {
           // Section header
           const groupHeader = !sidebarCollapsed ? (
             <div 
-              className="flex items-center px-4 mb-2 cursor-pointer"
+              className="flex items-center px-4 mb-2 cursor-pointer hover:bg-gray-50 rounded-md py-1.5 transition-colors"
               onClick={() => toggleGroup(group.id)}
             >
-              <span className="mr-2 text-[#1c3668]">
+              <span className="mr-2 text-[var(--text-body)]">
                 <GroupIconComponent className="h-5 w-5" />
               </span>
-              <h3 className="text-xs font-bold text-[#1c3668] uppercase tracking-wider">
+              <h3 className="text-xs font-semibold text-[var(--text-body)] uppercase tracking-wider">
                 {group.title}
               </h3>
               <ChevronDown 
                 className={cn(
-                  "ml-auto h-4 w-4 transition-transform duration-200",
+                  "ml-auto h-4 w-4 text-[var(--text-body)] transition-transform duration-200",
                   isGroupExpanded ? "transform rotate-180" : ""
                 )} 
               />
