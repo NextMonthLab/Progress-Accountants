@@ -397,6 +397,12 @@ function Router() {
         component={InsightsDashboardPage} 
         allowedRoles={['admin', 'super_admin', 'editor']} 
       />
+      {/* Add redirect from /insights to the proper dashboard path */}
+      <ProtectedRoute 
+        path="/insights" 
+        component={() => <Redirect to="/admin/insights-dashboard" />}
+        allowedRoles={['admin', 'super_admin', 'editor']} 
+      />
       <ProtectedRoute 
         path="/admin/insight-users" 
         component={InsightUsersPage} 

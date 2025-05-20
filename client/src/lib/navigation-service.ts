@@ -207,7 +207,7 @@ export const mapSidebarToNavigation = (): NavigationItem[] => {
       title: 'Insights Dashboard',
       icon: 'PieChart',
       type: 'link',
-      href: '/insights',
+      href: '/admin/insights-dashboard',
       description: 'Get business insights and recommendations',
       category: 'manage_monitor',
       pinnedOrder: 3,
