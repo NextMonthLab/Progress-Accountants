@@ -138,7 +138,6 @@ export const mapSidebarToNavigation = (): NavigationItem[] => {
       href: '/tools/social-media-generator',
       requiresStaff: true,
       description: 'Create optimized social media posts',
-      badge: { text: 'AI-Powered', variant: 'new' },
       category: 'creator_tools',
     },
     {
@@ -149,7 +148,6 @@ export const mapSidebarToNavigation = (): NavigationItem[] => {
       href: '/tools/blog-post-generator',
       requiresStaff: true,
       description: 'Generate SEO-optimized blog posts',
-      badge: { text: 'AI-Powered', variant: 'new' },
       category: 'creator_tools',
     },
     
@@ -163,7 +161,6 @@ export const mapSidebarToNavigation = (): NavigationItem[] => {
       href: '/admin/analytics',
       requiresStaff: true,
       description: 'Traffic, user behavior and conversions',
-      badge: { text: 'Real-time', variant: 'new' },
       category: 'admin_tools',
     },
 
@@ -175,7 +172,6 @@ export const mapSidebarToNavigation = (): NavigationItem[] => {
       href: '/admin/insights-dashboard',
       requiresStaff: true,
       description: 'Actionable business intelligence',
-      badge: { text: 'New', variant: 'new' },
       category: 'admin_tools',
     },
     /* Removed CRM for Hetzner v1 deployment
