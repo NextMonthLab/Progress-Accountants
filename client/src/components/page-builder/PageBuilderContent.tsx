@@ -87,7 +87,8 @@ interface PageBuilderPage {
   updatedAt: string;
   sections: PageBuilderSection[];
   isLocked?: boolean;
-  origin?: string;
+  origin?: 'user' | 'nextmonth';
+  createdBy?: 'user' | 'nextmonth';
 }
 
 const PageBuilderContent: React.FC = () => {
