@@ -74,27 +74,27 @@ function StatCard({
   isGradient = false,
   className = ''
 }: StatCardProps) {
-  // Define the color scheme with proper type - using NextMonth Gold colors
+  // Define the color scheme with proper type - using system color tokens for consistency
   const scheme = {
     navy: {
-      bg: isGradient ? 'bg-[#008080]' : 'bg-white dark:bg-gray-800',
-      icon: isGradient ? 'bg-white/40 text-white' : 'bg-[#008080]/10 dark:bg-[#008080]/20 text-[#008080] dark:text-[#40a7a7]',
-      border: isGradient ? 'border-[#008080]/10' : 'border-[#008080]/10 dark:border-gray-700'
+      bg: isGradient ? 'bg-primary' : 'bg-white dark:bg-gray-800',
+      icon: isGradient ? 'bg-white/40 text-white' : 'bg-primary/10 dark:bg-primary/20 text-primary dark:text-primary/80',
+      border: isGradient ? 'border-primary/10' : 'border-primary/10 dark:border-gray-700'
     },
     orange: {
-      bg: isGradient ? 'bg-[#F4A261]' : 'bg-white dark:bg-gray-800', 
-      icon: isGradient ? 'bg-white/40 text-white' : 'bg-[#F4A261]/10 dark:bg-[#F4A261]/20 text-[#F4A261] dark:text-[#F4A261]',
-      border: isGradient ? 'border-[#F4A261]/10' : 'border-[#F4A261]/10 dark:border-gray-700'
+      bg: isGradient ? 'bg-orange-500' : 'bg-white dark:bg-gray-800', 
+      icon: isGradient ? 'bg-white/40 text-white' : 'bg-orange-500/10 dark:bg-orange-500/20 text-orange-500 dark:text-orange-400',
+      border: isGradient ? 'border-orange-500/10' : 'border-orange-500/10 dark:border-gray-700'
     },
     emerald: {
-      bg: isGradient ? 'bg-[#10B981]' : 'bg-white dark:bg-gray-800',
-      icon: isGradient ? 'bg-white/40 text-white' : 'bg-[#10B981]/10 dark:bg-[#10B981]/20 text-[#10B981] dark:text-[#34d399]',
-      border: isGradient ? 'border-[#10B981]/10' : 'border-[#10B981]/10 dark:border-gray-700'
+      bg: isGradient ? 'bg-emerald-500' : 'bg-white dark:bg-gray-800',
+      icon: isGradient ? 'bg-white/40 text-white' : 'bg-emerald-500/10 dark:bg-emerald-500/20 text-emerald-500 dark:text-emerald-400',
+      border: isGradient ? 'border-emerald-500/10' : 'border-emerald-500/10 dark:border-gray-700'
     },
     indigo: {
-      bg: isGradient ? 'bg-[#6366F1]' : 'bg-white dark:bg-gray-800',
-      icon: isGradient ? 'bg-white/40 text-white' : 'bg-[#6366F1]/10 dark:bg-[#6366F1]/20 text-[#6366F1] dark:text-[#818cf8]',
-      border: isGradient ? 'border-[#6366F1]/10' : 'border-[#6366F1]/10 dark:border-gray-700'
+      bg: isGradient ? 'bg-indigo-500' : 'bg-white dark:bg-gray-800',
+      icon: isGradient ? 'bg-white/40 text-white' : 'bg-indigo-500/10 dark:bg-indigo-500/20 text-indigo-500 dark:text-indigo-400',
+      border: isGradient ? 'border-indigo-500/10' : 'border-indigo-500/10 dark:border-gray-700'
     }
   };
 
@@ -562,9 +562,9 @@ export default function AdminDashboardPage() {
   return (
       <div className="space-y-6 p-2 sm:p-4 md:p-6 bg-background">
         {/* Page Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-4 rounded-lg shadow-sm border border-gray-100 dark:bg-gray-900 dark:border-gray-800">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-6 rounded-lg shadow-md border border-gray-100 hover:shadow-lg transition-all dark:bg-gray-800 dark:border-gray-700">
           <div>
-            <h1 className="text-2xl font-bold text-[#008080]">Admin Dashboard</h1>
+            <h1 className="text-2xl font-bold text-primary">Admin Dashboard</h1>
             <p className="text-gray-700 dark:text-gray-300">Welcome back, {user?.username || 'User'}</p>
           </div>
           <div className="flex flex-wrap gap-2 mt-2 sm:mt-0">
@@ -621,15 +621,15 @@ export default function AdminDashboardPage() {
           {/* Overview Tab Content */}
           <TabsContent value="overview" className="mt-0">
             {/* Welcome summary */}
-            <div className="mb-6 bg-white dark:bg-[#1E3A46] p-5 rounded-lg border border-gray-100 dark:border-[#2a3052]/50 shadow-sm">
+            <div className="mb-6 bg-white dark:bg-gray-800 p-6 rounded-lg border border-gray-100 dark:border-gray-700 shadow-md hover:shadow-lg transition-all">
               <div className="flex items-start gap-4">
-                <div className="p-3 bg-indigo-50 dark:bg-[#2A3052] rounded-md">
-                  <Sparkles className="h-6 w-6 text-indigo-600 dark:text-blue-300" />
+                <div className="p-3 bg-primary/10 dark:bg-primary/20 rounded-md">
+                  <Sparkles className="h-6 w-6 text-primary dark:text-primary/80" />
                 </div>
                 <div>
-                  <h2 className="text-lg font-medium text-gray-800 dark:text-white">Welcome back, {user?.username || 'Admin'}</h2>
+                  <h2 className="text-lg font-semibold text-gray-800 dark:text-white">Welcome back, {user?.username || 'Admin'}</h2>
                   <p className="text-gray-600 dark:text-gray-200 mt-1">
-                    Your website is performing well. You have {metrics?.totalPages || 0} pages published and {metrics?.totalToolsInstalled || 0} tools installed.
+                    Your website is performing well. You have <span className="font-medium text-primary">{metrics?.totalPages || 0} pages</span> published and <span className="font-medium text-primary">{metrics?.totalToolsInstalled || 0} tools</span> installed.
                   </p>
                 </div>
               </div>
