@@ -137,11 +137,14 @@ export const queryClient = new QueryClient({
       queryFn: getQueryFn({ on401: "throw" }),
       refetchInterval: false,
       refetchOnWindowFocus: false,
-      staleTime: Infinity,
-      retry: false,
+      staleTime: 5 * 60 * 1000, // 5 minutes instead of Infinity for better data freshness
+      retry: 1,
+      suspense: false, // Explicitly disable suspense mode by default
+      useErrorBoundary: false, // Don't propagate errors to React Error Boundary by default
     },
     mutations: {
       retry: false,
+      useErrorBoundary: false,
     },
   },
 });
