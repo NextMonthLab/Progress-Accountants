@@ -161,7 +161,7 @@ const LoadingFallback = () => (
   </div>
 );
 
-// Router for all application routes - Hetzner V1 Trimmed Version
+// Router for all application routes
 function Router() {
   return (
     <Switch>
