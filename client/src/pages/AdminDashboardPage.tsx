@@ -164,7 +164,7 @@ function ActivityItem({ icon, title, description, time, isLoading = false }: Act
         </>
       ) : (
         <>
-          <div className="h-10 w-10 rounded-full bg-[#008080]/10 flex items-center justify-center text-[#008080]">
+          <div className="h-10 w-10 rounded-full bg-[#008080]/10 dark:bg-[#008080]/20 flex items-center justify-center text-[#008080] dark:text-[#4fd1d1]">
             {icon}
           </div>
           <div className="flex-1">
