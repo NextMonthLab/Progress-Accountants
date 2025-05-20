@@ -161,7 +161,7 @@ const LoadingFallback = () => (
   </div>
 );
 
-// Router for all application routes - Hetzner V1 Trimmed Version
+// Router for all application routes
 function Router() {
   return (
     <Switch>
@@ -172,10 +172,112 @@ function Router() {
           <ClientRegistrationPage />
         </Suspense>
       </Route>
+      
+
+
+      <Route path="/team">
+        <Suspense fallback={<LoadingFallback />}>
+          <TeamPage />
+        </Suspense>
+      </Route>
+      <Route path="/about">
+        <Suspense fallback={<LoadingFallback />}>
+          <AboutPage />
+        </Suspense>
+      </Route>
+      <Route path="/services">
+        <Suspense fallback={<LoadingFallback />}>
+          <ServicesPage />
+        </Suspense>
+      </Route>
+      <Route path="/services/:slug">
+        <Suspense fallback={<LoadingFallback />}>
+          <ServiceDetailPage />
+        </Suspense>
+      </Route>
+      <Route path="/industries">
+        <Suspense fallback={<LoadingFallback />}>
+          <IndustriesPage />
+        </Suspense>
+      </Route>
+      <Route path="/industries/film">
+        <Suspense fallback={<LoadingFallback />}>
+          <FilmIndustryPage />
+        </Suspense>
+      </Route>
+      <Route path="/industries/music">
+        <Suspense fallback={<LoadingFallback />}>
+          <MusicIndustryPage />
+        </Suspense>
+      </Route>
+      <Route path="/industries/construction">
+        <Suspense fallback={<LoadingFallback />}>
+          <ConstructionIndustryPage />
+        </Suspense>
+      </Route>
+      
+      {/* Temporary demo route */}
+      <Route path="/conversion-demo">
+        <Suspense fallback={<LoadingFallback />}>
+          <ConversionDemo />
+        </Suspense>
+      </Route>
+      <Route path="/sme-support-hub">
+        <Suspense fallback={<LoadingFallback />}>
+          <SMESupportHubPage />
+        </Suspense>
+      </Route>
+      <Route path="/business-calculator">
+        <Suspense fallback={<LoadingFallback />}>
+          <BusinessCalculatorPage />
+        </Suspense>
+      </Route>
+      <Route path="/test-film">
+        <Suspense fallback={<LoadingFallback />}>
+          <TestFilmPage />
+        </Suspense>
+      </Route>
+      <Route path="/why-us">
+        <Suspense fallback={<LoadingFallback />}>
+          <WhyUsPage />
+        </Suspense>
+      </Route>
+      <Route path="/contact">
+        <Suspense fallback={<LoadingFallback />}>
+          <ContactPage />
+        </Suspense>
+      </Route>
+      <Route path="/testimonials">
+        <Suspense fallback={<LoadingFallback />}>
+          <TestimonialsPage />
+        </Suspense>
+      </Route>
+      <Route path="/resources" component={ResourcesPage} />
+      <Route path="/news" component={NewsPage} />
+      
+      {/* Support System routes */}
+      <Route path="/support/assistant" component={AssistantPage} />
+      <Route path="/support/ticket" component={TicketPage} />
+      <Route path="/support/digest" component={DigestPage} />
+      
       {/* Default route should be HomePage */}
       <Route path="/" component={HomePage} />
       
-      {/* Admin routes - Only essential routes for Hetzner v1 */}
+      {/* Diagnostic Dashboard restricted to admin and super_admin */}
+      <ProtectedRoute 
+        path="/diagnostics" 
+        component={DiagnosticDashboard}
+        allowedRoles={['admin', 'super_admin']}
+      />
+      
+      {/* Super Admin routes (require super admin privileges) */}
+      <ProtectedRoute 
+        path="/super-admin" 
+        component={SuperAdminDashboard} 
+        requireSuperAdmin={true} 
+      />
+      
+      {/* Admin routes (require admin or super admin) */}
       <ProtectedRoute 
         path="/admin" 
         component={() => {
@@ -190,8 +292,53 @@ function Router() {
         allowedRoles={['admin', 'super_admin', 'editor']} 
       />
       <ProtectedRoute 
+        path="/admin/crm" 
+        component={CRMViewPage} 
+        allowedRoles={['admin', 'super_admin', 'editor']} 
+      />
+      <ProtectedRoute 
+        path="/admin/crm-enhanced" 
+        component={CRMViewPageEnhanced} 
+        allowedRoles={['admin', 'super_admin']} 
+      />
+      <ProtectedRoute 
         path="/admin/settings" 
         component={AdminSettingsPage} 
+        allowedRoles={['admin', 'super_admin']} 
+      />
+      <ProtectedRoute 
+        path="/admin/seo" 
+        component={SEOConfigManagerPage} 
+        allowedRoles={['admin', 'super_admin', 'editor']} 
+      />
+      <ProtectedRoute 
+        path="/admin/brand" 
+        component={BrandManagerPage} 
+        allowedRoles={['admin', 'super_admin', 'editor']} 
+      />
+      <ProtectedRoute 
+        path="/admin/blueprint" 
+        component={BlueprintManagerPage} 
+        allowedRoles={['admin', 'super_admin']} 
+      />
+      <ProtectedRoute 
+        path="/admin/marketplace" 
+        component={AdminMarketplacePage} 
+        allowedRoles={['admin', 'super_admin', 'editor']} 
+      />
+      <ProtectedRoute 
+        path="/admin/blueprint-management" 
+        component={BlueprintManagementPage} 
+        allowedRoles={['admin', 'super_admin']} 
+      />
+      <ProtectedRoute 
+        path="/admin/tenant-customization" 
+        component={TenantCustomizationPage} 
+        allowedRoles={['admin', 'super_admin']} 
+      />
+      <ProtectedRoute 
+        path="/admin/theme-management" 
+        component={ThemeManagementPage} 
         allowedRoles={['admin', 'super_admin']} 
       />
       <ProtectedRoute 
@@ -313,7 +460,13 @@ function Router() {
         allowedRoles={['client', 'admin', 'super_admin']}
       />
       
-      {/* Only essential content creation tools retained for Hetzner v1 */}
+      {/* Tools and marketplace routes */}
+      <ProtectedRoute path="/tools-dashboard" component={ToolsDashboardPage} />
+      <ProtectedRoute path="/tools-hub" component={ToolsLandingPage} />
+      <ProtectedRoute path="/tools/create/form" component={CreateFormWizard} />
+      <ProtectedRoute path="/tools/create/calculator" component={CreateCalculatorWizard} />
+      <ProtectedRoute path="/tools/create/dashboard" component={CreateDashboardWizard} />
+      <ProtectedRoute path="/tools/create/embed" component={CreateEmbedWizard} />
       <ProtectedRoute 
         path="/tools/social-media-generator" 
         component={SocialMediaGeneratorPage} 
