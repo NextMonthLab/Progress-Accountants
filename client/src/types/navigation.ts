@@ -67,6 +67,31 @@ export interface NavigationState {
 // Default navigation groups
 export const DEFAULT_NAVIGATION_GROUPS: NavigationGroup[] = [
   {
+    id: 'quick_actions',
+    title: 'Quick Actions',
+    icon: 'Zap',
+    category: 'quick_actions',
+  },
+  {
+    id: 'create_publish',
+    title: 'Create & Publish',
+    icon: 'PenTool',
+    category: 'create_publish',
+  },
+  {
+    id: 'manage_monitor',
+    title: 'Manage & Monitor',
+    icon: 'BarChart',
+    category: 'manage_monitor',
+  },
+  {
+    id: 'settings_advanced',
+    title: 'Settings & Advanced',
+    icon: 'Settings',
+    category: 'settings_advanced',
+  },
+  // Keeping old categories for backward compatibility
+  {
     id: 'frequently_used',
     title: 'Frequently Used',
     icon: 'Star',
