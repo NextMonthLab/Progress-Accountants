@@ -222,20 +222,36 @@ function QuickAction({
   variant = 'primary',
   isLoading = false
 }: QuickActionProps) {
-  // Updated variant styles to match dark mode UI in screenshots
+  // Category-specific styles for consistent color theming
+  const categoryStyles = {
+    create: 'bg-[#525DEE] hover:bg-[#4549c5] dark:bg-[#444fb6] dark:hover:bg-[#3a44a6] shadow-sm hover:shadow-md text-white border-0 dark:border dark:border-[#2a3052]/50 transition-all duration-150 border-l-4 border-l-indigo-500',
+    monitor: 'bg-[#1E3A46] hover:bg-[#18323d] dark:bg-[#1E3A46] dark:hover:bg-[#18323d] text-gray-100 shadow-sm hover:shadow-md border-0 dark:border dark:border-[#2a3052]/50 transition-all duration-150 border-l-4 border-l-blue-500',
+    manage: 'bg-[#293945] hover:bg-[#1E3A46] dark:bg-[#293945] dark:hover:bg-[#1E3A46] text-gray-100 shadow-sm hover:shadow-md border-0 dark:border dark:border-[#2a3052]/50 transition-all duration-150 border-l-4 border-l-emerald-500',
+    settings: 'bg-[#232D39] hover:bg-[#1E3A46] dark:bg-[#232D39] dark:hover:bg-[#1E3A46] text-gray-100 dark:border dark:border-[#2a3052]/50 transition-all duration-150 border-l-4 border-l-amber-500',
+  };
+  
+  // For backward compatibility, map the variant props to category styles
   const variantStyles = {
-    primary: 'bg-[#525DEE] hover:bg-[#4549c5] dark:bg-[#444fb6] dark:hover:bg-[#3a44a6] shadow-sm hover:shadow-md text-white border-0 dark:border dark:border-[#2a3052]/50 transition-all duration-150',
-    secondary: 'bg-[#1E3A46] hover:bg-[#18323d] dark:bg-[#1E3A46] dark:hover:bg-[#18323d] text-gray-100 shadow-sm hover:shadow-md border-0 dark:border dark:border-[#2a3052]/50 transition-all duration-150',
-    outline: 'bg-[#1E3A46] hover:bg-[#18323d] dark:bg-[#293945] dark:hover:bg-[#1E3A46] text-gray-100 shadow-sm hover:shadow-md border-0 dark:border dark:border-[#2a3052]/50 transition-all duration-150',
-    ghost: 'bg-[#232D39] hover:bg-[#1E3A46] dark:bg-[#232D39] dark:hover:bg-[#1E3A46] text-gray-100 dark:border dark:border-[#2a3052]/50 transition-all duration-150',
+    primary: categoryStyles.create,
+    secondary: categoryStyles.monitor,
+    outline: categoryStyles.manage,
+    ghost: categoryStyles.settings,
   };
 
-  // Unified icon styles for better visual consistency
+  // Category-specific icon styles
+  const categoryIconStyles = {
+    create: 'text-indigo-300 bg-[#2A3052] p-2 rounded-md flex-shrink-0',
+    monitor: 'text-blue-300 bg-[#2A3052] p-2 rounded-md flex-shrink-0',
+    manage: 'text-emerald-300 bg-[#2A3052] p-2 rounded-md flex-shrink-0',
+    settings: 'text-amber-300 bg-[#2A3052] p-2 rounded-md flex-shrink-0',
+  };
+  
+  // For backward compatibility, map the variant props to category icon styles
   const iconColor = {
-    primary: 'text-blue-300 bg-[#2A3052] p-2 rounded-md flex-shrink-0',
-    secondary: 'text-blue-300 bg-[#2A3052] p-2 rounded-md flex-shrink-0',
-    outline: 'text-blue-300 bg-[#2A3052] p-2 rounded-md flex-shrink-0',
-    ghost: 'text-blue-300 bg-[#2A3052] p-2 rounded-md flex-shrink-0'
+    primary: categoryIconStyles.create,
+    secondary: categoryIconStyles.monitor,
+    outline: categoryIconStyles.manage,
+    ghost: categoryIconStyles.settings,
   };
   
   // Consistent title colors for all card types
@@ -722,7 +738,7 @@ export default function AdminDashboardPage() {
                           description="Manage your media files"
                           icon={<ImageIcon className="h-5 w-5" />}
                           link="/media"
-                          variant="outline"
+                          variant="primary"
                         />
                       </div>
                     </div>
@@ -771,14 +787,14 @@ export default function AdminDashboardPage() {
                           description="Browse the tool marketplace"
                           icon={<Layers className="h-5 w-5" />}
                           link="/tool-marketplace"
-                          variant="secondary"
+                          variant="ghost"
                         />
                         <QuickAction
                           title="Blueprint Management"
                           description="Extract and manage templates"
                           icon={<Copy className="h-5 w-5" />}
                           link="/admin/blueprint-management"
-                          variant="outline"
+                          variant="ghost"
                         />
                       </div>
                     </div>
