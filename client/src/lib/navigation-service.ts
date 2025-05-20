@@ -78,11 +78,11 @@ export const mapSidebarToNavigation = (): NavigationItem[] => {
     },
     {
       id: 'view_insights',
-      title: 'View Insights',
+      title: 'Insights Dashboard',
       icon: 'BarChart2',
       type: 'link',
       href: '/admin/insights-dashboard',
-      description: 'View client feedback and content suggestions',
+      description: 'View client feedback and content insights',
       category: 'quick_actions',
       pinnedOrder: 3,
     },
