@@ -599,6 +599,21 @@ export default function AdminDashboardPage() {
 
           {/* Overview Tab Content */}
           <TabsContent value="overview" className="mt-0">
+            {/* Welcome summary */}
+            <div className="mb-6 bg-white p-5 rounded-lg border border-gray-100 shadow-sm">
+              <div className="flex items-start gap-4">
+                <div className="p-3 bg-indigo-50 rounded-md">
+                  <Sparkles className="h-6 w-6 text-indigo-600" />
+                </div>
+                <div>
+                  <h2 className="text-lg font-medium text-gray-800">Welcome back, {user?.username || 'Admin'}</h2>
+                  <p className="text-gray-600 mt-1">
+                    Your website is performing well. You have {metrics?.totalPages || 0} pages published and {metrics?.totalToolsInstalled || 0} tools installed.
+                  </p>
+                </div>
+              </div>
+            </div>
+            
             {/* Key Stats */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
               <StatCard
