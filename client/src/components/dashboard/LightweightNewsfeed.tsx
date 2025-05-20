@@ -119,15 +119,15 @@ export function LightweightNewsfeed() {
   }, []);
   
   return (
-    <Card className="col-span-2 h-full max-h-[450px] overflow-hidden border-border">
+    <Card className="col-span-2 h-full max-h-[450px] overflow-hidden border-border dark:bg-gray-800 dark:border-gray-700">
       <CardHeader className="pb-2">
         <div className="flex items-center justify-between">
           <div>
-            <CardTitle className="text-xl flex items-center gap-2">
-              <Newspaper className="h-5 w-5 text-primary" />
+            <CardTitle className="text-xl flex items-center gap-2 dark:text-white">
+              <Newspaper className="h-5 w-5 text-primary dark:text-primary-foreground" />
               Industry News
             </CardTitle>
-            <CardDescription>
+            <CardDescription className="dark:text-gray-300">
               {tenant?.industry 
                 ? `Latest updates for ${tenant.industry}`
                 : "Latest industry updates"}
@@ -152,19 +152,19 @@ export function LightweightNewsfeed() {
                   <Settings className="h-4 w-4" />
                 </Button>
               </DialogTrigger>
-              <DialogContent className="max-w-md">
+              <DialogContent className="max-w-md dark:bg-gray-800 dark:border-gray-700">
                 <DialogHeader>
-                  <DialogTitle>Configure Newsfeed</DialogTitle>
-                  <DialogDescription>
+                  <DialogTitle className="dark:text-white">Configure Newsfeed</DialogTitle>
+                  <DialogDescription className="dark:text-gray-300">
                     Newsfeed configuration options
                   </DialogDescription>
                 </DialogHeader>
                 
                 <div className="py-4">
-                  <Alert variant="default" className="bg-green-50 border-green-200">
-                    <CheckCircle2 className="h-4 w-4 text-green-600" />
-                    <AlertTitle className="text-green-700">Optimized Mode Active</AlertTitle>
-                    <AlertDescription className="text-green-600">
+                  <Alert variant="default" className="bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800">
+                    <CheckCircle2 className="h-4 w-4 text-green-600 dark:text-green-400" />
+                    <AlertTitle className="text-green-700 dark:text-green-400">Optimized Mode Active</AlertTitle>
+                    <AlertDescription className="text-green-600 dark:text-green-400">
                       The newsfeed is running in an optimized mode to ensure application stability.
                       This prevents memory issues while maintaining core functionality.
                     </AlertDescription>

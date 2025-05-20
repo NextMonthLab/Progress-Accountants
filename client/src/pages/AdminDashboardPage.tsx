@@ -225,37 +225,37 @@ function QuickAction({
   const variantStyles = {
     primary: 'bg-[#4F46E5] hover:bg-[#6366F1] shadow-sm hover:shadow-md text-white border-0',
     secondary: 'bg-[#E0F2FE] text-[#0284C7] hover:bg-[#BAE6FD] shadow-sm hover:shadow-md border-0',
-    outline: 'border border-gray-200 bg-white hover:bg-gray-50 text-gray-700 hover:shadow-sm',
-    ghost: 'bg-gray-100 hover:bg-gray-200 text-gray-700 border border-gray-200',
+    outline: 'border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 hover:shadow-sm',
+    ghost: 'bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 border border-gray-200 dark:border-gray-700',
   };
 
-  // Colors based on variant for better contrast - modernized
+  // Colors based on variant for better contrast - modernized with dark mode support
   const iconColor = {
     primary: 'text-white bg-indigo-600 p-1.5 rounded-md',
-    secondary: 'text-blue-600 bg-blue-100 p-1.5 rounded-md',
-    outline: 'text-indigo-600 bg-indigo-50 p-1.5 rounded-md',
-    ghost: 'text-gray-600 bg-gray-200 p-1.5 rounded-md'
+    secondary: 'text-blue-600 bg-blue-100 dark:text-blue-400 dark:bg-blue-900/30 p-1.5 rounded-md',
+    outline: 'text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/30 p-1.5 rounded-md',
+    ghost: 'text-gray-600 dark:text-gray-300 bg-gray-200 dark:bg-gray-700 p-1.5 rounded-md'
   };
   
   const titleColor = {
     primary: 'text-white font-medium',
-    secondary: 'text-slate-800 font-medium',
-    outline: 'text-slate-800 font-medium',
-    ghost: 'text-slate-800 font-medium'
+    secondary: 'text-slate-800 dark:text-slate-200 font-medium',
+    outline: 'text-slate-800 dark:text-slate-200 font-medium',
+    ghost: 'text-slate-800 dark:text-slate-200 font-medium'
   };
   
   const descriptionColor = {
     primary: 'text-white/90',
-    secondary: 'text-slate-500',
-    outline: 'text-slate-500',
-    ghost: 'text-slate-500'
+    secondary: 'text-slate-500 dark:text-slate-400',
+    outline: 'text-slate-500 dark:text-slate-400',
+    ghost: 'text-slate-500 dark:text-slate-400'
   };
 
   const arrowColor = {
     primary: 'text-white/70',
-    secondary: 'text-blue-600/70',
-    outline: 'text-indigo-600/70',
-    ghost: 'text-gray-600/70'
+    secondary: 'text-blue-600/70 dark:text-blue-400/70',
+    outline: 'text-indigo-600/70 dark:text-indigo-400/70',
+    ghost: 'text-gray-600/70 dark:text-gray-400/70'
   };
 
   if (isLoading) {
