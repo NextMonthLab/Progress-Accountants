@@ -233,7 +233,7 @@ export default function Navbar() {
               )}
               <Button 
                 variant="default"
-                className="bg-[#f15a29] text-white hover:bg-[#f15a29]/90"
+                className="text-white hover:shadow-md transition-all"
                 asChild
               >
                 <Link 
@@ -249,8 +249,8 @@ export default function Navbar() {
           {/* Show admin dashboard link with high visibility for staff */}
           {isStaff && (
             <Button 
-              variant="default"
-              className="bg-[#1c3668] text-white hover:bg-[#132549] transition-colors font-medium shadow-sm"
+              variant="settings"
+              className="shadow-sm hover:shadow-md transition-all font-medium"
               asChild
             >
               <Link 

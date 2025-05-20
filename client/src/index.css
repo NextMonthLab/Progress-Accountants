@@ -75,6 +75,11 @@
     @apply shadow-sm hover:shadow-md border border-gray-100;
   }
 
+  /* Modern badge styling */
+  .badge-flat {
+    @apply text-xs rounded-full px-2 py-0.5 font-normal border;
+  }
+  
   /* AI feature badges */
   .badge-ai {
     color: var(--ai-accent);
