@@ -222,39 +222,39 @@ function QuickAction({
   isLoading = false
 }: QuickActionProps) {
   const variantStyles = {
-    primary: 'bg-gradient-to-r from-[#f953c6] to-[#ff6b6b] hover:opacity-90 hover:shadow-lg hover:shadow-[#f953c6]/20 text-white border-0',
-    secondary: 'bg-gradient-to-r from-[#36d1dc] to-[#5b86e5] hover:opacity-90 hover:shadow-lg hover:shadow-[#36d1dc]/20 text-white border-0',
-    outline: 'border-2 border-[#008080]/20 dark:border-[#008080]/30 hover:border-[#008080]/40 bg-white dark:bg-gray-800 text-gray-800 dark:text-white hover:bg-[#008080]/5 dark:hover:bg-[#008080]/10',
-    ghost: 'bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-800 dark:text-white border border-gray-200 dark:border-gray-700',
+    primary: 'bg-[#4F46E5] hover:bg-[#6366F1] shadow-sm hover:shadow-md text-white border-0',
+    secondary: 'bg-[#E0F2FE] text-[#0284C7] hover:bg-[#BAE6FD] shadow-sm hover:shadow-md border-0',
+    outline: 'border border-gray-200 bg-white hover:bg-gray-50 text-gray-700 hover:shadow-sm',
+    ghost: 'bg-gray-100 hover:bg-gray-200 text-gray-700 border border-gray-200',
   };
 
-  // Colors based on variant for better contrast
+  // Colors based on variant for better contrast - modernized
   const iconColor = {
-    primary: 'text-white bg-white/20 p-1.5 rounded-md',
-    secondary: 'text-white bg-white/20 p-1.5 rounded-md',
-    outline: 'text-[#008080] dark:text-[#008080] bg-[#008080]/10 dark:bg-[#008080]/20 p-1.5 rounded-md',
-    ghost: 'text-[#008080] dark:text-[#008080] bg-gray-200 dark:bg-gray-700 p-1.5 rounded-md'
+    primary: 'text-white bg-indigo-600 p-1.5 rounded-md',
+    secondary: 'text-blue-600 bg-blue-100 p-1.5 rounded-md',
+    outline: 'text-indigo-600 bg-indigo-50 p-1.5 rounded-md',
+    ghost: 'text-gray-600 bg-gray-200 p-1.5 rounded-md'
   };
   
   const titleColor = {
     primary: 'text-white font-medium',
-    secondary: 'text-gray-800 dark:text-white font-medium',
-    outline: 'text-gray-800 dark:text-white font-medium',
-    ghost: 'text-gray-800 dark:text-white font-medium'
+    secondary: 'text-slate-800 font-medium',
+    outline: 'text-slate-800 font-medium',
+    ghost: 'text-slate-800 font-medium'
   };
   
   const descriptionColor = {
     primary: 'text-white/90',
-    secondary: 'text-gray-700 dark:text-gray-300',
-    outline: 'text-gray-700 dark:text-gray-300',
-    ghost: 'text-gray-700 dark:text-gray-300'
+    secondary: 'text-slate-500',
+    outline: 'text-slate-500',
+    ghost: 'text-slate-500'
   };
 
   const arrowColor = {
     primary: 'text-white/70',
-    secondary: 'text-[#008080] dark:text-[#008080]/90',
-    outline: 'text-[#008080]/80 dark:text-[#008080]/90',
-    ghost: 'text-gray-500 dark:text-gray-400'
+    secondary: 'text-blue-600/70',
+    outline: 'text-indigo-600/70',
+    ghost: 'text-gray-600/70'
   };
 
   if (isLoading) {
