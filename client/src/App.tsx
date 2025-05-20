@@ -1,4 +1,4 @@
-import { Switch, Route, useLocation } from "wouter";
+import { Switch, Route, useLocation, Redirect } from "wouter";
 import { Toaster } from "@/components/ui/toaster";
 import { useEffect, lazy, Suspense } from "react";
 import { Loader2 } from "lucide-react";
@@ -400,7 +400,11 @@ function Router() {
       {/* Add redirect from /insights to the proper dashboard path */}
       <ProtectedRoute 
         path="/insights" 
-        component={() => <Redirect to="/admin/insights-dashboard" />}
+        component={() => {
+          // Simple redirect component
+          window.location.href = "/admin/insights-dashboard";
+          return <p>Redirecting to Insights Dashboard...</p>;
+        }}
         allowedRoles={['admin', 'super_admin', 'editor']} 
       />
       <ProtectedRoute 
