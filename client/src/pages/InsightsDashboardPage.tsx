@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useTransition } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import AdminLayout from '@/layouts/AdminLayout';
 import { Loader2, BarChart3, Award, TrendingUp, Medal } from 'lucide-react';
@@ -98,6 +98,7 @@ function AiSummaryCard({ summary }: { summary: InsightSummary }) {
 // Main dashboard component
 export default function InsightsDashboardPage() {
   const [period, setPeriod] = useState('week');
+  const [isPending, startTransition] = useTransition();
   
   // Use separate queries with explicit loading states
   const { 
@@ -195,10 +196,10 @@ export default function InsightsDashboardPage() {
             <div className="flex bg-muted rounded-md p-1">
               <button
                 className={`px-3 py-1 text-sm rounded-md ${period === 'day' ? 'bg-white shadow-sm' : ''}`}
-                onClick={() => setPeriod('day')}
-                disabled={loadingLeaderboard}
+                onClick={() => startTransition(() => setPeriod('day'))}
+                disabled={loadingLeaderboard || isPending}
               >
-                {loadingLeaderboard && period === 'day' ? (
+                {(loadingLeaderboard && period === 'day') || (isPending && period !== 'day') ? (
                   <span className="flex items-center">
                     <Loader2 className="h-3 w-3 mr-1 animate-spin" />
                     Daily
@@ -207,10 +208,10 @@ export default function InsightsDashboardPage() {
               </button>
               <button
                 className={`px-3 py-1 text-sm rounded-md ${period === 'week' ? 'bg-white shadow-sm' : ''}`}
-                onClick={() => setPeriod('week')}
-                disabled={loadingLeaderboard}
+                onClick={() => startTransition(() => setPeriod('week'))}
+                disabled={loadingLeaderboard || isPending}
               >
-                {loadingLeaderboard && period === 'week' ? (
+                {(loadingLeaderboard && period === 'week') || (isPending && period !== 'week') ? (
                   <span className="flex items-center">
                     <Loader2 className="h-3 w-3 mr-1 animate-spin" />
                     Weekly
@@ -219,10 +220,10 @@ export default function InsightsDashboardPage() {
               </button>
               <button
                 className={`px-3 py-1 text-sm rounded-md ${period === 'month' ? 'bg-white shadow-sm' : ''}`}
-                onClick={() => setPeriod('month')}
-                disabled={loadingLeaderboard}
+                onClick={() => startTransition(() => setPeriod('month'))}
+                disabled={loadingLeaderboard || isPending}
               >
-                {loadingLeaderboard && period === 'month' ? (
+                {(loadingLeaderboard && period === 'month') || (isPending && period !== 'month') ? (
                   <span className="flex items-center">
                     <Loader2 className="h-3 w-3 mr-1 animate-spin" />
                     Monthly
