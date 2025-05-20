@@ -21,7 +21,7 @@ export default function AdminLayout({ children, useNewNavigation = true }: Admin
   const SidebarComponent = useNewNavigation ? DynamicSidebar : AdminSidebar;
   
   return (
-    <div className="flex h-screen overflow-hidden">
+    <div className="flex h-screen overflow-hidden bg-white dark:bg-gray-900">
       {useNewNavigation ? (
         <NavigationProvider>
           {/* New Dynamic Sidebar */}
@@ -34,11 +34,11 @@ export default function AdminLayout({ children, useNewNavigation = true }: Admin
           <MobileOverlay />
           
           {/* Main Content with Smart Context Banner */}
-          <div className="flex-1 overflow-y-auto flex flex-col">
+          <div className="flex-1 overflow-y-auto flex flex-col bg-white dark:bg-gray-900">
             {/* Smart Context Banner - shows intelligent awareness */}
             <SmartContextBanner />
             
-            <main className="flex-1 px-6">
+            <main className="flex-1 px-6 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
               {children}
             </main>
             
@@ -76,11 +76,11 @@ export default function AdminLayout({ children, useNewNavigation = true }: Admin
           <AdminSidebar />
           
           {/* Main Content with Smart Context Banner */}
-          <div className="flex-1 overflow-y-auto flex flex-col">
+          <div className="flex-1 overflow-y-auto flex flex-col bg-white dark:bg-gray-900">
             {/* Smart Context Banner - shows intelligent awareness */}
             <SmartContextBanner />
             
-            <main className="flex-1 px-6">
+            <main className="flex-1 px-6 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
               {children}
             </main>
             
