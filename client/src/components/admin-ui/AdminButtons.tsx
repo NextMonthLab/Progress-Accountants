@@ -98,7 +98,7 @@ export function TabsNav({
             className={cn(
               "dark:text-white text-gray-800 py-3 px-4 flex items-center gap-2 text-sm font-medium transition-colors",
               activeTab === tab.id 
-                ? "dark:bg-[#121212] bg-gray-50 dark:text-white text-gray-900 border-b-2 border-[#F65C9A]" 
+                ? "dark:bg-[#121212] bg-gray-50 dark:text-white text-gray-900 border-b-2 border-[#4F46E5]" 
                 : "dark:text-[#9E9E9E] text-gray-600 border-b-2 border-transparent"
             )}
             onClick={() => onChange(tab.id)}
@@ -136,7 +136,7 @@ export function NavItem({
         variant="ghost"
         className={cn(
           "dark:text-white text-gray-800 font-medium px-3 py-2 h-auto flex items-center gap-2 text-sm transition-colors",
-          active && "dark:bg-[#121212] bg-gray-50 dark:text-white text-gray-900 border-b-2 border-[#F65C9A]",
+          active && "dark:bg-[#121212] bg-gray-50 dark:text-white text-gray-900 border-b-2 border-[#4F46E5]",
           !active && "dark:text-[#9E9E9E] text-gray-600 border-b-2 border-transparent",
           className
         )}
