@@ -437,13 +437,17 @@ export default function HealthTracker() {
     if (shouldSendBatch) {
       console.log(`[Health] Sending batch of ${metricBatch.length} metrics`);
       
+      // Create a copy of the current batch to avoid state update issues
+      const currentBatch = [...metricBatch];
+      
       // Process each metric in the batch
-      metricBatch.forEach(metric => {
+      currentBatch.forEach(metric => {
         trackMetric(metric.name, metric.value);
       });
       
-      // Clear the batch
-      setMetricBatch([]);
+      // Clear the batch - use a callback form to avoid closure issues
+      // This was causing the infinite loop
+      setMetricBatch(() => []);
       lastBatchSentRef.current = now;
     }
   }, [metricBatch, trackMetric]);

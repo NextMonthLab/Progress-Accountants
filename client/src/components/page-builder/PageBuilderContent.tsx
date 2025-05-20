@@ -707,7 +707,7 @@ const PageBuilderContent: React.FC = () => {
         </div>
         
         <div className="flex items-center gap-2">
-          {page.isLocked && <PageLockIndicator origin={page.origin || 'user'} />}
+          {page.isLocked && <PageLockIndicator origin={page.origin === 'nextmonth' ? 'pro' : 'builder'} />}
           
           <Button
             variant={previewMode ? "default" : "outline"}
