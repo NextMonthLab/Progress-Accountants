@@ -460,6 +460,13 @@ function Router() {
         allowedRoles={['client', 'admin', 'super_admin']}
       />
       
+      {/* Analytics route - fixing hardcoded URL issue */}
+      <ProtectedRoute 
+        path="/analytics" 
+        component={AnalyticsPage} 
+        allowedRoles={['admin', 'super_admin', 'editor']}
+      />
+      
       {/* Tools and marketplace routes */}
       <ProtectedRoute path="/tools-dashboard" component={ToolsDashboardPage} />
       <ProtectedRoute path="/tools-hub" component={ToolsLandingPage} />
