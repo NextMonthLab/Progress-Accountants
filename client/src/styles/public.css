@@ -54,11 +54,11 @@
   color: var(--public-white);
 }
 
-/* Book a Call button specific style */
+/* Book a Call button specific style - matching Admin Dashboard */
 .book-call-btn {
   background-color: var(--public-navy);
   color: var(--public-white);
-  padding: 0.625rem 1.25rem;
+  padding: 0.5rem 1rem;
   border-radius: 0.5rem;
   font-size: 0.875rem;
   font-weight: 500;
@@ -71,12 +71,12 @@
   text-decoration: none;
   height: 40px;
   line-height: 1;
+  white-space: nowrap;
 }
 
 .book-call-btn:hover {
   background-color: var(--public-navy-dark);
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 /* Mobile book call button - different style */
