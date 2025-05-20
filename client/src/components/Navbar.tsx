@@ -265,7 +265,7 @@ export default function Navbar() {
           
           <a href="#book-call">
             <Button 
-              className="hover:shadow-md hover:-translate-y-[2px] transition duration-300 flex items-center bg-[#f15a29] text-white"
+              className="transition-all shadow-sm hover:shadow-md flex items-center"
             >
               <PhoneCall className="h-4 w-4 mr-2" />
               Book a Call

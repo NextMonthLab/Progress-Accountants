@@ -81,9 +81,9 @@ const QuickActions: React.FC = () => {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button
-          variant="outline"
+          variant="settings"
           size="sm"
-          className="h-8 gap-1 border-dashed bg-background/80 backdrop-blur-sm"
+          className="h-8 gap-1 shadow-sm hover:shadow-md transition-all rounded-lg"
         >
           <Menu className="h-4 w-4" />
           <span className="hidden sm:inline-block">Quick Actions</span>

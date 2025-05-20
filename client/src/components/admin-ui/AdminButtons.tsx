@@ -16,30 +16,24 @@ export function GradientButton({
   children,
   ...props
 }: GradientButtonProps) {
-  const gradientClass = {
-    // Updated gradients to match NextMonth Gold UI design system
-    "primary": "bg-gradient-to-r from-[#f953c6] to-[#ff6b6b] hover:opacity-90", // Pink-Coral for primary actions
-    "secondary": "bg-gradient-to-r from-[#36d1dc] to-[#5b86e5] hover:opacity-90", // Teal-Blue for secondary actions
-    "pink-teal": "bg-gradient-to-r from-[#3CBFAE] to-[#F65C9A] hover:opacity-90", // Legacy gradient
-    "teal-blue": "bg-gradient-to-r from-[#36d1dc] to-[#5b86e5] hover:opacity-90", // Informational actions
-    "pink-coral": "bg-gradient-to-r from-[#f953c6] to-[#ff6b6b] hover:opacity-90"  // Primary actions
+  // Modernized solid colors following the new design system
+  const colorClass = {
+    "primary": "bg-[#4F46E5] hover:bg-[#6366F1]", // Primary action (indigo)
+    "secondary": "bg-[#E0F2FE] text-[#0284C7] hover:bg-[#BAE6FD]", // Secondary info (light blue)
+    "pink-teal": "bg-[#14B8A6] hover:bg-[#0D9488]", // AI tools accent (teal)
+    "teal-blue": "bg-[#0284C7] hover:bg-[#0369A1]", // Informational actions (blue)
+    "pink-coral": "bg-[#4F46E5] hover:bg-[#6366F1]"  // Legacy - now mapped to primary
   }[gradient];
 
-  // Define shadow based on gradient type
-  const shadowStyle = {
-    "teal-blue": "hover:shadow-[0_4px_16px_rgba(54,209,220,0.3)]",
-    "pink-coral": "hover:shadow-[0_4px_16px_rgba(249,83,198,0.3)]",
-    "primary": "hover:shadow-[0_4px_16px_rgba(249,83,198,0.3)]", // Updated to match pink-coral
-    "secondary": "hover:shadow-[0_4px_16px_rgba(54,209,220,0.3)]", // Updated to match teal-blue
-    "pink-teal": "hover:shadow-[0_4px_16px_rgba(246,92,154,0.25)]"
-  }[gradient];
+  // Text color changes for secondary buttons
+  const textColorClass = gradient === "secondary" ? "text-[#0284C7]" : "text-white";
 
   return (
     <Button
       className={cn(
-        gradientClass,
-        "text-white font-medium shadow-lg transition-all duration-300 border-0 rounded-xl px-6 py-3",
-        shadowStyle,
+        colorClass,
+        textColorClass,
+        "font-medium shadow-sm hover:shadow-md transition-all duration-300 rounded-lg px-4 py-2",
         className
       )}
       {...props}
@@ -59,16 +53,16 @@ export function ActionButton({
   children,
   ...props
 }: ButtonProps) {
-  // Decide whether to use gradient or outline style
-  const isGradient = variant === "default" || variant === undefined;
+  // Decide whether to use solid or outline style
+  const isSolid = variant === "default" || variant === undefined;
   
   return (
     <Button
-      variant={isGradient ? "default" : variant}
+      variant={isSolid ? "secondary" : variant}
       className={cn(
-        isGradient ? 
-          "bg-gradient-to-r from-[#36d1dc] to-[#5b86e5] text-white font-medium shadow-lg hover:shadow-[0_4px_16px_rgba(54,209,220,0.3)] hover:opacity-90 transition-all duration-300 border-0 rounded-xl px-6 py-3" : 
-          "font-medium border-[#36d1dc] bg-gray-50 hover:bg-[#36d1dc]/10 transition-all text-gray-800 rounded-xl px-6 py-3",
+        isSolid ? 
+          "bg-[#E0F2FE] text-[#0284C7] hover:bg-[#BAE6FD] font-medium shadow-sm hover:shadow-md transition-all duration-300 rounded-lg px-4 py-2" : 
+          "font-medium border-gray-200 bg-white hover:bg-gray-50 transition-all text-gray-700 rounded-lg px-4 py-2",
         className
       )}
       {...props}
@@ -186,20 +180,21 @@ export function Badge({
   text: string;
   variant?: "primary" | "success" | "default" | "teal-blue" | "pink-coral";
 }) {
+  // Modern, subtle badge styles with solid colors
   const variantClass = {
-    "primary": "bg-gradient-to-r from-[#f953c6] to-[#ff6b6b] text-white",
-    "success": "bg-[#3CBFAE] text-white",
-    "default": "dark:bg-[#3A3A3A] dark:text-[#E0E0E0] bg-gray-300 text-gray-800 font-medium",
-    "teal-blue": "bg-gradient-to-r from-[#36d1dc] to-[#5b86e5] text-white",
-    "pink-coral": "bg-gradient-to-r from-[#f953c6] to-[#ff6b6b] text-white"
+    "primary": "bg-indigo-50 text-indigo-600 border border-indigo-100",
+    "success": "bg-teal-50 text-teal-600 border border-teal-100",
+    "default": "bg-gray-100 text-gray-600 border border-gray-200",
+    "teal-blue": "bg-blue-50 text-blue-600 border border-blue-100",
+    "pink-coral": "bg-indigo-50 text-indigo-600 border border-indigo-100"
   }[variant];
 
   return (
     <div className={cn(
-      "text-xs font-medium px-3 py-1.5 rounded-full",
+      "text-xs font-normal px-2 py-1 rounded-full",
       variantClass
     )}>
-      {text}
+      {text.toLowerCase()}
     </div>
   );
 }
