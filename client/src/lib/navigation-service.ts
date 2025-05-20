@@ -5,14 +5,97 @@ import {
   NavigationItemCategory
 } from '@/types/navigation';
 
+// Define the new navigation structure with main collapsible groups
+export const NAVIGATION_GROUPS = [
+  {
+    id: 'quick_actions',
+    title: 'Quick Actions',
+    icon: 'Zap',
+    category: 'quick_actions',
+    defaultExpanded: true,
+  },
+  {
+    id: 'create_publish',
+    title: 'Create & Publish',
+    icon: 'PenTool',
+    category: 'create_publish',
+    defaultExpanded: true,
+  },
+  {
+    id: 'manage_monitor',
+    title: 'Manage & Monitor',
+    icon: 'BarChart',
+    category: 'manage_monitor',
+    defaultExpanded: false,
+  },
+  {
+    id: 'settings_advanced',
+    title: 'Settings & Advanced',
+    icon: 'Settings',
+    category: 'settings_advanced',
+    defaultExpanded: false,
+  }
+];
+
+// For user preference storage
+export const NAVIGATION_MODES = {
+  BEGINNER: 'beginner',
+  ADVANCED: 'advanced'
+};
+
+// Default to beginner mode initially
+export const DEFAULT_NAV_MODE = NAVIGATION_MODES.BEGINNER;
+
 // Map the current sidebar items to our new navigation structure
 export const mapSidebarToNavigation = (): NavigationItem[] => {
   // This is a conversion function that allows us to transform our current
   // sidebar structure into the new dynamic navigation system format
   
   const navigationItems: NavigationItem[] = [
-    // FREQUENTLY USED SECTION
+    // QUICK ACTIONS SECTION
     // ======================
+    {
+      id: 'edit_homepage',
+      title: 'Edit Homepage',
+      icon: 'Home',
+      type: 'link',
+      href: '/page-builder/home',
+      description: 'Edit your website homepage',
+      category: 'quick_actions',
+      pinnedOrder: 1,
+    },
+    {
+      id: 'create_new_page',
+      title: 'Create New Page',
+      icon: 'FileText',
+      type: 'link',
+      href: '/page-builder/new',
+      description: 'Create a new page for your website',
+      category: 'quick_actions',
+      pinnedOrder: 2,
+    },
+    {
+      id: 'view_insights',
+      title: 'View Insights',
+      icon: 'BarChart2',
+      type: 'link',
+      href: '/analytics',
+      description: 'See analytics and performance data',
+      category: 'quick_actions',
+      pinnedOrder: 3,
+    },
+    {
+      id: 'update_branding',
+      title: 'Update Branding',
+      icon: 'Palette',
+      type: 'link',
+      href: '/brand-center',
+      description: 'Update your brand colors and styles',
+      category: 'quick_actions',
+      pinnedOrder: 4,
+    },
+    
+    // Moving previous items to new categories
     {
       id: 'view_website',
       title: 'View Website',
@@ -20,8 +103,8 @@ export const mapSidebarToNavigation = (): NavigationItem[] => {
       type: 'link',
       href: '/',
       description: 'Open your public website in a new tab',
-      category: 'frequently_used',
-      pinnedOrder: 1,
+      category: 'quick_actions',
+      pinnedOrder: 5,
     },
     {
       id: 'dashboard',
@@ -30,8 +113,8 @@ export const mapSidebarToNavigation = (): NavigationItem[] => {
       type: 'link',
       href: '/admin/dashboard',
       description: 'View your site performance at a glance',
-      category: 'frequently_used',
-      pinnedOrder: 2,
+      category: 'manage_monitor',
+      pinnedOrder: 1,
     },
 
     {
@@ -47,7 +130,7 @@ export const mapSidebarToNavigation = (): NavigationItem[] => {
           type: 'link',
           href: '/page-builder',
           requiresStaff: true,
-          category: 'frequently_used',
+          category: 'create_publish',
         },
         {
           id: 'create_page',
@@ -56,7 +139,7 @@ export const mapSidebarToNavigation = (): NavigationItem[] => {
           type: 'link',
           href: '/page-builder/new',
           requiresStaff: true,
-          category: 'frequently_used',
+          category: 'create_publish',
         },
         {
           id: 'page_templates',
@@ -65,12 +148,34 @@ export const mapSidebarToNavigation = (): NavigationItem[] => {
           type: 'link',
           href: '/page-builder/templates',
           requiresStaff: true,
-          category: 'frequently_used',
+          category: 'create_publish',
         }
       ],
       requiresStaff: true,
-      category: 'frequently_used',
-      pinnedOrder: 4,
+      category: 'create_publish',
+      pinnedOrder: 1,
+    },
+    {
+      id: 'blog_content',
+      title: 'Blog Content',
+      icon: 'BookOpen',
+      type: 'link',
+      href: '/blog',
+      requiresStaff: true,
+      description: 'Create and manage blog posts',
+      category: 'create_publish',
+      pinnedOrder: 2,
+    },
+    {
+      id: 'social_media_content',
+      title: 'Social Media Content',
+      icon: 'Share2',
+      type: 'link',
+      href: '/social-media',
+      requiresStaff: true,
+      description: 'Create social media posts',
+      category: 'create_publish',
+      pinnedOrder: 3,
     },
     {
       id: 'media_hub',
@@ -80,8 +185,8 @@ export const mapSidebarToNavigation = (): NavigationItem[] => {
       href: '/media',
       requiresStaff: true,
       description: 'Manage images, videos and documents',
-      category: 'frequently_used',
-      pinnedOrder: 5,
+      category: 'create_publish',
+      pinnedOrder: 4,
     },
     /* Temporarily removed marketplace for Hetzner deployment
     {

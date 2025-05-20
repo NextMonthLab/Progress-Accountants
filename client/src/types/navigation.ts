@@ -9,7 +9,12 @@ export type NavigationItemCategory =
   | 'system'
   | 'brand_center'
   | 'website_setup'
-  | 'uncategorized';
+  | 'uncategorized'
+  // New categories for reorganized sidebar
+  | 'quick_actions'
+  | 'create_publish'
+  | 'manage_monitor'
+  | 'settings_advanced';
 
 export type NavigationGroup = {
   id: string;
