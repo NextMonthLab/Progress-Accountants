@@ -696,10 +696,10 @@ export default function AdminDashboardPage() {
 
               <div className="space-y-6">
                 {/* Quick Actions Card */}
-                <Card>
+                <Card className="dark:bg-gray-800 dark:border-gray-700">
                   <CardHeader>
-                    <CardTitle>Quick Actions</CardTitle>
-                    <CardDescription className="text-gray-700">Common tasks and actions</CardDescription>
+                    <CardTitle className="dark:text-gray-100">Quick Actions</CardTitle>
+                    <CardDescription className="text-gray-700 dark:text-gray-400">Common tasks and actions</CardDescription>
                   </CardHeader>
                   <CardContent className="grid gap-3">
                     <QuickAction
