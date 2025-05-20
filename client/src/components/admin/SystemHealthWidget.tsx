@@ -9,13 +9,13 @@ export default function SystemHealthWidget() {
   
   if (isLoadingHealthStatus) {
     return (
-      <Card>
+      <Card className="dark:bg-gray-800 dark:border-gray-700">
         <CardHeader className="pb-2">
-          <CardTitle className="text-lg font-semibold">System Health</CardTitle>
-          <CardDescription>Checking system status...</CardDescription>
+          <CardTitle className="text-lg font-semibold dark:text-white">System Health</CardTitle>
+          <CardDescription className="dark:text-gray-300">Checking system status...</CardDescription>
         </CardHeader>
         <CardContent className="flex justify-center py-6">
-          <Loader2 className="h-6 w-6 animate-spin text-primary" />
+          <Loader2 className="h-6 w-6 animate-spin text-primary dark:text-primary-foreground" />
         </CardContent>
       </Card>
     );
@@ -24,10 +24,10 @@ export default function SystemHealthWidget() {
   // If no health status data is available yet
   if (!healthStatus) {
     return (
-      <Card>
+      <Card className="dark:bg-gray-800 dark:border-gray-700">
         <CardHeader className="pb-2">
-          <CardTitle className="text-lg font-semibold">System Health</CardTitle>
-          <CardDescription>System monitoring initializing...</CardDescription>
+          <CardTitle className="text-lg font-semibold dark:text-white">System Health</CardTitle>
+          <CardDescription className="dark:text-gray-300">System monitoring initializing...</CardDescription>
         </CardHeader>
         <CardContent className="flex justify-center py-6">
           <AlertTriangle className="h-10 w-10 text-amber-500" />
@@ -92,12 +92,12 @@ export default function SystemHealthWidget() {
   const totalServices = Object.values(healthStatus.services).length;
   
   return (
-    <Card>
+    <Card className="dark:bg-gray-800 dark:border-gray-700">
       <CardHeader className="pb-2">
         <div className="flex justify-between items-center">
           <div>
-            <CardTitle className="text-lg font-semibold">System Health</CardTitle>
-            <CardDescription>Current status as of {formatDate(healthStatus.timestamp)}</CardDescription>
+            <CardTitle className="text-lg font-semibold dark:text-white">System Health</CardTitle>
+            <CardDescription className="dark:text-gray-300">Current status as of {formatDate(healthStatus.timestamp)}</CardDescription>
           </div>
           {getStatusBadge(healthStatus.status)}
         </div>
@@ -106,8 +106,8 @@ export default function SystemHealthWidget() {
         <div className="flex items-center justify-center gap-3 mb-4">
           {getStatusIcon(healthStatus.status)}
           <div>
-            <p className="font-medium">{getOverallStatus(healthStatus)}</p>
-            <p className="text-sm text-gray-500">
+            <p className="font-medium dark:text-white">{getOverallStatus(healthStatus)}</p>
+            <p className="text-sm text-gray-500 dark:text-gray-400">
               {healthyCount} of {totalServices} services operational
             </p>
           </div>
@@ -115,9 +115,9 @@ export default function SystemHealthWidget() {
         
         <div className="grid grid-cols-2 gap-2 text-sm">
           {Object.entries(healthStatus.services).map(([key, service]) => (
-            <div key={key} className="flex justify-between items-center p-2 rounded-md border">
-              <span className="capitalize">{key}</span>
-              <span className={service.healthy ? 'text-green-500' : 'text-red-500'}>
+            <div key={key} className="flex justify-between items-center p-2 rounded-md border dark:border-gray-700 dark:bg-gray-800">
+              <span className="capitalize dark:text-gray-300">{key}</span>
+              <span className={service.healthy ? 'text-green-500 dark:text-green-400' : 'text-red-500 dark:text-red-400'}>
                 {service.healthy ? 'Healthy' : 'Error'}
               </span>
             </div>
