@@ -151,17 +151,17 @@ export default function Navbar() {
   const renderDesktopDropdown = (group: MenuGroup) => {
     return (
       <DropdownMenu key={group.label}>
-        <DropdownMenuTrigger className="font-medium text-[var(--navy)] hover:text-[var(--orange)] transition duration-300 outline-none flex items-center">
+        <DropdownMenuTrigger className="font-medium text-[#1c3668] hover:text-[#f15a29] transition duration-300 outline-none flex items-center">
           {group.label} <ChevronDown className="h-4 w-4 ml-1 opacity-70" />
         </DropdownMenuTrigger>
         <DropdownMenuContent className="min-w-[200px]">
-          <DropdownMenuLabel className="text-[var(--navy)]">{group.label}</DropdownMenuLabel>
+          <DropdownMenuLabel className="text-[#1c3668]">{group.label}</DropdownMenuLabel>
           <DropdownMenuSeparator />
           {group.items.map((item) => (
             <DropdownMenuItem key={item.label} asChild>
               <Link
                 href={item.href}
-                className={`flex items-center py-2 px-2 ${isActive(item.href) ? 'text-[var(--orange)]' : 'text-[var(--navy)] hover:text-[var(--orange)]'} transition duration-300 no-underline w-full`}
+                className={`flex items-center py-2 px-2 ${isActive(item.href) ? 'text-[#f15a29]' : 'text-[#1c3668] hover:text-[#f15a29]'} transition duration-300 no-underline w-full`}
               >
                 {item.icon}
                 {item.label}
@@ -182,7 +182,7 @@ export default function Navbar() {
           <Link
             key={item.label}
             href={item.href}
-            className={`flex items-center py-2 px-2 font-medium ${isActive(item.href) ? 'text-[var(--orange)]' : 'text-[var(--navy)] hover:text-[var(--orange)]'} transition duration-300 no-underline`}
+            className={`flex items-center py-2 px-2 font-medium ${isActive(item.href) ? 'text-[#f15a29]' : 'text-[#1c3668] hover:text-[#f15a29]'} transition duration-300 no-underline`}
             onClick={closeMenu}
           >
             {item.icon}
@@ -265,7 +265,7 @@ export default function Navbar() {
           
           <a href="#book-call">
             <Button 
-              className="hover:shadow-md hover:-translate-y-[2px] transition duration-300 flex items-center bg-[var(--orange)] text-white"
+              className="hover:shadow-md hover:-translate-y-[2px] transition duration-300 flex items-center bg-[#f15a29] text-white"
             >
               <PhoneCall className="h-4 w-4 mr-2" />
               Book a Call
@@ -280,9 +280,9 @@ export default function Navbar() {
           aria-label="Toggle mobile menu"
         >
           {isMenuOpen ? (
-            <X style={{ color: 'var(--navy)' }} className="h-6 w-6" />
+            <X style={{ color: '#1c3668' }} className="h-6 w-6" />
           ) : (
-            <Menu style={{ color: 'var(--navy)' }} className="h-6 w-6" />
+            <Menu style={{ color: '#1c3668' }} className="h-6 w-6" />
           )}
         </button>
       </nav>
@@ -302,7 +302,7 @@ export default function Navbar() {
               {clientRegistrationEnabled && tenant?.id && (
                 <Button 
                   variant="outline"
-                  className="w-full mb-2 border-[var(--navy)] text-[var(--navy)] hover:bg-[var(--navy)] hover:text-white hover:border-[var(--navy)]"
+                  className="w-full mb-2 border-[#1c3668] text-[#1c3668] hover:bg-[#1c3668] hover:text-white hover:border-[#1c3668]"
                   onClick={closeMenu}
                   asChild
                 >
@@ -318,7 +318,7 @@ export default function Navbar() {
               
               <Button 
                 variant="default"
-                className="w-full bg-[var(--orange)] text-white hover:bg-[var(--orange)]/90"
+                className="w-full bg-[#f15a29] text-white hover:bg-[#f15a29]/90"
                 onClick={closeMenu}
                 asChild
               >
@@ -338,7 +338,7 @@ export default function Navbar() {
               <h4 className="text-sm uppercase tracking-wider text-gray-500 mb-2 px-2">Admin</h4>
               <Button 
                 variant="default"
-                className="w-full bg-[var(--navy)] text-white hover:bg-[var(--navy-dark)] transition-colors font-medium shadow-sm"
+                className="w-full bg-[#1c3668] text-white hover:bg-[#132549] transition-colors font-medium shadow-sm"
                 onClick={closeMenu}
                 asChild
               >
@@ -361,7 +361,7 @@ export default function Navbar() {
               className="inline-block text-center w-full"
             >
               <Button 
-                className="w-full hover:shadow-md hover:-translate-y-[2px] transition duration-300 flex items-center justify-center bg-[var(--orange)] text-white"
+                className="w-full hover:shadow-md hover:-translate-y-[2px] transition duration-300 flex items-center justify-center bg-[#f15a29] text-white"
               >
                 <PhoneCall className="h-4 w-4 mr-2" />
                 Book a Call
