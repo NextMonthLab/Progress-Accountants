@@ -30,7 +30,6 @@ export const mapSidebarToNavigation = (): NavigationItem[] => {
       type: 'link',
       href: '/admin/dashboard',
       description: 'View your site performance at a glance',
-      badge: { text: 'Upgraded', variant: 'updated' },
       category: 'frequently_used',
       pinnedOrder: 2,
     },
@@ -57,7 +56,6 @@ export const mapSidebarToNavigation = (): NavigationItem[] => {
           type: 'link',
           href: '/page-builder/new',
           requiresStaff: true,
-          badge: { text: 'Updated', variant: 'updated' },
           category: 'frequently_used',
         },
         {
@@ -82,7 +80,6 @@ export const mapSidebarToNavigation = (): NavigationItem[] => {
       href: '/media',
       requiresStaff: true,
       description: 'Manage images, videos and documents',
-      badge: { text: 'Enhanced', variant: 'updated' },
       category: 'frequently_used',
       pinnedOrder: 5,
     },
