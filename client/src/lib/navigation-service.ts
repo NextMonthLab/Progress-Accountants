@@ -54,6 +54,7 @@ export const mapSidebarToNavigation = (): NavigationItem[] => {
   const navigationItems: NavigationItem[] = [
     // QUICK ACTIONS SECTION
     // ======================
+    /* Removed Edit Homepage from menu as requested
     {
       id: 'edit_homepage',
       title: 'Edit Homepage',
@@ -64,6 +65,7 @@ export const mapSidebarToNavigation = (): NavigationItem[] => {
       category: 'quick_actions',
       pinnedOrder: 1,
     },
+    */
     {
       id: 'create_new_page',
       title: 'Create New Page',
