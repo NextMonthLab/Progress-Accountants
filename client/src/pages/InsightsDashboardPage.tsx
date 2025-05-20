@@ -1,4 +1,4 @@
-import React, { useState, useTransition } from 'react';
+import React, { useState, useTransition, Suspense } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import AdminLayout from '@/layouts/AdminLayout';
 import { Loader2, BarChart3, Award, TrendingUp, Medal } from 'lucide-react';
@@ -95,12 +95,24 @@ function AiSummaryCard({ summary }: { summary: InsightSummary }) {
   );
 }
 
-// Main dashboard component
+// Main wrapper component with proper suspense boundary
+// Dashboard container that safely handles suspense states
 export default function InsightsDashboardPage() {
+  return (
+    <AdminLayout>
+      <Suspense fallback={<DashboardLoader />}>
+        <InsightsDashboardContent />
+      </Suspense>
+    </AdminLayout>
+  );
+}
+
+// Actual dashboard content component
+function InsightsDashboardContent() {
   const [period, setPeriod] = useState('week');
   const [isPending, startTransition] = useTransition();
   
-  // Use separate queries with explicit loading states
+  // Use separate queries with explicit loading states and suspense: false
   const { 
     data: leaderboard, 
     isLoading: loadingLeaderboard, 
@@ -113,7 +125,8 @@ export default function InsightsDashboardPage() {
       return await res.json();
     },
     staleTime: 5 * 60 * 1000, // 5 minutes
-    retry: 1
+    retry: 1,
+    suspense: false // Prevents React suspense during data loading
   });
   
   const { 
@@ -127,7 +140,8 @@ export default function InsightsDashboardPage() {
       return await res.json();
     },
     staleTime: 5 * 60 * 1000, // 5 minutes
-    retry: 1
+    retry: 1,
+    suspense: false // Prevents React suspense during data loading
   });
   
   const { 
@@ -141,7 +155,8 @@ export default function InsightsDashboardPage() {
       return await res.json();
     },
     staleTime: 5 * 60 * 1000, // 5 minutes
-    retry: 1
+    retry: 1,
+    suspense: false // Prevents React suspense during data loading
   });
   
   const { 
@@ -155,7 +170,8 @@ export default function InsightsDashboardPage() {
       return await res.json();
     },
     staleTime: 5 * 60 * 1000, // 5 minutes
-    retry: 1
+    retry: 1,
+    suspense: false // Prevents React suspense during data loading
   });
   
   // Check if all data is loading
