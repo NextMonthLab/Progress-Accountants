@@ -681,8 +681,16 @@ const PageBuilderContent: React.FC = () => {
       {/* NextMonth Foundation Page Warning */}
       {isNextMonthPage && (
         <NextMonthPageWarning 
-          pageTitle={page.title}
-          onDuplicateClick={() => {
+          pageInfo={{
+            id: page.id,
+            title: page.title,
+            path: page.path,
+            origin: 'nextmonth',
+            createdBy: page.createdBy,
+            pageType: page.pageType,
+            isProtected: true
+          }}
+          onDuplicate={() => {
             // Create a duplicate of this page that the user can edit
             if (page) {
               const duplicatePage = {

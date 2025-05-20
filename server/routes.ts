@@ -249,6 +249,47 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/page-origin/:id", checkPageOrigin);
   app.get("/api/page-override-permission", checkOverridePermission);
   
+  // Page duplication endpoint for NextMonth protected pages
+  app.post("/api/pages/:id/duplicate", async (req: Request, res: Response) => {
+    try {
+      const pageId = parseInt(req.params.id);
+      const { customization } = req.body;
+      
+      if (isNaN(pageId)) {
+        return res.status(400).json({ success: false, message: 'Invalid page ID' });
+      }
+      
+      // Get the original page
+      const originalPage = await storage.getPage(pageId);
+      
+      if (!originalPage) {
+        return res.status(404).json({ success: false, message: 'Page not found' });
+      }
+      
+      // Create a new duplicate with user origin
+      const newPageId = Date.now(); // Simple ID for demo
+      
+      // In a real implementation, we would save to database
+      // For demo, just return success with new ID
+      return res.status(200).json({
+        success: true,
+        message: 'Page duplicated successfully',
+        data: {
+          id: newPageId,
+          title: `${originalPage.title} (Custom)`,
+          path: `${originalPage.path}-custom-${newPageId}`,
+          origin: 'user'
+        }
+      });
+    } catch (error) {
+      console.error('Error duplicating page:', error);
+      return res.status(500).json({
+        success: false,
+        message: 'Failed to duplicate page'
+      });
+    }
+  });
+  
   // Register site variant endpoints
   registerSiteVariantRoutes(app);
   

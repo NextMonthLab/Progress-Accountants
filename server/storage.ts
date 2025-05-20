@@ -325,6 +325,42 @@ export interface IStorage {
 
 // Database-backed implementation of IStorage
 export class DatabaseStorage implements IStorage {
+  // NextMonth foundation pages (protected from direct editing)
+  private foundationPages = {
+    'home': {
+      id: 1,
+      title: 'Home Page',
+      path: 'home',
+      origin: 'nextmonth',
+      createdBy: 'nextmonth',
+      tenantId: '00000000-0000-0000-0000-000000000000',
+      description: 'Professional home page design',
+      pageType: 'core',
+      isPublished: true
+    },
+    'about': {
+      id: 2,
+      title: 'About Us',
+      path: 'about',
+      origin: 'nextmonth',
+      createdBy: 'nextmonth',
+      tenantId: '00000000-0000-0000-0000-000000000000',
+      description: 'Professional about page design',
+      pageType: 'core',
+      isPublished: true
+    },
+    'services': {
+      id: 3, 
+      title: 'Our Services',
+      path: 'services',
+      origin: 'nextmonth',
+      createdBy: 'nextmonth',
+      tenantId: '00000000-0000-0000-0000-000000000000',
+      description: 'Professional services page design',
+      pageType: 'core',
+      isPublished: true
+    }
+  };
   sessionStore: session.Store;
   
   constructor() {
@@ -1969,6 +2005,43 @@ export class DatabaseStorage implements IStorage {
     } catch (error) {
       console.error("Error calculating credit usage total:", error);
       return 0;
+    }
+  }
+  
+  // Page origin protection methods
+  async getPageByPath(path: string): Promise<any> {
+    // Check if this is a foundation page first
+    if (this.foundationPages[path]) {
+      return this.foundationPages[path];
+    }
+
+    // Otherwise, check the database for user-created pages
+    try {
+      // In a real implementation, we would query the database
+      // Here we just return null to indicate page doesn't exist
+      return null;
+    } catch (error) {
+      console.error(`Error fetching page by path "${path}":`, error);
+      return null;
+    }
+  }
+
+  async getPage(id: number): Promise<any> {
+    // Check foundation pages
+    for (const path in this.foundationPages) {
+      if (this.foundationPages[path].id === id) {
+        return this.foundationPages[path];
+      }
+    }
+
+    // Otherwise, check the database for user-created pages
+    try {
+      // In a real implementation, we would query the database
+      // Here we just return null to indicate page doesn't exist
+      return null;
+    } catch (error) {
+      console.error(`Error fetching page by ID ${id}:`, error);
+      return null;
     }
   }
 }

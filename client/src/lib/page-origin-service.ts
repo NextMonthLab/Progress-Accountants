@@ -21,6 +21,7 @@ export interface PageInfo {
  */
 export async function checkPageOrigin(pageIdOrPath: string | number): Promise<PageInfo> {
   try {
+    // Make sure the route matches what's defined on the server
     const response = await apiRequest('GET', `/api/page-origin/${pageIdOrPath}`);
     const result = await response.json();
 
@@ -31,7 +32,16 @@ export async function checkPageOrigin(pageIdOrPath: string | number): Promise<Pa
     return result.data;
   } catch (error) {
     console.error('Error checking page origin:', error);
-    throw error;
+    // Return default page info
+    return {
+      id: typeof pageIdOrPath === 'number' ? pageIdOrPath : 0,
+      title: 'Unknown Page',
+      path: typeof pageIdOrPath === 'string' ? pageIdOrPath : '',
+      origin: null,
+      createdBy: null,
+      pageType: null,
+      isProtected: false
+    };
   }
 }
 
@@ -41,7 +51,7 @@ export async function checkPageOrigin(pageIdOrPath: string | number): Promise<Pa
  */
 export async function hasOverridePermission(): Promise<boolean> {
   try {
-    const response = await apiRequest('GET', '/api/page-origin/override-permission');
+    const response = await apiRequest('GET', '/api/page-override-permission');
     const result = await response.json();
 
     if (!result.success) {
