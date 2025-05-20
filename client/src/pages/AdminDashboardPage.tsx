@@ -222,47 +222,51 @@ function QuickAction({
   variant = 'primary',
   isLoading = false
 }: QuickActionProps) {
+  // Enhanced variant styles with improved contrast, hover effects, and shadows
   const variantStyles = {
-    primary: 'bg-[#4F46E5] hover:bg-[#6366F1] dark:bg-[#4338ca] dark:hover:bg-[#4f46e5] shadow-sm hover:shadow-md text-white border-0 dark:shadow-[0_2px_5px_rgba(79,70,229,0.3)]',
-    secondary: 'bg-[#E0F2FE] text-[#0284C7] hover:bg-[#BAE6FD] dark:bg-[#1e3a46] dark:text-[#38bdf8] dark:hover:bg-[#164e63] shadow-sm hover:shadow-md border-0 dark:shadow-[0_2px_3px_rgba(0,0,0,0.3)]',
-    outline: 'border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 hover:shadow-sm dark:shadow-[0_2px_3px_rgba(0,0,0,0.2)]',
-    ghost: 'bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 border border-gray-200 dark:border-gray-700 dark:shadow-none',
+    primary: 'bg-[#4F46E5] hover:bg-[#4338CA] dark:bg-[#4338ca] dark:hover:bg-[#4f46e5] shadow-sm hover:shadow-md text-white border-0 dark:shadow-[0_2px_5px_rgba(79,70,229,0.3)] ring-0 hover:ring-2 hover:ring-indigo-300 dark:hover:ring-indigo-900/50 transition-all duration-150',
+    secondary: 'bg-[#E0F2FE] text-[#0284C7] hover:bg-[#BAE6FD] dark:bg-[#1e3a46] dark:text-[#38bdf8] dark:hover:bg-[#164e63] shadow-sm hover:shadow-md border-0 dark:shadow-[0_2px_3px_rgba(0,0,0,0.3)] ring-0 hover:ring-2 hover:ring-blue-200 dark:hover:ring-blue-900/50 transition-all duration-150',
+    outline: 'border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 hover:shadow-sm dark:shadow-[0_2px_3px_rgba(0,0,0,0.2)] ring-0 hover:ring-2 hover:ring-gray-200 dark:hover:ring-gray-700 transition-all duration-150',
+    ghost: 'bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 border border-gray-200 dark:border-gray-700 dark:shadow-none hover:shadow-sm dark:hover:shadow-[0_1px_2px_rgba(255,255,255,0.05)] transition-all duration-150',
   };
 
-  // Colors based on variant for better contrast - modernized with dark mode support
+  // Improved icon styles with consistent padding and better contrast
   const iconColor = {
-    primary: 'text-white bg-indigo-600 p-1.5 rounded-md',
-    secondary: 'text-blue-600 bg-blue-100 dark:text-blue-400 dark:bg-blue-900/30 p-1.5 rounded-md',
-    outline: 'text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/30 p-1.5 rounded-md',
-    ghost: 'text-gray-600 dark:text-gray-300 bg-gray-200 dark:bg-gray-700 p-1.5 rounded-md'
+    primary: 'text-white bg-indigo-600 dark:bg-indigo-500 p-2 rounded-md',
+    secondary: 'text-blue-600 bg-blue-100 dark:text-blue-300 dark:bg-blue-900/50 p-2 rounded-md',
+    outline: 'text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/40 p-2 rounded-md',
+    ghost: 'text-gray-600 dark:text-gray-300 bg-gray-200 dark:bg-gray-700 p-2 rounded-md'
   };
   
+  // Enhanced title colors for better readability
   const titleColor = {
     primary: 'text-white font-medium',
-    secondary: 'text-slate-800 dark:text-slate-200 font-medium',
-    outline: 'text-slate-800 dark:text-slate-200 font-medium',
-    ghost: 'text-slate-800 dark:text-slate-200 font-medium'
+    secondary: 'text-slate-800 dark:text-slate-100 font-medium',
+    outline: 'text-slate-800 dark:text-slate-100 font-medium',
+    ghost: 'text-slate-800 dark:text-slate-100 font-medium'
   };
   
+  // Improved description contrast for better readability
   const descriptionColor = {
-    primary: 'text-white/90',
-    secondary: 'text-slate-500 dark:text-slate-400',
-    outline: 'text-slate-500 dark:text-slate-400',
-    ghost: 'text-slate-500 dark:text-slate-400'
+    primary: 'text-white/90 dark:text-white/95',
+    secondary: 'text-slate-600 dark:text-slate-300',
+    outline: 'text-slate-600 dark:text-slate-300',
+    ghost: 'text-slate-600 dark:text-slate-300'
   };
 
+  // Enhanced arrow colors with better contrast
   const arrowColor = {
-    primary: 'text-white/70',
-    secondary: 'text-blue-600/70 dark:text-blue-400/70',
-    outline: 'text-indigo-600/70 dark:text-indigo-400/70',
-    ghost: 'text-gray-600/70 dark:text-gray-400/70'
+    primary: 'text-white/80 group-hover:text-white',
+    secondary: 'text-blue-600/80 dark:text-blue-400/80 group-hover:text-blue-600 dark:group-hover:text-blue-400',
+    outline: 'text-indigo-600/80 dark:text-indigo-400/80 group-hover:text-indigo-600 dark:group-hover:text-indigo-400',
+    ghost: 'text-gray-600/80 dark:text-gray-400/80 group-hover:text-gray-700 dark:group-hover:text-gray-300'
   };
 
   if (isLoading) {
     return (
       <div className="p-4 rounded-xl bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 animate-pulse">
         <div className="flex items-start gap-3">
-          <div className="h-8 w-8 rounded-md bg-gray-200 dark:bg-gray-700"></div>
+          <div className="h-10 w-10 rounded-md bg-gray-200 dark:bg-gray-700"></div>
           <div className="flex-1">
             <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4 mb-2"></div>
             <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-full"></div>
@@ -274,14 +278,14 @@ function QuickAction({
 
   return (
     <Link href={link}>
-      <div className={`p-4 rounded-lg transition-all ${variantStyles[variant]} relative group`}>
+      <div className={`p-4 rounded-lg transition-all ${variantStyles[variant]} relative group hover:scale-[1.01]`}>
         <div className="flex items-start gap-3">
           {icon && (
-            <div className={iconColor[variant]}>
+            <div className={`${iconColor[variant]} flex items-center justify-center transition-transform duration-200 group-hover:scale-110`}>
               {icon}
             </div>
           )}
-          <div className="flex-1 pr-4">
+          <div className="flex-1 pr-5">
             <h3 className={titleColor[variant]}>{title}</h3>
             <p className={`text-sm mt-1 ${descriptionColor[variant]}`}>{description}</p>
           </div>
@@ -701,56 +705,83 @@ export default function AdminDashboardPage() {
                     <CardTitle className="dark:text-gray-100">Quick Actions</CardTitle>
                     <CardDescription className="text-gray-700 dark:text-gray-400">Common tasks and actions</CardDescription>
                   </CardHeader>
-                  <CardContent className="grid gap-3">
-                    <QuickAction
-                      title="Create New Page"
-                      description="Design and publish a new page"
-                      icon={<FileText className="h-5 w-5" />}
-                      link="/page-builder/page/new"
-                      variant="primary" 
-                    />
-                    <QuickAction
-                      title="Install New Tool"
-                      description="Browse the tool marketplace"
-                      icon={<Layers className="h-5 w-5" />}
-                      link="/tool-marketplace"
-                      variant="secondary"
-                    />
-                    <QuickAction
-                      title="Insights Dashboard"
-                      description="Track and analyze user feedback"
-                      icon={<BarChart3 className="h-5 w-5" />}
-                      link="/admin/insights-dashboard"
-                      variant="secondary"
-                    />
-                    <QuickAction
-                      title="Manage Insight Users"
-                      description="Add and edit insight users"
-                      icon={<Users className="h-5 w-5" />}
-                      link="/admin/insight-users"
-                      variant="outline"
-                    />
-                    <QuickAction
-                      title="View Website"
-                      description="See your live website"
-                      icon={<Globe className="h-5 w-5" />}
-                      link="/"
-                      variant="secondary"
-                    />
-                    <QuickAction
-                      title="Media Library"
-                      description="Manage your media files"
-                      icon={<ImageIcon className="h-5 w-5" />}
-                      link="/media"
-                      variant="outline"
-                    />
-                    <QuickAction
-                      title="Blueprint Management"
-                      description="Extract and manage templates"
-                      icon={<Copy className="h-5 w-5" />}
-                      link="/admin/blueprint-management"
-                      variant="outline"
-                    />
+                  <CardContent className="grid gap-5">
+                    {/* Create Section */}
+                    <div className="space-y-2">
+                      <h4 className="text-xs font-semibold uppercase tracking-wider text-indigo-600 dark:text-indigo-400 pl-1">Create</h4>
+                      <div className="grid gap-2">
+                        <QuickAction
+                          title="Create New Page"
+                          description="Design and publish a new page"
+                          icon={<FileText className="h-5 w-5" />}
+                          link="/page-builder/page/new"
+                          variant="primary" 
+                        />
+                        <QuickAction
+                          title="Media Library"
+                          description="Manage your media files"
+                          icon={<ImageIcon className="h-5 w-5" />}
+                          link="/media"
+                          variant="outline"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Monitor Section */}
+                    <div className="space-y-2">
+                      <h4 className="text-xs font-semibold uppercase tracking-wider text-blue-600 dark:text-blue-400 pl-1">Monitor</h4>
+                      <div className="grid gap-2">
+                        <QuickAction
+                          title="Insights Dashboard"
+                          description="Track and analyze user feedback"
+                          icon={<BarChart3 className="h-5 w-5" />}
+                          link="/admin/insights-dashboard"
+                          variant="secondary"
+                        />
+                        <QuickAction
+                          title="View Website"
+                          description="See your live website"
+                          icon={<Globe className="h-5 w-5" />}
+                          link="/"
+                          variant="secondary"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Manage Section */}
+                    <div className="space-y-2">
+                      <h4 className="text-xs font-semibold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 pl-1">Manage</h4>
+                      <div className="grid gap-2">
+                        <QuickAction
+                          title="Manage Insight Users"
+                          description="Add and edit insight users"
+                          icon={<Users className="h-5 w-5" />}
+                          link="/admin/insight-users"
+                          variant="outline"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Settings Section */}
+                    <div className="space-y-2">
+                      <h4 className="text-xs font-semibold uppercase tracking-wider text-amber-600 dark:text-amber-400 pl-1">Settings</h4>
+                      <div className="grid gap-2">
+                        <QuickAction
+                          title="Install New Tool"
+                          description="Browse the tool marketplace"
+                          icon={<Layers className="h-5 w-5" />}
+                          link="/tool-marketplace"
+                          variant="secondary"
+                        />
+                        <QuickAction
+                          title="Blueprint Management"
+                          description="Extract and manage templates"
+                          icon={<Copy className="h-5 w-5" />}
+                          link="/admin/blueprint-management"
+                          variant="outline"
+                        />
+                      </div>
+                    </div>
                   </CardContent>
                 </Card>
 
