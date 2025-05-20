@@ -48,7 +48,7 @@ function SidebarLogo({ collapsed }: { collapsed: boolean }) {
   if (collapsed) {
     return (
       <a href="/admin/dashboard" className="no-underline">
-        <span className="font-poppins uppercase font-bold text-xl" style={{ color: 'var(--navy)' }}>
+        <span className="font-poppins uppercase font-bold text-xl" style={{ color: '#1c3668' }}>
           {siteBranding?.logo?.text ? siteBranding.logo.text.charAt(0) : defaultText.charAt(0)}
         </span>
       </a>
@@ -60,11 +60,11 @@ function SidebarLogo({ collapsed }: { collapsed: boolean }) {
   const words = logoText.split(" ");
   
   return (
-    <a href="/admin/dashboard" className="font-poppins font-bold text-xl no-underline" style={{ color: 'var(--navy)' }}>
+    <a href="/admin/dashboard" className="font-poppins font-bold text-xl no-underline" style={{ color: '#1c3668' }}>
       {words.length > 1 ? (
         <>
           <span>{words.slice(0, -1).join(" ")} </span>
-          <span style={{ color: 'var(--navy)' }}>{words[words.length - 1]} </span>
+          <span style={{ color: '#1c3668' }}>{words[words.length - 1]} </span>
         </>
       ) : (
         <span>{logoText} </span>
@@ -134,7 +134,7 @@ const DynamicSidebar: React.FC = () => {
             "flex items-center justify-between rounded-md px-3 py-2 transition-all duration-200 no-underline",
             isActive(item.href) && !isViewWebsiteLink
               ? "bg-[#008080]/10 text-[#008080] font-medium" 
-              : "text-[var(--navy)] hover:bg-[#008080]/10 hover:text-[#008080]",
+              : "text-[#1c3668] hover:bg-[#008080]/10 hover:text-[#008080]",
             isNested && "ml-6 text-sm",
             isViewWebsiteLink && "text-[#008080] font-medium"
           )}
@@ -156,7 +156,7 @@ const DynamicSidebar: React.FC = () => {
           
           {/* Add external link icon for view website */}
           {isViewWebsiteLink && (
-            <ExternalLink className="h-3 w-3 ml-2 text-[var(--nextmonth-teal)]" />
+            <ExternalLink className="h-3 w-3 ml-2 text-[#008080]" />
           )}
         </a>
       </div>
@@ -172,7 +172,7 @@ const DynamicSidebar: React.FC = () => {
       <div key={submenu.id} className="space-y-1">
         <button
           className={cn(
-            "flex items-center justify-between w-full rounded-md px-3 py-2 transition-all duration-200 text-[var(--navy)] hover:bg-[#008080]/10 hover:text-[#008080] text-left font-medium",
+            "flex items-center justify-between w-full rounded-md px-3 py-2 transition-all duration-200 text-[#1c3668] hover:bg-[#008080]/10 hover:text-[#008080] text-left font-medium",
             isExpanded && "bg-[#008080]/10 text-[#008080]"
           )}
           onClick={(e) => {
