@@ -912,29 +912,38 @@ export default function AdminDashboardPage() {
                   </CardContent>
                 </Card>
                 
-                <Card className="dark:bg-gray-800 dark:border-gray-700">
+                <Card className="dark:bg-[#1C1F2A] dark:border-gray-700">
                   <CardHeader>
-                    <CardTitle className="dark:text-white">Quick Content Actions</CardTitle>
+                    <CardTitle className="dark:text-[#E0E0E0]">Quick Content Actions</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-3">
                     <Button 
-                      variant="outline" 
-                      className="w-full justify-start dark:bg-gray-700 dark:border-gray-600 dark:text-white hover:dark:bg-gray-600"
+                      variant="default"
+                      className="w-full justify-start bg-[#635BFF] hover:bg-[#534BD6] text-white dark:bg-[#635BFF] dark:hover:bg-[#534BD6] dark:text-white dark:shadow-[0_0_4px_rgba(255,255,255,0.05)]"
                       onClick={() => navigate("/page-builder/page/new")}
                     >
                       <Plus className="mr-2 h-4 w-4" />
                       Create New Page
                     </Button>
-                    <Button variant="outline" className="w-full justify-start dark:bg-gray-700 dark:border-gray-600 dark:text-white hover:dark:bg-gray-600">
-                      <ImageIcon className="mr-2 h-4 w-4" />
+                    <Button 
+                      variant="outline" 
+                      className="w-full justify-start dark:bg-gray-800 dark:border-gray-600 dark:text-[#E0E0E0] hover:dark:bg-gray-700 dark:shadow-[0_0_4px_rgba(255,255,255,0.05)]"
+                    >
+                      <ImageIcon className="mr-2 h-4 w-4 dark:text-[#E0E0E0]" />
                       Upload Media
                     </Button>
-                    <Button variant="outline" className="w-full justify-start dark:bg-gray-700 dark:border-gray-600 dark:text-white hover:dark:bg-gray-600">
-                      <Palette className="mr-2 h-4 w-4" />
+                    <Button 
+                      variant="outline" 
+                      className="w-full justify-start dark:bg-gray-800 dark:border-gray-600 dark:text-[#E0E0E0] hover:dark:bg-gray-700 dark:shadow-[0_0_4px_rgba(255,255,255,0.05)]"
+                    >
+                      <Palette className="mr-2 h-4 w-4 dark:text-[#E0E0E0]" />
                       Edit Brand Guidelines
                     </Button>
-                    <Button variant="outline" className="w-full justify-start dark:bg-gray-700 dark:border-gray-600 dark:text-white hover:dark:bg-gray-600">
-                      <BookOpen className="mr-2 h-4 w-4" />
+                    <Button 
+                      variant="outline" 
+                      className="w-full justify-start dark:bg-gray-800 dark:border-gray-600 dark:text-[#E0E0E0] hover:dark:bg-gray-700 dark:shadow-[0_0_4px_rgba(255,255,255,0.05)]"
+                    >
+                      <BookOpen className="mr-2 h-4 w-4 dark:text-[#E0E0E0]" />
                       Manage Templates
                     </Button>
                   </CardContent>
