@@ -482,33 +482,42 @@ function Router() {
         component={ContentStudioPage} 
         allowedRoles={['admin', 'super_admin', 'editor']} 
       />
+      {/* Removed Business Network route for Hetzner deployment
       <ProtectedRoute 
         path="/business-network" 
         component={BusinessNetworkPage} 
         allowedRoles={['client', 'admin', 'super_admin', 'editor']} 
       />
+      */}
+      {/* Removed Business Discover route for Hetzner deployment
       <ProtectedRoute 
         path="/business-discover" 
         component={BusinessDiscoverPage} 
         allowedRoles={['client', 'admin', 'super_admin', 'editor']} 
       />
+      */}
+      {/* Removed Entrepreneur Support route for Hetzner deployment
       <ProtectedRoute 
         path="/entrepreneur-support" 
         component={EntrepreneurSupportPage}
         allowedRoles={['client', 'admin', 'super_admin']} 
       />
-      {/* Moved to protected route at /admin/agora-profile */}
+      */}
+      {/* Removed Agora Profile test route for Hetzner deployment
       <Route path="/agora-profile-test">
         <Suspense fallback={<LoadingFallback />}>
           <AgoraProfileTestPage />
         </Suspense>
       </Route>
+      */}
       <ProtectedRoute 
         path="/navigation-demo" 
         component={NavigationDemoPage}
         allowedRoles={['admin', 'super_admin']} 
       />
+      {/* Temporarily removed Marketplace route for Hetzner deployment
       <ProtectedRoute path="/marketplace" component={EnhancedMarketplacePage} />
+      */}
       {/* Removed My Tools route for Hetzner deployment
       <ProtectedRoute path="/my-tools" component={MyToolsPage} />
       */}
