@@ -77,8 +77,10 @@
 
   /* AI feature badges */
   .badge-ai {
-    @apply text-xs text-[var(--ai-accent)] bg-[var(--ai-accent)]/10 rounded-full px-2 py-0.5;
-    @apply border border-[var(--ai-accent)]/20 font-normal;
+    color: var(--ai-accent);
+    background-color: rgba(20, 184, 166, 0.1);
+    border: 1px solid rgba(20, 184, 166, 0.2);
+    @apply text-xs rounded-full px-2 py-0.5 font-normal;
   }
 }
 

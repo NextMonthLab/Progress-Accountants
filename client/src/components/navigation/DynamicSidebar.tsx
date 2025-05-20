@@ -48,7 +48,7 @@ function SidebarLogo({ collapsed }: { collapsed: boolean }) {
   if (collapsed) {
     return (
       <a href="/admin/dashboard" className="no-underline">
-        <span className="font-poppins uppercase font-bold text-xl" style={{ color: '#1c3668' }}>
+        <span className="font-poppins uppercase font-bold text-xl" style={{ color: 'var(--text-headline)' }}>
           {siteBranding?.logo?.text ? siteBranding.logo.text.charAt(0) : defaultText.charAt(0)}
         </span>
       </a>
@@ -82,12 +82,26 @@ const SidebarItemBadge = ({
 }) => {
   const variant = badge.variant || "default";
   
+  // Handle different badge styles based on type
+  const getBadgeClasses = () => {
+    if (variant === "new") {
+      return "badge-flat bg-blue-50 text-blue-600";
+    } else if (variant === "updated") {
+      return "badge-flat bg-indigo-50 text-indigo-600"; 
+    } else if (variant === "pro") {
+      return "badge-flat bg-purple-50 text-purple-600";
+    } else if (variant === "ai-powered" || variant === "beta") {
+      return "badge-ai";
+    }
+    return "badge-flat bg-gray-100 text-gray-600";
+  };
+  
   return (
     <Badge 
-      variant={variant === "default" ? "outline" : "default"}
-      className="ml-auto text-[9px] h-4 ml-1"
+      variant="outline"
+      className={cn("ml-auto text-[9px] py-0.5 px-2 font-normal lowercase ml-1", getBadgeClasses())}
     >
-      {badge.text}
+      {badge.text.toLowerCase()}
     </Badge>
   );
 };
@@ -221,7 +235,7 @@ const DynamicSidebar: React.FC = () => {
                   aria-label={sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
                 >
                   <ChevronRight className={cn(
-                    "h-3 w-3 text-[#1c3668] transition-transform duration-200",
+                    "h-3 w-3 text-[var(--text-body)] transition-transform duration-200",
                     sidebarCollapsed ? "rotate-180" : ""
                   )} />
                 </button>
