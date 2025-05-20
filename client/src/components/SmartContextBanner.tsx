@@ -82,23 +82,23 @@ const SmartContextBanner: React.FC = () => {
   if (!isOpen || !smartContext || navigationState.focusedMode) return null;
 
   return (
-    <div className="bg-white shadow-sm border-b border-gray-200 p-2 px-3 sm:px-4 text-sm relative">
+    <div className="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700 p-2 px-3 sm:px-4 text-sm relative">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center">
-          <div className="bg-blue-50 p-1.5 rounded-md">
-            <Brain className="h-4 w-4 text-navy" />
+          <div className="bg-blue-50 dark:bg-blue-900/20 p-1.5 rounded-md">
+            <Brain className="h-4 w-4 text-navy dark:text-blue-400" />
           </div>
-          <span className="font-medium text-navy ml-2">Smart Context</span>
+          <span className="font-medium text-navy dark:text-blue-300 ml-2">Smart Context</span>
           {loading ? (
-            <div className="ml-3 h-4 w-32 bg-gray-200 rounded animate-pulse"></div>
+            <div className="ml-3 h-4 w-32 bg-gray-200 dark:bg-gray-700 rounded animate-pulse"></div>
           ) : (
-            <span className="ml-3 text-gray-700 font-medium">{smartContext.context}</span>
+            <span className="ml-3 text-gray-700 dark:text-gray-300 font-medium">{smartContext.context}</span>
           )}
           
-          <div className="hidden sm:flex items-center ml-6 text-xs text-gray-500">
+          <div className="hidden sm:flex items-center ml-6 text-xs text-gray-500 dark:text-gray-400">
             <Clock className="h-3 w-3 mr-1" />
             {loading ? (
-              <div className="h-3 w-24 bg-gray-200 rounded animate-pulse"></div>
+              <div className="h-3 w-24 bg-gray-200 dark:bg-gray-700 rounded animate-pulse"></div>
             ) : (
               <span>Last activity: {smartContext.lastActivity}</span>
             )}
@@ -106,10 +106,10 @@ const SmartContextBanner: React.FC = () => {
         </div>
         
         <div className="flex items-center mt-1 sm:mt-0">
-          <div className="flex sm:hidden items-center text-xs text-gray-500 mr-2">
+          <div className="flex sm:hidden items-center text-xs text-gray-500 dark:text-gray-400 mr-2">
             <Clock className="h-3 w-3 mr-1" />
             {loading ? (
-              <div className="h-3 w-24 bg-gray-200 rounded animate-pulse"></div>
+              <div className="h-3 w-24 bg-gray-200 dark:bg-gray-700 rounded animate-pulse"></div>
             ) : (
               <span>Last activity: {smartContext.lastActivity}</span>
             )}
@@ -128,6 +128,11 @@ const SmartContextBanner: React.FC = () => {
           {/* Keyboard Shortcuts Button */}
           <div className="mr-2">
             <KeyboardShortcutsButton />
+          </div>
+          
+          {/* Theme Toggle Button */}
+          <div className="mr-2">
+            <ThemeToggle variant="ghost" />
           </div>
           
           {/* View Website Button */}
@@ -157,14 +162,14 @@ const SmartContextBanner: React.FC = () => {
       {!loading && smartContext.suggestions.length > 0 && (
         <div className="mt-2 pl-2 sm:pl-6 flex flex-col sm:flex-row sm:items-center text-xs">
           <div className="flex items-center">
-            <div className="bg-amber-50 p-1 rounded-md">
-              <LightbulbIcon className="h-3 w-3 text-amber-500" />
+            <div className="bg-amber-50 dark:bg-amber-900/20 p-1 rounded-md">
+              <LightbulbIcon className="h-3 w-3 text-amber-500 dark:text-amber-400" />
             </div>
-            <span className="text-gray-700 font-medium ml-2 mr-2">Smart suggestions:</span>
+            <span className="text-gray-700 dark:text-gray-300 font-medium ml-2 mr-2">Smart suggestions:</span>
           </div>
           <ul className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4 mt-2 sm:mt-0 ml-6 sm:ml-0">
             {smartContext.suggestions.map((suggestion, index) => (
-              <li key={index} className="text-navy hover:text-[#F65C9A] transition-colors bg-gray-50 py-1 px-2 sm:py-0.5 sm:px-2 rounded-md">
+              <li key={index} className="text-navy dark:text-blue-300 hover:text-[#F65C9A] dark:hover:text-[#F65C9A] transition-colors bg-gray-50 dark:bg-gray-700/50 py-1 px-2 sm:py-0.5 sm:px-2 rounded-md">
                 {suggestion}
               </li>
             ))}
