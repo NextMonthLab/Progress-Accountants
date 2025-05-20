@@ -15,24 +15,24 @@ const badgeVariants = cva(
         destructive:
           "border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80",
         outline: "text-foreground",
-        // NextMonth Gold UI design system gradient variants
+        // Modern UI design system - solid colors with subtle styling
         "teal-blue": 
-          "border-0 bg-gradient-to-r from-[#36d1dc] to-[#5b86e5] text-white hover:opacity-90",
+          "bg-blue-50 text-blue-600 border border-blue-100",
         "pink-coral": 
-          "border-0 bg-gradient-to-r from-[#f953c6] to-[#ff6b6b] text-white hover:opacity-90",
-        // NextMonth Gold UI specialized variants
+          "bg-indigo-50 text-indigo-600 border border-indigo-100",
+        // NextMonth Gold UI specialized variants - modernized
         "teal-tag": 
-          "border-0 bg-[#008080]/10 text-[#008080] hover:bg-[#008080]/20",
+          "bg-teal-50 text-teal-600 border border-teal-100",
         
-        // Legacy badge variants mapped to gradients (for backward compatibility)
+        // Legacy badge variants mapped to modern styling (for backward compatibility)
         "new": 
-          "border-0 bg-gradient-to-r from-[#f953c6] to-[#ff6b6b] text-white hover:opacity-90",
+          "bg-indigo-50 text-indigo-600 border border-indigo-100",
         "updated": 
-          "border-0 bg-gradient-to-r from-[#36d1dc] to-[#5b86e5] text-white hover:opacity-90",
+          "bg-blue-50 text-blue-600 border border-blue-100",
         "beta": 
-          "border-0 bg-gradient-to-r from-[#f953c6] to-[#ff6b6b] text-white hover:opacity-90",
+          "bg-teal-50 text-teal-600 border border-teal-100",
         "pro": 
-          "border-0 bg-gradient-to-r from-[#f953c6] to-[#ff6b6b] text-white hover:opacity-90",
+          "bg-purple-50 text-purple-600 border border-purple-100",
       },
     },
     defaultVariants: {

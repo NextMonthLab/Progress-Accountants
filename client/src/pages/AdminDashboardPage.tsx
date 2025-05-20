@@ -273,7 +273,7 @@ function QuickAction({
 
   return (
     <Link href={link}>
-      <div className={`p-4 rounded-xl transition-all ${variantStyles[variant]} relative group`}>
+      <div className={`p-4 rounded-lg transition-all ${variantStyles[variant]} relative group`}>
         <div className="flex items-start gap-3">
           {icon && (
             <div className={iconColor[variant]}>
@@ -323,34 +323,34 @@ function SystemHealth({ components = [], isLoading = false }: SystemHealthProps)
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-2">
       {components.map((component, index) => (
-        <div key={index} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-md">
+        <div key={index} className="flex items-center justify-between p-2 bg-gray-50 dark:bg-gray-800 rounded-md">
           <div className="flex items-center gap-2">
             {component.status === 'good' ? (
-              <CheckCircle2 className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
+              <CheckCircle2 className="h-4 w-4 text-emerald-600" />
             ) : component.status === 'warning' ? (
-              <AlertTriangle className="h-4 w-4 text-amber-600 dark:text-amber-400" />
+              <AlertTriangle className="h-4 w-4 text-yellow-600" />
             ) : (
-              <XCircle className="h-4 w-4 text-red-600 dark:text-red-400" />
+              <XCircle className="h-4 w-4 text-red-600" />
             )}
             <div>
-              <p className="font-medium text-gray-800 dark:text-white">{component.name}</p>
-              {component.details && <p className="text-xs text-gray-700 dark:text-gray-300">{component.details}</p>}
+              <p className="font-medium text-slate-800 text-sm">{component.name}</p>
+              {component.details && <p className="text-xs text-slate-500">{component.details}</p>}
             </div>
           </div>
           <div className="flex items-center gap-2">
             <Badge className={
               component.status === 'good' 
-                ? 'bg-gradient-to-r from-[#36d1dc] to-[#5b86e5] text-white border-0'
+                ? 'bg-emerald-50 text-emerald-600 border border-emerald-100'
                 : component.status === 'warning'
-                ? 'bg-gradient-to-r from-[#f953c6] to-[#ff6b6b] text-white border-0 opacity-75'
-                : 'bg-gradient-to-r from-[#f953c6] to-[#ff6b6b] text-white border-0'
+                ? 'bg-yellow-50 text-yellow-600 border border-yellow-100'
+                : 'bg-red-50 text-red-600 border border-red-100'
             }>
               {component.status === 'good' ? 'Good' : 
                 component.status === 'warning' ? 'Warning' : 'Error'}
             </Badge>
-            <span className="text-xs text-gray-600 dark:text-gray-400">{component.lastChecked}</span>
+            <span className="text-xs text-slate-500">{component.lastChecked}</span>
           </div>
         </div>
       ))}

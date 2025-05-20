@@ -22,7 +22,7 @@ export function AdminCard({ children, className, title, icon, footer }: AdminCar
         <div className="px-6 py-5 border-b dark:border-[#1D1D1D] border-gray-200">
           <div className="flex items-center gap-3">
             {icon && (
-              <div className="w-9 h-9 rounded-lg flex items-center justify-center bg-gradient-to-r from-[#3CBFAE] to-[#F65C9A] text-white">
+              <div className="w-9 h-9 rounded-lg flex items-center justify-center bg-[#4F46E5] text-white">
                 {icon}
               </div>
             )}
