@@ -334,9 +334,9 @@ function SystemHealth({ components = [], isLoading = false }: SystemHealthProps)
     return (
       <div className="space-y-4">
         {[1, 2, 3, 4].map((_, i) => (
-          <div key={i} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-md animate-pulse">
-            <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/3"></div>
-            <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/4"></div>
+          <div key={i} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-[#1E3A46] rounded-md animate-pulse">
+            <div className="h-4 bg-gray-200 dark:bg-[#2A3052] rounded w-1/3"></div>
+            <div className="h-4 bg-gray-200 dark:bg-[#2A3052] rounded w-1/4"></div>
           </div>
         ))}
       </div>
@@ -346,7 +346,7 @@ function SystemHealth({ components = [], isLoading = false }: SystemHealthProps)
   return (
     <div className="space-y-2">
       {components.map((component, index) => (
-        <div key={index} className="flex items-center justify-between p-2 bg-gray-50 dark:bg-gray-800 rounded-md">
+        <div key={index} className="flex items-center justify-between p-2 bg-gray-50 dark:bg-[#1E3A46] rounded-md">
           <div className="flex items-center gap-2">
             {component.status === 'good' ? (
               <CheckCircle2 className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
@@ -357,7 +357,7 @@ function SystemHealth({ components = [], isLoading = false }: SystemHealthProps)
             )}
             <div>
               <p className="font-medium text-slate-800 dark:text-white text-sm">{component.name}</p>
-              {component.details && <p className="text-xs text-slate-500 dark:text-slate-400">{component.details}</p>}
+              {component.details && <p className="text-xs text-slate-500 dark:text-gray-300">{component.details}</p>}
             </div>
           </div>
           <div className="flex items-center gap-2">
@@ -371,7 +371,7 @@ function SystemHealth({ components = [], isLoading = false }: SystemHealthProps)
               {component.status === 'good' ? 'Good' : 
                 component.status === 'warning' ? 'Warning' : 'Error'}
             </Badge>
-            <span className="text-xs text-slate-500 dark:text-slate-400">{component.lastChecked}</span>
+            <span className="text-xs text-slate-500 dark:text-gray-300">{component.lastChecked}</span>
           </div>
         </div>
       ))}
@@ -621,14 +621,14 @@ export default function AdminDashboardPage() {
           {/* Overview Tab Content */}
           <TabsContent value="overview" className="mt-0">
             {/* Welcome summary */}
-            <div className="mb-6 bg-white dark:bg-gray-800 p-5 rounded-lg border border-gray-100 dark:border-gray-700 shadow-sm">
+            <div className="mb-6 bg-white dark:bg-[#1E3A46] p-5 rounded-lg border border-gray-100 dark:border-[#2a3052]/50 shadow-sm">
               <div className="flex items-start gap-4">
-                <div className="p-3 bg-indigo-50 dark:bg-indigo-900/30 rounded-md">
-                  <Sparkles className="h-6 w-6 text-indigo-600 dark:text-indigo-400" />
+                <div className="p-3 bg-indigo-50 dark:bg-[#2A3052] rounded-md">
+                  <Sparkles className="h-6 w-6 text-indigo-600 dark:text-blue-300" />
                 </div>
                 <div>
                   <h2 className="text-lg font-medium text-gray-800 dark:text-white">Welcome back, {user?.username || 'Admin'}</h2>
-                  <p className="text-gray-600 dark:text-gray-300 mt-1">
+                  <p className="text-gray-600 dark:text-gray-200 mt-1">
                     Your website is performing well. You have {metrics?.totalPages || 0} pages published and {metrics?.totalToolsInstalled || 0} tools installed.
                   </p>
                 </div>
