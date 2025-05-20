@@ -31,6 +31,7 @@ const MediaManagementPage = lazy(() => import("@/pages/MediaManagementPage"));
 // Page builder pages
 const PageBuilderListPage = lazy(() => import("@/pages/PageBuilderListPage"));
 const PageBuilderPage = lazy(() => import("@/pages/PageBuilderPage"));
+const ProtectedPageBuilderRoute = lazy(() => import("@/components/page-builder/ProtectedPageBuilderRoute"));
 
 // Lead Intelligence pages
 const LeadRadarPageWrapper = lazy(() => import("@/pages/admin/leads/LeadRadarPageWrapper"));
