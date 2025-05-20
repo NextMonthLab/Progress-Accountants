@@ -99,19 +99,19 @@ function StatCard({
   };
 
   return (
-    <Card className={`overflow-hidden border ${isGradient ? 'shadow-lg shadow-' + color + '/10 border-0' : 'shadow-sm border ' + scheme[color].border} ${className} hover:shadow-md transition-all`}>
+    <Card className={`overflow-hidden border ${isGradient ? 'shadow-lg shadow-' + color + '/10 border-0' : 'shadow-md border ' + scheme[color].border} ${className} hover:shadow-lg transition-all`}>
       <div className={`${scheme[color].bg} p-4 sm:p-6`}>
         <div className="flex justify-between items-center">
           <div>
             <p className={`text-sm font-medium ${isGradient ? 'text-white/90' : 'text-gray-700 dark:text-gray-300'}`}>{label}</p>
-            <h3 className={`text-xl sm:text-2xl font-bold mt-1 ${isGradient ? 'text-white' : 'text-gray-800 dark:text-white'}`}>{value}</h3>
+            <h3 className={`text-xl sm:text-2xl font-bold mt-1 ${isGradient ? 'text-white' : 'text-gray-900 dark:text-white'}`}>{value}</h3>
             {change && (
-              <p className={`text-xs font-medium mt-1 flex items-center ${isPositive ? (isGradient ? 'text-white' : 'text-emerald-600') : (isGradient ? 'text-white' : 'text-red-600')}`}>
+              <p className={`text-xs font-medium mt-1 flex items-center ${isPositive ? (isGradient ? 'text-white' : 'text-emerald-600 dark:text-emerald-400') : (isGradient ? 'text-white' : 'text-red-600 dark:text-red-400')}`}>
                 {isPositive ? '↑' : '↓'} {change}
               </p>
             )}
           </div>
-          <div className={`w-10 h-10 rounded-full flex items-center justify-center ${scheme[color].icon}`}>
+          <div className={`w-12 h-12 rounded-full flex items-center justify-center ${scheme[color].icon} transition-transform duration-200 hover:scale-110`}>
             {icon}
           </div>
         </div>
