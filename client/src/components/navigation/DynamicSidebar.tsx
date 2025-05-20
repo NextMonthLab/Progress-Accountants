@@ -247,30 +247,30 @@ const DynamicSidebar: React.FC = () => {
         </div>
       )}
       
-      {/* Sidebar Header */}
-      <div className="px-4 py-3 flex items-center justify-between border-b border-gray-200 bg-gradient-to-r from-gray-100 to-[#008080]/5">
+      {/* Sidebar Header - Updated with modern UI styling */}
+      <div className="px-4 py-3 flex items-center justify-between border-b border-gray-100 bg-white">
         <SidebarLogo collapsed={sidebarCollapsed} />
         <button
           onClick={isMobile ? toggleMobileSidebar : toggleSidebar}
-          className="p-2 rounded-md hover:bg-teal-100/50 transition-colors"
+          className="p-2 rounded-md hover:bg-[var(--secondary-bg)] transition-colors"
           aria-label={isMobile 
             ? mobileSidebarCollapsed ? "Open menu" : "Close menu" 
             : sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"
           }
         >
           {isMobile ? (
-            <X className="h-5 w-5 text-[#1c3668]" />
+            <X className="h-5 w-5 text-[var(--text-headline)]" />
           ) : sidebarCollapsed ? (
-            <ChevronRight className="h-5 w-5 text-[#1c3668]" />
+            <ChevronRight className="h-5 w-5 text-[var(--text-headline)]" />
           ) : (
-            <MenuIcon className="h-5 w-5 text-[#1c3668]" />
+            <MenuIcon className="h-5 w-5 text-[var(--text-headline)]" />
           )}
         </button>
       </div>
       
-      {/* User Profile & Onboarding Progress */}
+      {/* User Profile & Onboarding Progress - Updated with modern UI styling */}
       {user && (user.userType === 'admin' || user.userType === 'super_admin') && (
-        <div className="px-4 py-3 flex items-center space-x-3 border-b border-gray-200 bg-gradient-to-r from-gray-100 to-[#008080]/5">
+        <div className="px-4 py-3 flex items-center space-x-3 border-b border-gray-100 bg-white">
           <div className="relative flex-shrink-0">
             <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-semibold">
               {user.username ? user.username.charAt(0).toUpperCase() : 'U'}

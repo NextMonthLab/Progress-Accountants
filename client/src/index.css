@@ -20,8 +20,18 @@
 :root {
   --navy: #1a365d;
   --navy-dark: #132b4d;
-  --primary-gradient-start: #3CBFAE;
-  --primary-gradient-end: #F65C9A;
+  /* Updated color palette for modern UI */
+  --primary: #4F46E5;
+  --primary-hover: #6366F1;
+  --secondary-bg: #E0F2FE;
+  --secondary-text: #0284C7;
+  --secondary-hover: #BAE6FD;
+  --secondary-border: #BFDBFE;
+  --ai-accent: #14B8A6;
+  --background: #F8F9FB;
+  --card-bg: #FFFFFF;
+  --text-headline: #222222;
+  --text-body: #6B7280;
   --light-grey: #f5f7fa;
   --dark-grey: #4a5568;
   --orange: #F4A261;
@@ -46,6 +56,29 @@
 @layer components {
   .container {
     @apply px-8;
+  }
+
+  /* Updated button styles for modern UI */
+  .btn-primary {
+    @apply bg-[var(--primary)] text-white rounded-lg py-2 px-4 sm:px-4 md:px-6 transition-all;
+    @apply hover:bg-[var(--primary-hover)] hover:shadow-sm focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:ring-opacity-50;
+  }
+
+  .btn-secondary {
+    @apply bg-[var(--secondary-bg)] text-[var(--secondary-text)] rounded-lg py-2 px-4 sm:px-4 md:px-6 transition-all;
+    @apply border border-[var(--secondary-border)] hover:bg-[var(--secondary-hover)] focus:outline-none focus:ring-2 focus:ring-[var(--secondary-text)] focus:ring-opacity-50;
+  }
+
+  /* Card styling */
+  .card-modern {
+    @apply bg-[var(--card-bg)] rounded-lg p-4 sm:p-5 md:p-6 transition-all;
+    @apply shadow-sm hover:shadow-md border border-gray-100;
+  }
+
+  /* AI feature badges */
+  .badge-ai {
+    @apply text-xs text-[var(--ai-accent)] bg-[var(--ai-accent)]/10 rounded-full px-2 py-0.5;
+    @apply border border-[var(--ai-accent)]/20 font-normal;
   }
 }
 
@@ -132,18 +165,19 @@
   transform: scale(1.05);
 }
 
-/* Button hover effects */
+/* Button hover effects - updated for new color scheme */
 .glow-on-hover:hover {
-  box-shadow: 0 0 15px rgba(246, 92, 154, 0.5);
+  box-shadow: 0 0 15px rgba(79, 70, 229, 0.3);
 }
 
-/* Card hover effects */
+/* Card hover effects - more subtle scaling */
 .hover-scale {
-  transition: transform 0.3s ease-in-out;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
 
 .hover-scale:hover {
-  transform: scale(1.03);
+  transform: scale(1.02);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
 /* Hide scrollbar but keep functionality */
@@ -181,15 +215,52 @@
   backdrop-filter: blur(16px);
 }
 
-/* Glass morphism utilities */
+/* Glass morphism utilities - refined for modern UI */
 .glass {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 }
 
 .glass-dark {
-  background: rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(10px);
+  background: rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(8px);
   border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Background colors for layout elements */
+.bg-modern {
+  background-color: var(--background);
+}
+
+.bg-card {
+  background-color: var(--card-bg);
+}
+
+/* Text styles for modern UI */
+.text-headline {
+  color: var(--text-headline);
+}
+
+.text-body {
+  color: var(--text-body);
+}
+
+/* Updated sidebar navigation items */
+.nav-item {
+  @apply rounded-md transition-all duration-200 hover:bg-gray-100 dark:hover:bg-gray-800;
+}
+
+.nav-item.active {
+  background-color: rgba(79, 70, 229, 0.1);
+  @apply text-[var(--primary)];
+  @apply border-l-2 border-[var(--primary)];
+}
+
+/* Flat badges for sidebar */
+.badge-flat {
+  @apply text-xs font-normal px-2 py-0.5 rounded-md;
+  @apply bg-opacity-10 border-none uppercase tracking-wide;
 }
