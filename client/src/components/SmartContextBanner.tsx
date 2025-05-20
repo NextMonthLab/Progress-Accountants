@@ -7,6 +7,7 @@ import { useNavigation } from '@/contexts/NavigationContext';
 import QuickActions from '@/components/QuickActions';
 import NotificationsPanel from '@/components/NotificationsPanel';
 import KeyboardShortcutsButton from '@/components/KeyboardShortcutsButton';
+import { ThemeToggle } from '@/components/ThemeToggle';
 
 interface SmartContext {
   context: string;
