@@ -161,7 +161,7 @@ const LoadingFallback = () => (
   </div>
 );
 
-// Router for all application routes - Hetzner V1 Deployment (Trimmed Version)
+// Router for all application routes
 function Router() {
   return (
     <Switch>
@@ -173,96 +173,17 @@ function Router() {
         </Suspense>
       </Route>
       
-      {/* Default route should be HomePage */}
-      <Route path="/" component={HomePage} />
-      
-      {/* Admin routes - Only essential routes for Hetzner v1 */}
-      <ProtectedRoute 
-        path="/admin" 
-        component={() => {
-          const [, setLocation] = useLocation();
-          useEffect(() => {
-            setLocation('/admin/dashboard');
-          }, [setLocation]);
-          return <div className="flex items-center justify-center min-h-screen">
-            <Loader2 className="h-8 w-8 animate-spin text-primary" />
-          </div>;
-        }}
-        allowedRoles={['admin', 'super_admin', 'editor']} 
-      />
-      
-      {/* Essential admin pages */}
-      <ProtectedRoute 
-        path="/admin/settings" 
-        component={AdminSettingsPage} 
-        allowedRoles={['admin', 'super_admin']} 
-      />
-      <ProtectedRoute 
-        path="/admin/site-branding" 
-        component={SiteBrandingPage} 
-        allowedRoles={['admin', 'super_admin']} 
-      />
-      <ProtectedRoute 
-        path="/admin/companion-settings" 
-        component={CompanionSettingsPage} 
-        allowedRoles={['admin', 'super_admin']} 
-      />
-      <ProtectedRoute 
-        path="/admin/analytics" 
-        component={AnalyticsPage}
-        allowedRoles={['admin', 'super_admin', 'editor']} 
-      />
-      <ProtectedRoute 
-        path="/admin/insights-dashboard" 
-        component={InsightsDashboardPage}
-        allowedRoles={['admin', 'super_admin', 'editor']} 
-      />
-      
-      {/* Essential content creation pages */}
-      <ProtectedRoute 
-        path="/foundation-pages" 
-        component={FoundationPagesOverviewPage} 
-        allowedRoles={['admin', 'super_admin', 'editor']} 
-      />
-      <ProtectedRoute 
-        path="/page-builder" 
-        component={PageBuilderListPage} 
-        allowedRoles={['admin', 'super_admin', 'editor']} 
-      />
-      <ProtectedRoute 
-        path="/page-builder/new" 
-        component={CreateNewPagePage} 
-        allowedRoles={['admin', 'super_admin', 'editor']} 
-      />
-      <ProtectedRoute 
-        path="/page-builder/:id" 
-        component={PageBuilderPage} 
-        allowedRoles={['admin', 'super_admin', 'editor']} 
-      />
-      <ProtectedRoute 
-        path="/launch-ready" 
-        component={LaunchReadyPage} 
-        allowedRoles={['admin', 'super_admin', 'editor']} 
-      />
-      
-      {/* Essential content generation tools */}
-      <ProtectedRoute
-        path="/tools/social-media-generator"
-        component={SocialMediaGeneratorPage}
-        allowedRoles={['admin', 'super_admin', 'editor']}
-      />
-      <ProtectedRoute
-        path="/tools/blog-post-generator"
-        component={BlogPostGenerator}
-        allowedRoles={['admin', 'super_admin', 'editor']}
-      />
-      
-      {/* Account management */}
-      <ProtectedRoute 
-        path="/account" 
-        component={AccountPage} 
-      />
-      <Route component={NotFound} />
+
+
+      <Route path="/team">
+        <Suspense fallback={<LoadingFallback />}>
+          <TeamPage />
+        </Suspense>
+      </Route>
+      <Route path="/about">
+        <Suspense fallback={<LoadingFallback />}>
+          <AboutPage />
+        </Suspense>
       </Route>
       <Route path="/services">
         <Suspense fallback={<LoadingFallback />}>
