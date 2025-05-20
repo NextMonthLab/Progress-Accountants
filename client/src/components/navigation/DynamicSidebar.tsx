@@ -221,7 +221,7 @@ const DynamicSidebar: React.FC = () => {
                   aria-label={sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
                 >
                   <ChevronRight className={cn(
-                    "h-3 w-3 text-[var(--navy)] transition-transform duration-200",
+                    "h-3 w-3 text-[#1c3668] transition-transform duration-200",
                     sidebarCollapsed ? "rotate-180" : ""
                   )} />
                 </button>
@@ -242,7 +242,7 @@ const DynamicSidebar: React.FC = () => {
             className="p-2 rounded-full bg-white border border-gray-200 shadow-sm hover:bg-[#008080]/10 transition-all duration-150"
             aria-label="Close sidebar"
           >
-            <X className="h-4 w-4 text-[var(--navy)]" />
+            <X className="h-4 w-4 text-[#1c3668]" />
           </button>
         </div>
       )}
@@ -259,11 +259,11 @@ const DynamicSidebar: React.FC = () => {
           }
         >
           {isMobile ? (
-            <X className="h-5 w-5 text-[var(--navy)]" />
+            <X className="h-5 w-5 text-[#1c3668]" />
           ) : sidebarCollapsed ? (
-            <ChevronRight className="h-5 w-5 text-[var(--navy)]" />
+            <ChevronRight className="h-5 w-5 text-[#1c3668]" />
           ) : (
-            <MenuIcon className="h-5 w-5 text-[var(--navy)]" />
+            <MenuIcon className="h-5 w-5 text-[#1c3668]" />
           )}
         </button>
       </div>
@@ -351,10 +351,10 @@ const DynamicSidebar: React.FC = () => {
               className="flex items-center px-4 mb-2 cursor-pointer"
               onClick={() => toggleGroup(group.id)}
             >
-              <span className="mr-2 text-[var(--navy)]">
+              <span className="mr-2 text-[#1c3668]">
                 <GroupIconComponent className="h-5 w-5" />
               </span>
-              <h3 className="text-xs font-bold text-[var(--navy)] uppercase tracking-wider">
+              <h3 className="text-xs font-bold text-[#1c3668] uppercase tracking-wider">
                 {group.title}
               </h3>
               <ChevronDown 
