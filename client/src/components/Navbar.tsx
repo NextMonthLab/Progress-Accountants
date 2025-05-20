@@ -264,11 +264,9 @@ export default function Navbar() {
           )}
           
           {/* Decoupled "Book a Call" button using public-specific CSS classes */}
-          <a href="#book-call">
-            <button className="book-call-btn">
-              <PhoneCall className="h-4 w-4 mr-2" />
-              Book a Call
-            </button>
+          <a href="#book-call" className="book-call-btn">
+            <PhoneCall className="h-4 w-4" />
+            <span>Book a Call</span>
           </a>
         </div>
         
