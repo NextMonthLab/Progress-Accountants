@@ -263,13 +263,12 @@ export default function Navbar() {
             </Button>
           )}
           
+          {/* Decoupled "Book a Call" button using public-specific CSS classes */}
           <a href="#book-call">
-            <Button 
-              className="transition-all shadow-sm hover:shadow-md flex items-center"
-            >
+            <button className="book-call-btn">
               <PhoneCall className="h-4 w-4 mr-2" />
               Book a Call
-            </Button>
+            </button>
           </a>
         </div>
         
@@ -360,12 +359,11 @@ export default function Navbar() {
               onClick={closeMenu}
               className="inline-block text-center w-full"
             >
-              <Button 
-                className="w-full hover:shadow-md hover:-translate-y-[2px] transition duration-300 flex items-center justify-center bg-[#f15a29] text-white"
-              >
+              {/* Decoupled mobile "Book a Call" button using public-specific CSS classes */}
+              <button className="book-call-btn-mobile">
                 <PhoneCall className="h-4 w-4 mr-2" />
                 Book a Call
-              </Button>
+              </button>
             </a>
           </div>
         </div>
