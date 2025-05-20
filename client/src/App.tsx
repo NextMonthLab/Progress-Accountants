@@ -351,11 +351,13 @@ function Router() {
         component={CompanionSettingsPage} 
         allowedRoles={['admin', 'super_admin']} 
       />
+      {/* Removed Agora Profile route for Hetzner deployment
       <ProtectedRoute 
         path="/admin/agora-profile" 
         component={AgoraProfilePage} 
         allowedRoles={['admin', 'super_admin', 'editor']} 
       />
+      */}
       <ProtectedRoute 
         path="/admin/menu-management" 
         component={MenuManagementPage} 
@@ -507,7 +509,9 @@ function Router() {
         allowedRoles={['admin', 'super_admin']} 
       />
       <ProtectedRoute path="/marketplace" component={EnhancedMarketplacePage} />
+      {/* Removed My Tools route for Hetzner deployment
       <ProtectedRoute path="/my-tools" component={MyToolsPage} />
+      */}
       <ProtectedRoute path="/installed-tools" component={InstalledToolsPage} />
       <ProtectedRoute path="/module-gallery" component={MarketplacePage} />
       <ProtectedRoute path="/module-library" component={ModuleLibraryPage} />

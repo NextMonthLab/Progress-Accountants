@@ -34,17 +34,7 @@ export const mapSidebarToNavigation = (): NavigationItem[] => {
       category: 'frequently_used',
       pinnedOrder: 2,
     },
-    {
-      id: 'agora_profile',
-      title: 'Agora Profile',
-      icon: 'Brain',
-      type: 'link',
-      href: '/admin/agora-profile',
-      description: 'Business intelligence and management platform',
-      badge: { text: 'New', variant: 'new' },
-      category: 'frequently_used',
-      pinnedOrder: 3,
-    },
+
     {
       id: 'page_builder',
       title: 'Page Builder',
@@ -96,6 +86,7 @@ export const mapSidebarToNavigation = (): NavigationItem[] => {
       category: 'frequently_used',
       pinnedOrder: 5,
     },
+    /* Temporarily removed marketplace for Hetzner deployment
     {
       id: 'marketplace',
       title: 'Marketplace',
@@ -107,17 +98,8 @@ export const mapSidebarToNavigation = (): NavigationItem[] => {
       category: 'frequently_used',
       pinnedOrder: 6,
     },
-    {
-      id: 'my_tools',
-      title: 'My Tools',
-      icon: 'AppWindow',
-      type: 'link',
-      href: '/my-tools',
-      description: 'Access your installed tools',
-      badge: { text: 'New', variant: 'new' },
-      category: 'frequently_used', 
-      pinnedOrder: 7,
-    },
+    */
+
     
     // CONTENT CREATION
     // ===============
@@ -187,17 +169,7 @@ export const mapSidebarToNavigation = (): NavigationItem[] => {
       badge: { text: 'Real-time', variant: 'new' },
       category: 'admin_tools',
     },
-    {
-      id: 'agora_profile_analytics',
-      title: 'Agora Profile',
-      icon: 'Brain',
-      type: 'link',
-      href: '/admin/agora-profile',
-      requiresStaff: true,
-      description: 'Business intelligence and management platform',
-      badge: { text: 'New', variant: 'new' },
-      category: 'admin_tools',
-    },
+
     {
       id: 'insights_dashboard',
       title: 'Business Insights',
@@ -288,6 +260,7 @@ export const mapSidebarToNavigation = (): NavigationItem[] => {
       category: 'brand_center',
     },
 
+    /* Temporarily removed Growth & Networking section for Hetzner deployment
     // GROWTH & NETWORKING
     // ==================
     {
@@ -320,6 +293,7 @@ export const mapSidebarToNavigation = (): NavigationItem[] => {
       badge: { text: 'New', variant: 'new' },
       category: 'personal_growth',
     },
+    */
     
     // SYSTEM & ADMINISTRATION
     // ======================
