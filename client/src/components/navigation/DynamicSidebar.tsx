@@ -96,13 +96,22 @@ const SidebarItemBadge = ({
     return "badge-flat bg-gray-100 text-gray-600";
   };
   
+  // For Smart Site v1, we're using more subtle badge styles
+  // Remove badges completely for certain types, make others more subtle
+  if (["upgraded", "enhanced", "ai-powered", "real-time"].includes(badge.text.toLowerCase())) {
+    return (
+      <span className="ml-auto text-[9px] text-slate-500 font-normal">
+        {/* Intentionally empty for cleaner sidebar */}
+      </span>
+    );
+  }
+  
   return (
-    <Badge 
-      variant="outline"
-      className={cn("ml-auto text-[9px] py-0.5 px-2 font-normal lowercase ml-1", getBadgeClasses())}
+    <span 
+      className="ml-auto text-[9px] text-slate-500 font-normal"
     >
       {badge.text.toLowerCase()}
-    </Badge>
+    </span>
   );
 };
 
