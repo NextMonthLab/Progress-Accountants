@@ -181,6 +181,7 @@ export const mapSidebarToNavigation = (): NavigationItem[] => {
       badge: { text: 'New', variant: 'new' },
       category: 'admin_tools',
     },
+    /* Removed CRM for Hetzner v1 deployment
     {
       id: 'crm',
       title: 'Client CRM',
@@ -192,6 +193,7 @@ export const mapSidebarToNavigation = (): NavigationItem[] => {
       badge: { text: 'Pro', variant: 'pro' },
       category: 'admin_tools',
     },
+    */
     
     // WEBSITE SETTINGS
     // ==============
@@ -205,6 +207,7 @@ export const mapSidebarToNavigation = (): NavigationItem[] => {
       description: 'Configure site navigation',
       category: 'website_setup',
     },
+    /* Removed SEO Settings for Hetzner v1 deployment
     {
       id: 'seo_manager',
       title: 'SEO Settings',
@@ -215,6 +218,7 @@ export const mapSidebarToNavigation = (): NavigationItem[] => {
       description: 'Optimize for search engines',
       category: 'website_setup',
     },
+    */
     {
       id: 'domain_settings',
       title: 'Domain Settings',
@@ -229,6 +233,7 @@ export const mapSidebarToNavigation = (): NavigationItem[] => {
     
     // BRAND CENTER
     // ===========
+    /* Removed Brand Guidelines for Hetzner v1 deployment
     {
       id: 'brand_guidelines',
       title: 'Brand Guidelines',
@@ -239,6 +244,7 @@ export const mapSidebarToNavigation = (): NavigationItem[] => {
       description: 'Define your brand identity',
       category: 'brand_center',
     },
+    */
     {
       id: 'business_identity',
       title: 'Business Profile',
@@ -297,6 +303,7 @@ export const mapSidebarToNavigation = (): NavigationItem[] => {
     
     // SYSTEM & ADMINISTRATION
     // ======================
+    /* Removed Account for Hetzner v1 deployment
     {
       id: 'account',
       title: 'My Account',
@@ -306,6 +313,7 @@ export const mapSidebarToNavigation = (): NavigationItem[] => {
       description: 'Manage your user account',
       category: 'system',
     },
+    */
     {
       id: 'admin_settings',
       title: 'System Settings',
@@ -326,6 +334,7 @@ export const mapSidebarToNavigation = (): NavigationItem[] => {
       description: 'Configure AI behavior',
       category: 'system',
     },
+    /* Removed Diagnostics for Hetzner v1 deployment
     {
       id: 'diagnostics_dashboard',
       title: 'System Health',
@@ -338,6 +347,8 @@ export const mapSidebarToNavigation = (): NavigationItem[] => {
       badge: { text: 'Admin', variant: 'pro' },
       category: 'system',
     },
+    */
+    /* Removed Site Inventory for Hetzner v1 deployment
     {
       id: 'site_inventory',
       title: 'Site Inventory',
@@ -349,6 +360,8 @@ export const mapSidebarToNavigation = (): NavigationItem[] => {
       badge: { text: 'New', variant: 'new' },
       category: 'system',
     },
+    */
+    /* Removed SOT Management for Hetzner v1 deployment
     {
       id: 'sot_management',
       title: 'Source of Truth',
@@ -361,6 +374,8 @@ export const mapSidebarToNavigation = (): NavigationItem[] => {
       badge: { text: 'Admin', variant: 'pro' },
       category: 'system',
     },
+    */
+    /* Removed Blueprint Management for Hetzner v1 deployment
     {
       id: 'blueprint_management',
       title: 'Blueprint Management',
@@ -373,6 +388,8 @@ export const mapSidebarToNavigation = (): NavigationItem[] => {
       badge: { text: 'Admin', variant: 'pro' },
       category: 'system',
     },
+    */
+    /* Removed Clone Template for Hetzner v1 deployment
     {
       id: 'clone_template',
       title: 'Site Templates',
@@ -385,6 +402,7 @@ export const mapSidebarToNavigation = (): NavigationItem[] => {
       badge: { text: 'Admin', variant: 'pro' },
       category: 'system',
     },
+    */
   ];
   
   return navigationItems;
