@@ -193,6 +193,15 @@ export default function Navbar() {
     );
   };
 
+  // Define local colors for the public site that don't depend on global theme
+  const publicColors = {
+    navy: "#1c3668",
+    navyDark: "#132549",
+    orange: "#f15a29",
+    white: "#ffffff",
+    gray: "#f0f0f0"
+  };
+  
   return (
     <header className="bg-white sticky top-0 z-50 shadow-sm">
       <nav className="container mx-auto px-6 md:px-8 py-4 flex justify-between items-center">
@@ -210,7 +219,7 @@ export default function Navbar() {
               {clientRegistrationEnabled && tenant?.id && (
                 <Button 
                   variant="outline"
-                  className="border-[var(--navy)] text-[var(--navy)] hover:bg-[var(--orange)] hover:text-white hover:border-[var(--orange)]"
+                  className="border-[#1c3668] text-[#1c3668] hover:bg-[#f15a29] hover:text-white hover:border-[#f15a29]"
                   asChild
                 >
                   <Link 
@@ -224,7 +233,7 @@ export default function Navbar() {
               )}
               <Button 
                 variant="default"
-                className="bg-[var(--orange)] text-white hover:bg-[var(--orange)]/90"
+                className="bg-[#f15a29] text-white hover:bg-[#f15a29]/90"
                 asChild
               >
                 <Link 
@@ -241,7 +250,7 @@ export default function Navbar() {
           {isStaff && (
             <Button 
               variant="default"
-              className="bg-[var(--navy)] text-white hover:bg-[var(--navy-dark)] transition-colors font-medium shadow-sm"
+              className="bg-[#1c3668] text-white hover:bg-[#132549] transition-colors font-medium shadow-sm"
               asChild
             >
               <Link 
