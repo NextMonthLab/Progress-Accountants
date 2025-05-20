@@ -202,16 +202,7 @@ export const mapSidebarToNavigation = (): NavigationItem[] => {
       category: 'manage_monitor',
       pinnedOrder: 2,
     },
-    {
-      id: 'insights_dashboard',
-      title: 'Insights Dashboard',
-      icon: 'PieChart',
-      type: 'link',
-      href: '/admin/insights-dashboard',
-      description: 'Get business insights and recommendations',
-      category: 'manage_monitor',
-      pinnedOrder: 3,
-    },
+    /* Removed duplicate Insights Dashboard entry - using only the Quick Actions version */
     {
       id: 'system_health',
       title: 'System Health',
@@ -377,17 +368,7 @@ export const mapSidebarToNavigation = (): NavigationItem[] => {
       pinnedOrder: 7,
     },
 
-    {
-      id: 'insights_dashboard_updated',
-      title: 'Business Insights',
-      icon: 'TrendingUp',
-      type: 'link',
-      href: '/insights-dashboard',
-      requiresStaff: true,
-      description: 'Actionable business intelligence',
-      category: 'manage_monitor',
-      pinnedOrder: 7,
-    },
+    /* Removed third duplicate Insights Dashboard entry - using only the Quick Actions version */
     /* Removed CRM for Hetzner v1 deployment
     {
       id: 'crm',
