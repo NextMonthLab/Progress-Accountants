@@ -125,10 +125,23 @@ const DynamicSidebar: React.FC = () => {
     toggleSidebar,
     toggleMobileSidebar,
     getGroupItems,
-    isMobile
+    isMobile,
+    setNavigationState
   } = useNavigation();
   
   const { sidebarCollapsed, mobileSidebarCollapsed, expandedGroups, expandedSubmenus } = navigationState;
+  
+  // Function to toggle all navigation groups
+  const toggleAllGroups = (expand: boolean) => {
+    if (expand) {
+      setNavigationState(prev => ({ 
+        ...prev, 
+        expandedGroups: navigationGroups.map(g => g.id) 
+      }));
+    } else {
+      setNavigationState(prev => ({ ...prev, expandedGroups: [] }));
+    }
+  };
   
   // Check if user has staff privileges (admin, super_admin, or editor)
   const isStaff = user?.userType === 'admin' || user?.userType === 'super_admin' || user?.userType === 'editor' || user?.isSuperAdmin;
@@ -330,12 +343,9 @@ const DynamicSidebar: React.FC = () => {
               // If any group is expanded, collapse all; otherwise, expand all
               const anyExpanded = navigationGroups.some(group => expandedGroups.includes(group.id));
               if (anyExpanded) {
-                setNavigationState(prev => ({ ...prev, expandedGroups: [] }));
+                toggleAllGroups(false);
               } else {
-                setNavigationState(prev => ({ 
-                  ...prev, 
-                  expandedGroups: navigationGroups.map(g => g.id) 
-                }));
+                toggleAllGroups(true);
               }
             }}
             className="text-xs w-full flex items-center justify-between px-3 py-1.5 rounded-md bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
@@ -410,8 +420,14 @@ const DynamicSidebar: React.FC = () => {
                 return 'text-blue-500 dark:text-blue-400';
               case 'settings_advanced':
                 return 'text-amber-500 dark:text-amber-400';
+              case 'website_setup':
+                return 'text-purple-500 dark:text-purple-400';
+              case 'brand_center':
+                return 'text-rose-500 dark:text-rose-400';
+              case 'system':
+                return 'text-orange-500 dark:text-orange-400';
               default:
-                return 'text-gray-500 dark:text-gray-400';
+                return 'text-sky-500 dark:text-sky-400'; // Default to sky color for other categories
             }
           };
           
@@ -426,8 +442,14 @@ const DynamicSidebar: React.FC = () => {
                 return 'hover:bg-blue-50 dark:hover:bg-blue-900/20';
               case 'settings_advanced':
                 return 'hover:bg-amber-50 dark:hover:bg-amber-900/20';
+              case 'website_setup':
+                return 'hover:bg-purple-50 dark:hover:bg-purple-900/20';
+              case 'brand_center':
+                return 'hover:bg-rose-50 dark:hover:bg-rose-900/20';
+              case 'system':
+                return 'hover:bg-orange-50 dark:hover:bg-orange-900/20';
               default:
-                return 'hover:bg-gray-50 dark:hover:bg-gray-700';
+                return 'hover:bg-sky-50 dark:hover:bg-sky-900/20';
             }
           };
           
@@ -442,8 +464,14 @@ const DynamicSidebar: React.FC = () => {
                 return 'text-blue-500 dark:text-blue-400';
               case 'settings_advanced':
                 return 'text-amber-500 dark:text-amber-400';
+              case 'website_setup':
+                return 'text-purple-500 dark:text-purple-400';
+              case 'brand_center':
+                return 'text-rose-500 dark:text-rose-400';
+              case 'system':
+                return 'text-orange-500 dark:text-orange-400';
               default:
-                return 'text-[var(--text-body)] dark:text-gray-300';
+                return 'text-sky-500 dark:text-sky-400';
             }
           };
           
