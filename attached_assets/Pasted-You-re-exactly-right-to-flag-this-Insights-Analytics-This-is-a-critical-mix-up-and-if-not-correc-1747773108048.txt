@@ -1,0 +1,70 @@
+You’re exactly right to flag this—Insights ≠ Analytics. This is a critical mix-up, and if not corrected, you’re losing access to one of the most valuable features of the system: the feedback loop between end users, internal staff, and the business’s content strategy.
+
+🧠 Insights vs Analytics (Clarification)
+
+Feature	Insights	Analytics
+Purpose	Show qualitative inputs from clients and staff	Show quantitative page traffic and events
+Feeds from	Smart Site chat UI, embedded feedback tools, support questions	Web traffic, page views, session data
+Used by	Business owner, content strategist, editor	Admin, SEO, performance monitoring
+Value	Content ideas, service refinement, business strategy	UX performance, marketing ROI tracking
+
+
+⸻
+
+⚠️ What Happened?
+	•	The /analytics route was correctly added to fix a routing error—but it appears that the “View Insights” button was accidentally routed there, possibly due to:
+	•	A mislabelled navService.ts
+	•	Or a misinterpretation of “insights” as traffic data
+
+⸻
+
+✅ What Needs to Be Done
+
+Here’s the corrected Replit Prompt to restore proper functionality:
+
+⸻
+
+🛠️ Prompt for Replit: Fix Misdirected Insights Link
+
+You’ve successfully routed /analytics to the AnalyticsPage component.
+
+However, the “View Insights” menu item is currently pointing to /analytics—which is incorrect.
+
+✅ The correct destination should be:
+/insights-dashboard (or whatever route renders the InsightsDashboard component used to summarize:
+	•	Frontend chat feedback
+	•	Client queries
+	•	Business content suggestions)
+
+⸻
+
+Required Fixes:
+	1.	Routing
+	•	Create or restore route:
+
+<ProtectedRoute path="/insights-dashboard" component={InsightsDashboard} roles={['admin', 'super_admin', 'editor']} />
+
+
+	2.	Navigation Correction
+	•	In the nav config (likely navService.ts), change:
+
+{
+  label: "View Insights",
+  path: "/analytics",
+  ...
+}
+
+➤ To:
+
+{
+  label: "View Insights",
+  path: "/insights-dashboard",
+  ...
+}
+
+
+	3.	Fallback
+	•	If /insights-dashboard is not implemented, restore or regenerate the Insights component used to:
+	•	Display conversation summaries
+	•	List insight tags from visitors
+	•	Support blog idea generation
