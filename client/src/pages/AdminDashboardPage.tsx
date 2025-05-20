@@ -222,54 +222,54 @@ function QuickAction({
   variant = 'primary',
   isLoading = false
 }: QuickActionProps) {
-  // Enhanced variant styles with improved contrast, hover effects, and shadows
+  // Updated variant styles to match dark mode UI in screenshots
   const variantStyles = {
-    primary: 'bg-[#4F46E5] hover:bg-[#4338CA] dark:bg-[#4338ca] dark:hover:bg-[#4f46e5] shadow-sm hover:shadow-md text-white border-0 dark:shadow-[0_2px_5px_rgba(79,70,229,0.3)] ring-0 hover:ring-2 hover:ring-indigo-300 dark:hover:ring-indigo-900/50 transition-all duration-150',
-    secondary: 'bg-[#E0F2FE] text-[#0284C7] hover:bg-[#BAE6FD] dark:bg-[#1e3a46] dark:text-[#38bdf8] dark:hover:bg-[#164e63] shadow-sm hover:shadow-md border-0 dark:shadow-[0_2px_3px_rgba(0,0,0,0.3)] ring-0 hover:ring-2 hover:ring-blue-200 dark:hover:ring-blue-900/50 transition-all duration-150',
-    outline: 'border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 hover:shadow-sm dark:shadow-[0_2px_3px_rgba(0,0,0,0.2)] ring-0 hover:ring-2 hover:ring-gray-200 dark:hover:ring-gray-700 transition-all duration-150',
-    ghost: 'bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 border border-gray-200 dark:border-gray-700 dark:shadow-none hover:shadow-sm dark:hover:shadow-[0_1px_2px_rgba(255,255,255,0.05)] transition-all duration-150',
+    primary: 'bg-[#525DEE] hover:bg-[#4549c5] dark:bg-[#444fb6] dark:hover:bg-[#3a44a6] shadow-sm hover:shadow-md text-white border-0 dark:border dark:border-[#2a3052]/50 transition-all duration-150',
+    secondary: 'bg-[#1E3A46] hover:bg-[#18323d] dark:bg-[#1E3A46] dark:hover:bg-[#18323d] text-gray-100 shadow-sm hover:shadow-md border-0 dark:border dark:border-[#2a3052]/50 transition-all duration-150',
+    outline: 'bg-[#1E3A46] hover:bg-[#18323d] dark:bg-[#293945] dark:hover:bg-[#1E3A46] text-gray-100 shadow-sm hover:shadow-md border-0 dark:border dark:border-[#2a3052]/50 transition-all duration-150',
+    ghost: 'bg-[#232D39] hover:bg-[#1E3A46] dark:bg-[#232D39] dark:hover:bg-[#1E3A46] text-gray-100 dark:border dark:border-[#2a3052]/50 transition-all duration-150',
   };
 
-  // Improved icon styles with consistent padding and better contrast
+  // Unified icon styles for better visual consistency
   const iconColor = {
-    primary: 'text-white bg-indigo-600 dark:bg-indigo-500 p-2 rounded-md',
-    secondary: 'text-blue-600 bg-blue-100 dark:text-blue-300 dark:bg-blue-900/50 p-2 rounded-md',
-    outline: 'text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/40 p-2 rounded-md',
-    ghost: 'text-gray-600 dark:text-gray-300 bg-gray-200 dark:bg-gray-700 p-2 rounded-md'
+    primary: 'text-blue-300 bg-[#2A3052] p-2 rounded-md flex-shrink-0',
+    secondary: 'text-blue-300 bg-[#2A3052] p-2 rounded-md flex-shrink-0',
+    outline: 'text-blue-300 bg-[#2A3052] p-2 rounded-md flex-shrink-0',
+    ghost: 'text-blue-300 bg-[#2A3052] p-2 rounded-md flex-shrink-0'
   };
   
-  // Enhanced title colors for better readability
+  // Consistent title colors for all card types
   const titleColor = {
     primary: 'text-white font-medium',
-    secondary: 'text-slate-800 dark:text-slate-100 font-medium',
-    outline: 'text-slate-800 dark:text-slate-100 font-medium',
-    ghost: 'text-slate-800 dark:text-slate-100 font-medium'
+    secondary: 'text-white font-medium',
+    outline: 'text-white font-medium',
+    ghost: 'text-white font-medium'
   };
   
-  // Improved description contrast for better readability
+  // Consistent description contrast for all card types
   const descriptionColor = {
-    primary: 'text-white/90 dark:text-white/95',
-    secondary: 'text-slate-600 dark:text-slate-300',
-    outline: 'text-slate-600 dark:text-slate-300',
-    ghost: 'text-slate-600 dark:text-slate-300'
+    primary: 'text-gray-300',
+    secondary: 'text-gray-300',
+    outline: 'text-gray-300',
+    ghost: 'text-gray-300'
   };
 
-  // Enhanced arrow colors with better contrast
+  // Consistent arrow colors for all card types
   const arrowColor = {
-    primary: 'text-white/80 group-hover:text-white',
-    secondary: 'text-blue-600/80 dark:text-blue-400/80 group-hover:text-blue-600 dark:group-hover:text-blue-400',
-    outline: 'text-indigo-600/80 dark:text-indigo-400/80 group-hover:text-indigo-600 dark:group-hover:text-indigo-400',
-    ghost: 'text-gray-600/80 dark:text-gray-400/80 group-hover:text-gray-700 dark:group-hover:text-gray-300'
+    primary: 'text-blue-400 group-hover:text-blue-300',
+    secondary: 'text-blue-400 group-hover:text-blue-300',
+    outline: 'text-blue-400 group-hover:text-blue-300',
+    ghost: 'text-blue-400 group-hover:text-blue-300'
   };
 
   if (isLoading) {
     return (
-      <div className="p-4 rounded-xl bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 animate-pulse">
+      <div className="p-4 rounded-md bg-[#1E3A46] border border-[#2a3052]/50 animate-pulse">
         <div className="flex items-start gap-3">
-          <div className="h-10 w-10 rounded-md bg-gray-200 dark:bg-gray-700"></div>
+          <div className="h-10 w-10 rounded-md bg-[#2A3052]"></div>
           <div className="flex-1">
-            <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4 mb-2"></div>
-            <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-full"></div>
+            <div className="h-4 bg-[#2A3052] rounded w-3/4 mb-2"></div>
+            <div className="h-3 bg-[#2A3052] rounded w-full"></div>
           </div>
         </div>
       </div>
@@ -278,20 +278,20 @@ function QuickAction({
 
   return (
     <Link href={link}>
-      <div className={`p-4 rounded-lg transition-all ${variantStyles[variant]} relative group hover:scale-[1.01]`}>
+      <div className={`p-4 rounded-md transition-all ${variantStyles[variant]} relative group`}>
         <div className="flex items-start gap-3">
           {icon && (
-            <div className={`${iconColor[variant]} flex items-center justify-center transition-transform duration-200 group-hover:scale-110`}>
+            <div className={`${iconColor[variant]} flex items-center justify-center transition-transform duration-200 group-hover:scale-110 w-10 h-10`}>
               {icon}
             </div>
           )}
-          <div className="flex-1 pr-5">
+          <div className="flex-1 pr-6">
             <h3 className={titleColor[variant]}>{title}</h3>
             <p className={`text-sm mt-1 ${descriptionColor[variant]}`}>{description}</p>
           </div>
         </div>
         <div className="absolute bottom-4 right-4 transition-all transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
-          <ArrowUpRight className={`h-4 w-4 ${arrowColor[variant]}`} />
+          <ArrowUpRight className={`h-5 w-5 ${arrowColor[variant]}`} />
         </div>
       </div>
     </Link>
