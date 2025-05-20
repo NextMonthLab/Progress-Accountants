@@ -1,10 +1,10 @@
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import AdminLayout from '@/layouts/AdminLayout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { format, parseISO } from 'date-fns';
-import { Medal, Calendar, TrendingUp, BarChart3, Award, ArrowUpRight, Users } from 'lucide-react';
+import { Medal, Calendar, TrendingUp, BarChart3, Award, ArrowUpRight, Users, Loader2 } from 'lucide-react';
 import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip } from 'recharts';
 
 type LeaderboardEntry = {
@@ -31,16 +31,28 @@ type ActivityData = {
   count: number;
 };
 
+// Loader component to ensure consistent loading state
+function LoadingSpinner() {
+  return (
+    <div className="flex justify-center py-8">
+      <Loader2 className="h-8 w-8 animate-spin text-primary" />
+    </div>
+  );
+}
+
 export default function InsightsDashboardPage() {
   const [period, setPeriod] = useState('week');
   
+  // Set suspense:false to prevent React from suspending during data fetching
   const { data: leaderboard, isLoading: loadingLeaderboard } = useQuery<LeaderboardEntry[]>({
     queryKey: ['/api/insights/leaderboard', period],
     queryFn: async () => {
       const res = await fetch(`/api/insights/leaderboard?period=${period}`);
       if (!res.ok) throw new Error('Failed to fetch leaderboard');
       return await res.json();
-    }
+    },
+    suspense: false,
+    retry: 2
   });
   
   const { data: weeklySummary, isLoading: loadingWeeklySummary } = useQuery<InsightSummary[]>({
@@ -49,7 +61,9 @@ export default function InsightsDashboardPage() {
       const res = await fetch('/api/insights/summaries?type=weekly');
       if (!res.ok) throw new Error('Failed to fetch weekly summary');
       return await res.json();
-    }
+    },
+    suspense: false,
+    retry: 2
   });
   
   const { data: monthlySummary, isLoading: loadingMonthlySummary } = useQuery<InsightSummary[]>({
@@ -58,7 +72,9 @@ export default function InsightsDashboardPage() {
       const res = await fetch('/api/insights/summaries?type=monthly');
       if (!res.ok) throw new Error('Failed to fetch monthly summary');
       return await res.json();
-    }
+    },
+    suspense: false,
+    retry: 2
   });
   
   const { data: activityData, isLoading: loadingActivity } = useQuery<ActivityData[]>({
@@ -67,9 +83,12 @@ export default function InsightsDashboardPage() {
       const res = await fetch('/api/insights/activity');
       if (!res.ok) throw new Error('Failed to fetch activity data');
       return await res.json();
-    }
+    },
+    suspense: false,
+    retry: 2
   });
   
+  // Safely process the activity data with null checks
   const formattedActivityData = activityData?.map(item => ({
     date: format(parseISO(item.date), 'MMM d'),
     count: item.count
@@ -117,8 +136,8 @@ export default function InsightsDashboardPage() {
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {loadingLeaderboard ? (
-              <div className="col-span-full flex justify-center py-12">
-                <div className="animate-spin h-8 w-8 border-4 border-primary border-t-transparent rounded-full"></div>
+              <div className="col-span-full">
+                <LoadingSpinner />
               </div>
             ) : leaderboard && leaderboard.length > 0 ? (
               leaderboard.map((item, index) => (
@@ -160,9 +179,7 @@ export default function InsightsDashboardPage() {
           <Card>
             <CardContent className="pt-6">
               {loadingActivity ? (
-                <div className="flex justify-center py-12">
-                  <div className="animate-spin h-8 w-8 border-4 border-primary border-t-transparent rounded-full"></div>
-                </div>
+                <LoadingSpinner />
               ) : (
                 <div className="h-64">
                   <ResponsiveContainer width="100%" height="100%">
@@ -197,9 +214,7 @@ export default function InsightsDashboardPage() {
             
             <TabsContent value="weekly">
               {loadingWeeklySummary ? (
-                <div className="flex justify-center py-12">
-                  <div className="animate-spin h-8 w-8 border-4 border-primary border-t-transparent rounded-full"></div>
-                </div>
+                <LoadingSpinner />
               ) : latestWeeklySummary ? (
                 <AiSummaryCard summary={latestWeeklySummary} />
               ) : (
@@ -211,9 +226,7 @@ export default function InsightsDashboardPage() {
             
             <TabsContent value="monthly">
               {loadingMonthlySummary ? (
-                <div className="flex justify-center py-12">
-                  <div className="animate-spin h-8 w-8 border-4 border-primary border-t-transparent rounded-full"></div>
-                </div>
+                <LoadingSpinner />
               ) : latestMonthlySummary ? (
                 <AiSummaryCard summary={latestMonthlySummary} />
               ) : (
