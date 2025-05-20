@@ -278,8 +278,30 @@ export const mapSidebarToNavigation = (): NavigationItem[] => {
       pinnedOrder: 4,
     },
     
-    // CONTENT CREATION
-    // ===============
+    // BLOG AND SOCIAL MEDIA
+    // ======================
+    {
+      id: 'blog_post_generator',
+      title: 'Blog Post Generator',
+      icon: 'BookOpen',
+      type: 'link',
+      href: '/tools/blog-post-generator',
+      badge: { text: 'AI', variant: 'beta' },
+      description: 'Generate blog content with AI',
+      category: 'create_publish',
+      pinnedOrder: 5,
+    },
+    {
+      id: 'social_media_generator',
+      title: 'Social Media Generator',
+      icon: 'Share2',
+      type: 'link',
+      href: '/tools/social-media-generator',
+      badge: { text: 'AI', variant: 'beta' },
+      description: 'Create social media content with AI',
+      category: 'create_publish',
+      pinnedOrder: 6,
+    },
     {
       id: 'homepage_setup',
       title: 'Homepage Builder',
@@ -288,7 +310,8 @@ export const mapSidebarToNavigation = (): NavigationItem[] => {
       href: '/homepage-setup',
       requiresStaff: true,
       description: 'Configure your site homepage',
-      category: 'page_builders',
+      category: 'create_publish',
+      pinnedOrder: 7,
     },
     {
       id: 'foundation_pages',
@@ -298,7 +321,8 @@ export const mapSidebarToNavigation = (): NavigationItem[] => {
       href: '/foundation-pages',
       requiresStaff: true,
       description: 'Manage essential pages',
-      category: 'page_builders',
+      category: 'create_publish',
+      pinnedOrder: 8,
     },
     {
       id: 'launch_ready',
@@ -308,51 +332,59 @@ export const mapSidebarToNavigation = (): NavigationItem[] => {
       href: '/launch-ready',
       requiresStaff: true,
       description: 'Prepare your site for launch',
-      category: 'page_builders',
-    },
-    {
-      id: 'social_media_generator',
-      title: 'Social Media Content',
-      icon: 'Share2',
-      type: 'link',
-      href: '/tools/social-media-generator',
-      requiresStaff: true,
-      description: 'Create optimized social media posts',
-      category: 'creator_tools',
-    },
-    {
-      id: 'blog_post_generator',
-      title: 'Blog Content',
-      icon: 'FileText',
-      type: 'link',
-      href: '/tools/blog-post-generator',
-      requiresStaff: true,
-      description: 'Generate SEO-optimized blog posts',
-      category: 'creator_tools',
+      category: 'manage_monitor',
+      pinnedOrder: 6,
     },
     
-    // ANALYTICS & INSIGHTS
+    // SEO & INTEGRATIONS
     // ===================
     {
-      id: 'analytics',
-      title: 'Site Analytics',
-      icon: 'BarChart',
+      id: 'seo_settings',
+      title: 'SEO Settings',
+      icon: 'Search',
       type: 'link',
-      href: '/admin/analytics',
+      href: '/seo',
       requiresStaff: true,
-      description: 'Traffic, user behavior and conversions',
-      category: 'admin_tools',
+      description: 'Manage search engine optimization',
+      category: 'settings_advanced',
+      pinnedOrder: 5,
+    },
+    {
+      id: 'integrations',
+      title: 'Integrations',
+      icon: 'Link',
+      type: 'link',
+      href: '/integrations',
+      requiresStaff: true,
+      description: 'Connect with third-party services',
+      category: 'settings_advanced',
+      pinnedOrder: 6,
+    },
+    
+    // ADVANCED TOOLS
+    // =============
+    {
+      id: 'client_registration',
+      title: 'Client Registration',
+      icon: 'UserPlus',
+      type: 'link',
+      href: '/client-registration',
+      requiresStaff: true,
+      description: 'Register and manage clients',
+      category: 'settings_advanced',
+      pinnedOrder: 7,
     },
 
     {
-      id: 'insights_dashboard',
+      id: 'insights_dashboard_updated',
       title: 'Business Insights',
       icon: 'TrendingUp',
       type: 'link',
-      href: '/admin/insights-dashboard',
+      href: '/insights-dashboard',
       requiresStaff: true,
       description: 'Actionable business intelligence',
-      category: 'admin_tools',
+      category: 'manage_monitor',
+      pinnedOrder: 7,
     },
     /* Removed CRM for Hetzner v1 deployment
     {
