@@ -96,15 +96,16 @@ export function TextGradient({
   gradient?: "primary" | "teal-blue" | "pink-coral";
   className?: string;
 }) {
-  const gradientClasses = {
-    "primary": "from-[#36d1dc] to-[#5b86e5]", // Updated to teal-blue as primary
-    "teal-blue": "from-[#36d1dc] to-[#5b86e5]",
-    "pink-coral": "from-[#f953c6] to-[#ff6b6b]"
+  // Modern solid colors instead of gradients
+  const colorClasses = {
+    "primary": "text-indigo-600", // Primary indigo
+    "teal-blue": "text-blue-600", // Blue for informational
+    "pink-coral": "text-indigo-600" // Legacy mapped to primary indigo
   };
 
   return (
     <span className={cn(
-      `bg-gradient-to-r ${gradientClasses[gradient]} bg-clip-text text-transparent`,
+      `font-medium ${colorClasses[gradient]}`,
       className
     )}>
       {text}
@@ -145,15 +146,15 @@ export function ThemeToggle({
       onClick={toggleTheme}
       className={`h-9 w-9 rounded-full flex items-center justify-center ${
         isDarkTheme 
-          ? "bg-[#f953c6]/20 hover:bg-[#f953c6]/30 shadow-md" 
-          : "bg-[#36d1dc]/20 hover:bg-[#36d1dc]/30 border border-[#36d1dc]/30 shadow-md"
+          ? "bg-indigo-100 hover:bg-indigo-200 shadow-sm" 
+          : "bg-blue-100 hover:bg-blue-200 border border-blue-200 shadow-sm"
       } transition-all duration-200`}
       title={`Switch to ${isDarkTheme ? "light" : "dark"} mode`}
     >
       {isDarkTheme ? (
         <svg 
           xmlns="http://www.w3.org/2000/svg" 
-          className="h-5 w-5 text-[#f953c6]" 
+          className="h-5 w-5 text-indigo-600" 
           fill="none" 
           viewBox="0 0 24 24" 
           stroke="currentColor"
@@ -168,7 +169,7 @@ export function ThemeToggle({
       ) : (
         <svg 
           xmlns="http://www.w3.org/2000/svg" 
-          className="h-5 w-5 text-[#36d1dc]" 
+          className="h-5 w-5 text-blue-600" 
           fill="none" 
           viewBox="0 0 24 24" 
           stroke="currentColor"
