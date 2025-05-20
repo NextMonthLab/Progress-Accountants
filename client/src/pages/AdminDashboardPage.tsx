@@ -77,24 +77,24 @@ function StatCard({
   // Define the color scheme with proper type - using NextMonth Gold colors
   const scheme = {
     navy: {
-      bg: isGradient ? 'bg-[#008080]' : 'bg-white',
-      icon: isGradient ? 'bg-white/40 text-white' : 'bg-[#008080]/10 text-[#008080]',
-      border: isGradient ? 'border-[#008080]/10' : 'border-[#008080]/10'
+      bg: isGradient ? 'bg-[#008080]' : 'bg-white dark:bg-gray-800',
+      icon: isGradient ? 'bg-white/40 text-white' : 'bg-[#008080]/10 dark:bg-[#008080]/20 text-[#008080] dark:text-[#40a7a7]',
+      border: isGradient ? 'border-[#008080]/10' : 'border-[#008080]/10 dark:border-gray-700'
     },
     orange: {
-      bg: isGradient ? 'bg-[#F4A261]' : 'bg-white', 
-      icon: isGradient ? 'bg-white/40 text-white' : 'bg-[#F4A261]/10 text-[#F4A261]',
-      border: isGradient ? 'border-[#F4A261]/10' : 'border-[#F4A261]/10'
+      bg: isGradient ? 'bg-[#F4A261]' : 'bg-white dark:bg-gray-800', 
+      icon: isGradient ? 'bg-white/40 text-white' : 'bg-[#F4A261]/10 dark:bg-[#F4A261]/20 text-[#F4A261] dark:text-[#F4A261]',
+      border: isGradient ? 'border-[#F4A261]/10' : 'border-[#F4A261]/10 dark:border-gray-700'
     },
     emerald: {
-      bg: isGradient ? 'bg-[#10B981]' : 'bg-white',
-      icon: isGradient ? 'bg-white/40 text-white' : 'bg-[#10B981]/10 text-[#10B981]',
-      border: isGradient ? 'border-[#10B981]/10' : 'border-[#10B981]/10'
+      bg: isGradient ? 'bg-[#10B981]' : 'bg-white dark:bg-gray-800',
+      icon: isGradient ? 'bg-white/40 text-white' : 'bg-[#10B981]/10 dark:bg-[#10B981]/20 text-[#10B981] dark:text-[#34d399]',
+      border: isGradient ? 'border-[#10B981]/10' : 'border-[#10B981]/10 dark:border-gray-700'
     },
     indigo: {
-      bg: isGradient ? 'bg-[#6366F1]' : 'bg-white',
-      icon: isGradient ? 'bg-white/40 text-white' : 'bg-[#6366F1]/10 text-[#6366F1]',
-      border: isGradient ? 'border-[#6366F1]/10' : 'border-[#6366F1]/10'
+      bg: isGradient ? 'bg-[#6366F1]' : 'bg-white dark:bg-gray-800',
+      icon: isGradient ? 'bg-white/40 text-white' : 'bg-[#6366F1]/10 dark:bg-[#6366F1]/20 text-[#6366F1] dark:text-[#818cf8]',
+      border: isGradient ? 'border-[#6366F1]/10' : 'border-[#6366F1]/10 dark:border-gray-700'
     }
   };
 

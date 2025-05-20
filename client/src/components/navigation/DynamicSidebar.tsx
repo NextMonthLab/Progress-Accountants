@@ -156,10 +156,10 @@ const DynamicSidebar: React.FC = () => {
           className={cn(
             "flex items-center justify-between rounded-lg px-3 py-2 transition-all duration-200 no-underline nav-item",
             isActive(item.href) && !isViewWebsiteLink
-              ? "active font-medium" 
-              : "text-[var(--text-headline)] hover:bg-gray-50",
+              ? "active font-medium dark:text-white" 
+              : "text-[var(--text-headline)] dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700",
             isNested && "ml-6 text-sm",
-            isViewWebsiteLink && "text-[var(--secondary-text)] bg-[var(--secondary-bg)] hover:bg-[var(--secondary-hover)]"
+            isViewWebsiteLink && "text-[var(--secondary-text)] dark:text-[#6fcfcf] bg-[var(--secondary-bg)] dark:bg-[#1e3a3a] hover:bg-[var(--secondary-hover)] dark:hover:bg-[#23474a]"
           )}
           target={isViewWebsiteLink ? "_blank" : undefined}
           rel={isViewWebsiteLink ? "noopener noreferrer" : undefined}
@@ -171,7 +171,7 @@ const DynamicSidebar: React.FC = () => {
           }}
         >
           <div className="flex items-center">
-            <IconComponent className={cn("h-5 w-5 mr-2", isViewWebsiteLink && "text-[#008080]")} />
+            <IconComponent className={cn("h-5 w-5 mr-2", isViewWebsiteLink ? "text-[#008080] dark:text-[#6fcfcf]" : "dark:text-gray-300")} />
             <span>{item.title}</span>
           </div>
           
@@ -179,7 +179,7 @@ const DynamicSidebar: React.FC = () => {
           
           {/* Add external link icon for view website */}
           {isViewWebsiteLink && (
-            <ExternalLink className="h-3 w-3 ml-2 text-[#008080]" />
+            <ExternalLink className="h-3 w-3 ml-2 text-[#008080] dark:text-[#6fcfcf]" />
           )}
         </a>
       </div>
@@ -195,8 +195,8 @@ const DynamicSidebar: React.FC = () => {
       <div key={submenu.id} className="space-y-1">
         <button
           className={cn(
-            "flex items-center justify-between w-full rounded-lg px-3 py-2 transition-all duration-200 text-[var(--text-headline)] hover:bg-gray-50 text-left font-medium nav-item",
-            isExpanded && "active"
+            "flex items-center justify-between w-full rounded-lg px-3 py-2 transition-all duration-200 text-[var(--text-headline)] dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 text-left font-medium nav-item",
+            isExpanded && "active dark:text-white"
           )}
           onClick={(e) => {
             e.preventDefault();
@@ -204,12 +204,12 @@ const DynamicSidebar: React.FC = () => {
           }}
         >
           <div className="flex items-center">
-            <IconComponent className="h-5 w-5 mr-3" />
+            <IconComponent className="h-5 w-5 mr-3 dark:text-gray-300" />
             <span>{submenu.title}</span>
           </div>
           <ChevronDown
             className={cn(
-              "h-4 w-4 transition-transform duration-200",
+              "h-4 w-4 transition-transform duration-200 dark:text-gray-300",
               isExpanded ? "transform rotate-180" : ""
             )}
           />
@@ -226,7 +226,7 @@ const DynamicSidebar: React.FC = () => {
 
   return (
     <div className={cn(
-      "flex flex-col h-screen border-r border-gray-200 bg-gray-100 transition-all duration-300",
+      "flex flex-col h-screen border-r border-gray-200 dark:border-gray-700 bg-gray-100 dark:bg-gray-800 transition-all duration-300",
       !isMobile && (sidebarCollapsed ? "w-[70px]" : "w-64"),
       isMobile && (mobileSidebarCollapsed ? "w-0 border-r-0" : "fixed w-[90%] max-w-[280px] shadow-lg z-50")
     )}>
@@ -239,12 +239,12 @@ const DynamicSidebar: React.FC = () => {
                 <button
                   onClick={toggleSidebar}
                   className={cn(
-                    "flex items-center justify-center w-6 h-6 rounded-full bg-white border border-gray-100 shadow-sm hover:bg-[var(--secondary-bg)] transition-all duration-150",
+                    "flex items-center justify-center w-6 h-6 rounded-full bg-white dark:bg-gray-700 border border-gray-100 dark:border-gray-600 shadow-sm hover:bg-[var(--secondary-bg)] dark:hover:bg-gray-600 transition-all duration-150",
                   )}
                   aria-label={sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
                 >
                   <ChevronRight className={cn(
-                    "h-3 w-3 text-[var(--text-body)] transition-transform duration-200",
+                    "h-3 w-3 text-[var(--text-body)] dark:text-gray-300 transition-transform duration-200",
                     sidebarCollapsed ? "rotate-180" : ""
                   )} />
                 </button>
@@ -271,31 +271,31 @@ const DynamicSidebar: React.FC = () => {
       )}
       
       {/* Sidebar Header - Updated with modern UI styling */}
-      <div className="px-4 py-3 flex items-center justify-between border-b border-gray-100 bg-white">
+      <div className="px-4 py-3 flex items-center justify-between border-b border-gray-100 dark:border-gray-700 bg-white dark:bg-gray-800">
         <SidebarLogo collapsed={sidebarCollapsed} />
         <button
           onClick={isMobile ? toggleMobileSidebar : toggleSidebar}
-          className="p-2 rounded-md hover:bg-[var(--secondary-bg)] transition-colors"
+          className="p-2 rounded-md hover:bg-[var(--secondary-bg)] dark:hover:bg-gray-700 transition-colors"
           aria-label={isMobile 
             ? mobileSidebarCollapsed ? "Open menu" : "Close menu" 
             : sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"
           }
         >
           {isMobile ? (
-            <X className="h-5 w-5 text-[var(--text-headline)]" />
+            <X className="h-5 w-5 text-[var(--text-headline)] dark:text-gray-200" />
           ) : sidebarCollapsed ? (
-            <ChevronRight className="h-5 w-5 text-[var(--text-headline)]" />
+            <ChevronRight className="h-5 w-5 text-[var(--text-headline)] dark:text-gray-200" />
           ) : (
-            <MenuIcon className="h-5 w-5 text-[var(--text-headline)]" />
+            <MenuIcon className="h-5 w-5 text-[var(--text-headline)] dark:text-gray-200" />
           )}
         </button>
       </div>
       
       {/* User Profile & Onboarding Progress - Updated with modern UI styling */}
       {user && (user.userType === 'admin' || user.userType === 'super_admin') && (
-        <div className="px-4 py-3 flex items-center space-x-3 border-b border-gray-100 bg-white">
+        <div className="px-4 py-3 flex items-center space-x-3 border-b border-gray-100 dark:border-gray-700 bg-white dark:bg-gray-800">
           <div className="relative flex-shrink-0">
-            <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-semibold">
+            <div className="h-8 w-8 rounded-full bg-primary/10 dark:bg-primary/20 flex items-center justify-center text-primary dark:text-primary-foreground font-semibold">
               {user.username ? user.username.charAt(0).toUpperCase() : 'U'}
             </div>
             {!sidebarCollapsed && (
@@ -306,8 +306,8 @@ const DynamicSidebar: React.FC = () => {
           </div>
           {!sidebarCollapsed && (
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium truncate">{user.username}</p>
-              <p className="text-xs text-muted-foreground truncate">
+              <p className="text-sm font-medium truncate dark:text-gray-200">{user.username}</p>
+              <p className="text-xs text-muted-foreground truncate dark:text-gray-400">
                 {user.isSuperAdmin || user.userType === 'super_admin' 
                   ? 'Super Admin' 
                   : user.userType === 'admin' ? 'Admin' : 'User'}
@@ -371,24 +371,24 @@ const DynamicSidebar: React.FC = () => {
           // Section header
           const groupHeader = !sidebarCollapsed ? (
             <div 
-              className="flex items-center px-4 mb-2 cursor-pointer hover:bg-gray-50 rounded-md py-1.5 transition-colors"
+              className="flex items-center px-4 mb-2 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 rounded-md py-1.5 transition-colors"
               onClick={() => toggleGroup(group.id)}
             >
-              <span className="mr-2 text-[var(--text-body)]">
+              <span className="mr-2 text-[var(--text-body)] dark:text-gray-300">
                 <GroupIconComponent className="h-5 w-5" />
               </span>
-              <h3 className="text-xs font-semibold text-[var(--text-body)] uppercase tracking-wider">
+              <h3 className="text-xs font-semibold text-[var(--text-body)] dark:text-gray-300 uppercase tracking-wider">
                 {group.title}
               </h3>
               <ChevronDown 
                 className={cn(
-                  "ml-auto h-4 w-4 text-[var(--text-body)] transition-transform duration-200",
+                  "ml-auto h-4 w-4 text-[var(--text-body)] dark:text-gray-300 transition-transform duration-200",
                   isGroupExpanded ? "transform rotate-180" : ""
                 )} 
               />
             </div>
           ) : (
-            <div className="border-t border-gray-100 mx-2 my-3"></div>
+            <div className="border-t border-gray-100 dark:border-gray-700 mx-2 my-3"></div>
           );
           
           return (
