@@ -60,16 +60,16 @@ function SidebarLogo({ collapsed }: { collapsed: boolean }) {
   const words = logoText.split(" ");
   
   return (
-    <a href="/admin/dashboard" className="font-poppins font-bold text-xl no-underline" style={{ color: '#1c3668' }}>
+    <a href="/admin/dashboard" className="font-poppins font-bold text-xl no-underline" style={{ color: 'var(--text-headline)' }}>
       {words.length > 1 ? (
         <>
           <span>{words.slice(0, -1).join(" ")} </span>
-          <span style={{ color: '#1c3668' }}>{words[words.length - 1]} </span>
+          <span style={{ color: 'var(--text-headline)' }}>{words[words.length - 1]} </span>
         </>
       ) : (
         <span>{logoText} </span>
       )}
-      <span style={{ color: '#008080' }}>Admin</span>
+      <span style={{ color: 'var(--primary)' }}>Admin</span>
     </a>
   );
 }
