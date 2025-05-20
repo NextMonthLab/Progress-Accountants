@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'wouter';
+import { Link, useLocation } from 'wouter';
 import { cn } from '@/lib/utils';
 import * as LucideIcons from 'lucide-react';
-import { Circle, AlertTriangle, Lock } from 'lucide-react';
-import {
+import { Circle, Lock, AlertTriangle } from 'lucide-react';
+import { NavigationLink } from '@/types/navigation';
+import { 
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
-import { NavigationLink } from '@/types/navigation';
 import { checkPageOrigin, PageInfo } from '@/lib/page-origin-service';
 
 interface NavigationLinkWithOriginProps {
@@ -20,171 +20,120 @@ interface NavigationLinkWithOriginProps {
 }
 
 /**
- * Enhanced NavigationLink component that checks page origin
- * and conditionally renders or disables links to protected pages
+ * Enhanced navigation link component that checks page origin before allowing navigation
+ * Prevents direct access to NextMonth foundation pages
  */
 const NavigationLinkWithOrigin: React.FC<NavigationLinkWithOriginProps> = ({
   item,
   isNested = false,
   onMobileClick,
-  collapsed = false,
+  collapsed = false
 }) => {
-  const [, navigate] = useLocation();
+  const [location] = useLocation();
   const [pageInfo, setPageInfo] = useState<PageInfo | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   
-  // Get the Lucide icon dynamically
-  const IconComponent = (LucideIcons as any)[item.icon] || Circle;
+  // Check if the current route is active
+  const isActive = location === item.href || location.startsWith(item.href + '/');
   
-  // Determine which pages need origin checking
-  const isPageBuilderLink = item.href?.startsWith('/page-builder/') && 
-                           !item.href.endsWith('/new') &&
-                           !item.href.includes('/templates');
-  
-  // If this is a link to edit a specific page, check its origin
+  // Extract page ID or path from href to check if it's a page builder link
   useEffect(() => {
-    if (isPageBuilderLink) {
-      setIsLoading(true);
+    // Only check for page-builder links that aren't creating a new page
+    if (item.href?.startsWith('/page-builder/') && 
+        !item.href.endsWith('/new') && 
+        !item.href.includes('/templates')) {
       
-      // Extract page ID or path from href
       const pageIdOrPath = item.href.replace('/page-builder/', '');
+      setIsLoading(true);
       
       checkPageOrigin(pageIdOrPath)
         .then(info => {
           setPageInfo(info);
         })
         .catch(err => {
-          console.error('Error checking page origin:', err);
-          // Default to treating as protected if we can't verify
+          console.error('Failed to check page origin:', err);
+          // Mock protected page on error to prevent accidental navigation
           setPageInfo({
-            id: 0,
+            id: parseInt(pageIdOrPath) || 0,
             path: pageIdOrPath,
             title: item.title,
-            isProtected: true
+            isProtected: true,
+            origin: null,
+            createdBy: null,
+            pageType: null
           });
         })
         .finally(() => {
           setIsLoading(false);
         });
     }
-  }, [item.href, isPageBuilderLink]);
+  }, [item.href, item.title]);
   
-  // Special handling for "View Website" link to open in a new tab
-  const isViewWebsiteLink = item.id === 'view_website';
-  const isProtected = pageInfo?.isProtected || false;
+  // Get the Lucide icon dynamically
+  const IconComponent = (LucideIcons as any)[item.icon] || Circle;
   
-  // Function to handle click on the link
-  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    // For protected pages, prevent navigation and show a tooltip
-    if (isPageBuilderLink && isProtected) {
-      e.preventDefault();
-      
-      // Don't navigate to protected pages
-      return;
-    }
-    
-    // If it's a normal navigation link and on mobile, close the sidebar
-    if (onMobileClick) {
-      onMobileClick();
-    }
-  };
-  
-  // Don't render anything while we're loading the page info
-  if (isPageBuilderLink && isLoading) {
-    return null;
-  }
-  
-  // For collapsed view, show tooltip
-  if (collapsed) {
+  // If this is a protected NextMonth page, show warning
+  if (pageInfo?.isProtected) {
     return (
-      <TooltipProvider delayDuration={300}>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <a
-              href={isProtected ? '#' : item.href}
-              className={cn(
-                "relative flex items-center justify-center rounded-lg p-2 transition-all duration-150 no-underline",
-                isProtected 
-                  ? "opacity-60 cursor-not-allowed text-gray-400 dark:text-gray-500" 
-                  : "hover:bg-gray-50 dark:hover:bg-gray-700",
-                isNested && "ml-2",
-                isViewWebsiteLink && "text-[var(--secondary-text)] dark:text-[#6fcfcf]"
-              )}
-              target={isViewWebsiteLink ? "_blank" : undefined}
-              rel={isViewWebsiteLink ? "noopener noreferrer" : undefined}
-              onClick={handleClick}
-              aria-disabled={isProtected}
-            >
-              {isProtected ? (
-                <div className="relative">
-                  <Lock className="h-5 w-5" />
+      <div className="group" key={item.id}>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <div
+                className={cn(
+                  "flex items-center justify-between rounded-lg px-3 py-2 transition-all duration-200 cursor-not-allowed",
+                  "text-gray-400 dark:text-gray-500 hover:bg-gray-50 dark:hover:bg-gray-700",
+                  isNested && "ml-6 text-sm"
+                )}
+              >
+                <div className="flex items-center">
+                  <span className="mr-3 text-amber-500">
+                    <AlertTriangle className="h-5 w-5" />
+                  </span>
+                  <span>{item.title}</span>
                 </div>
-              ) : (
-                <IconComponent className="h-5 w-5" />
-              )}
-            </a>
-          </TooltipTrigger>
-          <TooltipContent side="right" className="flex flex-col gap-1 max-w-xs">
-            <p className="font-medium text-sm">{item.title}</p>
-            {isProtected ? (
-              <div className="flex items-start gap-1 mt-1 text-amber-600 dark:text-amber-400">
-                <AlertTriangle className="h-3 w-3 mt-0.5 flex-shrink-0" />
-                <span className="text-xs">
-                  This page was professionally designed by NextMonth and cannot be edited directly.
-                </span>
+                <Lock className="h-3.5 w-3.5 text-amber-500" />
               </div>
-            ) : (
-              item.description && <p className="text-xs text-gray-500">{item.description}</p>
-            )}
-          </TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
+            </TooltipTrigger>
+            <TooltipContent side="right" className="max-w-xs">
+              <div className="text-xs">
+                <p className="font-medium">Protected NextMonth Page</p>
+                <p>This foundation page cannot be edited directly. Use the Page Builder to create a custom version instead.</p>
+              </div>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      </div>
     );
   }
   
-  // Normal expanded view
+  // Regular navigation link for non-protected pages
   return (
     <div className="group" key={item.id}>
-      <a
-        href={isProtected ? '#' : item.href}
+      <Link
+        href={item.href}
         className={cn(
           "flex items-center justify-between rounded-lg px-3 py-2 transition-all duration-200 no-underline nav-item",
-          isProtected
-            ? "opacity-60 cursor-not-allowed bg-gray-50 dark:bg-gray-800 text-gray-400 dark:text-gray-500"
+          isActive
+            ? "active font-medium dark:text-white" 
             : "text-[var(--text-headline)] dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700",
           isNested && "ml-6 text-sm",
-          isViewWebsiteLink && "text-[var(--secondary-text)] dark:text-[#6fcfcf] bg-[var(--secondary-bg)] dark:bg-[#1e3a3a] hover:bg-[var(--secondary-hover)] dark:hover:bg-[#23474a]"
+          isLoading && "opacity-50 cursor-wait"
         )}
-        target={isViewWebsiteLink ? "_blank" : undefined}
-        rel={isViewWebsiteLink ? "noopener noreferrer" : undefined}
-        onClick={handleClick}
-        aria-disabled={isProtected}
+        onClick={(e) => {
+          // If on mobile, close the sidebar after clicking
+          if (onMobileClick) {
+            onMobileClick();
+          }
+        }}
       >
         <div className="flex items-center">
           <span className="mr-3">
-            {isProtected ? <Lock className="h-5 w-5" /> : <IconComponent className="h-5 w-5" />}
+            <IconComponent className="h-5 w-5" />
           </span>
-          <span>{item.title}</span>
+          {!collapsed && <span>{item.title}</span>}
         </div>
-        
-        {isProtected && (
-          <TooltipProvider delayDuration={300}>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <span className="ml-2">
-                  <AlertTriangle className="h-4 w-4 text-amber-500" />
-                </span>
-              </TooltipTrigger>
-              <TooltipContent side="right" className="max-w-xs">
-                <p className="text-xs">
-                  This page was professionally designed by NextMonth and cannot be edited directly. 
-                  To request changes, please duplicate or contact support.
-                </p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-        )}
-      </a>
+      </Link>
     </div>
   );
 };

@@ -245,6 +245,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Register media upload endpoints
   registerMediaRoutes(app);
   
+  // Register page origin protection endpoints
+  app.get("/api/page-origin/:id", checkPageOrigin);
+  app.get("/api/page-override-permission", checkOverridePermission);
+  
   // Register site variant endpoints
   registerSiteVariantRoutes(app);
   

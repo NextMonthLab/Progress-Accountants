@@ -114,6 +114,9 @@ type ModulePayload = {
 
 // Enhanced IStorage interface with comprehensive CRUD operations
 export interface IStorage {
+  // Page origin protection
+  getPageByPath: (path: string) => Promise<any>;
+  getPage: (id: number) => Promise<any>;
   // Session store for authentication
   sessionStore: session.Store;
   
