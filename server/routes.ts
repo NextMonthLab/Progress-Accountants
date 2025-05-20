@@ -48,6 +48,7 @@ import {
 } from "./controllers/resourcesController";
 import { registerResourcesRoutes } from "./controllers/resourcesController";
 import { registerCompanionRoutes } from "./controllers/companionController";
+import { checkPageOrigin, checkOverridePermission } from "./controllers/pageOriginController";
 import { registerCompanionConfigRoutes } from "./controllers/registerCompanionConfigRoutes";
 import { registerToolMarketplaceRoutes } from "./controllers/toolMarketplaceController";
 import { registerSiteVariantRoutes } from "./routes/siteVariantRoutes";

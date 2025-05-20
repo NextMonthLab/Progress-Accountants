@@ -1,113 +1,79 @@
 /**
- * Service to check and validate page origins
- * Used to determine if pages are editable or protected based on who created them
+ * Service to check page origin and protect NextMonth foundation pages
  */
 
 import { apiRequest } from '@/lib/queryClient';
 
-// Types of page origins
-export type PageOrigin = 'user' | 'nextmonth';
-
-// Page info interface with origin data
 export interface PageInfo {
   id: number;
-  path: string;
   title: string;
-  origin?: PageOrigin;
-  createdBy?: PageOrigin;
-  pageType?: 'core' | 'custom' | 'automation';
+  path: string;
+  origin: string | null;
+  createdBy: string | null;
+  pageType: string | null;
   isProtected: boolean;
 }
 
-// Cache page origin results to avoid excessive API calls
-const pageOriginCache = new Map<string, PageInfo>();
-
 /**
- * Check if a page is editable based on origin
+ * Check if a page is a NextMonth foundation page and should be protected
  * @param pageIdOrPath - The page ID or path to check
- * @returns Promise<PageInfo> - Information about the page, including if it's protected
+ * @returns PageInfo object with protection status and metadata
  */
 export async function checkPageOrigin(pageIdOrPath: string | number): Promise<PageInfo> {
-  // Convert to string for cache key
-  const cacheKey = String(pageIdOrPath);
-  
-  // Return cached result if available
-  if (pageOriginCache.has(cacheKey)) {
-    return pageOriginCache.get(cacheKey)!;
-  }
-  
   try {
-    // Determine if we're checking by ID or path
-    const isPath = typeof pageIdOrPath === 'string' && !pageIdOrPath.match(/^\d+$/);
-    const endpoint = isPath 
-      ? `/api/page-builder/pages/path/${encodeURIComponent(pageIdOrPath.replace(/^\//, ''))}`
-      : `/api/page-builder/pages/${pageIdOrPath}`;
-    
-    const response = await apiRequest('GET', endpoint);
-    const data = await response.json();
-    
-    if (!response.ok) {
-      throw new Error(data.message || 'Failed to check page origin');
+    const response = await apiRequest('GET', `/api/page-origin/${pageIdOrPath}`);
+    const result = await response.json();
+
+    if (!result.success) {
+      throw new Error(result.message || 'Failed to check page origin');
     }
-    
-    // Process page info
-    const pageInfo = data.data || data;
-    const origin = pageInfo.origin || pageInfo.createdBy;
-    const pageType = pageInfo.pageType;
-    
-    // Determine if page is protected (NextMonth created or core type)
-    const isProtected = origin === 'nextmonth' || pageType === 'core';
-    
-    const result: PageInfo = {
-      id: pageInfo.id,
-      path: pageInfo.path,
-      title: pageInfo.title,
-      origin: origin,
-      createdBy: pageInfo.createdBy,
-      pageType: pageInfo.pageType,
-      isProtected
-    };
-    
-    // Cache the result
-    pageOriginCache.set(cacheKey, result);
-    
-    return result;
+
+    return result.data;
   } catch (error) {
     console.error('Error checking page origin:', error);
-    
-    // Return a fallback - assume protected if we can't verify
-    const fallback: PageInfo = {
-      id: typeof pageIdOrPath === 'number' ? pageIdOrPath : 0,
-      path: typeof pageIdOrPath === 'string' ? pageIdOrPath : '',
-      title: '',
-      isProtected: true // Default to protected on error to prevent unwanted edits
-    };
-    
-    return fallback;
+    throw error;
   }
 }
 
 /**
- * Check if current user has override permissions to edit protected pages
- * @returns boolean - true if user can override page protection
+ * Check if current user has permission to override page protection
+ * @returns Boolean indicating if the user has override permission
  */
 export async function hasOverridePermission(): Promise<boolean> {
   try {
-    const response = await apiRequest('GET', '/api/user/permissions');
-    const data = await response.json();
-    
-    // Check for override_edit permission
-    return data.permissions?.includes('override_edit') || false;
+    const response = await apiRequest('GET', '/api/page-origin/override-permission');
+    const result = await response.json();
+
+    if (!result.success) {
+      throw new Error(result.message || 'Failed to check override permission');
+    }
+
+    return !!result.hasOverride;
   } catch (error) {
-    console.error('Error checking permissions:', error);
+    console.error('Error checking override permission:', error);
     return false;
   }
 }
 
 /**
- * Clear the page origin cache
- * Call this when pages are updated/changed
+ * Duplicate a NextMonth foundation page for customization
+ * @param pageId - The ID of the page to duplicate
+ * @returns The new page ID
  */
-export function clearPageOriginCache(): void {
-  pageOriginCache.clear();
+export async function duplicatePageForCustomization(pageId: number): Promise<number> {
+  try {
+    const response = await apiRequest('POST', `/api/pages/${pageId}/duplicate`, {
+      customization: true
+    });
+    const result = await response.json();
+
+    if (!result.success) {
+      throw new Error(result.message || 'Failed to duplicate page');
+    }
+
+    return result.data.id;
+  } catch (error) {
+    console.error('Error duplicating page:', error);
+    throw error;
+  }
 }
