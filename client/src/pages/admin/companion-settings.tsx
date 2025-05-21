@@ -13,7 +13,7 @@ import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Trash, Save, RefreshCw } from "lucide-react";
+import { Plus, Trash, Save, RefreshCw, Shield } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -393,17 +393,18 @@ export default function CompanionSettingsPage() {
   }
   
   return (
-    <div className="container mx-auto py-6">
-      <div className="flex justify-between items-center mb-6">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight">Business Companion Persona Settings</h1>
-          <p className="text-muted-foreground mt-2">
-            Customize how your business companion interacts with users, what topics it discusses, and what data it can access.
-          </p>
+    <AdminLayout>
+      <div className="container mx-auto py-6">
+        <div className="flex justify-between items-center mb-6">
+          <div>
+            <h1 className="text-3xl font-bold tracking-tight">Business Companion Persona Settings</h1>
+            <p className="text-muted-foreground mt-2">
+              Customize how your business companion interacts with users, what topics it discusses, and what data it can access.
+            </p>
+          </div>
         </div>
-      </div>
-      
-      <Form {...form}>
+        
+        <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <div className="space-y-6">
               <Tabs value={activeTab} onValueChange={setActiveTab}>
