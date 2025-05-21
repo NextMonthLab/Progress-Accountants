@@ -14,7 +14,7 @@ type ThemeProviderState = {
 };
 
 const initialState: ThemeProviderState = {
-  theme: "system",
+  theme: "dark", // Changed initial state to dark mode
   setTheme: () => null,
 };
 
@@ -22,7 +22,7 @@ const ThemeProviderContext = createContext<ThemeProviderState>(initialState);
 
 export function ThemeProvider({
   children,
-  defaultTheme = "system",
+  defaultTheme = "dark", // Changed default theme to dark instead of system
   storageKey = "smart-site-ui-theme",
   ...props
 }: ThemeProviderProps) {
