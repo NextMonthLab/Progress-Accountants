@@ -135,6 +135,32 @@ export default function CompanionSettingsPage() {
     }
   });
   
+  // Mutation for creating the initial configuration
+  const createConfigMutation = useMutation({
+    mutationFn: async (data: z.infer<typeof companionConfigSchema>) => {
+      const res = await apiRequest("POST", "/api/companion-config", { ...data, tenantId });
+      if (!res.ok) {
+        const error = await res.json();
+        throw new Error(error.error || "Failed to create companion configuration");
+      }
+      return res.json();
+    },
+    onSuccess: () => {
+      toast({
+        title: "Configuration created",
+        description: "Your companion settings have been created successfully.",
+      });
+      queryClient.invalidateQueries({ queryKey: ["/api/companion-config", tenantId] });
+    },
+    onError: (error: Error) => {
+      toast({
+        title: "Failed to create settings",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
+  });
+  
   // Add a new example phrase
   const addExamplePhrase = () => {
     const currentPhrases = form.getValues("tone.examplePhrases");
@@ -269,14 +295,80 @@ export default function CompanionSettingsPage() {
   }
   
   if (error) {
+    // Check if this is likely a missing table error (companion_config doesn't exist)
+    const errorMessage = (error as Error).message;
+    const isMissingTableError = 
+      errorMessage.includes("not found") || 
+      errorMessage.includes("does not exist") ||
+      errorMessage.includes("Companion configuration not found");
+      
     return (
-      <div className="flex flex-col items-center justify-center min-h-[500px]">
-        <h2 className="text-xl font-semibold mb-2">Error Loading Settings</h2>
-        <p className="text-muted-foreground mb-4">{(error as Error).message}</p>
-        <Button onClick={() => queryClient.invalidateQueries({ queryKey: ["/api/companion-config", tenantId] })}>
-          <RefreshCw className="mr-2 h-4 w-4" /> Try Again
-        </Button>
-      </div>
+      <AdminLayout>
+        <div className="container mx-auto py-6">
+          <div className="flex justify-between items-center mb-6">
+            <div>
+              <h1 className="text-3xl font-bold tracking-tight">Business Companion Persona Settings</h1>
+              <p className="text-muted-foreground mt-2">
+                Customize how your business companion interacts with users, what topics it discusses, and what data it can access.
+              </p>
+            </div>
+          </div>
+          
+          <Card className="border-muted/20 dark:bg-slate-900/60 mx-auto max-w-3xl">
+            <CardHeader>
+              <CardTitle className="text-xl">
+                {isMissingTableError ? "Initialize Companion Settings" : "Error Loading Settings"}
+              </CardTitle>
+              <CardDescription>
+                {isMissingTableError 
+                  ? "It looks like this is your first time setting up the AI companion. Let's get started by creating your initial configuration."
+                  : "There was a problem loading your companion settings."}
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              {isMissingTableError ? (
+                <div className="space-y-4">
+                  <p>We'll set up your companion with recommended default settings that you can customize afterward:</p>
+                  <ul className="list-disc pl-5 space-y-1">
+                    <li>Professional communication style</li>
+                    <li>Accounting and financial topics enabled</li>
+                    <li>Regulatory compliance settings configured</li>
+                    <li>Data access permissions secured</li>
+                  </ul>
+                </div>
+              ) : (
+                <div className="py-4">
+                  <p className="text-muted-foreground">{errorMessage}</p>
+                </div>
+              )}
+            </CardContent>
+            <CardFooter className="flex justify-end space-x-4">
+              {isMissingTableError ? (
+                <Button 
+                  onClick={() => createConfigMutation.mutate(form.getValues())}
+                  disabled={createConfigMutation.isPending}
+                >
+                  {createConfigMutation.isPending ? (
+                    <>
+                      <Loader className="mr-2 h-4 w-4" /> Creating Configuration...
+                    </>
+                  ) : (
+                    <>
+                      Initialize Configuration
+                    </>
+                  )}
+                </Button>
+              ) : (
+                <Button 
+                  onClick={() => queryClient.invalidateQueries({ queryKey: ["/api/companion-config", tenantId] })}
+                >
+                  <RefreshCw className="mr-2 h-4 w-4" /> Try Again
+                </Button>
+              )}
+            </CardFooter>
+          </Card>
+        </div>
+      </AdminLayout>
     );
   }
   
