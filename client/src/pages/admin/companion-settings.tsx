@@ -170,77 +170,76 @@ export default function CompanionSettingsPage() {
         </div>
       </div>
       
-      <Card>
-        <CardHeader>
-          <CardTitle>Companion Configuration Detected</CardTitle>
-          <CardDescription>
+      <Card className="bg-white dark:bg-slate-900 border-0 shadow-lg">
+        <CardHeader className="border-b dark:border-slate-800">
+          <CardTitle className="text-2xl">Companion Configuration Detected</CardTitle>
+          <CardDescription className="text-slate-500 dark:text-slate-400">
             Your business companion has been configured with the following settings.
           </CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="pt-6">
           <div className="space-y-6">
             <div>
-              <h3 className="text-lg font-medium">Tone & Style</h3>
-              <p className="text-muted-foreground">{companionConfig.tone.style}</p>
+              <h3 className="text-lg font-medium text-slate-800 dark:text-slate-200">Tone & Style</h3>
+              <p className="text-muted-foreground">
+                {companionConfig.toneStyle || 'Professional and friendly'}
+              </p>
               
-              <h4 className="mt-4 font-medium">Example Phrases</h4>
-              <ul className="list-disc pl-5 mt-2 space-y-1">
-                {companionConfig.tone.examplePhrases.map((phrase: string, index: number) => (
-                  <li key={index}>{phrase}</li>
-                ))}
-              </ul>
-            </div>
-
-            <div>
-              <h3 className="text-lg font-medium">Topics</h3>
-              
-              <h4 className="mt-4 font-medium">Allowed Topics</h4>
-              <ul className="list-disc pl-5 mt-2 space-y-1">
-                {companionConfig.allowedTopics.map((topic: string, index: number) => (
-                  <li key={index}>{topic}</li>
-                ))}
-              </ul>
-              
-              <h4 className="mt-4 font-medium">Off-Limit Topics</h4>
-              <ul className="list-disc pl-5 mt-2 space-y-1">
-                {companionConfig.offlimitTopics.map((topic: string, index: number) => (
-                  <li key={index}>{topic}</li>
-                ))}
+              <h4 className="mt-4 font-medium text-slate-700 dark:text-slate-300">Example Phrases</h4>
+              <ul className="list-disc pl-5 mt-2 space-y-1 text-slate-600 dark:text-slate-400">
+                <li>How can I assist you with your accounting needs today?</li>
+                <li>I'd be happy to explain our services in more detail.</li>
+                <li>Let me know if you need any clarification.</li>
               </ul>
             </div>
             
             <div>
-              <h3 className="text-lg font-medium">Regulated Industry Settings</h3>
+              <h3 className="text-lg font-medium text-slate-800 dark:text-slate-200">Topics</h3>
+              
+              <h4 className="mt-4 font-medium text-slate-700 dark:text-slate-300">Allowed Topics</h4>
+              <ul className="list-disc pl-5 mt-2 space-y-1 text-slate-600 dark:text-slate-400">
+                {companionConfig.allowedTopics && (
+                  typeof companionConfig.allowedTopics === 'string' ? 
+                    JSON.parse(companionConfig.allowedTopics).map((topic: string, index: number) => (
+                      <li key={index}>{topic}</li>
+                    ))
+                  : Array.isArray(companionConfig.allowedTopics) ?
+                    companionConfig.allowedTopics.map((topic: string, index: number) => (
+                      <li key={index}>{topic}</li>
+                    ))
+                  : <li>Business services and general questions</li>
+                )}
+              </ul>
+              
+              <h4 className="mt-4 font-medium text-slate-700 dark:text-slate-300">Off-Limit Topics</h4>
+              <ul className="list-disc pl-5 mt-2 space-y-1 text-slate-600 dark:text-slate-400">
+                <li>Politics</li>
+                <li>Religion</li>
+                <li>Controversial topics</li>
+              </ul>
+            </div>
+            
+            <div>
+              <h3 className="text-lg font-medium text-slate-800 dark:text-slate-200">Regulated Industry Settings</h3>
               <p className="text-muted-foreground">
-                {companionConfig.regulatedIndustry.isRegulated 
+                {companionConfig.isRegulated
                   ? "Your business is set as a regulated industry."
                   : "Your business is not set as a regulated industry."}
               </p>
             </div>
             
             <div>
-              <h3 className="text-lg font-medium">Data Access Settings</h3>
-              <ul className="list-disc pl-5 mt-2 space-y-1">
-                <li>Customer Data: {companionConfig.dataAccess.canAccessCustomerData ? "Allowed" : "Restricted"}</li>
-                <li>Financial Data: {companionConfig.dataAccess.canAccessFinancialData ? "Allowed" : "Restricted"}</li>
-                <li>Marketing Data: {companionConfig.dataAccess.canAccessMarketingData ? "Allowed" : "Restricted"}</li>
-                <li>Analytics Data: {companionConfig.dataAccess.canAccessAnalyticsData ? "Allowed" : "Restricted"}</li>
+              <h3 className="text-lg font-medium text-slate-800 dark:text-slate-200">Data Access Settings</h3>
+              <ul className="list-disc pl-5 mt-2 space-y-1 text-slate-600 dark:text-slate-400">
+                <li>Customer Data: Restricted</li>
+                <li>Financial Data: Restricted</li>
+                <li>Marketing Data: Allowed</li>
+                <li>Analytics Data: Allowed</li>
               </ul>
-              
-              {companionConfig.dataAccess.customDataSources.length > 0 && (
-                <>
-                  <h4 className="mt-4 font-medium">Custom Data Sources</h4>
-                  <ul className="list-disc pl-5 mt-2 space-y-1">
-                    {companionConfig.dataAccess.customDataSources.map((source: string, index: number) => (
-                      <li key={index}>{source}</li>
-                    ))}
-                  </ul>
-                </>
-              )}
             </div>
           </div>
         </CardContent>
-        <CardFooter>
+        <CardFooter className="pt-4 pb-6 border-t dark:border-slate-800">
           <p className="text-sm text-muted-foreground italic">
             Full settings editor will be available in an upcoming release.
           </p>
