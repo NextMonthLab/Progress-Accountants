@@ -18,7 +18,7 @@ export default function AdminSettingsPage() {
         <Separator />
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <Card>
+          <Card className="border-muted/20 dark:bg-slate-900/60">
             <CardHeader>
               <div className="flex items-center justify-between">
                 <CardTitle className="text-xl">Backup & Recovery</CardTitle>
@@ -60,7 +60,7 @@ export default function AdminSettingsPage() {
             </CardContent>
           </Card>
           
-          <Card>
+          <Card className="border-muted/20 dark:bg-slate-900/60">
             <CardHeader>
               <div className="flex items-center justify-between">
                 <CardTitle className="text-xl">System Status</CardTitle>
