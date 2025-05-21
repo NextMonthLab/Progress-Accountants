@@ -351,14 +351,14 @@ const DynamicSidebar: React.FC = () => {
                 }));
               }
             }}
-            className="text-xs w-full flex items-center justify-between px-3 py-1.5 rounded-md bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
+            className="text-xs w-full flex items-center justify-between px-3 py-1.5 rounded-md bg-gray-50 dark:bg-gray-800/60 hover:bg-gray-100 dark:hover:bg-gray-700/70 transition-colors border border-transparent dark:border-gray-700"
           >
-            <span className="font-medium text-gray-600 dark:text-gray-300">
+            <span className="font-medium text-gray-600 dark:text-gray-200">
               {expandedGroups.length > 0 ? 'Collapse All Sections' : 'Expand All Sections'}
             </span>
             <ChevronDown 
               className={cn(
-                "h-3 w-3 text-gray-500 dark:text-gray-400 transition-transform duration-200",
+                "h-3 w-3 text-gray-500 dark:text-gray-300 transition-transform duration-200",
                 expandedGroups.length > 0 ? "" : "transform rotate-180"
               )} 
             />
