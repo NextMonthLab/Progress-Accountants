@@ -570,7 +570,11 @@ function Router() {
       <Route path="/studio-banbury" component={StudioPage} />
       <ProtectedRoute path="/scope-request" component={ScopeRequestPage} />
       <ProtectedRoute path="/brand-guidelines" component={BrandGuidelinesPage} />
-      <ProtectedRoute path="/business-identity" component={BusinessIdentityPage} />
+      <Route path="/business-identity">
+        <Suspense fallback={<LoadingFallback />}>
+          <BusinessIdentityPage />
+        </Suspense>
+      </Route>
       <ProtectedRoute path="/homepage-setup" component={HomepageSetupPage} />
       <ProtectedRoute path="/foundation-pages" component={FoundationPagesOverviewPage} />
       {/* Removed standalone page creation in favor of the Page Builder */}
