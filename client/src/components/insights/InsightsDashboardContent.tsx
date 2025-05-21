@@ -55,7 +55,7 @@ export default function InsightsDashboardContent() {
   const [period, setPeriod] = useState('week');
   const [isPending, startTransition] = useTransition();
   
-  // Set suspense:false to prevent React from suspending during data fetching
+  // Use React Query without suspense option to avoid React 18 suspension issues
   const { data: leaderboard, isLoading: loadingLeaderboard } = useQuery<LeaderboardEntry[]>({
     queryKey: ['/api/insights/leaderboard', period],
     queryFn: async () => {
@@ -63,7 +63,6 @@ export default function InsightsDashboardContent() {
       if (!res.ok) throw new Error('Failed to fetch leaderboard');
       return await res.json();
     },
-    suspense: false,
     staleTime: 5 * 60 * 1000, // 5 minutes
     retry: 2
   });
@@ -75,7 +74,6 @@ export default function InsightsDashboardContent() {
       if (!res.ok) throw new Error('Failed to fetch weekly summary');
       return await res.json();
     },
-    suspense: false,
     staleTime: 5 * 60 * 1000, // 5 minutes
     retry: 2
   });
@@ -87,7 +85,6 @@ export default function InsightsDashboardContent() {
       if (!res.ok) throw new Error('Failed to fetch monthly summary');
       return await res.json();
     },
-    suspense: false,
     staleTime: 5 * 60 * 1000, // 5 minutes
     retry: 2
   });
@@ -99,7 +96,6 @@ export default function InsightsDashboardContent() {
       if (!res.ok) throw new Error('Failed to fetch activity data');
       return await res.json();
     },
-    suspense: false,
     staleTime: 5 * 60 * 1000, // 5 minutes
     retry: 2
   });

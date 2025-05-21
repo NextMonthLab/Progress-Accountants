@@ -1,10 +1,12 @@
-import React, { useState, useTransition, Suspense } from 'react';
+import React, { useState, useTransition } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import AdminLayout from '@/layouts/AdminLayout';
-import { Loader2, BarChart3, Award, TrendingUp, Medal } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Loader2, BarChart3, Award, TrendingUp, Medal, AlertTriangle } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Button } from '@/components/ui/button';
 import { format, parseISO } from 'date-fns';
+import { ErrorBoundary as ReactErrorBoundary } from 'react-error-boundary';
 import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip } from 'recharts';
 
 // Types
@@ -95,14 +97,55 @@ function AiSummaryCard({ summary }: { summary: InsightSummary }) {
   );
 }
 
-// Main wrapper component with proper suspense boundary
-// Dashboard container that safely handles suspense states
+// Error fallback component
+function DashboardError() {
+  return (
+    <Card className="my-8 border-red-200">
+      <CardHeader className="bg-red-50 dark:bg-red-900/20">
+        <div className="flex items-center gap-2">
+          <AlertTriangle className="h-5 w-5 text-red-500" />
+          <CardTitle className="text-red-700 dark:text-red-400">Dashboard Error</CardTitle>
+        </div>
+        <CardDescription className="text-red-600/80 dark:text-red-300/80">
+          There was a problem loading the insights dashboard
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="pt-6">
+        <p className="text-slate-700 dark:text-slate-300">
+          We encountered an error while loading your insights data. This could be due to a network issue or temporary server problem.
+        </p>
+      </CardContent>
+      <CardFooter className="border-t pt-4">
+        <Button 
+          onClick={() => window.location.reload()}
+          variant="outline"
+          className="text-red-600 border-red-200 hover:bg-red-50 hover:text-red-700"
+        >
+          Retry Loading Dashboard
+        </Button>
+      </CardFooter>
+    </Card>
+  );
+}
+
+// Loading component
+function DashboardLoader() {
+  return (
+    <div className="w-full py-12 flex flex-col items-center justify-center">
+      <Loader2 className="h-8 w-8 animate-spin text-primary mb-4" />
+      <p className="text-muted-foreground">Loading insights dashboard...</p>
+    </div>
+  );
+}
+
+// Main wrapper component with proper error handling
+// Dashboard container that safely handles loading states without suspense
 export default function InsightsDashboardPage() {
   return (
     <AdminLayout>
-      <Suspense fallback={<DashboardLoader />}>
+      <ReactErrorBoundary FallbackComponent={DashboardError}>
         <InsightsDashboardContent />
-      </Suspense>
+      </ReactErrorBoundary>
     </AdminLayout>
   );
 }
