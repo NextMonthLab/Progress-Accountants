@@ -61,12 +61,32 @@ export default function CompanionSettingsPage() {
   } = useQuery({
     queryKey: ["/api/companion-config", tenantId],
     queryFn: async () => {
-      const res = await apiRequest("GET", `/api/companion-config?tenantId=${tenantId}`);
-      if (!res.ok) {
-        const error = await res.json();
-        throw new Error(error.error || "Failed to fetch companion configuration");
+      try {
+        const res = await apiRequest("GET", `/api/companion-config?tenantId=${tenantId}`);
+        if (!res.ok) {
+          // Handle 404 specially to avoid double-reading the response
+          if (res.status === 404) {
+            throw new Error("Companion configuration not found");
+          }
+          
+          // For other errors, try to read the JSON
+          try {
+            const error = await res.json();
+            throw new Error(error.error || "Failed to fetch companion configuration");
+          } catch (parseError) {
+            // If we can't parse JSON (e.g., body stream already read)
+            throw new Error("Companion configuration not found");
+          }
+        }
+        return res.json();
+      } catch (error) {
+        // Ensure we always have a proper error object
+        if (error instanceof Error) {
+          throw error;
+        } else {
+          throw new Error("An unknown error occurred");
+        }
       }
-      return res.json();
     },
     retry: 1,
     enabled: !!tenantId
