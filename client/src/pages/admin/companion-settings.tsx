@@ -108,39 +108,41 @@ export default function CompanionSettingsPage() {
   if (isError || !companionConfig) {
     return (
       <div className="container mx-auto py-6">
-        <Card className="max-w-4xl mx-auto">
-          <CardHeader>
-            <CardTitle>Initialize Business Companion Settings</CardTitle>
-            <CardDescription>
+        <Card className="max-w-4xl mx-auto border-0 shadow-lg bg-white dark:bg-slate-900">
+          <CardHeader className="border-b dark:border-slate-800">
+            <CardTitle className="text-2xl">Initialize Business Companion Settings</CardTitle>
+            <CardDescription className="text-slate-500 dark:text-slate-400">
               Set up your business companion to interact with users based on your preferences.
             </CardDescription>
           </CardHeader>
-          <CardContent>
-            <p className="mb-6">
+          <CardContent className="pt-6">
+            <p className="mb-6 text-slate-700 dark:text-slate-300">
               You haven't configured your business companion settings yet. Initialize with default settings to get started.
             </p>
             <div className="space-y-4">
-              <div className="flex items-center p-4 bg-slate-100 dark:bg-slate-800 rounded-md">
-                <div className="mr-4 text-blue-500">
-                  <Shield size={24} />
+              <div className="flex items-center p-6 bg-indigo-50 dark:bg-indigo-950/30 rounded-lg border border-indigo-100 dark:border-indigo-900">
+                <div className="mr-4 text-indigo-500 dark:text-indigo-400">
+                  <Shield size={28} />
                 </div>
                 <div>
-                  <h3 className="font-medium">Professional Default Settings</h3>
-                  <p className="text-sm text-muted-foreground">
+                  <h3 className="font-medium text-lg text-indigo-700 dark:text-indigo-300">Professional Default Settings</h3>
+                  <p className="text-sm text-indigo-600/80 dark:text-indigo-400/80">
                     Start with a professional tone and standard configuration.
                   </p>
                 </div>
               </div>
             </div>
           </CardContent>
-          <CardFooter>
+          <CardFooter className="pt-4 pb-6 border-t dark:border-slate-800">
             <Button
               onClick={() => initializeCompanionConfigMutation.mutate()}
               disabled={initializeCompanionConfigMutation.isPending}
+              className="bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-600 dark:hover:bg-indigo-700 text-white px-5 py-2 h-11"
+              size="lg"
             >
               {initializeCompanionConfigMutation.isPending ? (
                 <>
-                  <Loader size="sm" className="mr-2" />
+                  <Loader size="sm" className="mr-2 text-white" />
                   Initializing...
                 </>
               ) : (
