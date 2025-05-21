@@ -488,8 +488,8 @@ const MenuManagementPage = () => {
     <div className="container py-6">
       <div className="flex justify-between items-center mb-6">
         <div>
-          <h1 className="text-2xl font-bold">Menu Management</h1>
-          <p className="text-muted-foreground">Create and manage navigation menus for your site</p>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-50">Menu Management</h1>
+          <p className="text-muted-foreground dark:text-gray-300">Create and manage navigation menus for your site</p>
         </div>
       </div>
         
