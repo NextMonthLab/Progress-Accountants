@@ -1,0 +1,100 @@
+/* public.css - Styles specific to public-facing components */
+
+:root {
+  /* Public site colors */
+  --public-navy: #1c3668;
+  --public-navy-dark: #132549;
+  --public-orange: #f15a29;
+  --public-white: #ffffff;
+  --public-gray: #f0f0f0;
+}
+
+/* Public button styles */
+.public-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 0.375rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
+}
+
+.public-btn-primary {
+  background-color: var(--public-navy);
+  color: var(--public-white);
+}
+
+.public-btn-primary:hover {
+  background-color: var(--public-navy-dark);
+}
+
+.public-btn-secondary {
+  background-color: var(--public-orange);
+  color: var(--public-white);
+}
+
+.public-btn-secondary:hover {
+  background-color: rgba(241, 90, 41, 0.9); /* Slightly transparent orange */
+}
+
+.public-btn-outline {
+  background-color: transparent;
+  border: 1px solid var(--public-navy);
+  color: var(--public-navy);
+}
+
+.public-btn-outline:hover {
+  background-color: var(--public-orange);
+  border-color: var(--public-orange);
+  color: var(--public-white);
+}
+
+/* Book a Call button specific style - matching Admin Dashboard */
+.book-call-btn {
+  background-color: var(--public-navy);
+  color: var(--public-white);
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  text-decoration: none;
+  height: 40px;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.book-call-btn:hover {
+  background-color: var(--public-navy-dark);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Mobile book call button - different style */
+.book-call-btn-mobile {
+  background-color: var(--public-orange);
+  color: var(--public-white);
+  width: 100%;
+  padding: 0.625rem 1rem;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.book-call-btn-mobile:hover {
+  background-color: rgba(241, 90, 41, 0.9);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}

@@ -1,0 +1,15 @@
+{
+  "name": "progress-smart-site",
+  "valid": true,
+  "version": "1.0.0",
+  "description": "The production-ready Progress Smart Site, designed for accountants with modern AI and automation features.",
+  "port": 5001,
+  "status": "ready",
+  "zip_path": "packages/progress-smart-site.zip",
+  "type": "web-app",
+  "tags": ["progress", "smart-site", "accounting", "nextmonth", "agora"],
+  "requirements": {
+    "docker": true,
+    "node": "18.x"
+  }
+}
