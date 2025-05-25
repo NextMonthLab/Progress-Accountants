@@ -1,11 +1,11 @@
 {
   "name": "progress-smart-site",
   "version": "1.0.0",
-  "type": "express",
-  "port": 5000,
+  "type": "react",
+  "port": 5001,
   "status": "ready",
   "deployment": {
-    "entry": "server/index.ts",
+    "entry": "index.html",
     "docker": true,
     "serve_script": true
   },
