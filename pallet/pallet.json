@@ -9,6 +9,5 @@
     "docker": true,
     "serve_script": true
   },
-  "tags": ["agora", "pallet", "hetzner-ready", "scaffolded"],
-  "expansion_ready": true
+  "tags": ["agora", "pallet"]
 }
