@@ -8,6 +8,7 @@
   "zip_path": "packages/progress-smart-site.zip",
   "deployment": {
     "entry": "server/index.ts",
+    "port": 5001,
     "docker": true,
     "serve_script": true
   },
