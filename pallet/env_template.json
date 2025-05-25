@@ -1,0 +1,6 @@
+{
+  "OPENAI_API_KEY": "your_openai_api_key_here",
+  "SESSION_SECRET": "your_session_secret_here",
+  "NEXTMONTH_BACKUP_ENDPOINT": "https://nextmonth.ai/wp-json/nextmonth/v1/project-backup",
+  "PROJECT_ID": "progress_accountants"
+}

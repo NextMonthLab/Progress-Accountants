@@ -1,0 +1,14 @@
+{
+  "name": "progress-smart-site",
+  "version": "1.0.0",
+  "type": "express",
+  "port": 5000,
+  "status": "ready",
+  "deployment": {
+    "entry": "server/index.ts",
+    "docker": true,
+    "serve_script": true
+  },
+  "tags": ["agora", "pallet", "hetzner-ready", "scaffolded"],
+  "expansion_ready": true
+}

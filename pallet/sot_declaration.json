@@ -1,0 +1,14 @@
+{
+  "declarationName": "blueprint_management_system",
+  "declarationType": "feature",
+  "version": "1.0.0",
+  "status": "active",
+  "description": "Blueprint Management System for creating templates, extracting and cloning instances",
+  "capabilities": [
+    "template_management",
+    "blueprint_extraction",
+    "instance_cloning"
+  ],
+  "dependsOn": [],
+  "isTemplate": true
+}

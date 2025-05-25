@@ -1,0 +1,72 @@
+📦 Replit Prompt: Prepare an Expandable, Hetzner-Ready Agora OS Pallet
+
+You are a Replit instance participating in the Agora OS ecosystem.
+Your task is to prepare your app as a Hetzner-ready, expandable Pallet for deployment, verification, and future growth.
+
+⸻
+
+🧱 1. Scaffold the /pallet/ folder:
+
+Create a /pallet/ directory that includes:
+• Your existing app structure (e.g. /index.html, /public, /dist, etc.)
+• Core config files for deployment
+• Expandable placeholder folders for advanced features:
+  • /whispers/ → For system nudges + intelligent feedback
+  • /blueprint/ → For internal config, structure, SOT import/export
+  • /council/ → For AI council integrations or runtime logic
+  • /api/ → Placeholder for future routes or automation
+
+Even if these are empty now, their presence signals that this app is designed to grow intelligently within Agora OS.
+
+⸻
+
+📋 2. Include pallet.json
+
+Create /pallet/pallet.json with the following structure:
+
+```json
+{
+  "name": "<your-project-name>",
+  "version": "1.0.0",
+  "type": "static-site",
+  "port": 5000,
+  "status": "ready",
+  "deployment": {
+    "entry": "index.html",
+    "docker": true,
+    "serve_script": true
+  },
+  "tags": ["agora", "pallet", "hetzner-ready", "scaffolded"],
+  "expansion_ready": true
+}
+```
+
+⸻
+
+🧠 3. Add the deployment files:
+
+Inside /pallet/, include:
+• Dockerfile → Build instructions for Hetzner
+• docker-compose.yml → Port + service config (default 5000)
+• serve.sh → Script to launch locally inside the container
+
+⸻
+
+📤 4. Push the app to GitHub
+
+Push your /pallet/ folder to a public repo:
+
+https://github.com/<your-org-or-user>/<your-project>/tree/main/pallet/
+
+⸻
+
+🤖 5. Let Pallet Manager Handle the Rest
+
+Once you've pushed:
+• Submit the link to Pallet Manager via "🔗 Add GitHub Pallet"
+• It will:
+  • Validate the scaffold
+  • Store your Pallet metadata
+  • Prepare it for immediate or deferred Hetzner deployment
+
+You don't have to use every part of the scaffold immediately, but it means you won't need to rewrap or rewire when your app evolves.

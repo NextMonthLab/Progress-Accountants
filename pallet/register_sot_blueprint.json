@@ -1,0 +1,10 @@
+{
+  "instanceId": "9499d311-5979-4779-8d65-4abff5e81d67",
+  "instanceType": "client_site",
+  "blueprintVersion": "1.0.0",
+  "toolsSupported": ["template_management", "blueprint_extraction", "instance_cloning"],
+  "callbackUrl": "http://localhost:5000/api/blueprint/status",
+  "status": "active",
+  "isTemplate": true,
+  "isCloneable": true
+}
