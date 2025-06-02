@@ -47,7 +47,7 @@ export default function HomePage() {
   }, []);
 
   return (
-    <>
+    <div className="min-h-screen bg-black text-white">
       <HeroSection />
       <ServicesSection />
       <IndustriesSection />
@@ -427,6 +427,6 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-    </>
+    </div>
   );
 }
