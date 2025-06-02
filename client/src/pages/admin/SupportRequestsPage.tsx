@@ -654,7 +654,7 @@ export default function SupportRequestsPage() {
                     <h3 className="text-sm font-medium text-muted-foreground">User Information</h3>
                     <Card className="p-4 bg-muted/20">
                       <div className="flex gap-4 items-center">
-                        <User className="h-12 w-12 text-muted-foreground p-2 bg-muted rounded-full" />
+                        <User className="h-12 w-12 text-muted-foreground p-2 bg-muted rounded-lg" />
                         <div>
                           <p className="font-medium">{selectedTicket.userName || 'Anonymous User'}</p>
                           <p className="text-sm text-muted-foreground flex items-center">

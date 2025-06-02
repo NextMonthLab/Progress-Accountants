@@ -144,7 +144,7 @@ export function ThemeToggle({
   return (
     <button
       onClick={toggleTheme}
-      className={`h-9 w-9 rounded-full flex items-center justify-center ${
+      className={`h-9 w-9 rounded-lg flex items-center justify-center ${
         isDarkTheme 
           ? "bg-indigo-100 hover:bg-indigo-200 shadow-sm" 
           : "bg-blue-100 hover:bg-blue-200 border border-blue-200 shadow-sm"

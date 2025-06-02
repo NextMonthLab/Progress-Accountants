@@ -255,7 +255,7 @@ export default function ThemeManagementPage() {
                       <div className="flex justify-between">
                         <Label htmlFor="primary-color">Primary Color</Label>
                         <div 
-                          className="w-6 h-6 rounded-full border border-gray-300" 
+                          className="w-6 h-6 rounded-lg border border-gray-300" 
                           style={{ backgroundColor: theme.primary }}
                         />
                       </div>
@@ -280,7 +280,7 @@ export default function ThemeManagementPage() {
                       <div className="flex justify-between">
                         <Label htmlFor="secondary-color">Secondary Color</Label>
                         <div 
-                          className="w-6 h-6 rounded-full border border-gray-300" 
+                          className="w-6 h-6 rounded-lg border border-gray-300" 
                           style={{ backgroundColor: theme.secondary }}
                         />
                       </div>
@@ -305,7 +305,7 @@ export default function ThemeManagementPage() {
                       <div className="flex justify-between">
                         <Label htmlFor="accent-color">Accent Color</Label>
                         <div 
-                          className="w-6 h-6 rounded-full border border-gray-300" 
+                          className="w-6 h-6 rounded-lg border border-gray-300" 
                           style={{ backgroundColor: theme.accent }}
                         />
                       </div>
@@ -330,7 +330,7 @@ export default function ThemeManagementPage() {
                       <div className="flex justify-between">
                         <Label htmlFor="background-color">Background Color</Label>
                         <div 
-                          className="w-6 h-6 rounded-full border border-gray-300" 
+                          className="w-6 h-6 rounded-lg border border-gray-300" 
                           style={{ backgroundColor: theme.background }}
                         />
                       </div>
@@ -355,7 +355,7 @@ export default function ThemeManagementPage() {
                       <div className="flex justify-between">
                         <Label htmlFor="text-color">Text Color</Label>
                         <div 
-                          className="w-6 h-6 rounded-full border border-gray-300" 
+                          className="w-6 h-6 rounded-lg border border-gray-300" 
                           style={{ backgroundColor: theme.text }}
                         />
                       </div>

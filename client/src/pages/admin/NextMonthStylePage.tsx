@@ -110,9 +110,9 @@ export default function NextMonthStylePage() {
       <div className="w-full bg-gray-100 h-0.5 relative">
         <div className="max-w-7xl mx-auto px-4 flex">
           <div className="bg-gradient-to-r from-[#d65db1] to-[#ff6987] w-1/6 h-0.5 relative">
-            <div className="absolute left-0 -top-1 h-2 w-2 rounded-full bg-[#d65db1]"></div>
+            <div className="absolute left-0 -top-1 h-2 w-2 rounded-lg bg-[#d65db1]"></div>
           </div>
-          <div className="absolute right-4 -top-1 h-2 w-2 rounded-full bg-gray-300"></div>
+          <div className="absolute right-4 -top-1 h-2 w-2 rounded-lg bg-gray-300"></div>
         </div>
       </div>
 
@@ -121,7 +121,7 @@ export default function NextMonthStylePage() {
         {/* Lead Tracker Card */}
         <Card className="bg-white shadow-sm rounded-lg mb-8 overflow-hidden relative border-0">
           <div className="absolute top-0 right-0 w-64 h-64 opacity-[0.03] z-0">
-            <div className="w-full h-full bg-[#ff6987] transform rotate-12 translate-x-10 -translate-y-10 rounded-full"></div>
+            <div className="w-full h-full bg-[#ff6987] transform rotate-12 translate-x-10 -translate-y-10 rounded-lg"></div>
           </div>
           
           <CardContent className="p-6 z-10 relative">
@@ -140,7 +140,7 @@ export default function NextMonthStylePage() {
                     <span className="text-gray-800">Lead </span>
                     <span className="text-[#5EB8B6]">Tracker</span>
                   </h1>
-                  <div className="text-sm text-gray-600 bg-slate-50 px-3 py-1 rounded-full">
+                  <div className="text-sm text-gray-600 bg-slate-50 px-3 py-1 rounded-lg">
                     Credits <span className="font-medium">35/100</span>
                   </div>
                 </div>
@@ -161,20 +161,20 @@ export default function NextMonthStylePage() {
         
         {/* Tab Navigation */}
         <div className="mb-6 flex">
-          <div className="bg-white shadow-sm rounded-full p-1 flex space-x-1 border">
-            <Button variant="ghost" className="bg-white shadow-sm rounded-full py-1 px-4 text-gray-700 flex items-center gap-2 h-auto">
+          <div className="bg-white shadow-sm rounded-lg p-1 flex space-x-1 border">
+            <Button variant="ghost" className="bg-white shadow-sm rounded-lg py-1 px-4 text-gray-700 flex items-center gap-2 h-auto">
               <span className="text-gray-600">◷</span> Overview
             </Button>
-            <Button variant="ghost" className="py-1 px-4 text-gray-700 flex items-center gap-2 rounded-full h-auto">
+            <Button variant="ghost" className="py-1 px-4 text-gray-700 flex items-center gap-2 rounded-lg h-auto">
               <span className="text-gray-600">◯</span> Lead Profiles
             </Button>
-            <Button variant="ghost" className="py-1 px-4 text-gray-700 flex items-center gap-2 rounded-full h-auto">
+            <Button variant="ghost" className="py-1 px-4 text-gray-700 flex items-center gap-2 rounded-lg h-auto">
               <span className="text-gray-600">⊕</span> Signals
             </Button>
-            <Button variant="ghost" className="py-1 px-4 text-gray-700 flex items-center gap-2 rounded-full h-auto">
+            <Button variant="ghost" className="py-1 px-4 text-gray-700 flex items-center gap-2 rounded-lg h-auto">
               <span className="text-gray-600">⮆</span> Matches
             </Button>
-            <Button variant="ghost" className="py-1 px-4 text-gray-700 flex items-center gap-2 rounded-full h-auto">
+            <Button variant="ghost" className="py-1 px-4 text-gray-700 flex items-center gap-2 rounded-lg h-auto">
               <span className="text-gray-600">◐</span> Insights
             </Button>
           </div>
@@ -182,11 +182,11 @@ export default function NextMonthStylePage() {
         
         {/* Time Filters */}
         <div className="flex space-x-2 mb-8">
-          <Badge variant="outline" className="px-4 py-1.5 rounded-full bg-gray-50 border-gray-200 text-gray-600">Today</Badge>
-          <Badge variant="outline" className="px-4 py-1.5 rounded-full bg-gray-50 border-gray-200 text-gray-600">Yesterday</Badge>
-          <Badge variant="outline" className="px-4 py-1.5 rounded-full bg-[#fde2ed] text-[#d65db1] border-[#ffbed9]">Last 7 days</Badge>
-          <Badge variant="outline" className="px-4 py-1.5 rounded-full bg-gray-50 border-gray-200 text-gray-600">Last 30 days</Badge>
-          <Badge variant="outline" className="px-4 py-1.5 rounded-full bg-gray-50 border-gray-200 text-gray-600">Custom</Badge>
+          <Badge variant="outline" className="px-4 py-1.5 rounded-lg bg-gray-50 border-gray-200 text-gray-600">Today</Badge>
+          <Badge variant="outline" className="px-4 py-1.5 rounded-lg bg-gray-50 border-gray-200 text-gray-600">Yesterday</Badge>
+          <Badge variant="outline" className="px-4 py-1.5 rounded-lg bg-[#fde2ed] text-[#d65db1] border-[#ffbed9]">Last 7 days</Badge>
+          <Badge variant="outline" className="px-4 py-1.5 rounded-lg bg-gray-50 border-gray-200 text-gray-600">Last 30 days</Badge>
+          <Badge variant="outline" className="px-4 py-1.5 rounded-lg bg-gray-50 border-gray-200 text-gray-600">Custom</Badge>
         </div>
         
         {/* Stat Cards */}
@@ -199,10 +199,10 @@ export default function NextMonthStylePage() {
                     index === 0 ? "bg-[#d65db1]" : 
                     index === 1 ? "bg-[#5EB8B6]" : 
                     index === 2 ? "bg-[#4E94F8]" : "bg-[#F8A84E]"
-                  } p-3 rounded-full`}>
+                  } p-3 rounded-lg`}>
                     {stat.icon}
                   </div>
-                  <Badge variant="outline" className="flex items-center bg-green-50 text-green-700 border-green-100 rounded-full">
+                  <Badge variant="outline" className="flex items-center bg-green-50 text-green-700 border-green-100 rounded-lg">
                     <ArrowUpRight className="h-3 w-3 mr-1" />
                     {stat.change}
                   </Badge>
@@ -224,7 +224,7 @@ export default function NextMonthStylePage() {
                 <h3 className="text-lg font-semibold">Lead Activity</h3>
                 <p className="text-sm text-gray-500">Website visitor activity over time</p>
               </div>
-              <Button variant="ghost" size="sm" className="text-[#d65db1] hover:text-[#d65db1]/90 hover:bg-[#d65db1]/5 rounded-full">
+              <Button variant="ghost" size="sm" className="text-[#d65db1] hover:text-[#d65db1]/90 hover:bg-[#d65db1]/5 rounded-lg">
                 View All
               </Button>
             </div>
