@@ -8,6 +8,44 @@
 @tailwind utilities;
 
 @layer utilities {
+  /* Progress Design System Utilities */
+  .gradient-bg {
+    @apply bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4];
+  }
+
+  .gradient-text {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4];
+  }
+
+  .dark-theme-text {
+    @apply text-white;
+  }
+
+  .dark-theme-paragraph {
+    @apply text-gray-200;
+  }
+
+  .dark-theme-card {
+    @apply bg-zinc-800 text-white border-zinc-700;
+  }
+
+  .progress-button {
+    @apply relative overflow-hidden transition-all duration-300 ease-in-out;
+    position: relative;
+    z-index: 1;
+  }
+
+  .progress-button::before {
+    content: '';
+    @apply absolute top-0 left-0 w-full h-full transition-all duration-300 ease-in-out;
+    background: linear-gradient(135deg, #7B3FE4, #3FA4E4);
+    z-index: -1;
+  }
+
+  .progress-button:hover::before {
+    @apply opacity-90 scale-105;
+  }
+
   /* Grid pattern background for cards */
   .bg-grid-black {
     background-size: 40px 40px;
@@ -25,19 +63,23 @@
 :root {
   --navy: #1a365d;
   --navy-dark: #132b4d;
+  /* Progress Brand Colors */
+  --progress-purple: #7B3FE4;
+  --progress-blue: #3FA4E4;
+  --accent-teal: #059669;
   /* Updated color palette for modern UI */
-  --primary: #4F46E5;
+  --primary: #7B3FE4;
   --primary-hover: #6366F1;
-  --secondary-bg: #E0F2FE;
-  --secondary-text: #0284C7;
-  --secondary-hover: #BAE6FD;
-  --secondary-border: #BFDBFE;
+  --secondary-bg: #1F2937;
+  --secondary-text: #7B3FE4;
+  --secondary-hover: #374151;
+  --secondary-border: #4B5563;
   --ai-accent: #14B8A6;
-  --background: #F8F9FB;
-  --card-bg: #FFFFFF;
-  --text-headline: #222222;
-  --text-body: #6B7280;
-  --light-grey: #f5f7fa;
+  --background: #000000;
+  --card-bg: #1F2937;
+  --text-headline: #FFFFFF;
+  --text-body: #D1D5DB;
+  --light-grey: #374151;
   --dark-grey: #4a5568;
   --orange: #F4A261;
   --nextmonth-teal: #008080;

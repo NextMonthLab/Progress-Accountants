@@ -30,7 +30,7 @@ import ContentLoader from "@/components/error/ContentLoader";
 
 // Eagerly loaded components for critical paths
 import HomePage from "@/pages/HomePage";
-import NewProgressHomePage from "@/pages/NewProgressHomePage";
+import ProgressHomePage from "@/pages/ProgressHomePage";
 import AuthPage from "@/pages/AuthPage";
 
 // Lazy loaded components for better performance
@@ -168,7 +168,7 @@ function Router() {
     <Switch>
       {/* Public routes */}
       <Route path="/auth" component={AuthPage} />
-      <Route path="/new-progress" component={NewProgressHomePage} />
+      <Route path="/progress-design" component={ProgressHomePage} />
       <Route path="/client-register/:tenantId">
         <Suspense fallback={<LoadingFallback />}>
           <ClientRegistrationPage />
