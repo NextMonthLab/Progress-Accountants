@@ -206,7 +206,7 @@ const IndustriesSection = () => {
         
         {/* Additional Industries Section */}
         <div className={`mt-12 transition-all duration-500 delay-300 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
-          <h3 className="text-center text-xl font-semibold mb-6 text-navy">We also serve</h3>
+          <h3 className="text-center text-xl font-semibold mb-6 bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] bg-clip-text text-transparent">We also serve</h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {additionalIndustries.map((industry, index) => (
               <AdditionalIndustryBadge 
