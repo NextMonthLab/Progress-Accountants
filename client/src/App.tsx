@@ -30,6 +30,7 @@ import ContentLoader from "@/components/error/ContentLoader";
 
 // Eagerly loaded components for critical paths
 import HomePage from "@/pages/HomePage";
+import NewProgressHomePage from "@/pages/NewProgressHomePage";
 import AuthPage from "@/pages/AuthPage";
 
 // Lazy loaded components for better performance
