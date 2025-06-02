@@ -168,6 +168,7 @@ function Router() {
     <Switch>
       {/* Public routes */}
       <Route path="/auth" component={AuthPage} />
+      <Route path="/new-progress" component={NewProgressHomePage} />
       <Route path="/client-register/:tenantId">
         <Suspense fallback={<LoadingFallback />}>
           <ClientRegistrationPage />
