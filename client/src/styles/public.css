@@ -54,29 +54,35 @@
   color: var(--public-white);
 }
 
-/* Book a Call button specific style - Progress brand colors */
+/* Book a Call button specific style - Progress brand colors with maximum specificity */
+a.book-call-btn,
 .book-call-btn {
   background: linear-gradient(135deg, #7B3FE4 0%, #3FA4E4 100%) !important;
-  color: var(--public-white) !important;
-  padding: 0.5rem 1rem;
-  border-radius: 0.5rem;
-  font-size: 0.875rem;
-  font-weight: 500;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  transition: all 0.2s ease;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-  text-decoration: none;
-  height: 40px;
-  line-height: 1;
-  white-space: nowrap;
+  background-color: #7B3FE4 !important;
+  color: white !important;
+  padding: 0.5rem 1rem !important;
+  border-radius: 0.5rem !important;
+  font-size: 0.875rem !important;
+  font-weight: 500 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.5rem !important;
+  transition: all 0.2s ease !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) !important;
+  text-decoration: none !important;
+  height: 40px !important;
+  line-height: 1 !important;
+  white-space: nowrap !important;
+  border: none !important;
 }
 
+a.book-call-btn:hover,
 .book-call-btn:hover {
   background: linear-gradient(135deg, #6B2FD4 0%, #2F94D4 100%) !important;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: #6B2FD4 !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+  color: white !important;
 }
 
 /* Mobile book call button - different style */
