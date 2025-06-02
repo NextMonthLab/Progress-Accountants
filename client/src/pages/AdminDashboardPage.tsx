@@ -111,7 +111,7 @@ function StatCard({
               </p>
             )}
           </div>
-          <div className={`w-12 h-12 rounded-full flex items-center justify-center ${scheme[color].icon} transition-transform duration-200 hover:scale-110`}>
+          <div className={`w-12 h-12 rounded-lg flex items-center justify-center ${scheme[color].icon} transition-transform duration-200 hover:scale-110`}>
             {icon}
           </div>
         </div>
@@ -156,7 +156,7 @@ function ActivityItem({ icon, title, description, time, isLoading = false }: Act
     <div className="flex gap-4 py-4 border-b border-gray-100 dark:border-gray-800 last:border-0">
       {isLoading ? (
         <>
-          <div className="h-10 w-10 rounded-full bg-gray-200 dark:bg-gray-700 animate-pulse"></div>
+          <div className="h-10 w-10 rounded-lg bg-gray-200 dark:bg-gray-700 animate-pulse"></div>
           <div className="flex-1 space-y-2">
             <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4 animate-pulse"></div>
             <div className="h-3 bg-gray-100 dark:bg-gray-800 rounded w-full animate-pulse"></div>
@@ -164,7 +164,7 @@ function ActivityItem({ icon, title, description, time, isLoading = false }: Act
         </>
       ) : (
         <>
-          <div className="h-10 w-10 rounded-full bg-[#008080]/10 dark:bg-[#008080]/20 flex items-center justify-center text-[#008080] dark:text-[#4fd1d1]">
+          <div className="h-10 w-10 rounded-lg bg-[#008080]/10 dark:bg-[#008080]/20 flex items-center justify-center text-[#008080] dark:text-[#4fd1d1]">
             {icon}
           </div>
           <div className="flex-1">
