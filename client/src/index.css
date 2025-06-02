@@ -85,6 +85,13 @@
   --nextmonth-teal: #008080;
 }
 
+/* Critical fix: Prevent oval shapes in admin areas */
+body:has([data-admin]) .rounded-full,
+[data-admin] .rounded-full,
+.admin-layout .rounded-full {
+  border-radius: 0.5rem !important;
+}
+
 @layer base {
   * {
     @apply border-border;
