@@ -46,7 +46,7 @@ const ServiceCard = withMemo(({
       )}
       <CardContent className="p-6 md:p-8">
         <div className="flex items-center mb-4">
-          <div className="w-10 h-10 rounded-full bg-orange-500 flex items-center justify-center mr-3">
+          <div className="w-10 h-10 rounded-full gradient-bg flex items-center justify-center mr-3">
             <span className="text-white text-sm">★</span>
           </div>
           <h3 className="font-bold text-xl text-white">
@@ -61,7 +61,7 @@ const ServiceCard = withMemo(({
           <ul className="mb-5 space-y-2">
             {features.map((feature, idx) => (
               <li key={idx} className="flex items-start">
-                <CheckCircle2 className="h-5 w-5 text-orange-500 mr-2 shrink-0 mt-0.5" />
+                <CheckCircle2 className="h-5 w-5 text-[#7B3FE4] mr-2 shrink-0 mt-0.5" />
                 <span className="text-gray-300 text-sm">{feature}</span>
               </li>
             ))}
@@ -71,7 +71,7 @@ const ServiceCard = withMemo(({
         {title === "Podcast & Video Studio" && (
           <Link href="/studio-banbury" className="inline-block mt-3">
             <Button 
-              className="px-4 py-2 rounded-full bg-transparent border border-orange-500 text-orange-500 hover:bg-orange-500/10 transition-colors"
+              className="px-4 py-2 rounded-full bg-transparent border border-[#7B3FE4] text-[#7B3FE4] hover:bg-[#7B3FE4]/10 transition-colors"
             >
               <span>Find Out More</span>
               <ArrowRight className="ml-2 h-4 w-4" />
