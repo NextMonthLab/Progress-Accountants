@@ -143,7 +143,7 @@ const HeroSection = () => {
                 />
                 
                 {/* Simple badge - positioned more discreetly */}
-                <div className="absolute top-4 right-4 bg-orange-500 px-3 py-1 rounded-full shadow-md">
+                <div className="absolute top-4 right-4 gradient-bg px-3 py-1 rounded-full shadow-md">
                   <p className="text-xs font-semibold text-white">
                     UK Certified
                   </p>

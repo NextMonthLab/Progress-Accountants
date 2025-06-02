@@ -37,7 +37,7 @@ const IndustryCard = withMemo(({
         
         {/* Icon badge */}
         <div className="absolute top-4 right-4 z-20 bg-white p-2 rounded-full">
-          <Icon className="h-5 w-5 text-orange-500" />
+          <Icon className="h-5 w-5 text-[#7B3FE4]" />
         </div>
         
         {/* Title on image */}
@@ -56,7 +56,7 @@ const IndustryCard = withMemo(({
           <ul className="space-y-1">
             {expertise.slice(0, 3).map((item, i) => (
               <li key={i} className="flex items-center text-sm text-gray-600">
-                <span className="h-1 w-1 rounded-full bg-orange-500 mr-2"></span>
+                <span className="h-1 w-1 rounded-full bg-[#7B3FE4] mr-2"></span>
                 {item}
               </li>
             ))}
@@ -70,7 +70,7 @@ const IndustryCard = withMemo(({
           <Button 
             variant="outline" 
             size="sm"
-            className="text-sm border-orange-300 text-orange-600 hover:bg-orange-50"
+            className="text-sm border-[#7B3FE4] text-[#7B3FE4] hover:bg-[#7B3FE4]/10"
           >
             <span>Learn more</span>
             <ArrowRight className="ml-2 h-4 w-4" />
@@ -90,10 +90,10 @@ const AdditionalIndustryBadge = withMemo(({
   label: string 
 }) => (
   <div className="flex items-center gap-3 p-3 bg-white rounded-lg shadow-sm border border-gray-100">
-    <div className="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center">
-      <Icon className="h-5 w-5 text-orange-500" />
+    <div className="w-10 h-10 rounded-full bg-gradient-to-r from-[#7B3FE4]/20 to-[#3FA4E4]/20 flex items-center justify-center">
+      <Icon className="h-5 w-5 text-[#7B3FE4]" />
     </div>
-    <span className="text-navy font-medium">{label}</span>
+    <span className="text-zinc-800 font-medium">{label}</span>
   </div>
 ));
 
