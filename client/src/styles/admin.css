@@ -54,9 +54,26 @@
   background-color: var(--admin-settings-hover);
 }
 
-/* Admin-specific card styles */
-.admin-card {
-  background-color: white;
-  border-radius: 0.5rem;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+/* Admin-specific card styles - Override any global styles */
+.admin-card,
+[data-admin] .card,
+[data-admin] .Card,
+body:has([data-admin]) .card,
+.admin-layout .card {
+  background-color: white !important;
+  border-radius: 0.5rem !important;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06) !important;
+}
+
+/* Ensure admin containers are never oval */
+[data-admin] *,
+.admin-layout *,
+body:has([data-admin]) * {
+  border-radius: inherit !important;
+}
+
+[data-admin] *[class*="rounded-full"],
+.admin-layout *[class*="rounded-full"],
+body:has([data-admin]) *[class*="rounded-full"] {
+  border-radius: 0.5rem !important;
 }

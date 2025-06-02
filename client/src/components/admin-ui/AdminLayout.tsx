@@ -89,7 +89,7 @@ export function AdminLayoutV2({
   const siteProgress = 40; // This would be calculated based on completed tasks
 
   return (
-    <div className={`flex flex-col min-h-screen ${isDarkTheme ? 'dark bg-black' : 'bg-gray-50'}`}>
+    <div className={`flex flex-col min-h-screen admin-layout ${isDarkTheme ? 'dark bg-black' : 'bg-gray-50'}`} data-admin="true">
       {/* Top Navigation */}
       <header className="dark:border-[#1D1D1D] border-gray-200 z-10">
         <div className="max-w-screen-xl mx-auto px-4">
