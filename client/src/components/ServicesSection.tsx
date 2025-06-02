@@ -94,20 +94,17 @@ const StandardServiceCard = withMemo(({
   Icon: React.ComponentType<any>;
 }) => {
   return (
-    <Card className="h-full bg-white rounded-xl border border-gray-100 shadow hover:shadow-md transition-all duration-300 hover:-translate-y-1">
+    <Card className="h-full dark-theme-card rounded-xl border border-zinc-700 shadow hover:shadow-md transition-all duration-300 hover:-translate-y-1">
       <CardContent className="p-6">
         <div className="flex items-center mb-3">
-          <div className="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center mr-3">
-            <Icon className="h-5 w-5 text-blue-500" />
+          <div className="w-10 h-10 rounded-full bg-gradient-to-r from-[#7B3FE4]/20 to-[#3FA4E4]/20 flex items-center justify-center mr-3">
+            <Icon className="h-5 w-5 text-[#7B3FE4]" />
           </div>
-          <h3 
-            className="font-medium text-lg"
-            style={{ color: 'var(--navy)' }}
-          >
+          <h3 className="font-medium text-lg text-white">
             {title}
           </h3>
         </div>
-        <p style={{ color: 'var(--dark-grey)' }} className="text-sm leading-relaxed">
+        <p className="text-sm leading-relaxed text-gray-300">
           {description}
         </p>
       </CardContent>
@@ -219,18 +216,15 @@ const ServicesSection = () => {
   return (
     <section 
       id="services" 
-      className="py-16 md:py-24 relative" 
-      style={{ backgroundColor: 'var(--light-grey)' }}
+      className="py-16 md:py-24 relative bg-black"
     >
       <div className="container mx-auto px-6 md:px-8 relative z-10">
         <div className="mx-auto">
           <div className="text-center max-w-3xl mx-auto mb-16">
-            <div className="inline-block mb-4 px-4 py-1 rounded-full bg-orange-100 text-orange-600 text-sm font-medium">
+            <div className="inline-block mb-4 px-4 py-1 rounded-full bg-gradient-to-r from-[#7B3FE4]/20 to-[#3FA4E4]/20 text-purple-300 text-sm font-medium border border-purple-400/30">
               <span className="mr-1">✦</span> Designed for Modern Businesses <span className="ml-1">✦</span>
             </div>
-            <h2 
-              className="font-bold text-3xl md:text-4xl mb-4"
-              style={{ color: 'var(--navy)' }}
+            <h2 className="font-bold text-3xl md:text-4xl mb-4 text-white"
             >
               Our Premium Services
             </h2>

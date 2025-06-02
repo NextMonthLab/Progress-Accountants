@@ -65,23 +65,22 @@ const HeroSection = () => {
 
   return (
     <section 
-      style={{ backgroundColor: 'var(--navy)' }} 
-      className="text-white min-h-[90vh] relative flex items-center py-16 overflow-hidden"
+      className="bg-black text-white min-h-[90vh] relative flex items-center py-16 overflow-hidden"
     >
-      {/* Clean gradient background */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#031c40] to-[#010c1d] z-0"></div>
+      {/* Progress gradient background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-800 z-0"></div>
       
       <div className="container mx-auto px-6 md:px-8 z-10 relative">
         <div className="flex flex-col md:flex-row items-center gap-8 lg:gap-16">
           {/* Left content - Text content */}
           <div className="md:w-1/2 md:pr-8 text-center md:text-left">
-            <span className="text-orange-300 text-sm font-medium tracking-wide inline-block mb-4">
+            <span className="text-purple-300 text-sm font-medium tracking-wide inline-block mb-4">
               Premium Financial Advisory
             </span>
             
             <h1 className="font-bold text-4xl md:text-5xl lg:text-6xl mb-6 leading-tight">
               <span className="text-white">{businessName}</span>
-              <span className="block mt-3 text-orange-500">
+              <span className="block mt-3 gradient-text">
                 {tagline}
               </span>
             </h1>
@@ -95,7 +94,7 @@ const HeroSection = () => {
                 <ul className="list-none space-y-3 max-w-lg">
                   {usps.slice(0, 3).map((usp, index) => (
                     <li key={index} className="flex items-start">
-                      <span className="flex items-center justify-center bg-orange-500 w-6 h-6 rounded-full mr-3 shrink-0">
+                      <span className="flex items-center justify-center bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] w-6 h-6 rounded-full mr-3 shrink-0">
                         <span className="text-white text-xs">✓</span>
                       </span> 
                       <span className="text-gray-200">{usp}</span>
@@ -109,7 +108,7 @@ const HeroSection = () => {
               <a href="#book-call">
                 <Button 
                   size="lg" 
-                  className="px-6 py-3 rounded-full bg-orange-500 hover:bg-orange-600 text-white"
+                  className="px-6 py-3 rounded-full gradient-bg hover:shadow-lg text-white progress-button"
                 >
                   <span className="font-medium flex items-center">
                     Book Your Free Strategy Consultation
@@ -120,11 +119,11 @@ const HeroSection = () => {
               
               <Button 
                 variant="ghost" 
-                className="px-6 py-3 rounded-full text-white border border-white/20 hover:bg-white/10"
+                className="px-6 py-3 rounded-full text-white border border-purple-400/30 hover:bg-purple-500/20"
                 onClick={scrollToContent}
               >
                 <span>Explore Our Services</span>
-                <span className="ml-2 text-orange-300">→</span>
+                <span className="ml-2 text-purple-300">→</span>
               </Button>
             </div>
           </div>
