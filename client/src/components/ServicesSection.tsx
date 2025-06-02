@@ -258,10 +258,7 @@ const ServicesSection = () => {
           {standardServices.length > 0 && (
             <>
               <div className="text-center max-w-3xl mx-auto mb-10 mt-16">
-                <h2 
-                  className="font-bold text-2xl md:text-3xl mb-4"
-                  style={{ color: 'var(--navy)' }}
-                >
+                <h2 className="font-bold text-2xl md:text-3xl mb-4 gradient-text">
                   Standard Services
                 </h2>
                 <p 
