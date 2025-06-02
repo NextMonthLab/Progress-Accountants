@@ -56,8 +56,8 @@
 
 /* Book a Call button specific style - Progress brand colors */
 .book-call-btn {
-  background: linear-gradient(135deg, #7B3FE4 0%, #3FA4E4 100%);
-  color: var(--public-white);
+  background: linear-gradient(135deg, #7B3FE4 0%, #3FA4E4 100%) !important;
+  color: var(--public-white) !important;
   padding: 0.5rem 1rem;
   border-radius: 0.5rem;
   font-size: 0.875rem;
@@ -75,7 +75,7 @@
 }
 
 .book-call-btn:hover {
-  background: linear-gradient(135deg, #6B2FD4 0%, #2F94D4 100%);
+  background: linear-gradient(135deg, #6B2FD4 0%, #2F94D4 100%) !important;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
