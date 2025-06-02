@@ -88,8 +88,37 @@
 /* Critical fix: Prevent oval shapes in admin areas */
 body:has([data-admin]) .rounded-full,
 [data-admin] .rounded-full,
+.admin-layout .rounded-full,
+body:has([data-admin]) *[class*="rounded-full"],
+[data-admin] *[class*="rounded-full"],
+.admin-layout *[class*="rounded-full"] {
+  border-radius: 0.75rem !important;
+}
+
+/* Force all admin elements to use consistent border radius */
+[data-admin] *,
+.admin-layout * {
+  border-radius: 0.75rem !important;
+}
+
+/* Override any Tailwind rounded classes in admin */
+[data-admin] .rounded,
+[data-admin] .rounded-sm,
+[data-admin] .rounded-md,
+[data-admin] .rounded-lg,
+[data-admin] .rounded-xl,
+[data-admin] .rounded-2xl,
+[data-admin] .rounded-3xl,
+[data-admin] .rounded-full,
+.admin-layout .rounded,
+.admin-layout .rounded-sm,
+.admin-layout .rounded-md,
+.admin-layout .rounded-lg,
+.admin-layout .rounded-xl,
+.admin-layout .rounded-2xl,
+.admin-layout .rounded-3xl,
 .admin-layout .rounded-full {
-  border-radius: 0.5rem !important;
+  border-radius: 0.75rem !important;
 }
 
 @layer base {
