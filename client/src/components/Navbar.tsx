@@ -151,17 +151,17 @@ export default function Navbar() {
   const renderDesktopDropdown = (group: MenuGroup) => {
     return (
       <DropdownMenu key={group.label}>
-        <DropdownMenuTrigger className="font-medium text-[#1c3668] hover:text-[#f15a29] transition duration-300 outline-none flex items-center">
+        <DropdownMenuTrigger className="font-medium text-white hover:text-[#7B3FE4] transition duration-300 outline-none flex items-center">
           {group.label} <ChevronDown className="h-4 w-4 ml-1 opacity-70" />
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="min-w-[200px]">
-          <DropdownMenuLabel className="text-[#1c3668]">{group.label}</DropdownMenuLabel>
-          <DropdownMenuSeparator />
+        <DropdownMenuContent className="min-w-[200px] bg-zinc-900 border-zinc-700">
+          <DropdownMenuLabel className="text-white">{group.label}</DropdownMenuLabel>
+          <DropdownMenuSeparator className="bg-zinc-700" />
           {group.items.map((item) => (
             <DropdownMenuItem key={item.label} asChild>
               <Link
                 href={item.href}
-                className={`flex items-center py-2 px-2 ${isActive(item.href) ? 'text-[#f15a29]' : 'text-[#1c3668] hover:text-[#f15a29]'} transition duration-300 no-underline w-full`}
+                className={`flex items-center py-2 px-2 ${isActive(item.href) ? 'text-[#7B3FE4]' : 'text-gray-300 hover:text-[#7B3FE4]'} transition duration-300 no-underline w-full`}
               >
                 {item.icon}
                 {item.label}
@@ -177,12 +177,12 @@ export default function Navbar() {
   const renderMobileMenuGroup = (group: MenuGroup) => {
     return (
       <div key={group.label} className="py-2">
-        <h4 className="text-sm uppercase tracking-wider text-gray-500 mb-2 px-2">{group.label}</h4>
+        <h4 className="text-sm uppercase tracking-wider text-gray-400 mb-2 px-2">{group.label}</h4>
         {group.items.map((item) => (
           <Link
             key={item.label}
             href={item.href}
-            className={`flex items-center py-2 px-2 font-medium ${isActive(item.href) ? 'text-[#f15a29]' : 'text-[#1c3668] hover:text-[#f15a29]'} transition duration-300 no-underline`}
+            className={`flex items-center py-2 px-2 font-medium ${isActive(item.href) ? 'text-[#7B3FE4]' : 'text-gray-300 hover:text-[#7B3FE4]'} transition duration-300 no-underline`}
             onClick={closeMenu}
           >
             {item.icon}
@@ -203,7 +203,7 @@ export default function Navbar() {
   };
   
   return (
-    <header className="bg-white sticky top-0 z-50 shadow-sm">
+    <header className="bg-black/95 backdrop-blur-sm border-b border-gray-800 sticky top-0 z-50">
       <nav className="container mx-auto px-6 md:px-8 py-4 flex justify-between items-center">
         <div className="flex items-center">
           <NavbarLogo />
@@ -219,7 +219,7 @@ export default function Navbar() {
               {clientRegistrationEnabled && tenant?.id && (
                 <Button 
                   variant="outline"
-                  className="border-[#1c3668] text-[#1c3668] hover:bg-[#f15a29] hover:text-white hover:border-[#f15a29]"
+                  className="border-purple-400/30 text-purple-300 hover:bg-[#7B3FE4] hover:text-white hover:border-[#7B3FE4]"
                   asChild
                 >
                   <Link 
@@ -233,7 +233,7 @@ export default function Navbar() {
               )}
               <Button 
                 variant="default"
-                className="text-white hover:shadow-md transition-all"
+                className="gradient-bg text-white hover:shadow-md transition-all progress-button"
                 asChild
               >
                 <Link 
@@ -277,16 +277,16 @@ export default function Navbar() {
           aria-label="Toggle mobile menu"
         >
           {isMenuOpen ? (
-            <X style={{ color: '#1c3668' }} className="h-6 w-6" />
+            <X className="h-6 w-6 text-white" />
           ) : (
-            <Menu style={{ color: '#1c3668' }} className="h-6 w-6" />
+            <Menu className="h-6 w-6 text-white" />
           )}
         </button>
       </nav>
       
       {/* Mobile Menu - Public-facing only */}
       <div 
-        className={`md:hidden bg-white w-full absolute z-20 shadow-md overflow-y-auto max-h-[80vh] ${isMenuOpen ? '' : 'hidden'}`}
+        className={`md:hidden bg-zinc-900 w-full absolute z-20 shadow-md border-t border-zinc-700 overflow-y-auto max-h-[80vh] ${isMenuOpen ? '' : 'hidden'}`}
       >
         <div className="container mx-auto px-6 md:px-8 py-3 flex flex-col divide-y">
           {publicMenuGroups.map(renderMobileMenuGroup)}
@@ -294,12 +294,12 @@ export default function Navbar() {
           {/* Login section for non-authenticated users */}
           {!user && (
             <div className="py-2">
-              <h4 className="text-sm uppercase tracking-wider text-gray-500 mb-2 px-2">Access</h4>
+              <h4 className="text-sm uppercase tracking-wider text-gray-400 mb-2 px-2">Access</h4>
               
               {clientRegistrationEnabled && tenant?.id && (
                 <Button 
                   variant="outline"
-                  className="w-full mb-2 border-[#1c3668] text-[#1c3668] hover:bg-[#1c3668] hover:text-white hover:border-[#1c3668]"
+                  className="w-full mb-2 border-purple-400/30 text-purple-300 hover:bg-[#7B3FE4] hover:text-white hover:border-[#7B3FE4]"
                   onClick={closeMenu}
                   asChild
                 >
@@ -315,7 +315,7 @@ export default function Navbar() {
               
               <Button 
                 variant="default"
-                className="w-full bg-[#f15a29] text-white hover:bg-[#f15a29]/90"
+                className="w-full gradient-bg text-white hover:shadow-md progress-button"
                 onClick={closeMenu}
                 asChild
               >
@@ -332,10 +332,10 @@ export default function Navbar() {
           {/* Admin link if staff */}
           {isStaff && (
             <div className="py-2">
-              <h4 className="text-sm uppercase tracking-wider text-gray-500 mb-2 px-2">Admin</h4>
+              <h4 className="text-sm uppercase tracking-wider text-gray-400 mb-2 px-2">Admin</h4>
               <Button 
                 variant="default"
-                className="w-full bg-[#1c3668] text-white hover:bg-[#132549] transition-colors font-medium shadow-sm"
+                className="w-full gradient-bg text-white hover:shadow-md transition-colors font-medium progress-button"
                 onClick={closeMenu}
                 asChild
               >

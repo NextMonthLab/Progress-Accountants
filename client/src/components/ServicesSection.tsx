@@ -228,7 +228,7 @@ const ServicesSection = () => {
             >
               Our Premium Services
             </h2>
-            <p style={{ color: 'var(--dark-grey)' }} className="text-lg leading-relaxed">
+            <p className="text-lg leading-relaxed text-gray-300">
               {typedBusinessIdentity.core?.businessName || "Progress Accountants"} is different. We're not just your accountant — we're your growth partner.
             </p>
           </div>
