@@ -277,9 +277,9 @@ export default function Navbar() {
           aria-label="Toggle mobile menu"
         >
           {isMenuOpen ? (
-            <X className="h-6 w-6 text-white" />
+            <X className="h-6 w-6 text-gray-800" />
           ) : (
-            <Menu className="h-6 w-6 text-white" />
+            <Menu className="h-6 w-6 text-gray-800" />
           )}
         </button>
       </nav>
