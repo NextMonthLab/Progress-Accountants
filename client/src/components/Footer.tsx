@@ -57,7 +57,7 @@ export default function Footer() {
                 </a>
               </li>
               <li>
-                <Link href="/studio-banbury" className="text-[var(--orange)] font-medium hover:underline transition">
+                <Link href="/studio-banbury" className="text-[#7B3FE4] font-medium hover:underline transition">
                   🎙️ Podcast & Video Studio
                 </Link>
               </li>
