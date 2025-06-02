@@ -65,27 +65,27 @@ const HeroSection = () => {
 
   return (
     <section 
-      className="bg-black text-white min-h-[90vh] relative flex items-center py-16 overflow-hidden"
+      className="bg-white text-gray-900 min-h-[90vh] relative flex items-center py-16 overflow-hidden"
     >
-      {/* Progress gradient background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-800 z-0"></div>
+      {/* Light gradient background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-gray-50 via-purple-50 to-gray-100 z-0"></div>
       
       <div className="container mx-auto px-12 md:px-16 z-10 relative">
         <div className="flex flex-col md:flex-row items-center gap-8 lg:gap-16">
           {/* Left content - Text content */}
           <div className="md:w-1/2 md:pr-8 text-center md:text-left">
-            <span className="text-purple-300 text-sm font-medium tracking-wide inline-block mb-4">
+            <span className="text-purple-600 text-sm font-medium tracking-wide inline-block mb-4">
               Premium Financial Advisory
             </span>
             
             <h1 className="font-bold text-4xl md:text-5xl lg:text-6xl mb-6 leading-tight">
-              <span className="text-white">{businessName}</span>
-              <span className="block mt-3 gradient-text">
+              <span className="text-gray-900">{businessName}</span>
+              <span className="block mt-3 text-purple-600">
                 {tagline}
               </span>
             </h1>
             
-            <p className="text-lg md:text-xl mb-8 text-gray-200 max-w-xl leading-relaxed">
+            <p className="text-lg md:text-xl mb-8 text-gray-700 max-w-xl leading-relaxed">
               Unlock your business potential with tailored financial strategies that drive growth and optimize tax efficiency.
             </p>
             
@@ -97,7 +97,7 @@ const HeroSection = () => {
                       <span className="flex items-center justify-center bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] w-6 h-6 rounded-full mr-3 shrink-0">
                         <span className="text-white text-xs">✓</span>
                       </span> 
-                      <span className="text-gray-200">{usp}</span>
+                      <span className="text-gray-700">{usp}</span>
                     </li>
                   ))}
                 </ul>
@@ -119,11 +119,11 @@ const HeroSection = () => {
               
               <Button 
                 variant="ghost" 
-                className="px-6 py-3 rounded-full text-white border border-purple-400/30 hover:bg-purple-500/20"
+                className="px-6 py-3 rounded-full text-gray-700 border border-purple-300 hover:bg-purple-50"
                 onClick={scrollToContent}
               >
                 <span>Explore Our Services</span>
-                <span className="ml-2 text-purple-300">→</span>
+                <span className="ml-2 text-purple-600">→</span>
               </Button>
             </div>
           </div>

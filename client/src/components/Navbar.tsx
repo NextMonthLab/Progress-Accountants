@@ -151,17 +151,17 @@ export default function Navbar() {
   const renderDesktopDropdown = (group: MenuGroup) => {
     return (
       <DropdownMenu key={group.label}>
-        <DropdownMenuTrigger className="font-medium text-white hover:text-[#7B3FE4] transition duration-300 outline-none flex items-center">
+        <DropdownMenuTrigger className="font-medium text-gray-800 hover:text-[#7B3FE4] transition duration-300 outline-none flex items-center">
           {group.label} <ChevronDown className="h-4 w-4 ml-1 opacity-70" />
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="min-w-[200px] bg-zinc-900 border-zinc-700">
-          <DropdownMenuLabel className="text-white">{group.label}</DropdownMenuLabel>
-          <DropdownMenuSeparator className="bg-zinc-700" />
+        <DropdownMenuContent className="min-w-[200px] bg-white border-gray-200">
+          <DropdownMenuLabel className="text-gray-800">{group.label}</DropdownMenuLabel>
+          <DropdownMenuSeparator className="bg-gray-200" />
           {group.items.map((item) => (
             <DropdownMenuItem key={item.label} asChild>
               <Link
                 href={item.href}
-                className={`flex items-center py-2 px-2 ${isActive(item.href) ? 'text-[#7B3FE4]' : 'text-gray-300 hover:text-[#7B3FE4]'} transition duration-300 no-underline w-full`}
+                className={`flex items-center py-2 px-2 ${isActive(item.href) ? 'text-[#7B3FE4]' : 'text-gray-700 hover:text-[#7B3FE4]'} transition duration-300 no-underline w-full`}
               >
                 {item.icon}
                 {item.label}
@@ -177,12 +177,12 @@ export default function Navbar() {
   const renderMobileMenuGroup = (group: MenuGroup) => {
     return (
       <div key={group.label} className="py-2">
-        <h4 className="text-sm uppercase tracking-wider text-gray-400 mb-2 px-2">{group.label}</h4>
+        <h4 className="text-sm uppercase tracking-wider text-gray-500 mb-2 px-2">{group.label}</h4>
         {group.items.map((item) => (
           <Link
             key={item.label}
             href={item.href}
-            className={`flex items-center py-2 px-2 font-medium ${isActive(item.href) ? 'text-[#7B3FE4]' : 'text-gray-300 hover:text-[#7B3FE4]'} transition duration-300 no-underline`}
+            className={`flex items-center py-2 px-2 font-medium ${isActive(item.href) ? 'text-[#7B3FE4]' : 'text-gray-700 hover:text-[#7B3FE4]'} transition duration-300 no-underline`}
             onClick={closeMenu}
           >
             {item.icon}
@@ -203,7 +203,7 @@ export default function Navbar() {
   };
   
   return (
-    <header className="bg-black/95 backdrop-blur-sm border-b border-gray-800 sticky top-0 z-50">
+    <header className="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
       <nav className="container mx-auto px-12 md:px-16 py-4 flex justify-between items-center">
         <div className="flex items-center">
           <NavbarLogo />
@@ -286,7 +286,7 @@ export default function Navbar() {
       
       {/* Mobile Menu - Public-facing only */}
       <div 
-        className={`md:hidden bg-zinc-900 w-full absolute z-20 shadow-md border-t border-zinc-700 overflow-y-auto max-h-[80vh] ${isMenuOpen ? '' : 'hidden'}`}
+        className={`md:hidden bg-white w-full absolute z-20 shadow-md border-t border-gray-200 overflow-y-auto max-h-[80vh] ${isMenuOpen ? '' : 'hidden'}`}
       >
         <div className="container mx-auto px-12 md:px-16 py-3 flex flex-col divide-y">
           {publicMenuGroups.map(renderMobileMenuGroup)}
