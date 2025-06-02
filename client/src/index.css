@@ -91,8 +91,13 @@
   }
 
   body {
-    @apply font-sans antialiased bg-background text-foreground;
+    @apply font-sans antialiased;
     font-family: 'Inter', sans-serif;
+  }
+
+  /* Only apply Progress branding to public pages */
+  body.public-page {
+    @apply bg-background text-foreground;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -101,7 +106,8 @@
 }
 
 @layer components {
-  .container {
+  /* Only apply container padding to public pages */
+  .public-page .container {
     @apply px-8;
   }
 
