@@ -204,12 +204,12 @@ export default function HomePage() {
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-10">
               <ScaleIn delay={0.1}>
-                <h2 className="text-3xl font-bold mb-3" style={{ color: 'var(--navy)' }}>
+                <h2 className="text-3xl font-bold mb-3 text-white">
                   Looking for a proactive accountant in United Kingdom?
                 </h2>
               </ScaleIn>
               <SlideUp delay={0.3}>
-                <p className="text-gray-600 max-w-3xl mx-auto">
+                <p className="text-zinc-300 max-w-3xl mx-auto">
                   We're based in Oxford, Banbury, and London, and proudly serve ambitious businesses across the United Kingdom and beyond.
                   Ready to take your accounting to the next level? Let's talk about how we can help your business flourish.
                 </p>
@@ -218,17 +218,17 @@ export default function HomePage() {
             
             {/* Contact Form Section */}
             <div className="mb-14">
-              <div className="bg-white p-8 rounded-lg shadow-md">
-                <div className="flex items-center justify-between mb-6 border-b border-gray-100 pb-6">
-                  <h3 className="text-xl font-semibold text-[var(--navy)]">Get in Touch</h3>
+              <div className="bg-gradient-to-br from-slate-900 to-slate-800 p-8 rounded-lg shadow-xl border border-slate-700">
+                <div className="flex items-center justify-between mb-6 border-b border-slate-700 pb-6">
+                  <h3 className="text-xl font-semibold text-white">Get in Touch</h3>
                   
                   <div className="flex space-x-4">
-                    <a href="mailto:info@progressaccountants.com" className="text-gray-500 hover:text-[var(--orange)] transition-colors">
+                    <a href="mailto:info@progressaccountants.com" className="text-slate-400 hover:text-[#7B3FE4] transition-colors">
                       <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                       </svg>
                     </a>
-                    <a href="tel:01865921150" className="text-gray-500 hover:text-[var(--orange)] transition-colors">
+                    <a href="tel:01865921150" className="text-slate-400 hover:text-[#7B3FE4] transition-colors">
                       <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                       </svg>
@@ -238,16 +238,16 @@ export default function HomePage() {
                 
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                   <div className="lg:col-span-1">
-                    <div className="bg-gray-50 p-5 rounded-lg border border-gray-100 h-full">
+                    <div className="bg-slate-800/50 p-5 rounded-lg border border-slate-600 h-full">
                       <div className="flex items-start mb-6">
-                        <div className="h-8 w-8 rounded-full bg-orange-100 flex items-center justify-center mr-3 mt-1 flex-shrink-0">
-                          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-[var(--orange)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <div className="h-8 w-8 rounded-full bg-gradient-to-r from-[#7B3FE4]/20 to-[#3FA4E4]/20 flex items-center justify-center mr-3 mt-1 flex-shrink-0">
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-[#7B3FE4]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                           </svg>
                         </div>
                         <div>
-                          <h3 className="text-sm font-semibold text-[var(--navy)] mb-2">Business Hours</h3>
-                          <div className="space-y-1.5 text-gray-600">
+                          <h3 className="text-sm font-semibold text-white mb-2">Business Hours</h3>
+                          <div className="space-y-1.5 text-slate-300">
                             <p className="flex justify-between">
                               <span>Monday - Friday:</span>
                               <span className="font-medium">9:00 AM - 5:30 PM</span>
@@ -261,23 +261,23 @@ export default function HomePage() {
                       </div>
                       
                       <div className="flex items-start">
-                        <div className="h-8 w-8 rounded-full bg-orange-100 flex items-center justify-center mr-3 mt-1 flex-shrink-0">
-                          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-[var(--orange)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <div className="h-8 w-8 rounded-full bg-gradient-to-r from-[#7B3FE4]/20 to-[#3FA4E4]/20 flex items-center justify-center mr-3 mt-1 flex-shrink-0">
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-[#7B3FE4]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                           </svg>
                         </div>
                         <div>
-                          <h3 className="text-sm font-semibold text-[var(--navy)] mb-2">Contact Details</h3>
-                          <div className="space-y-1.5 text-gray-600">
+                          <h3 className="text-sm font-semibold text-white mb-2">Contact Details</h3>
+                          <div className="space-y-1.5 text-slate-300">
                             <p className="flex items-center">
                               <span className="font-medium mr-2">Email:</span>
-                              <a href="mailto:info@progressaccountants.com" className="text-[var(--navy)] hover:text-[var(--orange)] transition-colors">
+                              <a href="mailto:info@progressaccountants.com" className="text-[#3FA4E4] hover:text-[#7B3FE4] transition-colors">
                                 info@progressaccountants.com
                               </a>
                             </p>
                             <p>
                               <span className="font-medium mr-2">General Enquiries:</span>
-                              <a href="tel:01865921150" className="text-[var(--navy)] hover:text-[var(--orange)] transition-colors">
+                              <a href="tel:01865921150" className="text-[#3FA4E4] hover:text-[#7B3FE4] transition-colors">
                                 01865 921 150
                               </a>
                             </p>
@@ -297,18 +297,18 @@ export default function HomePage() {
             {/* Office Locations Section */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
               {/* Oxford Office */}
-              <div className="bg-white p-6 rounded-lg shadow-md">
+              <div className="bg-gradient-to-br from-slate-900 to-slate-800 p-6 rounded-lg shadow-xl border border-slate-700">
                 <div className="mb-4">
-                  <h3 className="text-lg font-semibold text-[var(--navy)] mb-3">Oxford Office</h3>
-                  <div className="space-y-2 text-gray-600 mb-4">
+                  <h3 className="text-lg font-semibold text-white mb-3">Oxford Office</h3>
+                  <div className="space-y-2 text-slate-300 mb-4">
                     <p className="flex items-start">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-[var(--orange)] mr-2 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-[#7B3FE4] mr-2 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                       </svg>
                       <span>John Eccles House, Oxford Science Park, OX4 4GP</span>
                     </p>
                     <p className="flex items-start">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-[var(--orange)] mr-2 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-[#7B3FE4] mr-2 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                       </svg>
                       <span>01865 921 150</span>
