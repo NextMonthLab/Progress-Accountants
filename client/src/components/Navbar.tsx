@@ -19,54 +19,17 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import progressLogoPath from "@assets/Light Logo.png";
 
 // NavbarLogo component for displaying site branding
 function NavbarLogo() {
-  const [siteBranding, setSiteBranding] = useState<SiteBranding>(defaultSiteBranding);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const loadBranding = async () => {
-      setIsLoading(true);
-      try {
-        const brandingData = await getSiteBranding();
-        if (brandingData) {
-          setSiteBranding(brandingData);
-        }
-      } catch (error) {
-        console.error("Error loading site branding for logo:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    loadBranding();
-  }, []);
-
-  // Display image logo if available, otherwise use text logo
-  if (siteBranding.logo.imageUrl) {
-    return (
-      <Link href="/" className="no-underline flex items-center">
-        <img 
-          src={siteBranding.logo.imageUrl} 
-          alt={siteBranding.logo.altText} 
-          className="max-h-10 object-contain"
-        />
-      </Link>
-    );
-  }
-
-  // Default text logo
   return (
-    <Link href="/" className="font-poppins font-bold text-2xl no-underline" style={{ color: 'var(--navy)' }}>
-      {siteBranding.logo.text.includes(" ") 
-        ? siteBranding.logo.text.split(" ").map((word, index, arr) => (
-            <span key={index} style={{ color: index === arr.length - 1 ? 'var(--orange)' : 'var(--navy)' }}>
-              {word}{index < arr.length - 1 ? " " : ""}
-            </span>
-          ))
-        : siteBranding.logo.text
-      }
+    <Link href="/" className="no-underline flex items-center">
+      <img 
+        src={progressLogoPath} 
+        alt="Progress Accountants | Advisors | Growth Partners" 
+        className="h-10 object-contain"
+      />
     </Link>
   );
 }
