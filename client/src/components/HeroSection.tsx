@@ -67,8 +67,8 @@ const HeroSection = () => {
     <section 
       className="bg-black text-white min-h-[90vh] relative flex items-center py-16 overflow-hidden"
     >
-      {/* Dark gradient background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-800 z-0"></div>
+      {/* Darker gradient background for better text contrast */}
+      <div className="absolute inset-0 bg-gradient-to-br from-slate-950 via-gray-900 to-black z-0"></div>
       
       <div className="container mx-auto px-12 md:px-16 z-10 relative">
         <div className="flex flex-col md:flex-row items-center gap-8 lg:gap-16">
