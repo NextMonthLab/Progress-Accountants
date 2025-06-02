@@ -226,8 +226,15 @@ export default function Navbar() {
             </Button>
           )}
           
-          {/* Decoupled "Book a Call" button using public-specific CSS classes */}
-          <a href="#book-call" className="book-call-btn">
+          {/* Decoupled "Book a Call" button using Progress brand colors */}
+          <a 
+            href="#book-call" 
+            className="book-call-btn"
+            style={{
+              background: 'linear-gradient(135deg, #7B3FE4 0%, #3FA4E4 100%)',
+              color: 'white'
+            }}
+          >
             <PhoneCall className="h-4 w-4" />
             <span>Book a Call</span>
           </a>
