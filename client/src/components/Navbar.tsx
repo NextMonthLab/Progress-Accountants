@@ -204,7 +204,7 @@ export default function Navbar() {
   
   return (
     <header className="bg-black/95 backdrop-blur-sm border-b border-gray-800 sticky top-0 z-50">
-      <nav className="container mx-auto px-6 md:px-8 py-4 flex justify-between items-center">
+      <nav className="container mx-auto px-12 md:px-16 py-4 flex justify-between items-center">
         <div className="flex items-center">
           <NavbarLogo />
         </div>
@@ -288,7 +288,7 @@ export default function Navbar() {
       <div 
         className={`md:hidden bg-zinc-900 w-full absolute z-20 shadow-md border-t border-zinc-700 overflow-y-auto max-h-[80vh] ${isMenuOpen ? '' : 'hidden'}`}
       >
-        <div className="container mx-auto px-6 md:px-8 py-3 flex flex-col divide-y">
+        <div className="container mx-auto px-12 md:px-16 py-3 flex flex-col divide-y">
           {publicMenuGroups.map(renderMobileMenuGroup)}
           
           {/* Login section for non-authenticated users */}

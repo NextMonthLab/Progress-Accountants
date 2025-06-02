@@ -218,7 +218,7 @@ const ServicesSection = () => {
       id="services" 
       className="py-16 md:py-24 relative bg-black"
     >
-      <div className="container mx-auto px-6 md:px-8 relative z-10">
+      <div className="container mx-auto px-12 md:px-16 relative z-10">
         <div className="mx-auto">
           <div className="text-center max-w-3xl mx-auto mb-16">
             <div className="inline-block mb-4 px-4 py-1 rounded-full bg-gradient-to-r from-[#7B3FE4]/20 to-[#3FA4E4]/20 text-purple-300 text-sm font-medium border border-purple-400/30">

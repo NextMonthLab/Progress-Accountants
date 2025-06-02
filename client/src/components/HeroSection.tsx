@@ -70,7 +70,7 @@ const HeroSection = () => {
       {/* Progress gradient background */}
       <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-800 z-0"></div>
       
-      <div className="container mx-auto px-6 md:px-8 z-10 relative">
+      <div className="container mx-auto px-12 md:px-16 z-10 relative">
         <div className="flex flex-col md:flex-row items-center gap-8 lg:gap-16">
           {/* Left content - Text content */}
           <div className="md:w-1/2 md:pr-8 text-center md:text-left">
