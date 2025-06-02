@@ -178,10 +178,7 @@ const IndustriesSection = () => {
           <span className="inline-block mb-3 px-4 py-1 rounded-full bg-blue-100 text-blue-600 text-sm font-medium">
             Industry Expertise
           </span>
-          <h2 
-            className="font-bold text-3xl md:text-4xl mb-4"
-            style={{ color: 'var(--navy)' }}
-          >
+          <h2 className="font-bold text-3xl md:text-4xl mb-4 bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] bg-clip-text text-transparent">
             Specialists in complex industries
           </h2>
           <p style={{ color: 'var(--dark-grey)' }} className="text-lg">
