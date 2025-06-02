@@ -3,7 +3,7 @@ import { Facebook, Linkedin, Twitter } from "lucide-react";
 
 export default function Footer() {
   return (
-    <footer style={{ backgroundColor: 'var(--navy)' }} className="text-white py-12">
+    <footer className="bg-black text-white py-12">
       <div className="container mx-auto px-6 md:px-8">
         <div className="grid md:grid-cols-4 gap-8">
           <div>
