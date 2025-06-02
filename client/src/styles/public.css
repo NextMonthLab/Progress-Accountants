@@ -54,9 +54,9 @@
   color: var(--public-white);
 }
 
-/* Book a Call button specific style - matching Admin Dashboard */
+/* Book a Call button specific style - Progress brand colors */
 .book-call-btn {
-  background-color: var(--public-navy);
+  background: linear-gradient(135deg, #7B3FE4 0%, #3FA4E4 100%);
   color: var(--public-white);
   padding: 0.5rem 1rem;
   border-radius: 0.5rem;
@@ -75,7 +75,7 @@
 }
 
 .book-call-btn:hover {
-  background-color: var(--public-navy-dark);
+  background: linear-gradient(135deg, #6B2FD4 0%, #2F94D4 100%);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
