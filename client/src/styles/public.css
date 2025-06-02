@@ -54,6 +54,22 @@
   color: var(--public-white);
 }
 
+/* Progress button override with absolute specificity */
+.progress-button-override {
+  background: linear-gradient(135deg, #7B3FE4 0%, #3FA4E4 100%) !important;
+  background-color: #7B3FE4 !important;
+  color: white !important;
+  transition: all 0.2s ease !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) !important;
+}
+
+.progress-button-override:hover {
+  background: linear-gradient(135deg, #6B2FD4 0%, #2F94D4 100%) !important;
+  background-color: #6B2FD4 !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+  color: white !important;
+}
+
 /* Book a Call button specific style - Progress brand colors with maximum specificity */
 a.book-call-btn,
 .book-call-btn {

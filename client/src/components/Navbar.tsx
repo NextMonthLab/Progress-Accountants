@@ -229,10 +229,24 @@ export default function Navbar() {
           {/* Decoupled "Book a Call" button using Progress brand colors */}
           <a 
             href="#book-call" 
-            className="book-call-btn"
+            className="progress-button-override"
             style={{
               background: 'linear-gradient(135deg, #7B3FE4 0%, #3FA4E4 100%)',
-              color: 'white'
+              backgroundColor: '#7B3FE4',
+              color: 'white',
+              padding: '0.5rem 1rem',
+              borderRadius: '0.5rem',
+              fontSize: '0.875rem',
+              fontWeight: '500',
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '0.5rem',
+              textDecoration: 'none',
+              height: '40px',
+              lineHeight: '1',
+              whiteSpace: 'nowrap',
+              border: 'none'
             }}
           >
             <PhoneCall className="h-4 w-4" />
