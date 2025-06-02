@@ -175,7 +175,7 @@ const IndustriesSection = () => {
     >
       <div className="container mx-auto px-6 md:px-8">
         <div className={`text-center max-w-3xl mx-auto mb-12 transition-opacity duration-500 ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
-          <span className="inline-block mb-3 px-4 py-1 rounded-full bg-blue-100 text-blue-600 text-sm font-medium">
+          <span className="inline-block mb-3 px-4 py-1 rounded-full bg-purple-900/20 text-purple-300 text-sm font-medium border border-purple-500/20">
             Industry Expertise
           </span>
           <h2 className="font-bold text-3xl md:text-4xl mb-4 bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] bg-clip-text text-transparent">
