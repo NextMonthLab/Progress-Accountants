@@ -83,7 +83,7 @@ export default function ContactForm({ compact = false, className = "" }: Contact
     return (
       <div className={`rounded-lg border border-gray-200 shadow-sm bg-white ${className}`}>
         <div className="p-4 md:p-6">
-          <h2 className="text-xl font-bold mb-4" style={{ color: 'var(--navy)' }}>Get in Touch</h2>
+          <h2 className="text-xl font-bold mb-4 gradient-text">Get in Touch</h2>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -92,7 +92,7 @@ export default function ContactForm({ compact = false, className = "" }: Contact
                   name="name"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-sm" style={{ color: 'var(--navy)' }}>Name*</FormLabel>
+                      <FormLabel className="text-sm text-purple-600">Name*</FormLabel>
                       <FormControl>
                         <Input size={3} placeholder="Your name" {...field} className="h-9" />
                       </FormControl>
@@ -106,7 +106,7 @@ export default function ContactForm({ compact = false, className = "" }: Contact
                   name="email"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-sm" style={{ color: 'var(--navy)' }}>Email*</FormLabel>
+                      <FormLabel className="text-sm text-purple-600">Email*</FormLabel>
                       <FormControl>
                         <Input placeholder="Your email" {...field} className="h-9" />
                       </FormControl>
@@ -122,7 +122,7 @@ export default function ContactForm({ compact = false, className = "" }: Contact
                   name="phone"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-sm" style={{ color: 'var(--navy)' }}>Phone</FormLabel>
+                      <FormLabel className="text-sm text-purple-600">Phone</FormLabel>
                       <FormControl>
                         <Input placeholder="Your phone" {...field} className="h-9" />
                       </FormControl>
@@ -136,7 +136,7 @@ export default function ContactForm({ compact = false, className = "" }: Contact
                   name="business"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-sm" style={{ color: 'var(--navy)' }}>Business</FormLabel>
+                      <FormLabel className="text-sm text-purple-600">Business</FormLabel>
                       <FormControl>
                         <Input placeholder="Your business" {...field} className="h-9" />
                       </FormControl>
@@ -151,7 +151,7 @@ export default function ContactForm({ compact = false, className = "" }: Contact
                 name="message"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-sm" style={{ color: 'var(--navy)' }}>Message*</FormLabel>
+                    <FormLabel className="text-sm text-purple-600">Message*</FormLabel>
                     <FormControl>
                       <Textarea 
                         placeholder="Tell us how we can help" 
@@ -166,10 +166,11 @@ export default function ContactForm({ compact = false, className = "" }: Contact
               
               <Button 
                 type="submit" 
-                className="w-full"
+                className="w-full progress-button"
                 style={{ 
-                  backgroundColor: 'var(--orange)',
-                  color: 'white' 
+                  background: 'linear-gradient(135deg, #7B3FE4 0%, #3FA4E4 100%)',
+                  color: 'white',
+                  border: 'none'
                 }}
                 disabled={isSubmitting}
               >
