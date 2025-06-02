@@ -1,9 +1,9 @@
 /* public.css - Styles specific to public-facing components */
 
 :root {
-  /* Public site colors */
-  --public-navy: #1c3668;
-  --public-navy-dark: #132549;
+  /* Public site colors - Updated to Progress brand */
+  --public-navy: #000000;
+  --public-navy-dark: #000000;
   --public-orange: #f15a29;
   --public-white: #ffffff;
   --public-gray: #f0f0f0;
