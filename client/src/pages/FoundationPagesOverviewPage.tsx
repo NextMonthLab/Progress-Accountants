@@ -234,13 +234,13 @@ export default function FoundationPagesOverviewPage() {
   const getStatusBadge = (status: PageStatus) => {
     switch (status) {
       case 'not_started':
-        return <Badge variant="outline" className="text-gray-500 border-gray-300">Not Started</Badge>;
+        return <Badge variant="outline" className="text-slate-400 border-slate-500">Not Started</Badge>;
       case 'in_progress':
-        return <Badge variant="outline" className="text-blue-600 border-blue-300 bg-blue-50">In Progress</Badge>;
+        return <Badge variant="outline" className="text-[var(--nextmonth-teal)] border-[var(--nextmonth-teal)] bg-[var(--nextmonth-teal)]/20">In Progress</Badge>;
       case 'complete':
-        return <Badge variant="outline" className="text-green-600 border-green-300 bg-green-50">Complete</Badge>;
+        return <Badge variant="outline" className="text-green-400 border-green-400 bg-green-400/20">Complete</Badge>;
       case 'skipped':
-        return <Badge variant="outline" className="text-orange-600 border-orange-300 bg-orange-50">Skipped</Badge>;
+        return <Badge variant="outline" className="text-orange-400 border-orange-400 bg-orange-400/20">Skipped</Badge>;
       default:
         return null;
     }
@@ -250,13 +250,13 @@ export default function FoundationPagesOverviewPage() {
   const getStatusIcon = (status: PageStatus) => {
     switch (status) {
       case 'not_started':
-        return <Clock className="h-5 w-5 text-gray-400" />;
+        return <Clock className="h-5 w-5 text-slate-400" />;
       case 'in_progress':
-        return <Clock className="h-5 w-5 text-blue-600 animate-pulse" />;
+        return <Clock className="h-5 w-5 text-[var(--nextmonth-teal)] animate-pulse" />;
       case 'complete':
-        return <CheckCircle className="h-5 w-5 text-green-600" />;
+        return <CheckCircle className="h-5 w-5 text-green-400" />;
       case 'skipped':
-        return <ChevronRight className="h-5 w-5 text-orange-600" />;
+        return <ChevronRight className="h-5 w-5 text-orange-400" />;
       default:
         return null;
     }
@@ -270,10 +270,10 @@ export default function FoundationPagesOverviewPage() {
       
       <div className="container mx-auto max-w-6xl">
         <Card className="bg-slate-800/50 border-slate-700 backdrop-blur-sm">
-          <CardHeader className="bg-gradient-to-r from-[var(--nextmonth-teal)] to-teal-700 text-white">
-            <CardTitle className="text-3xl font-bold">Build the foundation of your business site</CardTitle>
-            <CardDescription className="text-teal-100 text-lg">
-              These pages give your customers confidence—and give you a system to grow with.
+          <CardHeader className="bg-gradient-to-r from-[var(--nextmonth-teal)] to-teal-600 text-white">
+            <CardTitle className="text-3xl">NextMonth Admin | Foundation Pages</CardTitle>
+            <CardDescription className="text-slate-100">
+              Configure the essential pages for your client's website foundation.
             </CardDescription>
           </CardHeader>
           
@@ -358,7 +358,7 @@ export default function FoundationPagesOverviewPage() {
             
             <Button
               onClick={handleContinueToLaunch}
-              className="bg-gradient-to-r from-orange-600 to-orange-700 hover:from-orange-700 hover:to-orange-800 text-white sm:min-w-[200px]"
+              className="bg-[var(--nextmonth-teal)] hover:bg-[var(--nextmonth-teal)]/90 text-white sm:min-w-[200px]"
               disabled={!allPagesAddressed}
             >
               Continue to Launch
