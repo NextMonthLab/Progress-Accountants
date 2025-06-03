@@ -60,7 +60,7 @@ const HeroSection = () => {
       }}
     >
       {/* Add decorative elements */}
-      <div className="absolute top-0 right-0 w-64 h-64 bg-orange-500 opacity-10 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl"></div>
+      <div className="absolute top-0 right-0 w-64 h-64 bg-purple-500 opacity-10 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl"></div>
       <div className="absolute bottom-0 left-0 w-96 h-96 bg-blue-600 opacity-10 rounded-full translate-y-1/3 -translate-x-1/3 blur-3xl"></div>
       
       <div className="container mx-auto px-6 md:px-8 relative z-10">
@@ -71,7 +71,7 @@ const HeroSection = () => {
           className="max-w-3xl mx-auto text-center"
         >
           <motion.div variants={itemVariants}>
-            <Badge variant="outline" className="mb-4 bg-orange-100 text-orange-800 hover:bg-orange-200 border-orange-200 uppercase tracking-wide px-4 py-1 font-semibold text-sm shadow-sm">
+            <Badge variant="outline" className="mb-4 bg-purple-100 text-purple-800 hover:bg-purple-200 border-purple-200 uppercase tracking-wide px-4 py-1 font-semibold text-sm shadow-sm">
               Business Resource Hub
             </Badge>
           </motion.div>
@@ -94,7 +94,7 @@ const HeroSection = () => {
             <Button 
               variant="default" 
               size="lg" 
-              className="bg-orange-500 hover:bg-orange-600 text-white shadow-lg hover:shadow-xl transition-all"
+              className="bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] hover:shadow-lg hover:shadow-purple-500/25 hover:-translate-y-1 transition-all duration-300 text-white"
               onClick={() => {
                 // Scroll to resources section
                 const resourcesSection = document.getElementById("resources-section");
