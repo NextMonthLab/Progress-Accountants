@@ -41,7 +41,7 @@ const FeatureCard = ({
   icon: Icon,
   title,
   description,
-  accentColor = "bg-blue-500"
+  accentColor = "bg-purple-500"
 }: {
   icon: React.ElementType;
   title: string;
@@ -50,18 +50,18 @@ const FeatureCard = ({
 }) => (
   <motion.div
     variants={itemVariants}
-    className="relative bg-white rounded-xl shadow-md border border-gray-100 p-6 hover:shadow-lg transition-shadow"
+    className="relative bg-gray-900 rounded-xl shadow-md border border-gray-800 p-6 hover:shadow-lg hover:shadow-purple-500/25 transition-all"
   >
     <div className={`absolute top-0 left-0 w-full h-1.5 ${accentColor} rounded-t-xl`}></div>
     <div className="flex items-start">
       <div className="mr-4 mt-1">
-        <div className="p-3 rounded-full bg-orange-100">
-          <Icon className="h-6 w-6 text-orange-600" />
+        <div className="p-3 rounded-full bg-purple-900/20">
+          <Icon className="h-6 w-6 text-purple-400" />
         </div>
       </div>
       <div>
-        <h3 className="font-bold text-xl mb-2 text-navy">{title}</h3>
-        <p className="text-gray-600">{description}</p>
+        <h3 className="font-bold text-xl mb-2 text-white">{title}</h3>
+        <p className="text-gray-300">{description}</p>
       </div>
     </div>
   </motion.div>
@@ -71,18 +71,18 @@ const FeatureCard = ({
 const Testimonial = ({ quote, author, role }: { quote: string; author: string; role: string }) => (
   <motion.div
     variants={itemVariants}
-    className="bg-white p-6 rounded-xl shadow-md border border-gray-100"
+    className="bg-gray-900 p-6 rounded-xl shadow-md border border-gray-800"
   >
     <div className="mb-4">
-      <svg className="h-10 w-10 text-orange-400 opacity-80" fill="currentColor" viewBox="0 0 32 32">
+      <svg className="h-10 w-10 text-purple-400 opacity-80" fill="currentColor" viewBox="0 0 32 32">
         <path d="M9.352 4C4.456 7.456 1 13.12 1 19.36c0 5.088 3.072 8.064 6.624 8.064 3.36 0 5.856-2.688 5.856-5.856 0-3.168-2.208-5.472-5.088-5.472-.576 0-1.344.096-1.536.192.48-3.264 3.552-7.104 6.624-9.024L9.352 4zm16.512 0c-4.8 3.456-8.256 9.12-8.256 15.36 0 5.088 3.072 8.064 6.624 8.064 3.264 0 5.856-2.688 5.856-5.856 0-3.168-2.304-5.472-5.184-5.472-.576 0-1.248.096-1.44.192.48-3.264 3.456-7.104 6.528-9.024L25.864 4z" />
       </svg>
     </div>
-    <p className="text-gray-700 mb-4 italic">{quote}</p>
+    <p className="text-gray-300 mb-4 italic">{quote}</p>
     <div className="flex items-center">
       <div className="ml-0">
-        <p className="font-semibold text-navy">{author}</p>
-        <p className="text-sm text-gray-500">{role}</p>
+        <p className="font-semibold text-white">{author}</p>
+        <p className="text-sm text-gray-400">{role}</p>
       </div>
     </div>
   </motion.div>
@@ -146,7 +146,7 @@ const FilmIndustryPage = () => {
   }, []);
 
   return (
-    <div className="bg-gray-50 pb-20">
+    <div className="bg-black pb-20">
       {/* Hero section */}
       <div 
         ref={headerRef}
@@ -174,7 +174,7 @@ const FilmIndustryPage = () => {
               className="lg:w-1/2"
             >
               <motion.div variants={itemVariants}>
-                <span className="inline-block px-4 py-1 rounded-full bg-orange-100 text-orange-700 font-medium text-sm mb-4">
+                <span className="inline-block px-4 py-1 rounded-full bg-purple-900/20 text-purple-400 font-medium text-sm mb-4">
                   Industry Specialists
                 </span>
               </motion.div>
@@ -195,10 +195,10 @@ const FilmIndustryPage = () => {
                 </p>
               </motion.div>
               <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-4">
-                <Button size="lg" className="bg-orange-500 hover:bg-orange-600 text-white font-medium">
+                <Button size="lg" className="bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] hover:shadow-lg hover:shadow-purple-500/25 text-white font-medium">
                   Book a free consultation
                 </Button>
-                <Button size="lg" className="bg-navy-600 border-navy-600 text-white hover:bg-navy-700 font-medium">
+                <Button size="lg" className="bg-gray-800 border-gray-700 text-white hover:bg-gray-700 font-medium">
                   Explore our services <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </motion.div>
@@ -210,7 +210,7 @@ const FilmIndustryPage = () => {
               transition={{ duration: 0.8, delay: 0.4 }}
               className="lg:w-1/2"
             >
-              <div className="bg-orange-600 p-3 rounded-2xl shadow-2xl relative">
+              <div className="bg-gradient-to-br from-[#7B3FE4] to-[#3FA4E4] p-3 rounded-2xl shadow-2xl relative">
                 <OptimizedImage
                   src={filmProductionImg}
                   alt="Film production accounting"
@@ -226,12 +226,12 @@ const FilmIndustryPage = () => {
                   transition={{ delay: 0.8, duration: 0.5 }}
                   className="absolute -bottom-4 -right-4 bg-white rounded-xl shadow-lg p-3 flex items-center"
                 >
-                  <div className="bg-orange-100 p-2 rounded-lg mr-3">
-                    <Award className="h-6 w-6 text-orange-600" />
+                  <div className="bg-purple-900/20 p-2 rounded-lg mr-3">
+                    <Award className="h-6 w-6 text-purple-400" />
                   </div>
                   <div>
-                    <p className="text-navy font-semibold text-sm">Film Tax Relief</p>
-                    <p className="text-xs text-gray-500">Maximise your returns</p>
+                    <p className="text-gray-900 font-semibold text-sm">Film Tax Relief</p>
+                    <p className="text-xs text-gray-600">Maximise your returns</p>
                   </div>
                 </motion.div>
               </div>
@@ -260,23 +260,23 @@ const FilmIndustryPage = () => {
           className="max-w-4xl mx-auto"
         >
           <motion.div variants={itemVariants} className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-navy mb-6">Why Choose Progress for Film Accounting?</h2>
-            <p className="text-lg text-gray-600">
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">Why Choose Progress for Film Accounting?</h2>
+            <p className="text-lg text-gray-300">
               Whether you're running an independent production, managing a freelance crew, or scaling up a creative studio, 
               Progress Accountants brings clarity, confidence, and control to your film finances.
             </p>
           </motion.div>
           
-          <motion.div variants={itemVariants} className="bg-white rounded-xl shadow-md p-6 md:p-8 mb-12 border border-gray-100">
-            <p className="text-lg text-gray-700 mb-4">
+          <motion.div variants={itemVariants} className="bg-gray-900 rounded-xl shadow-md p-6 md:p-8 mb-12 border border-gray-800">
+            <p className="text-lg text-gray-300 mb-4">
               We specialise in supporting the film and TV sector with proactive, tech-savvy accounting solutions tailored to 
               the unique challenges of the entertainment world.
             </p>
             <div className="flex items-center">
-              <div className="p-2 bg-orange-100 rounded-full mr-3">
-                <Film className="h-5 w-5 text-orange-600" />
+              <div className="p-2 bg-purple-900/20 rounded-full mr-3">
+                <Film className="h-5 w-5 text-purple-400" />
               </div>
-              <p className="font-medium text-navy">Based in Banbury. Supporting film productions across the UK.</p>
+              <p className="font-medium text-white">Based in Banbury. Supporting film productions across the UK.</p>
             </div>
           </motion.div>
         </motion.div>
