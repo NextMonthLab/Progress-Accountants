@@ -993,57 +993,52 @@ const BusinessCalculatorPage = () => {
 
   return (
     <div>
-      {/* Hero Section with Pound Symbol Background */}
-      <div 
-        className="relative py-20 md:py-28 mb-12" 
-        style={{ 
-          backgroundImage: `url(${poundSymbolBg})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center'
-        }}
-      >
-        {/* Dark overlay for better text readability */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[var(--navy)]/85 to-[var(--navy)]/60"></div>
+      {/* Hero Section */}
+      <div className="relative py-20 md:py-28 mb-12 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-purple-900/40"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-900/20 via-transparent to-transparent"></div>
         
-        <div className="container mx-auto px-6 md:px-8 relative z-10">
+        <div className="container mx-auto px-12 md:px-16 relative z-10">
           {/* Header */}
           <div className="text-center max-w-4xl mx-auto">
-            <div className="inline-block mb-6 bg-orange-500/20 p-3 rounded-full backdrop-blur-sm">
-              <Calculator className="h-10 w-10 text-orange-500" />
+            <div className="inline-block mb-6 bg-gradient-to-br from-slate-800/90 to-slate-900/90 border border-slate-600/50 p-4 rounded-full backdrop-blur-sm shadow-lg">
+              <Calculator className="h-10 w-10 text-[#7B3FE4]" />
             </div>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 drop-shadow-xl" style={{ textShadow: "0 2px 10px rgba(0, 0, 0, 0.5)" }}>
-              Smart Business Forecast Calculator
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
+              Smart Business{" "}
+              <span className="bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">Forecast</span>{" "}
+              Calculator
             </h1>
-            <p className="text-xl md:text-2xl text-gray-100 mb-8 max-w-3xl mx-auto leading-relaxed" style={{ textShadow: "0 1px 3px rgba(0, 0, 0, 0.5)" }}>
+            <p className="text-xl md:text-2xl text-slate-300 mb-8 max-w-3xl mx-auto leading-relaxed">
               Think beyond spreadsheets. Get a real-time financial pulse check tailored to your business—plus actionable insights in under 3 minutes.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 flex items-center border border-white/10 shadow-lg">
-                <Clock className="text-orange-400 h-6 w-6 mr-3 flex-shrink-0" />
-                <span className="text-white text-sm" style={{ textShadow: "0 1px 2px rgba(0, 0, 0, 0.5)" }}>Takes just 3 minutes</span>
+              <div className="bg-gradient-to-br from-slate-800/90 to-slate-900/90 border border-slate-600/50 rounded-xl p-4 flex items-center shadow-lg backdrop-blur-sm">
+                <Clock className="text-[#7B3FE4] h-6 w-6 mr-3 flex-shrink-0" />
+                <span className="text-slate-300 text-sm">Takes just 3 minutes</span>
               </div>
-              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 flex items-center border border-white/10 shadow-lg">
-                <FileText className="text-orange-400 h-6 w-6 mr-3 flex-shrink-0" />
-                <span className="text-white text-sm" style={{ textShadow: "0 1px 2px rgba(0, 0, 0, 0.5)" }}>Detailed PDF report</span>
+              <div className="bg-gradient-to-br from-slate-800/90 to-slate-900/90 border border-slate-600/50 rounded-xl p-4 flex items-center shadow-lg backdrop-blur-sm">
+                <FileText className="text-[#7B3FE4] h-6 w-6 mr-3 flex-shrink-0" />
+                <span className="text-slate-300 text-sm">Detailed PDF report</span>
               </div>
-              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 flex items-center border border-white/10 shadow-lg">
-                <Shield className="text-orange-400 h-6 w-6 mr-3 flex-shrink-0" />
-                <span className="text-white text-sm" style={{ textShadow: "0 1px 2px rgba(0, 0, 0, 0.5)" }}>Expert insights</span>
+              <div className="bg-gradient-to-br from-slate-800/90 to-slate-900/90 border border-slate-600/50 rounded-xl p-4 flex items-center shadow-lg backdrop-blur-sm">
+                <Shield className="text-[#7B3FE4] h-6 w-6 mr-3 flex-shrink-0" />
+                <span className="text-slate-300 text-sm">Expert insights</span>
               </div>
             </div>
           </div>
         </div>
       </div>
       
-      <div className="container mx-auto px-6 md:px-8 py-8">
+      <div className="container mx-auto px-12 md:px-16 py-8">
         {/* Calculator Container */}
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="max-w-3xl mx-auto bg-white p-6 md:p-8 rounded-2xl border-t-4 border-orange-500 shadow-xl relative"
+          className="max-w-3xl mx-auto bg-gradient-to-br from-slate-800/90 to-slate-900/90 border border-slate-600/50 p-6 md:p-8 rounded-2xl shadow-xl backdrop-blur-sm relative"
         >
-          <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-orange-500 text-white p-3 rounded-full shadow-lg">
+          <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] text-white p-3 rounded-full shadow-lg">
             <DollarSign className="h-6 w-6" />
           </div>
           
