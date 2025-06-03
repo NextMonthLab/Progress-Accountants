@@ -41,65 +41,23 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { getSiteBranding } from "@/lib/api";
-import { defaultSiteBranding, SiteBranding } from "@shared/site_branding";
+// Progress Accountants logo is in public directory
 
 // Admin sidebar logo component
 function AdminSidebarLogo({ collapsed }: { collapsed: boolean }) {
-  const [siteBranding, setSiteBranding] = useState<SiteBranding>(defaultSiteBranding);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const loadBranding = async () => {
-      setIsLoading(true);
-      try {
-        const brandingData = await getSiteBranding();
-        if (brandingData) {
-          setSiteBranding(brandingData);
-        }
-      } catch (error) {
-        console.error("Error loading site branding for admin sidebar:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    loadBranding();
-  }, []);
-
   if (collapsed) {
     return null;
   }
 
-  // Display image logo if available, otherwise use text logo
-  if (siteBranding.logo.imageUrl) {
-    return (
-      <Link href="/admin/dashboard" className="no-underline flex items-center">
-        <img 
-          src={siteBranding.logo.imageUrl} 
-          alt={siteBranding.logo.altText} 
-          className="max-h-8 object-contain"
-        />
-        <span className="ml-2 font-bold text-[var(--nextmonth-teal)]">Admin</span>
-      </Link>
-    );
-  }
-
-  // Default text logo with "Admin" suffix
-  const logoText = siteBranding.logo.text;
-  const words = logoText.split(" ");
-  
+  // Use Progress Accountants logo directly
   return (
-    <Link href="/admin/dashboard" className="font-poppins font-bold text-xl no-underline" style={{ color: 'var(--navy)' }}>
-      {words.length > 1 ? (
-        <>
-          <span>{words.slice(0, -1).join(" ")} </span>
-          <span style={{ color: 'var(--navy)' }}>{words[words.length - 1]} </span>
-        </>
-      ) : (
-        <span>{logoText} </span>
-      )}
-      <span style={{ color: 'var(--nextmonth-teal)' }}>Admin</span>
+    <Link href="/admin/dashboard" className="no-underline flex items-center">
+      <img 
+        src="/progress-logo.png" 
+        alt="Progress Accountants - Advisors | Growth Partners" 
+        className="max-h-8 object-contain"
+      />
+      <span className="ml-2 font-bold text-cyan-500">Admin</span>
     </Link>
   );
 }
