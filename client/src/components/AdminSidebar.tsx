@@ -670,7 +670,7 @@ export default function AdminSidebar() {
               <span>Powered by</span>
               <div className="relative">
                 <img 
-                  src="https://res.cloudinary.com/drl0fxrkq/image/upload/v1746537994/8A3D82EC-31EF-4209-85E2-D1D284F5E960_lnzuah.png"
+                  src="/nextmonth-logo-direct.png"
                   alt="NextMonth"
                   className="h-4 w-auto object-contain opacity-90"
                   style={{ 
@@ -678,13 +678,12 @@ export default function AdminSidebar() {
                     imageRendering: 'crisp-edges',
                     filter: 'brightness(0.9) contrast(1.1)'
                   }}
-                  crossOrigin="anonymous"
                   loading="eager"
                   onLoad={() => {
-                    console.log('NextMonth logo loaded successfully from Cloudinary');
+                    console.log('NextMonth logo loaded successfully from local file');
                   }}
                   onError={(e) => {
-                    console.error('Failed to load NextMonth logo from Cloudinary');
+                    console.error('Failed to load NextMonth logo from local file');
                     const target = e.currentTarget as HTMLImageElement;
                     target.style.display = 'none';
                     const container = target.parentElement;
