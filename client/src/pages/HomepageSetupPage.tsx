@@ -329,9 +329,9 @@ export default function HomepageSetupPage() {
   
   return (
     <Suspense fallback={<div className="flex items-center justify-center min-h-screen"><div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div></div>}>
-      <div className="bg-gray-50 min-h-screen py-10">
+      <div data-admin="true" className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 py-10">
       <Helmet>
-        <title>Homepage Setup | Onboarding</title>
+        <title>NextMonth Admin | Homepage Setup</title>
       </Helmet>
       
       {/* Homepage Preview Modal */}
@@ -502,47 +502,47 @@ export default function HomepageSetupPage() {
       </Dialog>
       
       <div className="container mx-auto px-4 max-w-5xl">
-        <Card className="bg-white shadow-sm">
-          <CardHeader className="bg-[var(--navy)] text-white rounded-t-lg">
-            <CardTitle className="text-3xl">Welcome to your Homepage Setup</CardTitle>
-            <CardDescription className="text-gray-100">
-              This is the first step in your Growth System. Let's define the key message your website will deliver.
+        <Card className="bg-slate-800 border-slate-700 shadow-xl">
+          <CardHeader className="bg-gradient-to-r from-[var(--nextmonth-teal)] to-teal-600 text-white rounded-t-lg">
+            <CardTitle className="text-3xl">NextMonth Admin | Homepage Setup</CardTitle>
+            <CardDescription className="text-slate-100">
+              Configure your client's homepage content and layout settings through the NextMonth admin interface.
             </CardDescription>
           </CardHeader>
           
-          <CardContent className="p-6 space-y-8">
-            <Alert className="mb-6">
-              <Info className="h-4 w-4" />
-              <AlertTitle>Required Setup</AlertTitle>
-              <AlertDescription>
-                This step cannot be skipped. The information collected here will be used to create your homepage.
+          <CardContent className="p-6 space-y-8 bg-slate-800 text-slate-100">
+            <Alert className="mb-6 bg-slate-700 border-slate-600 text-slate-100">
+              <Info className="h-4 w-4 text-[var(--nextmonth-teal)]" />
+              <AlertTitle className="text-slate-100">Admin Configuration</AlertTitle>
+              <AlertDescription className="text-slate-300">
+                Configure homepage settings for your client's website through the NextMonth admin panel.
               </AlertDescription>
             </Alert>
             
             {/* Complexity Scoring Demo */}
-            <Card className="border-blue-200 bg-blue-50/50">
+            <Card className="border-slate-600 bg-slate-700/50">
               <CardHeader className="pb-2">
                 <div className="flex justify-between items-center">
-                  <CardTitle className="text-lg font-medium">Page Complexity Analysis</CardTitle>
-                  <Badge variant="outline" className="bg-blue-100 text-blue-800 hover:bg-blue-100">
-                    New Feature
+                  <CardTitle className="text-lg font-medium text-slate-100">Page Complexity Analysis</CardTitle>
+                  <Badge variant="outline" className="bg-[var(--nextmonth-teal)]/20 text-[var(--nextmonth-teal)] border-[var(--nextmonth-teal)] hover:bg-[var(--nextmonth-teal)]/30">
+                    NextMonth AI
                   </Badge>
                 </div>
-                <CardDescription>
-                  Our intelligence layer analyzes your content and provides insights
+                <CardDescription className="text-slate-300">
+                  NextMonth's intelligence layer analyzes your client's content and provides insights
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
                   <div className="flex justify-between items-center">
-                    <span className="text-sm font-medium">Content Complexity</span>
+                    <span className="text-sm font-medium text-slate-200">Content Complexity</span>
                     <div className="flex space-x-2 items-center">
-                      <span className="text-sm text-muted-foreground">
+                      <span className="text-sm text-slate-400">
                         {homepage.headline.length > 50 ? "Medium" : "Low"}
                       </span>
-                      <div className="w-24 h-2 bg-gray-200 rounded-full overflow-hidden">
+                      <div className="w-24 h-2 bg-slate-600 rounded-full overflow-hidden">
                         <div 
-                          className="h-full bg-amber-500" 
+                          className="h-full bg-[var(--nextmonth-teal)]" 
                           style={{ width: `${Math.min(100, (homepage.headline.length / 100) * 100)}%` }}
                         ></div>
                       </div>
@@ -550,14 +550,14 @@ export default function HomepageSetupPage() {
                   </div>
                   
                   <div className="flex justify-between items-center">
-                    <span className="text-sm font-medium">SEO Readiness</span>
+                    <span className="text-sm font-medium text-slate-200">SEO Readiness</span>
                     <div className="flex space-x-2 items-center">
-                      <span className="text-sm text-muted-foreground">
+                      <span className="text-sm text-slate-400">
                         {(homepage.services?.length || 0) > 2 ? "High" : "Medium"}
                       </span>
-                      <div className="w-24 h-2 bg-gray-200 rounded-full overflow-hidden">
+                      <div className="w-24 h-2 bg-slate-600 rounded-full overflow-hidden">
                         <div 
-                          className="h-full bg-green-500" 
+                          className="h-full bg-[var(--nextmonth-teal)]" 
                           style={{ width: `${Math.min(100, ((homepage.services?.length || 0) / 5) * 100)}%` }}
                         ></div>
                       </div>
@@ -565,14 +565,14 @@ export default function HomepageSetupPage() {
                   </div>
                   
                   <div className="flex justify-between items-center">
-                    <span className="text-sm font-medium">User Engagement Potential</span>
+                    <span className="text-sm font-medium text-slate-200">User Engagement Potential</span>
                     <div className="flex space-x-2 items-center">
-                      <span className="text-sm text-muted-foreground">
+                      <span className="text-sm text-slate-400">
                         {(homepage.testimonials?.length || 0) > 1 ? "High" : "Low"}
                       </span>
-                      <div className="w-24 h-2 bg-gray-200 rounded-full overflow-hidden">
+                      <div className="w-24 h-2 bg-slate-600 rounded-full overflow-hidden">
                         <div 
-                          className="h-full bg-blue-500" 
+                          className="h-full bg-[var(--nextmonth-teal)]" 
                           style={{ width: `${Math.min(100, ((homepage.testimonials?.length || 0) / 3) * 100)}%` }}
                         ></div>
                       </div>
@@ -583,11 +583,11 @@ export default function HomepageSetupPage() {
             </Card>
             
             {/* Headline & Subheading */}
-            <Card>
+            <Card className="bg-slate-700 border-slate-600">
               <CardHeader>
-                <CardTitle>Page Headline & Subheading</CardTitle>
-                <CardDescription>
-                  Define the main message visitors will see first on your homepage
+                <CardTitle className="text-slate-100">Page Headline & Subheading</CardTitle>
+                <CardDescription className="text-slate-300">
+                  Configure the main message visitors will see first on your client's homepage
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
