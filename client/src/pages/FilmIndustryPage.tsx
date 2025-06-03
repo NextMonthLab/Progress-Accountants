@@ -386,14 +386,14 @@ const FilmIndustryPage = () => {
           viewport={{ once: true, margin: "-100px" }}
           variants={containerVariants}
         >
-          <motion.div variants={itemVariants} className="max-w-4xl mx-auto bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden">
+          <motion.div variants={itemVariants} className="max-w-4xl mx-auto bg-gray-900 rounded-xl shadow-md border border-gray-800 overflow-hidden">
             <div className="p-8 md:p-10">
-              <h2 className="text-2xl md:text-3xl font-bold text-navy mb-6">Our Tech-Savvy Approach</h2>
-              <p className="text-gray-700 mb-6">
+              <h2 className="text-2xl md:text-3xl font-bold text-white mb-6">Our Tech-Savvy Approach</h2>
+              <p className="text-gray-300 mb-6">
                 We use cloud-based systems like Xero and integrate your tools to deliver fast, accurate, and visual financial insights. 
                 Prefer to stay hands-off? We'll automate what we can—and flag what needs your attention.
               </p>
-              <p className="text-gray-700 mb-8">
+              <p className="text-gray-300 mb-8">
                 And yes, we speak your language. Our team understands the rhythm of production and keeps pace with it, offering:
               </p>
               
@@ -405,10 +405,10 @@ const FilmIndustryPage = () => {
                   "Expense categorisation tailored to film finance"
                 ].map((feature, index) => (
                   <div key={index} className="flex items-center">
-                    <div className="h-8 w-8 rounded-full bg-green-100 flex items-center justify-center mr-3">
-                      <CheckCircle className="h-5 w-5 text-green-600" />
+                    <div className="h-8 w-8 rounded-full bg-purple-900/20 flex items-center justify-center mr-3">
+                      <CheckCircle className="h-5 w-5 text-purple-400" />
                     </div>
-                    <span className="text-gray-700">{feature}</span>
+                    <span className="text-gray-300">{feature}</span>
                   </div>
                 ))}
               </div>
