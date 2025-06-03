@@ -167,14 +167,18 @@ export default function Navbar() {
 
   return (
     <header className="bg-black/95 backdrop-blur-sm border-b border-gray-800 sticky top-0 z-50">
-      <nav className="container mx-auto px-12 md:px-16 py-4 flex justify-between items-center">
-        <div className="flex items-center">
+      <nav className="container mx-auto px-12 md:px-16 py-4 flex items-center">
+        <div className="flex items-center flex-shrink-0">
           <NavbarLogo />
         </div>
 
         {/* Desktop Menu - Public-facing menu only */}
-        <div className="hidden md:flex items-center space-x-6">
+        <div className="hidden md:flex items-center space-x-8 ml-16">
           {publicMenuGroups.map(renderDesktopDropdown)}
+        </div>
+
+        {/* Right side buttons */}
+        <div className="hidden md:flex items-center space-x-4 ml-auto">
           {/* Show login button and potentially client registration for non-authenticated users */}
           {!user && (
             <>
