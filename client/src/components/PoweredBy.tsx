@@ -2,7 +2,7 @@ import React from "react";
 import { useTheme } from "@/components/ThemeProvider";
 
 // New NextMonth logo URL
-const NextMonthLogoURL = "https://res.cloudinary.com/drl0fxrkq/image/upload/v1746537994/0A6752C9-3498-4269-9627-A1BE7A36A800_dgqotr.png";
+const NextMonthLogoURL = "https://res.cloudinary.com/drl0fxrkq/image/upload/v1746537994/8A3D82EC-31EF-4209-85E2-D1D284F5E960_lnzuah.png";
 
 interface PoweredByProps {
   className?: string;
