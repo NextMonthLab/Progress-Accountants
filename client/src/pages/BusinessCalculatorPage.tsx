@@ -703,7 +703,7 @@ const ContactStep = ({ onNext, onBack, defaultValues }: StepProps) => {
             </Button>
             <Button 
               type="submit" 
-              className="bg-orange-500 hover:bg-orange-600 text-white"
+              className="bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] hover:shadow-lg hover:shadow-purple-500/25 hover:-translate-y-1 transition-all duration-300 text-white"
             >
               Get My Results
               <BarChart3 className="ml-2 h-4 w-4" />
@@ -752,9 +752,9 @@ const ResultsStep = ({ calculatorData }: { calculatorData: any }) => {
         animate={{ opacity: 1 }}
         className="flex flex-col items-center justify-center py-12 space-y-6"
       >
-        <div className="w-16 h-16 border-4 border-orange-500 border-t-transparent rounded-full animate-spin"></div>
-        <h3 className="text-xl font-medium text-navy">Calculating your business forecast...</h3>
-        <p className="text-gray-600">Analyzing your inputs and generating personalized insights</p>
+        <div className="w-16 h-16 border-4 border-[#7B3FE4] border-t-transparent rounded-full animate-spin"></div>
+        <h3 className="text-xl font-medium text-white">Calculating your business forecast...</h3>
+        <p className="text-slate-300">Analyzing your inputs and generating personalized insights</p>
       </motion.div>
     );
   }
@@ -766,36 +766,36 @@ const ResultsStep = ({ calculatorData }: { calculatorData: any }) => {
       className="space-y-8"
     >
       <div className="text-center">
-        <div className="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-          <CheckCircle className="h-8 w-8 text-green-600" />
+        <div className="bg-gradient-to-br from-slate-700/90 to-slate-800/90 border border-slate-600/50 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+          <CheckCircle className="h-8 w-8 text-[#7B3FE4]" />
         </div>
-        <h2 className="text-2xl font-bold text-navy">Your Business Forecast</h2>
-        <p className="text-gray-600 mt-2">
+        <h2 className="text-2xl font-bold text-white">Your Business Forecast</h2>
+        <p className="text-slate-300 mt-2">
           We've emailed a detailed PDF report to {calculatorData.contact.email}
         </p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <Card>
+        <Card className="bg-gradient-to-br from-slate-700/90 to-slate-800/90 border border-slate-600/50 hover:shadow-lg hover:shadow-purple-500/25 transition-all">
           <CardHeader>
-            <CardTitle className="flex items-center">
-              <Calculator className="h-5 w-5 mr-2 text-orange-500" />
+            <CardTitle className="flex items-center text-white">
+              <Calculator className="h-5 w-5 mr-2 text-[#7B3FE4]" />
               Break-Even Analysis
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
               <div>
-                <p className="text-sm text-gray-500">Current Break-Even Point</p>
-                <p className="text-2xl font-semibold text-navy">{results.breakEvenPoint}</p>
+                <p className="text-sm text-slate-400">Current Break-Even Point</p>
+                <p className="text-2xl font-semibold text-white">{results.breakEvenPoint}</p>
               </div>
               <div>
-                <p className="text-sm text-gray-500">Gross Profit Margin</p>
-                <p className="text-2xl font-semibold text-navy">{results.grossProfitMargin}</p>
+                <p className="text-sm text-slate-400">Gross Profit Margin</p>
+                <p className="text-2xl font-semibold text-white">{results.grossProfitMargin}</p>
               </div>
               <div>
-                <p className="text-sm text-gray-500">Cost-to-Income Ratio</p>
-                <p className="text-2xl font-semibold text-navy">{results.costToIncomeRatio}</p>
+                <p className="text-sm text-slate-400">Cost-to-Income Ratio</p>
+                <p className="text-2xl font-semibold text-white">{results.costToIncomeRatio}</p>
               </div>
             </div>
           </CardContent>
@@ -883,9 +883,9 @@ const ProgressStepper = ({ currentStep, totalSteps }: { currentStep: number; tot
     <div className="w-full mb-10 mt-4">
       <div className="flex justify-between mb-3 relative">
         {/* Progress line */}
-        <div className="absolute top-4 left-0 h-1 bg-gray-200 w-full -z-10"></div>
+        <div className="absolute top-4 left-0 h-1 bg-slate-600 w-full -z-10"></div>
         <div 
-          className="absolute top-4 left-0 h-1 bg-gradient-to-r from-orange-400 to-orange-600 transition-all duration-500 -z-10" 
+          className="absolute top-4 left-0 h-1 bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] transition-all duration-500 -z-10" 
           style={{ 
             width: `${((currentStep - 1) / (totalSteps - 1)) * 100}%` 
           }}
@@ -897,8 +897,8 @@ const ProgressStepper = ({ currentStep, totalSteps }: { currentStep: number; tot
             <div 
               className={`w-10 h-10 rounded-full flex items-center justify-center mx-auto shadow-md border-2 
               ${index + 1 <= currentStep 
-                ? 'bg-orange-500 border-orange-300 text-white' 
-                : 'bg-white border-gray-200 text-gray-400'}`}
+                ? 'bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] border-purple-300 text-white' 
+                : 'bg-slate-700 border-slate-600 text-slate-400'}`}
             >
               {index + 1 < currentStep ? (
                 <CheckCircle className="h-5 w-5" />
@@ -906,7 +906,7 @@ const ProgressStepper = ({ currentStep, totalSteps }: { currentStep: number; tot
                 <span className="font-medium">{index + 1}</span>
               )}
             </div>
-            <div className={`text-xs mt-2 ${index + 1 <= currentStep ? 'text-orange-600 font-medium' : 'text-gray-500'}`}>
+            <div className={`text-xs mt-2 ${index + 1 <= currentStep ? 'text-[#7B3FE4] font-medium' : 'text-slate-500'}`}>
               {index === 0 ? 'Business' : 
                index === 1 ? 'Financial' : 
                index === 2 ? 'Growth' : 'Contact'}
@@ -1056,42 +1056,42 @@ const BusinessCalculatorPage = () => {
         {/* Benefits Section - Show only on first step */}
         {currentStep === 1 && (
           <div className="mt-12 max-w-4xl mx-auto">
-            <h2 className="text-2xl font-bold text-navy text-center mb-6">Why Use Our Business Forecast Calculator?</h2>
+            <h2 className="text-2xl font-bold text-white text-center mb-6">Why Use Our Business Forecast Calculator?</h2>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <Card className="bg-gray-50 border-none shadow-md hover:shadow-lg transition-shadow">
+              <Card className="bg-gradient-to-br from-slate-700/90 to-slate-800/90 border border-slate-600/50 shadow-md hover:shadow-lg hover:shadow-purple-500/25 transition-all">
                 <CardHeader className="pb-2">
-                  <CardTitle className="text-lg flex items-center">
-                    <Zap className="h-5 w-5 mr-2 text-orange-500" />
+                  <CardTitle className="text-lg flex items-center text-white">
+                    <Zap className="h-5 w-5 mr-2 text-[#7B3FE4]" />
                     Instant Insights
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-gray-600">Get immediate financial projections based on your specific business data</p>
+                  <p className="text-slate-300">Get immediate financial projections based on your specific business data</p>
                 </CardContent>
               </Card>
               
-              <Card className="bg-gray-50 border-none shadow-md hover:shadow-lg transition-shadow">
+              <Card className="bg-gradient-to-br from-slate-700/90 to-slate-800/90 border border-slate-600/50 shadow-md hover:shadow-lg hover:shadow-purple-500/25 transition-all">
                 <CardHeader className="pb-2">
-                  <CardTitle className="text-lg flex items-center">
-                    <Shield className="h-5 w-5 mr-2 text-orange-500" />
+                  <CardTitle className="text-lg flex items-center text-white">
+                    <Shield className="h-5 w-5 mr-2 text-[#7B3FE4]" />
                     Expert Analysis
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-gray-600">Powered by our accountants' expertise across multiple industries</p>
+                  <p className="text-slate-300">Powered by our accountants' expertise across multiple industries</p>
                 </CardContent>
               </Card>
               
-              <Card className="bg-gray-50 border-none shadow-md hover:shadow-lg transition-shadow">
+              <Card className="bg-gradient-to-br from-slate-700/90 to-slate-800/90 border border-slate-600/50 shadow-md hover:shadow-lg hover:shadow-purple-500/25 transition-all">
                 <CardHeader className="pb-2">
-                  <CardTitle className="text-lg flex items-center">
-                    <FileText className="h-5 w-5 mr-2 text-orange-500" />
+                  <CardTitle className="text-lg flex items-center text-white">
+                    <FileText className="h-5 w-5 mr-2 text-[#7B3FE4]" />
                     Detailed Report
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-gray-600">Receive a comprehensive PDF with actionable recommendations</p>
+                  <p className="text-slate-300">Receive a comprehensive PDF with actionable recommendations</p>
                 </CardContent>
               </Card>
             </div>
@@ -1101,38 +1101,38 @@ const BusinessCalculatorPage = () => {
         {/* Testimonials - Show only on first two steps */}
         {currentStep <= 2 && (
           <div className="mt-16 max-w-4xl mx-auto">
-            <h2 className="text-2xl font-bold text-navy text-center mb-6">What Our Clients Say</h2>
+            <h2 className="text-2xl font-bold text-white text-center mb-6">What Our Clients Say</h2>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <Card className="border-none shadow-lg">
+              <Card className="bg-gradient-to-br from-slate-700/90 to-slate-800/90 border border-slate-600/50 shadow-lg hover:shadow-purple-500/25 transition-all">
                 <CardContent className="pt-6">
-                  <p className="italic text-gray-600 mb-4">
+                  <p className="italic text-slate-300 mb-4">
                     "The calculator highlighted tax savings opportunities we'd never considered. We implemented the recommendations and saved over £15,000 in the first year alone."
                   </p>
                   <div className="flex items-center">
-                    <div className="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center mr-3">
-                      <span className="font-semibold text-orange-600">MB</span>
+                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-slate-600 to-slate-700 flex items-center justify-center mr-3">
+                      <span className="font-semibold text-[#7B3FE4]">MB</span>
                     </div>
                     <div>
-                      <p className="font-medium">Michael Brown</p>
-                      <p className="text-sm text-gray-500">Filmhouse Productions</p>
+                      <p className="font-medium text-white">Michael Brown</p>
+                      <p className="text-sm text-slate-400">Filmhouse Productions</p>
                     </div>
                   </div>
                 </CardContent>
               </Card>
               
-              <Card className="border-none shadow-lg">
+              <Card className="bg-gradient-to-br from-slate-700/90 to-slate-800/90 border border-slate-600/50 shadow-lg hover:shadow-purple-500/25 transition-all">
                 <CardContent className="pt-6">
-                  <p className="italic text-gray-600 mb-4">
+                  <p className="italic text-slate-300 mb-4">
                     "As a growing construction business, cash flow is everything. This calculator gave us the clarity we needed to plan our expansion with confidence."
                   </p>
                   <div className="flex items-center">
-                    <div className="w-10 h-10 rounded-full bg-navy/10 flex items-center justify-center mr-3">
-                      <span className="font-semibold text-navy">SJ</span>
+                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-slate-600 to-slate-700 flex items-center justify-center mr-3">
+                      <span className="font-semibold text-[#7B3FE4]">SJ</span>
                     </div>
                     <div>
-                      <p className="font-medium">Sarah Johnson</p>
-                      <p className="text-sm text-gray-500">Cornerstone Building Ltd</p>
+                      <p className="font-medium text-white">Sarah Johnson</p>
+                      <p className="text-sm text-slate-400">Cornerstone Building Ltd</p>
                     </div>
                   </div>
                 </CardContent>
