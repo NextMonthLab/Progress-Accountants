@@ -62,21 +62,21 @@ export default function Footer() {
             <div className="flex space-x-4">
               <a 
                 href="#" 
-                className="text-white hover:text-[var(--orange)] transition"
+                className="text-white hover:text-purple-400 transition"
                 aria-label="Facebook"
               >
                 <Facebook className="h-6 w-6" />
               </a>
               <a 
                 href="#" 
-                className="text-white hover:text-[var(--orange)] transition"
+                className="text-white hover:text-purple-400 transition"
                 aria-label="LinkedIn"
               >
                 <Linkedin className="h-6 w-6" />
               </a>
               <a 
                 href="#" 
-                className="text-white hover:text-[var(--orange)] transition"
+                className="text-white hover:text-purple-400 transition"
                 aria-label="Twitter"
               >
                 <Twitter className="h-6 w-6" />
@@ -88,27 +88,27 @@ export default function Footer() {
             <h3 className="font-semibold text-lg mb-4">Services</h3>
             <ul className="space-y-2">
               <li>
-                <a href="#" className="text-gray-300 hover:text-[var(--orange)] transition">
+                <a href="#" className="text-gray-300 hover:text-purple-400 transition">
                   Accounting & Bookkeeping
                 </a>
               </li>
               <li>
-                <a href="#" className="text-gray-300 hover:text-[var(--orange)] transition">
+                <a href="#" className="text-gray-300 hover:text-purple-400 transition">
                   Tax Returns
                 </a>
               </li>
               <li>
-                <a href="#" className="text-gray-300 hover:text-[var(--orange)] transition">
+                <a href="#" className="text-gray-300 hover:text-purple-400 transition">
                   Financial Dashboard
                 </a>
               </li>
               <li>
-                <Link href="/studio-banbury" className="text-[#7B3FE4] font-medium hover:underline transition">
+                <Link href="/studio-banbury" className="text-[#7B3FE4] font-medium hover:text-purple-300 transition">
                   🎙️ Podcast & Video Studio
                 </Link>
               </li>
               <li>
-                <a href="#" className="text-gray-300 hover:text-[var(--orange)] transition">
+                <a href="#" className="text-gray-300 hover:text-purple-400 transition">
                   Virtual Finance Director
                 </a>
               </li>
@@ -119,27 +119,27 @@ export default function Footer() {
             <h3 className="font-semibold text-lg mb-4">Industries</h3>
             <ul className="space-y-2">
               <li>
-                <a href="#" className="text-gray-300 hover:text-[var(--orange)] transition">
+                <a href="#" className="text-gray-300 hover:text-purple-400 transition">
                   Film Industry
                 </a>
               </li>
               <li>
-                <a href="#" className="text-gray-300 hover:text-[var(--orange)] transition">
+                <a href="#" className="text-gray-300 hover:text-purple-400 transition">
                   Music Industry
                 </a>
               </li>
               <li>
-                <a href="#" className="text-gray-300 hover:text-[var(--orange)] transition">
+                <a href="#" className="text-gray-300 hover:text-purple-400 transition">
                   Construction
                 </a>
               </li>
               <li>
-                <a href="#" className="text-gray-300 hover:text-[var(--orange)] transition">
+                <a href="#" className="text-gray-300 hover:text-purple-400 transition">
                   Small Businesses
                 </a>
               </li>
               <li>
-                <a href="#" className="text-gray-300 hover:text-[var(--orange)] transition">
+                <a href="#" className="text-gray-300 hover:text-purple-400 transition">
                   Startups
                 </a>
               </li>
@@ -157,7 +157,7 @@ export default function Footer() {
               <div>
                 <a 
                   href="tel:+441234567890" 
-                  className="text-gray-300 hover:text-[var(--orange)] transition"
+                  className="text-gray-300 hover:text-purple-400 transition"
                 >
                   01234 567 890
                 </a>
@@ -165,7 +165,7 @@ export default function Footer() {
               <div>
                 <a 
                   href="mailto:info@progressaccountants.co.uk" 
-                  className="text-gray-300 hover:text-[var(--orange)] transition"
+                  className="text-gray-300 hover:text-purple-400 transition"
                 >
                   info@progressaccountants.co.uk
                 </a>
@@ -177,10 +177,10 @@ export default function Footer() {
         <div className="mt-12 pt-6 border-t border-gray-700 text-center text-gray-400 text-sm">
           <p>&copy; {new Date().getFullYear()} Progress Accountants. All rights reserved.</p>
           <p className="mt-2">
-            <Link href="/privacy-policy" className="hover:text-[var(--orange)] transition">
+            <Link href="/privacy-policy" className="hover:text-purple-400 transition">
               Privacy Policy
             </Link> | 
-            <Link href="/terms-of-service" className="hover:text-[var(--orange)] transition ml-1">
+            <Link href="/terms-of-service" className="hover:text-purple-400 transition ml-1">
               Terms of Service
             </Link>
           </p>
