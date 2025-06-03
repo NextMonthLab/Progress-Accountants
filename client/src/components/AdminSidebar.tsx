@@ -668,27 +668,14 @@ export default function AdminSidebar() {
           {!collapsed && (
             <div className="flex items-center justify-center text-xs text-gray-500 space-x-2 mt-2">
               <span>Powered by</span>
-              <div className="inline-flex items-center">
-                <svg width="60" height="16" viewBox="0 0 180 48" className="h-4 w-auto">
-                  <defs>
-                    <linearGradient id="nm-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                      <stop offset="0%" stopColor="#06B6D4" />
-                      <stop offset="100%" stopColor="#0891B2" />
-                    </linearGradient>
-                  </defs>
-                  <text 
-                    x="6" 
-                    y="30" 
-                    fontSize="20" 
-                    fontFamily="Arial, sans-serif" 
-                    fontWeight="600" 
-                    fill="url(#nm-gradient)"
-                  >
-                    NextMonth
-                  </text>
-                  <circle cx="160" cy="24" r="3" fill="#06B6D4" opacity="0.7"/>
-                </svg>
-              </div>
+              <div 
+                className="w-16 h-4 bg-contain bg-center bg-no-repeat opacity-80"
+                style={{
+                  backgroundImage: `url('https://res.cloudinary.com/drl0fxrkq/image/upload/v1746537994/8A3D82EC-31EF-4209-85E2-D1D284F5E960_lnzuah.png')`,
+                  filter: 'brightness(0.8) contrast(1.2)'
+                }}
+                title="NextMonth"
+              />
             </div>
           )}
         </div>
