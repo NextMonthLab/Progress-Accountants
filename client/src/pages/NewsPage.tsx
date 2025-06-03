@@ -76,7 +76,7 @@ const NewsPage = () => {
   };
 
   return (
-    <div>
+    <div className="min-h-screen bg-black">
       {/* Hero Section with Background */}
       <div className="bg-gradient-to-b from-black to-gray-900 py-16 mb-10">
         <div className="container mx-auto px-6 md:px-8">
@@ -268,7 +268,7 @@ const NewsPage = () => {
                         <CardFooter>
                           <Button
                             variant="link"
-                            className="px-0 text-[var(--orange)] hover:text-[var(--navy)]"
+                            className="px-0 text-purple-400 hover:text-purple-300"
                             asChild
                           >
                             <a href={`/news/${post.slug}`}>Read more</a>
@@ -329,28 +329,28 @@ const NewsPage = () => {
           {/* Sidebar */}
           <div className="w-full md:w-1/3">
             <div className="sticky top-4">
-              <div className="bg-gray-50 p-4 rounded-lg border mb-6">
-                <h3 className="text-lg font-semibold text-[var(--navy)] mb-2">Subscribe to Updates</h3>
-                <p className="text-gray-600 text-sm mb-4">Get the latest accounting news and insights delivered to your inbox.</p>
+              <div className="bg-gray-900 p-4 rounded-lg border border-gray-800 mb-6">
+                <h3 className="text-lg font-semibold text-white mb-2">Subscribe to Updates</h3>
+                <p className="text-gray-300 text-sm mb-4">Get the latest accounting news and insights delivered to your inbox.</p>
                 <Input 
                   placeholder="Your email address" 
-                  className="mb-3 border-gray-300" 
+                  className="mb-3 border-gray-600 bg-gray-800 text-white placeholder-gray-400" 
                 />
-                <Button className="w-full">Subscribe</Button>
+                <Button className="w-full bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] hover:shadow-lg hover:shadow-purple-500/25">Subscribe</Button>
               </div>
             
               <Tabs defaultValue="categories" className="w-full">
-                <TabsList className="grid w-full grid-cols-3">
-                  <TabsTrigger value="categories">Categories</TabsTrigger>
-                  <TabsTrigger value="popular">Popular</TabsTrigger>
-                  <TabsTrigger value="tags">Tags</TabsTrigger>
+                <TabsList className="grid w-full grid-cols-3 bg-gray-800 border-gray-700">
+                  <TabsTrigger value="categories" className="text-gray-300 data-[state=active]:bg-purple-600 data-[state=active]:text-white">Categories</TabsTrigger>
+                  <TabsTrigger value="popular" className="text-gray-300 data-[state=active]:bg-purple-600 data-[state=active]:text-white">Popular</TabsTrigger>
+                  <TabsTrigger value="tags" className="text-gray-300 data-[state=active]:bg-purple-600 data-[state=active]:text-white">Tags</TabsTrigger>
                 </TabsList>
                 
                 <TabsContent value="categories" className="mt-6">
-                  <Card>
+                  <Card className="bg-gray-900 border-gray-800">
                     <CardHeader>
-                      <CardTitle>Categories</CardTitle>
-                      <CardDescription>Browse articles by category</CardDescription>
+                      <CardTitle className="text-white">Categories</CardTitle>
+                      <CardDescription className="text-gray-300">Browse articles by category</CardDescription>
                     </CardHeader>
                     <CardContent>
                       <ul className="space-y-2">
@@ -358,15 +358,15 @@ const NewsPage = () => {
                           <li key={category}>
                             <Button
                               variant="ghost"
-                              className="w-full justify-start"
+                              className="w-full justify-start text-gray-300 hover:bg-purple-900/20 hover:text-white"
                               onClick={() => {
                                 setSelectedCategory(category);
                                 setCurrentPage(1);
                               }}
                             >
-                              <span className={`w-3 h-3 rounded-full bg-[var(--orange)] mr-2 ${selectedCategory === category ? 'opacity-100' : 'opacity-50'}`}></span>
+                              <span className={`w-3 h-3 rounded-full bg-purple-500 mr-2 ${selectedCategory === category ? 'opacity-100' : 'opacity-50'}`}></span>
                               {category}
-                              <span className="ml-auto text-sm text-gray-500">
+                              <span className="ml-auto text-sm text-gray-400">
                                 {BLOG_POSTS.filter(post => post.category === category).length}
                               </span>
                             </Button>
@@ -378,10 +378,10 @@ const NewsPage = () => {
                 </TabsContent>
                 
                 <TabsContent value="popular" className="mt-6">
-                  <Card>
+                  <Card className="bg-gray-900 border-gray-800">
                     <CardHeader>
-                      <CardTitle>Popular Articles</CardTitle>
-                      <CardDescription>Most read content this month</CardDescription>
+                      <CardTitle className="text-white">Popular Articles</CardTitle>
+                      <CardDescription className="text-gray-300">Most read content this month</CardDescription>
                     </CardHeader>
                     <CardContent>
                       <ul className="space-y-4">
@@ -395,15 +395,15 @@ const NewsPage = () => {
                               />
                             </div>
                             <div>
-                              <h4 className="font-medium text-sm line-clamp-2">
+                              <h4 className="font-medium text-sm line-clamp-2 text-white">
                                 <a 
                                   href={`/news/${post.slug}`}
-                                  className="hover:text-[var(--orange)] transition-colors"
+                                  className="hover:text-purple-400 transition-colors"
                                 >
                                   {post.title}
                                 </a>
                               </h4>
-                              <p className="text-xs text-gray-500 mt-1">{post.date}</p>
+                              <p className="text-xs text-gray-400 mt-1">{post.date}</p>
                             </div>
                           </li>
                         ))}
@@ -413,10 +413,10 @@ const NewsPage = () => {
                 </TabsContent>
                 
                 <TabsContent value="tags" className="mt-6">
-                  <Card>
+                  <Card className="bg-gray-900 border-gray-800">
                     <CardHeader>
-                      <CardTitle>Popular Tags</CardTitle>
-                      <CardDescription>Browse content by topic</CardDescription>
+                      <CardTitle className="text-white">Popular Tags</CardTitle>
+                      <CardDescription className="text-gray-300">Browse content by topic</CardDescription>
                     </CardHeader>
                     <CardContent>
                       <div className="flex flex-wrap gap-2">
@@ -425,7 +425,7 @@ const NewsPage = () => {
                             key={tag}
                             variant={selectedTag === tag ? "default" : "outline"}
                             size="sm"
-                            className="rounded-full"
+                            className={`rounded-full ${selectedTag === tag ? 'bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4]' : 'border-gray-600 text-gray-300 hover:bg-purple-900/20 hover:border-purple-500'}`}
                             onClick={() => {
                               setSelectedTag(tag);
                               setCurrentPage(1);
@@ -441,15 +441,15 @@ const NewsPage = () => {
               </Tabs>
               
               {/* Call to Action Card */}
-              <Card className="mt-6 bg-[var(--navy)] text-white">
+              <Card className="mt-6 bg-gradient-to-br from-purple-900 to-gray-900 text-white border-purple-500">
                 <CardHeader>
-                  <CardTitle>Need Accounting Help?</CardTitle>
+                  <CardTitle className="text-white">Need Accounting Help?</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="mb-4">
+                  <p className="mb-4 text-gray-300">
                     Our team of experts is ready to help you with any accounting or tax questions.
                   </p>
-                  <Button variant="outline" className="w-full bg-transparent text-white border-white hover:bg-white hover:text-[var(--navy)]">
+                  <Button variant="outline" className="w-full bg-transparent text-white border-white hover:bg-white hover:text-purple-900">
                     Contact Us
                   </Button>
                 </CardContent>
