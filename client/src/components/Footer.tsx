@@ -7,8 +7,12 @@ export default function Footer() {
       <div className="container mx-auto px-6 md:px-8">
         <div className="grid md:grid-cols-4 gap-8">
           <div>
-            <div className="font-poppins font-bold text-xl mb-4">
-              Progress <span style={{ color: 'var(--orange)' }}>Accountants</span>
+            <div className="mb-4">
+              <img 
+                src="/progress-logo-light.png" 
+                alt="Progress Accountants | Advisors | Growth Partners" 
+                className="h-16 w-auto"
+              />
             </div>
             <p className="mb-4 text-gray-300">
               We don't just talk about growth. We build the tools that drive it.
