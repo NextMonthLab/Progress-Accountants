@@ -511,7 +511,7 @@ function Router() {
       <ProtectedRoute path="/tools/create/dashboard" component={CreateDashboardWizard} />
       <ProtectedRoute path="/tools/create/embed" component={CreateEmbedWizard} />
       <ProtectedRoute 
-        path="/tools/social-media-generator" 
+        path="/admin/social-media-generator" 
         component={SocialMediaGeneratorPage} 
         allowedRoles={['admin', 'super_admin', 'editor']} 
       />
@@ -781,7 +781,7 @@ function FirstTimeUserDetector({ children }: { children: React.ReactNode }) {
     const isAllowedPath = 
       allowedPaths.includes(location) || 
       location.startsWith('/tools/create/') ||
-      location.startsWith('/tools/social-media-generator') ||
+      location.startsWith('/admin/social-media-generator') ||
       location.startsWith('/homepage-setup') || 
       location.startsWith('/foundation-pages') || 
       location.startsWith('/launch-ready') ||
