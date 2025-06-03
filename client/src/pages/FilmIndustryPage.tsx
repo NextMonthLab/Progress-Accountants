@@ -114,10 +114,10 @@ const CTASection = () => (
         Whether you're applying for Film Tax Relief or planning your next big pitch, book a call with our team to see how Progress can support your next production.
       </p>
       <div className="flex flex-col sm:flex-row gap-4">
-        <Button size="lg" className="bg-orange-500 hover:bg-orange-600 text-white border-none font-medium">
+        <Button size="lg" className="bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] hover:shadow-lg hover:shadow-purple-500/25 text-white border-none font-medium">
           Book a consultation
         </Button>
-        <Button size="lg" className="bg-white text-navy hover:bg-gray-100 font-medium">
+        <Button size="lg" className="bg-white text-gray-900 hover:bg-gray-100 font-medium">
           View our services
         </Button>
       </div>
@@ -129,12 +129,12 @@ const CTASection = () => (
 const ClientType = ({ icon: Icon, label }: { icon: React.ElementType, label: string }) => (
   <motion.div
     variants={itemVariants}
-    className="flex flex-col items-center p-5 bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow text-center"
+    className="flex flex-col items-center p-5 bg-gray-900 rounded-xl shadow-sm hover:shadow-md hover:shadow-purple-500/25 transition-all text-center border border-gray-800"
   >
-    <div className="p-3 rounded-full bg-orange-100 mb-4">
-      <Icon className="h-6 w-6 text-orange-600" />
+    <div className="p-3 rounded-full bg-purple-900/20 mb-4">
+      <Icon className="h-6 w-6 text-purple-400" />
     </div>
-    <span className="font-medium text-navy">{label}</span>
+    <span className="font-medium text-white">{label}</span>
   </motion.div>
 );
 
@@ -291,10 +291,10 @@ const FilmIndustryPage = () => {
           variants={containerVariants}
         >
           <motion.div variants={itemVariants} className="text-center mb-12">
-            <span className="inline-block px-3 py-1 rounded-full bg-blue-100 text-blue-700 font-medium text-sm mb-3">
+            <span className="inline-block px-3 py-1 rounded-full bg-purple-900/20 text-purple-400 font-medium text-sm mb-3">
               Our Specialist Services
             </span>
-            <h2 className="text-3xl md:text-4xl font-bold text-navy mb-6">Why Film & TV Companies Choose Progress</h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">Why Film & TV Companies Choose Progress</h2>
           </motion.div>
           
           <div className="grid md:grid-cols-2 gap-8 mb-16">
@@ -335,7 +335,7 @@ const FilmIndustryPage = () => {
           variants={containerVariants}
         >
           <motion.div variants={itemVariants} className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-navy mb-6">What Our Clients Say</h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">What Our Clients Say</h2>
           </motion.div>
           
           <div className="grid md:grid-cols-2 gap-8 mb-16">
@@ -362,8 +362,8 @@ const FilmIndustryPage = () => {
           variants={containerVariants}
         >
           <motion.div variants={itemVariants} className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-navy mb-6">Trusted by Producers, Studios, and Freelancers</h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto mb-8">
+            <h2 className="text-3xl font-bold text-white mb-6">Trusted by Producers, Studios, and Freelancers</h2>
+            <p className="text-lg text-gray-300 max-w-3xl mx-auto mb-8">
               Progress is more than a compliance service—we're your financial partner throughout development, production, and post. We've worked with:
             </p>
           </motion.div>
