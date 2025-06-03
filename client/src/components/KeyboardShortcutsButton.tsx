@@ -43,13 +43,13 @@ const KeyboardShortcutsButton: React.FC<KeyboardShortcutsButtonProps> = ({ class
       
       {showShortcuts && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-          <div className="bg-white rounded-md shadow-lg p-6 max-w-2xl w-full max-h-[80vh] overflow-y-auto">
+          <div className="bg-white dark:bg-gray-800 rounded-md shadow-lg p-6 max-w-2xl w-full max-h-[80vh] overflow-y-auto border border-gray-200 dark:border-gray-700">
             <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-bold">Keyboard Shortcuts</h2>
+              <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100">Keyboard Shortcuts</h2>
               <Button
                 variant="ghost"
                 size="sm"
-                className="h-8 w-8 p-0"
+                className="h-8 w-8 p-0 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
                 onClick={() => setShowShortcuts(false)}
               >
                 <span className="sr-only">Close</span>
@@ -72,16 +72,17 @@ const KeyboardShortcutsButton: React.FC<KeyboardShortcutsButtonProps> = ({ class
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {shortcuts.map((shortcut, index) => (
-                <div key={index} className="flex justify-between items-center border-b border-gray-100 py-2">
-                  <span className="font-medium">{shortcut.description}</span>
-                  <kbd className="px-2 py-1 bg-gray-100 rounded text-sm">{shortcut.key}</kbd>
+                <div key={index} className="flex justify-between items-center border-b border-gray-100 dark:border-gray-700 py-2">
+                  <span className="font-medium text-gray-700 dark:text-gray-300">{shortcut.description}</span>
+                  <kbd className="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded text-sm font-mono border border-gray-200 dark:border-gray-600">{shortcut.key}</kbd>
                 </div>
               ))}
             </div>
             
             <div className="mt-6 flex justify-end">
               <Button
-                className="px-4 py-2 bg-gray-100 rounded-md hover:bg-gray-200 transition-colors"
+                variant="outline"
+                className="px-4 py-2"
                 onClick={() => setShowShortcuts(false)}
               >
                 Close
