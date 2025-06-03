@@ -45,18 +45,28 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 
 // Admin sidebar logo component
 function AdminSidebarLogo({ collapsed }: { collapsed: boolean }) {
+  const [logoError, setLogoError] = useState(false);
+
   if (collapsed) {
     return null;
   }
 
-  // Use Progress Accountants logo directly
+  // Use Progress Accountants logo with fallback
   return (
     <Link href="/admin/dashboard" className="no-underline flex items-center">
-      <img 
-        src="/progress-logo.png" 
-        alt="Progress Accountants - Advisors | Growth Partners" 
-        className="max-h-8 object-contain"
-      />
+      {!logoError ? (
+        <img 
+          src="/progress-logo.png" 
+          alt="Progress Accountants - Advisors | Growth Partners" 
+          className="max-h-8 object-contain"
+          onError={() => setLogoError(true)}
+          onLoad={() => setLogoError(false)}
+        />
+      ) : (
+        <div className="text-white font-bold text-lg">
+          Progress Accountants
+        </div>
+      )}
       <span className="ml-2 font-bold text-cyan-500">Admin</span>
     </Link>
   );
