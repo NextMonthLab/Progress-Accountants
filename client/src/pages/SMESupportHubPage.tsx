@@ -181,13 +181,13 @@ const IntroSection = () => (
 const OrganizationCard = ({ organization }: { organization: typeof organizations[0] }) => {
   return (
     <motion.div variants={itemVariants}>
-      <Card className="h-full hover:shadow-md transition-shadow">
+      <Card className="h-full hover:shadow-md transition-shadow bg-gray-900 border-gray-700">
         <CardHeader className="pb-2">
-          <CardTitle className="text-navy flex items-center">
+          <CardTitle className="text-white flex items-center">
             <Building2 className="h-5 w-5 mr-2 text-purple-500" />
             {organization.name}
           </CardTitle>
-          <CardDescription className="mt-2">
+          <CardDescription className="mt-2 text-gray-300">
             {organization.description}
           </CardDescription>
         </CardHeader>
@@ -207,7 +207,7 @@ const OrganizationCard = ({ organization }: { organization: typeof organizations
           {organization.generalPhone && (
             <div className="flex items-start">
               <Phone className="h-4 w-4 mr-2 text-gray-500 mt-1 flex-shrink-0" />
-              <a href={`tel:${organization.generalPhone.replace(/\s/g, '')}`} className="text-gray-700 hover:text-navy">
+              <a href={`tel:${organization.generalPhone.replace(/\s/g, '')}`} className="text-gray-300 hover:text-white">
                 {organization.generalPhone}
               </a>
             </div>
@@ -217,8 +217,8 @@ const OrganizationCard = ({ organization }: { organization: typeof organizations
             <div className="space-y-2 pl-6">
               {organization.specialistPhones.map((phone, index) => (
                 <div key={index} className="flex items-start text-sm">
-                  <span className="font-medium mr-2">{phone.label}:</span>
-                  <a href={`tel:${phone.number.replace(/\s/g, '')}`} className="text-gray-700 hover:text-navy">
+                  <span className="font-medium mr-2 text-gray-300">{phone.label}:</span>
+                  <a href={`tel:${phone.number.replace(/\s/g, '')}`} className="text-gray-300 hover:text-white">
                     {phone.number}
                   </a>
                 </div>
@@ -229,7 +229,7 @@ const OrganizationCard = ({ organization }: { organization: typeof organizations
           {organization.email && (
             <div className="flex items-start">
               <Mail className="h-4 w-4 mr-2 text-gray-500 mt-1 flex-shrink-0" />
-              <a href={`mailto:${organization.email}`} className="text-gray-700 hover:text-navy break-all">
+              <a href={`mailto:${organization.email}`} className="text-gray-300 hover:text-white break-all">
                 {organization.email}
               </a>
             </div>
@@ -238,7 +238,7 @@ const OrganizationCard = ({ organization }: { organization: typeof organizations
           {organization.textphone && (
             <div className="flex items-start">
               <Phone className="h-4 w-4 mr-2 text-gray-500 mt-1 flex-shrink-0" />
-              <span className="text-gray-700">
+              <span className="text-gray-300">
                 Textphone: {organization.textphone}
               </span>
             </div>
@@ -247,7 +247,7 @@ const OrganizationCard = ({ organization }: { organization: typeof organizations
           {organization.hours && (
             <div className="flex items-start">
               <Clock className="h-4 w-4 mr-2 text-gray-500 mt-1 flex-shrink-0" />
-              <span className="text-gray-700">{organization.hours}</span>
+              <span className="text-gray-300">{organization.hours}</span>
             </div>
           )}
         </CardContent>
@@ -335,7 +335,7 @@ const DirectorySection = () => {
               <div className="relative md:w-64">
                 <Filter className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
                 <select
-                  className="w-full pl-10 pr-4 py-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none appearance-none bg-white"
+                  className="w-full pl-10 pr-4 py-2 rounded-md border border-gray-600 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none appearance-none bg-gray-800 text-white"
                   value={selectedFilter}
                   onChange={(e) => setSelectedFilter(e.target.value)}
                 >
