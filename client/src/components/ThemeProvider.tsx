@@ -16,12 +16,4 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
   }, []);
 
   return <>{children}</>;
-}
-
-// Simplified hook that always returns dark mode
-export const useTheme = () => {
-  return {
-    theme: "dark" as const,
-    setTheme: () => {}, // No-op function since we don't allow theme switching
-  };
 };
