@@ -174,7 +174,7 @@ function Router() {
           <ClientRegistrationPage />
         </Suspense>
       </Route>
-      
+
 
 
       <Route path="/team">
@@ -217,7 +217,7 @@ function Router() {
           <ConstructionIndustryPage />
         </Suspense>
       </Route>
-      
+
       {/* Temporary demo route */}
       <Route path="/conversion-demo">
         <Suspense fallback={<LoadingFallback />}>
@@ -256,29 +256,29 @@ function Router() {
       </Route>
       <Route path="/resources" component={ResourcesPage} />
       <Route path="/news" component={NewsPage} />
-      
+
       {/* Support System routes */}
       <Route path="/support/assistant" component={AssistantPage} />
       <Route path="/support/ticket" component={TicketPage} />
       <Route path="/support/digest" component={DigestPage} />
-      
+
       {/* Default route should be HomePage */}
       <Route path="/" component={HomePage} />
-      
+
       {/* Diagnostic Dashboard restricted to admin and super_admin */}
       <ProtectedRoute 
         path="/diagnostics" 
         component={DiagnosticDashboard}
         allowedRoles={['admin', 'super_admin']}
       />
-      
+
       {/* Super Admin routes (require super admin privileges) */}
       <ProtectedRoute 
         path="/super-admin" 
         component={SuperAdminDashboard} 
         requireSuperAdmin={true} 
       />
-      
+
       {/* Admin routes (require admin or super admin) */}
       <ProtectedRoute 
         path="/admin" 
@@ -465,7 +465,7 @@ function Router() {
         component={BlueprintOnboardingPage} 
         allowedRoles={['admin', 'super_admin']} 
       />
-      
+
       {/* Client dashboard routes - financial dashboard for Progress clients */}
       <ProtectedRoute 
         path="/client-dashboard" 
@@ -482,7 +482,7 @@ function Router() {
         component={AccountPage} 
         allowedRoles={['client', 'admin', 'super_admin']}
       />
-      
+
       {/* Analytics route with proper admin layout wrapping */}
       <ProtectedRoute 
         path="/admin/analytics" 
@@ -502,7 +502,7 @@ function Router() {
         }}
         allowedRoles={['admin', 'super_admin', 'editor']}
       />
-      
+
       {/* Tools and marketplace routes */}
       <ProtectedRoute path="/tools-dashboard" component={ToolsDashboardPage} />
       <ProtectedRoute path="/tools-hub" component={ToolsLandingPage} />
@@ -569,7 +569,7 @@ function Router() {
       <ProtectedRoute path="/module-library" component={ModuleLibraryPage} />
       <ProtectedRoute path="/tool-marketplace" component={ToolMarketplaceBrowserPage} allowedRoles={['admin', 'super_admin', 'editor']} />
       <ProtectedRoute path="/tools/marketplace" component={lazy(() => import('./pages/tools/marketplace'))} allowedRoles={['admin', 'super_admin', 'editor']} />
-      
+
       {/* Onboarding and setup routes */}
       <ProtectedRoute path="/onboarding" component={OnboardingWelcomePage} />
       <ProtectedRoute path="/new-client-setup" component={NewClientOnboarding} />
@@ -603,7 +603,7 @@ function Router() {
         component={MediaManagementPage} 
         allowedRoles={['admin', 'super_admin', 'editor']} 
       />
-      
+
       {/* Page Builder routes */}
       <ProtectedRoute 
         path="/page-builder" 
@@ -634,7 +634,7 @@ function Router() {
         component={() => <PageBuilderPage />}
         allowedRoles={['admin', 'super_admin', 'editor']} 
       />
-      
+
       {/* Legacy Page Builder routes - now disabled to prevent routing conflicts */}
       {/* 
       <ProtectedRoute 
@@ -653,10 +653,10 @@ function Router() {
         allowedRoles={['admin', 'super_admin', 'editor']} 
       />
       */}
-      
+
       {/* Component demo route */}
       <Route path="/components" component={ComponentDemo} />
-      
+
       {/* Fallback 404 route */}
       <Route component={NotFound} />
     </Switch>
@@ -709,7 +709,7 @@ function App() {
       </QueryClientProvider>
     </ErrorBoundary>
   );
-  
+
   /* DIAGNOSTIC MODE - USED FOR TROUBLESHOOTING
   return (
     <ErrorBoundary contentType="application">
@@ -752,20 +752,20 @@ function App() {
 function FirstTimeUserDetector({ children }: { children: React.ReactNode }) {
   const [, navigate] = useLocation();
   const { user } = useAuth();
-  
+
   // Query current location
   const [location] = useLocation();
-  
+
   // Only redirect authenticated non-admin users who haven't completed onboarding
   useEffect(() => {
     // Skip if user is not logged in or is an admin/super admin
     if (!user) return;
     if (user.userType === 'admin' || user.userType === 'super_admin' || user.userType === 'editor') return;
-    
+
     // For demo purposes, we'll redirect based on simple localStorage check
     // In a production environment, this would use the onboardingState from the backend
     const onboardingComplete = localStorage.getItem('project_context.status') === 'onboarded';
-    
+
     // Skip redirection for specific paths that are allowed before onboarding
     const allowedPaths = [
       '/onboarding',
@@ -777,7 +777,7 @@ function FirstTimeUserDetector({ children }: { children: React.ReactNode }) {
       '/auth',
       '/'
     ];
-    
+
     const isAllowedPath = 
       allowedPaths.includes(location) || 
       location.startsWith('/tools/create/') ||
@@ -787,7 +787,7 @@ function FirstTimeUserDetector({ children }: { children: React.ReactNode }) {
       location.startsWith('/launch-ready') ||
       location.startsWith('/marketplace') ||
       location.startsWith('/page-builder');
-    
+
     // If we need to redirect to onboarding
     if (!onboardingComplete && !isAllowedPath) {
       navigate('/onboarding');

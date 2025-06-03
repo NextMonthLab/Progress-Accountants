@@ -7,7 +7,7 @@ import { useNavigation } from '@/contexts/NavigationContext';
 import QuickActions from '@/components/QuickActions';
 import NotificationsPanel from '@/components/NotificationsPanel';
 import KeyboardShortcutsButton from '@/components/KeyboardShortcutsButton';
-import { ThemeToggle } from '@/components/ThemeToggle';
+// ThemeToggle removed - system uses permanent dark mode
 
 interface SmartContext {
   context: string;
@@ -26,7 +26,7 @@ const SmartContextBanner: React.FC = () => {
   // Load contextual information based on current page
   useEffect(() => {
     setLoading(true);
-    
+
     // In a real implementation, this would call an API endpoint
     // This simulates different contexts based on the current route
     const getContextForRoute = () => {
@@ -68,7 +68,7 @@ const SmartContextBanner: React.FC = () => {
         };
       }
     };
-    
+
     // Simulate API call delay
     setTimeout(() => {
       setSmartContext(getContextForRoute());
@@ -94,7 +94,7 @@ const SmartContextBanner: React.FC = () => {
           ) : (
             <span className="ml-3 text-gray-700 dark:text-gray-300 font-medium">{smartContext.context}</span>
           )}
-          
+
           <div className="hidden sm:flex items-center ml-6 text-xs text-gray-500 dark:text-gray-400">
             <Clock className="h-3 w-3 mr-1" />
             {loading ? (
@@ -104,7 +104,7 @@ const SmartContextBanner: React.FC = () => {
             )}
           </div>
         </div>
-        
+
         <div className="flex items-center mt-1 sm:mt-0">
           <div className="flex sm:hidden items-center text-xs text-gray-500 dark:text-gray-400 mr-2">
             <Clock className="h-3 w-3 mr-1" />
@@ -114,27 +114,27 @@ const SmartContextBanner: React.FC = () => {
               <span>Last activity: {smartContext.lastActivity}</span>
             )}
           </div>
-          
+
           {/* Quick Actions Dropdown */}
           <div className="mr-2">
             <QuickActions />
           </div>
-          
+
           {/* Notifications Panel */}
           <div className="mr-2">
             <NotificationsPanel />
           </div>
-          
+
           {/* Keyboard Shortcuts Button */}
           <div className="mr-2">
             <KeyboardShortcutsButton />
           </div>
-          
+
           {/* Theme Toggle Button */}
           <div className="mr-2">
-            <ThemeToggle variant="ghost" />
+            {/* ThemeToggle removed - system uses permanent dark mode */}
           </div>
-          
+
           {/* View Website Button */}
           <a 
             href="/" 
@@ -145,7 +145,7 @@ const SmartContextBanner: React.FC = () => {
             <Globe className="h-3 w-3 mr-1" />
             View Website
           </a>
-          
+
           <Button 
             variant="ghost" 
             size="sm" 
@@ -157,7 +157,7 @@ const SmartContextBanner: React.FC = () => {
           </Button>
         </div>
       </div>
-      
+
       {/* Intelligent Suggestions */}
       {!loading && smartContext.suggestions.length > 0 && (
         <div className="mt-2 pl-2 sm:pl-6 flex flex-col sm:flex-row sm:items-center text-xs">
