@@ -263,14 +263,14 @@ export default function FoundationPagesOverviewPage() {
   };
   
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 p-6">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-teal-900 to-slate-900 p-6" data-admin="true">
       <Helmet>
-        <title>Foundation Pages | Onboarding</title>
+        <title>Foundation Pages | NextMonth Admin</title>
       </Helmet>
       
       <div className="container mx-auto max-w-6xl">
         <Card className="bg-slate-800/50 border-slate-700 backdrop-blur-sm">
-          <CardHeader className="bg-gradient-to-r from-teal-600 to-teal-700 text-white">
+          <CardHeader className="bg-gradient-to-r from-[var(--nextmonth-teal)] to-teal-700 text-white">
             <CardTitle className="text-3xl font-bold">Build the foundation of your business site</CardTitle>
             <CardDescription className="text-teal-100 text-lg">
               These pages give your customers confidence—and give you a system to grow with.
@@ -284,7 +284,7 @@ export default function FoundationPagesOverviewPage() {
                 <span className="text-sm font-medium text-slate-300">
                   Setup Progress
                 </span>
-                <span className="text-sm font-medium text-teal-400">
+                <span className="text-sm font-medium text-[var(--nextmonth-teal)]">
                   {Math.round(calculateProgress())}%
                 </span>
               </div>
@@ -318,7 +318,7 @@ export default function FoundationPagesOverviewPage() {
                     <div className="flex flex-col sm:flex-row gap-2 mt-4">
                       <Button 
                         onClick={() => handleStartSetup(page)}
-                        className="flex-1 bg-teal-600 hover:bg-teal-700 text-white"
+                        className="flex-1 bg-[var(--nextmonth-teal)] hover:bg-teal-700 text-white"
                         disabled={pageStatuses[page.id] === 'complete'}
                       >
                         {pageStatuses[page.id] === 'complete' ? 'Completed' : 'Start Setup'}
