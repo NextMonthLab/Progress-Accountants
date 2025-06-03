@@ -136,8 +136,8 @@ const IntroSection = () => (
           className="bg-gradient-to-br from-gray-900 to-black p-6 md:p-8 rounded-xl shadow-md border border-gray-800 relative overflow-hidden"
         >
           {/* Decorative elements */}
-          <div className="absolute top-0 right-0 h-24 w-24 bg-purple-50 rounded-full -translate-y-1/3 translate-x-1/3 z-0"></div>
-          <div className="absolute bottom-0 left-0 h-32 w-32 bg-blue-50 rounded-full translate-y-1/2 -translate-x-1/4 z-0"></div>
+          <div className="absolute top-0 right-0 h-24 w-24 bg-purple-900/20 rounded-full -translate-y-1/3 translate-x-1/3 z-0"></div>
+          <div className="absolute bottom-0 left-0 h-32 w-32 bg-blue-900/20 rounded-full translate-y-1/2 -translate-x-1/4 z-0"></div>
           
           <div className="relative z-10">
             <div className="flex items-center mb-4">
