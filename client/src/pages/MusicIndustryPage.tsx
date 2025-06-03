@@ -131,41 +131,81 @@ const MusicIndustryPage = () => {
         <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-black to-blue-900/20" />
         
         <div className="container mx-auto px-6 md:px-8 relative z-10">
-          <motion.div
-            initial="hidden"
-            animate="visible"
-            variants={containerVariants}
-            className="text-center max-w-4xl mx-auto"
-          >
-            <motion.div variants={itemVariants} className="mb-6">
-              <span className="inline-block bg-purple-900/20 text-purple-300 px-4 py-2 rounded-full text-sm font-medium border border-purple-500/30">
-                Music Industry Specialists
-              </span>
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            {/* Left content */}
+            <motion.div
+              initial="hidden"
+              animate="visible"
+              variants={containerVariants}
+              className="text-left"
+            >
+              <motion.div variants={itemVariants} className="mb-6">
+                <span className="inline-block bg-purple-900/20 text-purple-300 px-4 py-2 rounded-full text-sm font-medium border border-purple-500/30">
+                  Music Industry Specialists
+                </span>
+              </motion.div>
+              
+              <motion.h1 variants={itemVariants} className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6">
+                <span className="text-white">
+                  Expert Accounting for
+                </span>
+                <br />
+                <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4]">
+                  the Music Industry
+                </span>
+              </motion.h1>
+              
+              <motion.p variants={itemVariants} className="text-xl text-gray-300 mb-8 leading-relaxed">
+                Helping You Maximize Royalty Revenue, Manage Tour Finances, and Keep Your Music Career on Track
+              </motion.p>
+              
+              <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-4">
+                <Button size="lg" className="bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] hover:shadow-lg hover:shadow-purple-500/25 text-white border-none font-medium">
+                  Book a free consultation
+                </Button>
+                <Button size="lg" variant="outline" className="border-purple-400/30 text-purple-300 hover:bg-purple-900/20 hover:border-purple-400 flex items-center gap-2">
+                  Explore our services
+                  <ArrowRight className="h-4 w-4" />
+                </Button>
+              </motion.div>
             </motion.div>
-            
-            <motion.h1 variants={itemVariants} className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6">
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-300">
-                Expert Accounting for
-              </span>
-              <br />
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4]">
-                Music Professionals
-              </span>
-            </motion.h1>
-            
-            <motion.p variants={itemVariants} className="text-xl md:text-2xl text-gray-300 mb-8 leading-relaxed">
-              From royalty management to tour accounting, we understand the unique financial challenges of the music industry.
-            </motion.p>
-            
-            <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" className="bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] hover:shadow-lg hover:shadow-purple-500/25 text-white border-none font-medium">
-                Get started today
-              </Button>
-              <Button size="lg" variant="outline" className="border-purple-400/30 text-purple-300 hover:bg-purple-900/20 hover:border-purple-400">
-                Learn more
-              </Button>
+
+            {/* Right image section */}
+            <motion.div
+              initial={{ opacity: 0, x: 50 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="relative"
+            >
+              <div className="relative bg-gradient-to-br from-purple-600/20 to-blue-600/20 rounded-2xl p-8 border border-purple-500/30">
+                {/* Music studio placeholder */}
+                <div className="bg-gray-800 rounded-xl h-64 md:h-80 flex items-center justify-center">
+                  <div className="text-center">
+                    <Headphones className="h-16 w-16 text-purple-400 mx-auto mb-4" />
+                    <p className="text-gray-400 text-sm">Music Studio Scene</p>
+                  </div>
+                </div>
+                
+                {/* Floating info card */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.8 }}
+                  className="absolute -bottom-4 -right-4 bg-white rounded-xl p-4 shadow-lg"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="bg-purple-100 p-2 rounded-full">
+                      <Music className="h-5 w-5 text-purple-600" />
+                    </div>
+                    <div>
+                      <div className="font-semibold text-gray-900 text-sm">Royalty Tracking</div>
+                      <div className="text-gray-600 text-xs">Maximize your returns</div>
+                    </div>
+                  </div>
+                </motion.div>
+              </div>
             </motion.div>
-          </motion.div>
+          </div>
         </div>
       </section>
 
