@@ -4,7 +4,7 @@
   /* Public site colors - Updated to Progress brand */
   --public-navy: #000000;
   --public-navy-dark: #000000;
-  --public-orange: #f15a29;
+  --public-orange: #7B3FE4;
   --public-white: #ffffff;
   --public-gray: #f0f0f0;
 }
@@ -34,12 +34,15 @@
 }
 
 .public-btn-secondary {
-  background-color: var(--public-orange);
+  background: linear-gradient(135deg, #7B3FE4 0%, #3FA4E4 100%);
   color: var(--public-white);
+  transition: all 0.3s ease;
 }
 
 .public-btn-secondary:hover {
-  background-color: rgba(241, 90, 41, 0.9); /* Slightly transparent orange */
+  background: linear-gradient(135deg, #6B2FD4 0%, #2F94D4 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(123, 63, 228, 0.25);
 }
 
 .public-btn-outline {
@@ -49,7 +52,7 @@
 }
 
 .public-btn-outline:hover {
-  background-color: var(--public-orange);
+  background: linear-gradient(135deg, #7B3FE4 0%, #3FA4E4 100%);
   border-color: var(--public-orange);
   color: var(--public-white);
 }
