@@ -55,7 +55,7 @@ export default function NextMonthStylePage() {
             <div className="flex items-center space-x-8">
               <div className="flex items-center">
                 <img 
-                  src="/nextmonth-logo.png" 
+                  src="https://res.cloudinary.com/drl0fxrkq/image/upload/v1746537994/8A3D82EC-31EF-4209-85E2-D1D284F5E960_lnzuah.png" 
                   alt="NextMonth" 
                   className="h-6"
                   onError={(e) => {
