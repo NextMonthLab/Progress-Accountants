@@ -78,14 +78,14 @@ const NewsPage = () => {
   return (
     <div>
       {/* Hero Section with Background */}
-      <div className="bg-gradient-to-b from-[var(--navy)] to-blue-900 py-16 mb-10">
+      <div className="bg-gradient-to-b from-black to-gray-900 py-16 mb-10">
         <div className="container mx-auto px-6 md:px-8">
           <div className="text-center">
             <h1 className="text-4xl md:text-5xl font-bold text-white mb-4 tracking-tight">
-              News & <span className="text-[var(--orange)]">Insights</span>
+              News & <span className="bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] bg-clip-text text-transparent">Insights</span>
             </h1>
-            <div className="w-24 h-1 bg-[var(--orange)] mx-auto my-6"></div>
-            <p className="text-lg text-gray-100 max-w-3xl mx-auto leading-relaxed">
+            <div className="w-24 h-1 bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] mx-auto my-6"></div>
+            <p className="text-lg text-gray-300 max-w-3xl mx-auto leading-relaxed">
               Stay up to date with the latest accounting news, industry insights, and expert advice 
               to help your business thrive financially.
             </p>
@@ -96,52 +96,52 @@ const NewsPage = () => {
       {/* Featured Content Cards */}
       <div className="container mx-auto px-6 md:px-8 mb-16">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-          <Card className="bg-gradient-to-br from-blue-50 to-white shadow-md border-t-4 border-t-blue-500 hover:shadow-lg transition-shadow">
+          <Card className="bg-gradient-to-br from-gray-900 to-black shadow-md border-t-4 border-t-purple-500 hover:shadow-lg hover:shadow-purple-500/25 transition-all">
             <CardHeader className="pb-2">
-              <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center mb-4">
-                <FileText className="text-blue-500 h-6 w-6" />
+              <div className="w-12 h-12 rounded-full bg-purple-900/20 flex items-center justify-center mb-4">
+                <FileText className="text-purple-400 h-6 w-6" />
               </div>
-              <CardTitle className="text-[var(--navy)]">Latest Articles</CardTitle>
+              <CardTitle className="text-white">Latest Articles</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-gray-600">Stay informed with our most recent accounting and tax updates.</p>
+              <p className="text-gray-300">Stay informed with our most recent accounting and tax updates.</p>
             </CardContent>
             <CardFooter>
-              <Button variant="outline" className="border-blue-500 text-blue-600 hover:bg-blue-50" onClick={() => setSelectedCategory(null)}>
+              <Button variant="outline" className="border-purple-500 text-purple-400 hover:bg-purple-900/20" onClick={() => setSelectedCategory(null)}>
                 Browse Articles
               </Button>
             </CardFooter>
           </Card>
           
-          <Card className="bg-gradient-to-br from-orange-50 to-white shadow-md border-t-4 border-t-[var(--orange)] hover:shadow-lg transition-shadow">
+          <Card className="bg-gradient-to-br from-gray-900 to-black shadow-md border-t-4 border-t-purple-500 hover:shadow-lg hover:shadow-purple-500/25 transition-all">
             <CardHeader className="pb-2">
-              <div className="w-12 h-12 rounded-full bg-orange-100 flex items-center justify-center mb-4">
-                <BookOpen className="text-[var(--orange)] h-6 w-6" />
+              <div className="w-12 h-12 rounded-full bg-purple-900/20 flex items-center justify-center mb-4">
+                <BookOpen className="text-purple-400 h-6 w-6" />
               </div>
-              <CardTitle className="text-[var(--navy)]">Industry Insights</CardTitle>
+              <CardTitle className="text-white">Industry Insights</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-gray-600">Discover in-depth analysis of trends in various industries.</p>
+              <p className="text-gray-300">Discover in-depth analysis of trends in various industries.</p>
             </CardContent>
             <CardFooter>
-              <Button variant="outline" className="border-[var(--orange)] text-[var(--orange)] hover:bg-orange-50">
+              <Button variant="outline" className="border-purple-500 text-purple-400 hover:bg-purple-900/20">
                 Explore Insights
               </Button>
             </CardFooter>
           </Card>
           
-          <Card className="bg-gradient-to-br from-green-50 to-white shadow-md border-t-4 border-t-green-500 hover:shadow-lg transition-shadow">
+          <Card className="bg-gradient-to-br from-gray-900 to-black shadow-md border-t-4 border-t-purple-500 hover:shadow-lg hover:shadow-purple-500/25 transition-all">
             <CardHeader className="pb-2">
-              <div className="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center mb-4">
-                <ClipboardList className="text-green-500 h-6 w-6" />
+              <div className="w-12 h-12 rounded-full bg-purple-900/20 flex items-center justify-center mb-4">
+                <ClipboardList className="text-purple-400 h-6 w-6" />
               </div>
-              <CardTitle className="text-[var(--navy)]">Tax Guides</CardTitle>
+              <CardTitle className="text-white">Tax Guides</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-gray-600">Comprehensive guides to help navigate complex tax situations.</p>
+              <p className="text-gray-300">Comprehensive guides to help navigate complex tax situations.</p>
             </CardContent>
             <CardFooter>
-              <Button variant="outline" className="border-green-500 text-green-600 hover:bg-green-50">
+              <Button variant="outline" className="border-purple-500 text-purple-400 hover:bg-purple-900/20">
                 View Guides
               </Button>
             </CardFooter>
@@ -152,19 +152,19 @@ const NewsPage = () => {
           {/* Main content */}
           <div className="w-full md:w-2/3">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-bold text-[var(--navy)]">Latest Articles</h2>
-              <div className="text-sm text-gray-500">
+              <h2 className="text-2xl font-bold text-white">Latest Articles</h2>
+              <div className="text-sm text-gray-400">
                 {filteredPosts.length} {filteredPosts.length === 1 ? 'article' : 'articles'} found
               </div>
             </div>
             
             {/* Search and filter area */}
-            <div className="bg-gray-50 p-4 rounded-lg border mb-8">
+            <div className="bg-gray-900 p-4 rounded-lg border border-gray-800 mb-8">
               <div className="relative mb-4">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                 <Input
                   placeholder="Search articles..."
-                  className="pl-10 border-gray-300 focus:border-[var(--orange)] focus:ring-[var(--orange)]"
+                  className="pl-10 border-gray-600 bg-gray-800 text-white placeholder-gray-400 focus:border-purple-500 focus:ring-purple-500"
                   value={searchQuery}
                   onChange={(e) => {
                     setSearchQuery(e.target.value);
@@ -202,13 +202,13 @@ const NewsPage = () => {
 
             {/* Blog posts list */}
             {currentPosts.length === 0 ? (
-              <div className="text-center py-12 bg-gray-50 rounded-lg border">
-                <h3 className="text-xl font-medium text-gray-700 mb-2">No articles found</h3>
-                <p className="text-gray-500">
+              <div className="text-center py-12 bg-gray-900 rounded-lg border border-gray-800">
+                <h3 className="text-xl font-medium text-white mb-2">No articles found</h3>
+                <p className="text-gray-400">
                   Try adjusting your search or filter criteria to find what you're looking for.
                 </p>
                 <Button
-                  className="mt-4"
+                  className="mt-4 bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] hover:shadow-lg hover:shadow-purple-500/25"
                   onClick={() => {
                     setSearchQuery('');
                     setSelectedCategory(null);
@@ -222,7 +222,7 @@ const NewsPage = () => {
             ) : (
               <div className="space-y-8">
                 {currentPosts.map(post => (
-                  <Card key={post.id} className="overflow-hidden hover:shadow-lg transition-shadow border border-gray-200">
+                  <Card key={post.id} className="overflow-hidden hover:shadow-lg hover:shadow-purple-500/25 transition-all border border-gray-800 bg-gray-900">
                     <div className="grid md:grid-cols-3 gap-0">
                       <div className="md:col-span-1">
                         <img
@@ -233,17 +233,17 @@ const NewsPage = () => {
                       </div>
                       <div className="md:col-span-2 p-0">
                         <CardHeader>
-                          <div className="flex items-center gap-2 text-sm text-gray-500 mb-2">
+                          <div className="flex items-center gap-2 text-sm text-gray-400 mb-2">
                             <Calendar className="h-4 w-4" />
                             <span>{post.date}</span>
                             <span className="mx-1">•</span>
                             <User className="h-4 w-4" />
                             <span>{post.author}</span>
                           </div>
-                          <CardTitle className="text-xl font-bold text-[var(--navy)] hover:text-[var(--orange)] transition-colors">
+                          <CardTitle className="text-xl font-bold text-white hover:text-purple-400 transition-colors">
                             <a href={`/news/${post.slug}`}>{post.title}</a>
                           </CardTitle>
-                          <CardDescription className="line-clamp-2">
+                          <CardDescription className="line-clamp-2 text-gray-300">
                             {post.excerpt}
                           </CardDescription>
                         </CardHeader>
@@ -254,7 +254,7 @@ const NewsPage = () => {
                                 key={tag}
                                 variant="outline"
                                 size="sm"
-                                className="rounded-full text-xs py-1 h-auto"
+                                className="rounded-full text-xs py-1 h-auto border-gray-600 text-gray-300 hover:bg-purple-900/20 hover:border-purple-500"
                                 onClick={() => {
                                   setSelectedTag(tag);
                                   setCurrentPage(1);
