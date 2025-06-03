@@ -263,7 +263,7 @@ export default function FoundationPagesOverviewPage() {
   };
   
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-teal-900 to-slate-900 p-6" data-admin="true">
+    <div className="min-h-screen bg-slate-900 p-6" data-admin="true">
       <Helmet>
         <title>Foundation Pages | NextMonth Admin</title>
       </Helmet>
