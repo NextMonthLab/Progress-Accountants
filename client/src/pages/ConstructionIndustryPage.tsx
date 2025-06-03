@@ -108,10 +108,10 @@ const CTASection = () => (
         Find out how we can make your business more profitable—and your finances less stressful.
       </p>
       <div className="flex flex-col sm:flex-row gap-4">
-        <Button size="lg" className="bg-orange-500 hover:bg-orange-600 text-white border-none font-medium">
+        <Button size="lg" className="bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] hover:from-[#6B2FD4] hover:to-[#2F94D4] text-white border-none font-medium">
           Book a consultation
         </Button>
-        <Button size="lg" className="bg-white text-navy hover:bg-gray-100 font-medium">
+        <Button size="lg" className="bg-gray-800 text-white hover:bg-gray-700 font-medium">
           View our services
         </Button>
       </div>
@@ -123,12 +123,12 @@ const CTASection = () => (
 const ClientType = ({ icon: Icon, label }: { icon: React.ElementType, label: string }) => (
   <motion.div
     variants={itemVariants}
-    className="flex flex-col items-center p-5 bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow text-center"
+    className="flex flex-col items-center p-5 bg-gray-900 rounded-xl shadow-sm hover:shadow-md transition-shadow text-center border border-gray-800"
   >
-    <div className="p-3 rounded-full bg-orange-100 mb-4">
-      <Icon className="h-6 w-6 text-orange-600" />
+    <div className="p-3 rounded-full bg-purple-900/20 mb-4">
+      <Icon className="h-6 w-6 text-purple-400" />
     </div>
-    <span className="font-medium text-navy">{label}</span>
+    <span className="font-medium text-white">{label}</span>
   </motion.div>
 );
 
@@ -286,10 +286,10 @@ const ConstructionIndustryPage = () => {
           variants={containerVariants}
         >
           <motion.div variants={itemVariants} className="text-center mb-12">
-            <span className="inline-block px-3 py-1 rounded-full bg-blue-100 text-blue-700 font-medium text-sm mb-3">
+            <span className="inline-block px-3 py-1 rounded-full bg-purple-900/20 text-purple-400 font-medium text-sm mb-3">
               Our Specialist Services
             </span>
-            <h2 className="text-3xl md:text-4xl font-bold text-navy mb-6">Why Construction Businesses Choose Progress</h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">Why Construction Businesses Choose Progress</h2>
           </motion.div>
           
           <div className="grid md:grid-cols-2 gap-8 mb-16">
@@ -330,7 +330,7 @@ const ConstructionIndustryPage = () => {
           variants={containerVariants}
         >
           <motion.div variants={itemVariants} className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-navy mb-6">What Our Clients Say</h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">What Our Clients Say</h2>
           </motion.div>
           
           <div className="grid md:grid-cols-2 gap-8 mb-16">
@@ -357,8 +357,8 @@ const ConstructionIndustryPage = () => {
           variants={containerVariants}
         >
           <motion.div variants={itemVariants} className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-navy mb-6">Trusted by Builders, Developers, and Tradespeople</h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto mb-8">
+            <h2 className="text-3xl font-bold text-white mb-6">Trusted by Builders, Developers, and Tradespeople</h2>
+            <p className="text-lg text-gray-300 max-w-3xl mx-auto mb-8">
               Whether you're laying bricks or managing builds, we'll handle the numbers that keep your business moving forward. We work with:
             </p>
           </motion.div>
@@ -382,30 +382,30 @@ const ConstructionIndustryPage = () => {
           variants={containerVariants}
         >
           <motion.div variants={itemVariants} className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-navy mb-6">Our Tech-Savvy Construction Support</h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto mb-8">
+            <h2 className="text-3xl font-bold text-white mb-6">Our Tech-Savvy Construction Support</h2>
+            <p className="text-lg text-gray-300 max-w-3xl mx-auto mb-8">
               We connect your bookkeeping, payroll, and job costing through cloud-based systems like Xero. That means:
             </p>
           </motion.div>
           
           <div className="max-w-4xl mx-auto">
-            <motion.div variants={itemVariants} className="bg-white rounded-xl shadow-md p-6 md:p-8 mb-12">
+            <motion.div variants={itemVariants} className="bg-gray-900 rounded-xl shadow-md p-6 md:p-8 mb-12 border border-gray-800">
               <ul className="space-y-4">
                 <li className="flex items-start">
-                  <CheckCircle className="h-5 w-5 text-green-500 mr-3 shrink-0 mt-1" />
-                  <p>Weekly and monthly cash flow snapshots</p>
+                  <CheckCircle className="h-5 w-5 text-purple-400 mr-3 shrink-0 mt-1" />
+                  <p className="text-gray-300">Weekly and monthly cash flow snapshots</p>
                 </li>
                 <li className="flex items-start">
-                  <CheckCircle className="h-5 w-5 text-green-500 mr-3 shrink-0 mt-1" />
-                  <p>Job-specific reports to track real margins</p>
+                  <CheckCircle className="h-5 w-5 text-purple-400 mr-3 shrink-0 mt-1" />
+                  <p className="text-gray-300">Job-specific reports to track real margins</p>
                 </li>
                 <li className="flex items-start">
-                  <CheckCircle className="h-5 w-5 text-green-500 mr-3 shrink-0 mt-1" />
-                  <p>Tax alerts and reminders that keep you in control</p>
+                  <CheckCircle className="h-5 w-5 text-purple-400 mr-3 shrink-0 mt-1" />
+                  <p className="text-gray-300">Tax alerts and reminders that keep you in control</p>
                 </li>
                 <li className="flex items-start">
-                  <CheckCircle className="h-5 w-5 text-green-500 mr-3 shrink-0 mt-1" />
-                  <p>Advice tailored to the realities of construction work</p>
+                  <CheckCircle className="h-5 w-5 text-purple-400 mr-3 shrink-0 mt-1" />
+                  <p className="text-gray-300">Advice tailored to the realities of construction work</p>
                 </li>
               </ul>
             </motion.div>
