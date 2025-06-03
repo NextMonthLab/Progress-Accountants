@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useContext } from "react";
+import { createContext, ReactNode, useContext, Suspense } from "react";
 import {
   useQuery,
   useMutation,
@@ -220,18 +220,20 @@ export function AuthProvider({
   });
 
   return (
-    <AuthContext.Provider
-      value={{
-        user: user || null,
-        isLoading,
-        error,
-        loginMutation,
-        logoutMutation,
-        registerMutation,
-      }}
-    >
-      {children}
-    </AuthContext.Provider>
+    <Suspense fallback={<div className="flex items-center justify-center min-h-screen"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div></div>}>
+      <AuthContext.Provider
+        value={{
+          user: user || null,
+          isLoading,
+          error,
+          loginMutation,
+          logoutMutation,
+          registerMutation,
+        }}
+      >
+        {children}
+      </AuthContext.Provider>
+    </Suspense>
   );
 }
 

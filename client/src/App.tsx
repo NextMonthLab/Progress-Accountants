@@ -84,8 +84,8 @@ const MyToolsPage = lazy(() => import("@/pages/MyToolsPage"));
 
 const BrandGuidelinesPage = lazy(() => import("@/pages/BrandGuidelinesPage"));
 const BusinessIdentityPage = lazy(() => import("@/pages/BusinessIdentityPage"));
-const HomepageSetupPage = lazy(() => import("@/pages/HomepageSetupPage"));
-const FoundationPagesOverviewPage = lazy(() => import("@/pages/FoundationPagesOverviewPage"));
+import HomepageSetupPage from "@/pages/HomepageSetupPage";
+import FoundationPagesOverviewPage from "@/pages/FoundationPagesOverviewPage";
 const AboutSetupPage = lazy(() => import("@/pages/AboutSetupPage"));
 const ServicesSetupPage = lazy(() => import("@/pages/ServicesSetupPage"));
 const ContactSetupPage = lazy(() => import("@/pages/ContactSetupPage"));
