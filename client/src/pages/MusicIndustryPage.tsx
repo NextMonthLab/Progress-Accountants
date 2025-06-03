@@ -50,14 +50,14 @@ const FeatureCard = ({
 }) => (
   <motion.div 
     variants={itemVariants}
-    className="bg-white rounded-xl shadow-md overflow-hidden border border-gray-100"
+    className="bg-gray-900 rounded-xl shadow-md overflow-hidden border border-gray-800"
   >
     <div className="p-6 sm:p-8">
-      <div className={`p-3 rounded-full w-fit ${accentColor} mb-5`}>
-        <Icon className="h-6 w-6 text-white" />
+      <div className="p-3 rounded-full w-fit bg-purple-900/20 mb-5">
+        <Icon className="h-6 w-6 text-purple-400" />
       </div>
-      <h3 className="text-xl font-bold text-navy mb-3">{title}</h3>
-      <p className="text-gray-600">{description}</p>
+      <h3 className="text-xl font-bold text-white mb-3">{title}</h3>
+      <p className="text-gray-300">{description}</p>
     </div>
   </motion.div>
 );
@@ -66,18 +66,18 @@ const FeatureCard = ({
 const Testimonial = ({ quote, author, role }: { quote: string; author: string; role: string }) => (
   <motion.div 
     variants={itemVariants}
-    className="bg-gray-50 rounded-xl p-6 border border-gray-100"
+    className="bg-gray-900 rounded-xl p-6 border border-gray-800"
   >
     <div className="flex flex-col">
       <div className="mb-4">
         {[1, 2, 3, 4, 5].map((star) => (
-          <span key={star} className="text-orange-500">★</span>
+          <span key={star} className="text-purple-400">★</span>
         ))}
       </div>
-      <p className="text-navy italic mb-4 text-lg">"{quote}"</p>
+      <p className="text-white italic mb-4 text-lg">"{quote}"</p>
       <div className="mt-auto">
-        <p className="font-semibold text-navy">{author}</p>
-        <p className="text-gray-600 text-sm">{role}</p>
+        <p className="font-semibold text-white">{author}</p>
+        <p className="text-gray-300 text-sm">{role}</p>
       </div>
     </div>
   </motion.div>
@@ -109,10 +109,10 @@ const CTASection = () => (
         Let's talk through your situation—whether you're a solo artist, studio owner, or label founder. We'll show you how to build a financial setup that supports your music, not smothers it.
       </p>
       <div className="flex flex-col sm:flex-row gap-4">
-        <Button size="lg" className="bg-orange-500 hover:bg-orange-600 text-white border-none font-medium">
+        <Button size="lg" className="bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] hover:shadow-lg hover:shadow-purple-500/25 text-white border-none font-medium">
           Book a consultation
         </Button>
-        <Button size="lg" className="bg-white text-navy hover:bg-gray-100 font-medium">
+        <Button size="lg" className="bg-white text-gray-900 hover:bg-gray-100 font-medium">
           View our services
         </Button>
       </div>
@@ -124,12 +124,12 @@ const CTASection = () => (
 const ClientType = ({ icon: Icon, label }: { icon: React.ElementType, label: string }) => (
   <motion.div
     variants={itemVariants}
-    className="flex flex-col items-center p-5 bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow text-center"
+    className="flex flex-col items-center p-5 bg-gray-900 rounded-xl shadow-sm hover:shadow-md hover:shadow-purple-500/25 transition-all text-center border border-gray-800"
   >
-    <div className="p-3 rounded-full bg-orange-100 mb-4">
-      <Icon className="h-6 w-6 text-orange-600" />
+    <div className="p-3 rounded-full bg-purple-900/20 mb-4">
+      <Icon className="h-6 w-6 text-purple-400" />
     </div>
-    <span className="font-medium text-navy">{label}</span>
+    <span className="font-medium text-white">{label}</span>
   </motion.div>
 );
 
@@ -329,7 +329,7 @@ const MusicIndustryPage = () => {
           variants={containerVariants}
         >
           <motion.div variants={itemVariants} className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-navy mb-6">What Our Clients Say</h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">What Our Clients Say</h2>
           </motion.div>
           
           <div className="grid md:grid-cols-2 gap-8 mb-16">
@@ -356,8 +356,8 @@ const MusicIndustryPage = () => {
           variants={containerVariants}
         >
           <motion.div variants={itemVariants} className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-navy mb-6">Trusted by Artists, Studios, and Music Managers</h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto mb-8">
+            <h2 className="text-3xl font-bold text-white mb-6">Trusted by Artists, Studios, and Music Managers</h2>
+            <p className="text-lg text-gray-300 max-w-3xl mx-auto mb-8">
               Whether you're mixing your next EP or building a label, we're here to support your creative and financial goals. We've worked with:
             </p>
           </motion.div>
@@ -381,31 +381,31 @@ const MusicIndustryPage = () => {
           variants={containerVariants}
         >
           <motion.div variants={itemVariants} className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-navy mb-6">Our Tech-Forward Support</h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto mb-8">
+            <h2 className="text-3xl font-bold text-white mb-6">Our Tech-Forward Support</h2>
+            <p className="text-lg text-gray-300 max-w-3xl mx-auto mb-8">
               We use cloud-based platforms like Xero to give you real-time visibility into your income and expenses. That means:
             </p>
           </motion.div>
           
           <div className="max-w-4xl mx-auto">
-            <motion.div variants={itemVariants} className="bg-white rounded-xl shadow-md p-6 md:p-8 mb-12">
+            <motion.div variants={itemVariants} className="bg-gray-900 rounded-xl shadow-md p-6 md:p-8 mb-12 border border-gray-800">
               <ul className="space-y-4">
                 <li className="flex items-start">
-                  <CheckCircle className="h-5 w-5 text-green-500 mr-3 shrink-0 mt-1" />
-                  <p>Snapshot views of income from Spotify, YouTube, and distributors</p>
+                  <CheckCircle className="h-5 w-5 text-purple-400 mr-3 shrink-0 mt-1" />
+                  <p className="text-gray-300">Snapshot views of income from Spotify, YouTube, and distributors</p>
                 </li>
                 <li className="flex items-start">
-                  <CheckCircle className="h-5 w-5 text-green-500 mr-3 shrink-0 mt-1" />
-                  <p>Categorised expenses from tours, equipment, and production</p>
+                  <CheckCircle className="h-5 w-5 text-purple-400 mr-3 shrink-0 mt-1" />
+                  <p className="text-gray-300">Categorised expenses from tours, equipment, and production</p>
                 </li>
                 <li className="flex items-start">
-                  <CheckCircle className="h-5 w-5 text-green-500 mr-3 shrink-0 mt-1" />
-                  <p>Real-time tax estimates so there are no nasty surprises</p>
+                  <CheckCircle className="h-5 w-5 text-purple-400 mr-3 shrink-0 mt-1" />
+                  <p className="text-gray-300">Real-time tax estimates so there are no nasty surprises</p>
                 </li>
               </ul>
               
-              <div className="mt-6 pt-6 border-t border-gray-100">
-                <p className="text-navy font-medium">Prefer voice notes to spreadsheets? We adapt to your workflow—not the other way around.</p>
+              <div className="mt-6 pt-6 border-t border-gray-800">
+                <p className="text-white font-medium">Prefer voice notes to spreadsheets? We adapt to your workflow—not the other way around.</p>
               </div>
             </motion.div>
           </div>
