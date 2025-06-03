@@ -126,14 +126,14 @@ const HeroSection = () => {
 
 // Introduction section
 const IntroSection = () => (
-  <section className="py-14 bg-white">
+  <section className="py-14 bg-black">
     <div className="container mx-auto px-6 md:px-8">
       <div className="max-w-4xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="bg-gradient-to-br from-gray-50 to-white p-6 md:p-8 rounded-xl shadow-md border border-gray-100 relative overflow-hidden"
+          className="bg-gradient-to-br from-gray-900 to-black p-6 md:p-8 rounded-xl shadow-md border border-gray-800 relative overflow-hidden"
         >
           {/* Decorative elements */}
           <div className="absolute top-0 right-0 h-24 w-24 bg-purple-50 rounded-full -translate-y-1/3 translate-x-1/3 z-0"></div>
@@ -142,32 +142,32 @@ const IntroSection = () => (
           <div className="relative z-10">
             <div className="flex items-center mb-4">
               <Info className="h-6 w-6 text-purple-500 mr-3 flex-shrink-0" />
-              <h3 className="text-xl font-semibold text-navy">Why We Built This Resource</h3>
+              <h3 className="text-xl font-semibold text-white">Why We Built This Resource</h3>
             </div>
-            <p className="text-gray-700 text-lg leading-relaxed mb-4">
+            <p className="text-gray-300 text-lg leading-relaxed mb-4">
               Running a business can feel like a full-time juggling act. That's why we've created this page—to give you quick access to the essential contacts and key dates that every UK business owner should know. All the official resources in one place, updated regularly by our team.
             </p>
             <div className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <div className="bg-blue-50 p-4 rounded-lg border border-blue-100">
+              <div className="bg-gray-800 p-4 rounded-lg border border-gray-700">
                 <div className="flex items-center mb-2">
-                  <Building2 className="h-5 w-5 text-blue-500 mr-2" />
-                  <span className="font-medium text-navy">Directory</span>
+                  <Building2 className="h-5 w-5 text-blue-400 mr-2" />
+                  <span className="font-medium text-white">Directory</span>
                 </div>
-                <p className="text-sm text-gray-600">Critical business contacts all in one place</p>
+                <p className="text-sm text-gray-400">Critical business contacts all in one place</p>
               </div>
-              <div className="bg-purple-50 p-4 rounded-lg border border-purple-100">
+              <div className="bg-gray-800 p-4 rounded-lg border border-gray-700">
                 <div className="flex items-center mb-2">
-                  <Calendar className="h-5 w-5 text-purple-500 mr-2" />
-                  <span className="font-medium text-navy">Deadlines</span>
+                  <Calendar className="h-5 w-5 text-purple-400 mr-2" />
+                  <span className="font-medium text-white">Deadlines</span>
                 </div>
-                <p className="text-sm text-gray-600">Never miss important tax & filing dates</p>
+                <p className="text-sm text-gray-400">Never miss important tax & filing dates</p>
               </div>
-              <div className="bg-green-50 p-4 rounded-lg border border-green-100">
+              <div className="bg-gray-800 p-4 rounded-lg border border-gray-700">
                 <div className="flex items-center mb-2">
-                  <Download className="h-5 w-5 text-green-500 mr-2" />
-                  <span className="font-medium text-navy">Downloads</span>
+                  <Download className="h-5 w-5 text-green-400 mr-2" />
+                  <span className="font-medium text-white">Downloads</span>
                 </div>
-                <p className="text-sm text-gray-600">Free printable resources to keep handy</p>
+                <p className="text-sm text-gray-400">Free printable resources to keep handy</p>
               </div>
             </div>
           </div>
@@ -198,7 +198,7 @@ const OrganizationCard = ({ organization }: { organization: typeof organizations
               href={organization.website} 
               target="_blank" 
               rel="noopener noreferrer"
-              className="text-blue-600 hover:text-blue-800 hover:underline"
+              className="text-purple-600 hover:text-purple-800 hover:underline"
             >
               {organization.website.replace(/^https?:\/\/(www\.)?/, '')}
             </a>
@@ -302,7 +302,7 @@ const DirectorySection = () => {
   );
 
   return (
-    <section className="py-12 bg-gray-50">
+    <section className="py-12 bg-black">
       <div className="container mx-auto px-6 md:px-8">
         <motion.div
           initial="hidden"
@@ -312,8 +312,8 @@ const DirectorySection = () => {
           className="max-w-6xl mx-auto"
         >
           <motion.div variants={itemVariants} className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-navy mb-4">National SME Directory</h2>
-            <p className="text-gray-600 max-w-3xl mx-auto">
+            <h2 className="text-3xl font-bold text-white mb-4">National SME Directory</h2>
+            <p className="text-gray-300 max-w-3xl mx-auto">
               Get in touch with the essential organizations that every UK business owner should know. We keep these details updated so you always have the right contact information.
             </p>
           </motion.div>
@@ -326,7 +326,7 @@ const DirectorySection = () => {
                 <input
                   type="text"
                   placeholder="Search organizations..."
-                  className="w-full pl-10 pr-4 py-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none"
+                  className="w-full pl-10 pr-4 py-2 rounded-md border border-gray-600 bg-gray-800 text-white placeholder-gray-400 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
