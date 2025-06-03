@@ -178,34 +178,36 @@ export default function StudioPage() {
       {/* Hero Section */}
       <section 
         ref={sectionRefs.hero}
-        className="py-16 md:py-24 fade-in-section" 
-        style={{ backgroundColor: 'var(--navy)' }}
+        className="py-20 relative overflow-hidden fade-in-section"
       >
-        <div className="container mx-auto px-4">
+        <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-purple-900/40"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-900/20 via-transparent to-transparent"></div>
+        <div className="container mx-auto px-12 md:px-16 relative z-10">
           <div className="flex flex-col md:flex-row items-center">
             <div className="md:w-1/2 md:pr-8 text-white">
-              <h1 className="font-poppins font-bold text-3xl md:text-5xl mb-4">
-                🎙️ Podcast & Video Studio Hire in Banbury
+              <h1 className="text-4xl md:text-6xl font-bold mb-6 text-white leading-tight">
+                🎙️ Podcast & Video{" "}
+                <span className="bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">Studio</span>{" "}
+                Hire in Banbury
               </h1>
-              <h2 className="font-poppins text-xl md:text-2xl mb-6 text-gray-200">
+              <h2 className="text-xl md:text-2xl mb-8 text-slate-300 leading-relaxed">
                 Broadcast-quality. Acoustically treated. Fully supported.
               </h2>
-              <p className="text-lg mb-6 text-gray-300">
+              <p className="text-lg mb-8 text-slate-300 leading-relaxed">
                 Looking for a professional video or podcast studio near Banbury? The Progress Studio is a fully equipped broadcast-quality space — purpose-built for small business owners, creators, and content-first brands who want to sound and look incredible without travelling miles or renting a London setup.
               </p>
-              <div className="bg-white/10 p-6 rounded-lg mb-6">
-                <p className="text-lg mb-2">
+              <div className="bg-gradient-to-br from-slate-800/90 to-slate-900/90 border border-slate-600/50 p-6 rounded-xl shadow-lg backdrop-blur-sm mb-8">
+                <p className="text-lg mb-2 text-slate-300">
                   <span className="font-bold text-white">Progress clients?</span> You get free studio access every month.
                 </p>
-                <p className="text-lg">
+                <p className="text-lg text-slate-300">
                   <span className="font-bold text-white">Other businesses?</span> You're more than welcome to book too.
                 </p>
               </div>
               <a href="#booking-form">
                 <Button 
                   size="lg" 
-                  style={{ backgroundColor: 'var(--orange)' }}
-                  className="px-8 py-6 text-lg glow-on-hover hover:-translate-y-[2px] transition duration-300"
+                  className="px-8 py-4 bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] text-white rounded-lg hover:shadow-lg hover:shadow-purple-500/25 hover:-translate-y-1 transition-all duration-300 font-medium text-lg"
                 >
                   Book Studio Time
                 </Button>
@@ -229,19 +231,18 @@ export default function StudioPage() {
       <section 
         ref={sectionRefs.features}
         id="features" 
-        className="py-16 md:py-24 bg-white fade-in-section"
+        className="py-20 relative overflow-hidden fade-in-section"
       >
-        <div className="container mx-auto px-4">
+        <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-purple-900/40"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-900/20 via-transparent to-transparent"></div>
+        <div className="container mx-auto px-12 md:px-16 relative z-10">
           <div className="text-center max-w-3xl mx-auto mb-16">
-            <h3 
-              className="font-poppins font-bold text-2xl md:text-3xl mb-6"
-              style={{ color: 'var(--navy)' }}
-            >
+            <h3 className="text-3xl md:text-4xl font-bold mb-6 text-white">
               What's included in every session
             </h3>
           </div>
           
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-3 gap-8">
             {studioFeatures.map((feature, index) => {
               // Map feature image name to Cloudinary image URL
               let imageUrl;
@@ -261,7 +262,7 @@ export default function StudioPage() {
               return (
                 <Card 
                   key={index} 
-                  className="hover-scale transition duration-300 shadow-md overflow-hidden"
+                  className="bg-gradient-to-br from-slate-800/90 to-slate-900/90 border border-slate-600/50 hover:border-purple-500/50 transition-all duration-300 shadow-lg hover:shadow-purple-500/25 hover:-translate-y-2 overflow-hidden backdrop-blur-sm"
                 >
                   <div className="h-48 overflow-hidden">
                     <img 
@@ -271,13 +272,10 @@ export default function StudioPage() {
                     />
                   </div>
                   <CardContent className="p-6">
-                    <h4 
-                      className="font-poppins font-semibold text-lg mb-2"
-                      style={{ color: 'var(--navy)' }}
-                    >
+                    <h4 className="font-semibold text-lg mb-2 text-white">
                       {feature.title}
                     </h4>
-                    <p style={{ color: 'var(--dark-grey)' }}>
+                    <p className="text-slate-300">
                       {feature.description}
                     </p>
                   </CardContent>
@@ -292,13 +290,14 @@ export default function StudioPage() {
       <section 
         ref={sectionRefs.location}
         id="location" 
-        className="py-16 md:py-24 fade-in-section"
-        style={{ backgroundColor: 'var(--light-grey)' }}
+        className="py-20 relative overflow-hidden fade-in-section"
       >
-        <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row items-center gap-10">
+        <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-purple-900/40"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-900/20 via-transparent to-transparent"></div>
+        <div className="container mx-auto px-12 md:px-16 relative z-10">
+          <div className="flex flex-col md:flex-row items-center gap-12">
             <div className="md:w-1/2">
-              <div className="rounded-lg overflow-hidden shadow-lg">
+              <div className="rounded-xl overflow-hidden shadow-lg border border-slate-600/50">
                 <img 
                   src={studioImages.location_map}
                   alt="Studio Location Map"
@@ -308,18 +307,15 @@ export default function StudioPage() {
               </div>
             </div>
             <div className="md:w-1/2">
-              <h3 
-                className="font-poppins font-bold text-2xl md:text-3xl mb-4"
-                style={{ color: 'var(--navy)' }}
-              >
+              <h3 className="text-3xl md:text-4xl font-bold mb-6 text-white">
                 Perfectly located in Banbury
               </h3>
-              <p className="text-lg mb-6" style={{ color: 'var(--dark-grey)' }}>
+              <p className="text-lg mb-8 text-slate-300 leading-relaxed">
                 We're based just off Banbury town centre in Oxfordshire — ideal for businesses from Oxford, Bicester, Leamington Spa, Brackley, and beyond. Free parking available.
               </p>
-              <div className="bg-white p-6 rounded-lg shadow-md">
-                <h4 className="font-semibold mb-2" style={{ color: 'var(--navy)' }}>Address:</h4>
-                <p style={{ color: 'var(--dark-grey)' }}>
+              <div className="bg-gradient-to-br from-slate-800/90 to-slate-900/90 border border-slate-600/50 p-6 rounded-xl shadow-lg backdrop-blur-sm">
+                <h4 className="font-semibold mb-3 text-[#7B3FE4]">Address:</h4>
+                <p className="text-slate-300 leading-relaxed">
                   Progress Studio<br />
                   123 Business Way<br />
                   Banbury<br />
@@ -336,42 +332,38 @@ export default function StudioPage() {
       <section 
         ref={sectionRefs.pricing}
         id="pricing" 
-        className="py-16 md:py-24 bg-white fade-in-section"
+        className="py-20 relative overflow-hidden fade-in-section"
       >
-        <div className="container mx-auto px-4">
-          <div className="text-center max-w-3xl mx-auto mb-8">
-            <h3 
-              className="font-poppins font-bold text-2xl md:text-3xl mb-4"
-              style={{ color: 'var(--navy)' }}
-            >
+        <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-purple-900/40"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-900/20 via-transparent to-transparent"></div>
+        <div className="container mx-auto px-12 md:px-16 relative z-10">
+          <div className="text-center max-w-3xl mx-auto mb-12">
+            <h3 className="text-3xl md:text-4xl font-bold mb-6 text-white">
               Studio Hire Rates
             </h3>
-            <p 
-              className="text-lg mb-6 flex items-center justify-center"
-              style={{ color: 'var(--dark-grey)' }}
-            >
+            <p className="text-lg mb-8 flex items-center justify-center text-slate-300">
               <span className="text-2xl mr-2">🎁</span>
               Progress Accountants clients get 1 hour of free studio use every month (included in all plans).
             </p>
           </div>
           
-          <div className="max-w-3xl mx-auto shadow-lg rounded-lg overflow-hidden">
+          <div className="max-w-3xl mx-auto bg-gradient-to-br from-slate-800/90 to-slate-900/90 border border-slate-600/50 shadow-lg rounded-xl overflow-hidden backdrop-blur-sm">
             <Table>
               <TableHeader>
-                <TableRow style={{ backgroundColor: 'var(--navy)', color: 'white' }}>
+                <TableRow className="bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4]">
                   <TableHead className="text-white font-medium w-2/3">Package</TableHead>
                   <TableHead className="text-white font-medium text-right">Price</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {pricingOptions.map((option, index) => (
-                  <TableRow key={index} style={{ backgroundColor: index % 2 === 0 ? 'white' : 'var(--light-grey)' }}>
-                    <TableCell className="font-medium">{option.package}</TableCell>
-                    <TableCell className="text-right font-bold" style={{ color: 'var(--navy)' }}>{option.price}</TableCell>
+                  <TableRow key={index} className={index % 2 === 0 ? "bg-slate-800/50" : "bg-slate-700/50"}>
+                    <TableCell className="font-medium text-white">{option.package}</TableCell>
+                    <TableCell className="text-right font-bold text-[#7B3FE4]">{option.price}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
-              <TableCaption className="py-3 bg-gray-50">
+              <TableCaption className="py-3 text-slate-300">
                 All bookings include tech support, lighting, and edit-ready output.
               </TableCaption>
             </Table>
@@ -383,12 +375,13 @@ export default function StudioPage() {
       <section 
         ref={sectionRefs.why}
         id="why-us" 
-        className="py-16 md:py-24 text-white fade-in-section"
-        style={{ backgroundColor: 'var(--navy)' }}
+        className="py-20 relative overflow-hidden text-white fade-in-section"
       >
-        <div className="container mx-auto px-4">
+        <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-purple-900/40"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-900/20 via-transparent to-transparent"></div>
+        <div className="container mx-auto px-12 md:px-16 relative z-10">
           <div className="text-center max-w-3xl mx-auto mb-12">
-            <h3 className="font-poppins font-bold text-2xl md:text-3xl mb-4">
+            <h3 className="text-3xl md:text-4xl font-bold mb-6 text-white">
               Why choose the Progress Studio?
             </h3>
           </div>
@@ -396,8 +389,8 @@ export default function StudioPage() {
           <div className="grid md:grid-cols-2 gap-x-16 gap-y-6 max-w-4xl mx-auto">
             {benefits.map((benefit, index) => (
               <div key={index} className="flex items-start">
-                <div style={{ color: 'var(--orange)' }} className="text-xl mr-3 mt-1">✓</div>
-                <p className="text-lg">{benefit}</p>
+                <div className="text-xl mr-3 mt-1 text-[#7B3FE4]">✓</div>
+                <p className="text-lg text-slate-300">{benefit}</p>
               </div>
             ))}
           </div>
@@ -408,25 +401,22 @@ export default function StudioPage() {
       <section 
         ref={sectionRefs.upsell}
         id="upsell" 
-        className="py-16 md:py-20 fade-in-section"
-        style={{ backgroundColor: 'var(--light-grey)' }}
+        className="py-20 relative overflow-hidden fade-in-section"
       >
-        <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto bg-white rounded-lg shadow-lg p-8 md:p-12 text-center">
-            <h3 
-              className="font-poppins font-bold text-2xl md:text-3xl mb-4"
-              style={{ color: 'var(--navy)' }}
-            >
+        <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-purple-900/40"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-900/20 via-transparent to-transparent"></div>
+        <div className="container mx-auto px-12 md:px-16 relative z-10">
+          <div className="max-w-3xl mx-auto bg-gradient-to-br from-slate-800/90 to-slate-900/90 border border-slate-600/50 rounded-xl shadow-lg p-8 md:p-12 text-center backdrop-blur-sm">
+            <h3 className="text-3xl md:text-4xl font-bold mb-6 text-white">
               Want it for free?
             </h3>
-            <p className="text-lg mb-6" style={{ color: 'var(--dark-grey)' }}>
+            <p className="text-lg mb-8 text-slate-300 leading-relaxed">
               Our clients don't just get great financial advice — they also get tools to grow their brand.
               All Progress clients receive 1 hour of free studio time per month, perfect for recording podcasts, sales videos, or expert content.
             </p>
             <a href="/">
               <Button 
-                style={{ backgroundColor: 'var(--orange)' }}
-                className="px-6 py-4 text-lg glow-on-hover hover:-translate-y-[2px] transition duration-300"
+                className="px-8 py-4 bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] text-white rounded-lg hover:shadow-lg hover:shadow-purple-500/25 hover:-translate-y-1 transition-all duration-300 font-medium text-lg"
               >
                 👉 Explore our client plans
               </Button>
@@ -439,23 +429,22 @@ export default function StudioPage() {
       <section 
         ref={sectionRefs.booking}
         id="booking-form" 
-        className="py-16 md:py-24 bg-white fade-in-section"
+        className="py-20 relative overflow-hidden fade-in-section"
       >
-        <div className="container mx-auto px-4">
+        <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-purple-900/40"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-900/20 via-transparent to-transparent"></div>
+        <div className="container mx-auto px-12 md:px-16 relative z-10">
           <div className="max-w-3xl mx-auto">
-            <div className="text-center mb-12">
-              <h3 
-                className="font-poppins font-bold text-2xl md:text-3xl mb-4"
-                style={{ color: 'var(--navy)' }}
-              >
+            <div className="text-center mb-16">
+              <h3 className="text-3xl md:text-4xl font-bold mb-6 text-white">
                 Book your studio session
               </h3>
-              <p className="text-lg" style={{ color: 'var(--dark-grey)' }}>
+              <p className="text-lg text-slate-300 leading-relaxed">
                 Fill out the form below and we'll get back to you within 24 hours to confirm your booking.
               </p>
             </div>
             
-            <div className="bg-white shadow-lg rounded-lg p-8 border border-gray-100">
+            <div className="bg-gradient-to-br from-slate-800/90 to-slate-900/90 border border-slate-600/50 shadow-lg rounded-xl p-8 backdrop-blur-sm">
               <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                   <FormField
@@ -657,8 +646,7 @@ export default function StudioPage() {
                   
                   <Button 
                     type="submit" 
-                    className="w-full py-6"
-                    style={{ backgroundColor: 'var(--orange)' }}
+                    className="w-full py-6 bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] text-white rounded-lg hover:shadow-lg hover:shadow-purple-500/25 hover:-translate-y-1 transition-all duration-300 font-medium text-lg"
                   >
                     Submit Booking Request
                   </Button>
