@@ -85,37 +85,29 @@
   --nextmonth-teal: #008080;
 }
 
-/* CRITICAL: Admin panel rectangular container fix */
-/* High specificity selectors to override all rounded styles */
-html body div[data-admin] div,
-html body div[data-admin] section,
-html body div[data-admin] article,
-html body div[data-admin] aside,
-html body div[data-admin] main,
-html body div[data-admin] .card,
-html body div[data-admin] [class*="bg-"],
-html body div.admin-layout div,
-html body div.admin-layout section,
-html body div.admin-layout article,
-html body div.admin-layout aside,
-html body div.admin-layout main,
-html body div.admin-layout .card,
-html body div.admin-layout [class*="bg-"] {
+/* GLOBAL: Control all rounded corners site-wide */
+/* Override all Tailwind rounded classes */
+.rounded,
+.rounded-sm,
+.rounded-md,
+.rounded-lg,
+.rounded-xl,
+.rounded-2xl,
+.rounded-3xl,
+.rounded-full,
+*[class*="rounded"] {
   border-radius: 4px !important;
-  border-top-left-radius: 4px !important;
-  border-top-right-radius: 4px !important;
-  border-bottom-left-radius: 4px !important;
-  border-bottom-right-radius: 4px !important;
 }
 
-/* Target specific rounded classes with extreme specificity */
-html body div[data-admin="true"] *[class*="rounded"],
-html body div.admin-layout *[class*="rounded"] {
+/* Specific admin panel overrides */
+html body div[data-admin] *,
+html body div.admin-layout * {
   border-radius: 4px !important;
-  border-top-left-radius: 4px !important;
-  border-top-right-radius: 4px !important;
-  border-bottom-left-radius: 4px !important;
-  border-bottom-right-radius: 4px !important;
+}
+
+/* Frontend Progress branding areas - can be adjusted separately if needed */
+body:not([data-admin]) .rounded-full {
+  border-radius: 4px !important;
 }
 
 @layer base {
