@@ -205,7 +205,7 @@ const MusicIndustryPage = () => {
               transition={{ duration: 0.8, delay: 0.4 }}
               className="lg:w-1/2"
             >
-              <div className="bg-orange-600 p-3 rounded-2xl shadow-2xl relative">
+              <div className="bg-gradient-to-br from-[#7B3FE4] to-[#3FA4E4] p-3 rounded-2xl shadow-2xl relative">
                 <OptimizedImage
                   src={musicCardImg}
                   alt="Musicians recording in studio"
