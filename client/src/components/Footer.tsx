@@ -8,11 +8,50 @@ export default function Footer() {
         <div className="grid md:grid-cols-4 gap-8">
           <div>
             <div className="mb-4">
-              <img 
-                src="/progress-logo.svg" 
-                alt="Progress Accountants | Advisors | Growth Partners" 
+              <svg 
+                width="320" 
+                height="80" 
+                viewBox="0 0 1024 200" 
                 className="h-16 w-auto"
-              />
+                aria-label="Progress Accountants | Advisors | Growth Partners"
+              >
+                <defs>
+                  <linearGradient id="progressArrowGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="#8B5CF6" />
+                    <stop offset="100%" stopColor="#3B82F6" />
+                  </linearGradient>
+                </defs>
+                
+                {/* Arrow Shape */}
+                <path 
+                  d="M0 40 L80 10 L120 50 L120 90 L80 130 L0 100 L30 70 Z" 
+                  fill="url(#progressArrowGradient)" 
+                />
+                
+                {/* PROGRESS Text */}
+                <text 
+                  x="140" 
+                  y="80" 
+                  fontFamily="Arial, sans-serif" 
+                  fontSize="48" 
+                  fontWeight="bold" 
+                  fill="white"
+                >
+                  PROGRESS
+                </text>
+                
+                {/* Subtitle */}
+                <text 
+                  x="140" 
+                  y="120" 
+                  fontFamily="Arial, sans-serif" 
+                  fontSize="18" 
+                  fontWeight="300" 
+                  fill="white"
+                >
+                  Accountants | Advisors | Growth Partners
+                </text>
+              </svg>
             </div>
             <p className="mb-4 text-gray-300">
               We don't just talk about growth. We build the tools that drive it.
