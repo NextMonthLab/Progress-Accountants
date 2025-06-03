@@ -41,7 +41,7 @@ export function TeamMemberCard({ member }: TeamMemberCardProps) {
             <div className="h-[250px] bg-gradient-to-br from-slate-700/80 to-slate-800/80 flex items-center justify-center relative">
               <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 to-blue-900/20"></div>
               <Avatar className="w-32 h-32 relative z-10">
-                <AvatarFallback className="text-3xl bg-gradient-to-br from-[#7B3FE4] to-[#3FA4E4] text-white shadow-lg">
+                <AvatarFallback className="text-3xl bg-gradient-to-br from-[#7B3FE4] via-[#E91E63] to-[#3FA4E4] text-white shadow-lg">
                   {getInitials(member.name)}
                 </AvatarFallback>
               </Avatar>
