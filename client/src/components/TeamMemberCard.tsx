@@ -22,7 +22,7 @@ export function TeamMemberCard({ member }: TeamMemberCardProps) {
   
   return (
     <>
-      <Card className="overflow-hidden transition-all hover:shadow-lg hover:shadow-purple-500/10 group bg-slate-800 border-slate-700">
+      <Card className="overflow-hidden transition-all hover:shadow-lg hover:shadow-purple-500/20 group bg-gradient-to-br from-slate-800/90 to-slate-900/90 border-slate-600/50 rounded-xl backdrop-blur-sm">
         <div className="relative overflow-hidden">
           {/* If we have a photo, display it with a zoom effect on hover */}
           {member.photoUrl ? (
@@ -38,9 +38,10 @@ export function TeamMemberCard({ member }: TeamMemberCardProps) {
               {React.createElement(member.placeholderComponent)}
             </div>
           ) : (
-            <div className="h-[250px] bg-gradient-to-br from-slate-700 to-slate-800 flex items-center justify-center">
-              <Avatar className="w-32 h-32">
-                <AvatarFallback className="text-3xl bg-gradient-to-br from-[#7B3FE4] to-[#3FA4E4] text-white">
+            <div className="h-[250px] bg-gradient-to-br from-slate-700/80 to-slate-800/80 flex items-center justify-center relative">
+              <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 to-blue-900/20"></div>
+              <Avatar className="w-32 h-32 relative z-10">
+                <AvatarFallback className="text-3xl bg-gradient-to-br from-[#7B3FE4] to-[#3FA4E4] text-white shadow-lg">
                   {getInitials(member.name)}
                 </AvatarFallback>
               </Avatar>
