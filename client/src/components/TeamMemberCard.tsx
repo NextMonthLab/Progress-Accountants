@@ -22,7 +22,7 @@ export function TeamMemberCard({ member }: TeamMemberCardProps) {
   
   return (
     <>
-      <Card className="overflow-hidden transition-all hover:shadow-lg hover:shadow-cyan-500/10 group bg-gray-800 border-gray-700">
+      <Card className="overflow-hidden transition-all hover:shadow-lg hover:shadow-purple-500/10 group bg-slate-800 border-slate-700">
         <div className="relative overflow-hidden">
           {/* If we have a photo, display it with a zoom effect on hover */}
           {member.photoUrl ? (
@@ -38,9 +38,9 @@ export function TeamMemberCard({ member }: TeamMemberCardProps) {
               {React.createElement(member.placeholderComponent)}
             </div>
           ) : (
-            <div className="h-[250px] bg-gradient-to-br from-gray-700 to-gray-800 flex items-center justify-center">
+            <div className="h-[250px] bg-gradient-to-br from-slate-700 to-slate-800 flex items-center justify-center">
               <Avatar className="w-32 h-32">
-                <AvatarFallback className="text-3xl bg-gradient-to-br from-cyan-500 to-blue-600 text-white">
+                <AvatarFallback className="text-3xl bg-gradient-to-br from-[#7B3FE4] to-[#3FA4E4] text-white">
                   {getInitials(member.name)}
                 </AvatarFallback>
               </Avatar>
@@ -54,17 +54,17 @@ export function TeamMemberCard({ member }: TeamMemberCardProps) {
               <h3 className="text-xl font-bold text-white">
                 {member.name}
                 {member.qualifications && (
-                  <span className="ml-2 text-sm font-semibold text-gray-400">
+                  <span className="ml-2 text-sm font-semibold text-slate-400">
                     {member.qualifications}
                   </span>
                 )}
               </h3>
-              <p className="text-cyan-400 font-medium">
+              <p className="text-[#7B3FE4] font-medium">
                 {member.role}
               </p>
             </div>
             
-            <p className="text-gray-300 line-clamp-3">
+            <p className="text-slate-300 line-clamp-3">
               {member.biography}
             </p>
           </div>
@@ -77,7 +77,7 @@ export function TeamMemberCard({ member }: TeamMemberCardProps) {
                 href={member.socialLinks.linkedin} 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="text-gray-400 hover:text-blue-400 transition-colors"
+                className="text-slate-400 hover:text-[#7B3FE4] transition-colors"
               >
                 <Linkedin size={18} />
               </a>
@@ -88,7 +88,7 @@ export function TeamMemberCard({ member }: TeamMemberCardProps) {
                 href={member.socialLinks.twitter} 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="text-gray-400 hover:text-sky-400 transition-colors"
+                className="text-slate-400 hover:text-[#7B3FE4] transition-colors"
               >
                 <Twitter size={18} />
               </a>
@@ -97,7 +97,7 @@ export function TeamMemberCard({ member }: TeamMemberCardProps) {
             {member.socialLinks?.email && (
               <a 
                 href={`mailto:${member.socialLinks.email}`}
-                className="text-gray-400 hover:text-green-400 transition-colors"
+                className="text-slate-400 hover:text-[#7B3FE4] transition-colors"
               >
                 <Mail size={18} />
               </a>
@@ -107,7 +107,7 @@ export function TeamMemberCard({ member }: TeamMemberCardProps) {
           <Button 
               variant="outline" 
               size="sm"
-              className="text-xs border-cyan-500 text-cyan-400 hover:bg-cyan-500 hover:text-white transition-all"
+              className="text-xs border-[#7B3FE4] text-[#7B3FE4] hover:bg-[#7B3FE4] hover:text-white transition-all"
               onClick={() => setIsOpen(true)}
             >
               <span className="mr-1">Read More</span>
@@ -117,12 +117,12 @@ export function TeamMemberCard({ member }: TeamMemberCardProps) {
       </Card>
       
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogContent className="max-w-3xl bg-gray-800 border-gray-700">
+        <DialogContent className="max-w-3xl bg-slate-800 border-slate-700">
           <DialogHeader>
             <DialogTitle className="text-2xl text-white">
-              {member.name} {member.qualifications && <span className="text-lg text-gray-400">({member.qualifications})</span>}
+              {member.name} {member.qualifications && <span className="text-lg text-slate-400">({member.qualifications})</span>}
             </DialogTitle>
-            <DialogDescription className="text-lg text-cyan-400">
+            <DialogDescription className="text-lg text-[#7B3FE4]">
               {member.role}
             </DialogDescription>
           </DialogHeader>
@@ -142,9 +142,9 @@ export function TeamMemberCard({ member }: TeamMemberCardProps) {
                   {React.createElement(member.placeholderComponent)}
                 </div>
               ) : (
-                <div className="bg-gradient-to-br from-gray-700 to-gray-800 rounded-lg aspect-square flex items-center justify-center">
+                <div className="bg-gradient-to-br from-slate-700 to-slate-800 rounded-lg aspect-square flex items-center justify-center">
                   <Avatar className="w-32 h-32">
-                    <AvatarFallback className="text-3xl bg-gradient-to-br from-cyan-500 to-blue-600 text-white">
+                    <AvatarFallback className="text-3xl bg-gradient-to-br from-[#7B3FE4] to-[#3FA4E4] text-white">
                       {getInitials(member.name)}
                     </AvatarFallback>
                   </Avatar>
@@ -158,7 +158,7 @@ export function TeamMemberCard({ member }: TeamMemberCardProps) {
                     href={member.socialLinks.linkedin} 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    className="text-gray-400 hover:text-blue-400 transition-colors"
+                    className="text-slate-400 hover:text-[#7B3FE4] transition-colors"
                   >
                     <Linkedin size={24} />
                   </a>
@@ -169,7 +169,7 @@ export function TeamMemberCard({ member }: TeamMemberCardProps) {
                     href={member.socialLinks.twitter} 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    className="text-gray-400 hover:text-sky-400 transition-colors"
+                    className="text-slate-400 hover:text-[#7B3FE4] transition-colors"
                   >
                     <Twitter size={24} />
                   </a>
@@ -178,7 +178,7 @@ export function TeamMemberCard({ member }: TeamMemberCardProps) {
                 {member.socialLinks?.email && (
                   <a 
                     href={`mailto:${member.socialLinks.email}`}
-                    className="text-gray-400 hover:text-green-400 transition-colors"
+                    className="text-slate-400 hover:text-[#7B3FE4] transition-colors"
                   >
                     <Mail size={24} />
                   </a>
@@ -191,7 +191,7 @@ export function TeamMemberCard({ member }: TeamMemberCardProps) {
                 <h3 className="text-lg font-semibold mb-1 text-white">
                   Biography
                 </h3>
-                <p className="text-gray-300">
+                <p className="text-slate-300">
                   {member.biography}
                 </p>
               </div>
@@ -200,7 +200,7 @@ export function TeamMemberCard({ member }: TeamMemberCardProps) {
                 <h3 className="text-lg font-semibold mb-1 text-white">
                   Interests
                 </h3>
-                <p className="text-gray-300">
+                <p className="text-slate-300">
                   {member.interests}
                 </p>
               </div>
@@ -211,7 +211,7 @@ export function TeamMemberCard({ member }: TeamMemberCardProps) {
             <Button 
               variant="outline" 
               onClick={() => setIsOpen(false)}
-              className="border-cyan-500 text-cyan-400 hover:bg-cyan-500 hover:text-white"
+              className="border-[#7B3FE4] text-[#7B3FE4] hover:bg-[#7B3FE4] hover:text-white"
             >
               Close
             </Button>
