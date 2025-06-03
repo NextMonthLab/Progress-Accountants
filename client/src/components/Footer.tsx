@@ -8,53 +8,11 @@ export default function Footer() {
         <div className="grid md:grid-cols-4 gap-8">
           <div>
             <div className="mb-4">
-              <svg 
-                width="400" 
-                height="100" 
-                viewBox="0 0 1000 250" 
+              <img 
+                src="/progress-logo-exact.png"
+                alt="Progress Accountants | Advisors | Growth Partners" 
                 className="h-16 w-auto"
-                aria-label="Progress Accountants | Advisors | Growth Partners"
-              >
-                <defs>
-                  <linearGradient id="progressArrowGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stopColor="#A855F7" />
-                    <stop offset="50%" stopColor="#8B5CF6" />
-                    <stop offset="100%" stopColor="#3B82F6" />
-                  </linearGradient>
-                </defs>
-                
-                {/* Arrow Shape - matching your logo design */}
-                <path 
-                  d="M0 20 L0 180 L80 180 L180 100 L80 20 Z" 
-                  fill="url(#progressArrowGradient)" 
-                />
-                
-                {/* PROGRESS Text */}
-                <text 
-                  x="220" 
-                  y="130" 
-                  fontFamily="Arial, sans-serif" 
-                  fontSize="70" 
-                  fontWeight="900" 
-                  fill="white"
-                  letterSpacing="2px"
-                >
-                  PROGRESS
-                </text>
-                
-                {/* Subtitle */}
-                <text 
-                  x="220" 
-                  y="200" 
-                  fontFamily="Arial, sans-serif" 
-                  fontSize="24" 
-                  fontWeight="400" 
-                  fill="white"
-                  letterSpacing="1px"
-                >
-                  Accountants | Advisors | Growth Partners
-                </text>
-              </svg>
+              />
             </div>
             <p className="mb-4 text-gray-300">
               We don't just talk about growth. We build the tools that drive it.
