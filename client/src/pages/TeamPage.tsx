@@ -5,7 +5,7 @@ import { TeamMemberCard } from '@/components/TeamMemberCard';
 import { Link } from 'wouter';
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
-import teamPhotoPath from '@assets/Team Photo.jpg';
+// Team photo removed for dark theme design
 import { PageHeaderSkeleton, TeamMemberSkeleton, CtaSkeleton } from '@/components/ui/skeletons';
 
 export default function TeamPage() {
@@ -22,30 +22,30 @@ export default function TeamPage() {
   // Show skeleton during loading state
   if (isLoading) {
     return (
-      <div className="bg-gray-50 min-h-screen">
+      <div className="bg-gray-900 min-h-screen">
         <Helmet>
           <title>Meet Our Team | Progress Accountants</title>
         </Helmet>
 
         {/* Skeleton Hero Section */}
-        <section className="bg-[var(--navy)] text-white py-16 md:py-24 relative overflow-hidden">
+        <section className="bg-gray-800 text-white py-16 md:py-24 relative overflow-hidden">
           <div className="container mx-auto px-4 relative z-10">
             <PageHeaderSkeleton />
           </div>
         </section>
 
         {/* Skeleton Team Members */}
-        <section className="py-16 md:py-24">
+        <section className="py-16 md:py-24 bg-gray-900">
           <div className="container mx-auto px-4">
             <div className="mb-8">
-              <div className="h-8 w-64 bg-muted animate-pulse mx-auto rounded-md mb-12"></div>
+              <div className="h-8 w-64 bg-gray-700 animate-pulse mx-auto rounded-md mb-12"></div>
             </div>
             <TeamMemberSkeleton count={6} />
           </div>
         </section>
 
         {/* Skeleton CTA Section */}
-        <section className="py-16 bg-gray-100">
+        <section className="py-16 bg-gray-800">
           <div className="container mx-auto px-4">
             <CtaSkeleton />
           </div>
@@ -56,39 +56,36 @@ export default function TeamPage() {
 
   // Return actual content once loaded
   return (
-    <div className="bg-gray-50 min-h-screen">
+    <div className="bg-gray-900 min-h-screen">
       <Helmet>
         <title>Meet Our Team | Progress Accountants</title>
         <meta name="description" content="Meet the experienced team at Progress Accountants who provide personalized accounting services tailored to your business needs." />
       </Helmet>
 
       {/* Hero Section */}
-      <section className="bg-[var(--navy)] text-white py-16 md:py-24 relative overflow-hidden">
-        <div className="absolute inset-0 opacity-20">
-          <img 
-            src={teamPhotoPath} 
-            alt="Progress Accountants Team" 
-            className="w-full h-full object-cover"
-          />
-        </div>
+      <section className="bg-gray-800 text-white py-16 md:py-24 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-gray-800 via-gray-900 to-black opacity-90"></div>
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-3xl md:text-5xl font-bold mb-6">Meet Our Team</h1>
-            <p className="text-lg md:text-xl text-gray-200 mb-8">
+            <h1 className="text-3xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-white to-cyan-400 bg-clip-text text-transparent">
+              Meet Our Team
+            </h1>
+            <p className="text-lg md:text-xl text-gray-300 mb-8">
               We're a team of dedicated professionals committed to providing exceptional accounting solutions for growing businesses.
             </p>
-            <p className="text-gray-300 mb-8">
+            <p className="text-gray-400 mb-8">
               With diverse expertise in accounting, tax planning, and business advisory, we help our clients navigate their financial journey with confidence.
             </p>
+            <div className="w-24 h-1 bg-gradient-to-r from-cyan-400 to-blue-500 mx-auto rounded-full"></div>
           </div>
         </div>
       </section>
 
       {/* Team Members Grid */}
-      <section className="py-16 md:py-24">
+      <section className="py-16 md:py-24 bg-gray-900">
         <div className="container mx-auto px-4">
           <div className="max-w-7xl mx-auto">
-            <h2 className="text-2xl md:text-3xl font-bold mb-12 text-center" style={{ color: 'var(--navy)' }}>
+            <h2 className="text-2xl md:text-3xl font-bold mb-12 text-center text-white">
               The People Behind Progress Accountants
             </h2>
             
@@ -102,24 +99,20 @@ export default function TeamPage() {
       </section>
 
       {/* Join Our Team Section */}
-      <section className="py-16 bg-gray-100">
+      <section className="py-16 bg-gray-800">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center">
-            <h2 className="text-2xl md:text-3xl font-bold mb-6" style={{ color: 'var(--navy)' }}>
+            <h2 className="text-2xl md:text-3xl font-bold mb-6 text-white">
               Interested in Joining Our Team?
             </h2>
-            <p className="text-gray-700 mb-8">
+            <p className="text-gray-300 mb-8">
               We're always looking for talented professionals to join Progress Accountants. 
               If you're passionate about helping businesses succeed and want to be part of a forward-thinking team, we'd love to hear from you.
             </p>
-            <Link href="#contact">
+            <Link href="/contact">
               <Button 
                 size="lg"
-                className="hover:shadow-md hover:-translate-y-[2px] transition duration-300 flex items-center gap-2"
-                style={{ 
-                  backgroundColor: 'var(--orange)',
-                  color: 'white' 
-                }}
+                className="bg-cyan-500 hover:bg-cyan-600 text-white hover:shadow-lg hover:-translate-y-[2px] transition-all duration-300 flex items-center gap-2 border-0"
               >
                 <span>Contact Us</span>
                 <ArrowRight size={16} />

@@ -22,7 +22,7 @@ export function TeamMemberCard({ member }: TeamMemberCardProps) {
   
   return (
     <>
-      <Card className="overflow-hidden transition-all hover:shadow-lg group">
+      <Card className="overflow-hidden transition-all hover:shadow-lg hover:shadow-cyan-500/10 group bg-gray-800 border-gray-700">
         <div className="relative overflow-hidden">
           {/* If we have a photo, display it with a zoom effect on hover */}
           {member.photoUrl ? (
@@ -38,9 +38,9 @@ export function TeamMemberCard({ member }: TeamMemberCardProps) {
               {React.createElement(member.placeholderComponent)}
             </div>
           ) : (
-            <div className="h-[250px] bg-gray-200 flex items-center justify-center">
+            <div className="h-[250px] bg-gradient-to-br from-gray-700 to-gray-800 flex items-center justify-center">
               <Avatar className="w-32 h-32">
-                <AvatarFallback className="text-3xl" style={{ backgroundColor: 'var(--navy, #0F172A)', color: 'white' }}>
+                <AvatarFallback className="text-3xl bg-gradient-to-br from-cyan-500 to-blue-600 text-white">
                   {getInitials(member.name)}
                 </AvatarFallback>
               </Avatar>
@@ -51,20 +51,20 @@ export function TeamMemberCard({ member }: TeamMemberCardProps) {
         <CardContent className="p-5">
           <div className="space-y-2">
             <div>
-              <h3 className="text-xl font-bold" style={{ color: 'var(--navy, #0F172A)' }}>
+              <h3 className="text-xl font-bold text-white">
                 {member.name}
                 {member.qualifications && (
-                  <span className="ml-2 text-sm font-semibold text-gray-500">
+                  <span className="ml-2 text-sm font-semibold text-gray-400">
                     {member.qualifications}
                   </span>
                 )}
               </h3>
-              <p className="text-orange-600 font-medium" style={{ color: 'var(--orange, #F59E0B)' }}>
+              <p className="text-cyan-400 font-medium">
                 {member.role}
               </p>
             </div>
             
-            <p className="text-gray-600 line-clamp-3">
+            <p className="text-gray-300 line-clamp-3">
               {member.biography}
             </p>
           </div>
@@ -77,7 +77,7 @@ export function TeamMemberCard({ member }: TeamMemberCardProps) {
                 href={member.socialLinks.linkedin} 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="text-gray-500 hover:text-blue-600 transition-colors"
+                className="text-gray-400 hover:text-blue-400 transition-colors"
               >
                 <Linkedin size={18} />
               </a>
@@ -88,7 +88,7 @@ export function TeamMemberCard({ member }: TeamMemberCardProps) {
                 href={member.socialLinks.twitter} 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="text-gray-500 hover:text-sky-500 transition-colors"
+                className="text-gray-400 hover:text-sky-400 transition-colors"
               >
                 <Twitter size={18} />
               </a>
@@ -97,7 +97,7 @@ export function TeamMemberCard({ member }: TeamMemberCardProps) {
             {member.socialLinks?.email && (
               <a 
                 href={`mailto:${member.socialLinks.email}`}
-                className="text-gray-500 hover:text-green-600 transition-colors"
+                className="text-gray-400 hover:text-green-400 transition-colors"
               >
                 <Mail size={18} />
               </a>
@@ -107,9 +107,8 @@ export function TeamMemberCard({ member }: TeamMemberCardProps) {
           <Button 
               variant="outline" 
               size="sm"
-              className="text-xs"
+              className="text-xs border-cyan-500 text-cyan-400 hover:bg-cyan-500 hover:text-white transition-all"
               onClick={() => setIsOpen(true)}
-              style={{ borderColor: 'var(--navy, #0F172A)', color: 'var(--navy, #0F172A)' }}
             >
               <span className="mr-1">Read More</span>
               <ExternalLink size={12} />
@@ -118,12 +117,12 @@ export function TeamMemberCard({ member }: TeamMemberCardProps) {
       </Card>
       
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogContent className="max-w-3xl">
+        <DialogContent className="max-w-3xl bg-gray-800 border-gray-700">
           <DialogHeader>
-            <DialogTitle className="text-2xl" style={{ color: 'var(--navy, #0F172A)' }}>
-              {member.name} {member.qualifications && <span className="text-lg">({member.qualifications})</span>}
+            <DialogTitle className="text-2xl text-white">
+              {member.name} {member.qualifications && <span className="text-lg text-gray-400">({member.qualifications})</span>}
             </DialogTitle>
-            <DialogDescription className="text-lg" style={{ color: 'var(--orange, #F59E0B)' }}>
+            <DialogDescription className="text-lg text-cyan-400">
               {member.role}
             </DialogDescription>
           </DialogHeader>
@@ -143,9 +142,9 @@ export function TeamMemberCard({ member }: TeamMemberCardProps) {
                   {React.createElement(member.placeholderComponent)}
                 </div>
               ) : (
-                <div className="bg-gray-200 rounded-lg aspect-square flex items-center justify-center">
+                <div className="bg-gradient-to-br from-gray-700 to-gray-800 rounded-lg aspect-square flex items-center justify-center">
                   <Avatar className="w-32 h-32">
-                    <AvatarFallback className="text-3xl" style={{ backgroundColor: 'var(--navy, #0F172A)', color: 'white' }}>
+                    <AvatarFallback className="text-3xl bg-gradient-to-br from-cyan-500 to-blue-600 text-white">
                       {getInitials(member.name)}
                     </AvatarFallback>
                   </Avatar>
@@ -159,7 +158,7 @@ export function TeamMemberCard({ member }: TeamMemberCardProps) {
                     href={member.socialLinks.linkedin} 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    className="text-gray-500 hover:text-blue-600 transition-colors"
+                    className="text-gray-400 hover:text-blue-400 transition-colors"
                   >
                     <Linkedin size={24} />
                   </a>
@@ -170,7 +169,7 @@ export function TeamMemberCard({ member }: TeamMemberCardProps) {
                     href={member.socialLinks.twitter} 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    className="text-gray-500 hover:text-sky-500 transition-colors"
+                    className="text-gray-400 hover:text-sky-400 transition-colors"
                   >
                     <Twitter size={24} />
                   </a>
@@ -179,7 +178,7 @@ export function TeamMemberCard({ member }: TeamMemberCardProps) {
                 {member.socialLinks?.email && (
                   <a 
                     href={`mailto:${member.socialLinks.email}`}
-                    className="text-gray-500 hover:text-green-600 transition-colors"
+                    className="text-gray-400 hover:text-green-400 transition-colors"
                   >
                     <Mail size={24} />
                   </a>
@@ -189,19 +188,19 @@ export function TeamMemberCard({ member }: TeamMemberCardProps) {
             
             <div className="col-span-2 space-y-4">
               <div>
-                <h3 className="text-lg font-semibold mb-1" style={{ color: 'var(--navy, #0F172A)' }}>
+                <h3 className="text-lg font-semibold mb-1 text-white">
                   Biography
                 </h3>
-                <p className="text-gray-700">
+                <p className="text-gray-300">
                   {member.biography}
                 </p>
               </div>
               
               <div>
-                <h3 className="text-lg font-semibold mb-1" style={{ color: 'var(--navy, #0F172A)' }}>
+                <h3 className="text-lg font-semibold mb-1 text-white">
                   Interests
                 </h3>
-                <p className="text-gray-700">
+                <p className="text-gray-300">
                   {member.interests}
                 </p>
               </div>
@@ -212,6 +211,7 @@ export function TeamMemberCard({ member }: TeamMemberCardProps) {
             <Button 
               variant="outline" 
               onClick={() => setIsOpen(false)}
+              className="border-cyan-500 text-cyan-400 hover:bg-cyan-500 hover:text-white"
             >
               Close
             </Button>
