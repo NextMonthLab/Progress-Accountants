@@ -194,15 +194,19 @@ export default function ContactForm({ compact = false, className = "" }: Contact
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <FormField
             control={form.control}
             name="name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel style={{ color: 'var(--navy)' }}>Name*</FormLabel>
+                <FormLabel className="text-[#7B3FE4] font-medium">Name*</FormLabel>
                 <FormControl>
-                  <Input placeholder="Your full name" {...field} />
+                  <Input 
+                    placeholder="Your full name" 
+                    {...field} 
+                    className="bg-slate-700/50 border-slate-600 text-white placeholder:text-slate-400 focus:border-purple-500 focus:ring-purple-500/20"
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -214,9 +218,13 @@ export default function ContactForm({ compact = false, className = "" }: Contact
             name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel style={{ color: 'var(--navy)' }}>Email*</FormLabel>
+                <FormLabel className="text-[#7B3FE4] font-medium">Email*</FormLabel>
                 <FormControl>
-                  <Input placeholder="Your email address" {...field} />
+                  <Input 
+                    placeholder="Your email address" 
+                    {...field} 
+                    className="bg-slate-700/50 border-slate-600 text-white placeholder:text-slate-400 focus:border-purple-500 focus:ring-purple-500/20"
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -224,15 +232,19 @@ export default function ContactForm({ compact = false, className = "" }: Contact
           />
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <FormField
             control={form.control}
             name="phone"
             render={({ field }) => (
               <FormItem>
-                <FormLabel style={{ color: 'var(--navy)' }}>Phone Number</FormLabel>
+                <FormLabel className="text-[#7B3FE4] font-medium">Phone Number</FormLabel>
                 <FormControl>
-                  <Input placeholder="Your phone number" {...field} />
+                  <Input 
+                    placeholder="Your phone number" 
+                    {...field} 
+                    className="bg-slate-700/50 border-slate-600 text-white placeholder:text-slate-400 focus:border-purple-500 focus:ring-purple-500/20"
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -244,9 +256,13 @@ export default function ContactForm({ compact = false, className = "" }: Contact
             name="business"
             render={({ field }) => (
               <FormItem>
-                <FormLabel style={{ color: 'var(--navy)' }}>Business Name</FormLabel>
+                <FormLabel className="text-[#7B3FE4] font-medium">Business Name</FormLabel>
                 <FormControl>
-                  <Input placeholder="Your business name" {...field} />
+                  <Input 
+                    placeholder="Your business name" 
+                    {...field} 
+                    className="bg-slate-700/50 border-slate-600 text-white placeholder:text-slate-400 focus:border-purple-500 focus:ring-purple-500/20"
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -259,9 +275,13 @@ export default function ContactForm({ compact = false, className = "" }: Contact
           name="industry"
           render={({ field }) => (
             <FormItem>
-              <FormLabel style={{ color: 'var(--navy)' }}>Industry</FormLabel>
+              <FormLabel className="text-[#7B3FE4] font-medium">Industry</FormLabel>
               <FormControl>
-                <Input placeholder="Your industry" {...field} />
+                <Input 
+                  placeholder="Your industry" 
+                  {...field} 
+                  className="bg-slate-700/50 border-slate-600 text-white placeholder:text-slate-400 focus:border-purple-500 focus:ring-purple-500/20"
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -273,11 +293,11 @@ export default function ContactForm({ compact = false, className = "" }: Contact
           name="message"
           render={({ field }) => (
             <FormItem>
-              <FormLabel style={{ color: 'var(--navy)' }}>Message*</FormLabel>
+              <FormLabel className="text-[#7B3FE4] font-medium">Message*</FormLabel>
               <FormControl>
                 <Textarea 
                   placeholder="Tell us about your business and how we can help you" 
-                  className="min-h-[120px]"
+                  className="min-h-[120px] bg-slate-700/50 border-slate-600 text-white placeholder:text-slate-400 focus:border-purple-500 focus:ring-purple-500/20"
                   {...field} 
                 />
               </FormControl>
@@ -288,11 +308,7 @@ export default function ContactForm({ compact = false, className = "" }: Contact
         
         <Button 
           type="submit" 
-          className="w-full"
-          style={{ 
-            backgroundColor: 'var(--orange)',
-            color: 'white' 
-          }}
+          className="w-full bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] text-white rounded-lg hover:shadow-lg hover:shadow-purple-500/25 hover:-translate-y-1 transition-all duration-300 font-medium py-3"
           disabled={isSubmitting}
         >
           {isSubmitting ? (
