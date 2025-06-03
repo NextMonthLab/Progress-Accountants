@@ -16,7 +16,7 @@ export function ProgressBanner({ className = "" }: ProgressBannerProps) {
           Expert financial guidance for modern businesses
         </p>
         <span className="hidden sm:inline text-primary">•</span>
-        <Link href="/studio-banbury" className="text-sm font-medium text-[#F65C9A] hover:underline cursor-pointer">
+        <Link href="/studio-banbury" className="text-sm font-medium text-[#7B3FE4] hover:underline cursor-pointer">
           🎙️ Visit our Professional Podcast & Video Studio
         </Link>
       </div>
