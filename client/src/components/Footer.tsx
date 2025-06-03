@@ -9,22 +9,9 @@ export default function Footer() {
           <div>
             <div className="mb-4">
               <img 
-                src="/progress-logo.png" 
+                src="/progress-logo-white.png" 
                 alt="Progress Accountants | Advisors | Growth Partners" 
                 className="h-16 w-auto"
-                onLoad={() => console.log('Progress logo loaded successfully')}
-                onError={(e) => {
-                  console.error('Progress logo failed to load, reverting to text');
-                  const target = e.currentTarget as HTMLImageElement;
-                  target.style.display = 'none';
-                  const parent = target.parentElement;
-                  if (parent && !parent.querySelector('.fallback-text')) {
-                    const fallback = document.createElement('div');
-                    fallback.innerHTML = 'Progress <span style="color: var(--orange)">Accountants</span>';
-                    fallback.className = 'font-poppins font-bold text-xl fallback-text';
-                    parent.appendChild(fallback);
-                  }
-                }}
               />
             </div>
             <p className="mb-4 text-gray-300">
