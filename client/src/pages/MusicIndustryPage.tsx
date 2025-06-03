@@ -141,7 +141,7 @@ const MusicIndustryPage = () => {
   }, []);
 
   return (
-    <div className="bg-gray-50 pb-20">
+    <div className="bg-black pb-20">
       {/* Hero section */}
       <div 
         ref={headerRef}
@@ -169,7 +169,7 @@ const MusicIndustryPage = () => {
               className="lg:w-1/2"
             >
               <motion.div variants={itemVariants}>
-                <span className="inline-block px-4 py-1 rounded-full bg-orange-100 text-orange-700 font-medium text-sm mb-4">
+                <span className="inline-block px-4 py-1 rounded-full bg-purple-900/20 text-purple-400 font-medium text-sm mb-4">
                   Industry Specialists
                 </span>
               </motion.div>
@@ -190,10 +190,10 @@ const MusicIndustryPage = () => {
                 </p>
               </motion.div>
               <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-4">
-                <Button size="lg" className="bg-orange-500 hover:bg-orange-600 text-white font-medium">
+                <Button size="lg" className="bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] hover:shadow-lg hover:shadow-purple-500/25 text-white font-medium">
                   Book a free consultation
                 </Button>
-                <Button size="lg" className="bg-navy-600 border-navy-600 text-white hover:bg-navy-700 font-medium">
+                <Button size="lg" className="bg-white text-gray-900 hover:bg-gray-100 font-medium">
                   Explore our services <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </motion.div>
@@ -219,14 +219,14 @@ const MusicIndustryPage = () => {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.8, duration: 0.5 }}
-                  className="absolute -bottom-4 -right-4 bg-white rounded-xl shadow-lg p-3 flex items-center"
+                  className="absolute -bottom-4 -right-4 bg-gray-900 rounded-xl shadow-lg p-3 flex items-center border border-gray-800"
                 >
-                  <div className="bg-orange-100 p-2 rounded-lg mr-3">
-                    <Headphones className="h-6 w-6 text-orange-600" />
+                  <div className="bg-purple-900/20 p-2 rounded-lg mr-3">
+                    <Headphones className="h-6 w-6 text-purple-400" />
                   </div>
                   <div>
-                    <p className="text-navy font-semibold text-sm">Royalty Management</p>
-                    <p className="text-xs text-gray-500">Keep more of what you earn</p>
+                    <p className="text-white font-semibold text-sm">Royalty Management</p>
+                    <p className="text-xs text-gray-300">Keep more of what you earn</p>
                   </div>
                 </motion.div>
               </div>
@@ -255,22 +255,22 @@ const MusicIndustryPage = () => {
           className="max-w-4xl mx-auto"
         >
           <motion.div variants={itemVariants} className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-navy mb-6">Why Musicians and Music Businesses Choose Progress</h2>
-            <p className="text-lg text-gray-600">
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">Why Musicians and Music Businesses Choose Progress</h2>
+            <p className="text-lg text-gray-300">
               From independent artists and producers to recording studios and music labels, we support your creative journey with financial clarity and control. At Progress, we understand the rhythm of the music industry—and we build your finances to match it.
             </p>
           </motion.div>
           
-          <motion.div variants={itemVariants} className="bg-white rounded-xl shadow-md p-6 md:p-8 mb-12 border border-gray-100">
-            <p className="text-lg text-gray-700 mb-4">
+          <motion.div variants={itemVariants} className="bg-gray-900 rounded-xl shadow-md p-6 md:p-8 mb-12 border border-gray-800">
+            <p className="text-lg text-gray-300 mb-4">
               We specialise in supporting the music industry with proactive, tech-savvy accounting solutions tailored to 
               the unique challenges of musicians, producers, and labels.
             </p>
             <div className="flex items-center">
-              <div className="p-2 bg-orange-100 rounded-full mr-3">
-                <Music className="h-5 w-5 text-orange-600" />
+              <div className="p-2 bg-purple-900/20 rounded-full mr-3">
+                <Music className="h-5 w-5 text-purple-400" />
               </div>
-              <p className="font-medium text-navy">Based in Banbury. Trusted by musicians across the UK.</p>
+              <p className="font-medium text-white">Based in Banbury. Trusted by musicians across the UK.</p>
             </div>
           </motion.div>
         </motion.div>
@@ -285,10 +285,10 @@ const MusicIndustryPage = () => {
           variants={containerVariants}
         >
           <motion.div variants={itemVariants} className="text-center mb-12">
-            <span className="inline-block px-3 py-1 rounded-full bg-blue-100 text-blue-700 font-medium text-sm mb-3">
+            <span className="inline-block px-3 py-1 rounded-full bg-purple-900/20 text-purple-400 font-medium text-sm mb-3">
               Our Specialist Services
             </span>
-            <h2 className="text-3xl md:text-4xl font-bold text-navy mb-6">Why Musicians Choose Progress</h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">Why Musicians Choose Progress</h2>
           </motion.div>
           
           <div className="grid md:grid-cols-2 gap-8 mb-16">
