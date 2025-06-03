@@ -534,7 +534,7 @@ const DownloadResourcesSection = () => {
   }
 
   return (
-    <section className="py-16 bg-gray-50">
+    <section className="py-16 bg-black">
       <div className="container mx-auto px-6 md:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -544,37 +544,37 @@ const DownloadResourcesSection = () => {
           className="max-w-5xl mx-auto"
         >
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-navy mb-4">Download & Print Your Essentials</h2>
-            <p className="text-gray-600 max-w-3xl mx-auto text-lg">
+            <h2 className="text-3xl font-bold text-white mb-4">Download & Print Your Essentials</h2>
+            <p className="text-gray-300 max-w-3xl mx-auto text-lg">
               Want a copy to keep? Download our ready-to-print PDFs to have your essential deadlines and contacts always at hand.
             </p>
           </div>
           
-          <div className="bg-white p-6 md:p-8 rounded-xl shadow-md">
+          <div className="bg-gray-900 p-6 md:p-8 rounded-xl shadow-md border border-gray-800">
             {!isSubmitted ? (
               <div className="grid md:grid-cols-2 gap-8">
                 <div>
-                  <h3 className="text-xl font-semibold mb-4 text-navy">Available Resources</h3>
+                  <h3 className="text-xl font-semibold mb-4 text-white">Available Resources</h3>
                   <ul className="space-y-4">
                     <li className="flex items-start">
                       <FileText className="h-6 w-6 mr-3 text-purple-500 flex-shrink-0 mt-0.5" />
                       <div>
-                        <h4 className="font-medium">Essential SME Contacts (2025)</h4>
-                        <p className="text-gray-600 text-sm">A comprehensive list of all important UK business support contacts.</p>
+                        <h4 className="font-medium text-white">Essential SME Contacts (2025)</h4>
+                        <p className="text-gray-400 text-sm">A comprehensive list of all important UK business support contacts.</p>
                       </div>
                     </li>
                     <li className="flex items-start">
                       <CalendarIcon className="h-6 w-6 mr-3 text-purple-500 flex-shrink-0 mt-0.5" />
                       <div>
-                        <h4 className="font-medium">Key Business Deadlines (2025)</h4>
-                        <p className="text-gray-600 text-sm">All tax and reporting deadlines for the 2024/25 year.</p>
+                        <h4 className="font-medium text-white">Key Business Deadlines (2025)</h4>
+                        <p className="text-gray-400 text-sm">All tax and reporting deadlines for the 2024/25 year.</p>
                       </div>
                     </li>
                   </ul>
                 </div>
                 
                 <div>
-                  <h3 className="text-xl font-semibold mb-4 text-navy">Complete the form to download</h3>
+                  <h3 className="text-xl font-semibold mb-4 text-white">Complete the form to download</h3>
                   <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
                       <FormField
@@ -653,8 +653,8 @@ const DownloadResourcesSection = () => {
             ) : (
               <div className="text-center py-4">
                 <CheckCircle className="h-12 w-12 mx-auto text-green-500 mb-4" />
-                <h3 className="text-xl font-semibold mb-2 text-navy">Your resources are ready!</h3>
-                <p className="text-gray-600 mb-8">Thank you for your interest. You now have access to download both PDFs.</p>
+                <h3 className="text-xl font-semibold mb-2 text-white">Your resources are ready!</h3>
+                <p className="text-gray-300 mb-8">Thank you for your interest. You now have access to download both PDFs.</p>
                 
                 <div className="grid md:grid-cols-2 gap-6 max-w-2xl mx-auto">
                   <a 
