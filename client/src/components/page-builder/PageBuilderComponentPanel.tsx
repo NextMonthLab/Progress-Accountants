@@ -139,7 +139,7 @@ const PageBuilderComponentPanel: React.FC<PageBuilderComponentPanelProps> = ({
   const handleRemoveComponent = (componentId: number) => {
     if (window.confirm('Are you sure you want to delete this component? This action cannot be undone.')) {
       const updatedComponents = section.components.filter((comp) => comp.id !== componentId);
-      
+
       onUpdateSection(section.id, {
         ...section,
         components: updatedComponents
