@@ -668,20 +668,7 @@ export default function AdminSidebar() {
           {!collapsed && (
             <div className="flex items-center justify-center text-xs text-gray-500 space-x-1 mt-2">
               <span>Powered by</span>
-              <img 
-                src="/nextmonth-logo.png"
-                alt="NextMonth"
-                className="h-5 w-auto object-contain ml-1"
-                style={{ maxWidth: '60px' }}
-                onLoad={() => console.log('NextMonth logo loaded successfully')}
-                onError={(e) => {
-                  console.error('Failed to load NextMonth logo');
-                  e.currentTarget.style.display = 'none';
-                  const fallbackText = e.currentTarget.nextElementSibling as HTMLElement;
-                  if (fallbackText) fallbackText.classList.remove('hidden');
-                }}
-              />
-              <span className="hidden text-cyan-500 font-medium">NextMonth</span>
+              <span className="text-cyan-400 font-semibold">NextMonth</span>
             </div>
           )}
         </div>
