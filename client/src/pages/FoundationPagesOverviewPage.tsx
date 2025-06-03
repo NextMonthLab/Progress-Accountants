@@ -263,45 +263,45 @@ export default function FoundationPagesOverviewPage() {
   };
   
   return (
-    <div className="bg-gray-50 min-h-screen py-10">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 p-6">
       <Helmet>
         <title>Foundation Pages | Onboarding</title>
       </Helmet>
       
-      <div className="container mx-auto px-4 max-w-6xl">
-        <Card className="bg-white shadow-sm">
-          <CardHeader className="bg-[var(--navy)] text-white rounded-t-lg">
-            <CardTitle className="text-3xl">Build the foundation of your business site</CardTitle>
-            <CardDescription className="text-gray-100">
+      <div className="container mx-auto max-w-6xl">
+        <Card className="bg-slate-800/50 border-slate-700 backdrop-blur-sm">
+          <CardHeader className="bg-gradient-to-r from-teal-600 to-teal-700 text-white">
+            <CardTitle className="text-3xl font-bold">Build the foundation of your business site</CardTitle>
+            <CardDescription className="text-teal-100 text-lg">
               These pages give your customers confidence—and give you a system to grow with.
             </CardDescription>
           </CardHeader>
           
-          <CardContent className="p-6">
+          <CardContent className="p-6 bg-slate-800/30">
             {/* Progress Bar */}
             <div className="mb-8">
               <div className="flex justify-between items-center mb-2">
-                <span className="text-sm font-medium text-gray-700">
+                <span className="text-sm font-medium text-slate-300">
                   Setup Progress
                 </span>
-                <span className="text-sm font-medium text-gray-700">
+                <span className="text-sm font-medium text-teal-400">
                   {Math.round(calculateProgress())}%
                 </span>
               </div>
-              <Progress value={calculateProgress()} className="h-2" />
+              <Progress value={calculateProgress()} className="h-2 bg-slate-700" />
             </div>
             
             {/* Page Cards Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {pages.map((page) => (
-                <Card key={page.id} className="overflow-hidden transition-all hover:shadow-md">
-                  <CardHeader className="bg-gray-50 p-4 flex-row items-start justify-between gap-4">
+                <Card key={page.id} className="overflow-hidden transition-all hover:shadow-lg bg-slate-700/50 border-slate-600 hover:bg-slate-700/70">
+                  <CardHeader className="bg-slate-600/50 p-4 flex-row items-start justify-between gap-4">
                     <div className="flex items-center gap-3">
-                      <div className="bg-white p-2 rounded-md shadow-sm">
+                      <div className="bg-slate-800 p-2 rounded-md border border-slate-600">
                         {page.icon}
                       </div>
                       <div>
-                        <CardTitle className="text-xl">{page.title}</CardTitle>
+                        <CardTitle className="text-xl text-slate-100">{page.title}</CardTitle>
                         {getStatusBadge(pageStatuses[page.id])}
                       </div>
                     </div>
@@ -310,15 +310,15 @@ export default function FoundationPagesOverviewPage() {
                     </div>
                   </CardHeader>
                   
-                  <CardContent className="p-4">
-                    <p className="text-gray-600 mb-4">
+                  <CardContent className="p-4 bg-slate-700/30">
+                    <p className="text-slate-300 mb-4">
                       {page.description}
                     </p>
                     
                     <div className="flex flex-col sm:flex-row gap-2 mt-4">
                       <Button 
                         onClick={() => handleStartSetup(page)}
-                        className="flex-1 bg-[var(--navy)] hover:bg-[var(--navy)]/90"
+                        className="flex-1 bg-teal-600 hover:bg-teal-700 text-white"
                         disabled={pageStatuses[page.id] === 'complete'}
                       >
                         {pageStatuses[page.id] === 'complete' ? 'Completed' : 'Start Setup'}
@@ -330,7 +330,7 @@ export default function FoundationPagesOverviewPage() {
                             <TooltipTrigger asChild>
                               <Button 
                                 variant="outline" 
-                                className="flex-none"
+                                className="flex-none border-slate-500 text-slate-300 hover:bg-slate-600 hover:text-white"
                                 onClick={() => handleSkipPage(page.id)}
                               >
                                 Skip for now
@@ -349,8 +349,8 @@ export default function FoundationPagesOverviewPage() {
             </div>
           </CardContent>
           
-          <CardFooter className="p-6 bg-gray-50 rounded-b-lg flex flex-col sm:flex-row justify-between items-center gap-4">
-            <p className="text-gray-600 text-sm">
+          <CardFooter className="p-6 bg-slate-600/30 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <p className="text-slate-300 text-sm">
               {allPagesAddressed 
                 ? "All set! You're ready to continue to Launch Mode." 
                 : "Complete or skip all pages to continue to Launch Mode."}
@@ -358,7 +358,7 @@ export default function FoundationPagesOverviewPage() {
             
             <Button
               onClick={handleContinueToLaunch}
-              className="bg-[var(--orange)] hover:bg-[var(--orange)]/90 text-white sm:min-w-[200px]"
+              className="bg-gradient-to-r from-orange-600 to-orange-700 hover:from-orange-700 hover:to-orange-800 text-white sm:min-w-[200px]"
               disabled={!allPagesAddressed}
             >
               Continue to Launch
