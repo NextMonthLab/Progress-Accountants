@@ -583,7 +583,11 @@ function Router() {
         </Suspense>
       </Route>
       <ProtectedRoute path="/homepage-setup" component={HomepageSetupPage} />
-      <ProtectedRoute path="/foundation-pages" component={FoundationPagesOverviewPage} />
+      <Route path="/foundation-pages">
+        <Suspense fallback={<LoadingFallback />}>
+          <FoundationPagesOverviewPage />
+        </Suspense>
+      </Route>
       {/* Removed standalone page creation in favor of the Page Builder */}
       <ProtectedRoute path="/create-new-page" component={CreateNewPagePage} allowedRoles={['admin', 'super_admin', 'editor']} />
       <ProtectedRoute path="/about-setup" component={AboutSetupPage} />

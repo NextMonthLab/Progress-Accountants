@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactNode, startTransition } from "react";
 import { Route, Redirect, useLocation } from "wouter";
 import { useAuth } from "@/hooks/use-auth";
 import { UserRole } from "@shared/schema";
@@ -66,7 +66,7 @@ export function ProtectedRoute({
           <p className="text-gray-600 mb-4">You need super admin privileges to access this page.</p>
           <button 
             className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90"
-            onClick={() => setLocation("/")}
+            onClick={() => startTransition(() => setLocation("/"))}
           >
             Go Home
           </button>
@@ -84,7 +84,7 @@ export function ProtectedRoute({
           <p className="text-gray-600 mb-4">You don't have permission to access this page.</p>
           <button 
             className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90"
-            onClick={() => setLocation("/")}
+            onClick={() => startTransition(() => setLocation("/"))}
           >
             Go Home
           </button>
