@@ -666,9 +666,37 @@ export default function AdminSidebar() {
           
           {/* Powered by NextMonth */}
           {!collapsed && (
-            <div className="flex items-center justify-center text-xs text-gray-500 space-x-1 mt-2">
+            <div className="flex items-center justify-center text-xs text-gray-500 space-x-2 mt-2">
               <span>Powered by</span>
-              <span className="text-cyan-400 font-semibold">NextMonth</span>
+              <div className="relative">
+                <img 
+                  src="https://res.cloudinary.com/drl0fxrkq/image/upload/v1746537994/8A3D82EC-31EF-4209-85E2-D1D284F5E960_lnzuah.png"
+                  alt="NextMonth"
+                  className="h-4 w-auto object-contain opacity-90"
+                  style={{ 
+                    maxWidth: '60px',
+                    imageRendering: 'crisp-edges',
+                    filter: 'brightness(0.9) contrast(1.1)'
+                  }}
+                  crossOrigin="anonymous"
+                  loading="eager"
+                  onLoad={() => {
+                    console.log('NextMonth logo loaded successfully from Cloudinary');
+                  }}
+                  onError={(e) => {
+                    console.error('Failed to load NextMonth logo from Cloudinary');
+                    const target = e.currentTarget as HTMLImageElement;
+                    target.style.display = 'none';
+                    const container = target.parentElement;
+                    if (container && !container.querySelector('.fallback-text')) {
+                      const fallback = document.createElement('span');
+                      fallback.textContent = 'NextMonth';
+                      fallback.className = 'text-cyan-400 font-semibold text-xs fallback-text';
+                      container.appendChild(fallback);
+                    }
+                  }}
+                />
+              </div>
             </div>
           )}
         </div>
