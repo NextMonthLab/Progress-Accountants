@@ -9,7 +9,7 @@ export default function Footer() {
           <div>
             <div className="mb-4">
               <img 
-                src="/progress-logo-white.png" 
+                src="/progress-logo.svg" 
                 alt="Progress Accountants | Advisors | Growth Partners" 
                 className="h-16 w-auto"
               />
