@@ -173,7 +173,7 @@ export const mapSidebarToNavigation = (): NavigationItem[] => {
       title: 'Social Media Content',
       icon: 'Share2',
       type: 'link',
-      href: '/social-media',
+      href: '/admin/social-media-generator',
       requiresStaff: true,
       description: 'Create social media posts',
       category: 'create_publish',
