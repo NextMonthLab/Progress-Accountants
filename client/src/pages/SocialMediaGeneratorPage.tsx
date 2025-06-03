@@ -385,19 +385,18 @@ export default function SocialMediaGeneratorPage() {
   };
 
   return (
-    <AdminLayout>
-      <div className="container py-6">
-        <div className="flex flex-col gap-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-3xl font-bold tracking-tight">Universal Social Media Post Generator</h1>
-              <p className="text-muted-foreground">Create professional social media content in seconds</p>
-            </div>
-            <div className="hidden md:flex items-center gap-2">
-              <Badge className="bg-orange-600">AI-Powered</Badge>
-              <Badge variant="outline">Session-Based</Badge>
-            </div>
-          </div>
+    <div className="min-h-screen bg-slate-900 py-10" data-admin="true">
+      <div className="container mx-auto px-4 max-w-6xl">
+        <Card className="bg-slate-800 border-slate-700 shadow-xl mb-6">
+          <CardHeader className="bg-gradient-to-r from-[var(--nextmonth-teal)] to-teal-600 text-white rounded-t-lg">
+            <CardTitle className="text-3xl">NextMonth Admin | Social Media Generator</CardTitle>
+            <CardDescription className="text-slate-100">
+              Create professional social media content for your clients using AI
+            </CardDescription>
+          </CardHeader>
+        </Card>
+        
+        <div className="space-y-6">
           
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
             <TabsList className="grid w-full grid-cols-2">
@@ -406,27 +405,27 @@ export default function SocialMediaGeneratorPage() {
             </TabsList>
             
             <TabsContent value="create" className="space-y-6 pt-4">
-              <Card>
+              <Card className="bg-slate-700 border-slate-600">
                 <CardHeader>
-                  <CardTitle>Create New Post</CardTitle>
-                  <CardDescription>
+                  <CardTitle className="text-slate-100">Create New Post</CardTitle>
+                  <CardDescription className="text-slate-300">
                     Select a platform and describe what you want to post about.
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6">
                   <div className="space-y-2">
-                    <Label htmlFor="platform">Platform</Label>
+                    <Label htmlFor="platform" className="text-slate-200">Platform</Label>
                     <Select 
                       value={platform} 
                       onValueChange={setPlatform}
                     >
-                      <SelectTrigger id="platform">
+                      <SelectTrigger id="platform" className="bg-slate-600 border-slate-500 text-slate-100">
                         <SelectValue placeholder="Select platform" />
                       </SelectTrigger>
-                      <SelectContent>
+                      <SelectContent className="bg-slate-700 border-slate-600">
                         {PLATFORMS.map(p => (
-                          <SelectItem key={p.id} value={p.id}>
-                            {p.name} - <span className="text-muted-foreground text-sm">{p.description}</span>
+                          <SelectItem key={p.id} value={p.id} className="text-slate-100 hover:bg-slate-600">
+                            {p.name} - <span className="text-slate-400 text-sm">{p.description}</span>
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -434,17 +433,17 @@ export default function SocialMediaGeneratorPage() {
                   </div>
                   
                   <div className="space-y-2">
-                    <Label htmlFor="prompt">Post Content Description</Label>
+                    <Label htmlFor="prompt" className="text-slate-200">Post Content Description</Label>
                     <Textarea
                       id="prompt"
                       placeholder="Describe what you want to post about..."
                       value={prompt}
                       onChange={(e) => setPrompt(e.target.value)}
                       rows={3}
-                      className="resize-none"
+                      className="resize-none bg-slate-600 border-slate-500 text-slate-100 placeholder:text-slate-400"
                     />
                     <div className="flex flex-col gap-1">
-                      <p className="text-sm text-muted-foreground">
+                      <p className="text-sm text-slate-400">
                         Example: "A post highlighting our new tax planning services for small businesses with a professional tone"
                       </p>
                       
@@ -555,7 +554,7 @@ export default function SocialMediaGeneratorPage() {
                   <Button
                     onClick={generatePost}
                     disabled={isGeneratingText || !prompt}
-                    className="w-full"
+                    className="w-full bg-[var(--nextmonth-teal)] hover:bg-[var(--nextmonth-teal)]/90 text-white"
                   >
                     {isGeneratingText ? (
                       <>
@@ -806,6 +805,6 @@ export default function SocialMediaGeneratorPage() {
           </Tabs>
         </div>
       </div>
-    </AdminLayout>
+    </div>
   );
 }
