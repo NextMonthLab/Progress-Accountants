@@ -592,73 +592,73 @@ export default function HomepageSetupPage() {
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="headline">
-                    Headline <span className="text-red-500">*</span>
+                  <Label htmlFor="headline" className="text-slate-200">
+                    Headline <span className="text-red-400">*</span>
                   </Label>
                   <Textarea 
                     id="headline" 
                     value={homepage.headline} 
                     onChange={(e) => handleInputChange('headline', e.target.value)}
-                    placeholder="What's the bold first thing visitors should read?"
+                    placeholder="Enter the main headline for your client's homepage"
                     rows={2}
-                    className={errors.headline ? 'border-red-500' : ''}
+                    className={`bg-slate-600 border-slate-500 text-slate-100 placeholder:text-slate-400 ${errors.headline ? 'border-red-400' : ''}`}
                   />
                   {errors.headline && (
-                    <p className="text-red-500 text-sm">{errors.headline}</p>
+                    <p className="text-red-400 text-sm">{errors.headline}</p>
                   )}
-                  <p className="text-sm text-gray-500">
-                    Keep it short, clear, and impactful. This is your first impression.
+                  <p className="text-sm text-slate-400">
+                    Configure the primary headline that will appear on your client's homepage.
                   </p>
                 </div>
                 
                 <div className="space-y-2">
-                  <Label htmlFor="subheading">
-                    Subheading <span className="text-red-500">*</span>
+                  <Label htmlFor="subheading" className="text-slate-200">
+                    Subheading <span className="text-red-400">*</span>
                   </Label>
                   <Textarea 
                     id="subheading" 
                     value={homepage.subheading} 
                     onChange={(e) => handleInputChange('subheading', e.target.value)}
-                    placeholder="Additional supporting text that expands on your headline"
+                    placeholder="Enter supporting text to expand on the headline"
                     rows={2}
-                    className={errors.subheading ? 'border-red-500' : ''}
+                    className={`bg-slate-600 border-slate-500 text-slate-100 placeholder:text-slate-400 ${errors.subheading ? 'border-red-400' : ''}`}
                   />
                   {errors.subheading && (
-                    <p className="text-red-500 text-sm">{errors.subheading}</p>
+                    <p className="text-red-400 text-sm">{errors.subheading}</p>
                   )}
-                  <p className="text-sm text-gray-500">
-                    Provide more context or detail about your value proposition
+                  <p className="text-sm text-slate-400">
+                    Configure the supporting text that explains your client's value proposition
                   </p>
                 </div>
               </CardContent>
             </Card>
             
             {/* Core Offer & Benefits */}
-            <Card>
+            <Card className="bg-slate-700 border-slate-600">
               <CardHeader>
-                <CardTitle>Core Offer & Benefits</CardTitle>
-                <CardDescription>
-                  Define what you're offering and why it matters
+                <CardTitle className="text-slate-100">Core Offer & Benefits</CardTitle>
+                <CardDescription className="text-slate-300">
+                  Configure what your client is offering and why it matters
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="offer">
-                    Core Offer or Promise <span className="text-red-500">*</span>
+                  <Label htmlFor="offer" className="text-slate-200">
+                    Core Offer or Promise <span className="text-red-400">*</span>
                   </Label>
                   <Textarea 
                     id="offer" 
                     value={homepage.offer} 
                     onChange={(e) => handleInputChange('offer', e.target.value)}
-                    placeholder="e.g. Tax support for UK-based creatives"
+                    placeholder="Enter your client's main service offering"
                     rows={2}
-                    className={errors.offer ? 'border-red-500' : ''}
+                    className={`bg-slate-600 border-slate-500 text-slate-100 placeholder:text-slate-400 ${errors.offer ? 'border-red-400' : ''}`}
                   />
                   {errors.offer && (
-                    <p className="text-red-500 text-sm">{errors.offer}</p>
+                    <p className="text-red-400 text-sm">{errors.offer}</p>
                   )}
-                  <p className="text-sm text-gray-500">
-                    What specific service or value do you provide? Be clear and specific.
+                  <p className="text-sm text-slate-400">
+                    Configure the specific service or value your client provides.
                   </p>
                 </div>
                 
@@ -852,7 +852,7 @@ export default function HomepageSetupPage() {
               <Button
                 onClick={previewHomepage}
                 variant="outline"
-                className="w-full sm:w-auto"
+                className="w-full sm:w-auto border-[var(--nextmonth-teal)] text-[var(--nextmonth-teal)] hover:bg-[var(--nextmonth-teal)]/20"
               >
                 <Eye className="h-4 w-4 mr-2" />
                 Preview Draft
@@ -860,7 +860,7 @@ export default function HomepageSetupPage() {
               
               <Button
                 onClick={continueToNext}
-                className="w-full sm:w-auto bg-[var(--orange)] hover:bg-[var(--orange)]/90 text-white"
+                className="w-full sm:w-auto bg-[var(--nextmonth-teal)] hover:bg-[var(--nextmonth-teal)]/90 text-white"
               >
                 <ArrowRight className="h-4 w-4 mr-2" />
                 Continue
