@@ -668,33 +668,26 @@ export default function AdminSidebar() {
           {!collapsed && (
             <div className="flex items-center justify-center text-xs text-gray-500 space-x-2 mt-2">
               <span>Powered by</span>
-              <div className="relative">
-                <img 
-                  src="/nextmonth-logo-direct.png"
-                  alt="NextMonth"
-                  className="h-4 w-auto object-contain opacity-90"
-                  style={{ 
-                    maxWidth: '60px',
-                    imageRendering: 'crisp-edges',
-                    filter: 'brightness(0.9) contrast(1.1)'
-                  }}
-                  loading="eager"
-                  onLoad={() => {
-                    console.log('NextMonth logo loaded successfully from local file');
-                  }}
-                  onError={(e) => {
-                    console.error('Failed to load NextMonth logo from local file');
-                    const target = e.currentTarget as HTMLImageElement;
-                    target.style.display = 'none';
-                    const container = target.parentElement;
-                    if (container && !container.querySelector('.fallback-text')) {
-                      const fallback = document.createElement('span');
-                      fallback.textContent = 'NextMonth';
-                      fallback.className = 'text-cyan-400 font-semibold text-xs fallback-text';
-                      container.appendChild(fallback);
-                    }
-                  }}
-                />
+              <div className="inline-flex items-center">
+                <svg width="60" height="16" viewBox="0 0 180 48" className="h-4 w-auto">
+                  <defs>
+                    <linearGradient id="nm-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                      <stop offset="0%" stopColor="#06B6D4" />
+                      <stop offset="100%" stopColor="#0891B2" />
+                    </linearGradient>
+                  </defs>
+                  <text 
+                    x="6" 
+                    y="30" 
+                    fontSize="20" 
+                    fontFamily="Arial, sans-serif" 
+                    fontWeight="600" 
+                    fill="url(#nm-gradient)"
+                  >
+                    NextMonth
+                  </text>
+                  <circle cx="160" cy="24" r="3" fill="#06B6D4" opacity="0.7"/>
+                </svg>
               </div>
             </div>
           )}
