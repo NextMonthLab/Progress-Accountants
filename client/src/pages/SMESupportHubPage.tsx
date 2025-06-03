@@ -136,12 +136,12 @@ const IntroSection = () => (
           className="bg-gradient-to-br from-gray-50 to-white p-6 md:p-8 rounded-xl shadow-md border border-gray-100 relative overflow-hidden"
         >
           {/* Decorative elements */}
-          <div className="absolute top-0 right-0 h-24 w-24 bg-orange-50 rounded-full -translate-y-1/3 translate-x-1/3 z-0"></div>
+          <div className="absolute top-0 right-0 h-24 w-24 bg-purple-50 rounded-full -translate-y-1/3 translate-x-1/3 z-0"></div>
           <div className="absolute bottom-0 left-0 h-32 w-32 bg-blue-50 rounded-full translate-y-1/2 -translate-x-1/4 z-0"></div>
           
           <div className="relative z-10">
             <div className="flex items-center mb-4">
-              <Info className="h-6 w-6 text-orange-500 mr-3 flex-shrink-0" />
+              <Info className="h-6 w-6 text-purple-500 mr-3 flex-shrink-0" />
               <h3 className="text-xl font-semibold text-navy">Why We Built This Resource</h3>
             </div>
             <p className="text-gray-700 text-lg leading-relaxed mb-4">
@@ -155,9 +155,9 @@ const IntroSection = () => (
                 </div>
                 <p className="text-sm text-gray-600">Critical business contacts all in one place</p>
               </div>
-              <div className="bg-orange-50 p-4 rounded-lg border border-orange-100">
+              <div className="bg-purple-50 p-4 rounded-lg border border-purple-100">
                 <div className="flex items-center mb-2">
-                  <Calendar className="h-5 w-5 text-orange-500 mr-2" />
+                  <Calendar className="h-5 w-5 text-purple-500 mr-2" />
                   <span className="font-medium text-navy">Deadlines</span>
                 </div>
                 <p className="text-sm text-gray-600">Never miss important tax & filing dates</p>
@@ -184,7 +184,7 @@ const OrganizationCard = ({ organization }: { organization: typeof organizations
       <Card className="h-full hover:shadow-md transition-shadow">
         <CardHeader className="pb-2">
           <CardTitle className="text-navy flex items-center">
-            <Building2 className="h-5 w-5 mr-2 text-orange-500" />
+            <Building2 className="h-5 w-5 mr-2 text-purple-500" />
             {organization.name}
           </CardTitle>
           <CardDescription className="mt-2">
@@ -268,7 +268,7 @@ const DeadlineRow = ({ deadline }: { deadline: typeof deadlines[0] }) => {
   return (
     <motion.tr
       variants={itemVariants}
-      className={`border-b border-gray-200 ${isUpcoming ? 'bg-orange-50' : ''}`}
+      className={`border-b border-gray-200 ${isUpcoming ? 'bg-purple-50' : ''}`}
     >
       <td className="py-4 px-4">
         <div className="flex items-center">
@@ -280,7 +280,7 @@ const DeadlineRow = ({ deadline }: { deadline: typeof deadlines[0] }) => {
         <div className="flex items-center">
           <span className="text-gray-700">{deadline.description}</span>
           {isUpcoming && (
-            <Badge variant="outline" className="ml-2 bg-orange-100 text-orange-700 border-orange-200">
+            <Badge variant="outline" className="ml-2 bg-purple-100 text-purple-700 border-purple-200">
               Upcoming
             </Badge>
           )}
@@ -326,7 +326,7 @@ const DirectorySection = () => {
                 <input
                   type="text"
                   placeholder="Search organizations..."
-                  className="w-full pl-10 pr-4 py-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none"
+                  className="w-full pl-10 pr-4 py-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
@@ -335,7 +335,7 @@ const DirectorySection = () => {
               <div className="relative md:w-64">
                 <Filter className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
                 <select
-                  className="w-full pl-10 pr-4 py-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none appearance-none bg-white"
+                  className="w-full pl-10 pr-4 py-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none appearance-none bg-white"
                   value={selectedFilter}
                   onChange={(e) => setSelectedFilter(e.target.value)}
                 >
