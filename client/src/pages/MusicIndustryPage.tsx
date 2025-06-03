@@ -1,7 +1,7 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import { 
   Music, 
   TrendingUp, 
@@ -123,59 +123,71 @@ const ClientType = ({ icon: Icon, label }: { icon: React.ElementType, label: str
 const MusicIndustryPage = () => {
   const headerRef = useRef<HTMLDivElement>(null);
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
-    <div className="min-h-screen bg-black text-white">
-      {/* Hero Section */}
-      <section ref={headerRef} className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        {/* Background gradient */}
-        <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-black to-blue-900/20" />
+    <div className="bg-black pb-20">
+      {/* Hero section */}
+      <div 
+        ref={headerRef}
+        className="relative overflow-hidden w-full min-h-[500px]"
+      >
+        {/* Full-width background with dark overlay */}
+        <div className="absolute inset-0 z-0">
+          {/* Music studio background placeholder */}
+          <div className="w-full h-full bg-gradient-to-br from-purple-900/30 via-black to-blue-900/30"></div>
+          {/* Dark overlay for better text contrast */}
+          <div className="absolute inset-0 bg-black opacity-60"></div>
+        </div>
         
-        <div className="container mx-auto px-6 md:px-8 relative z-10">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            {/* Left content */}
-            <motion.div
+        <div className="relative z-10 container mx-auto px-6 md:px-8 py-20 md:py-32">
+          <div className="flex flex-col lg:flex-row items-center gap-12">
+            <motion.div 
               initial="hidden"
               animate="visible"
               variants={containerVariants}
-              className="text-left"
+              className="lg:w-1/2"
             >
-              <motion.div variants={itemVariants} className="mb-6">
-                <span className="inline-block bg-purple-900/20 text-purple-300 px-4 py-2 rounded-full text-sm font-medium border border-purple-500/30">
+              <motion.div variants={itemVariants}>
+                <span className="inline-block px-4 py-1 rounded-full bg-purple-900/20 text-purple-400 font-medium text-sm mb-4">
                   Music Industry Specialists
                 </span>
               </motion.div>
-              
-              <motion.h1 variants={itemVariants} className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6">
-                <span className="text-white">
-                  Expert Accounting for
-                </span>
-                <br />
-                <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4]">
-                  the Music Industry
-                </span>
-              </motion.h1>
-              
-              <motion.p variants={itemVariants} className="text-xl text-gray-300 mb-8 leading-relaxed">
-                Helping You Maximize Royalty Revenue, Manage Tour Finances, and Keep Your Music Career on Track
-              </motion.p>
-              
+              <motion.div
+                variants={itemVariants}
+                className="mb-6"
+              >
+                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
+                  Expert Accounting for the Music Industry
+                </h1>
+              </motion.div>
+              <motion.div
+                variants={itemVariants}
+                className="mb-8"
+              >
+                <p className="text-lg md:text-xl text-white">
+                  Helping You Maximize Royalty Revenue, Manage Tour Finances, and Keep Your Music Career on Track
+                </p>
+              </motion.div>
               <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-4">
-                <Button size="lg" className="bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] hover:shadow-lg hover:shadow-purple-500/25 text-white border-none font-medium">
+                <Button size="lg" className="bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] hover:shadow-lg hover:shadow-purple-500/25 text-white font-medium">
                   Book a free consultation
                 </Button>
-                <Button size="lg" variant="outline" className="border-purple-400/30 text-purple-300 hover:bg-purple-900/20 hover:border-purple-400 flex items-center gap-2">
+                <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-gray-900 flex items-center gap-2">
                   Explore our services
                   <ArrowRight className="h-4 w-4" />
                 </Button>
               </motion.div>
             </motion.div>
 
-            {/* Right image section */}
-            <motion.div
+            {/* Right side image placeholder - matching film industry layout */}
+            <motion.div 
               initial={{ opacity: 0, x: 50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="relative"
+              className="lg:w-1/2 relative"
             >
               <div className="relative bg-gradient-to-br from-purple-600/20 to-blue-600/20 rounded-2xl p-8 border border-purple-500/30">
                 {/* Music studio placeholder */}
@@ -207,7 +219,7 @@ const MusicIndustryPage = () => {
             </motion.div>
           </div>
         </div>
-      </section>
+      </div>
 
       {/* Features Section */}
       <section className="py-20 bg-black">
