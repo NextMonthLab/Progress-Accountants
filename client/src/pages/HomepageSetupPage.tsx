@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, startTransition, Suspense } from 'react';
 import { Helmet } from 'react-helmet';
 import { useLocation } from 'wouter';
 import {
@@ -117,10 +117,12 @@ export default function HomepageSetupPage() {
     if (savedData) {
       try {
         const parsedData = JSON.parse(savedData);
-        setHomepage(parsedData);
-        if (parsedData.media_url) {
-          setPreviewUrl(parsedData.media_url);
-        }
+        startTransition(() => {
+          setHomepage(parsedData);
+          if (parsedData.media_url) {
+            setPreviewUrl(parsedData.media_url);
+          }
+        });
       } catch (error) {
         console.error('Error parsing stored homepage data:', error);
         toast({
@@ -134,29 +136,33 @@ export default function HomepageSetupPage() {
   
   // Handle input changes
   const handleInputChange = (field: keyof HomepageContext, value: string) => {
-    setHomepage(prev => ({
-      ...prev,
-      [field]: value
-    }));
-    
-    // Clear error for this field if it exists
-    if (errors[field]) {
-      setErrors(prev => {
-        const newErrors = { ...prev };
-        delete newErrors[field];
-        return newErrors;
-      });
-    }
+    startTransition(() => {
+      setHomepage(prev => ({
+        ...prev,
+        [field]: value
+      }));
+      
+      // Clear error for this field if it exists
+      if (errors[field]) {
+        setErrors(prev => {
+          const newErrors = { ...prev };
+          delete newErrors[field];
+          return newErrors;
+        });
+      }
+    });
   };
   
   // Add benefit
   const addBenefit = () => {
     if (newBenefit.trim() && homepage.benefits.length < 3) {
-      setHomepage(prev => ({
-        ...prev,
-        benefits: [...prev.benefits, newBenefit.trim()]
-      }));
-      setNewBenefit('');
+      startTransition(() => {
+        setHomepage(prev => ({
+          ...prev,
+          benefits: [...prev.benefits, newBenefit.trim()]
+        }));
+        setNewBenefit('');
+      });
     } else if (homepage.benefits.length >= 3) {
       toast({
         title: "Maximum Benefits Reached",
@@ -168,23 +174,27 @@ export default function HomepageSetupPage() {
   
   // Remove benefit
   const removeBenefit = (benefitToRemove: string) => {
-    setHomepage(prev => ({
-      ...prev,
-      benefits: prev.benefits.filter(benefit => benefit !== benefitToRemove)
-    }));
+    startTransition(() => {
+      setHomepage(prev => ({
+        ...prev,
+        benefits: prev.benefits.filter(benefit => benefit !== benefitToRemove)
+      }));
+    });
   };
   
   // Handle media file selection
   const handleMediaUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
-      setMediaFile(file);
-      
-      // For demo purposes, create an object URL
-      // In a real app, you'd upload this to a server and get a URL back
-      const objectUrl = URL.createObjectURL(file);
-      setPreviewUrl(objectUrl);
-      handleInputChange('media_url', objectUrl);
+      startTransition(() => {
+        setMediaFile(file);
+        
+        // For demo purposes, create an object URL
+        // In a real app, you'd upload this to a server and get a URL back
+        const objectUrl = URL.createObjectURL(file);
+        setPreviewUrl(objectUrl);
+        handleInputChange('media_url', objectUrl);
+      });
     }
   };
   
@@ -216,7 +226,9 @@ export default function HomepageSetupPage() {
       newErrors.layout_style = "Layout style is required";
     }
     
-    setErrors(newErrors);
+    startTransition(() => {
+      setErrors(newErrors);
+    });
     return Object.keys(newErrors).length === 0;
   };
   
@@ -231,14 +243,18 @@ export default function HomepageSetupPage() {
       return;
     }
     
-    setIsLoading(true);
+    startTransition(() => {
+      setIsLoading(true);
+    });
     
     try {
       // Save to localStorage
       localStorage.setItem('project_context.homepage', JSON.stringify(homepage));
       
       // Update the state to reflect the save
-      setSavedSuccessfully(true);
+      startTransition(() => {
+        setSavedSuccessfully(true);
+      });
       
       // Show success toast
       toast({
@@ -249,7 +265,9 @@ export default function HomepageSetupPage() {
       
       // Reset saved message after a delay
       setTimeout(() => {
-        setSavedSuccessfully(false);
+        startTransition(() => {
+          setSavedSuccessfully(false);
+        });
       }, 3000);
     } catch (error) {
       console.error('Error saving homepage data:', error);
@@ -260,7 +278,9 @@ export default function HomepageSetupPage() {
         variant: "destructive",
       });
     } finally {
-      setIsLoading(false);
+      startTransition(() => {
+        setIsLoading(false);
+      });
     }
   };
   
