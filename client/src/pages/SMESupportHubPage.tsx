@@ -557,14 +557,14 @@ const DownloadResourcesSection = () => {
                   <h3 className="text-xl font-semibold mb-4 text-navy">Available Resources</h3>
                   <ul className="space-y-4">
                     <li className="flex items-start">
-                      <FileText className="h-6 w-6 mr-3 text-orange-500 flex-shrink-0 mt-0.5" />
+                      <FileText className="h-6 w-6 mr-3 text-purple-500 flex-shrink-0 mt-0.5" />
                       <div>
                         <h4 className="font-medium">Essential SME Contacts (2025)</h4>
                         <p className="text-gray-600 text-sm">A comprehensive list of all important UK business support contacts.</p>
                       </div>
                     </li>
                     <li className="flex items-start">
-                      <CalendarIcon className="h-6 w-6 mr-3 text-orange-500 flex-shrink-0 mt-0.5" />
+                      <CalendarIcon className="h-6 w-6 mr-3 text-purple-500 flex-shrink-0 mt-0.5" />
                       <div>
                         <h4 className="font-medium">Key Business Deadlines (2025)</h4>
                         <p className="text-gray-600 text-sm">All tax and reporting deadlines for the 2024/25 year.</p>
@@ -642,7 +642,7 @@ const DownloadResourcesSection = () => {
                       
                       <Button 
                         type="submit" 
-                        className="w-full bg-navy hover:bg-orange-500 text-white transition-colors"
+                        className="w-full bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] hover:shadow-lg hover:shadow-purple-500/25 hover:-translate-y-1 transition-all duration-300 text-white"
                       >
                         Get Access to Resources
                       </Button>
@@ -662,7 +662,7 @@ const DownloadResourcesSection = () => {
                     target="_blank"
                     className="flex items-center justify-center p-4 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100 transition-colors"
                   >
-                    <Download className="h-5 w-5 mr-2 text-orange-500" />
+                    <Download className="h-5 w-5 mr-2 text-purple-500" />
                     <span className="font-medium">Download SME Contacts</span>
                   </a>
                   
@@ -671,7 +671,7 @@ const DownloadResourcesSection = () => {
                     target="_blank"
                     className="flex items-center justify-center p-4 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100 transition-colors"
                   >
-                    <Download className="h-5 w-5 mr-2 text-orange-500" />
+                    <Download className="h-5 w-5 mr-2 text-purple-500" />
                     <span className="font-medium">Download Key Deadlines</span>
                   </a>
                 </div>
