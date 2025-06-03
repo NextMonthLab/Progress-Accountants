@@ -296,7 +296,9 @@ export default function HomepageSetupPage() {
     }
     
     // Open the preview modal
-    setIsPreviewOpen(true);
+    startTransition(() => {
+      setIsPreviewOpen(true);
+    });
   };
   
   // Continue to next step
@@ -326,7 +328,8 @@ export default function HomepageSetupPage() {
   };
   
   return (
-    <div className="bg-gray-50 min-h-screen py-10">
+    <Suspense fallback={<div className="flex items-center justify-center min-h-screen"><div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div></div>}>
+      <div className="bg-gray-50 min-h-screen py-10">
       <Helmet>
         <title>Homepage Setup | Onboarding</title>
       </Helmet>
@@ -866,6 +869,7 @@ export default function HomepageSetupPage() {
           </CardFooter>
         </Card>
       </div>
-    </div>
+      </div>
+    </Suspense>
   );
 }
