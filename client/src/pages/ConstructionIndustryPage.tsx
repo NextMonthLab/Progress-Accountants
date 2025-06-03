@@ -49,14 +49,14 @@ const FeatureCard = ({
 }) => (
   <motion.div 
     variants={itemVariants}
-    className="bg-white rounded-xl shadow-md overflow-hidden border border-gray-100"
+    className="bg-gray-900 rounded-xl shadow-md overflow-hidden border border-gray-800"
   >
     <div className="p-6 sm:p-8">
-      <div className={`p-3 rounded-full w-fit ${accentColor} mb-5`}>
-        <Icon className="h-6 w-6 text-white" />
+      <div className="p-3 rounded-full w-fit bg-purple-900/20 mb-5">
+        <Icon className="h-6 w-6 text-purple-400" />
       </div>
-      <h3 className="text-xl font-bold text-navy mb-3">{title}</h3>
-      <p className="text-gray-600">{description}</p>
+      <h3 className="text-xl font-bold text-white mb-3">{title}</h3>
+      <p className="text-gray-300">{description}</p>
     </div>
   </motion.div>
 );
@@ -65,18 +65,18 @@ const FeatureCard = ({
 const Testimonial = ({ quote, author, role }: { quote: string; author: string; role: string }) => (
   <motion.div 
     variants={itemVariants}
-    className="bg-gray-50 rounded-xl p-6 border border-gray-100"
+    className="bg-gray-900 rounded-xl p-6 border border-gray-800"
   >
     <div className="flex flex-col">
       <div className="mb-4">
         {[1, 2, 3, 4, 5].map((star) => (
-          <span key={star} className="text-orange-500">★</span>
+          <span key={star} className="text-purple-400">★</span>
         ))}
       </div>
-      <p className="text-navy italic mb-4 text-lg">"{quote}"</p>
+      <p className="text-white italic mb-4 text-lg">"{quote}"</p>
       <div className="mt-auto">
-        <p className="font-semibold text-navy">{author}</p>
-        <p className="text-gray-600 text-sm">{role}</p>
+        <p className="font-semibold text-white">{author}</p>
+        <p className="text-gray-300 text-sm">{role}</p>
       </div>
     </div>
   </motion.div>
@@ -140,7 +140,7 @@ const ConstructionIndustryPage = () => {
   }, []);
 
   return (
-    <div className="bg-gray-50 pb-20">
+    <div className="bg-black pb-20">
       {/* Hero section */}
       <div 
         ref={headerRef}
@@ -168,7 +168,7 @@ const ConstructionIndustryPage = () => {
               className="lg:w-1/2"
             >
               <motion.div variants={itemVariants}>
-                <span className="inline-block px-4 py-1 rounded-full bg-orange-100 text-orange-700 font-medium text-sm mb-4">
+                <span className="inline-block px-4 py-1 rounded-full bg-purple-900/20 text-purple-400 font-medium text-sm mb-4">
                   Industry Specialists
                 </span>
               </motion.div>
@@ -189,10 +189,10 @@ const ConstructionIndustryPage = () => {
                 </p>
               </motion.div>
               <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-4">
-                <Button size="lg" className="bg-orange-500 hover:bg-orange-600 text-white font-medium">
+                <Button size="lg" className="bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] hover:from-[#6B2FD4] hover:to-[#2F94D4] text-white font-medium">
                   Book a free consultation
                 </Button>
-                <Button size="lg" className="bg-navy-600 border-navy-600 text-white hover:bg-navy-700 font-medium">
+                <Button size="lg" className="bg-gray-800 border-gray-700 text-white hover:bg-gray-700 font-medium">
                   Explore our services <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </motion.div>
@@ -204,7 +204,7 @@ const ConstructionIndustryPage = () => {
               transition={{ duration: 0.8, delay: 0.4 }}
               className="lg:w-1/2"
             >
-              <div className="bg-orange-600 p-3 rounded-2xl shadow-2xl relative">
+              <div className="bg-gradient-to-br from-[#7B3FE4] to-[#3FA4E4] p-3 rounded-2xl shadow-2xl relative">
                 <div className="rounded-xl shadow-lg w-full overflow-hidden">
                   <OptimizedImage
                     src={constructionFooterImg}
@@ -256,22 +256,22 @@ const ConstructionIndustryPage = () => {
           className="max-w-4xl mx-auto"
         >
           <motion.div variants={itemVariants} className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-navy mb-6">Why Construction Professionals Choose Progress</h2>
-            <p className="text-lg text-gray-600">
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">Why Construction Professionals Choose Progress</h2>
+            <p className="text-lg text-gray-300">
               From one-man bands to regional contractors and property developers, Progress helps construction businesses take control of their finances. Whether you're managing subcontractors, juggling projects, or scaling your team—we make the numbers work for you.
             </p>
           </motion.div>
           
-          <motion.div variants={itemVariants} className="bg-white rounded-xl shadow-md p-6 md:p-8 mb-12 border border-gray-100">
-            <p className="text-lg text-gray-700 mb-4">
+          <motion.div variants={itemVariants} className="bg-gray-900 rounded-xl shadow-md p-6 md:p-8 mb-12 border border-gray-800">
+            <p className="text-lg text-gray-300 mb-4">
               We specialise in supporting the construction industry with proactive, tech-savvy accounting solutions tailored to 
               the unique challenges of builders, developers, and contractors.
             </p>
             <div className="flex items-center">
-              <div className="p-2 bg-orange-100 rounded-full mr-3">
-                <Hammer className="h-5 w-5 text-orange-600" />
+              <div className="p-2 bg-purple-900/20 rounded-full mr-3">
+                <Hammer className="h-5 w-5 text-purple-400" />
               </div>
-              <p className="font-medium text-navy">Based in Banbury. Supporting construction professionals across the UK.</p>
+              <p className="font-medium text-white">Based in Banbury. Supporting construction professionals across the UK.</p>
             </div>
           </motion.div>
         </motion.div>
