@@ -52,7 +52,7 @@ export default function AdminLayout({ children, useNewNavigation = true }: Admin
               >
                 <span className="text-xs text-muted-foreground">Powered by</span>
                 <img 
-                  src="/assets/logos/progress-logo.png" 
+                  src="/assets/logos/progress-logo.png?v=2024" 
                   alt="Progress Accountants | Advisors | Growth Partners" 
                   className="h-[3.75rem]"
                 />
@@ -94,7 +94,7 @@ export default function AdminLayout({ children, useNewNavigation = true }: Admin
               >
                 <span className="text-xs text-muted-foreground">Powered by</span>
                 <img 
-                  src="/assets/logos/progress-logo.png" 
+                  src="/assets/logos/progress-logo.png?v=2024" 
                   alt="Progress Accountants | Advisors | Growth Partners" 
                   className="h-[3.75rem]"
                 />
