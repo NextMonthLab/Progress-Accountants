@@ -660,23 +660,23 @@ const DownloadResourcesSection = () => {
                   <a 
                     href="/downloads/Progress_Accountants_SME_Contacts_2025.pdf" 
                     target="_blank"
-                    className="flex items-center justify-center p-4 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100 transition-colors"
+                    className="flex items-center justify-center p-4 bg-gray-800 rounded-lg border border-gray-700 hover:bg-gray-700 transition-colors"
                   >
                     <Download className="h-5 w-5 mr-2 text-purple-500" />
-                    <span className="font-medium">Download SME Contacts</span>
+                    <span className="font-medium text-white">Download SME Contacts</span>
                   </a>
                   
                   <a 
                     href="/downloads/Progress_Accountants_Key_Dates_2025.pdf" 
                     target="_blank"
-                    className="flex items-center justify-center p-4 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100 transition-colors"
+                    className="flex items-center justify-center p-4 bg-gray-800 rounded-lg border border-gray-700 hover:bg-gray-700 transition-colors"
                   >
                     <Download className="h-5 w-5 mr-2 text-purple-500" />
-                    <span className="font-medium">Download Key Deadlines</span>
+                    <span className="font-medium text-white">Download Key Deadlines</span>
                   </a>
                 </div>
                 
-                <p className="mt-8 text-sm text-gray-500">
+                <p className="mt-8 text-sm text-gray-400">
                   We've also sent these links to your email for future reference.
                 </p>
               </div>
