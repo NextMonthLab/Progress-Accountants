@@ -53,7 +53,7 @@ export default function Navbar() {
   const { tenant } = useTenant();
   const isStaff = user?.userType === 'admin' || user?.userType === 'super_admin' || user?.userType === 'editor' || user?.isSuperAdmin;
   const [location] = useLocation();
-  
+
   // Check if client registration is enabled
   const clientRegistrationEnabled = tenant?.customization?.featureFlags?.enableClientLogin;
 
@@ -164,18 +164,18 @@ export default function Navbar() {
     white: "#ffffff",
     gray: "#f0f0f0"
   };
-  
+
   return (
     <header className="bg-black/95 backdrop-blur-sm border-b border-gray-800 sticky top-0 z-50">
       <nav className="container mx-auto px-12 md:px-16 py-4 flex justify-between items-center">
         <div className="flex items-center">
           <NavbarLogo />
         </div>
-        
+
         {/* Desktop Menu - Public-facing menu only */}
         <div className="hidden md:flex items-center space-x-6">
           {publicMenuGroups.map(renderDesktopDropdown)}
-          
+
           {/* Show login button and potentially client registration for non-authenticated users */}
           {!user && (
             <>
@@ -208,7 +208,7 @@ export default function Navbar() {
               </Button>
             </>
           )}
-          
+
           {/* Show admin dashboard link with high visibility for staff */}
           {isStaff && (
             <Button 
@@ -225,7 +225,7 @@ export default function Navbar() {
               </Link>
             </Button>
           )}
-          
+
           {/* Decoupled "Book a Call" button using Progress brand colors */}
           <a 
             href="#book-call" 
@@ -253,7 +253,7 @@ export default function Navbar() {
             <span>Book a Call</span>
           </a>
         </div>
-        
+
         {/* Mobile menu button */}
         <button 
           className="md:hidden flex items-center" 
@@ -267,19 +267,19 @@ export default function Navbar() {
           )}
         </button>
       </nav>
-      
+
       {/* Mobile Menu - Public-facing only */}
       <div 
         className={`md:hidden bg-zinc-900 w-full absolute z-20 shadow-md border-t border-zinc-700 overflow-y-auto max-h-[80vh] ${isMenuOpen ? '' : 'hidden'}`}
       >
         <div className="container mx-auto px-12 md:px-16 py-3 flex flex-col divide-y">
           {publicMenuGroups.map(renderMobileMenuGroup)}
-          
+
           {/* Login section for non-authenticated users */}
           {!user && (
             <div className="py-2">
               <h4 className="text-sm uppercase tracking-wider text-gray-400 mb-2 px-2">Access</h4>
-              
+
               {clientRegistrationEnabled && tenant?.id && (
                 <Button 
                   variant="outline"
@@ -296,7 +296,7 @@ export default function Navbar() {
                   </Link>
                 </Button>
               )}
-              
+
               <Button 
                 variant="default"
                 className="w-full gradient-bg text-white hover:shadow-md progress-button"
@@ -312,7 +312,7 @@ export default function Navbar() {
               </Button>
             </div>
           )}
-          
+
           {/* Admin link if staff */}
           {isStaff && (
             <div className="py-2">
@@ -333,7 +333,7 @@ export default function Navbar() {
               </Button>
             </div>
           )}
-          
+
           {/* Call to action */}
           <div className="py-4">
             <a 

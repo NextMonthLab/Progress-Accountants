@@ -19,29 +19,29 @@ interface AdminLayoutProps {
 export default function AdminLayout({ children, useNewNavigation = true }: AdminLayoutProps) {
   // We're now using the new navigation system by default
   const SidebarComponent = useNewNavigation ? DynamicSidebar : AdminSidebar;
-  
+
   return (
     <div className="flex h-screen overflow-hidden bg-white dark:bg-gray-900">
       {useNewNavigation ? (
         <NavigationProvider>
           {/* New Dynamic Sidebar */}
           <DynamicSidebar />
-          
+
           {/* Mobile Sidebar Toggle - only visible when sidebar is collapsed on mobile */}
           <MobileSidebarToggle />
-          
+
           {/* Mobile Overlay - only visible when mobile sidebar is open */}
           <MobileOverlay />
-          
+
           {/* Main Content with Smart Context Banner */}
           <div className="flex-1 overflow-y-auto flex flex-col bg-white dark:bg-gray-900">
             {/* Smart Context Banner - shows intelligent awareness */}
             <SmartContextBanner />
-            
+
             <main className="flex-1 px-6 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
               {children}
             </main>
-            
+
             {/* Powered by NextMonth footer */}
             <div className="px-6 py-3 border-t border-gray-200 dark:border-gray-800 mt-auto">
               <a 
@@ -52,18 +52,18 @@ export default function AdminLayout({ children, useNewNavigation = true }: Admin
               >
                 <span className="text-xs text-muted-foreground">Powered by</span>
                 <img 
-                  src="https://res.cloudinary.com/drl0fxrkq/image/upload/v1744814862/New_Logo_wwntva.png" 
-                  alt="NextMonth Logo" 
+                  src="/assets/logos/progress-logo.png" 
+                  alt="Progress Accountants Logo" 
                   className="h-[3.75rem]"
                 />
               </a>
             </div>
-            
+
             {/* Quick Select Menu - floating UI */}
             <Suspense fallback={null}>
               <QuickSelectMenu />
             </Suspense>
-            
+
             {/* Smart Command Bar - intelligent command interface */}
             <Suspense fallback={null}>
               <SmartCommandBar />
@@ -74,16 +74,16 @@ export default function AdminLayout({ children, useNewNavigation = true }: Admin
         <>
           {/* Current Admin Sidebar */}
           <AdminSidebar />
-          
+
           {/* Main Content with Smart Context Banner */}
           <div className="flex-1 overflow-y-auto flex flex-col bg-white dark:bg-gray-900">
             {/* Smart Context Banner - shows intelligent awareness */}
             <SmartContextBanner />
-            
+
             <main className="flex-1 px-6 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
               {children}
             </main>
-            
+
             {/* Powered by NextMonth footer */}
             <div className="px-6 py-3 border-t border-gray-200 dark:border-gray-800 mt-auto">
               <a 
@@ -94,8 +94,8 @@ export default function AdminLayout({ children, useNewNavigation = true }: Admin
               >
                 <span className="text-xs text-muted-foreground">Powered by</span>
                 <img 
-                  src="https://res.cloudinary.com/drl0fxrkq/image/upload/v1744814862/New_Logo_wwntva.png" 
-                  alt="NextMonth Logo" 
+                  src="/assets/logos/progress-logo.png" 
+                  alt="Progress Accountants Logo" 
                   className="h-[3.75rem]"
                 />
               </a>
