@@ -96,18 +96,18 @@
 .rounded-3xl,
 .rounded-full,
 *[class*="rounded"] {
-  border-radius: 4px !important;
+  border-radius: 10px !important;
 }
 
 /* Specific admin panel overrides */
 html body div[data-admin] *,
 html body div.admin-layout * {
-  border-radius: 4px !important;
+  border-radius: 10px !important;
 }
 
 /* Frontend Progress branding areas - can be adjusted separately if needed */
 body:not([data-admin]) .rounded-full {
-  border-radius: 4px !important;
+  border-radius: 10px !important;
 }
 
 @layer base {
