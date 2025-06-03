@@ -85,12 +85,13 @@ const PageBuilderComponentPanel: React.FC<PageBuilderComponentPanelProps> = ({
 
   // Handle adding a new component
   const handleAddComponent = (componentType: string) => {
+    const currentComponents = Array.isArray(section.components) ? section.components : [];
     const newComponent = {
       id: Date.now(),
       name: `New ${componentType.charAt(0).toUpperCase() + componentType.slice(1)}`,
       type: componentType,
       sectionId: section.id,
-      order: section.components.length,
+      order: currentComponents.length,
       content: {},
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
@@ -128,7 +129,7 @@ const PageBuilderComponentPanel: React.FC<PageBuilderComponentPanelProps> = ({
 
     onUpdateSection(section.id, {
       ...section,
-      components: [...section.components, newComponent]
+      components: [...currentComponents, newComponent]
     });
 
     // Open the editor for the new component
@@ -248,12 +249,52 @@ const PageBuilderComponentPanel: React.FC<PageBuilderComponentPanelProps> = ({
     return (
       <Card className="mb-6">
         <CardHeader className="pb-3">
-          <CardTitle className="text-xl">Loading Section Content</CardTitle>
-          <CardDescription>Section data is being loaded...</CardDescription>
+          <CardTitle className="text-xl text-gray-900 dark:text-gray-100">Section Not Found</CardTitle>
+          <CardDescription className="text-gray-600 dark:text-gray-400">
+            The section data could not be loaded. Please try refreshing the page.
+          </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="flex justify-center p-6">
-            <Spinner className="h-8 w-8 animate-spin text-primary" />
+          <div className="flex flex-col items-center space-y-4 p-6">
+            <p className="text-sm text-gray-500 dark:text-gray-400 text-center">
+              If this issue persists, please check your connection or contact support.
+            </p>
+            <Button 
+              onClick={() => window.location.reload()}
+              variant="outline"
+              className="flex items-center gap-2"
+            >
+              Refresh Page
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  // Additional validation for section data
+  if (!section.id) {
+    return (
+      <Card className="mb-6 border-amber-200 dark:border-amber-800">
+        <CardHeader className="pb-3">
+          <CardTitle className="text-xl text-amber-800 dark:text-amber-200">Invalid Section Data</CardTitle>
+          <CardDescription className="text-amber-600 dark:text-amber-400">
+            This section appears to be missing required data.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="flex flex-col items-center space-y-4 p-6">
+            <p className="text-sm text-amber-600 dark:text-amber-400 text-center">
+              Section ID: {section.id || 'Missing'}<br />
+              Section Name: {section.name || 'Missing'}
+            </p>
+            <Button 
+              onClick={() => window.location.reload()}
+              variant="outline"
+              className="flex items-center gap-2"
+            >
+              Refresh Page
+            </Button>
           </div>
         </CardContent>
       </Card>
@@ -263,10 +304,10 @@ const PageBuilderComponentPanel: React.FC<PageBuilderComponentPanelProps> = ({
   return (
     <Card className="mb-6">
       <CardHeader className="pb-3">
-        <CardTitle className="text-xl">
+        <CardTitle className="text-xl text-gray-900 dark:text-gray-100">
           {section?.name || 'Section Content'}
         </CardTitle>
-        <CardDescription>
+        <CardDescription className="text-gray-600 dark:text-gray-400">
           Manage the components in this section
         </CardDescription>
       </CardHeader>
@@ -303,8 +344,8 @@ const PageBuilderComponentPanel: React.FC<PageBuilderComponentPanelProps> = ({
         </div>
 
         <div className="mb-4">
-          <Label>Components</Label>
-          {section.components && section.components.length > 0 ? (
+          <Label className="text-gray-900 dark:text-gray-100">Components</Label>
+          {Array.isArray(section.components) && section.components.length > 0 ? (
             <DragDropContext onDragEnd={handleDragEnd}>
               <Droppable droppableId="components">
                 {(provided) => (
