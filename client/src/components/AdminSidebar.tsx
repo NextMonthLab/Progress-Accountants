@@ -669,7 +669,7 @@ export default function AdminSidebar() {
             <div className="flex items-center justify-center text-xs text-gray-500 space-x-1 mt-2">
               <span>Powered by</span>
               <img 
-                src="https://res.cloudinary.com/drl0fxrkq/image/upload/v1746537994/8A3D82EC-31EF-4209-85E2-D1D284F5E960_lnzuah.png"
+                src="/nextmonth-logo.png"
                 alt="NextMonth"
                 className="h-5 w-auto object-contain ml-1"
                 style={{ maxWidth: '60px' }}
