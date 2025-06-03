@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, startTransition } from 'react';
 import { Helmet } from 'react-helmet';
 import { useLocation } from 'wouter';
 import {
@@ -112,7 +112,9 @@ export default function FoundationPagesOverviewPage() {
       
       // Wait a moment to show the toast before redirecting
       setTimeout(() => {
-        setLocation('/tools-hub');
+        startTransition(() => {
+          setLocation('/tools-hub');
+        });
       }, 1500);
       
       return;
@@ -129,10 +131,12 @@ export default function FoundationPagesOverviewPage() {
           safeStatuses[key] = ensurePageStatus(parsedData[key]);
         });
         
-        setPageStatuses(safeStatuses);
-        
-        // Check if all pages have been addressed
-        checkAllPagesAddressed(safeStatuses);
+        startTransition(() => {
+          setPageStatuses(safeStatuses);
+          
+          // Check if all pages have been addressed
+          checkAllPagesAddressed(safeStatuses);
+        });
       } catch (error) {
         console.error('Error parsing stored page statuses:', error);
         toast({
@@ -170,7 +174,10 @@ export default function FoundationPagesOverviewPage() {
     
     // Save to localStorage
     localStorage.setItem('project_context.page_status', JSON.stringify(newStatus));
-    setPageStatuses(newStatus);
+    
+    startTransition(() => {
+      setPageStatuses(newStatus);
+    });
     
     // Navigate to the setup page
     toast({
@@ -180,7 +187,9 @@ export default function FoundationPagesOverviewPage() {
     });
     
     // Navigate to the setup page
-    setLocation(page.setupPath);
+    startTransition(() => {
+      setLocation(page.setupPath);
+    });
   };
   
   // Handle skipping a page
@@ -191,10 +200,13 @@ export default function FoundationPagesOverviewPage() {
     
     // Save to localStorage
     localStorage.setItem('project_context.page_status', JSON.stringify(newStatus));
-    setPageStatuses(newStatus);
     
-    // Check if all pages have been addressed
-    checkAllPagesAddressed(newStatus);
+    startTransition(() => {
+      setPageStatuses(newStatus);
+      
+      // Check if all pages have been addressed
+      checkAllPagesAddressed(newStatus);
+    });
     
     toast({
       title: "Page Skipped",
@@ -213,7 +225,9 @@ export default function FoundationPagesOverviewPage() {
     });
     
     // Navigate to the launch page
-    setLocation('/launch-ready');
+    startTransition(() => {
+      setLocation('/launch-ready');
+    });
   };
   
   // Get badge component based on page status
