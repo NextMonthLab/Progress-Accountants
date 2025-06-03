@@ -666,18 +666,22 @@ export default function AdminSidebar() {
           
           {/* Powered by NextMonth */}
           {!collapsed && (
-            <div className="flex items-center justify-center text-xs text-gray-500 space-x-2">
+            <div className="flex items-center justify-center text-xs text-gray-500 space-x-1 mt-2">
               <span>Powered by</span>
               <img 
                 src="https://res.cloudinary.com/drl0fxrkq/image/upload/v1746537994/8A3D82EC-31EF-4209-85E2-D1D284F5E960_lnzuah.png"
                 alt="NextMonth"
-                className="h-4 object-contain"
+                className="h-5 w-auto object-contain ml-1"
+                style={{ maxWidth: '60px' }}
+                onLoad={() => console.log('NextMonth logo loaded successfully')}
                 onError={(e) => {
+                  console.error('Failed to load NextMonth logo');
                   e.currentTarget.style.display = 'none';
-                  e.currentTarget.nextElementSibling?.classList.remove('hidden');
+                  const fallbackText = e.currentTarget.nextElementSibling as HTMLElement;
+                  if (fallbackText) fallbackText.classList.remove('hidden');
                 }}
               />
-              <span className="hidden">NextMonth</span>
+              <span className="hidden text-cyan-500 font-medium">NextMonth</span>
             </div>
           )}
         </div>
