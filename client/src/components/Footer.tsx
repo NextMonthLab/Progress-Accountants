@@ -147,7 +147,7 @@ export default function Footer() {
             >
               <span className="text-xs">Powered by</span>
               <img 
-                src="https://res.cloudinary.com/drl0fxrkq/image/upload/v1744814861/New_Logo_white_rlemnm.png" 
+                src="https://res.cloudinary.com/drl0fxrkq/image/upload/v1746537994/8A3D82EC-31EF-4209-85E2-D1D284F5E960_lnzuah.png" 
                 alt="NextMonth Logo" 
                 className="h-[3.75rem]"
               />
