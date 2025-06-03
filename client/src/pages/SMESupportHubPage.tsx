@@ -436,7 +436,7 @@ const CTASection = () => (
         <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
           Book a call and we'll guide you through it. Our team of experts is ready to help you navigate the complexities of business compliance.
         </p>
-        <Button size="lg" className="bg-orange-500 hover:bg-orange-600 text-white">
+        <Button size="lg" className="bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] hover:shadow-lg hover:shadow-purple-500/25 hover:-translate-y-1 transition-all duration-300 text-white">
           Schedule a Call
           <ArrowRight className="ml-2 h-5 w-5" />
         </Button>
