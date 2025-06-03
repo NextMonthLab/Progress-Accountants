@@ -173,7 +173,7 @@ export default function Navbar() {
         </div>
 
         {/* Desktop Menu - Public-facing menu only */}
-        <div className="hidden md:flex items-center space-x-6">
+        <div className="hidden md:flex items-center space-x-8 ml-12">
           {publicMenuGroups.map(renderDesktopDropdown)}
 
           {/* Show login button and potentially client registration for non-authenticated users */}
