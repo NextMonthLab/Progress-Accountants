@@ -8,34 +8,39 @@ import musicIndustryImage from '../../assets/images/music_industry.png';
 import constructionIndustryImage from '../../assets/images/construction_industry.png';
 import financialDashboardImage from '../../assets/images/new_financial_dashboard.png';
 
+// Import available assets
+import podcastStudioImg from "@assets/Podcast Studio.jpg";
+import strategySessionImg from "@assets/Strategy Session.jpg";
+import teamPhotoImg from "@assets/Team Photo.jpg";
+
 // Optimized version of image placeholders
 export const OptimizedPodcastStudio = () => (
   <OptimizedImage 
-    src="https://res.cloudinary.com/dtqavlzjv/image/upload/v1733352524/P1023674_di2j3g.jpg" 
+    src={podcastStudioImg} 
     alt="Podcast and Video Studio"
     width={400}
-    height={192}
-    className="w-full h-full object-cover object-top"
+    height={240}
+    className="w-full h-full object-cover object-center"
   />
 );
 
 export const OptimizedDashboardMockup = () => (
   <OptimizedImage 
-    src="https://res.cloudinary.com/dtqavlzjv/image/upload/v1733352524/P1013106-Enhanced-NR_adzlje.jpg" 
+    src={teamPhotoImg} 
     alt="Financial Dashboard with Revenue Analytics"
     width={400}
-    height={192}
-    className="w-full h-full object-cover object-top"
+    height={240}
+    className="w-full h-full object-cover object-center"
   />
 );
 
 export const OptimizedStrategySession = () => (
   <OptimizedImage 
-    src="https://res.cloudinary.com/dtqavlzjv/image/upload/v1733352524/P1023674_di2j3g.jpg" 
+    src={strategySessionImg} 
     alt="Strategy Session with Financial Advisors"
     width={400}
-    height={192}
-    className="w-full h-full object-cover object-top"
+    height={240}
+    className="w-full h-full object-cover object-center"
   />
 );
 
