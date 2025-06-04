@@ -311,13 +311,13 @@ export default function WhyUsPage() {
       </section>
 
       {/* Our Process */}
-      <section className="py-16 md:py-24 bg-white">
+      <section className="py-16 md:py-24 bg-gray-800">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center mb-16">
-            <h2 className="text-2xl md:text-3xl font-bold mb-6" style={{ color: 'var(--navy)' }}>
+            <h2 className="text-2xl md:text-3xl font-bold mb-6 bg-gradient-to-r from-pink-400 to-blue-400 bg-clip-text text-transparent">
               Our Client Process
             </h2>
-            <p className="text-lg text-gray-700">
+            <p className="text-lg text-gray-300">
               A transparent, effective approach designed to maximize your financial success.
             </p>
           </div>
@@ -325,36 +325,36 @@ export default function WhyUsPage() {
           <div className="max-w-5xl mx-auto">
             <div className="relative">
               {/* Process Timeline */}
-              <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-0.5 bg-gray-200 transform -translate-x-1/2"></div>
+              <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-0.5 bg-gray-600 transform -translate-x-1/2"></div>
               
               {/* Step 1 */}
               <div className="relative md:flex items-center mb-16">
                 <div className="hidden md:block w-1/2 pr-8 text-right">
-                  <h3 className="text-xl font-bold mb-2" style={{ color: 'var(--navy)' }}>
+                  <h3 className="text-xl font-bold mb-2 text-white">
                     Initial Consultation
                   </h3>
-                  <p className="text-gray-600">
+                  <p className="text-gray-300">
                     We start by understanding your business goals, challenges, and current financial situation.
                   </p>
                 </div>
                 
-                <div className="md:absolute md:left-1/2 md:transform md:-translate-x-1/2 z-10 flex items-center justify-center w-14 h-14 rounded-full bg-orange-100 border-4 border-white shadow-md mb-4 md:mb-0">
-                  <span className="text-orange-500 font-bold">1</span>
+                <div className="md:absolute md:left-1/2 md:transform md:-translate-x-1/2 z-10 flex items-center justify-center w-14 h-14 rounded-full bg-blue-500/20 border-4 border-gray-800 shadow-lg mb-4 md:mb-0">
+                  <span className="text-blue-400 font-bold">1</span>
                 </div>
                 
                 <div className="md:w-1/2 md:pl-8 md:text-left">
-                  <h3 className="md:hidden text-xl font-bold mb-2" style={{ color: 'var(--navy)' }}>
+                  <h3 className="md:hidden text-xl font-bold mb-2 text-white">
                     Initial Consultation
                   </h3>
-                  <p className="md:hidden text-gray-600 mb-4">
+                  <p className="md:hidden text-gray-300 mb-4">
                     We start by understanding your business goals, challenges, and current financial situation.
                   </p>
-                  <div className="bg-gray-50 p-4 rounded-lg">
+                  <div className="bg-gray-900 p-4 rounded-lg border border-gray-700">
                     <div className="flex items-center mb-2">
-                      <Clock size={18} className="text-orange-500 mr-2" />
-                      <span className="text-gray-700 font-medium">45-60 minutes</span>
+                      <Clock size={18} className="text-blue-400 mr-2" />
+                      <span className="text-white font-medium">45-60 minutes</span>
                     </div>
-                    <p className="text-gray-600 text-sm">
+                    <p className="text-gray-300 text-sm">
                       A no-obligation conversation to see if we're a good fit for your needs.
                     </p>
                   </div>
@@ -364,26 +364,26 @@ export default function WhyUsPage() {
               {/* Step 2 */}
               <div className="relative md:flex items-center mb-16">
                 <div className="md:w-1/2 md:pr-8 md:text-right">
-                  <div className="bg-gray-50 p-4 rounded-lg md:ml-auto md:mr-0">
+                  <div className="bg-gray-900 p-4 rounded-lg md:ml-auto md:mr-0 border border-gray-700">
                     <div className="flex items-center mb-2 md:justify-end">
-                      <BarChart size={18} className="text-orange-500 mr-2" />
-                      <span className="text-gray-700 font-medium">Tailored Strategy</span>
+                      <BarChart size={18} className="text-pink-400 mr-2" />
+                      <span className="text-white font-medium">Tailored Strategy</span>
                     </div>
-                    <p className="text-gray-600 text-sm">
+                    <p className="text-gray-300 text-sm">
                       We develop a customized financial strategy aligned with your specific business objectives.
                     </p>
                   </div>
                 </div>
                 
-                <div className="md:absolute md:left-1/2 md:transform md:-translate-x-1/2 z-10 flex items-center justify-center w-14 h-14 rounded-full bg-orange-100 border-4 border-white shadow-md my-4 md:my-0">
-                  <span className="text-orange-500 font-bold">2</span>
+                <div className="md:absolute md:left-1/2 md:transform md:-translate-x-1/2 z-10 flex items-center justify-center w-14 h-14 rounded-full bg-pink-500/20 border-4 border-gray-800 shadow-lg my-4 md:my-0">
+                  <span className="text-pink-400 font-bold">2</span>
                 </div>
                 
                 <div className="md:w-1/2 md:pl-8">
-                  <h3 className="text-xl font-bold mb-2" style={{ color: 'var(--navy)' }}>
+                  <h3 className="text-xl font-bold mb-2 text-white">
                     Strategic Planning
                   </h3>
-                  <p className="text-gray-600">
+                  <p className="text-gray-300">
                     Based on our discoveries, we create a comprehensive plan to optimize your financial operations.
                   </p>
                 </div>
@@ -392,31 +392,31 @@ export default function WhyUsPage() {
               {/* Step 3 */}
               <div className="relative md:flex items-center mb-16">
                 <div className="hidden md:block w-1/2 pr-8 text-right">
-                  <h3 className="text-xl font-bold mb-2" style={{ color: 'var(--navy)' }}>
+                  <h3 className="text-xl font-bold mb-2 text-white">
                     Implementation
                   </h3>
-                  <p className="text-gray-600">
+                  <p className="text-gray-300">
                     We set up systems, processes, and reporting structures to bring your financial strategy to life.
                   </p>
                 </div>
                 
-                <div className="md:absolute md:left-1/2 md:transform md:-translate-x-1/2 z-10 flex items-center justify-center w-14 h-14 rounded-full bg-orange-100 border-4 border-white shadow-md mb-4 md:mb-0">
-                  <span className="text-orange-500 font-bold">3</span>
+                <div className="md:absolute md:left-1/2 md:transform md:-translate-x-1/2 z-10 flex items-center justify-center w-14 h-14 rounded-full bg-blue-500/20 border-4 border-gray-800 shadow-lg mb-4 md:mb-0">
+                  <span className="text-blue-400 font-bold">3</span>
                 </div>
                 
                 <div className="md:w-1/2 md:pl-8">
-                  <h3 className="md:hidden text-xl font-bold mb-2" style={{ color: 'var(--navy)' }}>
+                  <h3 className="md:hidden text-xl font-bold mb-2 text-white">
                     Implementation
                   </h3>
-                  <p className="md:hidden text-gray-600 mb-4">
+                  <p className="md:hidden text-gray-300 mb-4">
                     We set up systems, processes, and reporting structures to bring your financial strategy to life.
                   </p>
-                  <div className="bg-gray-50 p-4 rounded-lg">
+                  <div className="bg-gray-900 p-4 rounded-lg border border-gray-700">
                     <div className="flex items-center mb-2">
-                      <Zap size={18} className="text-orange-500 mr-2" />
-                      <span className="text-gray-700 font-medium">Seamless Integration</span>
+                      <Zap size={18} className="text-blue-400 mr-2" />
+                      <span className="text-white font-medium">Seamless Integration</span>
                     </div>
-                    <p className="text-gray-600 text-sm">
+                    <p className="text-gray-300 text-sm">
                       We handle the heavy lifting to ensure minimal disruption to your business operations.
                     </p>
                   </div>
@@ -426,26 +426,26 @@ export default function WhyUsPage() {
               {/* Step 4 */}
               <div className="relative md:flex items-center">
                 <div className="md:w-1/2 md:pr-8 md:text-right">
-                  <div className="bg-gray-50 p-4 rounded-lg md:ml-auto md:mr-0">
+                  <div className="bg-gray-900 p-4 rounded-lg md:ml-auto md:mr-0 border border-gray-700">
                     <div className="flex items-center mb-2 md:justify-end">
-                      <Shield size={18} className="text-orange-500 mr-2" />
-                      <span className="text-gray-700 font-medium">Continuous Support</span>
+                      <Shield size={18} className="text-pink-400 mr-2" />
+                      <span className="text-white font-medium">Continuous Support</span>
                     </div>
-                    <p className="text-gray-600 text-sm">
+                    <p className="text-gray-300 text-sm">
                       Regular reviews, updates, and expert guidance to ensure your financial success.
                     </p>
                   </div>
                 </div>
                 
-                <div className="md:absolute md:left-1/2 md:transform md:-translate-x-1/2 z-10 flex items-center justify-center w-14 h-14 rounded-full bg-orange-100 border-4 border-white shadow-md my-4 md:my-0">
-                  <span className="text-orange-500 font-bold">4</span>
+                <div className="md:absolute md:left-1/2 md:transform md:-translate-x-1/2 z-10 flex items-center justify-center w-14 h-14 rounded-full bg-pink-500/20 border-4 border-gray-800 shadow-lg my-4 md:my-0">
+                  <span className="text-pink-400 font-bold">4</span>
                 </div>
                 
                 <div className="md:w-1/2 md:pl-8">
-                  <h3 className="text-xl font-bold mb-2" style={{ color: 'var(--navy)' }}>
+                  <h3 className="text-xl font-bold mb-2 text-white">
                     Ongoing Partnership
                   </h3>
-                  <p className="text-gray-600">
+                  <p className="text-gray-300">
                     We provide proactive advice, regular reporting, and strategic adjustments as your business evolves.
                   </p>
                 </div>
@@ -456,10 +456,10 @@ export default function WhyUsPage() {
       </section>
 
       {/* Call to Action */}
-      <section className="py-16 md:py-24 bg-[var(--navy)] text-white">
+      <section className="py-16 md:py-24 bg-gray-800 text-white">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center">
-            <h2 className="text-2xl md:text-4xl font-bold mb-6">
+            <h2 className="text-2xl md:text-4xl font-bold mb-6 bg-gradient-to-r from-blue-400 to-pink-400 bg-clip-text text-transparent">
               Ready to Experience the Difference?
             </h2>
             <p className="text-lg text-gray-300 mb-8">
@@ -469,11 +469,7 @@ export default function WhyUsPage() {
               <Link href="/contact">
                 <Button 
                   size="lg"
-                  className="w-full sm:w-auto hover:shadow-md hover:-translate-y-[2px] transition duration-300 flex items-center gap-2"
-                  style={{ 
-                    backgroundColor: 'var(--orange)',
-                    color: 'white' 
-                  }}
+                  className="w-full sm:w-auto bg-white text-gray-900 hover:bg-gray-100 hover:shadow-lg hover:-translate-y-[2px] transition duration-300 flex items-center gap-2"
                 >
                   <span>Contact Us</span>
                   <ArrowRight size={16} />
@@ -483,7 +479,7 @@ export default function WhyUsPage() {
                 <Button 
                   variant="outline"
                   size="lg"
-                  className="w-full sm:w-auto border-white/50 hover:border-white text-white flex items-center gap-2"
+                  className="w-full sm:w-auto border-gray-600 text-gray-300 hover:border-blue-400 hover:text-blue-400 flex items-center gap-2"
                 >
                   <span>Explore Our Services</span>
                   <ArrowRight size={16} />
