@@ -159,6 +159,26 @@ export default function HomePage() {
       </Helmet>
       <HeroSection />
       <ServicesSection />
+      
+      {/* Featured Image Section */}
+      <section className="py-16 bg-black">
+        <div className="container mx-auto px-12 md:px-16">
+          <div className="max-w-4xl mx-auto">
+            <FadeIn delay={0.2}>
+              <div className="relative rounded-xl overflow-hidden shadow-2xl">
+                <img 
+                  src="https://res.cloudinary.com/drl0fxrkq/image/upload/v1749050582/Screenshot_2025-06-04_at_16.22.10_rzqcnj.png"
+                  alt="Progress Accountants Professional Services"
+                  className="w-full h-auto object-cover"
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+              </div>
+            </FadeIn>
+          </div>
+        </div>
+      </section>
+      
       <IndustriesSection />
       
       {/* SME Support Hub Section with animations */}
