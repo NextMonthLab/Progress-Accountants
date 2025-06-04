@@ -5,6 +5,7 @@ import WhyUsSection from "@/components/WhyUsSection";
 import ContactForm from "@/components/ContactForm";
 import { useEffect } from "react";
 import { Link } from "wouter";
+import { Helmet } from 'react-helmet';
 import { 
   FadeIn, 
   SlideUp, 
@@ -48,6 +49,45 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-black text-white">
+      <Helmet>
+        <title>Accountants in Banbury | Progress Accountants</title>
+        <meta name="description" content="Forward-thinking accountants helping UK businesses with tax, forecasting, and industry-specific financial advice. Specialists in Construction, Film, Music & Professional Services." />
+        <meta name="keywords" content="accountants banbury, uk accountants, business tax advice, construction accounting, film industry accountants, music industry finance, professional services accounting" />
+        <link rel="canonical" href="https://progressaccountants.com/" />
+        
+        {/* Open Graph / Facebook */}
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://progressaccountants.com/" />
+        <meta property="og:title" content="Accountants in Banbury | Progress Accountants" />
+        <meta property="og:description" content="Forward-thinking accountants helping UK businesses with tax, forecasting, and industry-specific financial advice." />
+        <meta property="og:image" content="https://progressaccountants.com/progress-logo.png" />
+        <meta property="og:locale" content="en_GB" />
+        
+        {/* Twitter */}
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:url" content="https://progressaccountants.com/" />
+        <meta property="twitter:title" content="Accountants in Banbury | Progress Accountants" />
+        <meta property="twitter:description" content="Forward-thinking accountants helping UK businesses with tax, forecasting, and industry-specific financial advice." />
+        <meta property="twitter:image" content="https://progressaccountants.com/progress-logo.png" />
+        
+        {/* Additional SEO Meta */}
+        <meta name="robots" content="index, follow" />
+        <meta name="author" content="Progress Accountants" />
+        <meta name="geo.region" content="GB-OXF" />
+        <meta name="geo.placename" content="Banbury, Oxfordshire" />
+        <meta name="geo.position" content="52.0628;-1.3420" />
+        <meta name="ICBM" content="52.0628, -1.3420" />
+        
+        {/* Mobile & Theme */}
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="theme-color" content="#4F46E5" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        
+        {/* Favicon */}
+        <link rel="icon" type="image/png" href="/progress-logo.png" />
+        <link rel="apple-touch-icon" href="/progress-logo.png" />
+      </Helmet>
       <HeroSection />
       <ServicesSection />
       <IndustriesSection />
