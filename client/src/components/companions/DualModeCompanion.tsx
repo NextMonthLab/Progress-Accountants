@@ -239,7 +239,7 @@ export function DualModeCompanion() {
       
       {/* Chat drawer */}
       <Drawer open={open} onOpenChange={setOpen}>
-        <DrawerContent className="max-h-[90vh] sm:max-w-[500px] mx-auto rounded-t-lg bg-white">
+        <DrawerContent className="max-h-[90vh] sm:max-w-[500px] mx-auto rounded-t-lg bg-gray-900">
           <DrawerHeader className="text-white rounded-t-lg px-4 py-3" 
             style={{ 
               background: 'linear-gradient(135deg, #4F46E5 0%, #4F46E5 60%, #E935C1 100%)'
@@ -263,7 +263,7 @@ export function DualModeCompanion() {
             </CardDescription>
           </DrawerHeader>
           
-          <div ref={drawerBodyRef} className="px-4 py-0 flex-1 overflow-auto">
+          <div ref={drawerBodyRef} className="px-4 py-0 flex-1 overflow-auto bg-gray-900">
             <ScrollArea className="h-[55vh] w-full pr-4">
               <div className="flex flex-col space-y-4 p-4">
                 {messages.map((msg) => (
@@ -278,8 +278,8 @@ export function DualModeCompanion() {
                         msg.role === 'user'
                           ? 'text-white'
                           : msg.role === 'system'
-                          ? 'bg-muted text-muted-foreground'
-                          : 'bg-muted'
+                          ? 'bg-gray-700 text-gray-300'
+                          : 'bg-gray-700 text-white'
                       }`}
                       style={
                         msg.role === 'user'
@@ -356,7 +356,7 @@ export function DualModeCompanion() {
                   value={messageText}
                   onChange={(e) => setMessageText(e.target.value)}
                   placeholder="Type your message..."
-                  className="min-h-[80px] flex-1"
+                  className="min-h-[80px] flex-1 bg-gray-800 border-gray-600 text-white placeholder-gray-400"
                   disabled={isSubmitting}
                 />
                 <div className="flex flex-col space-y-2">
@@ -402,8 +402,8 @@ export function DualModeCompanion() {
             </div>
           </div>
           
-          <DrawerFooter className="border-t pt-2 pb-4 px-4">
-            <div className="text-xs text-muted-foreground flex items-center justify-between">
+          <DrawerFooter className="border-t border-gray-700 pt-2 pb-4 px-4 bg-gray-900">
+            <div className="text-xs text-gray-400 flex items-center justify-between">
               <div className="flex items-center">
                 <Info className="h-3 w-3 mr-1" />
                 <span>Progress Accountants AI Assistant</span>
