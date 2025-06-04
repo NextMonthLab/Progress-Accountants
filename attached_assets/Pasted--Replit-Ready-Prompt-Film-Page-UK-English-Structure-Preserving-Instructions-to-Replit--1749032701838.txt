@@ -1,0 +1,97 @@
+✏️ Replit-Ready Prompt — Film Page (UK English, Structure-Preserving)
+
+⚠️ Instructions to Replit:  
+Do not change the page layout or structure. Only replace text content with the version below. Ensure all spelling follows UK English conventions. Maintain headings, section order, and UI elements as-is.
+
+---
+
+Header:
+🎬 Industry Specialists  
+Expert Accounting for the Film Industry  
+Helping you maximise Film Tax Relief, manage complex cash flow, and keep your production on track.
+
+CTA: Book a Free Consultation  
+CTA: Explore Our Services
+
+—
+
+Hero Subsections:
+• Film production accounting  
+• Film Tax Relief  
+✓ Maximise your returns  
+
+Scroll CTA: Scroll to learn more
+
+—
+
+Section: Why Choose Progress for Film Accounting?  
+Whether you’re leading an independent shoot, running a freelance crew, or scaling a creative studio, Progress brings clarity, confidence, and control to your production finances.
+
+We specialise in the film and TV sector—offering proactive, tech-led accounting tailored to the rhythm of production.
+
+📍 Based in Banbury, supporting film professionals across the UK.
+
+—
+
+Section Title: Our Specialist Services  
+Why Film & TV Companies Choose Progress
+
+Subsections:
+
+🎯 Maximise Film Tax Relief  
+We don’t just know the rules—we know how to make them work. From qualifying spend to Creative Industry Tax Reliefs, we’ll ensure you’re claiming every penny you're entitled to.
+
+📈 Tame Complex Cash Flow Cycles  
+Production funding is unpredictable. We simplify it with real-time dashboards, financial forecasting, and monthly check-ins—all timed to your production phases.
+
+🧾 Simplify Freelancer & Crew Payments  
+From PAYE to international contractors, we streamline payments with compliant payroll systems, so you can focus on the shoot—not the spreadsheets.
+
+🌍 Plan Across Borders  
+Shooting abroad? We handle multi-jurisdiction tax planning to keep you compliant, wherever your project takes you.
+
+—
+
+Section: What Our Clients Say  
+“Progress helped us reclaim over £70,000 in Film Tax Relief—it made our next project possible.”  
+— Independent Producer, London
+
+“Having accountants who understand the rhythm of production makes all the difference. Progress delivers insights we can actually use, when we need them.”  
+— Production Manager, Manchester-based Studio
+
+—
+
+Section: Trusted by Producers, Studios & Freelancers  
+We’re more than just compliance. Progress is your financial partner across development, production, and post.
+
+We’ve worked with:
+• Independent film studios  
+• TV and broadcast production companies  
+• Post-production and VFX houses  
+• Freelance producers and creatives  
+• Branded content & commercial agencies
+
+—
+
+Section: Our Tech-Savvy Approach  
+We work with cloud-based systems like Xero—and integrate your tools for seamless reporting and cash burn visibility. Prefer a hands-off approach? We’ll automate where possible and flag what matters.
+
+We understand your world. That’s why we offer:
+• Digital dashboards tailored to film finance  
+• Real-time spend and burn tracking  
+• Budget variance reports  
+• Expense categorisation optimised for creative accounts
+
+—
+
+Visual CTA Caption:
+🎥 Film makeup artist in studio
+
+—
+
+Final CTA:
+🎬 Ready to streamline your production finances?  
+Whether you’re applying for Film Tax Relief or planning your next pitch, book a call with our team and see how Progress can support your next project.
+
+CTA: Book a Consultation  
+CTA: View Our Services

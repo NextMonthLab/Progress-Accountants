@@ -108,17 +108,17 @@ const CTASection = () => (
     </div>
     <div className="relative z-10">
       <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
-        Ready to streamline your film production finances?
+        🎬 Ready to streamline your production finances?
       </h2>
       <p className="text-white text-lg max-w-2xl mb-8">
-        Whether you're applying for Film Tax Relief or planning your next big pitch, book a call with our team to see how Progress can support your next production.
+        Whether you're applying for Film Tax Relief or planning your next pitch, book a call with our team and see how Progress can support your next project.
       </p>
       <div className="flex flex-col sm:flex-row gap-4">
         <Button size="lg" className="bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] hover:shadow-lg hover:shadow-purple-500/25 text-white border-none font-medium">
-          Book a consultation
+          Book a Consultation
         </Button>
         <Button size="lg" className="bg-white text-gray-900 hover:bg-gray-100 font-medium">
-          View our services
+          View Our Services
         </Button>
       </div>
     </div>
@@ -175,7 +175,7 @@ const FilmIndustryPage = () => {
             >
               <motion.div variants={itemVariants}>
                 <span className="inline-block px-4 py-1 rounded-full bg-purple-900/20 text-purple-400 font-medium text-sm mb-4">
-                  Industry Specialists
+                  🎬 Industry Specialists
                 </span>
               </motion.div>
               <motion.div
@@ -191,15 +191,15 @@ const FilmIndustryPage = () => {
                 className="mb-8"
               >
                 <p className="text-lg md:text-xl text-white">
-                  Helping You Maximise Film Tax Relief, Manage Cash Flow, and Keep Production on Track
+                  Helping you maximise Film Tax Relief, manage complex cash flow, and keep your production on track.
                 </p>
               </motion.div>
               <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-4">
                 <Button size="lg" className="bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] hover:shadow-lg hover:shadow-purple-500/25 text-white font-medium">
-                  Book a free consultation
+                  Book a Free Consultation
                 </Button>
                 <Button size="lg" className="bg-gray-800 border-gray-700 text-white hover:bg-gray-700 font-medium">
-                  Explore our services <ArrowRight className="ml-2 h-4 w-4" />
+                  Explore Our Services <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </motion.div>
             </motion.div>
@@ -262,21 +262,19 @@ const FilmIndustryPage = () => {
           <motion.div variants={itemVariants} className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">Why Choose Progress for Film Accounting?</h2>
             <p className="text-lg text-gray-300">
-              Whether you're running an independent production, managing a freelance crew, or scaling up a creative studio, 
-              Progress Accountants brings clarity, confidence, and control to your film finances.
+              Whether you're leading an independent shoot, running a freelance crew, or scaling a creative studio, Progress brings clarity, confidence, and control to your production finances.
             </p>
           </motion.div>
           
           <motion.div variants={itemVariants} className="bg-gray-900 rounded-xl shadow-md p-6 md:p-8 mb-12 border border-gray-800">
             <p className="text-lg text-gray-300 mb-4">
-              We specialise in supporting the film and TV sector with proactive, tech-savvy accounting solutions tailored to 
-              the unique challenges of the entertainment world.
+              We specialise in the film and TV sector—offering proactive, tech-led accounting tailored to the rhythm of production.
             </p>
             <div className="flex items-center">
               <div className="p-2 bg-purple-900/20 rounded-full mr-3">
                 <Film className="h-5 w-5 text-purple-400" />
               </div>
-              <p className="font-medium text-white">Based in Banbury. Supporting film productions across the UK.</p>
+              <p className="font-medium text-white">📍 Based in Banbury, supporting film professionals across the UK.</p>
             </div>
           </motion.div>
         </motion.div>
