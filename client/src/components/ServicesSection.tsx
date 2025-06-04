@@ -40,7 +40,7 @@ const ServiceCard = withMemo(({
   return (
     <Card className="h-full bg-[#101218] border border-[#2E2F3B] rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
       {ImageComponent && (
-        <div className="h-72 overflow-hidden relative">
+        <div className="h-48 overflow-hidden relative">
           <ImageComponent />
         </div>
       )}

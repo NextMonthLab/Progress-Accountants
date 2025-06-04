@@ -25,7 +25,7 @@ const IndustryCard = withMemo(({
   return (
     <div className="bg-[#101218] border border-[#2E2F3B] rounded-xl shadow-md overflow-hidden h-full transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
       {/* Image with simplified overlay */}
-      <div className="h-80 relative overflow-hidden">
+      <div className="h-48 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-t from-navy/60 to-transparent z-10"></div>
         <OptimizedImage
           src={imageSrc}

@@ -14,8 +14,8 @@ export const OptimizedPodcastStudio = () => (
     src="https://res.cloudinary.com/dtqavlzjv/image/upload/v1733352524/P1023674_di2j3g.jpg" 
     alt="Podcast and Video Studio"
     width={400}
-    height={288}
-    className="w-full h-full object-cover object-center"
+    height={192}
+    className="w-full h-full object-cover object-top"
   />
 );
 
@@ -24,8 +24,8 @@ export const OptimizedDashboardMockup = () => (
     src="https://res.cloudinary.com/dtqavlzjv/image/upload/v1733352524/P1013106-Enhanced-NR_adzlje.jpg" 
     alt="Financial Dashboard with Revenue Analytics"
     width={400}
-    height={288}
-    className="w-full h-full object-cover object-center"
+    height={192}
+    className="w-full h-full object-cover object-top"
   />
 );
 
@@ -34,8 +34,8 @@ export const OptimizedStrategySession = () => (
     src="https://res.cloudinary.com/dtqavlzjv/image/upload/v1733352524/P1023674_di2j3g.jpg" 
     alt="Strategy Session with Financial Advisors"
     width={400}
-    height={288}
-    className="w-full h-full object-cover object-center"
+    height={192}
+    className="w-full h-full object-cover object-top"
   />
 );
 
