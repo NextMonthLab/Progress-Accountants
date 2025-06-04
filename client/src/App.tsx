@@ -70,6 +70,7 @@ const WhyUsPage = lazy(() => import("@/pages/WhyUsPage"));
 const ContactPage = lazy(() => import("@/pages/ContactPage"));
 const TestimonialsPage = lazy(() => import("@/pages/TestimonialsPage"));
 const PrivacyPolicyPage = lazy(() => import("@/pages/PrivacyPolicyPage"));
+const TermsOfServicePage = lazy(() => import("@/pages/TermsOfServicePage"));
 
 // Admin interface pages
 const InsightUsersPage = lazy(() => import("@/pages/InsightUsersPage"));
@@ -264,6 +265,11 @@ function Router() {
       <Route path="/privacy-policy">
         <Suspense fallback={<LoadingFallback />}>
           <PrivacyPolicyPage />
+        </Suspense>
+      </Route>
+      <Route path="/terms-of-service">
+        <Suspense fallback={<LoadingFallback />}>
+          <TermsOfServicePage />
         </Suspense>
       </Route>
       <Route path="/professional-services">
