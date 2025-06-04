@@ -512,10 +512,10 @@ export default function WhyUsPage() {
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center">
             <h2 className="text-2xl md:text-4xl font-bold mb-6 bg-gradient-to-r from-blue-400 to-pink-400 bg-clip-text text-transparent">
-              Ready to Experience the Difference?
+              See the difference for yourself
             </h2>
             <p className="text-lg text-gray-300 mb-8">
-              Let's start with a conversation about your business and how we can help you achieve your financial goals.
+              Book a free consultation and discover how Progress can support your business—not just your bookkeeping.
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-4">
               <Link href="/contact">
@@ -523,7 +523,7 @@ export default function WhyUsPage() {
                   size="lg"
                   className="w-full sm:w-auto bg-white text-gray-900 hover:bg-gray-100 hover:shadow-lg hover:-translate-y-[2px] transition duration-300 flex items-center gap-2"
                 >
-                  <span>Contact Us</span>
+                  <span>Book a Free Consultation</span>
                   <ArrowRight size={16} />
                 </Button>
               </Link>
