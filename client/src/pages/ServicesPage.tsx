@@ -31,59 +31,59 @@ interface Service {
 const services: Service[] = [
   {
     id: 1,
-    name: "Accounting & Compliance",
-    description: "Ensure your business stays compliant with accurate financial statements and timely filings, all handled with precision and care.",
+    name: "📊 Tax Planning & Preparation",
+    description: "Minimise liabilities and plan ahead with strategic tax support tailored to your business type and income streams.",
     icon: <Calculator className="h-10 w-10 mb-4 text-blue-400" />,
-    slug: "accounting-compliance"
+    slug: "tax-planning"
   },
   {
     id: 2,
-    name: "Bookkeeping",
-    description: "Maintain clear and organized financial records with our efficient and reliable bookkeeping services.",
+    name: "📚 Bookkeeping",
+    description: "Stay organised and up to date with clear, reliable bookkeeping that keeps your business running smoothly.",
     icon: <BookOpen className="h-10 w-10 mb-4 text-pink-400" />,
     slug: "bookkeeping"
   },
   {
     id: 3,
-    name: "Tax Planning & Preparation",
-    description: "Optimize your tax position and ensure compliance with our proactive tax planning and preparation services.",
-    icon: <ClipboardCheck className="h-10 w-10 mb-4 text-blue-400" />,
-    slug: "tax-services"
-  },
-  {
-    id: 4,
-    name: "Payroll Services",
-    description: "Streamline your payroll process, ensuring your team is paid accurately and on time, every time.",
-    icon: <DollarSign className="h-10 w-10 mb-4 text-pink-400" />,
-    slug: "payroll-services"
-  },
-  {
-    id: 5,
-    name: "Financial Forecasting & Budgeting",
-    description: "Plan for the future with confidence using our detailed financial forecasting and budgeting services.",
+    name: "📈 Business Advisory",
+    description: "Get real insight into your business performance with tailored advice, forecasts, and strategy sessions.",
     icon: <BarChart4 className="h-10 w-10 mb-4 text-blue-400" />,
-    slug: "financial-forecasting"
-  },
-  {
-    id: 6,
-    name: "Business Advisory",
-    description: "Receive strategic advice tailored to your business goals, helping you make informed decisions and drive growth.",
-    icon: <Briefcase className="h-10 w-10 mb-4 text-pink-400" />,
     slug: "business-advisory"
   },
   {
-    id: 7,
-    name: "Cloud Accounting Solutions",
-    description: "Leverage the power of cloud accounting to access your financial data anytime, anywhere, with real-time insights.",
-    icon: <Cloud className="h-10 w-10 mb-4 text-blue-400" />,
+    id: 4,
+    name: "📄 Financial Reporting",
+    description: "Understand your numbers in plain English with detailed, timely reports that support better decisions.",
+    icon: <FileSpreadsheet className="h-10 w-10 mb-4 text-pink-400" />,
+    slug: "financial-reporting"
+  },
+  {
+    id: 5,
+    name: "🔍 Audit Support",
+    description: "Whether required or voluntary, we help you prepare for audits and reviews with clarity and confidence.",
+    icon: <ClipboardCheck className="h-10 w-10 mb-4 text-blue-400" />,
+    slug: "audit-support"
+  },
+  {
+    id: 6,
+    name: "☁️ Cloud Accounting",
+    description: "We use tools like Xero and QuickBooks to give you real-time visibility, automated workflows, and remote access.",
+    icon: <Cloud className="h-10 w-10 mb-4 text-pink-400" />,
     slug: "cloud-accounting"
   },
   {
+    id: 7,
+    name: "🎬 Industry-Specific Accounting",
+    description: "Tailored support for Construction, Film, Music, and Property—aligned to your sector's compliance, tax, and financial structure needs.",
+    icon: <Briefcase className="h-10 w-10 mb-4 text-blue-400" />,
+    slug: "industry-specific"
+  },
+  {
     id: 8,
-    name: "Virtual CFO Services",
-    description: "Gain executive-level financial expertise without the full-time commitment, guiding your business towards financial success.",
-    icon: <FileSpreadsheet className="h-10 w-10 mb-4 text-pink-400" />,
-    slug: "virtual-cfo"
+    name: "📅 Virtual Finance Director (VFD)",
+    description: "On-demand financial leadership without the overhead. Strategic planning, forecasting, and accountability for your growth journey.",
+    icon: <DollarSign className="h-10 w-10 mb-4 text-pink-400" />,
+    slug: "virtual-finance-director"
   }
 ];
 
@@ -163,9 +163,9 @@ export default function ServicesPage() {
       <section className="bg-gray-800 text-white py-16 md:py-24">
         <div className="container mx-auto px-6 md:px-8">
           <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-3xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-blue-400 to-pink-400 bg-clip-text text-transparent">Our Services</h1>
+            <h1 className="text-3xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-blue-400 to-pink-400 bg-clip-text text-transparent">🧾 Our Services</h1>
             <p className="text-xl text-gray-300">
-              Comprehensive financial solutions tailored to your business needs
+              Accounting, Tax, and Strategic Support for Growing Businesses
             </p>
           </div>
         </div>
@@ -175,12 +175,11 @@ export default function ServicesPage() {
       <section className="py-16 bg-gray-900">
         <div className="container mx-auto px-6 md:px-8">
           <div className="max-w-3xl mx-auto text-center mb-16">
-            <h2 className="text-2xl md:text-3xl font-bold mb-6 text-white">How We Support Your Business</h2>
             <p className="text-gray-300 mb-4">
-              At Progress Accountants, we offer a full spectrum of financial services designed to support businesses at every stage of growth. Our tailored approaches ensure you get exactly what you need to thrive in today's competitive environment.
+              At Progress, we do more than keep you compliant—we help you grow. From day-to-day bookkeeping to long-term planning, our services are built around your goals, not just your deadlines.
             </p>
             <p className="text-gray-300">
-              Whether you're looking for day-to-day accounting support or strategic financial guidance, our team of experts is here to help you succeed.
+              We specialise in small business support, construction, film, music, property, and professional services. Explore how we can help you stay in control and one step ahead.
             </p>
           </div>
 
