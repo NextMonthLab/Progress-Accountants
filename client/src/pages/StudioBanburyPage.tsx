@@ -65,6 +65,68 @@ export default function StudioBanburyPage() {
         </div>
       </section>
 
+      {/* Studio Gallery Section */}
+      <section className="py-20 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-purple-900/40"></div>
+        <div className="container mx-auto px-12 md:px-16 relative z-10">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-16">
+              <h2 className="text-3xl md:text-4xl font-bold mb-6 text-white">
+                See Our Professional Studio Space
+              </h2>
+              <p className="text-slate-300 text-lg">Acoustically treated, broadcast-quality environment</p>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
+              <div className="relative overflow-hidden rounded-xl shadow-lg group">
+                <img 
+                  src="https://res.cloudinary.com/drl0fxrkq/image/upload/v1747742830/P1012292-Enhanced-NR_fkrsv2.jpg"
+                  alt="Professional podcast recording setup with microphones and acoustic treatment"
+                  className="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              </div>
+              
+              <div className="relative overflow-hidden rounded-xl shadow-lg group">
+                <img 
+                  src="https://res.cloudinary.com/drl0fxrkq/image/upload/v1747742830/P1012291-Enhanced-NR_z1qebv.jpg"
+                  alt="Video recording equipment and camera setup in professional studio"
+                  className="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              </div>
+              
+              <div className="relative overflow-hidden rounded-xl shadow-lg group">
+                <img 
+                  src="https://res.cloudinary.com/drl0fxrkq/image/upload/v1747742831/P1012286-Enhanced-NR_h6v6jx.jpg"
+                  alt="Acoustic treatment and professional lighting in recording studio"
+                  className="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              </div>
+              
+              <div className="relative overflow-hidden rounded-xl shadow-lg group md:col-span-2">
+                <img 
+                  src="https://res.cloudinary.com/drl0fxrkq/image/upload/v1747742833/P1012283-Enhanced-NR-1_j1bb3j.jpg"
+                  alt="Full studio overview showing recording area and professional equipment"
+                  className="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              </div>
+              
+              <div className="relative overflow-hidden rounded-xl shadow-lg group">
+                <img 
+                  src="https://res.cloudinary.com/drl0fxrkq/image/upload/v1747742834/P1012275-Enhanced-NR_cgvg2v.jpg"
+                  alt="Detail shot of professional recording equipment and controls"
+                  className="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Studio Features Section */}
       <section className="py-20 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-purple-900/40"></div>
@@ -73,7 +135,7 @@ export default function StudioBanburyPage() {
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-16">
               <h2 className="text-3xl md:text-4xl font-bold mb-6 text-white">
-                Professional Podcast & Video Studio
+                Professional Equipment & Features
               </h2>
               <p className="text-slate-300 text-lg">What's included in every session:</p>
             </div>
