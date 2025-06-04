@@ -1,0 +1,61 @@
+✏️ Replit-Ready Prompt — Business Calculator Page (UK English, Structure-Preserving)
+
+⚠️ Instructions to Replit:  
+Do not change the page layout or structure. Only replace text content with the version below. Ensure all spelling follows UK English conventions. Maintain headings, section order, and UI elements as-is.
+
+---
+
+Header:
+📊 Business Finance Calculator  
+Clarity in minutes. Growth in sight.
+
+—
+
+Intro:
+Planning for growth? Feeling uncertain about cash flow?  
+Use our free Business Finance Calculator to gain instant insight into your revenue, expenses, profit margins, and future projections. Ideal for small businesses across the UK who want to plan ahead with confidence.
+
+This tool helps you:
+✓ Understand your monthly cash flow  
+✓ Visualise your profit potential  
+✓ Identify gaps before they become problems  
+✓ Build a clear financial narrative for investors or lenders
+
+No spreadsheet headaches. No downloads. Just answers.
+
+CTA: Start Your Calculation
+
+—
+
+Tool Features:
+✅ Built for SMEs – Designed around real-world business needs  
+✅ Easy inputs – Just enter revenue, costs, and growth expectations  
+✅ Real-time results – Instantly see forecasts, margins, and insights  
+✅ Export options – Save your results or share with your accountant
+
+—
+
+Who It’s For:
+This calculator is perfect for:
+• Small business owners planning for growth  
+• Startups pitching to investors  
+• Creatives, contractors, and freelancers budgeting for the year ahead  
+• Anyone trying to make more confident financial decisions
+
+—
+
+Expert Support Available:
+Need help interpreting your results?  
+Progress Accountants offers free discovery calls to walk you through your figures and build a custom growth strategy.
+
+CTA: Book a Free Consultation
+
+—
+
+Disclaimer:
+This calculator is for informational use only and does not constitute financial advice. For tailored forecasting or tax planning, please speak to one of our advisors.
+
+—
+
+SEO Footer Line (if applicable):
+Progress Accountants – Expert Business Forecasting Tools and Strategic Support for SMEs across Banbury, Oxford, London, and the UK.

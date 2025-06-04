@@ -1005,12 +1005,11 @@ const BusinessCalculatorPage = () => {
               <Calculator className="h-10 w-10 text-[#7B3FE4]" />
             </div>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
-              Smart Business{" "}
-              <span className="bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">Forecast</span>{" "}
-              Calculator
+              📊 Business Finance{" "}
+              <span className="bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">Calculator</span>
             </h1>
             <p className="text-xl md:text-2xl text-slate-300 mb-8 max-w-3xl mx-auto leading-relaxed">
-              Think beyond spreadsheets. Get a real-time financial pulse check tailored to your business—plus actionable insights in under 3 minutes.
+              Clarity in minutes. Growth in sight.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <div className="bg-gradient-to-br from-slate-800/90 to-slate-900/90 border border-slate-600/50 rounded-xl p-4 flex items-center shadow-lg backdrop-blur-sm">
@@ -1053,10 +1052,123 @@ const BusinessCalculatorPage = () => {
           </AnimatePresence>
         </motion.div>
         
+        {/* Intro Section - Show only on first step */}
+        {currentStep === 1 && (
+          <div className="mt-12 max-w-4xl mx-auto text-center">
+            <h2 className="text-2xl font-bold text-white mb-6">Planning for growth? Feeling uncertain about cash flow?</h2>
+            <div className="space-y-6 mb-10">
+              <p className="text-slate-300 text-lg leading-relaxed">
+                Use our free Business Finance Calculator to gain instant insight into your revenue, expenses, profit margins, and future projections. Ideal for small businesses across the UK who want to plan ahead with confidence.
+              </p>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl mx-auto">
+                <div className="flex items-center text-slate-300">
+                  <CheckCircle className="h-5 w-5 text-[#7B3FE4] mr-3 flex-shrink-0" />
+                  <span>Understand your monthly cash flow</span>
+                </div>
+                <div className="flex items-center text-slate-300">
+                  <CheckCircle className="h-5 w-5 text-[#7B3FE4] mr-3 flex-shrink-0" />
+                  <span>Visualise your profit potential</span>
+                </div>
+                <div className="flex items-center text-slate-300">
+                  <CheckCircle className="h-5 w-5 text-[#7B3FE4] mr-3 flex-shrink-0" />
+                  <span>Identify gaps before they become problems</span>
+                </div>
+                <div className="flex items-center text-slate-300">
+                  <CheckCircle className="h-5 w-5 text-[#7B3FE4] mr-3 flex-shrink-0" />
+                  <span>Build a clear financial narrative for investors or lenders</span>
+                </div>
+              </div>
+              <p className="text-slate-300 text-lg italic">
+                No spreadsheet headaches. No downloads. Just answers.
+              </p>
+            </div>
+          </div>
+        )}
+
+        {/* Tool Features Section - Show only on first step */}
+        {currentStep === 1 && (
+          <div className="mt-12 max-w-4xl mx-auto">
+            <h3 className="text-xl font-bold text-white text-center mb-6">Tool Features</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="flex items-start">
+                <CheckCircle className="h-6 w-6 text-[#7B3FE4] mr-3 mt-1 flex-shrink-0" />
+                <div>
+                  <h4 className="font-semibold text-white mb-1">Built for SMEs</h4>
+                  <p className="text-slate-300">Designed around real-world business needs</p>
+                </div>
+              </div>
+              <div className="flex items-start">
+                <CheckCircle className="h-6 w-6 text-[#7B3FE4] mr-3 mt-1 flex-shrink-0" />
+                <div>
+                  <h4 className="font-semibold text-white mb-1">Easy inputs</h4>
+                  <p className="text-slate-300">Just enter revenue, costs, and growth expectations</p>
+                </div>
+              </div>
+              <div className="flex items-start">
+                <CheckCircle className="h-6 w-6 text-[#7B3FE4] mr-3 mt-1 flex-shrink-0" />
+                <div>
+                  <h4 className="font-semibold text-white mb-1">Real-time results</h4>
+                  <p className="text-slate-300">Instantly see forecasts, margins, and insights</p>
+                </div>
+              </div>
+              <div className="flex items-start">
+                <CheckCircle className="h-6 w-6 text-[#7B3FE4] mr-3 mt-1 flex-shrink-0" />
+                <div>
+                  <h4 className="font-semibold text-white mb-1">Export options</h4>
+                  <p className="text-slate-300">Save your results or share with your accountant</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Who It's For Section - Show only on first step */}
+        {currentStep === 1 && (
+          <div className="mt-12 max-w-4xl mx-auto">
+            <h3 className="text-xl font-bold text-white text-center mb-6">Who It's For</h3>
+            <p className="text-slate-300 text-center mb-6">This calculator is perfect for:</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="flex items-center text-slate-300">
+                <span className="mr-3">•</span>
+                <span>Small business owners planning for growth</span>
+              </div>
+              <div className="flex items-center text-slate-300">
+                <span className="mr-3">•</span>
+                <span>Startups pitching to investors</span>
+              </div>
+              <div className="flex items-center text-slate-300">
+                <span className="mr-3">•</span>
+                <span>Creatives, contractors, and freelancers budgeting for the year ahead</span>
+              </div>
+              <div className="flex items-center text-slate-300">
+                <span className="mr-3">•</span>
+                <span>Anyone trying to make more confident financial decisions</span>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Expert Support Section - Show only on first step */}
+        {currentStep === 1 && (
+          <div className="mt-12 max-w-4xl mx-auto text-center">
+            <h3 className="text-xl font-bold text-white mb-4">Expert Support Available</h3>
+            <p className="text-slate-300 mb-6">
+              Need help interpreting your results? Progress Accountants offers free discovery calls to walk you through your figures and build a custom growth strategy.
+            </p>
+            <a 
+              href="/contact" 
+              className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] text-white rounded-lg hover:shadow-lg hover:shadow-purple-500/25 hover:-translate-y-1 transition-all duration-300 font-medium"
+            >
+              <span>Book a Free Consultation</span>
+              <ArrowRight size={16} />
+            </a>
+          </div>
+        )}
+
         {/* Benefits Section - Show only on first step */}
         {currentStep === 1 && (
           <div className="mt-12 max-w-4xl mx-auto">
-            <h2 className="text-2xl font-bold text-white text-center mb-6">Why Use Our Business Forecast Calculator?</h2>
+            <h2 className="text-2xl font-bold text-white text-center mb-6">Why Use Our Business Finance Calculator?</h2>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <Card className="bg-gradient-to-br from-slate-700/90 to-slate-800/90 border border-slate-600/50 shadow-md hover:shadow-lg hover:shadow-purple-500/25 transition-all">
@@ -1140,6 +1252,23 @@ const BusinessCalculatorPage = () => {
             </div>
           </div>
         )}
+
+        {/* Disclaimer Section */}
+        <div className="mt-16 max-w-4xl mx-auto text-center">
+          <div className="bg-gradient-to-br from-slate-800/90 to-slate-900/90 border border-slate-600/50 p-6 rounded-xl">
+            <h3 className="text-lg font-semibold text-white mb-3">Disclaimer</h3>
+            <p className="text-slate-300 text-sm">
+              This calculator is for informational use only and does not constitute financial advice. For tailored forecasting or tax planning, please speak to one of our advisors.
+            </p>
+          </div>
+        </div>
+
+        {/* SEO Footer */}
+        <div className="mt-8 max-w-4xl mx-auto text-center">
+          <p className="text-slate-400 text-sm">
+            Progress Accountants – Expert Business Forecasting Tools and Strategic Support for SMEs across Banbury, Oxford, London, and the UK.
+          </p>
+        </div>
       </div>
     </div>
   );
