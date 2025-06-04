@@ -10,11 +10,15 @@
 @layer utilities {
   /* Progress Design System Utilities */
   .gradient-bg {
-    @apply bg-gradient-to-r from-[#E935C1] to-[#4F46E5];
+    background: linear-gradient(to right, #4F46E5 0%, #4F46E5 75%, #E935C1 100%);
   }
 
   .gradient-text {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-[#E935C1] to-[#4F46E5];
+    background: linear-gradient(to right, #4F46E5 0%, #4F46E5 75%, #E935C1 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
   }
 
   .dark-theme-text {
