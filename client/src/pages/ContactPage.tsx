@@ -22,7 +22,7 @@ export default function ContactPage() {
               <span className="bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">Touch</span>
             </h1>
             <p className="text-lg md:text-xl text-slate-300 mb-8 max-w-3xl mx-auto leading-relaxed">
-              Ready to take your business finances to the next level? Our team is here to help you succeed.
+              Let's take your business finances to the next level—our team is here to help you succeed.
             </p>
           </div>
         </div>
@@ -37,17 +37,14 @@ export default function ContactPage() {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
               <div className="col-span-2">
                 <h2 className="text-3xl md:text-4xl font-bold mb-8 text-white">
-                  Looking for a proactive accountant in United Kingdom?
+                  Looking for proactive accountants in Banbury, Oxford, or London?
                 </h2>
                 <div className="space-y-6 mb-10">
                   <p className="text-slate-300 text-lg leading-relaxed">
-                    We're based in Oxford, Banbury, and London, and proudly serve ambitious businesses across the United Kingdom and beyond. 
-                    Whether you need bookkeeping, tax returns, or a finance director who understands your goals — 
-                    Progress Accountants is here to help.
+                    Progress Accountants supports ambitious SMEs across the UK—whether you need bookkeeping, tax planning, or a strategic finance partner who truly understands your goals.
                   </p>
                   <p className="text-slate-300 text-lg leading-relaxed">
-                    We specialise in small business accounting, and we're certified Xero accountants too. But most of all, we help our
-                    clients grow — with practical, forward-thinking support you won't find anywhere else.
+                    We specialise in small business accounting and are certified Xero accountants. But most importantly, we help you grow—with practical, forward-thinking advice and tools that make a real difference.
                   </p>
                 </div>
                 
@@ -115,8 +112,8 @@ export default function ContactPage() {
                       <div>
                         <h3 className="text-sm font-semibold text-slate-400 mb-2">Business Hours</h3>
                         <p className="text-slate-300">
-                          Monday - Friday: 9:00 AM - 5:30 PM<br />
-                          Saturday - Sunday: Closed
+                          Monday – Friday: 9:00am – 5:30pm<br />
+                          Saturday – Sunday: Closed
                         </p>
                       </div>
                     </div>
@@ -192,8 +189,7 @@ export default function ContactPage() {
             <div className="text-center mb-16">
               <h2 className="text-3xl md:text-4xl font-bold mb-6 text-white">Send Us a Message</h2>
               <p className="text-slate-300 text-lg max-w-2xl mx-auto leading-relaxed">
-                Need more information or have a specific question? Fill out the form below and one of our 
-                accounting specialists will get back to you promptly.
+                Have a question or need more information? Fill out the form below and one of our accounting specialists will get back to you promptly.
               </p>
             </div>
             
