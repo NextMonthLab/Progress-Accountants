@@ -34,13 +34,13 @@
 }
 
 .public-btn-secondary {
-  background: linear-gradient(135deg, #4F46E5 0%, #4F46E5 75%, #E935C1 100%);
+  background: linear-gradient(135deg, #4F46E5 0%, #4F46E5 60%, #E935C1 100%);
   color: var(--public-white);
   transition: all 0.3s ease;
 }
 
 .public-btn-secondary:hover {
-  background: linear-gradient(135deg, #3730A3 0%, #3730A3 75%, #D946EF 100%);
+  background: linear-gradient(135deg, #3730A3 0%, #3730A3 60%, #D946EF 100%);
   transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);
 }
@@ -52,14 +52,14 @@
 }
 
 .public-btn-outline:hover {
-  background: linear-gradient(135deg, #4F46E5 0%, #4F46E5 75%, #E935C1 100%);
+  background: linear-gradient(135deg, #4F46E5 0%, #4F46E5 60%, #E935C1 100%);
   border-color: var(--public-orange);
   color: var(--public-white);
 }
 
 /* Progress button override with absolute specificity */
 .progress-button-override {
-  background: linear-gradient(135deg, #4F46E5 0%, #4F46E5 75%, #E935C1 100%) !important;
+  background: linear-gradient(135deg, #4F46E5 0%, #4F46E5 60%, #E935C1 100%) !important;
   background-color: #4F46E5 !important;
   color: white !important;
   transition: all 0.2s ease !important;
@@ -67,7 +67,7 @@
 }
 
 .progress-button-override:hover {
-  background: linear-gradient(135deg, #3730A3 0%, #3730A3 75%, #D946EF 100%) !important;
+  background: linear-gradient(135deg, #3730A3 0%, #3730A3 60%, #D946EF 100%) !important;
   background-color: #3730A3 !important;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
   color: white !important;
