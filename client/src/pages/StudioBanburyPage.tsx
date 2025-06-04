@@ -23,6 +23,18 @@ export default function StudioBanburyPage() {
             <p className="text-lg md:text-xl text-slate-300 mb-8 max-w-3xl mx-auto leading-relaxed">
               Broadcast-quality. Acoustically treated. Fully supported.
             </p>
+            
+            {/* Hero Image */}
+            <div className="mt-12">
+              <div className="relative overflow-hidden rounded-xl shadow-2xl mx-auto max-w-2xl">
+                <img 
+                  src="https://res.cloudinary.com/drl0fxrkq/image/upload/v1749048358/IMG_7167_bsq3dc.jpg"
+                  alt="Professional studio workspace with advanced recording equipment and acoustic design"
+                  className="w-full h-80 object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -535,6 +547,37 @@ export default function StudioBanburyPage() {
                   </button>
                 </div>
               </form>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Bottom Studio Image Section */}
+      <section className="py-16 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-purple-900/40"></div>
+        <div className="container mx-auto px-12 md:px-16 relative z-10">
+          <div className="max-w-4xl mx-auto">
+            <div className="text-center mb-8">
+              <h3 className="text-2xl md:text-3xl font-bold text-white mb-4">
+                Ready to Create Something Amazing?
+              </h3>
+              <p className="text-slate-300 text-lg">
+                Professional studio environment designed for content creators and business owners
+              </p>
+            </div>
+            
+            <div className="relative overflow-hidden rounded-xl shadow-2xl mx-auto">
+              <img 
+                src="https://res.cloudinary.com/drl0fxrkq/image/upload/v1749048359/IMG_8542_qv70ds.jpg"
+                alt="Complete studio setup showing professional recording environment and equipment arrangement"
+                className="w-full h-96 object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
+              <div className="absolute bottom-6 left-6 right-6 text-center">
+                <p className="text-white text-lg font-medium">
+                  Book your session today and bring your content vision to life
+                </p>
+              </div>
             </div>
           </div>
         </div>
