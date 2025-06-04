@@ -140,7 +140,7 @@ const HeroSection = () => {
                 <OptimizedImage 
                   src={teamPhotoImage} 
                   alt={`${businessName} Team`}
-                  className="w-full h-auto object-cover brightness-105"
+                  className="w-full h-auto object-center object-contain brightness-105"
                   width={1000}
                   height={600}
                   priority={true}
