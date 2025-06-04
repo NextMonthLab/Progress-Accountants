@@ -223,9 +223,9 @@ export default function HomePage() {
             
             <div className="md:w-1/2 flex justify-center">
               <SlideInRight delay={0.4}>
-                <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full hover:shadow-xl transition-shadow duration-300">
+                <div className="bg-[#101218] border border-[#2E2F3B] p-6 rounded-lg shadow-lg max-w-md w-full hover:shadow-xl transition-shadow duration-300">
                   <ScaleIn delay={0.6}>
-                    <h3 className="text-xl font-bold mb-4 text-zinc-800">Available Resources</h3>
+                    <h3 className="text-xl font-bold mb-4 text-white">Available Resources</h3>
                   </ScaleIn>
                   
                   <ul className="space-y-4">
@@ -236,20 +236,20 @@ export default function HomePage() {
                         </svg>
                       </div>
                       <div>
-                        <h4 className="font-medium text-zinc-800">SME Contacts Directory</h4>
-                        <p className="text-gray-600 text-sm">All important UK business support contacts in one PDF.</p>
+                        <h4 className="font-medium text-white">SME Contacts Directory</h4>
+                        <p className="text-gray-300 text-sm">All important UK business support contacts in one PDF.</p>
                       </div>
                     </SlideUp>
                     
                     <SlideUp className="flex items-start" delay={0.8}>
                       <div className="bg-gradient-to-r from-[#7B3FE4]/20 to-[#3FA4E4]/20 p-2 rounded-lg mr-4">
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-[#7B3FE4]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2 2v12a2 2 0 002 2z" />
                         </svg>
                       </div>
                       <div>
-                        <h4 className="font-medium text-zinc-800">Key Business Deadlines</h4>
-                        <p className="text-gray-600 text-sm">All tax and reporting deadlines for 2025 in a printable format.</p>
+                        <h4 className="font-medium text-white">Key Business Deadlines</h4>
+                        <p className="text-gray-300 text-sm">All tax and reporting deadlines for 2025 in a printable format.</p>
                       </div>
                     </SlideUp>
                   </ul>
