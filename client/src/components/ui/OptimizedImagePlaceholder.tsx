@@ -15,7 +15,7 @@ export const OptimizedPodcastStudio = () => (
     alt="Podcast and Video Studio"
     width={400}
     height={200}
-    className="w-full h-full object-cover object-center"
+    className="w-full h-full object-cover object-top"
   />
 );
 
@@ -25,7 +25,7 @@ export const OptimizedDashboardMockup = () => (
     alt="Financial Dashboard with Revenue Analytics"
     width={400}
     height={200}
-    className="w-full h-full object-cover object-center"
+    className="w-full h-full object-cover object-top"
   />
 );
 
@@ -35,7 +35,7 @@ export const OptimizedStrategySession = () => (
     alt="Strategy Session with Financial Advisors"
     width={400}
     height={200}
-    className="w-full h-full object-cover object-center"
+    className="w-full h-full object-cover object-top"
   />
 );
 
