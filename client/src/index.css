@@ -86,7 +86,7 @@
   --light-grey: #374151;
   --dark-grey: #4a5568;
   --orange: #F4A261;
-  --nextmonth-teal: #06B6D4;
+  --nextmonth-teal: #000000;
 }
 
 /* GLOBAL: Control all rounded corners site-wide */
@@ -122,7 +122,11 @@ body:not([data-admin]) .rounded-full {
   /* Force dark mode permanently */
   html {
     color-scheme: dark;
-    background-color: black;
+    background-color: black !important;
+  }
+  
+  #root {
+    background-color: black !important;
   }
   
   html.dark {
