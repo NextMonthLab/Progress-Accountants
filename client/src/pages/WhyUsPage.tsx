@@ -107,7 +107,7 @@ export default function WhyUsPage() {
               </div>
             )}
             
-            <div className="mt-8 inline-block px-4 py-2 rounded-full bg-white/10 text-orange-300 text-sm font-medium">
+            <div className="mt-8 inline-block px-4 py-2 rounded-full bg-white/10 text-gray-300 text-sm font-medium">
               Established {yearFounded} • Serving businesses with excellence
             </div>
           </div>
