@@ -55,20 +55,20 @@ export default function WhyUsPage() {
   // Return skeleton during loading state
   if (isLoading || isLoadingIdentity) {
     return (
-      <div className="bg-gray-50 min-h-screen">
+      <div className="bg-gray-900 min-h-screen">
         <Helmet>
           <title>Why Choose Us | Progress Accountants</title>
         </Helmet>
 
         {/* Skeleton Hero Section */}
-        <section className="bg-[var(--navy)] text-white py-16 md:py-24 relative overflow-hidden">
+        <section className="bg-gray-800 text-white py-16 md:py-24 relative overflow-hidden">
           <div className="container mx-auto px-4">
             <PageHeaderSkeleton />
           </div>
         </section>
 
         {/* Skeleton Features */}
-        <section className="py-16 md:py-24 bg-white">
+        <section className="py-16 md:py-24 bg-gray-900">
           <div className="container mx-auto px-4">
             <FeaturesSkeleton count={6} />
           </div>
@@ -86,18 +86,18 @@ export default function WhyUsPage() {
   const certifications = businessIdentity?.personality?.certifications || [];
 
   return (
-    <div className="bg-gray-50 min-h-screen">
+    <div className="bg-gray-900 min-h-screen">
       <Helmet>
         <title>Why Choose Us | {businessName}</title>
         <meta name="description" content={`Discover what makes ${businessName} different and why businesses choose us for their accounting needs. Expertise, technology, and a client-first approach.`} />
       </Helmet>
 
       {/* Hero Section */}
-      <section className="bg-[var(--navy)] text-white py-16 md:py-24 relative overflow-hidden">
+      <section className="bg-gray-800 text-white py-16 md:py-24 relative overflow-hidden">
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-3xl md:text-5xl font-bold mb-6">Why Choose {businessName}?</h1>
-            <p className="text-xl md:text-2xl text-gray-200 mb-8">
+            <h1 className="text-3xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-blue-400 to-pink-400 bg-clip-text text-transparent">Why Choose {businessName}?</h1>
+            <p className="text-xl md:text-2xl text-gray-300 mb-8">
               More than just accountants—we're your financial growth partners.
             </p>
             
@@ -116,53 +116,53 @@ export default function WhyUsPage() {
       </section>
 
       {/* Key Differentiators */}
-      <section className="py-16 md:py-24 bg-white">
+      <section className="py-16 md:py-24 bg-gray-900">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center mb-16">
-            <h2 className="text-2xl md:text-3xl font-bold mb-6" style={{ color: 'var(--navy)' }}>
+            <h2 className="text-2xl md:text-3xl font-bold mb-6 bg-gradient-to-r from-blue-400 to-pink-400 bg-clip-text text-transparent">
               What Sets Us Apart
             </h2>
-            <p className="text-lg text-gray-700">
+            <p className="text-lg text-gray-300">
               We're not just accountants who file your tax returns. Our approach combines technology, expertise, and a genuine commitment to your business growth.
             </p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {/* Card 1 */}
-            <div className="bg-white rounded-lg shadow-md p-8 transition-all hover:shadow-lg hover:-translate-y-1">
-              <div className="mb-6 p-4 rounded-full inline-flex bg-orange-50" style={{ color: 'var(--orange)' }}>
-                <Zap size={40} />
+            <div className="bg-gray-800 rounded-lg shadow-lg p-8 transition-all hover:shadow-xl hover:-translate-y-2 border border-gray-700">
+              <div className="mb-6 p-4 rounded-full inline-flex bg-blue-500/20">
+                <Zap size={40} className="text-blue-400" />
               </div>
-              <h3 className="text-xl font-bold mb-3" style={{ color: 'var(--navy)' }}>
+              <h3 className="text-xl font-bold mb-3 text-white">
                 Technology-Driven
               </h3>
-              <p className="text-gray-600">
+              <p className="text-gray-300">
                 Modern cloud-based accounting solutions that give you real-time visibility into your finances anytime, anywhere. No more waiting for quarterly reports.
               </p>
             </div>
             
             {/* Card 2 */}
-            <div className="bg-white rounded-lg shadow-md p-8 transition-all hover:shadow-lg hover:-translate-y-1">
-              <div className="mb-6 p-4 rounded-full inline-flex bg-orange-50" style={{ color: 'var(--orange)' }}>
-                <Lightbulb size={40} />
+            <div className="bg-gray-800 rounded-lg shadow-lg p-8 transition-all hover:shadow-xl hover:-translate-y-2 border border-gray-700">
+              <div className="mb-6 p-4 rounded-full inline-flex bg-pink-500/20">
+                <Lightbulb size={40} className="text-pink-400" />
               </div>
-              <h3 className="text-xl font-bold mb-3" style={{ color: 'var(--navy)' }}>
+              <h3 className="text-xl font-bold mb-3 text-white">
                 Proactive Advisors
               </h3>
-              <p className="text-gray-600">
+              <p className="text-gray-300">
                 We don't just react to deadlines—we anticipate opportunities, identify risks before they become problems, and actively help you plan for growth.
               </p>
             </div>
             
             {/* Card 3 */}
-            <div className="bg-white rounded-lg shadow-md p-8 transition-all hover:shadow-lg hover:-translate-y-1">
-              <div className="mb-6 p-4 rounded-full inline-flex bg-orange-50" style={{ color: 'var(--orange)' }}>
-                <Users size={40} />
+            <div className="bg-gray-800 rounded-lg shadow-lg p-8 transition-all hover:shadow-xl hover:-translate-y-2 border border-gray-700">
+              <div className="mb-6 p-4 rounded-full inline-flex bg-blue-500/20">
+                <Users size={40} className="text-blue-400" />
               </div>
-              <h3 className="text-xl font-bold mb-3" style={{ color: 'var(--navy)' }}>
+              <h3 className="text-xl font-bold mb-3 text-white">
                 Relationship Focused
               </h3>
-              <p className="text-gray-600">
+              <p className="text-gray-300">
                 We take the time to understand your business, your goals, and your challenges. Every financial decision is made in the context of your bigger picture.
               </p>
             </div>
@@ -172,28 +172,28 @@ export default function WhyUsPage() {
 
       {/* Our Values */}
       {values.length > 0 && (
-        <section className="py-16 md:py-24 bg-gray-50">
+        <section className="py-16 md:py-24 bg-gray-800">
           <div className="container mx-auto px-4">
             <div className="max-w-3xl mx-auto text-center mb-16">
-              <h2 className="text-2xl md:text-3xl font-bold mb-6" style={{ color: 'var(--navy)' }}>
+              <h2 className="text-2xl md:text-3xl font-bold mb-6 bg-gradient-to-r from-pink-400 to-blue-400 bg-clip-text text-transparent">
                 Our Values
               </h2>
-              <p className="text-lg text-gray-700">
+              <p className="text-lg text-gray-300">
                 These core principles guide every interaction and decision we make.
               </p>
             </div>
             
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-4xl mx-auto">
               {values.map((value, index) => (
-                <div key={index} className="flex items-start p-6 bg-white rounded-lg shadow-sm hover:shadow-md transition-all">
-                  <div className="mr-4 text-orange-500">
+                <div key={index} className="flex items-start p-6 bg-gray-900 rounded-lg shadow-lg hover:shadow-xl transition-all border border-gray-700">
+                  <div className="mr-4 text-blue-400">
                     <CheckCircle2 size={24} />
                   </div>
                   <div>
-                    <h3 className="font-bold mb-2" style={{ color: 'var(--navy)' }}>
+                    <h3 className="font-bold mb-2 text-white">
                       {value}
                     </h3>
-                    <p className="text-gray-600 text-sm">
+                    <p className="text-gray-300 text-sm">
                       {index === 0 ? "We bring authenticity and transparency to every client relationship." :
                        index === 1 ? "We consistently deliver results that exceed expectations." :
                        index === 2 ? "We embrace forward-thinking approaches and continuous improvement." :
@@ -210,13 +210,13 @@ export default function WhyUsPage() {
 
       {/* USPs Section */}
       {usps.length > 0 && (
-        <section className="py-16 md:py-24 bg-[var(--navy)] text-white">
+        <section className="py-16 md:py-24 bg-gray-900 text-white">
           <div className="container mx-auto px-4">
             <div className="max-w-3xl mx-auto text-center mb-12">
-              <span className="inline-block px-4 py-2 rounded-full bg-white/10 text-orange-300 text-sm font-medium mb-4">
+              <span className="inline-block px-4 py-2 rounded-full bg-white/10 text-blue-300 text-sm font-medium mb-4">
                 Our Unique Advantages
               </span>
-              <h2 className="text-2xl md:text-3xl font-bold mb-6">
+              <h2 className="text-2xl md:text-3xl font-bold mb-6 bg-gradient-to-r from-blue-400 to-pink-400 bg-clip-text text-transparent">
                 Why Clients Choose Us
               </h2>
               <p className="text-lg text-gray-300">
@@ -226,8 +226,8 @@ export default function WhyUsPage() {
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
               {usps.map((usp, index) => (
-                <div key={index} className="flex items-start bg-blue-900/50 p-6 rounded-lg">
-                  <div className="mr-4 text-orange-400">
+                <div key={index} className="flex items-start bg-gray-800 p-6 rounded-lg border border-gray-700">
+                  <div className="mr-4 text-pink-400">
                     <Sparkles size={24} />
                   </div>
                   <div>
@@ -242,24 +242,24 @@ export default function WhyUsPage() {
 
       {/* Certifications and Credentials */}
       {certifications.length > 0 && (
-        <section className="py-16 md:py-24 bg-white">
+        <section className="py-16 md:py-24 bg-gray-800">
           <div className="container mx-auto px-4">
             <div className="max-w-3xl mx-auto text-center mb-12">
-              <h2 className="text-2xl md:text-3xl font-bold mb-6" style={{ color: 'var(--navy)' }}>
+              <h2 className="text-2xl md:text-3xl font-bold mb-6 bg-gradient-to-r from-pink-400 to-blue-400 bg-clip-text text-transparent">
                 Our Certifications & Credentials
               </h2>
-              <p className="text-lg text-gray-700">
+              <p className="text-lg text-gray-300">
                 We maintain the highest standards of professional excellence.
               </p>
             </div>
             
             <div className="flex flex-wrap justify-center gap-6 max-w-4xl mx-auto">
               {certifications.map((certification, index) => (
-                <div key={index} className="flex items-center bg-gray-50 px-6 py-4 rounded-lg shadow-sm">
-                  <div className="mr-3 text-orange-500">
+                <div key={index} className="flex items-center bg-gray-900 px-6 py-4 rounded-lg shadow-lg border border-gray-700">
+                  <div className="mr-3 text-blue-400">
                     <Award size={20} />
                   </div>
-                  <span className="font-medium" style={{ color: 'var(--navy)' }}>{certification}</span>
+                  <span className="font-medium text-white">{certification}</span>
                 </div>
               ))}
             </div>
@@ -268,29 +268,29 @@ export default function WhyUsPage() {
       )}
 
       {/* Client Testimonials */}
-      <section className="py-16 md:py-24 bg-gray-50">
+      <section className="py-16 md:py-24 bg-gray-900">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center mb-12">
-            <h2 className="text-2xl md:text-3xl font-bold mb-6" style={{ color: 'var(--navy)' }}>
+            <h2 className="text-2xl md:text-3xl font-bold mb-6 bg-gradient-to-r from-blue-400 to-pink-400 bg-clip-text text-transparent">
               What Our Clients Say
             </h2>
-            <p className="text-lg text-gray-700">
+            <p className="text-lg text-gray-300">
               Don't just take our word for it—here's what our clients have to say about working with us.
             </p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
             {testimonials.map((testimonial, index) => (
-              <div key={index} className="bg-white rounded-lg shadow-md p-8 transition-all hover:shadow-lg">
+              <div key={index} className="bg-gray-800 rounded-lg shadow-lg p-8 transition-all hover:shadow-xl border border-gray-700">
                 <div className="flex mb-4">
                   {[...Array(testimonial.rating)].map((_, i) => (
                     <Star key={i} size={16} className="text-yellow-400 fill-yellow-400" />
                   ))}
                 </div>
-                <p className="text-gray-700 italic mb-6">"{testimonial.quote}"</p>
+                <p className="text-gray-300 italic mb-6">"{testimonial.quote}"</p>
                 <div>
-                  <p className="font-medium" style={{ color: 'var(--navy)' }}>{testimonial.name}</p>
-                  <p className="text-sm text-gray-500">{testimonial.position}</p>
+                  <p className="font-medium text-white">{testimonial.name}</p>
+                  <p className="text-sm text-gray-400">{testimonial.position}</p>
                 </div>
               </div>
             ))}
