@@ -69,6 +69,7 @@ const BusinessCalculatorPage = lazy(() => import("@/pages/BusinessCalculatorPage
 const TestFilmPage = lazy(() => import("@/pages/TestFilmPage"));
 const WhyUsPage = lazy(() => import("@/pages/WhyUsPage"));
 const ContactPage = lazy(() => import("@/pages/ContactPage"));
+const StudioBanburyPage = lazy(() => import("@/pages/StudioBanburyPage"));
 const TestimonialsPage = lazy(() => import("@/pages/TestimonialsPage"));
 const PrivacyPolicyPage = lazy(() => import("@/pages/PrivacyPolicyPage"));
 const TermsOfServicePage = lazy(() => import("@/pages/TermsOfServicePage"));
@@ -257,6 +258,11 @@ function Router() {
       <Route path="/contact">
         <Suspense fallback={<LoadingFallback />}>
           <ContactPage />
+        </Suspense>
+      </Route>
+      <Route path="/studio-banbury">
+        <Suspense fallback={<LoadingFallback />}>
+          <StudioBanburyPage />
         </Suspense>
       </Route>
       <Route path="/testimonials">
