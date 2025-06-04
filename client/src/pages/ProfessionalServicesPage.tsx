@@ -27,27 +27,27 @@ interface BusinessIdentity {
 const professionalServices = [
   {
     icon: Calculator,
-    title: "Tax Planning & Compliance",
-    description: "Strategic tax planning to minimize your liability while ensuring full compliance with current regulations.",
+    title: "📊 Cash Flow You Can Count On",
+    description: "We help you forecast confidently, set aside for tax, and get paid on time—without chasing your tail.",
     features: [
-      "Annual tax planning strategies",
-      "Corporate tax compliance",
-      "VAT and payroll tax management",
-      "Tax efficient business structures"
+      "Reliable cash flow forecasting",
+      "Tax reserve planning",
+      "Payment tracking systems",
+      "Invoice management automation"
     ],
-    highlight: "Save up to 30% on tax liability"
+    highlight: "Predictable financial planning"
   },
   {
     icon: FileText,
-    title: "Management Accounts",
-    description: "Real-time financial reporting and analysis to help you make informed business decisions.",
+    title: "💼 Project Profitability Tracking",
+    description: "Whether you charge hourly or by project, we'll help you break down earnings, expenses, and margins so you know what's working.",
     features: [
-      "Monthly management reports",
-      "Cash flow forecasting",
-      "Budget planning & variance analysis",
-      "KPI dashboard creation"
+      "Time-based billing analysis",
+      "Project cost breakdown",
+      "Margin tracking by client",
+      "Profitability reporting"
     ],
-    highlight: "Monthly insights delivered"
+    highlight: "Know your real margins"
   },
   {
     icon: TrendingUp,
@@ -78,16 +78,15 @@ export default function ProfessionalServicesPage() {
           <div className="max-w-4xl mx-auto text-center">
             <Badge variant="secondary" className="mb-6 bg-gray-800 text-white border-gray-700">
               <Sparkles className="w-4 h-4 mr-2" />
-              Professional Services
+              💼 Industry Specialists
             </Badge>
             
             <h1 className="text-4xl md:text-6xl font-bold mb-6 gradient-text">
-              Expert Financial Solutions for Modern Businesses
+              Specialist Accounting for Professional Services
             </h1>
             
             <p className="text-xl md:text-2xl text-gray-300 mb-8 leading-relaxed">
-              Comprehensive accounting and advisory services designed to accelerate your growth, 
-              minimize your tax burden, and secure your financial future.
+              Helping you plan, price, and grow—without losing track of your finances.
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -97,7 +96,7 @@ export default function ProfessionalServicesPage() {
                 asChild
               >
                 <Link href="/contact">
-                  Get Free Consultation
+                  Book a Free Consultation
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
               </Button>
@@ -108,10 +107,27 @@ export default function ProfessionalServicesPage() {
                 asChild
               >
                 <Link href="/services">
-                  View All Services
+                  Explore Our Services
                 </Link>
               </Button>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Intro Section */}
+      <section className="py-20 bg-gray-900/30">
+        <div className="container mx-auto px-6 md:px-8">
+          <div className="max-w-4xl mx-auto text-center">
+            <p className="text-xl text-gray-300 mb-6 leading-relaxed">
+              From consultants and coaches to creative agencies and legal professionals—Progress supports service-led businesses with the clarity, confidence, and financial tools they need to thrive.
+            </p>
+            <p className="text-lg text-gray-400 mb-6 leading-relaxed">
+              We understand the realities of time-based billing, project fees, fluctuating cash flow, and scaling service teams. Our accounting is designed to help you stay focused on clients—while we handle the numbers.
+            </p>
+            <p className="text-sm text-purple-400 font-medium">
+              📍 Based in Banbury. Serving professional service businesses across the UK.
+            </p>
           </div>
         </div>
       </section>
@@ -121,10 +137,10 @@ export default function ProfessionalServicesPage() {
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-16">
               <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                Our Professional Services
+                Why Professional Service Firms Choose Progress
               </h2>
               <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-                From tax planning to business advisory, we provide the expertise you need to thrive in today's competitive landscape.
+                From cash flow management to project profitability tracking, we provide the clarity you need to grow confidently.
               </p>
             </div>
 
