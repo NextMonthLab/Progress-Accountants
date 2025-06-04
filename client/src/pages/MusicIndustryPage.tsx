@@ -170,7 +170,7 @@ const MusicIndustryPage = () => {
             >
               <motion.div variants={itemVariants}>
                 <span className="inline-block px-4 py-1 rounded-full bg-purple-900/20 text-purple-400 font-medium text-sm mb-4">
-                  Industry Specialists
+                  🎵 Industry Specialists
                 </span>
               </motion.div>
               <motion.div
@@ -186,15 +186,15 @@ const MusicIndustryPage = () => {
                 className="mb-8"
               >
                 <p className="text-lg md:text-xl text-white">
-                  Helping You Stay on Top of Royalties, Tax, and Touring Finances—Without Missing a Beat
+                  Helping you stay on top of royalties, tax, and touring finances—without missing a beat.
                 </p>
               </motion.div>
               <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-4">
                 <Button size="lg" className="bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] hover:shadow-lg hover:shadow-purple-500/25 text-white font-medium">
-                  Book a free consultation
+                  Book a Free Consultation
                 </Button>
                 <Button size="lg" className="bg-white text-gray-900 hover:bg-gray-100 font-medium">
-                  Explore our services <ArrowRight className="ml-2 h-4 w-4" />
+                  Explore Our Services <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </motion.div>
             </motion.div>
@@ -257,20 +257,19 @@ const MusicIndustryPage = () => {
           <motion.div variants={itemVariants} className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">Why Musicians and Music Businesses Choose Progress</h2>
             <p className="text-lg text-gray-300">
-              From independent artists and producers to recording studios and music labels, we support your creative journey with financial clarity and control. At Progress, we understand the rhythm of the music industry—and we build your finances to match it.
+              From solo artists and touring musicians to producers, labels, and studios—Progress brings structure and clarity to your creative career.
             </p>
           </motion.div>
           
           <motion.div variants={itemVariants} className="bg-gray-900 rounded-xl shadow-md p-6 md:p-8 mb-12 border border-gray-800">
             <p className="text-lg text-gray-300 mb-4">
-              We specialise in supporting the music industry with proactive, tech-savvy accounting solutions tailored to 
-              the unique challenges of musicians, producers, and labels.
+              We specialise in proactive, tech-forward accounting built for the music industry—tailored to the unpredictable rhythm of royalty income, touring schedules, and studio investments.
             </p>
             <div className="flex items-center">
               <div className="p-2 bg-purple-900/20 rounded-full mr-3">
                 <Music className="h-5 w-5 text-purple-400" />
               </div>
-              <p className="font-medium text-white">Based in Banbury. Trusted by musicians across the UK.</p>
+              <p className="font-medium text-white">📍 Based in Banbury. Trusted by musicians and music businesses across the UK.</p>
             </div>
           </motion.div>
         </motion.div>
@@ -294,8 +293,8 @@ const MusicIndustryPage = () => {
           <div className="grid md:grid-cols-2 gap-8 mb-16">
             <FeatureCard 
               icon={Award}
-              title="Tax-Smart Royalty Management"
-              description="Royalty income can be unpredictable—and heavily taxed if mismanaged. We help you plan for the peaks and troughs, stay compliant, and keep more of what you earn."
+              title="🎼 Tax-Smart Royalty Management"
+              description="Royalties are unpredictable—and if mismanaged, expensive. We help you plan, report, and optimise your music income, so you keep more of what you earn."
               accentColor="bg-orange-500"
             />
             <FeatureCard 
