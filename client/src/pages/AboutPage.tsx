@@ -110,27 +110,25 @@ export default function AboutPage() {
             </FadeIn>
             <FadeIn delay={0.2}>
               <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-purple-400 via-blue-400 to-purple-300 bg-clip-text text-transparent">
-                {tagline}
+                Forward-thinking Accounting for Modern Businesses
               </h1>
             </FadeIn>
             <FadeIn delay={0.3}>
               <p className="text-xl md:text-2xl text-gray-300 mb-8">
-                We're not just your accountants—we're your growth partners.
+                We're not just accountants—we're your growth partners.
               </p>
             </FadeIn>
             <FadeIn delay={0.4}>
               <p className="text-lg text-gray-400 max-w-3xl mx-auto">
-                {businessName} helps ambitious businesses unlock their full financial potential through smart systems, strategic thinking, and a genuinely human approach.
+                Progress Accountants helps ambitious SMEs across the UK unlock their financial potential through smart systems, strategic thinking, and a refreshingly human approach.
               </p>
             </FadeIn>
             
-            {missionStatement && (
-              <FadeIn delay={0.5}>
-                <div className="mt-10 p-6 bg-gradient-to-r from-purple-500/10 to-blue-500/10 backdrop-blur-sm border border-purple-500/20 rounded-xl">
-                  <p className="italic text-gray-300">"{missionStatement}"</p>
-                </div>
-              </FadeIn>
-            )}
+            <FadeIn delay={0.5}>
+              <div className="mt-10 p-6 bg-gradient-to-r from-purple-500/10 to-blue-500/10 backdrop-blur-sm border border-purple-500/20 rounded-xl">
+                <p className="italic text-gray-300">"To empower businesses with financial clarity and strategic insight—for growth that lasts."</p>
+              </div>
+            </FadeIn>
           </div>
         </div>
       </section>
@@ -143,32 +141,40 @@ export default function AboutPage() {
               <SlideInLeft delay={0.1}>
                 <div>
                   <h2 className="text-3xl md:text-4xl font-bold mb-6 bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
-                    What Makes {businessName} Different
+                    What Makes Progress Accountants Different
                   </h2>
                   <p className="text-xl text-gray-300 mb-6">
-                    Most accounting firms deliver the basics. We deliver insight.
+                    Most firms handle the basics. We deliver real insight.
                   </p>
                   <p className="text-gray-400 mb-6">
-                    At {businessName}, we combine cutting-edge technology with a proactive mindset to help our clients stay ahead—whether that means making smarter decisions, saving time, or unlocking new opportunities.
+                    We combine leading accounting tech with proactive, hands-on support—helping clients make smarter decisions, gain back time, and spot new opportunities.
                   </p>
                   <p className="text-gray-400 mb-8">
-                    We believe that financial clarity should be effortless, and we've built systems that make it feel that way.
+                    At Progress, financial clarity is built-in—not bolted on.
                   </p>
                   
-                  {/* USPs Section */}
-                  {usps.length > 0 && (
-                    <div className="space-y-3 mt-8">
-                      <h3 className="text-lg font-semibold text-purple-300">Our Unique Advantages:</h3>
-                      <ul className="space-y-3">
-                        {usps.map((usp, index) => (
-                          <li key={index} className="flex items-start">
-                            <span className="text-purple-400 mr-3 mt-1">✓</span>
-                            <span className="text-gray-300">{usp}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
+                  {/* Key Advantages */}
+                  <div className="space-y-3 mt-8">
+                    <h3 className="text-lg font-semibold text-purple-300">Our Key Advantages:</h3>
+                    <ul className="space-y-3">
+                      <li className="flex items-start">
+                        <span className="text-purple-400 mr-3 mt-1">✓</span>
+                        <span className="text-gray-300">Specialists in digital business transformation</span>
+                      </li>
+                      <li className="flex items-start">
+                        <span className="text-purple-400 mr-3 mt-1">✓</span>
+                        <span className="text-gray-300">Tech-forward, cloud-based accounting solutions</span>
+                      </li>
+                      <li className="flex items-start">
+                        <span className="text-purple-400 mr-3 mt-1">✓</span>
+                        <span className="text-gray-300">Dedicated accountant relationships, not generic service</span>
+                      </li>
+                      <li className="flex items-start">
+                        <span className="text-purple-400 mr-3 mt-1">✓</span>
+                        <span className="text-gray-300">Deep expertise in Film, Music, Construction & Property</span>
+                      </li>
+                    </ul>
+                  </div>
                 </div>
               </SlideInLeft>
               <FadeIn delay={0.2}>
@@ -193,26 +199,24 @@ export default function AboutPage() {
               </h2>
             </FadeIn>
             
-            {toneOfVoice.length > 0 && (
-              <FadeIn delay={0.2}>
-                <p className="text-xl text-gray-300 mb-12 text-center max-w-3xl mx-auto">
-                  Our approach is <span className="font-medium text-purple-300">{toneOfVoice.join(', ')}</span>, ensuring we deliver exceptional service that truly makes a difference for your business.
-                </p>
-              </FadeIn>
-            )}
+            <FadeIn delay={0.2}>
+              <p className="text-xl text-gray-300 mb-12 text-center max-w-3xl mx-auto">
+                Professional. Approachable. Strategic.
+              </p>
+            </FadeIn>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {/* Card 1 */}
               <SlideUp delay={0.1}>
                 <div className="dark-theme-card p-8 transition-all hover:shadow-xl hover:-translate-y-2 border border-purple-500/20 bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-sm">
                   <div className="mb-6 text-purple-400">
-                    <FileText size={48} />
+                    <Zap size={48} />
                   </div>
                   <h3 className="text-xl font-bold mb-4 text-purple-300">
-                    Technology that works for you.
+                    🔹 Technology That Works for You
                   </h3>
                   <p className="text-gray-400">
-                    Our client dashboards and automation tools are designed to give you real-time insight, eliminate bottlenecks, and keep everything flowing smoothly.
+                    From real-time dashboards to secure document portals, our tools give you instant visibility—and peace of mind.
                   </p>
                 </div>
               </SlideUp>
@@ -224,10 +228,10 @@ export default function AboutPage() {
                     <Clock size={48} />
                   </div>
                   <h3 className="text-xl font-bold mb-4 text-purple-300">
-                    Proactive, not reactive.
+                    🔹 Proactive, Not Reactive
                   </h3>
                   <p className="text-gray-400">
-                    We don't wait for deadlines to chase you—we flag what's needed in advance, guide you through it, and get things done early.
+                    No more deadline panic. We flag what's needed early, guide you through it, and get things done on time—every time.
                   </p>
                 </div>
               </SlideUp>
@@ -239,10 +243,10 @@ export default function AboutPage() {
                     <Users size={48} />
                   </div>
                   <h3 className="text-xl font-bold mb-4 text-purple-300">
-                    People-first mindset.
+                    🔹 Human, Always
                   </h3>
                   <p className="text-gray-400">
-                    We may be tech-led, but we're human at heart. You'll always have someone on your side, ready to explain, support, and go the extra mile.
+                    We might be tech-savvy, but we're people first. You'll always have someone you trust to talk to, explain things clearly, and genuinely care.
                   </p>
                 </div>
               </SlideUp>
@@ -263,51 +267,43 @@ export default function AboutPage() {
             
             <FadeIn delay={0.2}>
               <p className="text-xl text-gray-300 mb-8 text-center">
-                We specialize in serving <span className="font-medium text-purple-300">{targetAudience}</span> across <span className="font-medium text-purple-300">{geographicFocus}</span> that want to:
+                We specialise in small to medium-sized businesses across the UK who want to:
               </p>
             </FadeIn>
             
             <div className="space-y-4 mb-12">
               <SlideUp delay={0.1}>
                 <div className="flex items-start">
-                  <span className="text-purple-400 mr-4 mt-1">
-                    <Check size={20} />
-                  </span>
+                  <span className="text-purple-400 mr-4 mt-1">-</span>
                   <p className="text-gray-300">
-                    Get control of their finances without drowning in spreadsheets
+                    Take control of their finances without the overwhelm
                   </p>
                 </div>
               </SlideUp>
               
               <SlideUp delay={0.2}>
                 <div className="flex items-start">
-                  <span className="text-purple-400 mr-4 mt-1">
-                    <Check size={20} />
-                  </span>
+                  <span className="text-purple-400 mr-4 mt-1">-</span>
                   <p className="text-gray-300">
-                    Automate the boring stuff and focus on growth
+                    Automate admin and focus on what matters
                   </p>
                 </div>
               </SlideUp>
               
               <SlideUp delay={0.3}>
                 <div className="flex items-start">
-                  <span className="text-purple-400 mr-4 mt-1">
-                    <Check size={20} />
-                  </span>
+                  <span className="text-purple-400 mr-4 mt-1">-</span>
                   <p className="text-gray-300">
-                    Understand their numbers—and use them to make confident decisions
+                    Understand their numbers—and use them to grow
                   </p>
                 </div>
               </SlideUp>
               
               <SlideUp delay={0.4}>
                 <div className="flex items-start">
-                  <span className="text-purple-400 mr-4 mt-1">
-                    <Check size={20} />
-                  </span>
+                  <span className="text-purple-400 mr-4 mt-1">-</span>
                   <p className="text-gray-300">
-                    Feel like someone's actually <em>on their side</em>, not just ticking boxes
+                    Work with people who actually care, not just tick boxes
                   </p>
                 </div>
               </SlideUp>
@@ -315,7 +311,7 @@ export default function AboutPage() {
             
             <FadeIn delay={0.5}>
               <p className="text-xl text-center font-medium text-purple-300">
-                If that sounds like you, we'd love to talk.
+                If that sounds like you, we'd love to chat.
               </p>
             </FadeIn>
           </div>
@@ -335,41 +331,38 @@ export default function AboutPage() {
               
               <FadeIn delay={0.2}>
                 <p className="text-xl text-gray-300 mb-12 text-center max-w-3xl mx-auto">
-                  We offer a comprehensive range of accounting and financial services tailored to your specific business needs.
+                  All tailored to your business. All delivered with clarity, speed, and expertise.
                 </p>
               </FadeIn>
               
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {services.map((service, index) => {
-                  // Choose an icon based on the service name
-                  let ServiceIcon = BarChart;
-                  if (service.includes("Tax")) ServiceIcon = Award;
-                  else if (service.includes("Book")) ServiceIcon = FileText;
-                  else if (service.includes("Advisory")) ServiceIcon = Sparkles;
-                  else if (service.includes("Audit")) ServiceIcon = Shield;
-                  else if (service.includes("Cloud")) ServiceIcon = Clock;
-                  else if (service.includes("Report")) ServiceIcon = LifeBuoy;
-                  
-                  return (
-                    <SlideUp key={index} delay={0.1 + (index * 0.1)}>
-                      <div className="dark-theme-card p-6 hover:shadow-lg transition-all border border-purple-500/20 bg-gradient-to-br from-slate-800/30 to-slate-900/30 backdrop-blur-sm">
-                        <div className="flex items-start">
-                          <div className="mr-4 bg-gradient-to-br from-purple-500/20 to-blue-500/20 p-3 rounded-full border border-purple-500/30">
-                            <ServiceIcon className="h-6 w-6 text-purple-400" />
-                          </div>
-                          <div>
-                            <h3 className="font-semibold mb-2 text-purple-300">
-                              {service}
-                            </h3>
-                            <p className="text-sm text-gray-400">
-                              Tailored solutions to support your business growth and financial success.
-                            </p>
-                          </div>
+                {[
+                  { name: "Tax Planning & Preparation", icon: Award },
+                  { name: "Bookkeeping", icon: FileText },
+                  { name: "Business Advisory", icon: Sparkles },
+                  { name: "Financial Reporting", icon: BarChart },
+                  { name: "Audit Support", icon: Shield },
+                  { name: "Cloud Accounting", icon: Clock },
+                  { name: "Construction, Film & Music Accounting", icon: Users },
+                  { name: "Business Forecasting & Strategy", icon: Zap },
+                  { name: "SME Resources & Support Hub", icon: LifeBuoy }
+                ].map((service, index) => (
+                  <SlideUp key={index} delay={0.1 + (index * 0.1)}>
+                    <div className="dark-theme-card p-6 hover:shadow-lg transition-all border border-purple-500/20 bg-gradient-to-br from-slate-800/30 to-slate-900/30 backdrop-blur-sm">
+                      <div className="flex items-start">
+                        <div className="mr-4 bg-gradient-to-br from-purple-500/20 to-blue-500/20 p-3 rounded-full border border-purple-500/30">
+                          <service.icon className="h-6 w-6 text-purple-400" />
+                        </div>
+                        <div>
+                          <span className="text-purple-400 mr-2">✓</span>
+                          <h3 className="font-semibold mb-2 text-purple-300 inline">
+                            {service.name}
+                          </h3>
                         </div>
                       </div>
-                    </SlideUp>
-                  );
-                })}
+                    </div>
+                  </SlideUp>
+                ))}
               </div>
               
               <FadeIn delay={0.4}>
