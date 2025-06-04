@@ -108,7 +108,7 @@ export default function ServicesPage() {
         </Helmet>
         
         {/* Skeleton Hero Section */}
-        <section className="bg-gradient-to-br from-blue-600 to-pink-500 text-white py-16 md:py-24">
+        <section className="bg-gray-800 text-white py-16 md:py-24">
           <div className="container mx-auto px-6 md:px-8">
             <PageHeaderSkeleton />
           </div>
@@ -160,11 +160,11 @@ export default function ServicesPage() {
       </Helmet>
 
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-blue-600 to-pink-500 text-white py-16 md:py-24">
+      <section className="bg-gray-800 text-white py-16 md:py-24">
         <div className="container mx-auto px-6 md:px-8">
           <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-3xl md:text-5xl font-bold mb-6">Our Services</h1>
-            <p className="text-xl text-blue-100">
+            <h1 className="text-3xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-blue-400 to-pink-400 bg-clip-text text-transparent">Our Services</h1>
+            <p className="text-xl text-gray-300">
               Comprehensive financial solutions tailored to your business needs
             </p>
           </div>
@@ -214,10 +214,10 @@ export default function ServicesPage() {
           <div className="bg-gray-900 rounded-lg shadow-xl overflow-hidden border border-gray-700">
             <div className="grid md:grid-cols-2 gap-0">
               {/* Left: Image */}
-              <div className="h-64 md:h-auto bg-gradient-to-br from-blue-600 to-pink-500 flex items-center justify-center p-8">
+              <div className="h-64 md:h-auto bg-gray-700 flex items-center justify-center p-8">
                 <div className="text-center">
-                  <h3 className="text-2xl font-bold text-white mb-2">Podcast & Video Studio</h3>
-                  <p className="text-blue-100 mb-6">A cutting-edge facility for content creators</p>
+                  <h3 className="text-2xl font-bold mb-2 bg-gradient-to-r from-blue-400 to-pink-400 bg-clip-text text-transparent">Podcast & Video Studio</h3>
+                  <p className="text-gray-300 mb-6">A cutting-edge facility for content creators</p>
                   <Link href="/studio-banbury">
                     <Button className="bg-white text-gray-900 hover:bg-gray-100 hover:shadow-md hover:-translate-y-[2px] transition duration-300">
                       Explore the Studio
@@ -326,10 +326,10 @@ export default function ServicesPage() {
               </div>
               
               {/* Right: Image/Placeholder */}
-              <div className="h-64 md:h-auto bg-gradient-to-br from-pink-500 to-blue-600 flex items-center justify-center p-8">
+              <div className="h-64 md:h-auto bg-gray-700 flex items-center justify-center p-8">
                 <div className="text-center">
-                  <h3 className="text-2xl font-bold text-white mb-2">Client Portal</h3>
-                  <p className="text-gray-200 mb-6">Your finances at your fingertips</p>
+                  <h3 className="text-2xl font-bold mb-2 bg-gradient-to-r from-pink-400 to-blue-400 bg-clip-text text-transparent">Client Portal</h3>
+                  <p className="text-gray-300 mb-6">Your finances at your fingertips</p>
                 </div>
               </div>
             </div>
@@ -338,10 +338,10 @@ export default function ServicesPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 bg-gradient-to-br from-blue-600 to-pink-500 text-white">
+      <section className="py-16 bg-gray-800 text-white">
         <div className="container mx-auto px-6 md:px-8 text-center">
-          <h2 className="text-3xl font-bold mb-6">Ready to Take Your Business Further?</h2>
-          <p className="text-xl text-blue-100 mb-8 max-w-3xl mx-auto">
+          <h2 className="text-3xl font-bold mb-6 bg-gradient-to-r from-blue-400 to-pink-400 bg-clip-text text-transparent">Ready to Take Your Business Further?</h2>
+          <p className="text-xl text-gray-300 mb-8 max-w-3xl mx-auto">
             Schedule a consultation with our team to discuss how our services can be tailored to meet your specific needs.
           </p>
           <Link href="/contact">
