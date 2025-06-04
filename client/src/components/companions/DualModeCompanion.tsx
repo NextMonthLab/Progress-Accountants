@@ -228,17 +228,22 @@ export function DualModeCompanion() {
       {/* Floating button to open chat */}
       <Button
         onClick={() => setOpen(true)}
-        className="fixed bottom-6 right-6 z-50 rounded-full p-3 shadow-lg"
-        style={{ backgroundColor: brandSettings?.color.primary || '#1e3a8a' }}
+        className="fixed bottom-6 right-6 z-50 rounded-full p-3 shadow-lg text-white"
+        style={{ 
+          background: 'linear-gradient(135deg, #4F46E5 60%, #E935C1 40%)',
+          border: 'none'
+        }}
       >
         <MessageCircle className="h-6 w-6" />
       </Button>
       
       {/* Chat drawer */}
       <Drawer open={open} onOpenChange={setOpen}>
-        <DrawerContent className="max-h-[90vh] sm:max-w-[500px] mx-auto rounded-t-lg">
-          <DrawerHeader className="bg-primary text-primary-foreground rounded-t-lg px-4 py-3" 
-            style={{ backgroundColor: brandSettings?.color.primary || '#1e3a8a' }}
+        <DrawerContent className="max-h-[90vh] sm:max-w-[500px] mx-auto rounded-t-lg bg-white">
+          <DrawerHeader className="text-white rounded-t-lg px-4 py-3" 
+            style={{ 
+              background: 'linear-gradient(135deg, #4F46E5 60%, #E935C1 40%)'
+            }}
           >
             <div className="flex justify-between items-center">
               <DrawerTitle className="text-white text-lg">
@@ -271,14 +276,14 @@ export function DualModeCompanion() {
                     <div
                       className={`max-w-[80%] rounded-lg p-3 ${
                         msg.role === 'user'
-                          ? 'bg-primary text-primary-foreground'
+                          ? 'text-white'
                           : msg.role === 'system'
                           ? 'bg-muted text-muted-foreground'
                           : 'bg-muted'
                       }`}
                       style={
                         msg.role === 'user'
-                          ? { backgroundColor: brandSettings?.color.primary || '#1e3a8a' }
+                          ? { background: 'linear-gradient(135deg, #4F46E5 60%, #E935C1 40%)' }
                           : {}
                       }
                     >
@@ -358,8 +363,11 @@ export function DualModeCompanion() {
                   <Button
                     type="submit"
                     disabled={isSubmitting || !messageText.trim()}
-                    className="px-3"
-                    style={{ backgroundColor: brandSettings?.color.primary || '#1e3a8a' }}
+                    className="px-3 text-white border-none"
+                    style={{ 
+                      background: 'linear-gradient(135deg, #4F46E5 60%, #E935C1 40%)',
+                      border: 'none'
+                    }}
                   >
                     {isSubmitting ? (
                       <Loader2 className="h-5 w-5 animate-spin" />
