@@ -347,80 +347,86 @@ export default function HomePage() {
             
             {/* Contact Form Section */}
             <div className="mb-14">
-              <div className="bg-gradient-to-br from-slate-900 to-slate-800 p-8 rounded-lg shadow-xl border border-slate-700">
-                <div className="flex items-center justify-between mb-6 border-b border-slate-700 pb-6">
-                  <h3 className="text-xl font-semibold text-white">Get in Touch</h3>
-                  
-                  <div className="flex space-x-4">
-                    <a href="mailto:info@progressaccountants.com" className="text-slate-400 hover:text-[#7B3FE4] transition-colors">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                      </svg>
-                    </a>
-                    <a href="tel:01865921150" className="text-slate-400 hover:text-[#7B3FE4] transition-colors">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                      </svg>
-                    </a>
-                  </div>
-                </div>
+              <div className="bg-slate-900/80 backdrop-blur-sm p-8 rounded-xl shadow-2xl border border-slate-700/60 relative overflow-hidden">
+                {/* Enhanced background with texture */}
+                <div className="absolute inset-0 bg-gradient-to-br from-slate-800/30 via-zinc-900/50 to-gray-900/60 pointer-events-none"></div>
+                <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_30%_70%,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[length:40px_40px] pointer-events-none"></div>
+                <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-radial from-slate-700/10 to-transparent rounded-full blur-3xl pointer-events-none"></div>
                 
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                  <div className="lg:col-span-1">
-                    <div className="bg-slate-800/50 p-5 rounded-lg border border-slate-600 h-full">
-                      <div className="flex items-start mb-6">
-                        <div className="h-8 w-8 rounded-full bg-gradient-to-r from-[#7B3FE4]/20 to-[#3FA4E4]/20 flex items-center justify-center mr-3 mt-1 flex-shrink-0">
-                          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-[#7B3FE4]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                          </svg>
-                        </div>
-                        <div>
-                          <h3 className="text-sm font-semibold text-white mb-2">Business Hours</h3>
-                          <div className="space-y-1.5 text-slate-300">
-                            <p className="flex justify-between">
-                              <span>Monday - Friday:</span>
-                              <span className="font-medium">9:00 AM - 5:30 PM</span>
-                            </p>
-                            <p className="flex justify-between">
-                              <span>Saturday - Sunday:</span>
-                              <span className="font-medium">Closed</span>
-                            </p>
+                <div className="relative z-10">
+                  <div className="flex items-center justify-between mb-6 border-b border-slate-600/50 pb-6">
+                    <h3 className="text-xl font-semibold text-white">Get in Touch</h3>
+                    
+                    <div className="flex space-x-4">
+                      <a href="mailto:info@progressaccountants.com" className="text-slate-400 hover:text-[#7B3FE4] transition-colors p-2 rounded-lg hover:bg-slate-800/50">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                        </svg>
+                      </a>
+                      <a href="tel:01865921150" className="text-slate-400 hover:text-[#7B3FE4] transition-colors p-2 rounded-lg hover:bg-slate-800/50">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                        </svg>
+                      </a>
+                    </div>
+                  </div>
+                
+                  <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <div className="lg:col-span-1">
+                      <div className="bg-slate-800/50 backdrop-blur-sm p-6 rounded-lg border border-slate-600/60 h-full">
+                        <div className="flex items-start mb-6">
+                          <div className="h-8 w-8 rounded-full bg-gradient-to-r from-[#7B3FE4]/20 to-[#3FA4E4]/20 flex items-center justify-center mr-3 mt-1 flex-shrink-0">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-[#7B3FE4]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                          </div>
+                          <div className="flex-1">
+                            <h3 className="text-sm font-semibold text-white mb-3">Business Hours</h3>
+                            <div className="space-y-2 text-slate-300">
+                              <div className="flex flex-col sm:flex-row sm:justify-between">
+                                <span className="text-sm">Monday - Friday:</span>
+                                <span className="font-medium text-sm">9:00 AM - 5:30 PM</span>
+                              </div>
+                              <div className="flex flex-col sm:flex-row sm:justify-between">
+                                <span className="text-sm">Saturday - Sunday:</span>
+                                <span className="font-medium text-sm">Closed</span>
+                              </div>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                      
-                      <div className="flex items-start">
-                        <div className="h-8 w-8 rounded-full bg-gradient-to-r from-[#7B3FE4]/20 to-[#3FA4E4]/20 flex items-center justify-center mr-3 mt-1 flex-shrink-0">
-                          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-[#7B3FE4]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                          </svg>
-                        </div>
-                        <div>
-                          <h3 className="text-sm font-semibold text-white mb-2">Contact Details</h3>
-                          <div className="space-y-1.5 text-slate-300">
-                            <p className="flex items-center">
-                              <span className="font-medium mr-2">Email:</span>
-                              <a href="mailto:info@progressaccountants.com" className="text-[#3FA4E4] hover:text-[#7B3FE4] transition-colors">
-                                info@progressaccountants.com
-                              </a>
-                            </p>
-                            <p>
-                              <span className="font-medium mr-2">General Enquiries:</span>
-                              <a href="tel:01865921150" className="text-[#3FA4E4] hover:text-[#7B3FE4] transition-colors">
-                                01865 921 150
-                              </a>
-                            </p>
+                        
+                        <div className="flex items-start">
+                          <div className="h-8 w-8 rounded-full bg-gradient-to-r from-[#7B3FE4]/20 to-[#3FA4E4]/20 flex items-center justify-center mr-3 mt-1 flex-shrink-0">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-[#7B3FE4]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                            </svg>
+                          </div>
+                          <div className="flex-1">
+                            <h3 className="text-sm font-semibold text-white mb-3">Contact Details</h3>
+                            <div className="space-y-3 text-slate-300">
+                              <div>
+                                <span className="font-medium text-xs block mb-1">Email:</span>
+                                <a href="mailto:info@progressaccountants.com" className="text-[#3FA4E4] hover:text-[#7B3FE4] transition-colors text-sm break-all">
+                                  info@progressaccountants.com
+                                </a>
+                              </div>
+                              <div>
+                                <span className="font-medium text-xs block mb-1">General Enquiries:</span>
+                                <a href="tel:01865921150" className="text-[#3FA4E4] hover:text-[#7B3FE4] transition-colors text-sm">
+                                  01865 921 150
+                                </a>
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                  
-                  <div className="lg:col-span-2">
-                    <ContactForm compact={true} />
+                    
+                    <div className="lg:col-span-2">
+                      <ContactForm compact={true} />
+                    </div>
                   </div>
                 </div>
-              </div>
             </div>
             
             {/* Office Locations Section */}
