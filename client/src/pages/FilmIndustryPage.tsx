@@ -379,6 +379,26 @@ const FilmIndustryPage = () => {
         </motion.div>
       </div>
       
+      {/* Featured Image Section - Subtle placement */}
+      <div className="container mx-auto px-6 md:px-8 py-8">
+        <motion.div 
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+          variants={containerVariants}
+        >
+          <motion.div variants={itemVariants} className="max-w-3xl mx-auto">
+            <div className="bg-slate-800/30 backdrop-blur-sm p-4 rounded-lg border border-slate-600/40 overflow-hidden">
+              <img 
+                src="https://res.cloudinary.com/drl0fxrkq/image/upload/v1749050355/image_1_i0ldjo.png"
+                alt="Film industry professional services"
+                className="w-full h-auto max-h-64 object-cover rounded-lg shadow-md opacity-90"
+              />
+            </div>
+          </motion.div>
+        </motion.div>
+      </div>
+
       {/* Tech approach section */}
       <div className="container mx-auto px-6 md:px-8 py-12">
         <motion.div 
