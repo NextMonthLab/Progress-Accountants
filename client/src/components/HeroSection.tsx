@@ -52,7 +52,7 @@ const HeroSection = () => {
   // Extract business information from business identity
   const typedIdentity = businessIdentity as BusinessIdentity || {};
   const businessName = typedIdentity.core?.businessName || "Progress Accountants";
-  const tagline = "Forward-thinking Accountants for Banbury, Oxford, London & Beyond";
+  const tagline = "Forward-thinking Accountants for UK Businesses";
   const usps = [
     "Specialists in digital, construction, film & music industries",
     "Tech-driven accounting powered by Xero, QuickBooks & real-time dashboards", 
