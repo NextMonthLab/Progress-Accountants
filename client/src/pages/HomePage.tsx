@@ -166,7 +166,7 @@ export default function HomePage() {
             <FadeIn delay={0.2}>
               <div className="relative rounded-xl overflow-hidden shadow-2xl">
                 <img 
-                  src="https://res.cloudinary.com/drl0fxrkq/image/upload/v1749050579/Screenshot_2025-06-04_at_16.22.23_sisfjv.png"
+                  src="https://res.cloudinary.com/drl0fxrkq/image/upload/v1747742829/P1013106-Enhanced-NR_adzlje.jpg"
                   alt="Progress Accountants Professional Services"
                   className="w-full h-auto object-cover"
                   loading="lazy"
