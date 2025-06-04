@@ -65,23 +65,23 @@ export default function HomePage() {
                   SME Support Hub
                 </h2>
                 <p className="text-xl mb-4">
-                  Everything UK small businesses need in one place—contacts, deadlines, and downloadable resources.
+                  Your one-stop resource for UK small businesses.
                 </p>
               </SlideInLeft>
               
               <ul className="space-y-2 mb-6">
                 {/* Animated list items with staggered delay */}
                 <SlideUp className="flex items-center" delay={0.3}>
-                  <span className="text-[#7B3FE4] mr-2">✓</span> Essential HMRC & Companies House contact details
+                  <span className="text-[#7B3FE4] mr-2">✓</span> All key tax deadlines
                 </SlideUp>
                 <SlideUp className="flex items-center" delay={0.4}>
-                  <span className="text-[#7B3FE4] mr-2">✓</span> Key tax filing deadlines
+                  <span className="text-[#7B3FE4] mr-2">✓</span> HMRC & Companies House contacts
                 </SlideUp>
                 <SlideUp className="flex items-center" delay={0.5}>
-                  <span className="text-[#7B3FE4] mr-2">✓</span> Downloadable PDF resources
+                  <span className="text-[#7B3FE4] mr-2">✓</span> Downloadable guides
                 </SlideUp>
                 <SlideUp className="flex items-center" delay={0.6}>
-                  <span className="text-[#7B3FE4] mr-2">✓</span> Regularly updated information
+                  <span className="text-[#7B3FE4] mr-2">✓</span> Updated monthly
                 </SlideUp>
               </ul>
               

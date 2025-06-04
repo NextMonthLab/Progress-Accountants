@@ -52,8 +52,12 @@ const HeroSection = () => {
   // Extract business information from business identity
   const typedIdentity = businessIdentity as BusinessIdentity || {};
   const businessName = typedIdentity.core?.businessName || "Progress Accountants";
-  const tagline = typedIdentity.core?.tagline || "Forward-thinking accounting for modern businesses";
-  const usps = typedIdentity.personality?.usps || [];
+  const tagline = "Forward-thinking Accountants for Banbury, Oxford, London & Beyond";
+  const usps = [
+    "Specialists in digital, construction, film & music industries",
+    "Tech-driven accounting powered by Xero, QuickBooks & real-time dashboards", 
+    "Friendly, expert team who truly understand your business"
+  ];
   const geographicFocus = typedIdentity.market?.geographicFocus || "United Kingdom";
 
   const scrollToContent = () => {
@@ -86,7 +90,7 @@ const HeroSection = () => {
             </h1>
             
             <p className="text-lg md:text-xl mb-8 text-gray-200 max-w-xl leading-relaxed">
-              Unlock your business potential with tailored financial strategies that drive growth and optimize tax efficiency.
+              Empowering your business with strategic financial planning, expert tax optimisation, and tailored insights—delivered with tech-savvy clarity.
             </p>
             
             <div className="mb-8">

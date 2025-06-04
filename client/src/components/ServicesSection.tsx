@@ -160,18 +160,18 @@ const ServicesSection = () => {
     },
     "Podcast & Video Studio": { 
       imageComponent: OptimizedPodcastStudio,
-      description: "Record professional content in our in-house media suite — and grow your audience like never before.",
-      features: ["Professional equipment", "Technical support", "Editing assistance available"]
+      description: "Record professional-grade content in our Banbury studio—perfect for business podcasts, YouTube series, or social media clips.",
+      features: ["DSLR cameras & broadcast mics", "Acoustically treated space", "On-site tech support & editing"]
     },
     "Custom Financial Dashboard": { 
       imageComponent: OptimizedDashboardMockup,
-      description: "We build you a live dashboard showing your business's financial health — key metrics, trends, cash flow, tax, and more.",
-      features: ["Real-time data", "Custom KPIs", "Visual performance tracking"]
+      description: "Access a live dashboard with your revenue, tax, cash flow, and growth metrics—so you're never guessing.",
+      features: ["Real-time updates", "Bespoke KPIs", "Strategic decision-making made simple"]
     },
     "Virtual Finance Director": { 
       imageComponent: OptimizedStrategySession,
-      description: "Get expert strategy sessions, forecasting help, and actionable advice — whenever you need it.",
-      features: ["Quarterly strategy meetings", "On-demand expert advice", "Financial planning support"]
+      description: "On-demand expertise to guide your business growth—from forecasting and cash flow to expansion and tax relief.",
+      features: ["Quarterly planning sessions", "Expert insight on demand", "Built-in accountability"]
     }
   };
 
@@ -229,7 +229,7 @@ const ServicesSection = () => {
               Our Premium Services
             </h2>
             <p className="text-lg leading-relaxed text-gray-300">
-              {typedBusinessIdentity.core?.businessName || "Progress Accountants"} is different. We're not just your accountant — we're your growth partner.
+              At Progress Accountants, we're more than just number-crunchers—we're strategic partners helping SMEs grow, adapt, and thrive.
             </p>
           </div>
           
@@ -261,11 +261,8 @@ const ServicesSection = () => {
                 <h2 className="font-bold text-2xl md:text-3xl mb-4 gradient-text">
                   Standard Services
                 </h2>
-                <p 
-                  style={{ color: 'var(--dark-grey)' }} 
-                  className="text-md max-w-xl mx-auto"
-                >
-                  Our comprehensive range of accounting and financial services designed to meet all your business needs.
+                <p className="text-md max-w-xl mx-auto text-gray-300">
+                  All your accounting needs in one place—delivered with clarity, reliability, and results.
                 </p>
               </div>
               
