@@ -163,8 +163,8 @@ const ProtectedThemeManagement = withAuth(ThemeManagementPage, 'staff');
 
 // Loading fallback component for Suspense
 const LoadingFallback = () => (
-  <div className="flex items-center justify-center min-h-[40vh]">
-    <Loader2 className="h-8 w-8 animate-spin text-[#36d1dc]" />
+  <div className="flex items-center justify-center min-h-screen bg-black">
+    <Loader2 className="h-8 w-8 animate-spin text-white" />
   </div>
 );
 
