@@ -145,7 +145,8 @@ body:not([data-admin]) .rounded-full {
   }
   
   #root {
-    background-color: black !important;
+    background: #000000 !important;
+    background-color: #000000 !important;
   }
   
   html.dark {
@@ -153,8 +154,9 @@ body:not([data-admin]) .rounded-full {
   }
 
   body {
-    @apply font-sans antialiased bg-black text-white;
+    @apply font-sans antialiased text-white;
     font-family: 'Inter', sans-serif;
+    background: #000000 !important;
   }
 
   /* Admin pages always use dark theme */
@@ -359,11 +361,22 @@ body:not([data-admin]) .rounded-full {
 
 /* Background colors for layout elements */
 .bg-modern {
-  background-color: var(--background);
+  background: #000000 !important;
 }
 
 .bg-card {
-  background-color: var(--card-bg);
+  background: #000000 !important;
+}
+
+/* Override any potential gradient backgrounds */
+* {
+  background-image: none !important;
+}
+
+body, html, #root, main, .min-h-screen {
+  background: #000000 !important;
+  background-color: #000000 !important;
+  background-image: none !important;
 }
 
 /* Text styles for modern UI */
