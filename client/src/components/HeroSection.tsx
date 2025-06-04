@@ -83,7 +83,8 @@ const HeroSection = () => {
             </span>
             
             <h1 className="font-bold text-4xl md:text-5xl lg:text-6xl mb-6 leading-tight">
-              <span className="block gradient-text">
+              <span className="text-white">{businessName}</span>
+              <span className="block mt-3 gradient-text text-2xl md:text-3xl lg:text-4xl">
                 Forward-thinking Accountants for UK Businesses
               </span>
             </h1>
