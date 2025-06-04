@@ -94,7 +94,7 @@ const HeroSection = () => {
                 <ul className="list-none space-y-3 max-w-lg">
                   {usps.slice(0, 3).map((usp, index) => (
                     <li key={index} className="flex items-start">
-                      <span className="flex items-center justify-center bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] w-6 h-6 rounded-full mr-3 shrink-0">
+                      <span className="flex items-center justify-center bg-gradient-to-r from-[#8B5CF6] to-[#A855F7] w-6 h-6 rounded-full mr-3 shrink-0">
                         <span className="text-white text-xs">✓</span>
                       </span> 
                       <span className="text-gray-200">{usp}</span>

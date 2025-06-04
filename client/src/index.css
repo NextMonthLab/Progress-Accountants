@@ -10,11 +10,11 @@
 @layer utilities {
   /* Progress Design System Utilities */
   .gradient-bg {
-    @apply bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4];
+    @apply bg-gradient-to-r from-[#8B5CF6] to-[#A855F7];
   }
 
   .gradient-text {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4];
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-[#8B5CF6] to-[#A855F7];
   }
 
   .dark-theme-text {
