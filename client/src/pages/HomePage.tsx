@@ -84,9 +84,78 @@ export default function HomePage() {
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         
-        {/* Favicon */}
+        {/* Favicon & Manifest */}
         <link rel="icon" type="image/png" href="/progress-logo.png" />
         <link rel="apple-touch-icon" href="/progress-logo.png" />
+        <link rel="manifest" href="/manifest.json" />
+        
+        {/* JSON-LD Structured Data */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "AccountingService",
+            "name": "Progress Accountants",
+            "description": "Forward-thinking accountants helping UK businesses with tax, forecasting, and industry-specific financial advice",
+            "url": "https://progressaccountants.com",
+            "logo": "https://progressaccountants.com/progress-logo.png",
+            "image": "https://progressaccountants.com/progress-logo.png",
+            "telephone": "+44-1295-123456",
+            "email": "hello@progressaccountants.com",
+            "address": {
+              "@type": "PostalAddress",
+              "streetAddress": "Progress House, Castle Street",
+              "addressLocality": "Banbury",
+              "addressRegion": "Oxfordshire",
+              "postalCode": "OX16 5EU",
+              "addressCountry": "GB"
+            },
+            "geo": {
+              "@type": "GeoCoordinates",
+              "latitude": "52.0628",
+              "longitude": "-1.3420"
+            },
+            "openingHours": "Mo-Fr 09:00-17:00",
+            "sameAs": [
+              "https://www.linkedin.com/company/progress-accountants",
+              "https://twitter.com/progressaccounts"
+            ],
+            "serviceType": "Accounting Services",
+            "areaServed": {
+              "@type": "Country",
+              "name": "United Kingdom"
+            },
+            "hasOfferCatalog": {
+              "@type": "OfferCatalog",
+              "name": "Accounting Services",
+              "itemListElement": [
+                {
+                  "@type": "Offer",
+                  "itemOffered": {
+                    "@type": "Service",
+                    "name": "Tax Planning & Preparation",
+                    "description": "Strategic tax planning and compliance services for UK businesses"
+                  }
+                },
+                {
+                  "@type": "Offer",
+                  "itemOffered": {
+                    "@type": "Service",
+                    "name": "Business Advisory",
+                    "description": "Strategic business advice and financial forecasting"
+                  }
+                },
+                {
+                  "@type": "Offer",
+                  "itemOffered": {
+                    "@type": "Service",
+                    "name": "Industry-Specific Accounting",
+                    "description": "Specialist accounting for Construction, Film, Music and Professional Services"
+                  }
+                }
+              ]
+            }
+          })}
+        </script>
       </Helmet>
       <HeroSection />
       <ServicesSection />

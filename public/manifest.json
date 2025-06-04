@@ -1,0 +1,28 @@
+{
+  "name": "Progress Accountants",
+  "short_name": "Progress",
+  "description": "Forward-thinking accountants helping UK businesses with tax, forecasting, and industry-specific financial advice",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#4F46E5",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/progress-logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/progress-logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["business", "finance", "productivity"],
+  "lang": "en-GB",
+  "scope": "/",
+  "screenshots": []
+}
