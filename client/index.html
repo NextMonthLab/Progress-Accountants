@@ -14,11 +14,34 @@
         --background: 0 0% 0% !important;
         --card: 0 0% 0% !important;
         --popover: 0 0% 0% !important;
+        --muted: 0 0% 0% !important;
+        --accent: 0 0% 0% !important;
+        --secondary: 0 0% 0% !important;
       }
+      
+      /* Targeted override for loading background only */
       html, body, #root {
         background-color: black !important;
       }
+      
+      /* Ensure root elements always stay black */
+      html { background: black !important; }
+      body { background: black !important; }
+      #root { background: black !important; }
     </style>
+    <script>
+      // Force black background immediately with JavaScript
+      document.documentElement.style.backgroundColor = 'black';
+      document.documentElement.style.setProperty('--background', '0 0% 0%', 'important');
+      document.documentElement.style.setProperty('--card', '0 0% 0%', 'important');
+      
+      // Ensure it stays black as the page loads
+      const observer = new MutationObserver(() => {
+        document.documentElement.style.backgroundColor = 'black';
+        document.body.style.backgroundColor = 'black';
+      });
+      observer.observe(document.documentElement, { attributes: true, attributeFilter: ['style', 'class'] });
+    </script>
   </head>
   <body style="background-color: black; margin: 0; padding: 0;">
     <div id="root" style="background-color: black;"></div>
