@@ -728,22 +728,140 @@ const ResultsStep = ({ calculatorData }: { calculatorData: any }) => {
     return () => clearTimeout(timer);
   }, []);
 
-  // Mock calculation results
-  const results: CalculatorResults = {
-    breakEvenPoint: "£8,750 per month",
-    cashFlowForecast: "£23,400 positive over 12 months",
-    grossProfitMargin: "32%",
-    costToIncomeRatio: "0.68",
-    taxSetAside: "22%",
-    hiringImpact: "£37,500 cost per hire (including NI, benefits, etc.)",
-    recommendedAreas: [
-      "Cash flow management",
-      "Tax planning",
-      "Pricing strategy review",
-      "Growth funding options"
-    ],
-    insight: `Based on your inputs, your business is running lean with good profit margins, but your growth plans will require careful cash flow management. With planned hires and investment, your break-even point will shift by approximately 18%. We recommend reviewing your pricing strategy within the next quarter and exploring R&D tax credits which could provide additional funding for your growth plans.`
+  // Real calculation logic based on user inputs
+  const calculateResults = (data: any): CalculatorResults => {
+    // Input validation and parsing with safety checks
+    const annualRevenue = Math.max(0, parseFloat(data.financials?.annualRevenue) || 0);
+    const monthlyExpenses = Math.max(0, parseFloat(data.financials?.monthlyExpenses) || 0);
+    const profitMargin = Math.max(0, Math.min(100, data.financials?.profitMargin || 0));
+    const taxRate = Math.max(0, Math.min(100, data.financials?.taxRate || 19));
+    const plannedHires = Math.max(0, parseInt(data.growth?.plannedHires) || 0);
+    
+    // Handle investment amount based on selection
+    let plannedInvestment = 0;
+    const investmentValue = data.growth?.plannedInvestment;
+    if (investmentValue) {
+      if (investmentValue === "none") plannedInvestment = 0;
+      else if (investmentValue === "5000") plannedInvestment = 5000;
+      else if (investmentValue === "10000") plannedInvestment = 10000;
+      else if (investmentValue === "25000") plannedInvestment = 25000;
+      else if (investmentValue === "50000") plannedInvestment = 50000;
+      else if (investmentValue === "100000") plannedInvestment = 100000;
+      else plannedInvestment = parseFloat(investmentValue) || 0;
+    }
+    
+    // Core calculations with safety checks
+    const monthlyRevenue = annualRevenue / 12;
+    const grossProfit = annualRevenue * (profitMargin / 100);
+    const netProfit = grossProfit - (monthlyExpenses * 12);
+    const breakEvenMonthly = profitMargin > 0 
+      ? monthlyExpenses / (profitMargin / 100)
+      : monthlyExpenses; // If no profit margin, break-even equals expenses
+    
+    // Growth calculations
+    const averageHireCost = 35000; // UK average including salary, NI, benefits
+    const hiringCosts = plannedHires * averageHireCost;
+    const totalInvestment = plannedInvestment + hiringCosts;
+    
+    // Cash flow forecast (simplified 12-month projection)
+    const monthlyNetCashFlow = monthlyRevenue - monthlyExpenses;
+    const annualCashFlow = monthlyNetCashFlow * 12 - totalInvestment;
+    
+    // Tax calculations
+    const taxLiability = Math.max(0, netProfit * (taxRate / 100));
+    const recommendedTaxReserve = Math.ceil(taxRate + 3); // Add 3% buffer
+    
+    // Dynamic recommendations based on business profile
+    const recommendations: string[] = [];
+    
+    if (profitMargin < 15) {
+      recommendations.push("Profit margin optimization");
+      recommendations.push("Cost reduction analysis");
+    }
+    if (annualCashFlow < 0) {
+      recommendations.push("Cash flow management");
+      recommendations.push("Growth funding options");
+    }
+    if (taxLiability > 10000) {
+      recommendations.push("Strategic tax planning");
+    }
+    if (plannedHires > 0) {
+      recommendations.push("HR and payroll optimization");
+    }
+    if (data.businessType.businessType === "limited_company") {
+      recommendations.push("Dividend vs salary optimization");
+    }
+    if (data.businessType.industry === "construction") {
+      recommendations.push("CIS compliance management");
+    }
+    if (data.businessType.industry === "film" || data.businessType.industry === "creative") {
+      recommendations.push("Film/Creative tax relief opportunities");
+    }
+    
+    // Ensure we have at least 3 recommendations
+    const defaultRecommendations = ["Business forecasting", "Financial planning", "Performance monitoring"];
+    while (recommendations.length < 3) {
+      const next = defaultRecommendations.find(rec => !recommendations.includes(rec));
+      if (next) recommendations.push(next);
+      else break;
+    }
+    
+    // Generate dynamic insight
+    const generateInsight = () => {
+      let insight = `Based on your business profile with £${annualRevenue.toLocaleString()} annual revenue and ${profitMargin}% profit margin, `;
+      
+      if (profitMargin > 25) {
+        insight += "your business shows strong profitability. ";
+      } else if (profitMargin > 15) {
+        insight += "your business maintains healthy margins. ";
+      } else {
+        insight += "there's opportunity to improve profitability. ";
+      }
+      
+      if (plannedHires > 0) {
+        const hiringImpact = ((hiringCosts / annualRevenue) * 100).toFixed(1);
+        insight += `Your planned ${plannedHires} hire(s) will impact cash flow by approximately ${hiringImpact}% of annual revenue. `;
+      }
+      
+      if (annualCashFlow < 0) {
+        insight += "Your growth plans may require additional funding or cash flow management. ";
+      } else {
+        insight += "Your projected cash flow supports your growth plans. ";
+      }
+      
+      // Industry-specific insights
+      if (data.businessType.industry === "construction") {
+        insight += "As a construction business, ensure CIS compliance and consider seasonal cash flow variations.";
+      } else if (data.businessType.industry === "film") {
+        insight += "Film industry businesses should explore Film Tax Relief opportunities which could provide significant cash benefits.";
+      } else if (data.businessType.industry === "technology") {
+        insight += "Tech businesses may benefit from R&D tax credits and should plan for scaling costs.";
+      } else {
+        insight += "Consider quarterly financial reviews to stay on track with your growth objectives.";
+      }
+      
+      return insight;
+    };
+    
+    return {
+      breakEvenPoint: `£${breakEvenMonthly.toLocaleString('en-GB', { maximumFractionDigits: 0 })} per month`,
+      cashFlowForecast: annualCashFlow >= 0 
+        ? `£${annualCashFlow.toLocaleString('en-GB', { maximumFractionDigits: 0 })} positive over 12 months`
+        : `£${Math.abs(annualCashFlow).toLocaleString('en-GB', { maximumFractionDigits: 0 })} shortfall over 12 months`,
+      grossProfitMargin: `${profitMargin}%`,
+      costToIncomeRatio: monthlyRevenue > 0 
+        ? (monthlyExpenses / monthlyRevenue).toFixed(2)
+        : "N/A",
+      taxSetAside: `${recommendedTaxReserve}%`,
+      hiringImpact: plannedHires > 0 
+        ? `£${averageHireCost.toLocaleString()} average cost per hire (including NI, benefits, etc.)`
+        : "No planned hires",
+      recommendedAreas: recommendations,
+      insight: generateInsight()
+    };
   };
+
+  const results = calculateResults(calculatorData);
 
   if (loading) {
     return (
