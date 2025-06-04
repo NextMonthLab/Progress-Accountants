@@ -368,29 +368,30 @@ body:not([data-admin]) .rounded-full {
   background: #000000 !important;
 }
 
-/* Sophisticated dark textured background */
+/* Enhanced sophisticated dark textured background */
 body, html, #root {
-  background: #0f0f0f !important;
+  background: #0a0a0a !important;
   background-image: 
-    radial-gradient(circle at 20% 50%, rgba(79, 70, 229, 0.04) 0%, transparent 50%),
-    radial-gradient(circle at 80% 20%, rgba(79, 70, 229, 0.04) 0%, transparent 50%),
-    radial-gradient(circle at 40% 80%, rgba(79, 70, 229, 0.04) 0%, transparent 50%),
-    radial-gradient(circle at 60% 30%, rgba(233, 53, 193, 0.02) 0%, transparent 40%),
-    linear-gradient(135deg, rgba(79, 70, 229, 0.01) 0%, transparent 30%, rgba(233, 53, 193, 0.01) 70%, transparent 100%),
+    radial-gradient(circle at 15% 40%, rgba(30, 41, 59, 0.08) 0%, transparent 60%),
+    radial-gradient(circle at 85% 25%, rgba(15, 23, 42, 0.06) 0%, transparent 55%),
+    radial-gradient(circle at 45% 85%, rgba(17, 24, 39, 0.05) 0%, transparent 50%),
+    radial-gradient(circle at 70% 15%, rgba(31, 41, 55, 0.04) 0%, transparent 45%),
+    linear-gradient(135deg, rgba(15, 23, 42, 0.02) 0%, transparent 40%, rgba(17, 24, 39, 0.02) 80%, transparent 100%),
     repeating-linear-gradient(
-      45deg,
+      30deg,
       transparent,
-      transparent 40px,
-      rgba(255, 255, 255, 0.005) 40px,
-      rgba(255, 255, 255, 0.005) 42px
+      transparent 60px,
+      rgba(255, 255, 255, 0.008) 60px,
+      rgba(255, 255, 255, 0.008) 62px
     ),
     repeating-linear-gradient(
-      -45deg,
+      -30deg,
       transparent,
-      transparent 40px,
-      rgba(255, 255, 255, 0.005) 40px,
-      rgba(255, 255, 255, 0.005) 42px
-    ) !important;
+      transparent 60px,
+      rgba(255, 255, 255, 0.006) 60px,
+      rgba(255, 255, 255, 0.006) 62px
+    ),
+    radial-gradient(ellipse at center, rgba(15, 23, 42, 0.03) 0%, transparent 70%) !important;
 }
 
 main, .min-h-screen {

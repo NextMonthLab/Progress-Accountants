@@ -38,8 +38,11 @@ const ServiceCard = withMemo(({
   isPremium: boolean;
 }) => {
   return (
-    <Card className="h-full bg-zinc-900/50 backdrop-blur-sm border border-zinc-800/50 rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1 relative">
-      <div className="absolute inset-0 bg-gradient-to-br from-zinc-800/20 to-zinc-900/40 pointer-events-none"></div>
+    <Card className="h-full bg-slate-900/60 backdrop-blur-sm border border-slate-700/50 rounded-xl shadow-2xl overflow-hidden hover:shadow-2xl hover:border-slate-600/60 transition-all duration-300 hover:-translate-y-1 relative group">
+      <div className="absolute inset-0 bg-gradient-to-br from-slate-800/30 via-zinc-900/50 to-gray-900/60 pointer-events-none"></div>
+      <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent pointer-events-none"></div>
+      <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_70%_30%,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[length:30px_30px] pointer-events-none"></div>
+      <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-radial from-slate-700/10 to-transparent rounded-full blur-2xl group-hover:from-slate-600/15 transition-all duration-500 pointer-events-none"></div>
       <div className="relative z-10">
         {ImageComponent && (
           <div className="h-60 overflow-hidden relative">

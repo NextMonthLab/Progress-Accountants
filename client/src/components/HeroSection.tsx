@@ -71,11 +71,15 @@ const HeroSection = () => {
     <section 
       className="bg-black text-white min-h-[90vh] relative flex items-center py-16 overflow-hidden"
     >
-      {/* Sophisticated dark textured background */}
+      {/* Enhanced sophisticated dark textured background */}
       <div className="absolute inset-0 z-0">
-        <div className="absolute inset-0 bg-gradient-to-br from-zinc-900/80 via-gray-900/60 to-zinc-800/40"></div>
-        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-zinc-800/20 to-transparent"></div>
-        <div className="absolute inset-0 opacity-30 bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.01)_1px,transparent_1px)] bg-[length:40px_40px]"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-slate-950/90 via-zinc-900/70 to-gray-900/50"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-slate-800/30 to-transparent"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent"></div>
+        <div className="absolute inset-0 opacity-40 bg-[radial-gradient(circle_at_30%_70%,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[length:50px_50px]"></div>
+        <div className="absolute inset-0 opacity-20 bg-[linear-gradient(45deg,transparent_49%,rgba(255,255,255,0.01)_50%,transparent_51%)] bg-[length:100px_100px]"></div>
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-gradient-radial from-slate-800/10 to-transparent rounded-full blur-3xl"></div>
+        <div className="absolute bottom-0 right-1/3 w-80 h-80 bg-gradient-radial from-zinc-700/8 to-transparent rounded-full blur-3xl"></div>
       </div>
       
       <div className="container mx-auto px-12 md:px-16 z-10 relative">
