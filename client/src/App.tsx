@@ -62,7 +62,7 @@ const IndustriesPage = lazy(() => import("@/pages/IndustriesPage"));
 const FilmIndustryPage = lazy(() => import("@/pages/FilmIndustryPage"));
 const MusicIndustryPage = lazy(() => import("@/pages/MusicIndustryPage"));
 const ConstructionIndustryPage = lazy(() => import("@/pages/ConstructionIndustryPage"));
-const TestProfessionalServices = lazy(() => import("@/pages/TestProfessionalServices"));
+const ProfessionalServicesPage = lazy(() => import("@/pages/ProfessionalServicesPage"));
 const SMESupportHubPage = lazy(() => import("@/pages/SMESupportHubPage"));
 const BusinessCalculatorPage = lazy(() => import("@/pages/BusinessCalculatorPage"));
 const TestFilmPage = lazy(() => import("@/pages/TestFilmPage"));
@@ -257,7 +257,7 @@ function Router() {
       </Route>
       <Route path="/professional-services">
         <Suspense fallback={<LoadingFallback />}>
-          <TestProfessionalServices />
+          <ProfessionalServicesPage />
         </Suspense>
       </Route>
       <Route path="/resources" component={ResourcesPage} />
