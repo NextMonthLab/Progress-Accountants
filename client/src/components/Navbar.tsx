@@ -178,7 +178,7 @@ export default function Navbar() {
         </div>
 
         {/* Right side buttons */}
-        <div className="hidden md:flex items-center space-x-4 ml-auto">
+        <div className="hidden md:flex items-center space-x-6 ml-auto">
           {/* Show login button and potentially client registration for non-authenticated users */}
           {!user && (
             <>
@@ -199,7 +199,7 @@ export default function Navbar() {
               )}
               <Button 
                 variant="default"
-                className="gradient-bg text-white hover:shadow-md transition-all progress-button"
+                className="gradient-bg text-white hover:shadow-md transition-all progress-button h-10 px-4"
                 asChild
               >
                 <Link 
@@ -237,7 +237,7 @@ export default function Navbar() {
               background: 'linear-gradient(135deg, #7B3FE4 0%, #3FA4E4 100%)',
               backgroundColor: '#7B3FE4',
               color: 'white',
-              padding: '0.5rem 1rem',
+              padding: '0 1rem',
               borderRadius: '0.5rem',
               fontSize: '0.875rem',
               fontWeight: '500',
