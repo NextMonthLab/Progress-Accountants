@@ -230,7 +230,7 @@ export function DualModeCompanion() {
         onClick={() => setOpen(true)}
         className="fixed bottom-6 right-6 z-50 rounded-full p-3 shadow-lg text-white"
         style={{ 
-          background: 'linear-gradient(135deg, #4F46E5 60%, #E935C1 40%)',
+          background: 'linear-gradient(135deg, #4F46E5 0%, #4F46E5 60%, #E935C1 100%)',
           border: 'none'
         }}
       >
@@ -242,7 +242,7 @@ export function DualModeCompanion() {
         <DrawerContent className="max-h-[90vh] sm:max-w-[500px] mx-auto rounded-t-lg bg-white">
           <DrawerHeader className="text-white rounded-t-lg px-4 py-3" 
             style={{ 
-              background: 'linear-gradient(135deg, #4F46E5 60%, #E935C1 40%)'
+              background: 'linear-gradient(135deg, #4F46E5 0%, #4F46E5 60%, #E935C1 100%)'
             }}
           >
             <div className="flex justify-between items-center">
@@ -283,7 +283,7 @@ export function DualModeCompanion() {
                       }`}
                       style={
                         msg.role === 'user'
-                          ? { background: 'linear-gradient(135deg, #4F46E5 60%, #E935C1 40%)' }
+                          ? { background: 'linear-gradient(135deg, #4F46E5 0%, #4F46E5 60%, #E935C1 100%)' }
                           : {}
                       }
                     >
@@ -365,7 +365,7 @@ export function DualModeCompanion() {
                     disabled={isSubmitting || !messageText.trim()}
                     className="px-3 text-white border-none"
                     style={{ 
-                      background: 'linear-gradient(135deg, #4F46E5 60%, #E935C1 40%)',
+                      background: 'linear-gradient(135deg, #4F46E5 0%, #4F46E5 60%, #E935C1 100%)',
                       border: 'none'
                     }}
                   >
