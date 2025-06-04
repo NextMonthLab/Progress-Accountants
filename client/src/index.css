@@ -127,6 +127,25 @@ body:not([data-admin]) .rounded-full {
     --background: 0 0% 0% !important;
     --primary: 0 0% 0% !important;
     --card: 0 0% 0% !important;
+    --popover: 0 0% 0% !important;
+    --muted: 0 0% 0% !important;
+    --accent: 0 0% 0% !important;
+    --secondary: 0 0% 0% !important;
+  }
+  
+  /* Override any theme system changes */
+  html.dark {
+    --background: 0 0% 0% !important;
+    --primary: 0 0% 0% !important;
+    --card: 0 0% 0% !important;
+    background-color: black !important;
+  }
+  
+  html.light {
+    --background: 0 0% 0% !important;
+    --primary: 0 0% 0% !important; 
+    --card: 0 0% 0% !important;
+    background-color: black !important;
   }
   
   #root {
@@ -140,6 +159,34 @@ body:not([data-admin]) .rounded-full {
   body {
     @apply font-sans antialiased bg-black text-white;
     font-family: 'Inter', sans-serif;
+    background-color: black !important;
+  }
+  
+  /* Nuclear option - override any background changes with maximum specificity */
+  body,
+  html,
+  #root,
+  body *,
+  html *,
+  #root * {
+    background-color: black !important;
+  }
+  
+  /* Allow specific elements to have their own backgrounds */
+  img,
+  video,
+  canvas,
+  .gradient-bg,
+  [class*="gradient"],
+  .bg-gradient-to-r,
+  .bg-gradient-to-l,
+  .bg-gradient-to-t,
+  .bg-gradient-to-b,
+  .bg-gradient-to-br,
+  .bg-gradient-to-bl,
+  .bg-gradient-to-tr,
+  .bg-gradient-to-tl {
+    background-color: unset !important;
   }
 
   /* Admin pages always use dark theme */
