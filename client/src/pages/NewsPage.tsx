@@ -82,14 +82,22 @@ const NewsPage = () => {
         <div className="container mx-auto px-6 md:px-8">
           <div className="text-center">
             <h1 className="text-4xl md:text-5xl font-bold text-white mb-4 tracking-tight">
-              News & <span className="bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] bg-clip-text text-transparent">Insights</span>
+              🗞️ News & <span className="bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] bg-clip-text text-transparent">Insights</span>
             </h1>
             <div className="w-24 h-1 bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] mx-auto my-6"></div>
             <p className="text-lg text-gray-300 max-w-3xl mx-auto leading-relaxed">
-              Stay up to date with the latest accounting news, industry insights, and expert advice 
-              to help your business thrive financially.
+              Stay up to date with expert advice, tax updates, and financial strategies to help your business thrive.
             </p>
           </div>
+        </div>
+      </div>
+
+      {/* Intro Section */}
+      <div className="container mx-auto px-6 md:px-8 mb-16">
+        <div className="text-center mb-12">
+          <p className="text-lg text-gray-300 max-w-4xl mx-auto leading-relaxed">
+            Here you'll find timely accounting news, in-depth industry insights, and practical guides for UK business owners. Whether you're looking for the latest changes to HMRC rules or strategic tips to grow your business—we've got you covered.
+          </p>
         </div>
       </div>
       
@@ -104,7 +112,7 @@ const NewsPage = () => {
               <CardTitle className="text-white">Latest Articles</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-gray-300">Stay informed with our most recent accounting and tax updates.</p>
+              <p className="text-gray-300">Stay informed with our most recent updates on tax, accounting, and business finance.</p>
             </CardContent>
             <CardFooter>
               <Button variant="outline" className="border-purple-500 text-purple-400 hover:bg-purple-900/20" onClick={() => setSelectedCategory(null)}>
@@ -121,7 +129,7 @@ const NewsPage = () => {
               <CardTitle className="text-white">Industry Insights</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-gray-300">Discover in-depth analysis of trends in various industries.</p>
+              <p className="text-gray-300">Explore our deep dives into the trends shaping the Construction, Film, Music, and Property sectors.</p>
             </CardContent>
             <CardFooter>
               <Button variant="outline" className="border-purple-500 text-purple-400 hover:bg-purple-900/20">
@@ -138,7 +146,7 @@ const NewsPage = () => {
               <CardTitle className="text-white">Tax Guides</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-gray-300">Comprehensive guides to help navigate complex tax situations.</p>
+              <p className="text-gray-300">Clear, jargon-free guides to help you navigate complex UK tax rules—ideal for small businesses and growing firms.</p>
             </CardContent>
             <CardFooter>
               <Button variant="outline" className="border-purple-500 text-purple-400 hover:bg-purple-900/20">
@@ -203,9 +211,9 @@ const NewsPage = () => {
             {/* Blog posts list */}
             {currentPosts.length === 0 ? (
               <div className="text-center py-12 bg-gray-900 rounded-lg border border-gray-800">
-                <h3 className="text-xl font-medium text-white mb-2">No articles found</h3>
+                <h3 className="text-xl font-medium text-white mb-2">📭 0 Articles Found</h3>
                 <p className="text-gray-400">
-                  Try adjusting your search or filter criteria to find what you're looking for.
+                  We're currently preparing our first batch of expert content. Please check back soon for updates—or use the filters to adjust your view.
                 </p>
                 <Button
                   className="mt-4 bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] hover:shadow-lg hover:shadow-purple-500/25"
@@ -330,8 +338,8 @@ const NewsPage = () => {
           <div className="w-full md:w-1/3">
             <div className="sticky top-4">
               <div className="bg-gray-900 p-4 rounded-lg border border-gray-800 mb-6">
-                <h3 className="text-lg font-semibold text-white mb-2">Subscribe to Updates</h3>
-                <p className="text-gray-300 text-sm mb-4">Get the latest accounting news and insights delivered to your inbox.</p>
+                <h3 className="text-lg font-semibold text-white mb-2">📬 Subscribe to Updates</h3>
+                <p className="text-gray-300 text-sm mb-4">Get the latest articles and expert tips straight to your inbox.</p>
                 <Input 
                   placeholder="Your email address" 
                   className="mb-3 border-gray-600 bg-gray-800 text-white placeholder-gray-400" 
@@ -350,7 +358,7 @@ const NewsPage = () => {
                   <Card className="bg-gray-900 border-gray-800">
                     <CardHeader>
                       <CardTitle className="text-white">Categories</CardTitle>
-                      <CardDescription className="text-gray-300">Browse articles by category</CardDescription>
+                      <CardDescription className="text-gray-300">Browse articles by category to find insights most relevant to your business.</CardDescription>
                     </CardHeader>
                     <CardContent>
                       <ul className="space-y-2">
