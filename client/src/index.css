@@ -123,6 +123,10 @@ body:not([data-admin]) .rounded-full {
   html {
     color-scheme: dark;
     background-color: black !important;
+    /* Override any HSL theme variables */
+    --background: 0 0% 0% !important;
+    --primary: 0 0% 0% !important;
+    --card: 0 0% 0% !important;
   }
   
   #root {
