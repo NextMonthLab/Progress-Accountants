@@ -28,7 +28,7 @@ export const teamMembers: TeamMember[] = [
     name: "Lee Rogers",
     qualifications: "FMAAT",
     role: "Lead Accountant",
-    biography: "Over a decade in accounting; leads the firm with a focus on leveraging technology for optimal client service.",
+    biography: "Lee has spent over a decade helping SMEs navigate tax, growth, and compliance. As our lead accountant, he champions the use of modern accounting tech to deliver a proactive client experience.",
     interests: "Enjoys swimming with his children, running, and staying updated with the latest tech.",
     placeholderComponent: leePlaceholder,
     socialLinks: {
@@ -41,7 +41,7 @@ export const teamMembers: TeamMember[] = [
     name: "Henry Simons",
     qualifications: "MAAT",
     role: "Manager",
-    biography: "Joined in October 2024 with nearly ten years of experience; passionate about contributing to business growth.",
+    biography: "Henry joined in 2024, bringing nearly 10 years of practice experience and a deep commitment to strategic business growth. He leads operations and supports clients across key sectors, including construction and media.",
     interests: "An underground music DJ, hosts a radio show on Sigil Radio, and supports Birmingham City FC.",
     placeholderComponent: henryPlaceholder,
     socialLinks: {
@@ -53,7 +53,7 @@ export const teamMembers: TeamMember[] = [
     id: 3,
     name: "Jackie Bosch",
     role: "Assistant Accountant",
-    biography: "Brings over 30 years of experience; known for her attention to detail and client-first approach.",
+    biography: "With more than 30 years of experience, Jackie is known for her attention to detail, reliability, and calm professionalism. She plays a vital role in supporting our SME clients with day-to-day bookkeeping and compliance.",
     interests: "Loves family time, long walks in Oxfordshire, and planning travel adventures.",
     placeholderComponent: jackiePlaceholder,
     socialLinks: {
@@ -64,7 +64,7 @@ export const teamMembers: TeamMember[] = [
     id: 4,
     name: "Joy Holloway",
     role: "Business Administrator",
-    biography: "Supports accounting and bookkeeping teams; ensures excellent customer service.",
+    biography: "Joy ensures every client interaction is smooth, professional, and human. From document handling to scheduling, she's the behind-the-scenes engine keeping your accounting experience stress-free.",
     interests: "Enjoys time with her family and her dog, Fred; fan of Italian food and the movie Dirty Dancing.",
     placeholderComponent: joyPlaceholder,
     socialLinks: {
@@ -75,7 +75,7 @@ export const teamMembers: TeamMember[] = [
     id: 5,
     name: "Manny Abayomi",
     role: "Digital Marketing Executive",
-    biography: "Manages social media, website, email marketing, and branding efforts.",
+    biography: "Manny leads our digital presence—managing campaigns, brand messaging, and online outreach. He helps keep Progress visible, relevant, and connected to clients across the UK.",
     interests: "Enjoys gym workouts and plays as a defender for his local football team.",
     placeholderComponent: mannyPlaceholder,
     socialLinks: {

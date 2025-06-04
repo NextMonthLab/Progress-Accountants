@@ -76,8 +76,7 @@ export default function TeamPage() {
               <span className="bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">Expert Team</span>
             </h1>
             <p className="text-lg md:text-xl text-slate-300 mb-8 max-w-3xl mx-auto leading-relaxed">
-              Our qualified professionals bring decades of combined experience in accounting, 
-              tax planning, and business advisory services to help your business thrive.
+              Our experienced professionals bring decades of combined expertise in accounting, tax strategy, and business advisory—helping UK businesses grow with confidence.
             </p>
           </div>
         </div>
@@ -94,7 +93,7 @@ export default function TeamPage() {
                 The People Behind Progress
               </h2>
               <p className="text-slate-300 text-lg max-w-2xl mx-auto">
-                Dedicated professionals committed to delivering exceptional accounting solutions
+                A passionate, people-first team—driven to deliver exceptional service and strategic insight.
               </p>
             </div>
             
@@ -117,8 +116,7 @@ export default function TeamPage() {
               Interested in Joining Our Team?
             </h2>
             <p className="text-slate-300 mb-8 text-lg leading-relaxed">
-              We're always looking for talented professionals to join Progress Accountants. 
-              If you're passionate about helping businesses succeed and want to be part of a forward-thinking team, we'd love to hear from you.
+              We're always on the lookout for passionate professionals to join our growing firm. If you care about small business success and want to be part of a forward-thinking team, we'd love to hear from you.
             </p>
             <Link href="/contact">
               <button className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] text-white rounded-lg hover:shadow-lg hover:shadow-purple-500/25 hover:-translate-y-1 transition-all duration-300 font-medium">
