@@ -169,7 +169,7 @@ const ConstructionIndustryPage = () => {
             >
               <motion.div variants={itemVariants}>
                 <span className="inline-block px-4 py-1 rounded-full bg-purple-900/20 text-purple-400 font-medium text-sm mb-4">
-                  Industry Specialists
+                  🏗️ Industry Specialists
                 </span>
               </motion.div>
               <motion.div
@@ -185,15 +185,15 @@ const ConstructionIndustryPage = () => {
                 className="mb-8"
               >
                 <p className="text-lg md:text-xl text-white">
-                  Helping You Navigate CIS, VAT, and Cash Flow—So You Can Focus on Building
+                  Helping you navigate CIS, VAT, and cash flow—so you can focus on building.
                 </p>
               </motion.div>
               <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-4">
                 <Button size="lg" className="bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] hover:from-[#6B2FD4] hover:to-[#2F94D4] text-white font-medium">
-                  Book a free consultation
+                  Book a Free Consultation
                 </Button>
                 <Button size="lg" className="bg-gray-800 border-gray-700 text-white hover:bg-gray-700 font-medium">
-                  Explore our services <ArrowRight className="ml-2 h-4 w-4" />
+                  Explore Our Services <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </motion.div>
             </motion.div>
@@ -258,20 +258,19 @@ const ConstructionIndustryPage = () => {
           <motion.div variants={itemVariants} className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">Why Construction Professionals Choose Progress</h2>
             <p className="text-lg text-gray-300">
-              From one-man bands to regional contractors and property developers, Progress helps construction businesses take control of their finances. Whether you're managing subcontractors, juggling projects, or scaling your team—we make the numbers work for you.
+              From one-man bands and subcontractors to growing firms and developers, Progress helps you gain control of your construction finances.
             </p>
           </motion.div>
           
           <motion.div variants={itemVariants} className="bg-gray-900 rounded-xl shadow-md p-6 md:p-8 mb-12 border border-gray-800">
             <p className="text-lg text-gray-300 mb-4">
-              We specialise in supporting the construction industry with proactive, tech-savvy accounting solutions tailored to 
-              the unique challenges of builders, developers, and contractors.
+              We specialise in proactive, tech-led accounting for the construction industry—tailored to your deadlines, subcontractor payments, and project-based income.
             </p>
             <div className="flex items-center">
               <div className="p-2 bg-purple-900/20 rounded-full mr-3">
                 <Hammer className="h-5 w-5 text-purple-400" />
               </div>
-              <p className="font-medium text-white">Based in Banbury. Supporting construction professionals across the UK.</p>
+              <p className="font-medium text-white">📍 Based in Banbury. Supporting builders and contractors across the UK.</p>
             </div>
           </motion.div>
         </motion.div>
@@ -295,8 +294,8 @@ const ConstructionIndustryPage = () => {
           <div className="grid md:grid-cols-2 gap-8 mb-16">
             <FeatureCard 
               icon={Receipt}
-              title="CIS Compliance Without the Headache"
-              description="We handle the ins and outs of CIS tax deductions, monthly returns, and HMRC reporting—so you stay compliant and get paid on time."
+              title="🔧 CIS Compliance Without the Headache"
+              description="We handle CIS deductions, monthly returns, and HMRC filings—so you're always compliant and always paid on time."
               accentColor="bg-orange-500"
             />
             <FeatureCard 
