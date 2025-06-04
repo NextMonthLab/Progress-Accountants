@@ -72,20 +72,20 @@ const HeroSection = () => {
         >
           <motion.div variants={itemVariants}>
             <Badge variant="outline" className="mb-4 bg-purple-100 text-purple-800 hover:bg-purple-200 border-purple-200 uppercase tracking-wide px-4 py-1 font-semibold text-sm shadow-sm">
-              Business Resource Hub
+              📚 Business Resource Hub
             </Badge>
           </motion.div>
           <motion.h1 
             variants={itemVariants}
             className="text-3xl md:text-5xl font-bold text-white mb-6 leading-tight drop-shadow-sm"
           >
-            Everything Your Business Needs, All in One Place
+            Everything Your Business Needs—All in One Place
           </motion.h1>
           <motion.p 
             variants={itemVariants}
             className="text-lg md:text-xl text-gray-200 mb-8 drop-shadow-sm max-w-2xl mx-auto"
           >
-            From Companies House deadlines to HMRC contact details, this page keeps you compliant, informed, and in control of your business obligations.
+            From Companies House deadlines to HMRC contact lines, this page helps you stay compliant, informed, and in control. Built for small business owners who need quick answers and up-to-date resources—without digging through government websites.
           </motion.p>
           <motion.div
             variants={itemVariants}
@@ -142,10 +142,10 @@ const IntroSection = () => (
           <div className="relative z-10">
             <div className="flex items-center mb-4">
               <Info className="h-6 w-6 text-purple-500 mr-3 flex-shrink-0" />
-              <h3 className="text-xl font-semibold text-white">Why We Built This Resource</h3>
+              <h3 className="text-xl font-semibold text-white">Why We Built This Hub</h3>
             </div>
             <p className="text-gray-300 text-lg leading-relaxed mb-4">
-              Running a business can feel like a full-time juggling act. That's why we've created this page—to give you quick access to the essential contacts and key dates that every UK business owner should know. All the official resources in one place, updated regularly by our team.
+              Running a business often feels like juggling a dozen tasks at once. That's why we created the SME Support Hub: to bring you the essential information every UK business owner needs—in one reliable, regularly updated place.
             </p>
             <div className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div className="bg-gray-800 p-4 rounded-lg border border-gray-700">
@@ -153,21 +153,21 @@ const IntroSection = () => (
                   <Building2 className="h-5 w-5 text-blue-400 mr-2" />
                   <span className="font-medium text-white">Directory</span>
                 </div>
-                <p className="text-sm text-gray-400">Critical business contacts all in one place</p>
+                <p className="text-sm text-gray-400">All the key contacts for government departments and support bodies in one easy-to-browse list.</p>
               </div>
               <div className="bg-gray-800 p-4 rounded-lg border border-gray-700">
                 <div className="flex items-center mb-2">
                   <Calendar className="h-5 w-5 text-purple-400 mr-2" />
                   <span className="font-medium text-white">Deadlines</span>
                 </div>
-                <p className="text-sm text-gray-400">Never miss important tax & filing dates</p>
+                <p className="text-sm text-gray-400">Never miss a tax filing or compliance date again—stay ahead with our official calendar.</p>
               </div>
               <div className="bg-gray-800 p-4 rounded-lg border border-gray-700">
                 <div className="flex items-center mb-2">
                   <Download className="h-5 w-5 text-green-400 mr-2" />
                   <span className="font-medium text-white">Downloads</span>
                 </div>
-                <p className="text-sm text-gray-400">Free printable resources to keep handy</p>
+                <p className="text-sm text-gray-400">Print-ready PDF resources for your desk, inbox, or team documentation.</p>
               </div>
             </div>
           </div>
@@ -314,7 +314,8 @@ const DirectorySection = () => {
           <motion.div variants={itemVariants} className="text-center mb-12">
             <h2 className="text-3xl font-bold text-white mb-4">National SME Directory</h2>
             <p className="text-gray-300 max-w-3xl mx-auto">
-              Get in touch with the essential organizations that every UK business owner should know. We keep these details updated so you always have the right contact information.
+              Trusted Organisations & Contact Details for UK Businesses<br />
+              We keep this directory current, so you're always connected to the right support.
             </p>
           </motion.div>
           
@@ -325,7 +326,7 @@ const DirectorySection = () => {
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
                 <input
                   type="text"
-                  placeholder="Search organizations..."
+                  placeholder="Search organisations..."
                   className="w-full pl-10 pr-4 py-2 rounded-md border border-gray-600 bg-gray-800 text-white placeholder-gray-400 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
@@ -544,9 +545,9 @@ const DownloadResourcesSection = () => {
           className="max-w-5xl mx-auto"
         >
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-white mb-4">Download & Print Your Essentials</h2>
+            <h2 className="text-3xl font-bold text-white mb-4">📝 Download & Print Your Essentials</h2>
             <p className="text-gray-300 max-w-3xl mx-auto text-lg">
-              Want a copy to keep? Download our ready-to-print PDFs to have your essential deadlines and contacts always at hand.
+              Keep your key contacts and deadlines close with our free PDF packs—ideal for business owners, finance teams, and directors.
             </p>
           </div>
           
@@ -560,14 +561,14 @@ const DownloadResourcesSection = () => {
                       <FileText className="h-6 w-6 mr-3 text-purple-500 flex-shrink-0 mt-0.5" />
                       <div>
                         <h4 className="font-medium text-white">Essential SME Contacts (2025)</h4>
-                        <p className="text-gray-400 text-sm">A comprehensive list of all important UK business support contacts.</p>
+                        <p className="text-gray-400 text-sm">A ready-to-print directory of UK business support organisations and government departments.</p>
                       </div>
                     </li>
                     <li className="flex items-start">
                       <CalendarIcon className="h-6 w-6 mr-3 text-purple-500 flex-shrink-0 mt-0.5" />
                       <div>
                         <h4 className="font-medium text-white">Key Business Deadlines (2025)</h4>
-                        <p className="text-gray-400 text-sm">All tax and reporting deadlines for the 2024/25 year.</p>
+                        <p className="text-gray-400 text-sm">All key tax dates, annual filings, and reporting deadlines for the 2024/25 financial year.</p>
                       </div>
                     </li>
                   </ul>
