@@ -368,15 +368,33 @@ body:not([data-admin]) .rounded-full {
   background: #000000 !important;
 }
 
-/* Override any potential gradient backgrounds */
-* {
-  background-image: none !important;
+/* Sophisticated dark textured background */
+body, html, #root {
+  background: #0f0f0f !important;
+  background-image: 
+    radial-gradient(circle at 20% 50%, rgba(79, 70, 229, 0.04) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(79, 70, 229, 0.04) 0%, transparent 50%),
+    radial-gradient(circle at 40% 80%, rgba(79, 70, 229, 0.04) 0%, transparent 50%),
+    radial-gradient(circle at 60% 30%, rgba(233, 53, 193, 0.02) 0%, transparent 40%),
+    linear-gradient(135deg, rgba(79, 70, 229, 0.01) 0%, transparent 30%, rgba(233, 53, 193, 0.01) 70%, transparent 100%),
+    repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 40px,
+      rgba(255, 255, 255, 0.005) 40px,
+      rgba(255, 255, 255, 0.005) 42px
+    ),
+    repeating-linear-gradient(
+      -45deg,
+      transparent,
+      transparent 40px,
+      rgba(255, 255, 255, 0.005) 40px,
+      rgba(255, 255, 255, 0.005) 42px
+    ) !important;
 }
 
-body, html, #root, main, .min-h-screen {
-  background: #000000 !important;
-  background-color: #000000 !important;
-  background-image: none !important;
+main, .min-h-screen {
+  background: transparent !important;
 }
 
 /* Text styles for modern UI */
