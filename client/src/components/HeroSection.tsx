@@ -136,11 +136,11 @@ const HeroSection = () => {
           <div className="md:w-3/5 mt-10 md:mt-0">
             <div className="relative">
               {/* Enlarged, simplified image frame */}
-              <div className="relative overflow-hidden rounded-xl shadow-xl transform hover:scale-[1.02] transition-transform duration-500">
+              <div className="relative overflow-hidden rounded-xl shadow-xl transform hover:scale-[1.02] transition-transform duration-500 h-80">
                 <OptimizedImage 
                   src={teamPhotoImage} 
                   alt={`${businessName} Team`}
-                  className="w-full h-auto object-left object-contain brightness-105"
+                  className="w-full h-full object-contain brightness-105"
                   width={1000}
                   height={600}
                   priority={true}
