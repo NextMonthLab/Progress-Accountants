@@ -394,7 +394,7 @@ export default function AboutPage() {
             </FadeIn>
             <FadeIn delay={0.2}>
               <p className="text-xl text-gray-300 mb-8">
-                {businessName} is powered by a team of {numberOfEmployees} experienced professionals who care deeply about your business journey.
+                Progress is powered by a team of 25–50 professionals who care deeply about helping UK businesses thrive.
               </p>
             </FadeIn>
             <FadeIn delay={0.3}>
@@ -424,7 +424,7 @@ export default function AboutPage() {
             
             <FadeIn delay={0.2}>
               <p className="text-xl text-gray-300 mb-8 text-center">
-                We've built our own tech stack into your workflow:
+                Our in-house tech stack is built into your workflow:
               </p>
             </FadeIn>
             
@@ -468,7 +468,7 @@ export default function AboutPage() {
                   </div>
                   <div>
                     <h3 className="font-medium mb-2 text-purple-300">
-                      Automated reminders and status updates
+                      Automated reminders & deadline tracking
                     </h3>
                     <p className="text-gray-400 text-sm">
                       Never miss a deadline or important update
@@ -484,7 +484,7 @@ export default function AboutPage() {
                   </div>
                   <div>
                     <h3 className="font-medium mb-2 text-purple-300">
-                      AI-powered insights and reporting
+                      AI-driven reporting & insight tools
                     </h3>
                     <p className="text-gray-400 text-sm">
                       Intelligent analysis that helps identify opportunities
@@ -496,7 +496,7 @@ export default function AboutPage() {
             
             <FadeIn delay={0.5}>
               <p className="text-center text-gray-300">
-                All of this is designed to save you time, reduce risk, and give you full visibility at a glance.
+                Designed to save you time, reduce risk, and give you instant clarity—wherever you are.
               </p>
             </FadeIn>
           </div>
@@ -514,8 +514,7 @@ export default function AboutPage() {
             </FadeIn>
             <FadeIn delay={0.2}>
               <p className="text-xl text-gray-300 mb-8">
-                We're here to help you get clear, get confident, and get ahead.<br />
-                Let's start with a simple conversation.
+                Let's help you get clear, get confident, and get ahead.
               </p>
             </FadeIn>
             <FadeIn delay={0.3}>
