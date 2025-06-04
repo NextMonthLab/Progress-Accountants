@@ -138,7 +138,7 @@ const HeroSection = () => {
               {/* Enlarged, simplified image frame */}
               <div className="relative rounded-xl shadow-xl transform hover:scale-[1.02] transition-transform duration-500 bg-slate-800/50 p-4">
                 <OptimizedImage 
-                  src="https://res.cloudinary.com/drl0fxrkq/image/upload/v1747742829/P1013106-Enhanced-NR_adzlje.jpg" 
+                  src="https://res.cloudinary.com/drl0fxrkq/image/upload/v1747742806/P1023674_di2j3g.jpg" 
                   alt={`${businessName} Team`}
                   className="w-full h-auto rounded-lg brightness-105"
                   width={1000}
