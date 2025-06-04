@@ -23,7 +23,7 @@ const IndustryCard = withMemo(({
   expertise: string[];
 }) => {
   return (
-    <div className="bg-white rounded-xl shadow-md overflow-hidden h-full transition-all duration-300 hover:shadow-lg hover:-translate-y-1 border border-gray-100">
+    <div className="bg-[#101218] border border-[#2E2F3B] rounded-xl shadow-md overflow-hidden h-full transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
       {/* Image with simplified overlay */}
       <div className="h-48 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-t from-navy/60 to-transparent z-10"></div>
@@ -48,14 +48,14 @@ const IndustryCard = withMemo(({
       
       {/* Content */}
       <div className="p-5">
-        <p className="text-gray-700 mb-4 text-sm">{description}</p>
+        <p className="text-gray-300 mb-4 text-sm">{description}</p>
         
         {/* Simplified expertise list */}
         <div className="mb-4">
-          <h4 className="text-sm font-medium text-gray-700 mb-2">Our Expertise:</h4>
+          <h4 className="text-sm font-medium text-white mb-2">Our Expertise:</h4>
           <ul className="space-y-1">
             {expertise.slice(0, 3).map((item, i) => (
-              <li key={i} className="flex items-center text-sm text-gray-600">
+              <li key={i} className="flex items-center text-sm text-gray-300">
                 <span className="h-1 w-1 rounded-full bg-[#7B3FE4] mr-2"></span>
                 {item}
               </li>
@@ -89,11 +89,11 @@ const AdditionalIndustryBadge = withMemo(({
   icon: React.ElementType, 
   label: string 
 }) => (
-  <div className="flex items-center gap-3 p-3 bg-white rounded-lg shadow-sm border border-gray-100">
+  <div className="flex items-center gap-3 p-3 bg-[#101218] border border-[#2E2F3B] rounded-lg shadow-sm">
     <div className="w-10 h-10 rounded-full bg-gradient-to-r from-[#7B3FE4]/20 to-[#3FA4E4]/20 flex items-center justify-center">
       <Icon className="h-5 w-5 text-[#7B3FE4]" />
     </div>
-    <span className="text-zinc-800 font-medium">{label}</span>
+    <span className="text-gray-300 font-medium">{label}</span>
   </div>
 ));
 
@@ -171,17 +171,17 @@ const IndustriesSection = () => {
   return (
     <section 
       id="industries" 
-      className="py-16 md:py-20 bg-gray-50"
+      className="py-16 md:py-20 bg-black"
     >
       <div className="container mx-auto px-6 md:px-8">
         <div className={`text-center max-w-3xl mx-auto mb-12 transition-opacity duration-500 ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
-          <span className="inline-block mb-3 px-4 py-1 rounded-full bg-purple-100 text-purple-700 text-sm font-medium border border-purple-200">
+          <span className="inline-block mb-3 px-4 py-1 rounded-full bg-purple-900/30 text-purple-300 text-sm font-medium border border-purple-700/30">
             Industry Expertise
           </span>
           <h2 className="font-bold text-3xl md:text-4xl mb-4 bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] bg-clip-text text-transparent">
             Specialists in complex industries
           </h2>
-          <p style={{ color: 'var(--dark-grey)' }} className="text-lg">
+          <p className="text-lg text-gray-300">
             We serve businesses of all types, with deep experience in sectors that demand more than basic bookkeeping.
           </p>
         </div>
