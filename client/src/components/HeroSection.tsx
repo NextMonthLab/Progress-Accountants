@@ -75,9 +75,9 @@ const HeroSection = () => {
       <div className="absolute inset-0 bg-gradient-to-br from-slate-950 via-purple-950/40 to-slate-900 z-0"></div>
       
       <div className="container mx-auto px-12 md:px-16 z-10 relative">
-        <div className="flex flex-col md:flex-row items-center gap-8 lg:gap-16">
+        <div className="flex flex-col md:flex-row items-center gap-8 lg:gap-12">
           {/* Left content - Text content */}
-          <div className="md:w-1/2 md:pr-8 text-center md:text-left">
+          <div className="md:w-2/5 md:pr-6 text-center md:text-left">
             <span className="text-purple-300 text-sm font-medium tracking-wide inline-block mb-4">
               Premium Financial Advisory
             </span>
@@ -133,7 +133,7 @@ const HeroSection = () => {
           </div>
           
           {/* Right content - Prominent team image */}
-          <div className="md:w-1/2 mt-10 md:mt-0">
+          <div className="md:w-3/5 mt-10 md:mt-0">
             <div className="relative">
               {/* Enlarged, simplified image frame */}
               <div className="relative overflow-hidden rounded-xl shadow-xl transform hover:scale-[1.02] transition-transform duration-500">
@@ -141,8 +141,8 @@ const HeroSection = () => {
                   src={teamPhotoImage} 
                   alt={`${businessName} Team`}
                   className="w-full h-auto object-cover brightness-105"
-                  width={800}
-                  height={450}
+                  width={1000}
+                  height={600}
                   priority={true}
                 />
                 
