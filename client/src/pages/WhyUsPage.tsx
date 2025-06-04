@@ -33,21 +33,15 @@ export default function WhyUsPage() {
 
   const testimonials = [
     {
-      quote: "Their expertise has transformed our financial operations. We now have clarity and control like never before.",
-      name: "Sarah Johnson",
-      position: "CEO, TechStart Solutions",
+      quote: "Progress helped us make sense of our numbers and plan for the future. It's not just accounting—it's guidance.",
+      name: "Consultancy Owner",
+      position: "Midlands",
       rating: 5
     },
     {
-      quote: "Progress Accountants doesn't just crunch numbers—they provide insights that have directly improved our profitability.",
-      name: "Michael Robinson",
-      position: "Director, Horizon Retail",
-      rating: 5
-    },
-    {
-      quote: "Working with them has eliminated the stress of tax season. Proactive, professional, and genuinely invested in our success.",
-      name: "Emma Thompson",
-      position: "Operations Manager, Greenfield Properties",
+      quote: "I finally feel like we have accountants who care. Fast replies, good advice, and no more chasing.",
+      name: "Creative Director",
+      position: "London",
       rating: 5
     }
   ];
@@ -96,16 +90,14 @@ export default function WhyUsPage() {
       <section className="bg-gray-800 text-white py-16 md:py-24 relative overflow-hidden">
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-3xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-blue-400 to-pink-400 bg-clip-text text-transparent">Why Choose {businessName}?</h1>
+            <h1 className="text-3xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-blue-400 to-pink-400 bg-clip-text text-transparent">💡 Why Choose Progress?</h1>
             <p className="text-xl md:text-2xl text-gray-300 mb-8">
-              More than just accountants—we're your financial growth partners.
+              We're not just your accountants—we're your growth partners.
             </p>
             
-            {missionStatement && (
-              <div className="mt-6 p-6 bg-white/10 backdrop-blur-sm rounded-lg">
-                <p className="italic text-lg text-white/90">"{missionStatement}"</p>
-              </div>
-            )}
+            <div className="mt-6 p-6 bg-white/10 backdrop-blur-sm rounded-lg">
+              <p className="italic text-lg text-white/90">Progress Accountants exists to help ambitious businesses build strong financial foundations, make confident decisions, and unlock lasting growth. We combine real human relationships with smart systems and sector expertise—delivering support that's proactive, not just reactive.</p>
+            </div>
             
             <div className="mt-8 inline-block px-4 py-2 rounded-full bg-white/10 text-gray-300 text-sm font-medium">
               Established {yearFounded} • Serving businesses with excellence
@@ -120,50 +112,76 @@ export default function WhyUsPage() {
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center mb-16">
             <h2 className="text-2xl md:text-3xl font-bold mb-6 bg-gradient-to-r from-blue-400 to-pink-400 bg-clip-text text-transparent">
-              What Sets Us Apart
+              What Makes Us Different
             </h2>
             <p className="text-lg text-gray-300">
-              We're not just accountants who file your tax returns. Our approach combines technology, expertise, and a genuine commitment to your business growth.
+              We go beyond compliance to help you plan, forecast, and scale—whatever growth means to you.
             </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {/* Card 1 */}
             <div className="bg-gray-800 rounded-lg shadow-lg p-8 transition-all hover:shadow-xl hover:-translate-y-2 border border-gray-700">
               <div className="mb-6 p-4 rounded-full inline-flex bg-blue-500/20">
-                <Zap size={40} className="text-blue-400" />
+                <span className="text-3xl">🚀</span>
               </div>
               <h3 className="text-xl font-bold mb-3 text-white">
-                Technology-Driven
+                Growth-Focused
               </h3>
               <p className="text-gray-300">
-                Modern cloud-based accounting solutions that give you real-time visibility into your finances anytime, anywhere. No more waiting for quarterly reports.
+                We go beyond compliance to help you plan, forecast, and scale—whatever growth means to you.
               </p>
             </div>
             
             {/* Card 2 */}
             <div className="bg-gray-800 rounded-lg shadow-lg p-8 transition-all hover:shadow-xl hover:-translate-y-2 border border-gray-700">
               <div className="mb-6 p-4 rounded-full inline-flex bg-pink-500/20">
-                <Lightbulb size={40} className="text-pink-400" />
+                <span className="text-3xl">🧑‍💻</span>
               </div>
               <h3 className="text-xl font-bold mb-3 text-white">
-                Proactive Advisors
+                Tech-Savvy
               </h3>
               <p className="text-gray-300">
-                We don't just react to deadlines—we anticipate opportunities, identify risks before they become problems, and actively help you plan for growth.
+                From cloud dashboards to automation, we bring the tools and know-how to make your finances run smoother.
               </p>
             </div>
             
             {/* Card 3 */}
             <div className="bg-gray-800 rounded-lg shadow-lg p-8 transition-all hover:shadow-xl hover:-translate-y-2 border border-gray-700">
               <div className="mb-6 p-4 rounded-full inline-flex bg-blue-500/20">
-                <Users size={40} className="text-blue-400" />
+                <span className="text-3xl">📞</span>
               </div>
               <h3 className="text-xl font-bold mb-3 text-white">
-                Relationship Focused
+                Always Human
               </h3>
               <p className="text-gray-300">
-                We take the time to understand your business, your goals, and your challenges. Every financial decision is made in the context of your bigger picture.
+                Real people. Straight answers. You'll always have someone on your side who speaks your language.
+              </p>
+            </div>
+            
+            {/* Card 4 */}
+            <div className="bg-gray-800 rounded-lg shadow-lg p-8 transition-all hover:shadow-xl hover:-translate-y-2 border border-gray-700">
+              <div className="mb-6 p-4 rounded-full inline-flex bg-pink-500/20">
+                <span className="text-3xl">📊</span>
+              </div>
+              <h3 className="text-xl font-bold mb-3 text-white">
+                Clarity Over Complexity
+              </h3>
+              <p className="text-gray-300">
+                No jargon. No surprises. Just clear, actionable insight into what's working, what's changing, and what to do next.
+              </p>
+            </div>
+            
+            {/* Card 5 */}
+            <div className="bg-gray-800 rounded-lg shadow-lg p-8 transition-all hover:shadow-xl hover:-translate-y-2 border border-gray-700">
+              <div className="mb-6 p-4 rounded-full inline-flex bg-blue-500/20">
+                <span className="text-3xl">🎯</span>
+              </div>
+              <h3 className="text-xl font-bold mb-3 text-white">
+                Sector-Specific Knowledge
+              </h3>
+              <p className="text-gray-300">
+                We don't try to be everything to everyone—we specialise in Construction, Film, Music, Property, and Professional Services.
               </p>
             </div>
           </div>
@@ -171,42 +189,76 @@ export default function WhyUsPage() {
       </section>
 
       {/* Our Values */}
-      {values.length > 0 && (
-        <section className="py-16 md:py-24 bg-gray-800">
-          <div className="container mx-auto px-4">
-            <div className="max-w-3xl mx-auto text-center mb-16">
-              <h2 className="text-2xl md:text-3xl font-bold mb-6 bg-gradient-to-r from-pink-400 to-blue-400 bg-clip-text text-transparent">
-                Our Values
-              </h2>
-              <p className="text-lg text-gray-300">
-                These core principles guide every interaction and decision we make.
-              </p>
+      <section className="py-16 md:py-24 bg-gray-800">
+        <div className="container mx-auto px-4">
+          <div className="max-w-3xl mx-auto text-center mb-16">
+            <h2 className="text-2xl md:text-3xl font-bold mb-6 bg-gradient-to-r from-pink-400 to-blue-400 bg-clip-text text-transparent">
+              Our Values
+            </h2>
+            <p className="text-lg text-gray-300">
+              These core principles guide every interaction and decision we make.
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-4xl mx-auto">
+            <div className="flex items-start p-6 bg-gray-900 rounded-lg shadow-lg hover:shadow-xl transition-all border border-gray-700">
+              <div className="mr-4 text-blue-400">
+                <span className="text-2xl">✨</span>
+              </div>
+              <div>
+                <h3 className="font-bold mb-2 text-white">
+                  Simplicity
+                </h3>
+                <p className="text-gray-300 text-sm">
+                  We keep things clear, clean, and straightforward—because confidence starts with understanding.
+                </p>
+              </div>
             </div>
             
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-4xl mx-auto">
-              {values.map((value, index) => (
-                <div key={index} className="flex items-start p-6 bg-gray-900 rounded-lg shadow-lg hover:shadow-xl transition-all border border-gray-700">
-                  <div className="mr-4 text-blue-400">
-                    <CheckCircle2 size={24} />
-                  </div>
-                  <div>
-                    <h3 className="font-bold mb-2 text-white">
-                      {value}
-                    </h3>
-                    <p className="text-gray-300 text-sm">
-                      {index === 0 ? "We bring authenticity and transparency to every client relationship." :
-                       index === 1 ? "We consistently deliver results that exceed expectations." :
-                       index === 2 ? "We embrace forward-thinking approaches and continuous improvement." :
-                       index === 3 ? "We take ownership of our work and are accountable for outcomes." :
-                       "We uphold the highest standards of professional and ethical conduct."}
-                    </p>
-                  </div>
-                </div>
-              ))}
+            <div className="flex items-start p-6 bg-gray-900 rounded-lg shadow-lg hover:shadow-xl transition-all border border-gray-700">
+              <div className="mr-4 text-pink-400">
+                <span className="text-2xl">🤝</span>
+              </div>
+              <div>
+                <h3 className="font-bold mb-2 text-white">
+                  Partnership
+                </h3>
+                <p className="text-gray-300 text-sm">
+                  We're in it with you. Whether you're launching, scaling, or stuck—we're right there alongside you.
+                </p>
+              </div>
+            </div>
+            
+            <div className="flex items-start p-6 bg-gray-900 rounded-lg shadow-lg hover:shadow-xl transition-all border border-gray-700">
+              <div className="mr-4 text-blue-400">
+                <span className="text-2xl">🧠</span>
+              </div>
+              <div>
+                <h3 className="font-bold mb-2 text-white">
+                  Curiosity
+                </h3>
+                <p className="text-gray-300 text-sm">
+                  We don't just tick boxes. We ask questions, spot patterns, and look ahead.
+                </p>
+              </div>
+            </div>
+            
+            <div className="flex items-start p-6 bg-gray-900 rounded-lg shadow-lg hover:shadow-xl transition-all border border-gray-700">
+              <div className="mr-4 text-pink-400">
+                <span className="text-2xl">⚡</span>
+              </div>
+              <div>
+                <h3 className="font-bold mb-2 text-white">
+                  Proactivity
+                </h3>
+                <p className="text-gray-300 text-sm">
+                  We don't wait for year-end—we flag opportunities and issues early, so you stay in control.
+                </p>
+              </div>
             </div>
           </div>
-        </section>
-      )}
+        </div>
+      </section>
 
       {/* USPs Section */}
       {usps.length > 0 && (
