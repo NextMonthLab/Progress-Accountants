@@ -207,6 +207,38 @@ export default function ServicesPage() {
         </div>
       </section>
 
+      {/* Specialist Services Section */}
+      <section className="py-16 bg-gray-800">
+        <div className="container mx-auto px-6 md:px-8">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-16">
+              <h2 className="text-3xl md:text-4xl font-bold mb-6 text-white">Specialist Services</h2>
+              <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+                Additional services designed for businesses with specific needs and growth ambitions.
+              </p>
+            </div>
+            
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+              <div className="bg-gray-900 rounded-xl p-6 border border-gray-700 text-center">
+                <div className="w-12 h-12 rounded-lg bg-gradient-to-r from-blue-400 to-pink-400 flex items-center justify-center mb-4 mx-auto">
+                  <span className="text-2xl">📉</span>
+                </div>
+                <h3 className="text-white font-bold mb-3">Business Forecasting</h3>
+                <p className="text-gray-300 text-sm">Plan for the future with cash flow projections, growth targets, and scenario modelling tailored to your goals.</p>
+              </div>
+              
+              <div className="bg-gray-900 rounded-xl p-6 border border-gray-700 text-center">
+                <div className="w-12 h-12 rounded-lg bg-gradient-to-r from-blue-400 to-pink-400 flex items-center justify-center mb-4 mx-auto">
+                  <span className="text-2xl">🧰</span>
+                </div>
+                <h3 className="text-white font-bold mb-3">SME Resource Hub</h3>
+                <p className="text-gray-300 text-sm">Access our downloadable PDFs, tax calendars, and business contact directory—free for UK business owners.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Podcast Studio Feature */}
       <section className="py-16 bg-gray-800">
         <div className="container mx-auto px-6 md:px-8">
@@ -339,18 +371,29 @@ export default function ServicesPage() {
       {/* CTA Section */}
       <section className="py-16 bg-gray-800 text-white">
         <div className="container mx-auto px-6 md:px-8 text-center">
-          <h2 className="text-3xl font-bold mb-6 bg-gradient-to-r from-blue-400 to-pink-400 bg-clip-text text-transparent">Ready to Take Your Business Further?</h2>
+          <h2 className="text-3xl font-bold mb-6 bg-gradient-to-r from-blue-400 to-pink-400 bg-clip-text text-transparent">Not sure where to start?</h2>
           <p className="text-xl text-gray-300 mb-8 max-w-3xl mx-auto">
-            Schedule a consultation with our team to discuss how our services can be tailored to meet your specific needs.
+            Book a free discovery call and we'll help map the right support for your business.
           </p>
-          <Link href="/contact">
-            <Button 
-              size="lg"
-              className="bg-white text-gray-900 hover:bg-gray-100 hover:shadow-lg hover:-translate-y-[2px] transition duration-300"
-            >
-              Contact Us Today
-            </Button>
-          </Link>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link href="/contact">
+              <Button 
+                size="lg"
+                className="bg-white text-gray-900 hover:bg-gray-100 hover:shadow-lg hover:-translate-y-[2px] transition duration-300"
+              >
+                Book a Consultation
+              </Button>
+            </Link>
+            <Link href="/industries">
+              <Button 
+                size="lg"
+                variant="outline"
+                className="text-white border-white hover:bg-white hover:text-gray-900 transition duration-300"
+              >
+                Explore Our Sectors
+              </Button>
+            </Link>
+          </div>
         </div>
       </section>
     </div>
