@@ -3,349 +3,41 @@ import ServicesSection from "@/components/ServicesSection";
 import IndustriesSection from "@/components/IndustriesSection";
 import WhyUsSection from "@/components/WhyUsSection";
 import ContactForm from "@/components/ContactForm";
-import { useEffect } from "react";
-import { Link } from "wouter";
-import { Helmet } from 'react-helmet';
-import { 
-  FadeIn, 
-  SlideUp, 
-  SlideInLeft, 
-  SlideInRight, 
-  ScaleIn 
-} from "@/components/ui/ScrollAnimation";
+import { Card } from "@/components/ui/card";
+import { useBusinessIdentity } from "@/hooks/use-business-identity";
 
-export default function HomePage() {
-  // Adding smooth scroll behavior for anchor links
-  useEffect(() => {
-    const handleAnchorClick = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-      const anchor = target.closest('a');
-      
-      if (!anchor) return;
-      
-      const href = anchor.getAttribute('href');
-      if (!href || !href.startsWith('#')) return;
-      
-      e.preventDefault();
-      
-      const targetId = href === '#' ? null : href;
-      if (!targetId) return;
-      
-      const targetElement = document.querySelector(targetId);
-      if (targetElement) {
-        window.scrollTo({
-          top: targetElement.getBoundingClientRect().top + window.scrollY - 80,
-          behavior: 'smooth'
-        });
-      }
-    };
+const HomePage = () => {
+  const { businessIdentity, isLoading } = useBusinessIdentity();
 
-    document.addEventListener('click', handleAnchorClick);
-    
-    return () => {
-      document.removeEventListener('click', handleAnchorClick);
-    };
-  }, []);
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-black flex items-center justify-center">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-[#7B3FE4]"></div>
+      </div>
+    );
+  }
 
   return (
-    <div className="min-h-screen bg-black text-white">
-      <Helmet>
-        <title>Accountants in Banbury | Progress Accountants</title>
-        <meta name="description" content="Forward-thinking accountants helping UK businesses with tax, forecasting, and industry-specific financial advice. Specialists in Construction, Film, Music & Professional Services." />
-        <meta name="keywords" content="accountants banbury, uk accountants, business tax advice, construction accounting, film industry accountants, music industry finance, professional services accounting" />
-        <link rel="canonical" href="https://progressaccountants.com/" />
-        
-        {/* Open Graph / Facebook */}
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://progressaccountants.com/" />
-        <meta property="og:title" content="Accountants in Banbury | Progress Accountants" />
-        <meta property="og:description" content="Forward-thinking accountants helping UK businesses with tax, forecasting, and industry-specific financial advice." />
-        <meta property="og:image" content="https://progressaccountants.com/progress-logo.png" />
-        <meta property="og:locale" content="en_GB" />
-        
-        {/* Twitter */}
-        <meta property="twitter:card" content="summary_large_image" />
-        <meta property="twitter:url" content="https://progressaccountants.com/" />
-        <meta property="twitter:title" content="Accountants in Banbury | Progress Accountants" />
-        <meta property="twitter:description" content="Forward-thinking accountants helping UK businesses with tax, forecasting, and industry-specific financial advice." />
-        <meta property="twitter:image" content="https://progressaccountants.com/progress-logo.png" />
-        
-        {/* Additional SEO Meta */}
-        <meta name="robots" content="index, follow" />
-        <meta name="author" content="Progress Accountants" />
-        <meta name="geo.region" content="GB-OXF" />
-        <meta name="geo.placename" content="Banbury, Oxfordshire" />
-        <meta name="geo.position" content="52.0628;-1.3420" />
-        <meta name="ICBM" content="52.0628, -1.3420" />
-        
-        {/* Mobile & Theme */}
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta name="theme-color" content="#4F46E5" />
-        <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-        
-        {/* Favicon & Manifest */}
-        <link rel="icon" type="image/png" href="/progress-logo.png" />
-        <link rel="apple-touch-icon" href="/progress-logo.png" />
-        <link rel="manifest" href="/manifest.json" />
-        
-        {/* JSON-LD Structured Data */}
-        <script type="application/ld+json">
-          {JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "AccountingService",
-            "name": "Progress Accountants",
-            "description": "Forward-thinking accountants helping UK businesses with tax, forecasting, and industry-specific financial advice",
-            "url": "https://progressaccountants.com",
-            "logo": "https://progressaccountants.com/progress-logo.png",
-            "image": "https://progressaccountants.com/progress-logo.png",
-            "telephone": "+44-1295-123456",
-            "email": "hello@progressaccountants.com",
-            "address": {
-              "@type": "PostalAddress",
-              "streetAddress": "Progress House, Castle Street",
-              "addressLocality": "Banbury",
-              "addressRegion": "Oxfordshire",
-              "postalCode": "OX16 5EU",
-              "addressCountry": "GB"
-            },
-            "geo": {
-              "@type": "GeoCoordinates",
-              "latitude": "52.0628",
-              "longitude": "-1.3420"
-            },
-            "openingHours": "Mo-Fr 09:00-17:00",
-            "sameAs": [
-              "https://www.linkedin.com/company/progress-accountants",
-              "https://twitter.com/progressaccounts"
-            ],
-            "serviceType": "Accounting Services",
-            "areaServed": {
-              "@type": "Country",
-              "name": "United Kingdom"
-            },
-            "hasOfferCatalog": {
-              "@type": "OfferCatalog",
-              "name": "Accounting Services",
-              "itemListElement": [
-                {
-                  "@type": "Offer",
-                  "itemOffered": {
-                    "@type": "Service",
-                    "name": "Tax Planning & Preparation",
-                    "description": "Strategic tax planning and compliance services for UK businesses"
-                  }
-                },
-                {
-                  "@type": "Offer",
-                  "itemOffered": {
-                    "@type": "Service",
-                    "name": "Business Advisory",
-                    "description": "Strategic business advice and financial forecasting"
-                  }
-                },
-                {
-                  "@type": "Offer",
-                  "itemOffered": {
-                    "@type": "Service",
-                    "name": "Industry-Specific Accounting",
-                    "description": "Specialist accounting for Construction, Film, Music and Professional Services"
-                  }
-                }
-              ]
-            }
-          })}
-        </script>
-      </Helmet>
+    <div className="min-h-screen bg-black">
       <HeroSection />
-      
-      {/* Featured Image Section */}
-      <section className="py-16 bg-black">
-        <div className="container mx-auto px-12 md:px-16">
-          <div className="max-w-4xl mx-auto">
-            <FadeIn delay={0.2}>
-              <div className="relative rounded-xl overflow-hidden shadow-2xl">
-                <img 
-                  src="https://res.cloudinary.com/drl0fxrkq/image/upload/v1747742829/P1013106-Enhanced-NR_adzlje.jpg"
-                  alt="Progress Accountants Professional Services"
-                  className="w-full h-auto object-cover"
-                  loading="lazy"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
-              </div>
-            </FadeIn>
-          </div>
-        </div>
-      </section>
-      
       <ServicesSection />
       <IndustriesSection />
-      
-      {/* SME Support Hub Section with animations */}
-      <section className="py-16 relative overflow-hidden bg-black">
-        <div 
-          className="absolute inset-0 bg-gradient-to-br from-slate-900 via-purple-900/30 to-slate-800"
-        />
-        <div className="container mx-auto px-12 md:px-16 relative z-10">
-          <div className="flex flex-col md:flex-row items-center gap-8">
-            <div className="md:w-1/2 text-white">
-              <SlideInLeft delay={0.2}>
-                <h2 className="text-3xl font-bold mb-4">
-                  SME Support Hub
-                </h2>
-                <p className="text-xl mb-4">
-                  Your one-stop resource for UK small businesses.
-                </p>
-              </SlideInLeft>
-              
-              <ul className="space-y-2 mb-6">
-                {/* Animated list items with staggered delay */}
-                <SlideUp className="flex items-center" delay={0.3}>
-                  <span className="text-[#7B3FE4] mr-2">✓</span> All key tax deadlines
-                </SlideUp>
-                <SlideUp className="flex items-center" delay={0.4}>
-                  <span className="text-[#7B3FE4] mr-2">✓</span> HMRC & Companies House contacts
-                </SlideUp>
-                <SlideUp className="flex items-center" delay={0.5}>
-                  <span className="text-[#7B3FE4] mr-2">✓</span> Downloadable guides
-                </SlideUp>
-                <SlideUp className="flex items-center" delay={0.6}>
-                  <span className="text-[#7B3FE4] mr-2">✓</span> Updated monthly
-                </SlideUp>
-              </ul>
-              
-              <FadeIn>
-                <Link href="/sme-support-hub" className="inline-block px-6 py-3 gradient-bg text-white rounded-md hover:shadow-lg hover:-translate-y-1 transition-all duration-300 progress-button">
-                  Access SME Support Hub
-                </Link>
-              </FadeIn>
-            </div>
-            
-            <div className="md:w-1/2 flex justify-center">
-              <SlideInRight delay={0.4}>
-                <div className="bg-[#101218] border border-[#2E2F3B] p-6 rounded-lg shadow-lg max-w-md w-full hover:shadow-xl transition-shadow duration-300">
-                  <ScaleIn delay={0.6}>
-                    <h3 className="text-xl font-bold mb-4 text-white">Available Resources</h3>
-                  </ScaleIn>
-                  
-                  <ul className="space-y-4">
-                    <SlideUp className="flex items-start" delay={0.7}>
-                      <div className="bg-gradient-to-r from-[#7B3FE4]/20 to-[#3FA4E4]/20 p-2 rounded-lg mr-4">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-[#7B3FE4]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                        </svg>
-                      </div>
-                      <div>
-                        <h4 className="font-medium text-white">SME Contacts Directory</h4>
-                        <p className="text-gray-300 text-sm">All important UK business support contacts in one PDF.</p>
-                      </div>
-                    </SlideUp>
-                    
-                    <SlideUp className="flex items-start" delay={0.8}>
-                      <div className="bg-gradient-to-r from-[#7B3FE4]/20 to-[#3FA4E4]/20 p-2 rounded-lg mr-4">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-[#7B3FE4]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                        </svg>
-                      </div>
-                      <div>
-                        <h4 className="font-medium text-white">Key Business Deadlines</h4>
-                        <p className="text-gray-300 text-sm">All tax and reporting deadlines for 2025 in a printable format.</p>
-                      </div>
-                    </SlideUp>
-                  </ul>
-                </div>
-              </SlideInRight>
-            </div>
-          </div>
-        </div>
-      </section>
-      
       <WhyUsSection />
-      
-      {/* Studio Highlight Section with animations */}
-      <section className="py-16 relative overflow-hidden bg-black">
-        <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-purple-900/30 to-slate-800"></div>
-        <div className="container mx-auto px-12 md:px-16 relative z-10">
-          <div className="flex flex-col md:flex-row items-center gap-8">
-            <div className="md:w-1/2">
-              <SlideInLeft delay={0.2}>
-                <div className="relative overflow-hidden rounded-lg shadow-2xl">
-                  <img 
-                    src="https://res.cloudinary.com/drl0fxrkq/image/upload/v1744815129/P1012279-Enhanced-NR_dgdlta.jpg" 
-                    alt="Progress Podcast & Video Studio" 
-                    className="w-full h-auto rounded-lg transform transition-transform duration-700 hover:scale-105"
-                  />
-                  <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-t from-black/20 to-transparent opacity-70"></div>
-                </div>
-              </SlideInLeft>
-            </div>
-            
-            <div className="md:w-1/2 text-white">
-              <SlideInRight delay={0.3}>
-                <ScaleIn delay={0.4}>
-                  <h2 className="text-3xl font-bold mb-4">
-                    🎙️ Podcast & Video Studio
-                  </h2>
-                </ScaleIn>
-                
-                <p className="text-xl mb-4">
-                  Purpose-built for businesses that want to sound and look professional without metropolitan prices.
-                </p>
-                
-                <ul className="space-y-2 mb-6">
-                  <SlideUp className="flex items-center" delay={0.5}>
-                    <span className="text-[#7B3FE4] mr-2">✓</span> Professional DSLR cameras
-                  </SlideUp>
-                  <SlideUp className="flex items-center" delay={0.6}>
-                    <span className="text-[#7B3FE4] mr-2">✓</span> Broadcast-quality microphones
-                  </SlideUp>
-                  <SlideUp className="flex items-center" delay={0.7}>
-                    <span className="text-[#7B3FE4] mr-2">✓</span> Acoustically treated space
-                  </SlideUp>
-                  <SlideUp className="flex items-center" delay={0.8}>
-                    <span className="text-[#7B3FE4] mr-2">✓</span> On-site technical support
-                  </SlideUp>
-                </ul>
-                
-                <div className="flex flex-wrap gap-4">
-                  <Link 
-                    href="/studio-banbury" 
-                    className="inline-block px-6 py-3 gradient-bg text-white rounded-md hover:shadow-lg hover:-translate-y-1 transition-all duration-300 progress-button"
-                  >
-                    View Studio Details
-                  </Link>
-                  <Link 
-                    href="/studio-banbury#booking-form" 
-                    className="inline-block px-6 py-3 bg-white text-zinc-800 rounded-md hover:bg-gray-100 hover:shadow-md transition-all duration-300"
-                  >
-                    Book Studio Time
-                  </Link>
-                </div>
-              </SlideInRight>
-            </div>
-          </div>
-        </div>
-      </section>
-      
-      {/* Contact Section with animations */}
+
+      {/* Enhanced Contact Section with Dark Theme */}
       <section className="py-16 bg-black" id="contact">
         <div className="container mx-auto px-12 md:px-16">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-10">
-              <ScaleIn delay={0.1}>
-                <h2 className="text-3xl font-bold mb-3 text-white">
-                  Looking for a proactive accountant in United Kingdom?
-                </h2>
-              </ScaleIn>
-              <SlideUp delay={0.3}>
-                <p className="text-zinc-300 max-w-3xl mx-auto">
-                  We're based in Oxford, Banbury, and London, and proudly serve ambitious businesses across the United Kingdom and beyond.
-                  Ready to take your accounting to the next level? Let's talk about how we can help your business flourish.
-                </p>
-              </SlideUp>
+              <h2 className="text-3xl font-bold mb-3 text-white">
+                Looking for a proactive accountant in United Kingdom?
+              </h2>
+              <p className="text-lg text-slate-300 mb-6 max-w-2xl mx-auto leading-relaxed">
+                Start your conversation with us today. Let's discuss your business goals and see how we can support your growth.
+              </p>
             </div>
-            
-            {/* Contact Form Section */}
+
+            {/* Enhanced Contact Form Section */}
             <div className="mb-14">
               <div className="bg-slate-900/80 backdrop-blur-sm p-8 rounded-xl shadow-2xl border border-slate-700/60 relative overflow-hidden">
                 {/* Enhanced background with texture */}
@@ -370,7 +62,7 @@ export default function HomePage() {
                       </a>
                     </div>
                   </div>
-                
+
                   <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                     <div className="lg:col-span-1">
                       <div className="bg-slate-800/50 backdrop-blur-sm p-6 rounded-lg border border-slate-600/60 h-full">
@@ -427,6 +119,7 @@ export default function HomePage() {
                     </div>
                   </div>
                 </div>
+              </div>
             </div>
             
             {/* Office Locations Section */}
@@ -464,7 +157,7 @@ export default function HomePage() {
                       ></iframe>
                     </div>
                     <div className="text-center">
-                      <a href="https://goo.gl/maps/exampleOxford" target="_blank" rel="noopener noreferrer" className="text-xs text-[var(--navy)] font-medium hover:text-[var(--orange)] transition-colors">
+                      <a href="https://goo.gl/maps/exampleOxford" target="_blank" rel="noopener noreferrer" className="text-xs text-slate-400 font-medium hover:text-[#7B3FE4] transition-colors">
                         View larger map
                       </a>
                     </div>
@@ -522,20 +215,20 @@ export default function HomePage() {
                       <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-[#7B3FE4] mr-2 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                       </svg>
-                      <span>2 Frederick's Place, Old Jewry, EC2R 8AE</span>
+                      <span>160 London Wall, London EC2Y 5DT</span>
                     </p>
                     <p className="flex items-start">
                       <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-[#7B3FE4] mr-2 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                       </svg>
-                      <span>020 3833 9950</span>
+                      <span>020 7628 8777</span>
                     </p>
                   </div>
                   
                   <div className="space-y-2">
                     <div className="relative overflow-hidden rounded-lg shadow-sm border border-slate-600 aspect-video">
                       <iframe 
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2483.118271413698!2d-0.09074622339802587!3d51.51427727181761!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x48760354ae0cf06f%3A0xee933e8203c1c8a!2sOld%20Jewry%2C%20London!5e0!3m2!1sen!2suk!4v1651234567892!5m2!1sen!2suk" 
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2482.411344968584!2d-0.09726162339246936!3d51.51841831071536!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x48761cb3c48c5173%3A0x21b7b6cb6e3b5e!2s160%20London%20Wall%2C%20London%20EC2Y%205DT!5e0!3m2!1sen!2suk!4v1651234567892!5m2!1sen!2suk" 
                         width="100%" 
                         height="100%" 
                         style={{ border: 0 }} 
@@ -559,4 +252,6 @@ export default function HomePage() {
       </section>
     </div>
   );
-}
+};
+
+export default HomePage;
