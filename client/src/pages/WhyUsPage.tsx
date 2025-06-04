@@ -300,7 +300,7 @@ export default function WhyUsPage() {
             <Link href="/testimonials">
               <Button 
                 variant="outline" 
-                className="hover:text-[var(--orange)] hover:border-[var(--orange)] flex items-center gap-2"
+                className="border-gray-600 text-gray-300 hover:text-blue-400 hover:border-blue-400 flex items-center gap-2"
               >
                 <span>Read More Testimonials</span>
                 <ArrowRight size={16} />
