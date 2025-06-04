@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { withMemo } from "@/lib/withMemo";
-import { ArrowRight, Film, Music, Building2, Users, Briefcase, HandCoins } from "lucide-react";
+import { ArrowRight, Film, Music, Building2, Users, Briefcase, Home, HandCoins } from "lucide-react";
 import { OptimizedImage } from "@/components/ui/OptimizedImage";
 import filmIndustryImage from "../assets/images/film_industry.png";
 import musicIndustryImage from "../assets/images/music_industry.png";
@@ -130,42 +130,42 @@ const IndustriesSection = () => {
       icon: Film,
       imageSrc: filmIndustryImage,
       title: "Film Industry",
-      description: "From freelance tax setups to R&D tax credits — we've worked with independent producers, directors, and studios.",
+      description: "From freelance creatives to studio productions—we know how to unlock Film Tax Relief and simplify your finances.",
       expertise: [
         "Production company accounting",
-        "Film tax relief applications",
-        "Crew payments and compliance"
+        "Tax relief applications",
+        "Crew compliance"
       ]
     },
     {
       icon: Music,
       imageSrc: musicIndustryImage,
       title: "Music Industry",
-      description: "Touring, royalties, self-employment, label accounting — we handle the numbers so you can stay creative.",
+      description: "From royalty audits to tour finances—financial clarity for artists, producers, and labels.",
       expertise: [
-        "Royalty accounting and audits",
-        "Tour financial management",
-        "Studio and label accounting"
+        "Royalty & licensing audits",
+        "Tour budgeting",
+        "Studio & label accounting"
       ]
     },
     {
       icon: Building2,
       imageSrc: constructionIndustryImage,
       title: "Construction",
-      description: "We understand CIS, contractor management, and project-based finance. We've got the site and the spreadsheet covered.",
+      description: "CIS returns, project cash flow, and subcontractor pay—handled by sector specialists.",
       expertise: [
-        "CIS compliance and returns",
-        "Project profitability analysis",
-        "Subcontractor management"
+        "CIS tax compliance",
+        "Profitability tracking",
+        "Contractor finance systems"
       ]
     }
   ];
 
   // Additional industries we serve
   const additionalIndustries = [
-    { icon: Briefcase, label: "Professional Services" },
-    { icon: Users, label: "Family Businesses" },
-    { icon: HandCoins, label: "Investment Firms" }
+    { icon: Briefcase, label: "Digital & Technology" },
+    { icon: Home, label: "Property & Real Estate" },
+    { icon: Users, label: "Family Businesses" }
   ];
 
   return (
