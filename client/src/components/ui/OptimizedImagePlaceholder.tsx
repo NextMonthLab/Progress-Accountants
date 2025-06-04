@@ -11,31 +11,31 @@ import financialDashboardImage from '../../assets/images/new_financial_dashboard
 // Optimized version of image placeholders
 export const OptimizedPodcastStudio = () => (
   <OptimizedImage 
-    src={podcastStudioImage} 
+    src="https://res.cloudinary.com/dtqavlzjv/image/upload/v1733352524/P1023674_di2j3g.jpg" 
     alt="Podcast and Video Studio"
     width={400}
-    height={200}
-    className="w-full h-full object-cover object-top"
+    height={288}
+    className="w-full h-full object-cover object-center"
   />
 );
 
 export const OptimizedDashboardMockup = () => (
   <OptimizedImage 
-    src={financialDashboardImage} 
+    src="https://res.cloudinary.com/dtqavlzjv/image/upload/v1733352524/P1013106-Enhanced-NR_adzlje.jpg" 
     alt="Financial Dashboard with Revenue Analytics"
     width={400}
-    height={200}
-    className="w-full h-full object-cover object-top"
+    height={288}
+    className="w-full h-full object-cover object-center"
   />
 );
 
 export const OptimizedStrategySession = () => (
   <OptimizedImage 
-    src={strategySessionImage} 
+    src="https://res.cloudinary.com/dtqavlzjv/image/upload/v1733352524/P1023674_di2j3g.jpg" 
     alt="Strategy Session with Financial Advisors"
     width={400}
-    height={200}
-    className="w-full h-full object-cover object-top"
+    height={288}
+    className="w-full h-full object-cover object-center"
   />
 );
 
