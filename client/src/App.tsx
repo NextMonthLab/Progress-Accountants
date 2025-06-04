@@ -218,6 +218,11 @@ function Router() {
           <ConstructionIndustryPage />
         </Suspense>
       </Route>
+      <Route path="/industries/professional-services">
+        <Suspense fallback={<LoadingFallback />}>
+          <ProfessionalServicesPage />
+        </Suspense>
+      </Route>
 
       {/* Temporary demo route */}
       <Route path="/conversion-demo">
