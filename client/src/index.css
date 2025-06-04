@@ -122,6 +122,7 @@ body:not([data-admin]) .rounded-full {
   /* Force dark mode permanently */
   html {
     color-scheme: dark;
+    background-color: black;
   }
   
   html.dark {
@@ -129,7 +130,7 @@ body:not([data-admin]) .rounded-full {
   }
 
   body {
-    @apply font-sans antialiased bg-slate-900 text-white;
+    @apply font-sans antialiased bg-black text-white;
     font-family: 'Inter', sans-serif;
   }
 
