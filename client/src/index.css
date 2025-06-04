@@ -87,6 +87,13 @@
   --dark-grey: #4a5568;
   --orange: #F4A261;
   --nextmonth-teal: #000000;
+  
+  /* Force black background for all theme states */
+  --background: 0 0% 0% !important;
+  --card: 0 0% 0% !important;
+  --popover: 0 0% 0% !important;
+  --primary: 263 83% 57% !important;
+  --primary-foreground: 210 40% 98% !important;
 }
 
 /* GLOBAL: Control all rounded corners site-wide */

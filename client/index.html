@@ -8,6 +8,17 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+      /* Force black background immediately to prevent blue flash */
+      :root {
+        --background: 0 0% 0% !important;
+        --card: 0 0% 0% !important;
+        --popover: 0 0% 0% !important;
+      }
+      html, body, #root {
+        background-color: black !important;
+      }
+    </style>
   </head>
   <body style="background-color: black; margin: 0; padding: 0;">
     <div id="root" style="background-color: black;"></div>
