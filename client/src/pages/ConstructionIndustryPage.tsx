@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { OptimizedImage } from "@/components/ui/OptimizedImage";
+import { Helmet } from 'react-helmet';
 import { ArrowRight, CheckCircle, ArrowDown, Hammer, HardHat, Building2, Coins, Wrench, User, FileSpreadsheet, Home, Clock, Receipt, BarChart3 } from "lucide-react";
 
 // Import construction industry images
@@ -141,6 +142,96 @@ const ConstructionIndustryPage = () => {
 
   return (
     <div className="bg-black pb-20">
+      <Helmet>
+        <title>Construction Industry Accountants | CIS & VAT Specialists | Progress Accountants</title>
+        <meta name="description" content="Expert construction industry accounting services in the UK. CIS compliance, VAT planning, cash flow management and industry-specific tax advice for builders and contractors." />
+        <meta name="keywords" content="construction accountants uk, cis accounting, construction industry scheme, vat for builders, contractor accounting, construction tax advice" />
+        <link rel="canonical" href="https://progressaccountants.com/industries/construction" />
+        
+        {/* Open Graph */}
+        <meta property="og:title" content="Construction Industry Accountants | CIS & VAT Specialists" />
+        <meta property="og:description" content="Expert construction industry accounting services in the UK. CIS compliance, VAT planning, cash flow management." />
+        <meta property="og:url" content="https://progressaccountants.com/industries/construction" />
+        <meta property="og:type" content="website" />
+        
+        {/* Breadcrumb Schema */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://progressaccountants.com/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Industries",
+                "item": "https://progressaccountants.com/industries"
+              },
+              {
+                "@type": "ListItem",
+                "position": 3,
+                "name": "Construction Industry",
+                "item": "https://progressaccountants.com/industries/construction"
+              }
+            ]
+          })}
+        </script>
+        
+        {/* Service Schema */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Service",
+            "name": "Construction Industry Accounting Services",
+            "description": "Specialist accounting services for the UK construction industry including CIS compliance, VAT planning, and cash flow management",
+            "provider": {
+              "@type": "AccountingService",
+              "name": "Progress Accountants",
+              "url": "https://progressaccountants.com"
+            },
+            "areaServed": {
+              "@type": "Country",
+              "name": "United Kingdom"
+            },
+            "serviceType": "Construction Industry Accounting",
+            "hasOfferCatalog": {
+              "@type": "OfferCatalog",
+              "name": "Construction Accounting Services",
+              "itemListElement": [
+                {
+                  "@type": "Offer",
+                  "itemOffered": {
+                    "@type": "Service",
+                    "name": "CIS Compliance",
+                    "description": "Construction Industry Scheme compliance and management"
+                  }
+                },
+                {
+                  "@type": "Offer",
+                  "itemOffered": {
+                    "@type": "Service",
+                    "name": "VAT Planning",
+                    "description": "Strategic VAT planning for construction businesses"
+                  }
+                },
+                {
+                  "@type": "Offer",
+                  "itemOffered": {
+                    "@type": "Service",
+                    "name": "Cash Flow Management",
+                    "description": "Construction industry cash flow planning and management"
+                  }
+                }
+              ]
+            }
+          })}
+        </script>
+      </Helmet>
       {/* Hero section */}
       <div 
         ref={headerRef}

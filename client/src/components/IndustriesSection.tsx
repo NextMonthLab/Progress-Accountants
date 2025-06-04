@@ -29,7 +29,7 @@ const IndustryCard = withMemo(({
         <div className="absolute inset-0 bg-gradient-to-t from-navy/60 to-transparent z-10"></div>
         <OptimizedImage
           src={imageSrc}
-          alt={title}
+          alt={`${title} accounting services - specialist financial advice for ${title.toLowerCase()} professionals and businesses`}
           className="w-full h-full object-cover"
           width={600}
           height={300}
