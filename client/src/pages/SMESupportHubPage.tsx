@@ -433,9 +433,9 @@ const CTASection = () => (
         transition={{ duration: 0.6 }}
         className="max-w-4xl mx-auto text-center"
       >
-        <h2 className="text-3xl font-bold text-white mb-6">Need help keeping track of what matters for your business?</h2>
+        <h2 className="text-3xl font-bold text-white mb-6">📞 Ready to Get Expert Support?</h2>
         <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
-          Book a call and we'll guide you through it. Our team of experts is ready to help you navigate the complexities of business compliance.
+          Book a chat with our team and let us help you navigate UK business requirements with confidence.
         </p>
         <Button size="lg" className="bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] hover:shadow-lg hover:shadow-purple-500/25 hover:-translate-y-1 transition-all duration-300 text-white">
           Schedule a Call
