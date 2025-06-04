@@ -102,17 +102,17 @@ const CTASection = () => (
     </div>
     <div className="relative z-10">
       <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
-        Book a Free Construction Finance Review
+        📐 Book a Free Construction Finance Review
       </h2>
       <p className="text-white text-lg max-w-2xl mb-8">
-        Find out how we can make your business more profitable—and your finances less stressful.
+        Let's build a better financial setup for your business—from CIS to scaling up.
       </p>
       <div className="flex flex-col sm:flex-row gap-4">
         <Button size="lg" className="bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] hover:from-[#6B2FD4] hover:to-[#2F94D4] text-white border-none font-medium">
-          Book a consultation
+          Book a Consultation
         </Button>
         <Button size="lg" className="bg-gray-800 text-white hover:bg-gray-700 font-medium">
-          View our services
+          View Our Services
         </Button>
       </div>
     </div>
@@ -300,20 +300,20 @@ const ConstructionIndustryPage = () => {
             />
             <FeatureCard 
               icon={BarChart3}
-              title="VAT & Reverse Charge Simplified"
-              description="The Construction Reverse Charge can be a minefield. We make sure your VAT is reclaimed correctly and that you're never overpaying or filing late."
+              title="📄 VAT & Reverse Charge Simplified"
+              description="The Construction Reverse Charge can be confusing. We'll ensure it's handled correctly so you're not overpaying or getting caught out."
               accentColor="bg-blue-500"
             />
             <FeatureCard 
               icon={Coins}
-              title="Stay On Top of Project Cash Flow"
-              description="We help you track income and outgoings per project, forecast for slow months, and budget for materials, labour, and growth."
+              title="💸 Stay On Top of Project Cash Flow"
+              description="Track cash in and out on a per-project basis, forecast lean months, and budget smartly for labour, materials, and expansion."
               accentColor="bg-green-500"
             />
             <FeatureCard 
               icon={Building2}
-              title="Grow Without Losing Control"
-              description="From setting up new company structures to managing payroll and financing large builds—we're your strategic partner for growth, not just compliance."
+              title="🚀 Grow Without Losing Control"
+              description="From setting up SPVs to managing payroll for expanding teams—we're more than accountants. We're your financial growth partners."
               accentColor="bg-purple-500"
             />
           </div>
@@ -356,18 +356,18 @@ const ConstructionIndustryPage = () => {
           variants={containerVariants}
         >
           <motion.div variants={itemVariants} className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-white mb-6">Trusted by Builders, Developers, and Tradespeople</h2>
+            <h2 className="text-3xl font-bold text-white mb-6">Trusted by Builders, Developers & Tradespeople</h2>
             <p className="text-lg text-gray-300 max-w-3xl mx-auto mb-8">
-              Whether you're laying bricks or managing builds, we'll handle the numbers that keep your business moving forward. We work with:
+              Whether you're building houses or fitting kitchens, we've got your numbers covered. We work with:
             </p>
           </motion.div>
           
           <div className="grid grid-cols-2 md:grid-cols-5 gap-5 mb-16">
             <ClientType icon={HardHat} label="General contractors" />
             <ClientType icon={Home} label="Property developers" />
-            <ClientType icon={Wrench} label="Electricians & plumbers" />
-            <ClientType icon={Building2} label="Renovation specialists" />
-            <ClientType icon={User} label="Expanding trades companies" />
+            <ClientType icon={Wrench} label="Electricians and plumbers" />
+            <ClientType icon={Building2} label="Renovation and extension specialists" />
+            <ClientType icon={User} label="Scaling trade businesses and subcontractor teams" />
           </div>
         </motion.div>
       </div>
@@ -383,7 +383,7 @@ const ConstructionIndustryPage = () => {
           <motion.div variants={itemVariants} className="text-center mb-12">
             <h2 className="text-3xl font-bold text-white mb-6">Our Tech-Savvy Construction Support</h2>
             <p className="text-lg text-gray-300 max-w-3xl mx-auto mb-8">
-              We connect your bookkeeping, payroll, and job costing through cloud-based systems like Xero. That means:
+              We integrate tools like Xero and cloud-based job costing systems to give you fast, useful, and construction-specific insights.
             </p>
           </motion.div>
           
@@ -392,19 +392,19 @@ const ConstructionIndustryPage = () => {
               <ul className="space-y-4">
                 <li className="flex items-start">
                   <CheckCircle className="h-5 w-5 text-purple-400 mr-3 shrink-0 mt-1" />
-                  <p className="text-gray-300">Weekly and monthly cash flow snapshots</p>
+                  <p className="text-gray-300">Weekly/monthly cash flow views</p>
                 </li>
                 <li className="flex items-start">
                   <CheckCircle className="h-5 w-5 text-purple-400 mr-3 shrink-0 mt-1" />
-                  <p className="text-gray-300">Job-specific reports to track real margins</p>
+                  <p className="text-gray-300">Project-by-project profit tracking</p>
                 </li>
                 <li className="flex items-start">
                   <CheckCircle className="h-5 w-5 text-purple-400 mr-3 shrink-0 mt-1" />
-                  <p className="text-gray-300">Tax alerts and reminders that keep you in control</p>
+                  <p className="text-gray-300">Real-time alerts and tax deadline reminders</p>
                 </li>
                 <li className="flex items-start">
                   <CheckCircle className="h-5 w-5 text-purple-400 mr-3 shrink-0 mt-1" />
-                  <p className="text-gray-300">Advice tailored to the realities of construction work</p>
+                  <p className="text-gray-300">Practical advice tailored to your trade</p>
                 </li>
               </ul>
             </motion.div>
