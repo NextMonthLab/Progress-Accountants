@@ -51,15 +51,27 @@ const professionalServices = [
   },
   {
     icon: TrendingUp,
-    title: "Business Advisory",
-    description: "Strategic guidance to accelerate your business growth and improve operational efficiency.",
+    title: "🧾 Tax Planning for Service Models",
+    description: "We help service businesses stay efficient—whether you're a sole trader, LLP, or limited company with staff and contractors.",
     features: [
-      "Growth strategy development",
-      "Financial modeling",
-      "Investment planning",
-      "Exit strategy planning"
+      "Business structure optimisation",
+      "Contractor vs employee guidance",
+      "Tax-efficient payment strategies",
+      "Annual planning reviews"
     ],
-    highlight: "Accelerate business growth"
+    highlight: "Tailored to your business model"
+  },
+  {
+    icon: Shield,
+    title: "🔐 Secure Client Data Handling",
+    description: "We set up smart systems for managing sensitive documents and payments—especially if you deal with confidential client data.",
+    features: [
+      "Secure document management",
+      "Payment processing setup",
+      "Data protection compliance",
+      "Client confidentiality protocols"
+    ],
+    highlight: "GDPR compliant systems"
   }
 ];
 
@@ -179,15 +191,161 @@ export default function ProfessionalServicesPage() {
         </div>
       </section>
 
+      {/* Testimonials Section */}
+      <section className="py-20 bg-gray-900/30">
+        <div className="container mx-auto px-6 md:px-8">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-16">
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">What Our Clients Say</h2>
+            </div>
+            
+            <div className="grid md:grid-cols-2 gap-8">
+              <div className="bg-gray-800/50 rounded-xl p-8 border border-gray-700">
+                <div className="flex mb-4">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="w-5 h-5 text-yellow-400 fill-current" />
+                  ))}
+                </div>
+                <p className="text-gray-300 mb-6 italic">
+                  "Progress helped us finally understand where our profit really comes from. Their insight helped us shift focus and grow."
+                </p>
+                <p className="text-purple-400 font-medium">— Marketing Consultant, Oxfordshire</p>
+              </div>
+              
+              <div className="bg-gray-800/50 rounded-xl p-8 border border-gray-700">
+                <div className="flex mb-4">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="w-5 h-5 text-yellow-400 fill-current" />
+                  ))}
+                </div>
+                <p className="text-gray-300 mb-6 italic">
+                  "Hands down the most proactive accountants we've worked with. Clear advice, no jargon, and always one step ahead."
+                </p>
+                <p className="text-purple-400 font-medium">— Business Coach, Warwickshire</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Client Types Section */}
+      <section className="py-20 bg-gray-900/50">
+        <div className="container mx-auto px-6 md:px-8">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-16">
+              <h2 className="text-3xl md:text-4xl font-bold mb-6">Trusted by Agencies, Advisors, and Consultants</h2>
+              <p className="text-xl text-gray-300 max-w-3xl mx-auto mb-8">
+                We work with a wide range of professional service businesses, including:
+              </p>
+            </div>
+            
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+              <div className="text-center">
+                <div className="w-16 h-16 rounded-lg bg-gradient-to-r from-[#4F46E5] to-[#E935C1] flex items-center justify-center mb-4 mx-auto">
+                  <Users className="w-8 h-8 text-white" />
+                </div>
+                <p className="text-gray-300">Business consultants</p>
+              </div>
+              
+              <div className="text-center">
+                <div className="w-16 h-16 rounded-lg bg-gradient-to-r from-[#4F46E5] to-[#E935C1] flex items-center justify-center mb-4 mx-auto">
+                  <BarChart3 className="w-8 h-8 text-white" />
+                </div>
+                <p className="text-gray-300">Marketing & PR agencies</p>
+              </div>
+              
+              <div className="text-center">
+                <div className="w-16 h-16 rounded-lg bg-gradient-to-r from-[#4F46E5] to-[#E935C1] flex items-center justify-center mb-4 mx-auto">
+                  <FileText className="w-8 h-8 text-white" />
+                </div>
+                <p className="text-gray-300">Legal professionals</p>
+              </div>
+              
+              <div className="text-center">
+                <div className="w-16 h-16 rounded-lg bg-gradient-to-r from-[#4F46E5] to-[#E935C1] flex items-center justify-center mb-4 mx-auto">
+                  <TrendingUp className="w-8 h-8 text-white" />
+                </div>
+                <p className="text-gray-300">Coaches and educators</p>
+              </div>
+              
+              <div className="text-center">
+                <div className="w-16 h-16 rounded-lg bg-gradient-to-r from-[#4F46E5] to-[#E935C1] flex items-center justify-center mb-4 mx-auto">
+                  <Users className="w-8 h-8 text-white" />
+                </div>
+                <p className="text-gray-300">Training providers</p>
+              </div>
+              
+              <div className="text-center">
+                <div className="w-16 h-16 rounded-lg bg-gradient-to-r from-[#4F46E5] to-[#E935C1] flex items-center justify-center mb-4 mx-auto">
+                  <Users className="w-8 h-8 text-white" />
+                </div>
+                <p className="text-gray-300">HR and recruitment firms</p>
+              </div>
+              
+              <div className="text-center">
+                <div className="w-16 h-16 rounded-lg bg-gradient-to-r from-[#4F46E5] to-[#E935C1] flex items-center justify-center mb-4 mx-auto">
+                  <Sparkles className="w-8 h-8 text-white" />
+                </div>
+                <p className="text-gray-300">Architects and creative professionals</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Tech Support Section */}
+      <section className="py-20 bg-gray-900/30">
+        <div className="container mx-auto px-6 md:px-8">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-16">
+              <h2 className="text-3xl md:text-4xl font-bold mb-6">Our Tech-Forward Support</h2>
+              <p className="text-xl text-gray-300 max-w-3xl mx-auto mb-8">
+                We use cloud platforms like Xero to automate your invoicing, payments, and reporting—freeing you up to focus on client work.
+              </p>
+            </div>
+            
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div className="bg-gray-800/50 rounded-xl p-6 border border-gray-700 text-center">
+                <div className="w-12 h-12 rounded-lg bg-gradient-to-r from-[#4F46E5] to-[#E935C1] flex items-center justify-center mb-4 mx-auto">
+                  <BarChart3 className="w-6 h-6 text-white" />
+                </div>
+                <p className="text-gray-300">Live income dashboards</p>
+              </div>
+              
+              <div className="bg-gray-800/50 rounded-xl p-6 border border-gray-700 text-center">
+                <div className="w-12 h-12 rounded-lg bg-gradient-to-r from-[#4F46E5] to-[#E935C1] flex items-center justify-center mb-4 mx-auto">
+                  <FileText className="w-6 h-6 text-white" />
+                </div>
+                <p className="text-gray-300">Time/project-based expense tracking</p>
+              </div>
+              
+              <div className="bg-gray-800/50 rounded-xl p-6 border border-gray-700 text-center">
+                <div className="w-12 h-12 rounded-lg bg-gradient-to-r from-[#4F46E5] to-[#E935C1] flex items-center justify-center mb-4 mx-auto">
+                  <Calculator className="w-6 h-6 text-white" />
+                </div>
+                <p className="text-gray-300">Real-time tax estimates</p>
+              </div>
+              
+              <div className="bg-gray-800/50 rounded-xl p-6 border border-gray-700 text-center">
+                <div className="w-12 h-12 rounded-lg bg-gradient-to-r from-[#4F46E5] to-[#E935C1] flex items-center justify-center mb-4 mx-auto">
+                  <TrendingUp className="w-6 h-6 text-white" />
+                </div>
+                <p className="text-gray-300">Automation for invoicing and payment reminders</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section className="py-20">
         <div className="container mx-auto px-6 md:px-8">
           <div className="max-w-4xl mx-auto text-center">
             <div className="bg-gradient-to-r from-[#4F46E5]/10 to-[#E935C1]/10 rounded-2xl p-12 border border-gray-700">
               <h2 className="text-3xl md:text-4xl font-bold mb-6">
-                Ready to Transform Your Business?
+                📞 Book a Free Finance Strategy Call
               </h2>
               <p className="text-xl text-gray-300 mb-8">
-                Schedule a free consultation with our expert team and discover how we can help your business reach its full potential.
+                Let's explore how Progress can help you run a more profitable, less stressful service business.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button 
@@ -196,7 +354,7 @@ export default function ProfessionalServicesPage() {
                   asChild
                 >
                   <Link href="/contact">
-                    Book Free Consultation
+                    Book a Consultation
                     <ArrowRight className="ml-2 h-5 w-5" />
                   </Link>
                 </Button>
@@ -206,8 +364,8 @@ export default function ProfessionalServicesPage() {
                   className="px-8 py-6 text-lg border-gray-600 text-white hover:bg-gray-800"
                   asChild
                 >
-                  <Link href="/about">
-                    Learn About Us
+                  <Link href="/services">
+                    View Our Services
                   </Link>
                 </Button>
               </div>
