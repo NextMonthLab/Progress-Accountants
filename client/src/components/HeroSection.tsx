@@ -71,8 +71,12 @@ const HeroSection = () => {
     <section 
       className="bg-black text-white min-h-[90vh] relative flex items-center py-16 overflow-hidden"
     >
-      {/* Dark gradient background with subtle purple accent */}
-      <div className="absolute inset-0 bg-gradient-to-br from-slate-950 via-purple-950/40 to-slate-900 z-0"></div>
+      {/* Sophisticated dark textured background */}
+      <div className="absolute inset-0 z-0">
+        <div className="absolute inset-0 bg-gradient-to-br from-zinc-900/80 via-gray-900/60 to-zinc-800/40"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-zinc-800/20 to-transparent"></div>
+        <div className="absolute inset-0 opacity-30 bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.01)_1px,transparent_1px)] bg-[length:40px_40px]"></div>
+      </div>
       
       <div className="container mx-auto px-12 md:px-16 z-10 relative">
         <div className="flex flex-col md:flex-row items-center gap-8 lg:gap-12">
