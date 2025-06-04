@@ -4,6 +4,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { ProgressBanner } from "@/components/ProgressBanner";
 import AdminLayout from "@/layouts/AdminLayout";
+import CookieNotification from "@/components/CookieNotification";
 
 interface MainLayoutProps {
   children: ReactNode;
@@ -63,6 +64,7 @@ export default function MainLayout({ children }: MainLayoutProps) {
         <ProgressBanner />
       </div>
       <Footer />
+      <CookieNotification />
     </div>
   );
 }
