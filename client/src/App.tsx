@@ -27,6 +27,7 @@ import MainLayout from "@/layouts/MainLayout";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import ErrorBoundary from "@/components/error/ErrorBoundary";
 import ContentLoader from "@/components/error/ContentLoader";
+import CookieNotification from "@/components/CookieNotification";
 
 // Eagerly loaded components for critical paths
 import HomePage from "@/pages/HomePage";
