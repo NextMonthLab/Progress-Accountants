@@ -88,19 +88,19 @@ export default function Footer() {
             <h3 className="font-semibold text-lg mb-4">Services</h3>
             <ul className="space-y-2">
               <li>
-                <a href="#" className="text-gray-300 hover:text-purple-400 transition">
+                <Link href="/services" className="text-gray-300 hover:text-purple-400 transition">
+                  All Services
+                </Link>
+              </li>
+              <li>
+                <Link href="/services/accounting" className="text-gray-300 hover:text-purple-400 transition">
                   Accounting & Bookkeeping
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-gray-300 hover:text-purple-400 transition">
+                <Link href="/services/tax" className="text-gray-300 hover:text-purple-400 transition">
                   Tax Returns
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-gray-300 hover:text-purple-400 transition">
-                  Financial Dashboard
-                </a>
+                </Link>
               </li>
               <li>
                 <Link href="/studio-banbury" className="text-[#7B3FE4] font-medium hover:text-purple-300 transition">
@@ -108,9 +108,9 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <a href="#" className="text-gray-300 hover:text-purple-400 transition">
-                  Virtual Finance Director
-                </a>
+                <Link href="/business-calculator" className="text-gray-300 hover:text-purple-400 transition">
+                  Business Calculator
+                </Link>
               </li>
             </ul>
           </div>
@@ -119,29 +119,29 @@ export default function Footer() {
             <h3 className="font-semibold text-lg mb-4">Industries</h3>
             <ul className="space-y-2">
               <li>
-                <a href="#" className="text-gray-300 hover:text-purple-400 transition">
+                <Link href="/industries/film" className="text-gray-300 hover:text-purple-400 transition">
                   Film Industry
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-gray-300 hover:text-purple-400 transition">
+                <Link href="/industries/music" className="text-gray-300 hover:text-purple-400 transition">
                   Music Industry
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-gray-300 hover:text-purple-400 transition">
+                <Link href="/industries/construction" className="text-gray-300 hover:text-purple-400 transition">
                   Construction
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-gray-300 hover:text-purple-400 transition">
-                  Small Businesses
-                </a>
+                <Link href="/industries/professional-services" className="text-gray-300 hover:text-purple-400 transition">
+                  Professional Services
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-gray-300 hover:text-purple-400 transition">
-                  Startups
-                </a>
+                <Link href="/sme-support-hub" className="text-gray-300 hover:text-purple-400 transition">
+                  SME Support Hub
+                </Link>
               </li>
             </ul>
           </div>
