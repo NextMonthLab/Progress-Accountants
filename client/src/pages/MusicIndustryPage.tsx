@@ -110,10 +110,10 @@ const CTASection = () => (
       </p>
       <div className="flex flex-col sm:flex-row gap-4">
         <Button size="lg" className="bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] hover:shadow-lg hover:shadow-purple-500/25 text-white border-none font-medium">
-          Book a consultation
+          Book a Consultation
         </Button>
         <Button size="lg" className="bg-white text-gray-900 hover:bg-gray-100 font-medium">
-          View our services
+          View Our Services
         </Button>
       </div>
     </div>
@@ -299,20 +299,20 @@ const MusicIndustryPage = () => {
             />
             <FeatureCard 
               icon={Banknote}
-              title="Touring & International Tax Guidance"
-              description="Gigging abroad? We make sure you're covered with cross-border tax advice, travel expense planning, and currency-aware financial reporting."
+              title="🌍 Touring & International Tax Guidance"
+              description="Playing internationally? We handle cross-border tax compliance, currency management, and travel expense optimisation—keeping you compliant wherever you perform."
               accentColor="bg-blue-500"
             />
             <FeatureCard 
               icon={Users}
-              title="Smooth Payments for Freelancers & Session Musicians"
-              description="From bandmates to backing vocalists, we handle payments and tax filings for everyone in your crew—keeping you compliant and your collaborators happy."
+              title="🤝 Smooth Payments for Freelancers & Session Musicians"
+              description="Managing freelance payments and session musicians? We handle the compliance, contracts, and tax obligations—so everyone gets paid correctly and on time."
               accentColor="bg-green-500"
             />
             <FeatureCard 
               icon={Headphones}
-              title="Smart Studio & Equipment Expenses"
-              description="We advise on how to buy, lease, and depreciate equipment in a way that maximises tax efficiency and supports long-term growth."
+              title="🎛️ Smart Studio & Equipment Investment"
+              description="From mixing desks to tour vans—we optimise how you buy, lease, and write off equipment to maximise tax efficiency and support long-term growth."
               accentColor="bg-purple-500"
             />
           </div>
@@ -333,13 +333,13 @@ const MusicIndustryPage = () => {
           
           <div className="grid md:grid-cols-2 gap-8 mb-16">
             <Testimonial 
-              quote="Progress gave me total control of my royalty income. I finally feel in charge of my music money."
+              quote="Progress gave me complete control over my royalty income. For the first time, I actually understand my music finances."
               author="Independent Artist"
               role="Oxfordshire"
             />
             <Testimonial 
-              quote="Having accountants who understand the music business makes all the difference. Progress delivers insights we can actually use, when we need them."
-              author="Studio Owner"
+              quote="Having accountants who truly understand the music business makes all the difference. Progress delivers insights we can actually use."
+              author="Recording Studio Owner"
               role="London"
             />
           </div>
@@ -357,7 +357,7 @@ const MusicIndustryPage = () => {
           <motion.div variants={itemVariants} className="text-center mb-12">
             <h2 className="text-3xl font-bold text-white mb-6">Trusted by Artists, Studios, and Music Managers</h2>
             <p className="text-lg text-gray-300 max-w-3xl mx-auto mb-8">
-              Whether you're mixing your next EP or building a label, we're here to support your creative and financial goals. We've worked with:
+              Whether you're recording your next single or managing a touring act—we support music businesses at every level:
             </p>
           </motion.div>
           
@@ -380,9 +380,9 @@ const MusicIndustryPage = () => {
           variants={containerVariants}
         >
           <motion.div variants={itemVariants} className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-white mb-6">Our Tech-Forward Support</h2>
+            <h2 className="text-3xl font-bold text-white mb-6">Our Tech-Forward Approach</h2>
             <p className="text-lg text-gray-300 max-w-3xl mx-auto mb-8">
-              We use cloud-based platforms like Xero to give you real-time visibility into your income and expenses. That means:
+              We use cloud-based platforms like Xero to give you real-time visibility into your income and expenses:
             </p>
           </motion.div>
           
@@ -391,20 +391,20 @@ const MusicIndustryPage = () => {
               <ul className="space-y-4">
                 <li className="flex items-start">
                   <CheckCircle className="h-5 w-5 text-purple-400 mr-3 shrink-0 mt-1" />
-                  <p className="text-gray-300">Snapshot views of income from Spotify, YouTube, and distributors</p>
+                  <p className="text-gray-300">Real-time views of income from streaming, distributors, and live performances</p>
                 </li>
                 <li className="flex items-start">
                   <CheckCircle className="h-5 w-5 text-purple-400 mr-3 shrink-0 mt-1" />
-                  <p className="text-gray-300">Categorised expenses from tours, equipment, and production</p>
+                  <p className="text-gray-300">Categorised expenses from tours, equipment purchases, and studio costs</p>
                 </li>
                 <li className="flex items-start">
                   <CheckCircle className="h-5 w-5 text-purple-400 mr-3 shrink-0 mt-1" />
-                  <p className="text-gray-300">Real-time tax estimates so there are no nasty surprises</p>
+                  <p className="text-gray-300">Live tax estimates so there are no unexpected bills</p>
                 </li>
               </ul>
               
               <div className="mt-6 pt-6 border-t border-gray-800">
-                <p className="text-white font-medium">Prefer voice notes to spreadsheets? We adapt to your workflow—not the other way around.</p>
+                <p className="text-white font-medium">More comfortable with voice notes than spreadsheets? We adapt to your workflow—not the other way around.</p>
               </div>
             </motion.div>
           </div>
