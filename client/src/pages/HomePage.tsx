@@ -158,7 +158,6 @@ export default function HomePage() {
         </script>
       </Helmet>
       <HeroSection />
-      <ServicesSection />
       
       {/* Featured Image Section */}
       <section className="py-16 bg-black">
@@ -179,6 +178,7 @@ export default function HomePage() {
         </div>
       </section>
       
+      <ServicesSection />
       <IndustriesSection />
       
       {/* SME Support Hub Section with animations */}
