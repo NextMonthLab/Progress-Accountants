@@ -44,8 +44,8 @@ const ServiceCard = withMemo(({
           <ImageComponent />
         </div>
       )}
-      <CardContent className="px-4 pt-3 pb-4 md:px-6 md:pt-4 md:pb-6">
-        <div className="flex items-center mb-3">
+      <CardContent className="px-4 pt-1 pb-4 md:px-6 md:pt-2 md:pb-6">
+        <div className="flex items-center mb-2">
           <div className="w-10 h-10 rounded-full gradient-bg flex items-center justify-center mr-3">
             <span className="text-white text-sm">★</span>
           </div>
