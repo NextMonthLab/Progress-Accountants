@@ -298,26 +298,26 @@ const FilmIndustryPage = () => {
           <div className="grid md:grid-cols-2 gap-8 mb-16">
             <FeatureCard 
               icon={Award}
-              title="Maximise Film Tax Relief"
-              description="We don't just know the rules—we know how to make them work for your budget. From qualifying production expenses to navigating Creative Industry Tax Reliefs, we ensure you're claiming everything you're entitled to."
+              title="🎯 Maximise Film Tax Relief"
+              description="We don't just know the rules—we know how to make them work. From qualifying spend to Creative Industry Tax Reliefs, we'll ensure you're claiming every penny you're entitled to."
               accentColor="bg-orange-500"
             />
             <FeatureCard 
               icon={Banknote}
-              title="Tame Complex Cash Flow Cycles"
-              description="Project-based revenue and unpredictable funding can make financial planning feel like a guessing game. We bring structure with real-time dashboards, forecasting tools, and monthly check-ins tailored to your production schedule."
+              title="📈 Tame Complex Cash Flow Cycles"
+              description="Production funding is unpredictable. We simplify it with real-time dashboards, financial forecasting, and monthly check-ins—all timed to your production phases."
               accentColor="bg-blue-500"
             />
             <FeatureCard 
               icon={Users}
-              title="Simplify Freelancer & Crew Payments"
-              description="We set up efficient payroll systems that handle contractor payments, PAYE obligations, and international workers—so you don't spend your time chasing tax forms."
+              title="🧾 Simplify Freelancer & Crew Payments"
+              description="From PAYE to international contractors, we streamline payments with compliant payroll systems, so you can focus on the shoot—not the spreadsheets."
               accentColor="bg-green-500"
             />
             <FeatureCard 
               icon={Clock}
-              title="Plan Across Borders"
-              description="Shooting internationally? We'll guide you through multi-jurisdiction tax planning and help keep you compliant at every stage of production."
+              title="🌍 Plan Across Borders"
+              description="Shooting abroad? We handle multi-jurisdiction tax planning to keep you compliant, wherever your project takes you."
               accentColor="bg-purple-500"
             />
           </div>
@@ -360,18 +360,21 @@ const FilmIndustryPage = () => {
           variants={containerVariants}
         >
           <motion.div variants={itemVariants} className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-white mb-6">Trusted by Producers, Studios, and Freelancers</h2>
+            <h2 className="text-3xl font-bold text-white mb-6">Trusted by Producers, Studios & Freelancers</h2>
             <p className="text-lg text-gray-300 max-w-3xl mx-auto mb-8">
-              Progress is more than a compliance service—we're your financial partner throughout development, production, and post. We've worked with:
+              We're more than just compliance. Progress is your financial partner across development, production, and post.
+            </p>
+            <p className="text-lg text-gray-300 max-w-3xl mx-auto mb-8">
+              We've worked with:
             </p>
           </motion.div>
           
           <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-16">
             <ClientType icon={Film} label="Independent film studios" />
-            <ClientType icon={PlayCircle} label="TV production companies" />
-            <ClientType icon={CheckCircle} label="Post-production houses" />
+            <ClientType icon={PlayCircle} label="TV and broadcast production companies" />
+            <ClientType icon={CheckCircle} label="Post-production and VFX houses" />
             <ClientType icon={Users} label="Freelance producers and creatives" />
-            <ClientType icon={Award} label="Creative agencies offering branded content" />
+            <ClientType icon={Award} label="Branded content & commercial agencies" />
           </div>
         </motion.div>
       </div>
@@ -388,19 +391,18 @@ const FilmIndustryPage = () => {
             <div className="p-8 md:p-10">
               <h2 className="text-2xl md:text-3xl font-bold text-white mb-6">Our Tech-Savvy Approach</h2>
               <p className="text-gray-300 mb-6">
-                We use cloud-based systems like Xero and integrate your tools to deliver fast, accurate, and visual financial insights. 
-                Prefer to stay hands-off? We'll automate what we can—and flag what needs your attention.
+                We work with cloud-based systems like Xero—and integrate your tools for seamless reporting and cash burn visibility. Prefer a hands-off approach? We'll automate where possible and flag what matters.
               </p>
               <p className="text-gray-300 mb-8">
-                And yes, we speak your language. Our team understands the rhythm of production and keeps pace with it, offering:
+                We understand your world. That's why we offer:
               </p>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {[
-                  "Digital dashboards",
-                  "Real-time cash burn tracking",
-                  "Budget variance reporting",
-                  "Expense categorisation tailored to film finance"
+                  "Digital dashboards tailored to film finance",
+                  "Real-time spend and burn tracking",
+                  "Budget variance reports",
+                  "Expense categorisation optimised for creative accounts"
                 ].map((feature, index) => (
                   <div key={index} className="flex items-center">
                     <div className="h-8 w-8 rounded-full bg-purple-900/20 flex items-center justify-center mr-3">
