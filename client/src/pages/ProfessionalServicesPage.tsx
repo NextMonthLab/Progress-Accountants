@@ -1,5 +1,4 @@
 import { useQuery } from "@tanstack/react-query";
-import { Helmet } from "react-helmet";
 import { Link } from "wouter";
 import { 
   Calculator, 
@@ -141,25 +140,16 @@ export default function ProfessionalServicesPage() {
   const businessName = businessIdentity?.core?.businessName || "Progress Accountants";
 
   return (
-    <>
-      <Helmet>
-        <title>Professional Services - {businessName}</title>
-        <meta 
-          name="description" 
-          content="Comprehensive professional accounting and business advisory services designed to accelerate your business growth and ensure financial success."
-        />
-      </Helmet>
-
-      <div className="min-h-screen bg-black text-white">
-        {/* Hero Section */}
-        <section className="py-20 md:py-32 relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-[#4F46E5]/20 via-black to-[#E935C1]/10" />
-          <div className="container mx-auto px-6 md:px-8 relative z-10">
-            <div className="max-w-4xl mx-auto text-center">
-              <Badge variant="secondary" className="mb-6 bg-gray-800 text-white border-gray-700">
-                <Sparkles className="w-4 h-4 mr-2" />
-                Professional Services
-              </Badge>
+    <div className="min-h-screen bg-black text-white">
+      {/* Hero Section */}
+      <section className="py-20 md:py-32 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-[#4F46E5]/20 via-black to-[#E935C1]/10" />
+        <div className="container mx-auto px-6 md:px-8 relative z-10">
+          <div className="max-w-4xl mx-auto text-center">
+            <Badge variant="secondary" className="mb-6 bg-gray-800 text-white border-gray-700">
+              <Sparkles className="w-4 h-4 mr-2" />
+              Professional Services
+            </Badge>
               
               <h1 className="text-4xl md:text-6xl font-bold mb-6 gradient-text">
                 Expert Financial Solutions for Modern Businesses
