@@ -447,18 +447,18 @@ export default function HomePage() {
               </div>
               
               {/* Banbury Office */}
-              <div className="bg-white p-6 rounded-lg shadow-md">
+              <div className="bg-gradient-to-br from-slate-900 to-slate-800 p-6 rounded-lg shadow-xl border border-slate-700">
                 <div className="mb-4">
-                  <h3 className="text-lg font-semibold text-[var(--navy)] mb-3">Banbury Office</h3>
-                  <div className="space-y-2 text-gray-600 mb-4">
+                  <h3 className="text-lg font-semibold text-white mb-3">Banbury Office</h3>
+                  <div className="space-y-2 text-slate-300 mb-4">
                     <p className="flex items-start">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-[var(--orange)] mr-2 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-[#7B3FE4] mr-2 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                       </svg>
                       <span>1st Floor Beaumont House, Beaumont Road, OX16 1RH</span>
                     </p>
                     <p className="flex items-start">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-[var(--orange)] mr-2 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-[#7B3FE4] mr-2 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                       </svg>
                       <span>01295 477 250</span>
@@ -466,7 +466,7 @@ export default function HomePage() {
                   </div>
                   
                   <div className="space-y-2">
-                    <div className="relative overflow-hidden rounded-lg shadow-sm border border-gray-200 aspect-video">
+                    <div className="relative overflow-hidden rounded-lg shadow-sm border border-slate-600 aspect-video">
                       <iframe 
                         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2452.9512290731844!2d-1.3498106233780232!3d52.0620696712133!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4870bbf9c1ec66d1%3A0x641f85d46eed55d!2sBeaumont%20Rd%2C%20Banbury!5e0!3m2!1sen!2suk!4v1651234567891!5m2!1sen!2suk" 
                         width="100%" 
@@ -479,7 +479,7 @@ export default function HomePage() {
                       ></iframe>
                     </div>
                     <div className="text-center">
-                      <a href="https://goo.gl/maps/exampleBanbury" target="_blank" rel="noopener noreferrer" className="text-xs text-[var(--navy)] font-medium hover:text-[var(--orange)] transition-colors">
+                      <a href="https://goo.gl/maps/exampleBanbury" target="_blank" rel="noopener noreferrer" className="text-xs text-slate-400 font-medium hover:text-[#7B3FE4] transition-colors">
                         View larger map
                       </a>
                     </div>
@@ -488,18 +488,18 @@ export default function HomePage() {
               </div>
               
               {/* London Office */}
-              <div className="bg-white p-6 rounded-lg shadow-md">
+              <div className="bg-gradient-to-br from-slate-900 to-slate-800 p-6 rounded-lg shadow-xl border border-slate-700">
                 <div className="mb-4">
-                  <h3 className="text-lg font-semibold text-[var(--navy)] mb-3">London Office</h3>
-                  <div className="space-y-2 text-gray-600 mb-4">
+                  <h3 className="text-lg font-semibold text-white mb-3">London Office</h3>
+                  <div className="space-y-2 text-slate-300 mb-4">
                     <p className="flex items-start">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-[var(--orange)] mr-2 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-[#7B3FE4] mr-2 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                       </svg>
                       <span>2 Frederick's Place, Old Jewry, EC2R 8AE</span>
                     </p>
                     <p className="flex items-start">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-[var(--orange)] mr-2 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-[#7B3FE4] mr-2 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                       </svg>
                       <span>020 3833 9950</span>
@@ -507,7 +507,7 @@ export default function HomePage() {
                   </div>
                   
                   <div className="space-y-2">
-                    <div className="relative overflow-hidden rounded-lg shadow-sm border border-gray-200 aspect-video">
+                    <div className="relative overflow-hidden rounded-lg shadow-sm border border-slate-600 aspect-video">
                       <iframe 
                         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2483.118271413698!2d-0.09074622339802587!3d51.51427727181761!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x48760354ae0cf06f%3A0xee933e8203c1c8a!2sOld%20Jewry%2C%20London!5e0!3m2!1sen!2suk!4v1651234567892!5m2!1sen!2suk" 
                         width="100%" 
@@ -520,7 +520,7 @@ export default function HomePage() {
                       ></iframe>
                     </div>
                     <div className="text-center">
-                      <a href="https://goo.gl/maps/exampleLondon" target="_blank" rel="noopener noreferrer" className="text-xs text-[var(--navy)] font-medium hover:text-[var(--orange)] transition-colors">
+                      <a href="https://goo.gl/maps/exampleLondon" target="_blank" rel="noopener noreferrer" className="text-xs text-slate-400 font-medium hover:text-[#7B3FE4] transition-colors">
                         View larger map
                       </a>
                     </div>
