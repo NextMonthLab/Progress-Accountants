@@ -38,15 +38,17 @@ const ServiceCard = withMemo(({
   isPremium: boolean;
 }) => {
   return (
-    <Card className="h-full bg-[#101218] border border-[#2E2F3B] rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-      {ImageComponent && (
-        <div className="h-60 overflow-hidden relative">
-          <ImageComponent />
-        </div>
-      )}
-      <CardContent className="px-4 pt-1 pb-4 md:px-6 md:pt-2 md:pb-6">
-        <div className="flex items-center mb-2">
-          <div className="w-10 h-10 rounded-full gradient-bg flex items-center justify-center mr-3">
+    <Card className="h-full bg-zinc-900/50 backdrop-blur-sm border border-zinc-800/50 rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1 relative">
+      <div className="absolute inset-0 bg-gradient-to-br from-zinc-800/20 to-zinc-900/40 pointer-events-none"></div>
+      <div className="relative z-10">
+        {ImageComponent && (
+          <div className="h-60 overflow-hidden relative">
+            <ImageComponent />
+          </div>
+        )}
+        <CardContent className="px-4 pt-1 pb-4 md:px-6 md:pt-2 md:pb-6">
+          <div className="flex items-center mb-2">
+            <div className="w-10 h-10 rounded-full gradient-bg flex items-center justify-center mr-3">
             <span className="text-white text-sm">★</span>
           </div>
           <h3 className="font-bold text-xl text-white">
@@ -79,6 +81,7 @@ const ServiceCard = withMemo(({
           </Link>
         )}
       </CardContent>
+      </div>
     </Card>
   );
 });
