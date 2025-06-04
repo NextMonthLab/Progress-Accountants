@@ -423,8 +423,8 @@ const NewsPage = () => {
                 <TabsContent value="tags" className="mt-6">
                   <Card className="bg-gray-900 border-gray-800">
                     <CardHeader>
-                      <CardTitle className="text-white">Popular Tags</CardTitle>
-                      <CardDescription className="text-gray-300">Browse content by topic</CardDescription>
+                      <CardTitle className="text-white">Tags</CardTitle>
+                      <CardDescription className="text-gray-300">Discover trending topics and key terms used in our content.</CardDescription>
                     </CardHeader>
                     <CardContent>
                       <div className="flex flex-wrap gap-2">
@@ -455,7 +455,7 @@ const NewsPage = () => {
                 </CardHeader>
                 <CardContent>
                   <p className="mb-4 text-gray-300">
-                    Our team of experts is ready to help you with any accounting or tax questions.
+                    Our team is here to assist with tax queries, financial planning, or compliance questions.
                   </p>
                   <Button variant="outline" className="w-full bg-transparent text-white border-white hover:bg-white hover:text-purple-900">
                     Contact Us
