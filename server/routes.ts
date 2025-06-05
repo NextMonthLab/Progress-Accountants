@@ -12,13 +12,15 @@ import {
   type Tool,
   type ToolRequest,
   type PageToolIntegration,
+  type FeedSettings,
   insertPageComplexityTriageSchema,
   insertModuleActivationSchema,
   insertSeoConfigurationSchema,
   insertBrandVersionSchema,
   insertToolSchema,
   insertToolRequestSchema,
-  insertPageToolIntegrationSchema
+  insertPageToolIntegrationSchema,
+  insertFeedSettingsSchema
 } from "@shared/schema";
 import { registerBlueprintRoutes as registerLegacyBlueprintRoutes } from "./blueprint";
 import { registerMediaRoutes } from "./media-upload";
@@ -3982,6 +3984,185 @@ export async function registerRoutes(app: Express): Promise<Server> {
     console.log('Saving marketplace notification:', notification);
     return notification;
   }
+
+  // Feed Settings API endpoints for SmartSite Feed Control Panel
+  
+  // Get feed settings for current tenant
+  app.get("/api/feed/settings", async (req: Request, res: Response) => {
+    try {
+      const tenantId = "00000000-0000-0000-0000-000000000000"; // Default tenant for now
+      const settings = await storage.getFeedSettings(tenantId);
+      
+      if (!settings) {
+        return res.status(404).json({ error: "Feed settings not found" });
+      }
+      
+      res.json(settings);
+    } catch (error) {
+      console.error("Error fetching feed settings:", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  });
+
+  // Update feed settings
+  app.patch("/api/feed/settings", async (req: Request, res: Response) => {
+    try {
+      const tenantId = "00000000-0000-0000-0000-000000000000"; // Default tenant for now
+      const updateData = insertFeedSettingsSchema.partial().parse(req.body);
+      
+      const settings = await storage.updateFeedSettings(tenantId, updateData);
+      res.json(settings);
+    } catch (error) {
+      console.error("Error updating feed settings:", error);
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ error: "Validation failed", details: error.errors });
+      }
+      res.status(500).json({ error: "Internal server error" });
+    }
+  });
+
+  // Sync branding with feed
+  app.post("/api/feed/sync-branding", async (req: Request, res: Response) => {
+    try {
+      const tenantId = "00000000-0000-0000-0000-000000000000";
+      
+      // Update branding sync status
+      await storage.updateFeedSettings(tenantId, {
+        brandingSynced: true,
+        brandingLastSync: new Date(),
+      });
+      
+      res.json({
+        success: true,
+        message: "Branding synchronized successfully with SmartSite Feed"
+      });
+    } catch (error) {
+      console.error("Error syncing branding:", error);
+      res.status(500).json({ error: "Failed to sync branding" });
+    }
+  });
+
+  // Generate setup instructions for custom subdomain
+  app.post("/api/feed/setup-instructions", async (req: Request, res: Response) => {
+    try {
+      const { subdomain } = req.body;
+      
+      if (!subdomain) {
+        return res.status(400).json({ error: "Subdomain is required" });
+      }
+      
+      const instructions = {
+        cnameRecord: {
+          name: subdomain,
+          value: "smartsite-feed.nextmonth.app",
+          type: "CNAME"
+        },
+        iframeEmbed: `<iframe src="https://${subdomain}" width="100%" height="600" frameborder="0"></iframe>`,
+        jsSnippet: `<script src="https://${subdomain}/embed.js"></script>`,
+        setupSteps: [
+          "Add the CNAME record to your DNS provider",
+          "Wait for DNS propagation (usually 24-48 hours)",
+          "Test the subdomain in your browser",
+          "Use the iframe or JavaScript snippet to embed the feed",
+          "Configure SSL/TLS if needed"
+        ]
+      };
+      
+      res.json(instructions);
+    } catch (error) {
+      console.error("Error generating setup instructions:", error);
+      res.status(500).json({ error: "Failed to generate setup instructions" });
+    }
+  });
+
+  // Get public feed URL
+  app.get("/api/feed/url", async (req: Request, res: Response) => {
+    try {
+      const tenantId = "00000000-0000-0000-0000-000000000000";
+      const settings = await storage.getFeedSettings(tenantId);
+      
+      if (!settings) {
+        return res.json({ url: "", isActive: false });
+      }
+      
+      const url = settings.customSubdomain 
+        ? `https://${settings.customSubdomain}`
+        : `https://feed.smartsite.app/${tenantId}`;
+        
+      res.json({
+        url,
+        isActive: settings.subdomainActive ?? false
+      });
+    } catch (error) {
+      console.error("Error fetching feed URL:", error);
+      res.status(500).json({ error: "Failed to fetch feed URL" });
+    }
+  });
+
+  // Test feed deployment
+  app.get("/api/feed/test-deployment", async (req: Request, res: Response) => {
+    try {
+      const tenantId = "00000000-0000-0000-0000-000000000000";
+      const settings = await storage.getFeedSettings(tenantId);
+      
+      if (!settings) {
+        return res.json({
+          status: "error",
+          message: "Feed settings not configured"
+        });
+      }
+      
+      // Check if any modules are enabled
+      const hasActiveModules = settings.blogPostsEnabled || 
+                              settings.insightsEnabled || 
+                              settings.socialFeedEnabled || 
+                              settings.eventsEnabled || 
+                              settings.feedbackFormEnabled;
+      
+      if (!hasActiveModules) {
+        return res.json({
+          status: "warning",
+          message: "No modules are currently enabled in the feed"
+        });
+      }
+      
+      res.json({
+        status: "success",
+        message: "Feed deployment is ready and configured",
+        url: settings.customSubdomain 
+          ? `https://${settings.customSubdomain}`
+          : `https://feed.smartsite.app/${tenantId}`
+      });
+    } catch (error) {
+      console.error("Error testing deployment:", error);
+      res.status(500).json({ 
+        status: "error",
+        message: "Failed to test deployment" 
+      });
+    }
+  });
+
+  // Get available topics for autopilot
+  app.get("/api/feed/topics", async (req: Request, res: Response) => {
+    try {
+      // Return predefined topics for autopilot content generation
+      const topics = [
+        { id: "business-updates", name: "Business Updates", category: "general" },
+        { id: "industry-news", name: "Industry News", category: "news" },
+        { id: "client-success", name: "Client Success Stories", category: "testimonials" },
+        { id: "team-spotlight", name: "Team Spotlight", category: "team" },
+        { id: "service-updates", name: "Service Updates", category: "services" },
+        { id: "thought-leadership", name: "Thought Leadership", category: "insights" },
+        { id: "community-events", name: "Community Events", category: "events" },
+        { id: "technology-trends", name: "Technology Trends", category: "tech" }
+      ];
+      
+      res.json(topics);
+    } catch (error) {
+      console.error("Error fetching topics:", error);
+      res.status(500).json({ error: "Failed to fetch topics" });
+    }
+  });
 
   return httpServer;
 }

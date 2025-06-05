@@ -328,6 +328,10 @@ export interface IStorage {
   // Autopilot settings operations
   getAutopilotSettings(userId: number): Promise<AutopilotSettings | undefined>;
   saveAutopilotSettings(data: InsertAutopilotSettings): Promise<AutopilotSettings>;
+  
+  // Feed settings operations
+  getFeedSettings(tenantId: string): Promise<FeedSettings | undefined>;
+  updateFeedSettings(tenantId: string, data: Partial<InsertFeedSettings>): Promise<FeedSettings>;
 }
 
 // Database-backed implementation of IStorage
@@ -2096,6 +2100,57 @@ export class DatabaseStorage implements IStorage {
       }
     } catch (error) {
       console.error("Error saving autopilot settings:", error);
+      throw error;
+    }
+  }
+
+  // Feed settings operations
+  async getFeedSettings(tenantId: string): Promise<FeedSettings | undefined> {
+    try {
+      const result = await db
+        .select()
+        .from(feedSettings)
+        .where(eq(feedSettings.tenantId, tenantId))
+        .limit(1);
+      
+      return result[0];
+    } catch (error) {
+      console.error("Error fetching feed settings:", error);
+      return undefined;
+    }
+  }
+
+  async updateFeedSettings(tenantId: string, data: Partial<InsertFeedSettings>): Promise<FeedSettings> {
+    try {
+      // Check if settings already exist for this tenant
+      const existing = await this.getFeedSettings(tenantId);
+      
+      if (existing) {
+        // Update existing settings
+        const [updated] = await db
+          .update(feedSettings)
+          .set({
+            ...data,
+            updatedAt: new Date()
+          })
+          .where(eq(feedSettings.tenantId, tenantId))
+          .returning();
+        
+        return updated;
+      } else {
+        // Create new settings with defaults
+        const [created] = await db
+          .insert(feedSettings)
+          .values({
+            tenantId,
+            ...data
+          })
+          .returning();
+        
+        return created;
+      }
+    } catch (error) {
+      console.error("Error updating feed settings:", error);
       throw error;
     }
   }
