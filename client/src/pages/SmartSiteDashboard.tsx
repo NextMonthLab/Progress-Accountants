@@ -230,37 +230,37 @@ export default function SmartSiteDashboard() {
 
         {/* Quick Stats Overview */}
         <div className="grid md:grid-cols-4 gap-4">
-          <Card className="bg-white">
+          <Card className="bg-gray-800 border-gray-600">
             <CardContent className="p-6 text-center">
-              <BarChart3 className="h-8 w-8 text-cyan-600 mx-auto mb-2" />
-              <div className="text-2xl font-bold">{stats?.activeChatsToday || 0}</div>
-              <div className="text-sm text-gray-600">Active Chats</div>
+              <BarChart3 className="h-8 w-8 text-cyan-400 mx-auto mb-2" />
+              <div className="text-2xl font-bold text-white">{stats?.activeChatsToday || 0}</div>
+              <div className="text-sm text-gray-400">Active Chats</div>
             </CardContent>
           </Card>
           
-          <Card className="bg-white">
+          <Card className="bg-gray-800 border-gray-600">
             <CardContent className="p-6 text-center">
-              <Users className="h-8 w-8 text-green-600 mx-auto mb-2" />
-              <div className="text-2xl font-bold">{stats?.leadsThisWeek || 0}</div>
-              <div className="text-sm text-gray-600">New Leads</div>
+              <Users className="h-8 w-8 text-green-400 mx-auto mb-2" />
+              <div className="text-2xl font-bold text-white">{stats?.leadsThisWeek || 0}</div>
+              <div className="text-sm text-gray-400">New Leads</div>
             </CardContent>
           </Card>
           
-          <Card className="bg-white">
+          <Card className="bg-gray-800 border-gray-600">
             <CardContent className="p-6 text-center">
-              <FileText className="h-8 w-8 text-blue-600 mx-auto mb-2" />
-              <div className="text-2xl font-bold">{stats?.draftsAwaitingApproval || 0}</div>
-              <div className="text-sm text-gray-600">Drafts Pending</div>
+              <FileText className="h-8 w-8 text-blue-400 mx-auto mb-2" />
+              <div className="text-2xl font-bold text-white">{stats?.draftsAwaitingApproval || 0}</div>
+              <div className="text-sm text-gray-400">Drafts Pending</div>
             </CardContent>
           </Card>
           
-          <Card className="bg-white">
+          <Card className="bg-gray-800 border-gray-600">
             <CardContent className="p-6 text-center">
-              <Target className="h-8 w-8 text-purple-600 mx-auto mb-2" />
-              <div className="text-2xl font-bold">
+              <Target className="h-8 w-8 text-purple-400 mx-auto mb-2" />
+              <div className="text-2xl font-bold text-white">
                 {stats?.marketViewUnlocked ? "12" : "0"}
               </div>
-              <div className="text-sm text-gray-600">Market Insights</div>
+              <div className="text-sm text-gray-400">Market Insights</div>
             </CardContent>
           </Card>
         </div>
