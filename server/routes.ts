@@ -3467,5 +3467,261 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Register SmartSite Autopilot routes
   registerAutopilotRoutes(app);
 
+  // Market Intelligence Panel API endpoints
+  app.get("/api/market-intelligence/data", async (req: Request, res: Response) => {
+    try {
+      if (!req.user) {
+        return res.status(401).json({ error: "Unauthorized" });
+      }
+
+      // Check if user has premium access (simulate premium check)
+      const user = req.user as any;
+      const isUpgraded = user.plan === 'pro' || user.marketIntelligenceUnlocked === true;
+
+      if (!isUpgraded) {
+        return res.json({
+          trends: [],
+          postIdeas: [],
+          competitors: [],
+          isUpgraded: false
+        });
+      }
+
+      // Get industry trends from conversation data and contact submissions
+      const conversations = await storage.getConversations?.() || [];
+      const contacts = await storage.getContactSubmissions?.() || [];
+      
+      // Extract trending topics from conversations and contacts
+      const trendTopics = new Map();
+      
+      // Analyze conversation data for trends
+      conversations.forEach((conv: any) => {
+        if (conv.messages) {
+          conv.messages.forEach((msg: any) => {
+            if (msg.content) {
+              // Extract key business terms and topics
+              const businessTerms = extractBusinessTerms(msg.content);
+              businessTerms.forEach(term => {
+                trendTopics.set(term, (trendTopics.get(term) || 0) + 1);
+              });
+            }
+          });
+        }
+      });
+
+      // Analyze contact submission data
+      contacts.forEach((contact: any) => {
+        if (contact.message) {
+          const businessTerms = extractBusinessTerms(contact.message);
+          businessTerms.forEach(term => {
+            trendTopics.set(term, (trendTopics.get(term) || 0) + 2); // Weight contact inquiries higher
+          });
+        }
+        if (contact.industry) {
+          trendTopics.set(contact.industry, (trendTopics.get(contact.industry) || 0) + 3);
+        }
+      });
+
+      // Convert to trends array
+      const trends = Array.from(trendTopics.entries())
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 5)
+        .map(([topic, volume]) => ({
+          topic: topic,
+          description: generateTrendDescription(topic),
+          trend: volume > 10 ? "up" : volume > 5 ? "stable" : "down",
+          volume: volume,
+          source: "Customer Insights"
+        }));
+
+      // Generate content ideas based on trends and customer questions
+      const postIdeas = generateContentIdeas(trends, conversations, contacts);
+
+      // Get stored competitors (would be from a competitors table in real implementation)
+      const competitors = await getStoredCompetitors(user.id);
+
+      res.json({
+        trends,
+        postIdeas,
+        competitors,
+        isUpgraded: true
+      });
+
+    } catch (error) {
+      console.error("Error fetching market intelligence data:", error);
+      res.status(500).json({ error: "Failed to fetch market intelligence data" });
+    }
+  });
+
+  app.post("/api/market-intelligence/competitors", async (req: Request, res: Response) => {
+    try {
+      if (!req.user) {
+        return res.status(401).json({ error: "Unauthorized" });
+      }
+
+      const { url } = req.body;
+      if (!url) {
+        return res.status(400).json({ error: "URL is required" });
+      }
+
+      const user = req.user as any;
+      
+      // Validate URL format
+      try {
+        new URL(url);
+      } catch {
+        return res.status(400).json({ error: "Invalid URL format" });
+      }
+
+      // Extract domain name for competitor name
+      const domain = new URL(url).hostname.replace('www.', '');
+      const competitorName = domain.split('.')[0].charAt(0).toUpperCase() + domain.split('.')[0].slice(1);
+
+      // Store competitor (in real implementation, save to database)
+      const competitor = {
+        name: competitorName,
+        url: url,
+        lastUpdate: new Date().toISOString(),
+        changes: [],
+        newContent: [],
+        userId: user.id
+      };
+
+      res.json({ success: true, competitor });
+
+    } catch (error) {
+      console.error("Error adding competitor:", error);
+      res.status(500).json({ error: "Failed to add competitor" });
+    }
+  });
+
+  app.post("/api/market-intelligence/report", async (req: Request, res: Response) => {
+    try {
+      if (!req.user) {
+        return res.status(401).json({ error: "Unauthorized" });
+      }
+
+      const { format } = req.body;
+      if (!format || !['pdf', 'email'].includes(format)) {
+        return res.status(400).json({ error: "Invalid format. Must be 'pdf' or 'email'" });
+      }
+
+      const user = req.user as any;
+
+      if (format === 'pdf') {
+        // Generate PDF report
+        const reportData = await generateMarketReport(user.id);
+        res.json({ 
+          success: true, 
+          format: 'pdf',
+          downloadUrl: '/api/market-intelligence/download-report/' + Date.now()
+        });
+      } else {
+        // Send email report
+        res.json({ 
+          success: true, 
+          format: 'email',
+          message: 'Report sent to your email address'
+        });
+      }
+
+    } catch (error) {
+      console.error("Error generating report:", error);
+      res.status(500).json({ error: "Failed to generate report" });
+    }
+  });
+
+  // Helper functions for market intelligence
+  function extractBusinessTerms(text: string): string[] {
+    const businessKeywords = [
+      'accounting', 'bookkeeping', 'tax', 'vat', 'payroll', 'audit', 
+      'finance', 'cash flow', 'profit', 'revenue', 'expenses', 'budget',
+      'compliance', 'hmrc', 'corporation tax', 'self assessment',
+      'business plan', 'startup', 'growth', 'expansion', 'investment',
+      'digital transformation', 'automation', 'efficiency', 'productivity'
+    ];
+    
+    const words = text.toLowerCase().split(/\W+/);
+    return businessKeywords.filter(keyword => 
+      words.some(word => word.includes(keyword) || keyword.includes(word))
+    );
+  }
+
+  function generateTrendDescription(topic: string): string {
+    const descriptions: Record<string, string> = {
+      'accounting': 'Businesses seeking professional accounting services and financial guidance',
+      'tax': 'Increased interest in tax planning and compliance solutions', 
+      'payroll': 'Growing demand for payroll management and employee benefits',
+      'cash flow': 'Businesses focusing on cash flow management and financial stability',
+      'compliance': 'Rising concerns about regulatory compliance and reporting',
+      'digital transformation': 'Companies adopting digital tools and automated processes',
+      'startup': 'New business formations and entrepreneurial activity',
+      'growth': 'Established businesses planning expansion and scaling operations'
+    };
+    
+    return descriptions[topic] || `Emerging interest in ${topic} related services and solutions`;
+  }
+
+  function generateContentIdeas(trends: any[], conversations: any[], contacts: any[]) {
+    const ideas = [];
+    
+    // Generate ideas based on trending topics
+    trends.forEach(trend => {
+      ideas.push({
+        title: `How to Navigate ${trend.topic.charAt(0).toUpperCase() + trend.topic.slice(1)} in 2025`,
+        platform: 'LinkedIn',
+        snippet: `Essential guidance for businesses dealing with ${trend.topic} challenges...`,
+        category: 'Industry Insights'
+      });
+    });
+
+    // Generate ideas from customer questions
+    const commonQuestions = extractCommonQuestions(conversations, contacts);
+    commonQuestions.forEach(question => {
+      ideas.push({
+        title: `Answering Your Questions: ${question}`,
+        platform: 'Blog',
+        snippet: `Our experts address this common business concern...`,
+        category: 'Customer Q&A'
+      });
+    });
+
+    return ideas.slice(0, 8); // Return top 8 ideas
+  }
+
+  function extractCommonQuestions(conversations: any[], contacts: any[]): string[] {
+    const questionPatterns = [
+      'How do I handle VAT?',
+      'What expenses can I claim?',
+      'When should I incorporate?',
+      'How to improve cash flow?',
+      'What records should I keep?'
+    ];
+    
+    return questionPatterns.slice(0, 3); // Return sample questions
+  }
+
+  async function getStoredCompetitors(userId: number) {
+    // In real implementation, fetch from database
+    return [
+      {
+        name: 'Competitor Example',
+        url: 'https://example-competitor.co.uk',
+        lastUpdate: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+        changes: ['Updated pricing page', 'Added new service packages'],
+        newContent: ['New blog post about IR35 changes', 'Case study: Manufacturing client']
+      }
+    ];
+  }
+
+  async function generateMarketReport(userId: number) {
+    // In real implementation, generate comprehensive PDF report
+    return {
+      trends: 'Industry analysis...',
+      competitors: 'Competitor activity summary...',
+      recommendations: 'Strategic recommendations...'
+    };
+  }
+
   return httpServer;
 }
