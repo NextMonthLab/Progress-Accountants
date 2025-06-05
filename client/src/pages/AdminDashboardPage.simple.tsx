@@ -171,42 +171,42 @@ export default function AdminDashboardPageSimple() {
               </CardContent>
             </Card>
             
-            <Card className="border shadow-sm">
-              <CardHeader className="pb-2">
+            <Card className="bg-gradient-to-br from-gray-800 to-gray-900 border border-gray-700 shadow-2xl backdrop-blur-xl">
+              <CardHeader className="pb-6 p-8">
                 <div className="flex items-center justify-between">
-                  <CardTitle className="text-lg font-semibold">Top Pages</CardTitle>
-                  <Button variant="ghost" size="sm" className="text-primary hover:text-primary/90 hover:bg-primary/5">
+                  <CardTitle className="text-xl font-bold text-white">Top Pages</CardTitle>
+                  <Button variant="ghost" size="sm" className="text-purple-400 hover:text-purple-300 hover:bg-purple-500/10 rounded-xl">
                     View All
                   </Button>
                 </div>
-                <CardDescription>Most visited content</CardDescription>
+                <CardDescription className="text-gray-400">Most visited content</CardDescription>
               </CardHeader>
-              <CardContent className="pt-0">
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between border-b pb-3">
+              <CardContent className="pt-0 p-8">
+                <div className="space-y-6">
+                  <div className="flex items-center justify-between border-b border-gray-700 pb-4">
                     <div>
-                      <p className="font-medium text-sm">Homepage</p>
-                      <p className="text-xs text-gray-500">/</p>
+                      <p className="font-semibold text-white">Homepage</p>
+                      <p className="text-sm text-gray-400">/</p>
                     </div>
-                    <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-100">
+                    <Badge variant="outline" className="bg-blue-500/20 text-blue-400 border-blue-500/30 px-3 py-1 rounded-full">
                       36 visits
                     </Badge>
                   </div>
-                  <div className="flex items-center justify-between border-b pb-3">
+                  <div className="flex items-center justify-between border-b border-gray-700 pb-4">
                     <div>
-                      <p className="font-medium text-sm">Services</p>
-                      <p className="text-xs text-gray-500">/services</p>
+                      <p className="font-semibold text-white">Services</p>
+                      <p className="text-sm text-gray-400">/services</p>
                     </div>
-                    <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-100">
+                    <Badge variant="outline" className="bg-blue-500/20 text-blue-400 border-blue-500/30 px-3 py-1 rounded-full">
                       24 visits
                     </Badge>
                   </div>
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="font-medium text-sm">About Us</p>
-                      <p className="text-xs text-gray-500">/about</p>
+                      <p className="font-semibold text-white">About Us</p>
+                      <p className="text-sm text-gray-400">/about</p>
                     </div>
-                    <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-100">
+                    <Badge variant="outline" className="bg-blue-500/20 text-blue-400 border-blue-500/30 px-3 py-1 rounded-full">
                       18 visits
                     </Badge>
                   </div>
