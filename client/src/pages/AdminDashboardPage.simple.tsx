@@ -60,7 +60,7 @@ export default function AdminDashboardPageSimple() {
         {/* Main Dashboard Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           {/* Live Chat Monitoring Card */}
-          <Card className="bg-slate-800 rounded-3xl p-6 shadow-lg border-0">
+          <Card className="bg-gray-800 rounded-3xl p-6 shadow-xl border-0">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-8 h-8 rounded-full bg-purple-600/20 flex items-center justify-center">
                 <Users className="h-4 w-4 text-purple-400" />
@@ -84,85 +84,85 @@ export default function AdminDashboardPageSimple() {
               <Button size="sm" className="bg-white text-black rounded-full px-4 py-2 text-xs hover:bg-gray-100">
                 View Insights
               </Button>
-              <Button size="sm" variant="outline" className="rounded-full px-4 py-2 text-xs border-gray-600 text-gray-300 hover:bg-slate-700">
+              <Button size="sm" variant="outline" className="rounded-full px-4 py-2 text-xs border-gray-600 text-gray-300 hover:bg-gray-700">
                 CRM
               </Button>
-              <Button size="sm" variant="outline" className="rounded-full px-4 py-2 text-xs border-gray-600 text-gray-300 hover:bg-slate-700">
+              <Button size="sm" variant="outline" className="rounded-full px-4 py-2 text-xs border-gray-600 text-gray-300 hover:bg-gray-700">
                 Autopilot
               </Button>
             </div>
           </Card>
 
           {/* Content Creation Card */}
-          <Card className="bg-gradient-to-br from-yellow-600 to-orange-600 rounded-3xl p-6 shadow-lg border-0">
+          <Card className="bg-gray-800 rounded-3xl p-6 shadow-xl border-0">
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-8 h-8 rounded-full bg-orange-400/20 flex items-center justify-center">
-                <Sparkles className="h-4 w-4 text-orange-200" />
+              <div className="w-8 h-8 rounded-full bg-orange-600/20 flex items-center justify-center">
+                <Sparkles className="h-4 w-4 text-orange-400" />
               </div>
-              <span className="text-xs font-medium text-orange-100 uppercase">DRAFTS PENDING</span>
+              <span className="text-xs font-medium text-gray-400 uppercase">DRAFTS PENDING</span>
             </div>
-            <p className="text-sm text-orange-100 mb-6">See what's resonating. Create blog posts or social content</p>
+            <p className="text-sm text-gray-300 mb-6">See what's resonating. Create blog posts or social content</p>
             
             <div className="mb-6">
               <div className="text-2xl font-bold text-white mb-1">Page engagement</div>
               <div className="text-2xl font-bold text-white mb-1">up 15%</div>
-              <div className="text-xs text-orange-200">TOP INSIGHT</div>
+              <div className="text-xs text-gray-400">TOP INSIGHT</div>
               <div className="text-3xl font-bold text-white mt-4">0</div>
-              <div className="text-xs text-orange-200">DRAFTS PENDING</div>
+              <div className="text-xs text-gray-400">DRAFTS PENDING</div>
             </div>
             
             <div className="flex gap-2">
-              <Button size="sm" className="bg-white text-orange-600 rounded-full px-4 py-2 text-xs hover:bg-orange-50">
+              <Button size="sm" className="bg-white text-black rounded-full px-4 py-2 text-xs hover:bg-gray-100">
                 View Insights
               </Button>
-              <Button size="sm" className="bg-white text-orange-600 rounded-full px-4 py-2 text-xs hover:bg-orange-50">
+              <Button size="sm" className="bg-white text-black rounded-full px-4 py-2 text-xs hover:bg-gray-100">
                 Blog Posts
               </Button>
-              <Button size="sm" className="bg-white text-orange-600 rounded-full px-4 py-2 text-xs hover:bg-orange-50">
+              <Button size="sm" className="bg-white text-black rounded-full px-4 py-2 text-xs hover:bg-gray-100">
                 Social Posts
               </Button>
             </div>
           </Card>
 
           {/* Premium Upgrade Card */}
-          <Card className="bg-gradient-to-br from-blue-600 to-indigo-700 rounded-3xl p-6 shadow-lg border-0 relative">
+          <Card className="bg-gray-800 rounded-3xl p-6 shadow-xl border-0 relative">
             <div className="absolute top-4 right-4">
               <Badge className="bg-yellow-500 text-black text-xs px-2 py-1 rounded-full">Premium</Badge>
             </div>
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-8 h-8 rounded-full bg-blue-400/20 flex items-center justify-center">
-                <Building2 className="h-4 w-4 text-blue-200" />
+              <div className="w-8 h-8 rounded-full bg-blue-600/20 flex items-center justify-center">
+                <Building2 className="h-4 w-4 text-blue-400" />
               </div>
-              <span className="text-xs font-medium text-blue-100 uppercase">STATUS</span>
+              <span className="text-xs font-medium text-gray-400 uppercase">STATUS</span>
             </div>
-            <p className="text-sm text-blue-100 mb-6">Industry trends, competitor moves, smart suggestions</p>
+            <p className="text-sm text-gray-300 mb-6">Industry trends, competitor moves, smart suggestions</p>
             
             <div className="mb-6">
               <div className="text-2xl font-bold text-white mb-4">Upgrade Required</div>
               <div className="text-lg font-bold text-white">12+ premium tools</div>
-              <div className="text-xs text-blue-200">FEATURES</div>
+              <div className="text-xs text-gray-400">FEATURES</div>
             </div>
             
-            <Button size="sm" className="bg-white text-blue-600 rounded-full px-4 py-2 text-xs hover:bg-blue-50 w-full">
+            <Button size="sm" className="bg-white text-black rounded-full px-4 py-2 text-xs hover:bg-gray-100 w-full">
               Upgrade Now
             </Button>
           </Card>
 
           {/* Quick Actions Row */}
           <div className="grid grid-cols-2 gap-3">
-            <Card className="bg-slate-800 rounded-3xl p-4 shadow-lg border-0 text-center">
+            <Card className="bg-gray-800 rounded-3xl p-4 shadow-xl border-0 text-center">
               <BarChart4 className="h-8 w-8 text-blue-400 mx-auto mb-2" />
               <div className="text-sm font-medium text-white">Active Chats</div>
             </Card>
-            <Card className="bg-slate-800 rounded-3xl p-4 shadow-lg border-0 text-center">
+            <Card className="bg-gray-800 rounded-3xl p-4 shadow-xl border-0 text-center">
               <Users className="h-8 w-8 text-green-400 mx-auto mb-2" />
               <div className="text-sm font-medium text-white">New Leads</div>
             </Card>
-            <Card className="bg-slate-800 rounded-3xl p-4 shadow-lg border-0 text-center">
+            <Card className="bg-gray-800 rounded-3xl p-4 shadow-xl border-0 text-center">
               <LineChart className="h-8 w-8 text-purple-400 mx-auto mb-2" />
               <div className="text-sm font-medium text-white">Drafts Pending</div>
             </Card>
-            <Card className="bg-slate-800 rounded-3xl p-4 shadow-lg border-0 text-center">
+            <Card className="bg-gray-800 rounded-3xl p-4 shadow-xl border-0 text-center">
               <Sparkles className="h-8 w-8 text-orange-400 mx-auto mb-2" />
               <div className="text-sm font-medium text-white">Market Insights</div>
             </Card>
