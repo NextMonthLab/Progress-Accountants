@@ -1,9 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Loader2, Calendar, User, ArrowRight, FileText } from 'lucide-react';
-import { format } from 'date-fns';
-import MainLayout from '@/layouts/MainLayout';
+import { useEffect } from 'react';
 import { useLocation } from 'wouter';
 
 type BlogPost = {
@@ -25,48 +20,10 @@ type BlogPost = {
 export default function BlogPage() {
   const [, setLocation] = useLocation();
 
-  const { data: posts, isLoading, error } = useQuery<BlogPost[]>({
-    queryKey: ['/api/blog/posts'],
-    queryFn: async () => {
-      const res = await fetch('/api/blog/posts');
-      if (!res.ok) throw new Error('Failed to fetch blog posts');
-      return await res.json();
-    },
-  });
-
-  if (isLoading) {
-    return (
-      <MainLayout>
-        <div className="container mx-auto px-4 py-8">
-          <div className="flex items-center justify-center min-h-64">
-            <Loader2 className="h-8 w-8 animate-spin text-primary" />
-          </div>
-        </div>
-      </MainLayout>
-    );
-  }
-
-  if (error) {
-    return (
-      <MainLayout>
-        <div className="container mx-auto px-4 py-8">
-          <Card className="max-w-2xl mx-auto">
-            <CardHeader>
-              <CardTitle className="text-center text-red-600">Blog Unavailable</CardTitle>
-            </CardHeader>
-            <CardContent className="text-center">
-              <p className="text-muted-foreground mb-4">
-                We're currently working on our blog. Please check back soon.
-              </p>
-              <Button onClick={() => setLocation('/')} variant="outline">
-                Return Home
-              </Button>
-            </CardContent>
-          </Card>
-        </div>
-      </MainLayout>
-    );
-  }
+  // Redirect to admin blog generator page
+  useEffect(() => {
+    setLocation('/admin/content/blog-posts');
+  }, [setLocation]);
 
   return (
     <MainLayout>
