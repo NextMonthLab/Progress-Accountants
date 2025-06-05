@@ -105,7 +105,7 @@ export const mapSidebarToNavigation = (): NavigationItem[] => {
       title: 'Blog Content',
       icon: 'BookOpen',
       type: 'link',
-      href: '/blog',
+      href: '/admin/content/blog-posts',
       requiresStaff: true,
       description: 'Create and manage blog posts',
       category: 'create_publish',
