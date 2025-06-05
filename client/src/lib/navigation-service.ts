@@ -101,6 +101,17 @@ export const mapSidebarToNavigation = (): NavigationItem[] => {
 
     // Removed page builder navigation (front-end editing)
     {
+      id: 'blog_post_generator',
+      title: 'Blog Post Generator',
+      icon: 'BookOpen',
+      type: 'link',
+      href: '/admin/blog-post-generator',
+      requiresStaff: true,
+      description: 'Generate blog posts with AI',
+      category: 'create_publish',
+      pinnedOrder: 2,
+    },
+    {
       id: 'social_media_content',
       title: 'Social Media Content',
       icon: 'Share2',

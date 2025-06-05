@@ -565,7 +565,7 @@ function Router() {
         allowedRoles={['admin', 'super_admin', 'editor']} 
       />
       <ProtectedRoute 
-        path="/tools/blog-post-generator" 
+        path="/admin/blog-post-generator" 
         component={BlogPostGenerator} 
         allowedRoles={['admin', 'super_admin', 'editor']} 
       />
