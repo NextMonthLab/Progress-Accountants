@@ -377,6 +377,15 @@ function Router() {
         allowedRoles={['admin', 'super_admin', 'editor']} 
       />
       <ProtectedRoute 
+        path="/admin/autopilot" 
+        component={(props: Record<string, any>) => (
+          <Suspense fallback={<LoadingFallback />}>
+            <AutopilotControlPanel {...props} />
+          </Suspense>
+        )}
+        allowedRoles={['admin', 'super_admin']} 
+      />
+      <ProtectedRoute 
         path="/admin/dashboard" 
         component={(props: Record<string, any>) => (
           <Suspense fallback={<LoadingFallback />}>

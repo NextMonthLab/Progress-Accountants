@@ -324,6 +324,10 @@ export interface IStorage {
   createCreditUsageLog(log: Partial<CreditUsageLog>): Promise<CreditUsageLog>;
   getCreditUsageLogs(businessId: string, limit?: number): Promise<CreditUsageLog[]>;
   getCreditUsageTotal(businessId: string): Promise<number>;
+  
+  // Autopilot settings operations
+  getAutopilotSettings(userId: number): Promise<AutopilotSettings | undefined>;
+  saveAutopilotSettings(data: InsertAutopilotSettings): Promise<AutopilotSettings>;
 }
 
 // Database-backed implementation of IStorage
@@ -2045,6 +2049,54 @@ export class DatabaseStorage implements IStorage {
     } catch (error) {
       console.error(`Error fetching page by ID ${id}:`, error);
       return null;
+    }
+  }
+
+  // Autopilot settings operations
+  async getAutopilotSettings(userId: number): Promise<AutopilotSettings | undefined> {
+    try {
+      const result = await db
+        .select()
+        .from(autopilotSettings)
+        .where(eq(autopilotSettings.userId, userId))
+        .limit(1);
+      
+      return result[0];
+    } catch (error) {
+      console.error("Error fetching autopilot settings:", error);
+      return undefined;
+    }
+  }
+
+  async saveAutopilotSettings(data: InsertAutopilotSettings): Promise<AutopilotSettings> {
+    try {
+      // Check if settings already exist for this user
+      const existing = await this.getAutopilotSettings(data.userId);
+      
+      if (existing) {
+        // Update existing settings
+        const [updated] = await db
+          .update(autopilotSettings)
+          .set({
+            ...data,
+            updatedAt: new Date()
+          })
+          .where(eq(autopilotSettings.userId, data.userId))
+          .returning();
+        
+        return updated;
+      } else {
+        // Create new settings
+        const [created] = await db
+          .insert(autopilotSettings)
+          .values(data)
+          .returning();
+        
+        return created;
+      }
+    } catch (error) {
+      console.error("Error saving autopilot settings:", error);
+      throw error;
     }
   }
 }

@@ -37,6 +37,7 @@ import { registerEnhancedSeoRoutes } from "./controllers/registerEnhancedSeoRout
 import { registerBusinessNetworkRoutes } from "./controllers/registerBusinessNetworkRoutes";
 import { registerBusinessDiscoverRoutes } from "./controllers/registerBusinessDiscoverRoutes";
 import { registerAgoraRoutes } from "./routes/agoraRoutes";
+import { registerAutopilotRoutes } from "./autopilot";
 import { 
   getAllResources, 
   getPublicResources, 
