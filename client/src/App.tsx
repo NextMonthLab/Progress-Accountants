@@ -103,19 +103,19 @@ import WebsiteIntentPage from "@/pages/WebsiteIntentPage";
 import AdminSettingsPage from "@/pages/AdminSettingsPage";
 import ResourcesPage from "@/pages/ResourcesPage";
 import ResourcesSetupPage from "@/pages/ResourcesSetupPage";
-import SEOConfigManagerPage from "@/pages/SEOConfigManagerPage";
-import BrandManagerPage from "@/pages/BrandManagerPage";
-import CompanionSettingsPage from "@/pages/admin/companion-settings";
-import BlueprintManagerPage from "@/pages/BlueprintManagerPage";
-import BlueprintManagementPage from "@/pages/BlueprintManagementPage";
-import MediaManagementPage from "@/pages/MediaManagementPage";
+// Removed front-end editing components:
+// - SEOConfigManagerPage (static page SEO management)
+// - BrandManagerPage (front-end branding)
+// - BlueprintManagerPage/BlueprintManagementPage (page templates)
+// - MediaManagementPage (front-end media library)
+// - TenantCustomizationPage (front-end customization)
+// - ThemeManagementPage (visual theming)
+// - SiteBrandingPage (front-end branding)
+// - MenuManagementPage (navigation management)
+// - CreateNewPagePage (page creation)
+
+// Preserved admin-only components for intelligence layer
 import NewClientOnboarding from "@/pages/NewClientOnboarding";
-import CreateNewPagePage from "@/pages/CreateNewPagePage";
-// Admin settings pages
-import TenantCustomizationPage from "@/pages/admin/TenantCustomizationPage";
-import ThemeManagementPage from "@/pages/admin/ThemeManagementPage";
-import SiteBrandingPage from "@/pages/admin/SiteBrandingPage";
-import MenuManagementPage from "@/pages/admin/MenuManagementPage";
 import DomainMappingPage from "@/pages/DomainMappingPage";
 import SotManagementPage from "@/pages/SotManagementPage";
 import ConversationInsightsPage from "@/pages/ConversationInsightsPage";
@@ -126,7 +126,7 @@ import AccountPage from "@/pages/AccountPage";
 import NewsPage from "@/pages/NewsPage";
 import BusinessNetworkPage from "@/pages/BusinessNetworkPage";
 import BusinessDiscoverPage from "@/pages/BusinessDiscoverPage";
-import CloneTemplatePage from "@/pages/CloneTemplatePage";
+// Removed CloneTemplatePage (front-end templating)
 import EntrepreneurSupportPage from "@/pages/EntrepreneurSupportPage";
 import NavigationDemoPage from "@/pages/NavigationDemoPage";
 // Support System pages
@@ -136,9 +136,7 @@ import DigestPage from "@/pages/support/DigestPage";
 import SystemReadinessPage from "@/pages/support/SystemReadinessPage";
 import SupportRequestsPage from "@/pages/admin/SupportRequestsPage";
 import HealthDashboardPage from "@/pages/admin/HealthDashboardPage";
-// Page Builder pages
-import PageBuilderListPage from "@/pages/PageBuilderListPage";
-import PageBuilderPage from "@/pages/PageBuilderPage";
+// Removed Page Builder components (front-end page building)
 // Import wizard components
 import CreateFormWizard from "@/pages/tools/wizards/CreateFormWizard";
 import CreateCalculatorWizard from "@/pages/tools/wizards/CreateCalculatorWizard";
@@ -155,11 +153,7 @@ const ProtectedCRMView = withAuth(CRMViewPage, 'staff');
 const ProtectedCRMViewEnhanced = withAuth(CRMViewPageEnhanced, 'staff');
 const ProtectedDashboard = withAuth(DashboardPage);
 const ProtectedAdminSettings = withAuth(AdminSettingsPage, 'staff');
-const ProtectedSEOConfigManager = withAuth(SEOConfigManagerPage, 'staff');
-const ProtectedBrandManager = withAuth(BrandManagerPage, 'staff');
-const ProtectedBlueprintManager = withAuth(BlueprintManagerPage, 'staff');
-const ProtectedTenantCustomization = withAuth(TenantCustomizationPage, 'staff');
-const ProtectedThemeManagement = withAuth(ThemeManagementPage, 'staff');
+// Removed protected wrappers for front-end editing components
 
 // Loading fallback component for Suspense
 const LoadingFallback = () => (
@@ -344,66 +338,21 @@ function Router() {
         component={AdminSettingsPage} 
         allowedRoles={['admin', 'super_admin']} 
       />
-      <ProtectedRoute 
-        path="/admin/seo" 
-        component={SEOConfigManagerPage} 
-        allowedRoles={['admin', 'super_admin', 'editor']} 
-      />
-      <ProtectedRoute 
-        path="/admin/brand" 
-        component={BrandManagerPage} 
-        allowedRoles={['admin', 'super_admin', 'editor']} 
-      />
-      <ProtectedRoute 
-        path="/brand-center" 
-        component={BrandManagerPage} 
-        allowedRoles={['admin', 'super_admin', 'editor']} 
-      />
-      <ProtectedRoute 
-        path="/admin/blueprint" 
-        component={BlueprintManagerPage} 
-        allowedRoles={['admin', 'super_admin']} 
-      />
+      {/* Removed front-end editing routes:
+        - /admin/seo (static page SEO management)
+        - /admin/brand (front-end branding)
+        - /brand-center (brand management)
+        - /admin/blueprint (page templates)
+        - /admin/blueprint-management (template management)
+        - /admin/tenant-customization (front-end customization)
+        - /admin/theme-management (visual theming)
+        - /admin/site-branding (front-end branding)
+        - /admin/companion-settings (moved to phase 2)
+        - /admin/menu-management (navigation management)
+      */}
       <ProtectedRoute 
         path="/admin/marketplace" 
         component={AdminMarketplacePage} 
-        allowedRoles={['admin', 'super_admin', 'editor']} 
-      />
-      <ProtectedRoute 
-        path="/admin/blueprint-management" 
-        component={BlueprintManagementPage} 
-        allowedRoles={['admin', 'super_admin']} 
-      />
-      <ProtectedRoute 
-        path="/admin/tenant-customization" 
-        component={TenantCustomizationPage} 
-        allowedRoles={['admin', 'super_admin']} 
-      />
-      <ProtectedRoute 
-        path="/admin/theme-management" 
-        component={ThemeManagementPage} 
-        allowedRoles={['admin', 'super_admin']} 
-      />
-      <ProtectedRoute 
-        path="/admin/site-branding" 
-        component={SiteBrandingPage} 
-        allowedRoles={['admin', 'super_admin']} 
-      />
-      <ProtectedRoute 
-        path="/admin/companion-settings" 
-        component={CompanionSettingsPage} 
-        allowedRoles={['admin', 'super_admin']} 
-      />
-      {/* Removed Agora Profile route for Hetzner deployment
-      <ProtectedRoute 
-        path="/admin/agora-profile" 
-        component={AgoraProfilePage} 
-        allowedRoles={['admin', 'super_admin', 'editor']} 
-      />
-      */}
-      <ProtectedRoute 
-        path="/admin/menu-management" 
-        component={MenuManagementPage} 
         allowedRoles={['admin', 'super_admin', 'editor']} 
       />
       <ProtectedRoute 
@@ -491,11 +440,7 @@ function Router() {
         component={ScopeRequestPage} 
         allowedRoles={['admin', 'super_admin', 'editor']} 
       />
-      <ProtectedRoute 
-        path="/admin/clone-template" 
-        component={CloneTemplatePage} 
-        allowedRoles={['admin', 'super_admin']} 
-      />
+      {/* Removed /admin/clone-template (front-end templating) */}
       <ProtectedRoute 
         path="/admin/onboarding" 
         component={BlueprintOnboardingPage} 
@@ -624,52 +569,13 @@ function Router() {
           <FoundationPagesOverviewPage />
         </Suspense>
       </Route>
-      {/* Removed standalone page creation in favor of the Page Builder */}
-      <ProtectedRoute path="/create-new-page" component={CreateNewPagePage} allowedRoles={['admin', 'super_admin', 'editor']} />
-      <ProtectedRoute path="/about-setup" component={AboutSetupPage} />
-      <ProtectedRoute path="/services-setup" component={ServicesSetupPage} />
-      <ProtectedRoute path="/contact-setup" component={ContactSetupPage} />
-      <ProtectedRoute path="/testimonials-setup" component={TestimonialsSetupPage} />
-      {/* Resources setup now handled through the Page Builder */}
-      {/* <ProtectedRoute path="/admin/resources-setup" component={ResourcesSetupPage} /> */}
-      <ProtectedRoute path="/faq-setup" component={FAQSetupPage} />
-      <ProtectedRoute path="/launch-ready" component={LaunchReadyPage} />
-      <ProtectedRoute 
-        path="/media"
-        component={MediaManagementPage} 
-        allowedRoles={['admin', 'super_admin', 'editor']} 
-      />
-
-      {/* Page Builder routes */}
-      <ProtectedRoute 
-        path="/page-builder" 
-        component={PageBuilderListPage} 
-        allowedRoles={['admin', 'super_admin', 'editor']} 
-      />
-      {/* Also support the old URL pattern for backwards compatibility */}
-      <ProtectedRoute 
-        path="/page-builder/new" 
-        component={() => <PageBuilderPage />}
-        allowedRoles={['admin', 'super_admin', 'editor']} 
-      />
-      {/* Fix for the "Create New Page" route */}
-      <ProtectedRoute 
-        path="/page-builder/page/new" 
-        component={() => <PageBuilderPage />}
-        allowedRoles={['admin', 'super_admin', 'editor']} 
-      />
-      {/* Route for existing pages with numeric IDs */}
-      <ProtectedRoute 
-        path="/page-builder/page/:id" 
-        component={PageBuilderPage} 
-        allowedRoles={['admin', 'super_admin', 'editor']} 
-      />
-      {/* Templates gallery view */}
-      <ProtectedRoute 
-        path="/page-builder/templates" 
-        component={() => <PageBuilderPage />}
-        allowedRoles={['admin', 'super_admin', 'editor']} 
-      />
+      {/* Removed all front-end editing routes:
+        - /create-new-page (page creation)
+        - /about-setup, /services-setup, /contact-setup, /testimonials-setup (page setup)
+        - /faq-setup, /launch-ready (content setup)
+        - /media (front-end media management)
+        - All /page-builder routes (page building functionality)
+      */}
 
       {/* Legacy Page Builder routes - now disabled to prevent routing conflicts */}
       {/* 
