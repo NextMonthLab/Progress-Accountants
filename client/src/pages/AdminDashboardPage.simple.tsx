@@ -275,7 +275,8 @@ export default function AdminDashboardPageSimple() {
             </CardContent>
           </Card>
         </TabsContent>
-      </Tabs>
+        </Tabs>
+      </div>
     </AdminLayout>
   );
 }
