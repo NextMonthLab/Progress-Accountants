@@ -50,8 +50,8 @@ export default function AdminDashboardPageSimple() {
 
   return (
     <AdminLayout title="Lead Intelligence">
-      <div className="admin-dashboard">
-        <div className="admin-header p-6 mb-6">
+      <div className="admin-dashboard min-h-screen bg-gray-900 text-white">
+        <div className="admin-header p-8 mb-8 bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl border border-gray-700 shadow-2xl backdrop-blur-xl">
         <div className="flex items-start mb-4">
           <img 
             src="/nextmonth-logo.png" 
@@ -63,110 +63,110 @@ export default function AdminDashboardPageSimple() {
           />
           <div className="flex-1">
             <div className="flex justify-between items-center mb-1">
-              <h1 className="text-2xl font-bold admin-text-primary">
-                <span className="admin-text-primary">Lead </span>
-                <span className="text-[#6abbba]">Tracker</span>
+              <h1 className="text-3xl font-bold bg-gradient-to-r from-purple-400 via-blue-400 to-purple-500 bg-clip-text text-transparent">
+                <span>Lead </span>
+                <span className="text-emerald-400">Tracker</span>
               </h1>
-              <div className="text-sm admin-text-secondary">
-                Credits <span className="font-medium">35/100</span>
+              <div className="text-sm text-gray-300 bg-gray-800 px-4 py-2 rounded-full border border-purple-500/20">
+                Credits <span className="font-semibold text-purple-400">35/100</span>
               </div>
             </div>
-            <p className="admin-text-secondary text-sm">Transform visitor data into actionable sales insights</p>
+            <p className="text-gray-300 text-base">Transform visitor data into actionable sales insights</p>
           </div>
         </div>
         
-          <div className="flex gap-3 mt-6">
-            <Button size="sm" className="bg-teal-500 text-white hover:bg-teal-600 flex items-center gap-2 px-4 py-2">
+          <div className="flex gap-4 mt-8">
+            <Button size="sm" className="bg-gradient-to-r from-purple-500 to-blue-500 text-white hover:from-purple-600 hover:to-blue-600 shadow-lg shadow-purple-500/25 flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all duration-300 hover:scale-105">
               <Sparkles className="h-4 w-4" /> Generate Signal
             </Button>
-            <Button variant="outline" size="sm" className="admin-text-secondary hover:bg-gray-50 border-gray-200 flex items-center gap-2 px-4 py-2">
+            <Button variant="outline" size="sm" className="text-gray-300 hover:bg-gray-800 border-gray-600 hover:border-purple-500/50 flex items-center gap-2 px-6 py-3 rounded-xl font-medium transition-all duration-300">
               <BarChart4 className="h-4 w-4" /> Documentation
             </Button>
           </div>
         </div>
         
-        <Tabs defaultValue="overview" className="space-y-6">
+        <Tabs defaultValue="overview" className="space-y-8">
           <div className="flex items-center justify-between">
-            <TabsList className="admin-tabs-list p-1 h-12">
+            <TabsList className="bg-gray-800 border border-gray-700 rounded-2xl p-2 h-14 backdrop-blur-xl shadow-xl">
             <TabsTrigger 
               value="overview" 
-              className="data-[state=active]:bg-white data-[state=active]:shadow-sm rounded-lg h-10 gap-2 px-4"
+              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-500 data-[state=active]:to-blue-500 data-[state=active]:text-white data-[state=active]:shadow-lg rounded-xl h-10 gap-2 px-6 font-medium transition-all duration-300 text-gray-300"
             >
-              <span className="text-gray-500">􀋲</span> Overview
+              <LayoutDashboard className="h-4 w-4" /> Overview
             </TabsTrigger>
             <TabsTrigger 
               value="profiles" 
-              className="data-[state=active]:bg-white data-[state=active]:shadow-sm rounded-lg h-10 gap-2 px-4"
+              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-500 data-[state=active]:to-blue-500 data-[state=active]:text-white data-[state=active]:shadow-lg rounded-xl h-10 gap-2 px-6 font-medium transition-all duration-300 text-gray-300"
             >
-              <span className="text-gray-500">􀋮</span> Lead Profiles
+              <Users className="h-4 w-4" /> Lead Profiles
             </TabsTrigger>
             <TabsTrigger 
               value="signals" 
-              className="data-[state=active]:bg-white data-[state=active]:shadow-sm rounded-lg h-10 gap-2 px-4"
+              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-500 data-[state=active]:to-blue-500 data-[state=active]:text-white data-[state=active]:shadow-lg rounded-xl h-10 gap-2 px-6 font-medium transition-all duration-300 text-gray-300"
             >
-              <span className="text-gray-500">􀋰</span> Signals
+              <Zap className="h-4 w-4" /> Signals
             </TabsTrigger>
             <TabsTrigger 
               value="matches" 
-              className="data-[state=active]:bg-white data-[state=active]:shadow-sm rounded-lg h-10 gap-2 px-4"
+              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-500 data-[state=active]:to-blue-500 data-[state=active]:text-white data-[state=active]:shadow-lg rounded-xl h-10 gap-2 px-6 font-medium transition-all duration-300 text-gray-300"
             >
-              <span className="text-gray-500">􀋱</span> Matches
+              <Building2 className="h-4 w-4" /> Matches
             </TabsTrigger>
             <TabsTrigger 
               value="insights" 
-              className="data-[state=active]:bg-white data-[state=active]:shadow-sm rounded-lg h-10 gap-2 px-4"
+              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-500 data-[state=active]:to-blue-500 data-[state=active]:text-white data-[state=active]:shadow-lg rounded-xl h-10 gap-2 px-6 font-medium transition-all duration-300 text-gray-300"
             >
-              <span className="text-gray-500">􀋿</span> Insights
+              <Sparkles className="h-4 w-4" /> Insights
             </TabsTrigger>
           </TabsList>
         </div>
         
-        <div className="flex items-center space-x-2 mt-6">
-          <Badge variant="outline" className="px-3 py-1 rounded-full bg-gray-100 border-gray-200 text-gray-600">Today</Badge>
-          <Badge variant="outline" className="px-3 py-1 rounded-full bg-gray-100 border-gray-200 text-gray-600">Yesterday</Badge>
-          <Badge variant="outline" className="px-3 py-1 rounded-full bg-pink-100 text-pink-600 border-pink-200">Last 7 days</Badge>
-          <Badge variant="outline" className="px-3 py-1 rounded-full bg-gray-100 border-gray-200 text-gray-600">Last 30 days</Badge>
-          <Badge variant="outline" className="px-3 py-1 rounded-full bg-gray-100 border-gray-200 text-gray-600">Custom</Badge>
+        <div className="flex items-center space-x-3 mt-8">
+          <Badge variant="outline" className="px-4 py-2 rounded-xl bg-gray-800 border-gray-600 text-gray-300 hover:bg-gray-700 transition-all duration-300">Today</Badge>
+          <Badge variant="outline" className="px-4 py-2 rounded-xl bg-gray-800 border-gray-600 text-gray-300 hover:bg-gray-700 transition-all duration-300">Yesterday</Badge>
+          <Badge variant="outline" className="px-4 py-2 rounded-xl bg-gradient-to-r from-purple-500/20 to-blue-500/20 text-purple-400 border-purple-500/50 shadow-lg">Last 7 days</Badge>
+          <Badge variant="outline" className="px-4 py-2 rounded-xl bg-gray-800 border-gray-600 text-gray-300 hover:bg-gray-700 transition-all duration-300">Last 30 days</Badge>
+          <Badge variant="outline" className="px-4 py-2 rounded-xl bg-gray-800 border-gray-600 text-gray-300 hover:bg-gray-700 transition-all duration-300">Custom</Badge>
         </div>
         
         <TabsContent value="overview" className="mt-0">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {stats.map((stat, index) => (
-              <Card key={index} className="border shadow-sm hover:shadow-md transition-shadow">
-                <CardContent className="p-6">
-                  <div className="flex justify-between items-start">
-                    <div className={`${stat.color} p-3 rounded-lg`}>
+              <Card key={index} className="bg-gradient-to-br from-gray-800 to-gray-900 border border-gray-700 shadow-2xl hover:shadow-purple-500/20 transition-all duration-500 hover:scale-105 backdrop-blur-xl">
+                <CardContent className="p-8">
+                  <div className="flex justify-between items-start mb-6">
+                    <div className={`${stat.color} p-4 rounded-2xl shadow-lg`}>
                       {stat.icon}
                     </div>
-                    <Badge variant="outline" className="flex items-center bg-green-50 text-green-700 border-green-100">
+                    <Badge variant="outline" className="flex items-center bg-emerald-500/20 text-emerald-400 border-emerald-500/30 px-3 py-1 rounded-full">
                       <ArrowUpRight className="h-3 w-3 mr-1" />
                       {stat.change}
                     </Badge>
                   </div>
-                  <div className="mt-3">
-                    <p className="text-sm font-medium text-gray-500">{stat.title}</p>
-                    <h4 className="text-2xl font-bold mt-1">{stat.value}</h4>
+                  <div className="space-y-2">
+                    <p className="text-sm font-medium text-gray-400">{stat.title}</p>
+                    <h4 className="text-3xl font-bold text-white">{stat.value}</h4>
                   </div>
                 </CardContent>
               </Card>
             ))}
           </div>
           
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
-            <Card className="col-span-2 border shadow-sm">
-              <CardHeader className="pb-2">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-12">
+            <Card className="col-span-2 bg-gradient-to-br from-gray-800 to-gray-900 border border-gray-700 shadow-2xl backdrop-blur-xl">
+              <CardHeader className="pb-6 p-8">
                 <div className="flex items-center justify-between">
-                  <CardTitle className="text-lg font-semibold">Lead Activity</CardTitle>
-                  <Button variant="ghost" size="sm" className="text-primary hover:text-primary/90 hover:bg-primary/5">
+                  <CardTitle className="text-xl font-bold text-white">Lead Activity</CardTitle>
+                  <Button variant="ghost" size="sm" className="text-purple-400 hover:text-purple-300 hover:bg-purple-500/10 rounded-xl">
                     View All
                   </Button>
                 </div>
-                <CardDescription>Website visitor activity over time</CardDescription>
+                <CardDescription className="text-gray-400">Website visitor activity over time</CardDescription>
               </CardHeader>
-              <CardContent className="pt-0">
-                <div className="h-[300px] flex items-center justify-center bg-gray-50 rounded-md">
-                  <BarChart4 className="h-16 w-16 text-gray-300" />
-                  <p className="text-gray-500 ml-4">Chart visualization will appear here</p>
+              <CardContent className="pt-0 p-8">
+                <div className="h-[300px] flex items-center justify-center bg-gradient-to-br from-gray-900 to-black rounded-2xl border border-gray-700">
+                  <BarChart4 className="h-16 w-16 text-purple-400" />
+                  <p className="text-gray-400 ml-4 text-lg">Chart visualization will appear here</p>
                 </div>
               </CardContent>
             </Card>
