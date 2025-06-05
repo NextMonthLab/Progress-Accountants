@@ -1,0 +1,65 @@
+📦 TASK: ADMIN PANEL UI RESTRUCTURE
+
+SmartSite is no longer a page builder. It is now an intelligence layer that upgrades existing websites with automated insights, lead intelligence, content creation, and AI assistant control.
+
+Your task is to refactor the Admin Panel UI into 3 clearly separated zones:
+
+---
+
+### 🧠 NEW LAYOUT STRUCTURE:
+
+1. **🗨️ Conversations & Customers**
+   - Route Group: `/admin/conversations`
+   - Modules:
+     • `/admin/conversation-insights` – Chat transcripts, filters, tagging  
+     • `/admin/crm` – Lead tracking and contact history  
+     • `/admin/leads/lead-radar` – Lead scoring and visit-based triggers  
+     • `/admin/autopilot` – Assistant override, blog automation, notifications
+
+---
+
+2. **✍️ Insights & Content**
+   - Route Group: `/admin/insights`
+   - Modules:
+     • `/admin/insights-dashboard` – User behavior, page engagement  
+     • `/admin/insight-users` – Who’s interacting and how  
+     • `📘 Blog Generator` → Rename to `/admin/content/blog-posts`  
+     • `📣 Social Generator` → Rename to `/admin/content/social-posts`  
+     • `/admin/scope-request` – Optional feature request capture  
+
+---
+
+3. **🌐 Market View (Upgrade Required)**
+   - Route Group: `/admin/market-intelligence`
+   - Modules:
+     • `/admin/market-trends` – Pulls live industry data, keyword shifts  
+     • `/admin/competitor-watch` – AI-inferred competitor moves  
+     • `/admin/trend-prompts` – Suggested post/campaign ideas  
+     • Upgrade logic: If not subscribed, show teaser and upgrade CTA
+
+---
+
+✅ IMPLEMENTATION DETAILS:
+
+• Update Admin sidebar navigation to reflect these 3 headings  
+• Use section dividers and icons to clearly separate each panel  
+• Ensure all renamed or moved components still load correctly  
+• Add breadcrumbs or route indicators where useful  
+• Optional: Add a dashboard summary screen that links into all 3 panels  
+
+🧠 CONSIDERATIONS:
+
+• All renamed routes must maintain backwards compatibility or redirect  
+• Blog Generator and Social Generator should store content in the same backend system they already use — do not reset data  
+• Teal accent color (#06B6D4) should be used consistently for section titles  
+
+---
+
+📣 OUTPUT:
+
+1. Updated navigation structure
+2. Route map of old paths → new paths
+3. Confirmation that each new panel renders correctly
+4. Teaser UI or logic placeholder for locked upgrade sections
+
+Let’s finish the transformation. SmartSite is now *the brain* behind any website.

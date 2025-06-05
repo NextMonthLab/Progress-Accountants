@@ -14,10 +14,13 @@ import {
   ChevronRight,
   ChevronDown,
   MessageCircle,
+  MessageSquare,
   FileText,
   PlusCircle,
   Layers,
   Image,
+  Target,
+  Share2,
   ListOrdered,
   Link as LinkIcon,
   Palette,
@@ -32,9 +35,7 @@ import {
   Cpu,
   Newspaper,
   User,
-  TrendingUp,
-  Brain,
-  Bot
+  Brain
 } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import { useState, useEffect, useRef } from "react";
@@ -135,68 +136,73 @@ export default function AdminSidebar() {
   // Define all admin menu sections
   const sidebarSections: SidebarSection[] = [
     {
-      title: "Command Center",
-      icon: <Gauge className="h-5 w-5" />,
+      title: "🗨️ Conversations & Customers",
+      icon: <MessageSquare className="h-5 w-5" />,
       isExpandable: true,
       items: [
         { 
-          title: "Dashboard", 
-          href: "/admin/dashboard", 
-          icon: <LayoutDashboard className="h-5 w-5" />,
-          description: "Modern dashboard with enhanced UI and improved contrast",
-          badge: { text: "Upgraded", variant: "updated" }
+          title: "Conversation Insights", 
+          href: "/admin/conversation-insights", 
+          icon: <MessageSquare className="h-5 w-5" />,
+          description: "Chat transcripts, filters, and tagging"
         },
         { 
-          title: "Agora Profile", 
-          href: "/admin/agora-profile", 
-          icon: <Brain className="h-5 w-5" />,
-          description: "Business intelligence and management platform",
-          badge: { text: "New", variant: "new" }
-        },
-        { 
-          title: "Client CRM", 
+          title: "CRM", 
           href: "/admin/crm", 
           icon: <Users className="h-5 w-5" />,
-          requiresStaff: true,
-          badge: { text: "Pro", variant: "pro" }
+          description: "Lead tracking and contact history"
         },
         { 
-          title: "Analytics", 
-          href: "/admin/analytics", 
-          icon: <BarChart className="h-5 w-5" />,
-          requiresStaff: true,
-          badge: { text: "New", variant: "new" },
-          isNew: true
+          title: "Lead Radar", 
+          href: "/admin/leads/lead-radar", 
+          icon: <Target className="h-5 w-5" />,
+          description: "Lead scoring and visit-based triggers"
         },
+        { 
+          title: "SmartSite Autopilot", 
+          href: "/admin/autopilot", 
+          icon: <Bot className="h-5 w-5" />,
+          description: "Assistant override, blog automation, notifications",
+          badge: { text: "New", variant: "new" }
+        }
+      ]
+    },
+    {
+      title: "✍️ Insights & Content",
+      icon: <TrendingUp className="h-5 w-5" />,
+      isExpandable: true,
+      items: [
         { 
           title: "Insights Dashboard", 
           href: "/admin/insights-dashboard", 
           icon: <TrendingUp className="h-5 w-5" />,
-          requiresStaff: true,
-          badge: { text: "New", variant: "new" },
-          isNew: true
-        },
-      ]
-    },
-    {
-      title: "Intelligence Hub",
-      icon: <Brain className="h-5 w-5" />,
-      isExpandable: true,
-      items: [
-        { 
-          title: "Social Media Generator", 
-          href: "/tools/social-media-generator", 
-          icon: <Newspaper className="h-5 w-5" />,
-          requiresStaff: true,
-          badge: { text: "New", variant: "new" }
+          description: "User behavior, page engagement"
         },
         { 
-          title: "Blog Post Generator", 
-          href: "/tools/blog-post-generator", 
+          title: "User Insights", 
+          href: "/admin/insight-users", 
+          icon: <Users className="h-5 w-5" />,
+          description: "Who's interacting and how"
+        },
+        { 
+          title: "Blog Posts", 
+          href: "/admin/content/blog-posts", 
           icon: <FileText className="h-5 w-5" />,
-          requiresStaff: true,
-          badge: { text: "New", variant: "new" },
-          isNew: true
+          description: "AI-powered blog content generation",
+          requiresStaff: true
+        },
+        { 
+          title: "Social Posts", 
+          href: "/admin/content/social-posts", 
+          icon: <Share2 className="h-5 w-5" />,
+          description: "Social media content creation",
+          requiresStaff: true
+        },
+        { 
+          title: "Feature Requests", 
+          href: "/admin/scope-request", 
+          icon: <MessageSquare className="h-5 w-5" />,
+          description: "Optional feature request capture"
         },
         { 
           title: "Business Network", 
