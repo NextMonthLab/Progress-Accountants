@@ -85,23 +85,39 @@
   background-color: var(--admin-settings-hover);
 }
 
-/* Force Dark Cards for Admin Dashboard */
-.admin-dashboard [data-card],
-.admin-dashboard .bg-gray-800,
-.admin-dashboard [class*="bg-gray-800"],
-.admin-dashboard .card,
-.admin-dashboard [data-testid="card"],
-.admin-dashboard div[class*="Card"],
-.admin-dashboard div[class*="bg-white"],
-.admin-dashboard div[class*="bg-gradient"],
-.admin-dashboard > div > div:not(.admin-header) > div > div {
+/* Force Dark Cards for Admin Dashboard - Nuclear Override */
+.admin-dashboard div {
   background-color: #1f2937 !important;
+  background-image: none !important;
   color: white !important;
 }
 
-/* Override any white backgrounds */
-.admin-dashboard [class*="bg-white"] {
-  background-color: #1f2937 !important;
+/* Restore background for main container and header */
+.admin-dashboard,
+.admin-dashboard .admin-header {
+  background-color: #0f172a !important;
+}
+
+/* Force text colors */
+.admin-dashboard div p,
+.admin-dashboard div span,
+.admin-dashboard div h1,
+.admin-dashboard div h2,
+.admin-dashboard div h3,
+.admin-dashboard div h4 {
+  color: white !important;
+}
+
+.admin-dashboard div .text-gray-400,
+.admin-dashboard div .text-gray-500,
+.admin-dashboard div .text-gray-600 {
+  color: #9ca3af !important;
+}
+
+/* Keep buttons contrasted */
+.admin-dashboard button.bg-white {
+  background-color: white !important;
+  color: black !important;
 }
 
 .admin-dashboard .text-white {
