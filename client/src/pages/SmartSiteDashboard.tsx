@@ -207,19 +207,36 @@ export default function SmartSiteDashboard() {
                   {/* Quick Actions */}
                   <div className="pt-4 border-t border-gray-600">
                     <div className="flex flex-wrap gap-2">
-                      {card.actions.map((action, index) => (
-                        <Button
-                          key={index}
-                          asChild
-                          variant="outline"
-                          size="sm"
-                          className="text-white border-gray-500 hover:bg-gray-600 hover:text-white"
-                        >
-                          <Link href={action.href}>
-                            {action.label}
-                          </Link>
-                        </Button>
-                      ))}
+                      {card.actions.map((action, index) => {
+                        // Color coding for different action types
+                        let buttonClass = "text-white border-gray-500 hover:bg-gray-600 hover:text-white";
+                        
+                        if (action.label.includes("View") || action.label.includes("Insights")) {
+                          buttonClass = "bg-blue-600 text-white border-blue-500 hover:bg-blue-700";
+                        } else if (action.label.includes("CRM") || action.label.includes("Leads")) {
+                          buttonClass = "bg-green-600 text-white border-green-500 hover:bg-green-700";
+                        } else if (action.label.includes("Blog") || action.label.includes("Social") || action.label.includes("Content")) {
+                          buttonClass = "bg-purple-600 text-white border-purple-500 hover:bg-purple-700";
+                        } else if (action.label.includes("Autopilot") || action.label.includes("Market")) {
+                          buttonClass = "bg-orange-600 text-white border-orange-500 hover:bg-orange-700";
+                        } else if (action.label.includes("Upgrade")) {
+                          buttonClass = "bg-yellow-600 text-white border-yellow-500 hover:bg-yellow-700";
+                        }
+                        
+                        return (
+                          <Button
+                            key={index}
+                            asChild
+                            variant="outline"
+                            size="sm"
+                            className={buttonClass}
+                          >
+                            <Link href={action.href}>
+                              {action.label}
+                            </Link>
+                          </Button>
+                        );
+                      })}
                     </div>
                   </div>
                 </CardContent>
