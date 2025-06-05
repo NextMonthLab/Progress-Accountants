@@ -178,44 +178,10 @@ export default function AdminSidebar() {
       ]
     },
     {
-      title: "Content Studio",
-      icon: <Sparkles className="h-5 w-5" />,
+      title: "Intelligence Hub",
+      icon: <Brain className="h-5 w-5" />,
       isExpandable: true,
       items: [
-        {
-          title: "Page Builder",
-          icon: <Layers className="h-5 w-5" />,
-          items: [
-            { 
-              title: "All Pages", 
-              href: "/page-builder", 
-              icon: <FileText className="h-5 w-5" />,
-              requiresStaff: true 
-            },
-            { 
-              title: "Create New Page", 
-              href: "/page-builder/new", 
-              icon: <PlusCircle className="h-5 w-5" />,
-              requiresStaff: true,
-              badge: { text: "Updated", variant: "updated" } 
-            },
-            { 
-              title: "Page Templates", 
-              href: "/page-builder/templates", 
-              icon: <Layout className="h-5 w-5" />,
-              requiresStaff: true 
-            },
-          ],
-          requiresStaff: true,
-          isNew: true
-        },
-        { 
-          title: "Media Hub", 
-          href: "/media", 
-          icon: <FileImage className="h-5 w-5" />,
-          requiresStaff: true,
-          badge: { text: "Enhanced", variant: "updated" } 
-        },
         { 
           title: "Social Media Generator", 
           href: "/tools/social-media-generator", 
@@ -274,55 +240,11 @@ export default function AdminSidebar() {
           requiresStaff: true 
         },
         { 
-          title: "Site Branding", 
-          href: "/admin/site-branding", 
-          icon: <Image className="h-5 w-5" />,
-          requiresStaff: true 
-        },
-
-      ]
-    },
-    {
-      title: "Website Setup",
-      icon: <SquarePen className="h-5 w-5" />,
-      isExpandable: true,
-      items: [
-        { 
-          title: "Homepage Setup", 
-          href: "/homepage-setup", 
-          icon: <Home className="h-5 w-5" />,
-          requiresStaff: true 
-        },
-        { 
-          title: "Foundation Pages", 
-          href: "/foundation-pages", 
-          icon: <Layout className="h-5 w-5" />,
-          requiresStaff: true 
-        },
-        { 
-          title: "Navigation Menus", 
-          href: "/admin/menu-management", 
-          icon: <ListOrdered className="h-5 w-5" />,
-          requiresStaff: true 
-        },
-        { 
-          title: "SEO Manager", 
-          href: "/admin/seo", 
-          icon: <Globe className="h-5 w-5" />,
-          requiresStaff: true 
-        },
-        { 
           title: "Domain Settings", 
           href: "/admin/domain-mapping", 
           icon: <LinkIcon className="h-5 w-5" />,
           requiresStaff: true,
-          badge: { text: "New", variant: "new" }
-        },
-        { 
-          title: "Launch Ready", 
-          href: "/launch-ready", 
-          icon: <FastForward className="h-5 w-5" />,
-          requiresStaff: true 
+          badge: { text: "Admin", variant: "pro" }
         },
       ]
     },
@@ -342,12 +264,7 @@ export default function AdminSidebar() {
           icon: <Settings className="h-5 w-5" />,
           requiresStaff: true 
         },
-        { 
-          title: "AI Companion", 
-          href: "/admin/companion-settings", 
-          icon: <MessageCircle className="h-5 w-5" />,
-          requiresStaff: true 
-        },
+        // Removed AI Companion (front-end customization)
         { 
           title: "Conversation Insights", 
           href: "/admin/conversation-insights", 

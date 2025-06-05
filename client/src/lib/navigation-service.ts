@@ -99,44 +99,7 @@ export const mapSidebarToNavigation = (): NavigationItem[] => {
       pinnedOrder: 1,
     },
 
-    {
-      id: 'page_builder',
-      title: 'Page Builder',
-      icon: 'Layers',
-      type: 'submenu',
-      items: [
-        {
-          id: 'all_pages',
-          title: 'All Pages',
-          icon: 'FileText',
-          type: 'link',
-          href: '/page-builder',
-          requiresStaff: true,
-          category: 'create_publish',
-        },
-        {
-          id: 'create_page',
-          title: 'Create New Page',
-          icon: 'PlusCircle',
-          type: 'link',
-          href: '/page-builder/new',
-          requiresStaff: true,
-          category: 'create_publish',
-        },
-        {
-          id: 'page_templates',
-          title: 'Page Templates',
-          icon: 'Layout',
-          type: 'link',
-          href: '/page-builder/templates',
-          requiresStaff: true,
-          category: 'create_publish',
-        }
-      ],
-      requiresStaff: true,
-      category: 'create_publish',
-      pinnedOrder: 1,
-    },
+    // Removed page builder navigation (front-end editing)
     {
       id: 'blog_content',
       title: 'Blog Content',
