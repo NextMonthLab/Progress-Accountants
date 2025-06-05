@@ -42,7 +42,7 @@ export default function SmartSiteDashboard() {
       subtitle: "Review live chats, score leads, take over the assistant",
       href: "/admin/conversation-insights",
       icon: <MessageSquare className="h-6 w-6" />,
-      color: "bg-blue-50 border-blue-200 hover:bg-blue-100",
+      color: "bg-gray-800 border-gray-600 hover:bg-gray-700",
       stats: [
         { label: "Active chats today", value: stats?.activeChatsToday || 0 },
         { label: "Leads this week", value: stats?.leadsThisWeek || 0 }
@@ -59,7 +59,7 @@ export default function SmartSiteDashboard() {
       subtitle: "See what's resonating. Create blog posts or social content",
       href: "/admin/insights-dashboard",
       icon: <TrendingUp className="h-6 w-6" />,
-      color: "bg-green-50 border-green-200 hover:bg-green-100",
+      color: "bg-gray-800 border-gray-600 hover:bg-gray-700",
       stats: [
         { label: "Top insight", value: stats?.topInsight || "Page engagement up 15%" },
         { label: "Drafts pending", value: stats?.draftsAwaitingApproval || 0 }
@@ -77,8 +77,8 @@ export default function SmartSiteDashboard() {
       href: stats?.marketViewUnlocked ? "/admin/market-trends" : "/admin/upgrade",
       icon: <Globe className="h-6 w-6" />,
       color: stats?.marketViewUnlocked 
-        ? "bg-purple-50 border-purple-200 hover:bg-purple-100"
-        : "bg-gray-50 border-gray-200 hover:bg-gray-100",
+        ? "bg-gray-800 border-gray-600 hover:bg-gray-700"
+        : "bg-gray-800 border-gray-600 hover:bg-gray-700",
       stats: stats?.marketViewUnlocked 
         ? [
             { label: "Trending keyword", value: stats.topTrendingKeyword || "accounting software" },
@@ -118,7 +118,7 @@ export default function SmartSiteDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-8">
+    <div className="min-h-screen bg-slate-900 p-8">
       <div className="max-w-7xl mx-auto space-y-8">
         {/* Welcome Banner */}
         <div className="bg-gradient-to-r from-cyan-500 to-blue-600 text-white p-8 rounded-lg shadow-lg">
@@ -170,7 +170,7 @@ export default function SmartSiteDashboard() {
                     <div className="flex items-center space-x-3">
                       {card.icon}
                       <div>
-                        <CardTitle className="text-lg font-semibold">
+                        <CardTitle className="text-lg font-semibold text-white">
                           {card.title}
                         </CardTitle>
                       </div>
@@ -181,7 +181,7 @@ export default function SmartSiteDashboard() {
                       </Badge>
                     )}
                   </div>
-                  <CardDescription className="text-gray-600">
+                  <CardDescription className="text-gray-300">
                     {card.subtitle}
                   </CardDescription>
                 </CardHeader>
@@ -191,13 +191,13 @@ export default function SmartSiteDashboard() {
                   <div className="grid grid-cols-2 gap-4">
                     {card.stats.map((stat, index) => (
                       <div key={index} className="text-center">
-                        <div className="text-2xl font-bold text-gray-900">
+                        <div className="text-2xl font-bold text-white">
                           {typeof stat.value === 'number' && stat.value > 1000 
                             ? `${(stat.value / 1000).toFixed(1)}k`
                             : stat.value
                           }
                         </div>
-                        <div className="text-xs text-gray-600 uppercase tracking-wide">
+                        <div className="text-xs text-gray-400 uppercase tracking-wide">
                           {stat.label}
                         </div>
                       </div>
@@ -205,7 +205,7 @@ export default function SmartSiteDashboard() {
                   </div>
 
                   {/* Quick Actions */}
-                  <div className="pt-4 border-t border-gray-200">
+                  <div className="pt-4 border-t border-gray-600">
                     <div className="flex flex-wrap gap-2">
                       {card.actions.map((action, index) => (
                         <Button
@@ -213,7 +213,7 @@ export default function SmartSiteDashboard() {
                           asChild
                           variant="outline"
                           size="sm"
-                          className="text-gray-700 hover:text-gray-900"
+                          className="text-white border-gray-500 hover:bg-gray-600 hover:text-white"
                         >
                           <Link href={action.href}>
                             {action.label}
