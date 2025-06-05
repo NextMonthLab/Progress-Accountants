@@ -82,7 +82,6 @@ export default function Navbar() {
       items: [
         { label: "Business Calculator", href: "/business-calculator", icon: <Calculator className="h-4 w-4 mr-2" /> },
         { label: "SME Support Hub", href: "/sme-support-hub", icon: <Building2 className="h-4 w-4 mr-2" /> },
-        { label: "News & Insights", href: "/news", icon: <Newspaper className="h-4 w-4 mr-2" /> },
         { label: "Podcast Studio", href: "/studio-banbury", icon: <Layout className="h-4 w-4 mr-2" /> },
       ]
     },
