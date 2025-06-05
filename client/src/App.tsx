@@ -80,6 +80,8 @@ const InsightUsersPage = lazy(() => import("@/pages/InsightUsersPage"));
 const InsightsDashboardPage = lazy(() => import("@/pages/InsightsDashboardPage"));
 const SmartSiteDashboard = lazy(() => import("@/pages/SmartSiteDashboard"));
 const SmartSiteSetupPanel = lazy(() => import("@/pages/SmartSiteSetupPanel"));
+const BlogPostGenerator = lazy(() => import("@/pages/BlogPostGenerator"));
+const SocialPostGenerator = lazy(() => import("@/pages/SocialPostGenerator"));
 const SotManagerPage = lazy(() => import("@/pages/admin/SotManagerPage"));
 const ScopeRequestPage = lazy(() => import("@/pages/ScopeRequestPage"));
 const ModuleGalleryPage = lazy(() => import("@/pages/ModuleGalleryPage"));
@@ -145,7 +147,7 @@ import CreateFormWizard from "@/pages/tools/wizards/CreateFormWizard";
 import CreateCalculatorWizard from "@/pages/tools/wizards/CreateCalculatorWizard";
 import CreateDashboardWizard from "@/pages/tools/wizards/CreateDashboardWizard";
 import CreateEmbedWizard from "@/pages/tools/wizards/CreateEmbedWizard";
-import BlogPostGenerator from "@/pages/tools/blog-post-generator";
+
 // Import tool pages
 // DocumentHead and MainLayout already imported above
 import { ClientDataProvider, withAuth } from "@/components/ClientDataProvider";
@@ -409,6 +411,24 @@ function Router() {
           </Suspense>
         )}
         allowedRoles={['admin', 'super_admin']} 
+      />
+      <ProtectedRoute 
+        path="/admin/content/blog-posts" 
+        component={(props: Record<string, any>) => (
+          <Suspense fallback={<LoadingFallback />}>
+            <BlogPostGenerator {...props} />
+          </Suspense>
+        )}
+        allowedRoles={['admin', 'super_admin', 'editor']} 
+      />
+      <ProtectedRoute 
+        path="/admin/content/social-posts" 
+        component={(props: Record<string, any>) => (
+          <Suspense fallback={<LoadingFallback />}>
+            <SocialPostGenerator {...props} />
+          </Suspense>
+        )}
+        allowedRoles={['admin', 'super_admin', 'editor']} 
       />
       {/* Add redirect from /insights to the proper dashboard path */}
       <ProtectedRoute 

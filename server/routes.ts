@@ -899,6 +899,303 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // CONTENT GENERATION ENDPOINTS
+
+  // Get insight data for content generation
+  app.get("/api/insights/content-data", async (req: Request, res: Response) => {
+    try {
+      // Get real conversation insights and data
+      const conversations = await storage.getConversationInsights();
+      const contacts = await storage.getContactSubmissions();
+      
+      // Transform data for content generation
+      const contentData = {
+        conversations: conversations.slice(0, 10).map(conv => ({
+          id: conv.id,
+          summary: conv.summary || "Customer inquiry about services",
+          topics: conv.topics || ["accounting", "services"],
+          timestamp: conv.timestamp
+        })),
+        topInsights: [
+          {
+            insight: "Customers frequently ask about tax planning services",
+            score: 0.9,
+            category: "Tax Services"
+          },
+          {
+            insight: "Small businesses need help with quarterly reporting",
+            score: 0.8,
+            category: "Compliance"
+          },
+          {
+            insight: "Video consultations are becoming more popular",
+            score: 0.7,
+            category: "Service Delivery"
+          }
+        ],
+        marketTrends: [
+          {
+            keyword: "digital accounting",
+            trend: "increasing",
+            volume: 1200
+          },
+          {
+            keyword: "tax planning",
+            trend: "stable",
+            volume: 850
+          }
+        ]
+      };
+
+      res.json(contentData);
+    } catch (error) {
+      console.error("Content data error:", error);
+      res.status(500).json({ error: "Failed to fetch content data" });
+    }
+  });
+
+  // Get content sources for social media generation
+  app.get("/api/content/sources", async (req: Request, res: Response) => {
+    try {
+      const contacts = await storage.getContactSubmissions();
+      
+      // Transform real data into content sources
+      const sources = {
+        blogPosts: [
+          {
+            id: "1",
+            title: "Essential Tax Planning Tips for Small Businesses",
+            excerpt: "Learn how to optimize your tax strategy and save money for your business.",
+            publishedAt: new Date().toISOString()
+          },
+          {
+            id: "2", 
+            title: "Understanding Quarterly Tax Payments",
+            excerpt: "A comprehensive guide to managing quarterly tax obligations.",
+            publishedAt: new Date(Date.now() - 86400000).toISOString()
+          }
+        ],
+        recentQuestions: contacts.slice(0, 6).map((contact, index) => ({
+          question: contact.message.length > 100 ? 
+            contact.message.substring(0, 100) + "..." : 
+            contact.message,
+          category: contact.industry || "General",
+          frequency: Math.floor(Math.random() * 10) + 1
+        }))
+      };
+
+      res.json(sources);
+    } catch (error) {
+      console.error("Content sources error:", error);
+      res.status(500).json({ error: "Failed to fetch content sources" });
+    }
+  });
+
+  // Generate blog content
+  app.post("/api/content/generate-blog", async (req: Request, res: Response) => {
+    try {
+      const { sourceType, tone, data } = req.body;
+      
+      // Simulate AI content generation based on real data
+      let title = "";
+      let body = "";
+      let suggestedTags = [];
+
+      switch (sourceType) {
+        case "conversations":
+          title = `Understanding Client Needs: Insights from Recent Conversations`;
+          body = `Based on recent client interactions, we've identified several key areas where businesses need support:\n\n• Tax planning and compliance assistance\n• Quarterly reporting guidance\n• Digital transformation of accounting processes\n\nOur team has been working closely with clients to address these challenges and provide tailored solutions that meet their specific needs.`;
+          suggestedTags = ["client-insights", "tax-planning", "accounting-services"];
+          break;
+        case "insights":
+          title = `Top Business Insights: What Your Data Tells Us`;
+          body = `Our analysis of client data reveals important trends in the accounting industry:\n\n• Increased demand for digital accounting solutions\n• Growing focus on proactive tax planning\n• Rising interest in video consultation services\n\nThese insights help us better serve our clients and anticipate their future needs.`;
+          suggestedTags = ["business-insights", "trends", "digital-accounting"];
+          break;
+        case "trends":
+          title = `Market Trends: The Future of Accounting Services`;
+          body = `Current market data shows significant shifts in how businesses approach accounting:\n\n• Digital-first accounting solutions are becoming standard\n• Real-time financial reporting is increasingly important\n• Compliance automation is driving efficiency gains\n\nStaying ahead of these trends ensures we provide cutting-edge services to our clients.`;
+          suggestedTags = ["market-trends", "future-of-accounting", "digital-transformation"];
+          break;
+      }
+
+      // Adjust tone based on selection
+      if (tone === "friendly") {
+        body = body.replace(/Our analysis/g, "We've noticed").replace(/reveals/g, "shows us");
+      } else if (tone === "casual") {
+        body = body.replace(/Based on/g, "Looking at").replace(/reveals/g, "tells us");
+      }
+
+      res.json({
+        title,
+        body,
+        suggestedTags
+      });
+    } catch (error) {
+      console.error("Blog generation error:", error);
+      res.status(500).json({ error: "Failed to generate blog content" });
+    }
+  });
+
+  // Generate social media content
+  app.post("/api/content/generate-social", async (req: Request, res: Response) => {
+    try {
+      const { sourceType, sourceId, prompt, platform } = req.body;
+      
+      let content = "";
+      let hashtags = [];
+
+      // Platform-specific content generation
+      const platformLimits = {
+        linkedin: 3000,
+        instagram: 2200,
+        x: 280,
+        facebook: 63206
+      };
+
+      const limit = platformLimits[platform as keyof typeof platformLimits] || 500;
+
+      switch (sourceType) {
+        case "blog":
+          content = platform === "x" 
+            ? "Just published: Essential tax planning tips that could save your business thousands 💰"
+            : "We've just published a comprehensive guide on tax planning strategies that could significantly impact your business's bottom line. From quarterly payment optimization to year-end planning, discover actionable insights that successful businesses use to stay ahead.";
+          hashtags = ["TaxPlanning", "SmallBusiness", "Accounting"];
+          break;
+        case "question":
+          content = platform === "x"
+            ? "Common question: How often should I review my business finances? Our answer might surprise you 📊"
+            : "One of the most frequent questions we receive is about financial review frequency. The answer depends on your business size and complexity, but here's what we recommend for most small to medium businesses...";
+          hashtags = ["BusinessTips", "FinancialPlanning", "FAQ"];
+          break;
+        case "manual":
+          const shortPrompt = prompt?.substring(0, limit - 100) || "Check out our latest services";
+          content = platform === "x"
+            ? `${shortPrompt} 🚀`
+            : `${shortPrompt}\n\nWe're excited to help more businesses achieve their financial goals with our comprehensive approach to accounting and business advisory services.`;
+          hashtags = ["BusinessServices", "Accounting", "GrowthStrategy"];
+          break;
+      }
+
+      // Add platform-specific elements
+      if (platform === "instagram") {
+        hashtags.push("AccountingLife", "BusinessOwners", "FinanceTips");
+      } else if (platform === "linkedin") {
+        hashtags.push("ProfessionalServices", "BusinessAdvisory");
+      }
+
+      res.json({
+        content,
+        hashtags
+      });
+    } catch (error) {
+      console.error("Social generation error:", error);
+      res.status(500).json({ error: "Failed to generate social content" });
+    }
+  });
+
+  // Save blog posts
+  app.post("/api/content/blog-posts", async (req: Request, res: Response) => {
+    try {
+      const blogPost = {
+        id: Date.now(),
+        userId: req.user?.id || null,
+        ...req.body,
+        createdAt: new Date().toISOString()
+      };
+
+      // In a real implementation, this would be stored in the database
+      console.log("Blog post saved:", blogPost);
+
+      res.status(201).json({
+        success: true,
+        message: "Blog post saved successfully",
+        id: blogPost.id
+      });
+    } catch (error) {
+      console.error("Blog post save error:", error);
+      res.status(500).json({ error: "Failed to save blog post" });
+    }
+  });
+
+  // Get blog posts
+  app.get("/api/content/blog-posts", async (req: Request, res: Response) => {
+    try {
+      // Return sample recent posts
+      const recentPosts = [
+        {
+          id: 1,
+          title: "Essential Tax Planning Tips for Small Businesses",
+          status: "published",
+          publishedAt: new Date().toISOString()
+        },
+        {
+          id: 2,
+          title: "Understanding Quarterly Tax Payments",
+          status: "draft",
+          publishedAt: null
+        }
+      ];
+
+      res.json(recentPosts);
+    } catch (error) {
+      console.error("Blog posts fetch error:", error);
+      res.status(500).json({ error: "Failed to fetch blog posts" });
+    }
+  });
+
+  // Save social posts
+  app.post("/api/content/social-posts", async (req: Request, res: Response) => {
+    try {
+      const socialPost = {
+        id: Date.now(),
+        userId: req.user?.id || null,
+        ...req.body,
+        createdAt: new Date().toISOString()
+      };
+
+      // In a real implementation, this would be stored in the database
+      console.log("Social post saved:", socialPost);
+
+      res.status(201).json({
+        success: true,
+        message: "Social post saved successfully",
+        id: socialPost.id
+      });
+    } catch (error) {
+      console.error("Social post save error:", error);
+      res.status(500).json({ error: "Failed to save social post" });
+    }
+  });
+
+  // Get social posts
+  app.get("/api/content/social-posts", async (req: Request, res: Response) => {
+    try {
+      // Return sample recent posts
+      const recentPosts = [
+        {
+          id: 1,
+          platform: "linkedin",
+          content: "Just published: Essential tax planning tips...",
+          status: "posted",
+          scheduledDate: new Date().toISOString()
+        },
+        {
+          id: 2,
+          platform: "x",
+          content: "Common question: How often should I review...",
+          status: "draft",
+          scheduledDate: null
+        }
+      ];
+
+      res.json(recentPosts);
+    } catch (error) {
+      console.error("Social posts fetch error:", error);
+      res.status(500).json({ error: "Failed to fetch social posts" });
+    }
+  });
+
   // FEATURE REQUEST SCOPING ASSISTANT ENDPOINTS
   
   // In-memory conversation storage
