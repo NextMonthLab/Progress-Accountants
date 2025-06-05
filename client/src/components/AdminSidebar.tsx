@@ -35,7 +35,9 @@ import {
   Cpu,
   Newspaper,
   User,
-  Brain
+  Brain,
+  Bot,
+  TrendingUp
 } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import { useState, useEffect, useRef } from "react";
@@ -203,56 +205,35 @@ export default function AdminSidebar() {
           href: "/admin/scope-request", 
           icon: <MessageSquare className="h-5 w-5" />,
           description: "Optional feature request capture"
-        },
-        { 
-          title: "Business Network", 
-          href: "/business-network", 
-          icon: <Users className="h-5 w-5" />,
-          badge: { text: "New", variant: "new" },
-          isNew: true
-        },
-        { 
-          title: "Business Discover", 
-          href: "/business-discover", 
-          icon: <Globe className="h-5 w-5" />,
-          badge: { text: "New", variant: "new" },
-          isNew: true
-        },
-        { 
-          title: "Entrepreneur Support", 
-          href: "/entrepreneur-support", 
-          icon: <Lightbulb className="h-5 w-5" />,
-          badge: { text: "New", variant: "new" },
-          isNew: true
         }
       ]
     },
-    // Content Studio now contains all content-related items directly
     {
-      title: "Brand Center",
-      icon: <Palette className="h-5 w-5" />,
+      title: "🌐 Market View (Upgrade Required)",
+      icon: <Globe className="h-5 w-5" />,
       isExpandable: true,
       items: [
         { 
-          title: "Brand Guidelines", 
-          href: "/brand-guidelines", 
-          icon: <PaintBucket className="h-5 w-5" />,
-          requiresStaff: true,
-          description: "Define your brand's visual identity"
+          title: "Market Trends", 
+          href: "/admin/market-trends", 
+          icon: <TrendingUp className="h-5 w-5" />,
+          description: "Pulls live industry data, keyword shifts",
+          badge: { text: "Pro", variant: "pro" }
         },
         { 
-          title: "Business Identity", 
-          href: "/business-identity", 
-          icon: <CircleUser className="h-5 w-5" />,
-          requiresStaff: true 
+          title: "Competitor Watch", 
+          href: "/admin/competitor-watch", 
+          icon: <Target className="h-5 w-5" />,
+          description: "AI-inferred competitor moves",
+          badge: { text: "Pro", variant: "pro" }
         },
         { 
-          title: "Domain Settings", 
-          href: "/admin/domain-mapping", 
-          icon: <LinkIcon className="h-5 w-5" />,
-          requiresStaff: true,
-          badge: { text: "Admin", variant: "pro" }
-        },
+          title: "Trend Prompts", 
+          href: "/admin/trend-prompts", 
+          icon: <Lightbulb className="h-5 w-5" />,
+          description: "Suggested post/campaign ideas",
+          badge: { text: "Pro", variant: "pro" }
+        }
       ]
     },
     {
@@ -270,31 +251,6 @@ export default function AdminSidebar() {
           href: "/admin/settings", 
           icon: <Settings className="h-5 w-5" />,
           requiresStaff: true 
-        },
-        // Removed AI Companion (front-end customization)
-        { 
-          title: "Conversation Insights", 
-          href: "/admin/conversation-insights", 
-          icon: <Sparkles className="h-5 w-5" />,
-          requiresStaff: true,
-          badge: { text: "Pro", variant: "pro" }
-        },
-        { 
-          title: "SmartSite Autopilot", 
-          href: "/admin/autopilot", 
-          icon: <Bot className="h-5 w-5" />,
-          requiresStaff: true,
-          badge: { text: "New", variant: "new" },
-          isNew: true
-        },
-
-        { 
-          title: "Blueprint Management", 
-          href: "/admin/blueprint-management", 
-          icon: <Cpu className="h-5 w-5" />,
-          requiresStaff: true,
-          badge: { text: "New", variant: "new" },
-          isNew: true
         },
         { 
           title: "Clone Template", 
