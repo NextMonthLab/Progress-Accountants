@@ -92,6 +92,25 @@ export default function SocialPostGenerator() {
   const [manualPrompt, setManualPrompt] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
 
+  // Check for preloaded insight from URL parameters
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const preloadedPrompt = urlParams.get('prompt');
+    
+    if (preloadedPrompt) {
+      setSocialPost(prev => ({
+        ...prev,
+        content: preloadedPrompt
+      }));
+      setManualPrompt(preloadedPrompt);
+      
+      toast({
+        title: "Insight Loaded",
+        description: "Content has been preloaded from your insight selection.",
+      });
+    }
+  }, [toast]);
+
   // Fetch content sources
   const { data: contentSources, isLoading: loadingSources } = useQuery<ContentSource>({
     queryKey: ["/api/content/sources"],

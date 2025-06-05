@@ -268,7 +268,11 @@ export default function InsightsDashboardContent() {
             {loadingWeeklySummary ? (
               <LoadingSpinner />
             ) : latestWeeklySummary ? (
-              <AiSummaryCard summary={latestWeeklySummary} />
+              <AiSummaryCard 
+                summary={latestWeeklySummary} 
+                onGenerateBlogPost={generateBlogPost}
+                onGenerateSocialPost={generateSocialPost}
+              />
             ) : (
               <div className="text-center py-6 text-muted-foreground">
                 No weekly summaries available yet
@@ -280,7 +284,11 @@ export default function InsightsDashboardContent() {
             {loadingMonthlySummary ? (
               <LoadingSpinner />
             ) : latestMonthlySummary ? (
-              <AiSummaryCard summary={latestMonthlySummary} />
+              <AiSummaryCard 
+                summary={latestMonthlySummary} 
+                onGenerateBlogPost={generateBlogPost}
+                onGenerateSocialPost={generateSocialPost}
+              />
             ) : (
               <div className="text-center py-6 text-muted-foreground">
                 No monthly summaries available yet
@@ -293,7 +301,15 @@ export default function InsightsDashboardContent() {
   );
 }
 
-function AiSummaryCard({ summary }: { summary: InsightSummary }) {
+function AiSummaryCard({ 
+  summary, 
+  onGenerateBlogPost, 
+  onGenerateSocialPost 
+}: { 
+  summary: InsightSummary;
+  onGenerateBlogPost: (insight: string, title?: string) => void;
+  onGenerateSocialPost: (insight: string) => void;
+}) {
   const formattedStartDate = format(parseISO(summary.startDate), 'MMM d, yyyy');
   const formattedEndDate = format(parseISO(summary.endDate), 'MMM d, yyyy');
   
@@ -334,7 +350,7 @@ function AiSummaryCard({ summary }: { summary: InsightSummary }) {
                             size="sm"
                             variant="outline"
                             className="h-8 px-3 text-xs border-cyan-200 hover:border-cyan-400 hover:bg-cyan-50"
-                            onClick={() => generateBlogPost(insight.reason, `Insight: ${insight.reason.substring(0, 50)}...`)}
+                            onClick={() => onGenerateBlogPost(insight.reason, `Insight: ${insight.reason.substring(0, 50)}...`)}
                           >
                             <Edit3 className="h-3 w-3 mr-1 text-cyan-600" />
                             Write a Post
@@ -351,7 +367,7 @@ function AiSummaryCard({ summary }: { summary: InsightSummary }) {
                             size="sm"
                             variant="outline"
                             className="h-8 px-3 text-xs border-cyan-200 hover:border-cyan-400 hover:bg-cyan-50"
-                            onClick={() => generateSocialPost(insight.reason)}
+                            onClick={() => onGenerateSocialPost(insight.reason)}
                           >
                             <Share2 className="h-3 w-3 mr-1 text-cyan-600" />
                             Create Social Snippet
