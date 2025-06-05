@@ -60,7 +60,7 @@ export default function AdminDashboardPageSimple() {
         {/* Main Dashboard Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           {/* Live Chat Monitoring Card */}
-          <Card className="bg-gray-800 rounded-3xl p-6 shadow-xl border-0" style={{backgroundColor: '#1f2937', color: 'white'}}>
+          <Card className="bg-gray-700 rounded-3xl p-6 shadow-xl border-0" style={{backgroundColor: '#374151', color: 'white', border: '1px solid #4b5563'}}>
             <div className="flex items-center gap-3 mb-4">
               <div className="w-8 h-8 rounded-full bg-purple-600/20 flex items-center justify-center">
                 <Users className="h-4 w-4 text-purple-400" />
@@ -94,7 +94,7 @@ export default function AdminDashboardPageSimple() {
           </Card>
 
           {/* Content Creation Card */}
-          <Card className="bg-gray-800 rounded-3xl p-6 shadow-xl border-0" style={{backgroundColor: '#1f2937', color: 'white'}}>
+          <Card className="bg-gray-700 rounded-3xl p-6 shadow-xl border-0" style={{backgroundColor: '#374151', color: 'white', border: '1px solid #4b5563'}}>
             <div className="flex items-center gap-3 mb-4">
               <div className="w-8 h-8 rounded-full bg-orange-600/20 flex items-center justify-center">
                 <Sparkles className="h-4 w-4 text-orange-400" />
@@ -125,7 +125,7 @@ export default function AdminDashboardPageSimple() {
           </Card>
 
           {/* Premium Upgrade Card */}
-          <Card className="bg-gray-800 rounded-3xl p-6 shadow-xl border-0 relative" style={{backgroundColor: '#1f2937', color: 'white'}}>
+          <Card className="bg-gray-700 rounded-3xl p-6 shadow-xl border-0 relative" style={{backgroundColor: '#374151', color: 'white', border: '1px solid #4b5563'}}>
             <div className="absolute top-4 right-4">
               <Badge className="bg-yellow-500 text-black text-xs px-2 py-1 rounded-full">Premium</Badge>
             </div>
@@ -150,19 +150,19 @@ export default function AdminDashboardPageSimple() {
 
           {/* Quick Actions Row */}
           <div className="grid grid-cols-2 gap-3">
-            <Card className="bg-gray-800 rounded-3xl p-4 shadow-xl border-0 text-center" style={{backgroundColor: '#1f2937', color: 'white'}}>
+            <Card className="bg-gray-700 rounded-3xl p-4 shadow-xl border-0 text-center" style={{backgroundColor: '#374151', color: 'white', border: '1px solid #4b5563'}}>
               <BarChart4 className="h-8 w-8 text-blue-400 mx-auto mb-2" />
               <div className="text-sm font-medium text-white" style={{color: 'white'}}>Active Chats</div>
             </Card>
-            <Card className="bg-gray-800 rounded-3xl p-4 shadow-xl border-0 text-center" style={{backgroundColor: '#1f2937', color: 'white'}}>
+            <Card className="bg-gray-700 rounded-3xl p-4 shadow-xl border-0 text-center" style={{backgroundColor: '#374151', color: 'white', border: '1px solid #4b5563'}}>
               <Users className="h-8 w-8 text-green-400 mx-auto mb-2" />
               <div className="text-sm font-medium text-white" style={{color: 'white'}}>New Leads</div>
             </Card>
-            <Card className="bg-gray-800 rounded-3xl p-4 shadow-xl border-0 text-center" style={{backgroundColor: '#1f2937', color: 'white'}}>
+            <Card className="bg-gray-700 rounded-3xl p-4 shadow-xl border-0 text-center" style={{backgroundColor: '#374151', color: 'white', border: '1px solid #4b5563'}}>
               <LineChart className="h-8 w-8 text-purple-400 mx-auto mb-2" />
               <div className="text-sm font-medium text-white" style={{color: 'white'}}>Drafts Pending</div>
             </Card>
-            <Card className="bg-gray-800 rounded-3xl p-4 shadow-xl border-0 text-center" style={{backgroundColor: '#1f2937', color: 'white'}}>
+            <Card className="bg-gray-700 rounded-3xl p-4 shadow-xl border-0 text-center" style={{backgroundColor: '#374151', color: 'white', border: '1px solid #4b5563'}}>
               <Sparkles className="h-8 w-8 text-orange-400 mx-auto mb-2" />
               <div className="text-sm font-medium text-white" style={{color: 'white'}}>Market Insights</div>
             </Card>
