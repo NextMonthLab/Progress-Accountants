@@ -1299,6 +1299,56 @@ export const insertAiComponentRecommendationSchema = createInsertSchema(aiCompon
 export type InsertAiComponentRecommendation = z.infer<typeof insertAiComponentRecommendationSchema>;
 export type AiComponentRecommendation = typeof aiComponentRecommendations.$inferSelect;
 
+// Feed Settings table for SmartSite Feed Control Panel
+export const feedSettings = pgTable("feed_settings", {
+  id: serial("id").primaryKey(),
+  tenantId: uuid("tenant_id").references(() => tenants.id).notNull(),
+  
+  // Module toggles
+  blogPostsEnabled: boolean("blog_posts_enabled").default(true),
+  insightsEnabled: boolean("insights_enabled").default(true),
+  socialFeedEnabled: boolean("social_feed_enabled").default(false),
+  eventsEnabled: boolean("events_enabled").default(false),
+  feedbackFormEnabled: boolean("feedback_form_enabled").default(true),
+  
+  // Social channel toggles
+  youtubeEnabled: boolean("youtube_enabled").default(false),
+  instagramEnabled: boolean("instagram_enabled").default(false),
+  tiktokEnabled: boolean("tiktok_enabled").default(false),
+  twitterEnabled: boolean("twitter_enabled").default(false),
+  
+  // Autopilot settings
+  autopilotEnabled: boolean("autopilot_enabled").default(false),
+  autopilotInterval: varchar("autopilot_interval", { length: 20 }).default("weekly"), // daily, weekly, monthly
+  autopilotTopics: jsonb("autopilot_topics"), // Array of selected topics/tags
+  autopilotApprovalRequired: boolean("autopilot_approval_required").default(true),
+  
+  // Branding configuration
+  brandingSynced: boolean("branding_synced").default(false),
+  brandingLastSync: timestamp("branding_last_sync"),
+  
+  // Public subdomain setup
+  customSubdomain: varchar("custom_subdomain", { length: 255 }),
+  subdomainActive: boolean("subdomain_active").default(false),
+  
+  // Feed configuration
+  feedTitle: varchar("feed_title", { length: 255 }),
+  feedDescription: text("feed_description"),
+  feedTheme: varchar("feed_theme", { length: 50 }).default("default"),
+  
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export const insertFeedSettingsSchema = createInsertSchema(feedSettings).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export type InsertFeedSettings = z.infer<typeof insertFeedSettingsSchema>;
+export type FeedSettings = typeof feedSettings.$inferSelect;
+
 // AI Color Palette Generator
 export const aiColorPalettes = pgTable("ai_color_palettes", {
   id: serial("id").primaryKey(),
