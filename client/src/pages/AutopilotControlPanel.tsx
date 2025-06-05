@@ -199,7 +199,7 @@ export default function AutopilotControlPanel() {
                 <div className="space-y-2">
                   <Label className="text-white font-medium">AI Tone Preference</Label>
                   <Select
-                    value={formData.aiTonePreference || ""}
+                    value={formData.aiTonePreference ?? ""}
                     onValueChange={(value) => updateFormData("aiTonePreference", value)}
                   >
                     <SelectTrigger className="bg-gray-900 border-gray-600 text-white">
@@ -223,7 +223,7 @@ export default function AutopilotControlPanel() {
                     </p>
                   </div>
                   <Switch
-                    checked={formData.reviewBeforePublish}
+                    checked={Boolean(formData.reviewBeforePublish)}
                     onCheckedChange={(checked) => updateFormData("reviewBeforePublish", checked)}
                   />
                 </div>
@@ -253,7 +253,7 @@ export default function AutopilotControlPanel() {
                 </p>
               </div>
               <Switch
-                checked={formData.emailNotifyOnLiveChat}
+                checked={Boolean(formData.emailNotifyOnLiveChat)}
                 onCheckedChange={(checked) => updateFormData("emailNotifyOnLiveChat", checked)}
               />
             </div>
@@ -267,7 +267,7 @@ export default function AutopilotControlPanel() {
                 </p>
               </div>
               <Switch
-                checked={formData.notifyOnlyHighLeadScore}
+                checked={Boolean(formData.notifyOnlyHighLeadScore)}
                 onCheckedChange={(checked) => updateFormData("notifyOnlyHighLeadScore", checked)}
               />
             </div>
@@ -302,7 +302,7 @@ export default function AutopilotControlPanel() {
                 </p>
               </div>
               <Switch
-                checked={formData.autoPauseAssistant}
+                checked={Boolean(formData.autoPauseAssistant)}
                 onCheckedChange={(checked) => updateFormData("autoPauseAssistant", checked)}
               />
             </div>
