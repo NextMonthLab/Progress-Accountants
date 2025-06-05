@@ -1,7 +1,7 @@
 /* admin.css - Styles specific to admin dashboard components */
 
 :root {
-  /* Admin dashboard colors */
+  /* Admin dashboard colors - Light mode */
   --admin-primary: #4F46E5;
   --admin-primary-hover: #6366F1;
   --admin-secondary: #E0F2FE;
@@ -10,6 +10,28 @@
   --admin-settings-bg: #f1f5f9;
   --admin-settings-hover: #e2e8f0;
   --admin-settings-text: #334155;
+  --admin-card-bg: #ffffff;
+  --admin-card-border: #e2e8f0;
+  --admin-text-primary: #1e293b;
+  --admin-text-secondary: #64748b;
+  --admin-bg-main: #f8fafc;
+}
+
+/* Dark mode admin colors */
+.dark {
+  --admin-primary: #6366F1;
+  --admin-primary-hover: #8B5CF6;
+  --admin-secondary: #1e293b;
+  --admin-secondary-hover: #334155;
+  --admin-secondary-text: #94a3b8;
+  --admin-settings-bg: #1e293b;
+  --admin-settings-hover: #334155;
+  --admin-settings-text: #e2e8f0;
+  --admin-card-bg: #1e293b;
+  --admin-card-border: #334155;
+  --admin-text-primary: #f1f5f9;
+  --admin-text-secondary: #94a3b8;
+  --admin-bg-main: #0f172a;
 }
 
 /* Admin button styles - ensures they don't leak into public pages */
@@ -60,9 +82,20 @@
 [data-admin] .Card,
 body:has([data-admin]) .card,
 .admin-layout .card {
-  background-color: white !important;
+  background-color: var(--admin-card-bg) !important;
+  border: 1px solid var(--admin-card-border) !important;
   border-radius: 0.5rem !important;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06) !important;
+  color: var(--admin-text-primary) !important;
+  transition: all 0.2s ease-in-out !important;
+}
+
+.dark .admin-card,
+.dark [data-admin] .card,
+.dark [data-admin] .Card,
+.dark body:has([data-admin]) .card,
+.dark .admin-layout .card {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2) !important;
 }
 
 /* Ensure admin containers are never oval */
@@ -76,4 +109,121 @@ body:has([data-admin]) * {
 .admin-layout *[class*="rounded-full"],
 body:has([data-admin]) *[class*="rounded-full"] {
   border-radius: 0.5rem !important;
+}
+
+/* Admin dashboard layout */
+.admin-dashboard {
+  background-color: var(--admin-bg-main) !important;
+  min-height: 100vh;
+  color: var(--admin-text-primary) !important;
+}
+
+/* Admin text styles */
+.admin-text-primary,
+[data-admin] h1,
+[data-admin] h2,
+[data-admin] h3,
+[data-admin] .text-gray-800,
+.admin-layout h1,
+.admin-layout h2,
+.admin-layout h3,
+.admin-layout .text-gray-800 {
+  color: var(--admin-text-primary) !important;
+}
+
+.admin-text-secondary,
+[data-admin] p,
+[data-admin] .text-gray-500,
+[data-admin] .text-gray-600,
+.admin-layout p,
+.admin-layout .text-gray-500,
+.admin-layout .text-gray-600 {
+  color: var(--admin-text-secondary) !important;
+}
+
+/* Admin stats cards with enhanced dark mode */
+.admin-stats-card {
+  background-color: var(--admin-card-bg) !important;
+  border: 1px solid var(--admin-card-border) !important;
+  border-radius: 0.75rem !important;
+  padding: 1.5rem !important;
+  transition: all 0.2s ease-in-out !important;
+}
+
+.admin-stats-card:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
+}
+
+.dark .admin-stats-card:hover {
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Admin header styling */
+.admin-header,
+[data-admin] .bg-white,
+.admin-layout .bg-white {
+  background-color: var(--admin-card-bg) !important;
+  border: 1px solid var(--admin-card-border) !important;
+  border-radius: 0.75rem !important;
+}
+
+/* Admin tabs enhanced styling */
+.admin-tabs-list,
+[data-admin] .TabsList,
+.admin-layout .TabsList {
+  background-color: var(--admin-card-bg) !important;
+  border: 1px solid var(--admin-card-border) !important;
+  border-radius: 0.75rem !important;
+}
+
+.admin-tabs-trigger,
+[data-admin] .TabsTrigger,
+.admin-layout .TabsTrigger {
+  border-radius: 0.5rem !important;
+  transition: all 0.2s ease-in-out !important;
+  color: var(--admin-text-secondary) !important;
+}
+
+.admin-tabs-trigger[data-state="active"],
+[data-admin] .TabsTrigger[data-state="active"],
+.admin-layout .TabsTrigger[data-state="active"] {
+  background-color: var(--admin-primary) !important;
+  color: white !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+}
+
+.dark .admin-tabs-trigger[data-state="active"],
+.dark [data-admin] .TabsTrigger[data-state="active"],
+.dark .admin-layout .TabsTrigger[data-state="active"] {
+  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.4) !important;
+}
+
+/* Admin button enhancements for dark mode */
+[data-admin] .Button,
+[data-admin] button,
+.admin-layout .Button,
+.admin-layout button {
+  transition: all 0.2s ease-in-out !important;
+}
+
+[data-admin] .bg-teal-500,
+.admin-layout .bg-teal-500 {
+  background-color: #14b8a6 !important;
+}
+
+[data-admin] .bg-teal-500:hover,
+.admin-layout .bg-teal-500:hover {
+  background-color: #0f766e !important;
+}
+
+/* Ensure proper contrast for all admin content */
+[data-admin],
+.admin-layout {
+  background-color: var(--admin-bg-main) !important;
+}
+
+[data-admin] *,
+.admin-layout * {
+  border-color: var(--admin-card-border) !important;
 }

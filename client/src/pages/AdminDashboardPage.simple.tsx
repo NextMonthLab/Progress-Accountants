@@ -50,7 +50,7 @@ export default function AdminDashboardPageSimple() {
 
   return (
     <AdminLayout title="Lead Intelligence">
-      <div className="bg-white rounded-lg p-6 shadow-sm mb-6">
+      <div className="admin-header admin-card p-6 mb-6">
         <div className="flex items-start mb-4">
           <img 
             src="/nextmonth-logo.png" 
@@ -62,15 +62,15 @@ export default function AdminDashboardPageSimple() {
           />
           <div className="flex-1">
             <div className="flex justify-between items-center mb-1">
-              <h1 className="text-2xl font-bold">
-                <span className="text-gray-800">Lead </span>
+              <h1 className="text-2xl font-bold admin-text-primary">
+                <span className="admin-text-primary">Lead </span>
                 <span className="text-[#6abbba]">Tracker</span>
               </h1>
-              <div className="text-sm text-gray-600">
+              <div className="text-sm admin-text-secondary">
                 Credits <span className="font-medium">35/100</span>
               </div>
             </div>
-            <p className="text-gray-500 text-sm">Transform visitor data into actionable sales insights</p>
+            <p className="admin-text-secondary text-sm">Transform visitor data into actionable sales insights</p>
           </div>
         </div>
         
