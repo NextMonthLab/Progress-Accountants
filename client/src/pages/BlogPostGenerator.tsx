@@ -543,6 +543,195 @@ export default function BlogPostGenerator() {
             </Card>
           </div>
         </div>
+
+        {/* Stored Blog Posts List Section */}
+        <div className="mt-12 border-t pt-8">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-2xl font-bold text-gray-900">Stored Blog Posts</h2>
+            <div className="text-sm text-gray-500">
+              {filteredBlogPosts.length} of {storedBlogPosts.length} posts
+            </div>
+          </div>
+
+          {/* Filter and Search Controls */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            {/* Search Input */}
+            <div className="relative">
+              <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+              <Input
+                placeholder="Search posts by title or content..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-10"
+              />
+            </div>
+
+            {/* Status Filter */}
+            <Select value={statusFilter} onValueChange={setStatusFilter}>
+              <SelectTrigger>
+                <Filter className="h-4 w-4 mr-2" />
+                <SelectValue placeholder="Filter by status" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Status</SelectItem>
+                <SelectItem value="draft">Drafts</SelectItem>
+                <SelectItem value="published">Published</SelectItem>
+                <SelectItem value="archived">Archived</SelectItem>
+              </SelectContent>
+            </Select>
+
+            {/* Sort Options */}
+            <Select value={sortBy} onValueChange={setSortBy}>
+              <SelectTrigger>
+                <Calendar className="h-4 w-4 mr-2" />
+                <SelectValue placeholder="Sort by" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="newest">Newest First</SelectItem>
+                <SelectItem value="oldest">Oldest First</SelectItem>
+                <SelectItem value="title">Title A-Z</SelectItem>
+                <SelectItem value="status">Status</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          {/* Posts List */}
+          {isLoadingPosts ? (
+            <div className="flex items-center justify-center py-12">
+              <Loader2 className="h-8 w-8 animate-spin text-cyan-600" />
+              <span className="ml-2 text-gray-600">Loading blog posts...</span>
+            </div>
+          ) : filteredBlogPosts.length === 0 ? (
+            <Card className="py-12">
+              <CardContent className="text-center">
+                <FileText className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+                <h3 className="text-lg font-medium text-gray-900 mb-2">
+                  {storedBlogPosts.length === 0 ? "No blog posts yet" : "No posts match your filters"}
+                </h3>
+                <p className="text-gray-500">
+                  {storedBlogPosts.length === 0 
+                    ? "Start by generating your first blog post using the tools above."
+                    : "Try adjusting your search or filter criteria."
+                  }
+                </p>
+              </CardContent>
+            </Card>
+          ) : (
+            <div className="grid grid-cols-1 gap-4">
+              {filteredBlogPosts.map((post: StoredBlogPost) => (
+                <Card key={post.id} className="hover:shadow-md transition-shadow">
+                  <CardContent className="p-6">
+                    <div className="flex items-start justify-between">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-3 mb-2">
+                          <h3 className="text-lg font-semibold text-gray-900 line-clamp-1">
+                            {post.title}
+                          </h3>
+                          <Badge 
+                            variant={post.status === "published" ? "default" : "secondary"}
+                            className="capitalize"
+                          >
+                            {post.status}
+                          </Badge>
+                        </div>
+                        
+                        {post.excerpt && (
+                          <p className="text-gray-600 mb-3 line-clamp-2">
+                            {post.excerpt}
+                          </p>
+                        )}
+                        
+                        {post.keywords && post.keywords.length > 0 && (
+                          <div className="flex flex-wrap gap-1 mb-3">
+                            {post.keywords.slice(0, 5).map((keyword, index) => (
+                              <Badge key={index} variant="outline" className="text-xs">
+                                #{keyword}
+                              </Badge>
+                            ))}
+                            {post.keywords.length > 5 && (
+                              <Badge variant="outline" className="text-xs">
+                                +{post.keywords.length - 5} more
+                              </Badge>
+                            )}
+                          </div>
+                        )}
+                        
+                        <div className="flex items-center gap-4 text-sm text-gray-500">
+                          <span className="flex items-center gap-1">
+                            <Calendar className="h-3 w-3" />
+                            Created: {new Date(post.createdAt).toLocaleDateString()}
+                          </span>
+                          {post.publishedAt && (
+                            <span className="flex items-center gap-1">
+                              <Send className="h-3 w-3" />
+                              Published: {new Date(post.publishedAt).toLocaleDateString()}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                      
+                      <div className="flex items-center gap-2 ml-4">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => {
+                            navigator.clipboard.writeText(post.content);
+                            toast({
+                              title: "Content copied",
+                              description: "Blog post content copied to clipboard.",
+                            });
+                          }}
+                          className="shrink-0"
+                        >
+                          <Copy className="h-4 w-4" />
+                        </Button>
+                        
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => {
+                            setBlogPost({
+                              title: post.title,
+                              body: post.content,
+                              tone: "professional",
+                              tags: post.keywords || [],
+                              status: "draft"
+                            });
+                            toast({
+                              title: "Post loaded",
+                              description: "Blog post loaded into the editor for modification.",
+                            });
+                          }}
+                          className="shrink-0"
+                        >
+                          <Edit className="h-4 w-4" />
+                        </Button>
+                        
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => {
+                            if (confirm("Are you sure you want to delete this blog post? This action cannot be undone.")) {
+                              deleteBlogPost.mutate(post.id);
+                            }
+                          }}
+                          className="shrink-0 text-red-600 hover:text-red-700 hover:bg-red-50"
+                          disabled={deleteBlogPost.isPending}
+                        >
+                          {deleteBlogPost.isPending ? (
+                            <Loader2 className="h-4 w-4 animate-spin" />
+                          ) : (
+                            <Trash2 className="h-4 w-4" />
+                          )}
+                        </Button>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
