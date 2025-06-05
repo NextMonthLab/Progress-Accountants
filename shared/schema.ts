@@ -111,6 +111,38 @@ export const insertProjectContextSchema = createInsertSchema(projectContext).omi
   updatedAt: true,
 });
 
+// SmartSite Autopilot settings
+export const autopilotSettings = pgTable("autopilot_settings", {
+  id: serial("id").primaryKey(),
+  tenantId: uuid("tenant_id").references(() => tenants.id).notNull(),
+  userId: integer("user_id").references(() => users.id).notNull(),
+  
+  // Blog Autopilot Settings
+  blogAutopilotEnabled: boolean("blog_autopilot_enabled").default(false),
+  postingFrequency: varchar("posting_frequency", { length: 20 }).default("weekly"), // daily, weekly, fortnightly, monthly
+  contentSources: jsonb("content_sources").default([]), // chat_questions, lead_insights, market_trends
+  aiTonePreference: varchar("ai_tone_preference", { length:20 }).default("professional"), // friendly, professional, authoritative, casual
+  reviewBeforePublish: boolean("review_before_publish").default(true),
+  
+  // Chat Override Notifications
+  emailNotifyOnLiveChat: boolean("email_notify_on_live_chat").default(false),
+  notifyOnlyHighLeadScore: boolean("notify_only_high_lead_score").default(false),
+  leadScoreThreshold: integer("lead_score_threshold").default(70),
+  autoPauseAssistant: boolean("auto_pause_assistant").default(false),
+  
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export const insertAutopilotSettingsSchema = createInsertSchema(autopilotSettings).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export type AutopilotSettings = typeof autopilotSettings.$inferSelect;
+export type InsertAutopilotSettings = z.infer<typeof insertAutopilotSettingsSchema>;
+
 // Modules registry and activation status
 export const modules = pgTable("modules", {
   id: varchar("id", { length: 100 }).primaryKey(),

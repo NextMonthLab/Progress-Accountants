@@ -63,7 +63,10 @@ import {
   type InsertIntegrationRequest,
   companionConfig,
   type CompanionConfig,
-  type InsertCompanionConfig
+  type InsertCompanionConfig,
+  autopilotSettings,
+  type AutopilotSettings,
+  type InsertAutopilotSettings
 } from "@shared/schema";
 import { PageMetadata, PageComplexityAssessment } from "@shared/page_metadata";
 import { 

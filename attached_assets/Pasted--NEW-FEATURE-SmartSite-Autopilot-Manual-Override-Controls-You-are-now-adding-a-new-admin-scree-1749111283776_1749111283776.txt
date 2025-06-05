@@ -1,0 +1,66 @@
+🚀 NEW FEATURE: SmartSite Autopilot + Manual Override Controls
+
+You are now adding a new admin screen to the SmartSite Control Room:
+
+🧭 Route: /admin/autopilot  
+🧠 Component: AutopilotControlPanel.tsx  
+🔒 Access: Admin, Super Admin only
+
+---
+
+🧩 REQUIRED FUNCTIONALITY:
+
+✅ 1. BLOG AUTOPILOT SETTINGS
+Add a section that allows the user to toggle on/off blog auto-posting.
+
+Fields:
+- [ ] Enable Blog Autopilot [Toggle]
+- [ ] Posting Frequency: [Dropdown: Daily, Weekly, Fortnightly, Monthly]
+- [ ] Content Source: [Multi-select: Chat questions, Lead insights, Market trends (if unlocked)]
+- [ ] AI Tone Preference: [Dropdown: Friendly, Professional, Authoritative, Casual]
+- [ ] Review Before Publish? [Toggle: If enabled, send draft to Admin Panel for approval]
+
+Store this in the user's config settings and use it to schedule post-generation via CRON or background task.
+
+---
+
+✅ 2. CHAT OVERRIDE NOTIFICATIONS
+
+Add a section that allows the user to define when they want to be alerted and jump in:
+
+Fields:
+- [ ] Notify me by email when a user is chatting live [Toggle]
+- [ ] Notify me only if lead score > 70 [Toggle]
+- [ ] Auto-pause assistant when I open the conversation [Toggle]
+
+These will integrate with the SmartSite assistant runtime and notification system.
+
+---
+
+✅ 3. UI/UX DESIGN NOTES
+
+- This page should match the teal-accented Admin Control Room styling.
+- Use logical sections with h2 headings: "Blog Autopilot" / "Chat Notifications".
+- Use switches, dropdowns, and toggles — keep it minimal but smart.
+
+---
+
+🛠️ FILE STRUCTURE TO CREATE:
+
+- `src/routes/admin/autopilot.tsx`
+- `src/components/admin/AutopilotControlPanel.tsx`
+- `src/services/autopilotService.ts` (for storing/retrieving settings)
+- Extend existing user settings or config schema to support autopilot fields.
+
+---
+
+📣 OUTPUT:
+
+Once complete, return:
+1. Screenshot or summary of UI structure
+2. Confirmation that blog autopilot and chat triggers are storing correctly
+3. Location of logic hook (or placeholder) that external systems can call to:
+   - Trigger blog generation
+   - Send email alerts for assistant takeover
+
+Let’s make SmartSite work *for* the user — and let them decide when to step in.
