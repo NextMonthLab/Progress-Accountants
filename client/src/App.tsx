@@ -78,6 +78,7 @@ const CookiePolicyPage = lazy(() => import("@/pages/CookiePolicyPage"));
 // Admin interface pages
 const InsightUsersPage = lazy(() => import("@/pages/InsightUsersPage"));
 const InsightsDashboardPage = lazy(() => import("@/pages/InsightsDashboardPage"));
+const SmartSiteDashboard = lazy(() => import("@/pages/SmartSiteDashboard"));
 const SotManagerPage = lazy(() => import("@/pages/admin/SotManagerPage"));
 const ScopeRequestPage = lazy(() => import("@/pages/ScopeRequestPage"));
 const ModuleGalleryPage = lazy(() => import("@/pages/ModuleGalleryPage"));
@@ -389,7 +390,7 @@ function Router() {
         path="/admin/dashboard" 
         component={(props: Record<string, any>) => (
           <Suspense fallback={<LoadingFallback />}>
-            <AdminDashboardPage {...props} />
+            <SmartSiteDashboard {...props} />
           </Suspense>
         )}
         allowedRoles={['admin', 'super_admin', 'editor']} 

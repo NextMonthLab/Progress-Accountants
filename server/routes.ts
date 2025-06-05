@@ -819,6 +819,47 @@ export async function registerRoutes(app: Express): Promise<Server> {
     });
   });
 
+  // DASHBOARD STATISTICS ENDPOINT
+  app.get("/api/dashboard/stats", async (req: Request, res: Response) => {
+    try {
+      // Get real statistics from storage
+      const conversations = await storage.getConversationInsights();
+      const leads = await storage.getContactSubmissions();
+      const autopilotSettings = await storage.getAutopilotSettings();
+      
+      // Calculate statistics
+      const today = new Date();
+      const weekAgo = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
+      
+      const activeChatsToday = conversations.filter(conv => 
+        new Date(conv.timestamp).toDateString() === today.toDateString()
+      ).length;
+      
+      const leadsThisWeek = leads.filter(lead => 
+        new Date(lead.date) >= weekAgo
+      ).length;
+      
+      // Sample insights - could be enhanced with real analytics
+      const topInsight = "Page engagement up 15%";
+      const draftsAwaitingApproval = autopilotSettings?.reviewWorkflow ? 3 : 0;
+      const marketViewUnlocked = false; // Premium feature
+      
+      const stats = {
+        activeChatsToday,
+        leadsThisWeek,
+        topInsight,
+        draftsAwaitingApproval,
+        marketViewUnlocked,
+        topTrendingKeyword: marketViewUnlocked ? "accounting software" : undefined
+      };
+      
+      res.json(stats);
+    } catch (error) {
+      console.error("Dashboard stats error:", error);
+      res.status(500).json({ error: "Failed to fetch dashboard statistics" });
+    }
+  });
+
   // FEATURE REQUEST SCOPING ASSISTANT ENDPOINTS
   
   // In-memory conversation storage

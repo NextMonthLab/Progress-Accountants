@@ -1,0 +1,67 @@
+🧠 TASK: BUILD SMARTSITE CONTROL ROOM DASHBOARD
+
+You are now creating the **main landing screen** for SmartSite admins. This page will serve as the intelligence gateway and direct users into the 3 new functional zones.
+
+---
+
+🧭 Route: `/admin/dashboard`  
+📁 Component: `SmartSiteDashboard.tsx`  
+🔒 Access: Admin, Super Admin only
+
+---
+
+🧩 LAYOUT STRUCTURE:
+
+Design a **3-panel dashboard layout** with clean visual cards or blocks. Each block links into its respective admin zone.
+
+1. **🗨️ Conversations & Customers**
+   - Link to: `/admin/conversations`
+   - Subtitle: “Review live chats, score leads, take over the assistant”
+   - Stats to display:
+     - Active chats today
+     - Number of leads generated this week
+
+2. **✍️ Insights & Content**
+   - Link to: `/admin/insights`
+   - Subtitle: “See what’s resonating. Create blog posts or social content”
+   - Stats to display:
+     - Top insight this week (preview)
+     - Drafts awaiting approval (blog or social)
+
+3. **🌐 Market View (Upgrade)**
+   - Link to: `/admin/market-intelligence`
+   - Subtitle: “Industry trends, competitor moves, smart suggestions”
+   - Stats to display:
+     - “Upgrade to unlock” teaser
+     - Or, if unlocked: Top trending keyword this week
+
+---
+
+🎨 DESIGN NOTES:
+
+- Use teal highlight (#06B6D4) for active stats or CTA buttons  
+- Responsive card layout for desktop/tablet  
+- Show full-height welcome banner at top:  
+  > “Welcome back, [UserName]. Here’s what your website has learned this week.”
+
+- Optional CTA button for upcoming setup prompt:
+  > “Haven’t embedded SmartSite into your website yet?” → `/admin/setup`
+
+---
+
+📦 FILES TO CREATE:
+
+- `src/routes/admin/dashboard.tsx`
+- `src/components/admin/SmartSiteDashboard.tsx`
+- Extend user state (if needed) to pull simple usage stats for dashboard
+
+---
+
+📣 OUTPUT:
+
+1. UI layout with placeholder values
+2. Confirmation of card navigation
+3. Any dependencies or placeholders for live stat population
+4. Optional: placeholder for upgrade gate logic (Market View)
+
+Let’s turn this into the mission control of every business’s website.
