@@ -17,21 +17,26 @@
   --admin-bg-main: #f8fafc;
 }
 
-/* Dark mode admin colors */
+/* Dark mode admin colors - Premium Design */
 .dark {
-  --admin-primary: #6366F1;
-  --admin-primary-hover: #8B5CF6;
-  --admin-secondary: #1e293b;
-  --admin-secondary-hover: #334155;
-  --admin-secondary-text: #94a3b8;
-  --admin-settings-bg: #1e293b;
-  --admin-settings-hover: #334155;
-  --admin-settings-text: #e2e8f0;
-  --admin-card-bg: #1e293b;
-  --admin-card-border: #334155;
-  --admin-text-primary: #f1f5f9;
-  --admin-text-secondary: #94a3b8;
-  --admin-bg-main: #0f172a;
+  --admin-primary: #4F46E5;
+  --admin-primary-hover: #6366F1;
+  --admin-secondary: #1a1f2e;
+  --admin-secondary-hover: #252b3f;
+  --admin-secondary-text: #a1a9b8;
+  --admin-settings-bg: #1a1f2e;
+  --admin-settings-hover: #252b3f;
+  --admin-settings-text: #f1f5f9;
+  --admin-card-bg: #1a1f2e;
+  --admin-card-border: rgba(255, 255, 255, 0.1);
+  --admin-text-primary: #ffffff;
+  --admin-text-secondary: #a1a9b8;
+  --admin-bg-main: #0d1117;
+  --admin-gradient-primary: linear-gradient(135deg, #4F46E5 0%, #6366F1 100%);
+  --admin-gradient-secondary: linear-gradient(135deg, #1a1f2e 0%, #252b3f 100%);
+  --admin-shadow-light: rgba(79, 70, 229, 0.1);
+  --admin-shadow-medium: rgba(0, 0, 0, 0.3);
+  --admin-shadow-heavy: rgba(0, 0, 0, 0.5);
 }
 
 /* Admin button styles - ensures they don't leak into public pages */
@@ -76,18 +81,21 @@
   background-color: var(--admin-settings-hover);
 }
 
-/* Admin-specific card styles - Override any global styles */
+/* Premium Admin Card System */
 .admin-card,
 [data-admin] .card,
 [data-admin] .Card,
 body:has([data-admin]) .card,
 .admin-layout .card {
-  background-color: var(--admin-card-bg) !important;
+  background: var(--admin-card-bg) !important;
   border: 1px solid var(--admin-card-border) !important;
-  border-radius: 0.5rem !important;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06) !important;
+  border-radius: 1rem !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08) !important;
   color: var(--admin-text-primary) !important;
-  transition: all 0.2s ease-in-out !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  backdrop-filter: blur(8px) !important;
+  position: relative !important;
+  overflow: hidden !important;
 }
 
 .dark .admin-card,
@@ -95,7 +103,27 @@ body:has([data-admin]) .card,
 .dark [data-admin] .Card,
 .dark body:has([data-admin]) .card,
 .dark .admin-layout .card {
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2) !important;
+  background: var(--admin-gradient-secondary) !important;
+  box-shadow: 
+    0 8px 32px var(--admin-shadow-medium),
+    0 4px 16px var(--admin-shadow-light),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+}
+
+.admin-card:hover,
+[data-admin] .card:hover,
+.admin-layout .card:hover {
+  transform: translateY(-4px) !important;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12) !important;
+}
+
+.dark .admin-card:hover,
+.dark [data-admin] .card:hover,
+.dark .admin-layout .card:hover {
+  box-shadow: 
+    0 16px 48px var(--admin-shadow-heavy),
+    0 8px 24px var(--admin-shadow-light),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
 }
 
 /* Ensure admin containers are never oval */
@@ -111,14 +139,30 @@ body:has([data-admin]) *[class*="rounded-full"] {
   border-radius: 0.5rem !important;
 }
 
-/* Admin dashboard layout */
+/* Premium Admin Dashboard Layout */
 .admin-dashboard {
-  background-color: var(--admin-bg-main) !important;
+  background: var(--admin-bg-main) !important;
   min-height: 100vh;
   color: var(--admin-text-primary) !important;
+  position: relative !important;
 }
 
-/* Admin text styles */
+.dark .admin-dashboard::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle at 20% 20%, rgba(79, 70, 229, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(99, 102, 241, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 40% 60%, rgba(139, 92, 246, 0.05) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Premium Typography System */
 .admin-text-primary,
 [data-admin] h1,
 [data-admin] h2,
@@ -129,6 +173,8 @@ body:has([data-admin]) *[class*="rounded-full"] {
 .admin-layout h3,
 .admin-layout .text-gray-800 {
   color: var(--admin-text-primary) !important;
+  font-weight: 600 !important;
+  letter-spacing: -0.025em !important;
 }
 
 .admin-text-secondary,
@@ -139,91 +185,196 @@ body:has([data-admin]) *[class*="rounded-full"] {
 .admin-layout .text-gray-500,
 .admin-layout .text-gray-600 {
   color: var(--admin-text-secondary) !important;
+  font-weight: 400 !important;
 }
 
-/* Admin stats cards with enhanced dark mode */
+/* Premium Stats Cards */
 .admin-stats-card {
-  background-color: var(--admin-card-bg) !important;
+  background: var(--admin-gradient-secondary) !important;
   border: 1px solid var(--admin-card-border) !important;
-  border-radius: 0.75rem !important;
-  padding: 1.5rem !important;
-  transition: all 0.2s ease-in-out !important;
+  border-radius: 1.25rem !important;
+  padding: 2rem !important;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+.admin-stats-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+  pointer-events: none;
 }
 
 .admin-stats-card:hover {
-  transform: translateY(-2px) !important;
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
+  transform: translateY(-8px) scale(1.02) !important;
+  box-shadow: 
+    0 20px 60px var(--admin-shadow-heavy),
+    0 8px 32px var(--admin-shadow-light) !important;
 }
 
-.dark .admin-stats-card:hover {
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.3) !important;
+.dark .admin-stats-card {
+  background: var(--admin-gradient-secondary) !important;
+  box-shadow: 
+    0 8px 32px var(--admin-shadow-medium),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
 }
 
-/* Admin header styling */
+/* Premium Admin Header */
 .admin-header,
 [data-admin] .bg-white,
 .admin-layout .bg-white {
-  background-color: var(--admin-card-bg) !important;
+  background: var(--admin-gradient-secondary) !important;
   border: 1px solid var(--admin-card-border) !important;
-  border-radius: 0.75rem !important;
+  border-radius: 1.25rem !important;
+  position: relative !important;
+  overflow: hidden !important;
 }
 
-/* Admin tabs enhanced styling */
+.dark .admin-header::before,
+.dark [data-admin] .bg-white::before,
+.dark .admin-layout .bg-white::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+/* Premium Tab System */
 .admin-tabs-list,
 [data-admin] .TabsList,
-.admin-layout .TabsList {
-  background-color: var(--admin-card-bg) !important;
+.admin-layout .TabsList,
+[data-admin] [role="tablist"],
+.admin-layout [role="tablist"] {
+  background: var(--admin-gradient-secondary) !important;
   border: 1px solid var(--admin-card-border) !important;
-  border-radius: 0.75rem !important;
+  border-radius: 1rem !important;
+  padding: 0.375rem !important;
+  position: relative !important;
+  backdrop-filter: blur(8px) !important;
 }
 
 .admin-tabs-trigger,
 [data-admin] .TabsTrigger,
-.admin-layout .TabsTrigger {
-  border-radius: 0.5rem !important;
-  transition: all 0.2s ease-in-out !important;
+.admin-layout .TabsTrigger,
+[data-admin] [role="tab"],
+.admin-layout [role="tab"] {
+  border-radius: 0.75rem !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
   color: var(--admin-text-secondary) !important;
+  font-weight: 500 !important;
+  padding: 0.75rem 1.25rem !important;
+  position: relative !important;
 }
 
 .admin-tabs-trigger[data-state="active"],
 [data-admin] .TabsTrigger[data-state="active"],
-.admin-layout .TabsTrigger[data-state="active"] {
-  background-color: var(--admin-primary) !important;
+.admin-layout .TabsTrigger[data-state="active"],
+[data-admin] [role="tab"][data-state="active"],
+.admin-layout [role="tab"][data-state="active"] {
+  background: var(--admin-gradient-primary) !important;
   color: white !important;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+  box-shadow: 
+    0 4px 16px var(--admin-shadow-light),
+    0 2px 8px rgba(79, 70, 229, 0.3) !important;
+  transform: translateY(-1px) !important;
 }
 
-.dark .admin-tabs-trigger[data-state="active"],
-.dark [data-admin] .TabsTrigger[data-state="active"],
-.dark .admin-layout .TabsTrigger[data-state="active"] {
-  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.4) !important;
-}
-
-/* Admin button enhancements for dark mode */
+/* Premium Button System */
 [data-admin] .Button,
 [data-admin] button,
 .admin-layout .Button,
 .admin-layout button {
-  transition: all 0.2s ease-in-out !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  border-radius: 0.75rem !important;
+  font-weight: 500 !important;
+  position: relative !important;
+  overflow: hidden !important;
 }
 
 [data-admin] .bg-teal-500,
-.admin-layout .bg-teal-500 {
-  background-color: #14b8a6 !important;
+.admin-layout .bg-teal-500,
+.admin-btn-primary {
+  background: linear-gradient(135deg, #14b8a6 0%, #0f766e 100%) !important;
+  box-shadow: 
+    0 4px 16px rgba(20, 184, 166, 0.3),
+    0 2px 8px rgba(20, 184, 166, 0.2) !important;
 }
 
 [data-admin] .bg-teal-500:hover,
-.admin-layout .bg-teal-500:hover {
-  background-color: #0f766e !important;
+.admin-layout .bg-teal-500:hover,
+.admin-btn-primary:hover {
+  background: linear-gradient(135deg, #0f766e 0%, #0d5552 100%) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 
+    0 8px 24px rgba(20, 184, 166, 0.4),
+    0 4px 12px rgba(20, 184, 166, 0.3) !important;
 }
 
-/* Ensure proper contrast for all admin content */
+/* Premium Layout System */
 [data-admin],
 .admin-layout {
-  background-color: var(--admin-bg-main) !important;
+  background: var(--admin-bg-main) !important;
+  position: relative !important;
+  z-index: 1 !important;
 }
 
 [data-admin] *,
 .admin-layout * {
   border-color: var(--admin-card-border) !important;
+}
+
+/* Premium Grid System */
+.admin-grid {
+  display: grid !important;
+  gap: 1.5rem !important;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)) !important;
+}
+
+.admin-grid-stats {
+  display: grid !important;
+  gap: 1.5rem !important;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)) !important;
+}
+
+/* Premium Badge System */
+.admin-badge {
+  background: var(--admin-gradient-primary) !important;
+  color: white !important;
+  border-radius: 0.5rem !important;
+  padding: 0.25rem 0.75rem !important;
+  font-size: 0.75rem !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  box-shadow: 0 2px 8px var(--admin-shadow-light) !important;
+}
+
+/* Enhanced Scrollbars */
+.dark ::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.dark ::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  transition: background 0.2s ease;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
 }

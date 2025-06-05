@@ -50,7 +50,8 @@ export default function AdminDashboardPageSimple() {
 
   return (
     <AdminLayout title="Lead Intelligence">
-      <div className="admin-header admin-card p-6 mb-6">
+      <div className="admin-dashboard">
+        <div className="admin-header p-6 mb-6">
         <div className="flex items-start mb-4">
           <img 
             src="/nextmonth-logo.png" 
@@ -74,19 +75,19 @@ export default function AdminDashboardPageSimple() {
           </div>
         </div>
         
-        <div className="flex gap-2 mt-4 mb-6">
-          <Button size="sm" className="bg-teal-500 text-white hover:bg-teal-600 rounded-md flex items-center gap-1">
-            <span className="text-white">􀋲</span> Generate Signal
-          </Button>
-          <Button variant="outline" size="sm" className="text-gray-600 hover:bg-gray-50 rounded-md border-gray-200 flex items-center gap-1">
-            <span className="text-pink-500">􀋮</span> Documentation
-          </Button>
+          <div className="flex gap-3 mt-6">
+            <Button size="sm" className="bg-teal-500 text-white hover:bg-teal-600 flex items-center gap-2 px-4 py-2">
+              <Sparkles className="h-4 w-4" /> Generate Signal
+            </Button>
+            <Button variant="outline" size="sm" className="admin-text-secondary hover:bg-gray-50 border-gray-200 flex items-center gap-2 px-4 py-2">
+              <BarChart4 className="h-4 w-4" /> Documentation
+            </Button>
+          </div>
         </div>
-      </div>
-      
-      <Tabs defaultValue="overview" className="space-y-6">
-        <div className="flex items-center justify-between">
-          <TabsList className="bg-white rounded-xl shadow-sm border border-gray-100 p-1 h-12">
+        
+        <Tabs defaultValue="overview" className="space-y-6">
+          <div className="flex items-center justify-between">
+            <TabsList className="admin-tabs-list p-1 h-12">
             <TabsTrigger 
               value="overview" 
               className="data-[state=active]:bg-white data-[state=active]:shadow-sm rounded-lg h-10 gap-2 px-4"
