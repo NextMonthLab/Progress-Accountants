@@ -60,7 +60,7 @@ export default function AdminDashboardPageSimple() {
         {/* Main Dashboard Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           {/* Live Chat Monitoring Card */}
-          <Card className="bg-gray-800 rounded-3xl p-6 shadow-xl border-0">
+          <Card className="bg-gray-800 rounded-3xl p-6 shadow-xl border-0" style={{backgroundColor: '#1f2937', color: 'white'}}>
             <div className="flex items-center gap-3 mb-4">
               <div className="w-8 h-8 rounded-full bg-purple-600/20 flex items-center justify-center">
                 <Users className="h-4 w-4 text-purple-400" />
@@ -94,21 +94,21 @@ export default function AdminDashboardPageSimple() {
           </Card>
 
           {/* Content Creation Card */}
-          <Card className="bg-gray-800 rounded-3xl p-6 shadow-xl border-0">
+          <Card className="bg-gray-800 rounded-3xl p-6 shadow-xl border-0" style={{backgroundColor: '#1f2937', color: 'white'}}>
             <div className="flex items-center gap-3 mb-4">
               <div className="w-8 h-8 rounded-full bg-orange-600/20 flex items-center justify-center">
                 <Sparkles className="h-4 w-4 text-orange-400" />
               </div>
-              <span className="text-xs font-medium text-gray-400 uppercase">DRAFTS PENDING</span>
+              <span className="text-xs font-medium text-gray-400 uppercase" style={{color: '#9ca3af'}}>DRAFTS PENDING</span>
             </div>
-            <p className="text-sm text-gray-300 mb-6">See what's resonating. Create blog posts or social content</p>
+            <p className="text-sm text-gray-300 mb-6" style={{color: '#d1d5db'}}>See what's resonating. Create blog posts or social content</p>
             
             <div className="mb-6">
-              <div className="text-2xl font-bold text-white mb-1">Page engagement</div>
-              <div className="text-2xl font-bold text-white mb-1">up 15%</div>
-              <div className="text-xs text-gray-400">TOP INSIGHT</div>
-              <div className="text-3xl font-bold text-white mt-4">0</div>
-              <div className="text-xs text-gray-400">DRAFTS PENDING</div>
+              <div className="text-2xl font-bold text-white mb-1" style={{color: 'white'}}>Page engagement</div>
+              <div className="text-2xl font-bold text-white mb-1" style={{color: 'white'}}>up 15%</div>
+              <div className="text-xs text-gray-400" style={{color: '#9ca3af'}}>TOP INSIGHT</div>
+              <div className="text-3xl font-bold text-white mt-4" style={{color: 'white'}}>0</div>
+              <div className="text-xs text-gray-400" style={{color: '#9ca3af'}}>DRAFTS PENDING</div>
             </div>
             
             <div className="flex gap-2">
@@ -125,7 +125,7 @@ export default function AdminDashboardPageSimple() {
           </Card>
 
           {/* Premium Upgrade Card */}
-          <Card className="bg-gray-800 rounded-3xl p-6 shadow-xl border-0 relative">
+          <Card className="bg-gray-800 rounded-3xl p-6 shadow-xl border-0 relative" style={{backgroundColor: '#1f2937', color: 'white'}}>
             <div className="absolute top-4 right-4">
               <Badge className="bg-yellow-500 text-black text-xs px-2 py-1 rounded-full">Premium</Badge>
             </div>
@@ -133,14 +133,14 @@ export default function AdminDashboardPageSimple() {
               <div className="w-8 h-8 rounded-full bg-blue-600/20 flex items-center justify-center">
                 <Building2 className="h-4 w-4 text-blue-400" />
               </div>
-              <span className="text-xs font-medium text-gray-400 uppercase">STATUS</span>
+              <span className="text-xs font-medium text-gray-400 uppercase" style={{color: '#9ca3af'}}>STATUS</span>
             </div>
-            <p className="text-sm text-gray-300 mb-6">Industry trends, competitor moves, smart suggestions</p>
+            <p className="text-sm text-gray-300 mb-6" style={{color: '#d1d5db'}}>Industry trends, competitor moves, smart suggestions</p>
             
             <div className="mb-6">
-              <div className="text-2xl font-bold text-white mb-4">Upgrade Required</div>
-              <div className="text-lg font-bold text-white">12+ premium tools</div>
-              <div className="text-xs text-gray-400">FEATURES</div>
+              <div className="text-2xl font-bold text-white mb-4" style={{color: 'white'}}>Upgrade Required</div>
+              <div className="text-lg font-bold text-white" style={{color: 'white'}}>12+ premium tools</div>
+              <div className="text-xs text-gray-400" style={{color: '#9ca3af'}}>FEATURES</div>
             </div>
             
             <Button size="sm" className="bg-white text-black rounded-full px-4 py-2 text-xs hover:bg-gray-100 w-full">
@@ -150,21 +150,21 @@ export default function AdminDashboardPageSimple() {
 
           {/* Quick Actions Row */}
           <div className="grid grid-cols-2 gap-3">
-            <Card className="bg-gray-800 rounded-3xl p-4 shadow-xl border-0 text-center">
+            <Card className="bg-gray-800 rounded-3xl p-4 shadow-xl border-0 text-center" style={{backgroundColor: '#1f2937', color: 'white'}}>
               <BarChart4 className="h-8 w-8 text-blue-400 mx-auto mb-2" />
-              <div className="text-sm font-medium text-white">Active Chats</div>
+              <div className="text-sm font-medium text-white" style={{color: 'white'}}>Active Chats</div>
             </Card>
-            <Card className="bg-gray-800 rounded-3xl p-4 shadow-xl border-0 text-center">
+            <Card className="bg-gray-800 rounded-3xl p-4 shadow-xl border-0 text-center" style={{backgroundColor: '#1f2937', color: 'white'}}>
               <Users className="h-8 w-8 text-green-400 mx-auto mb-2" />
-              <div className="text-sm font-medium text-white">New Leads</div>
+              <div className="text-sm font-medium text-white" style={{color: 'white'}}>New Leads</div>
             </Card>
-            <Card className="bg-gray-800 rounded-3xl p-4 shadow-xl border-0 text-center">
+            <Card className="bg-gray-800 rounded-3xl p-4 shadow-xl border-0 text-center" style={{backgroundColor: '#1f2937', color: 'white'}}>
               <LineChart className="h-8 w-8 text-purple-400 mx-auto mb-2" />
-              <div className="text-sm font-medium text-white">Drafts Pending</div>
+              <div className="text-sm font-medium text-white" style={{color: 'white'}}>Drafts Pending</div>
             </Card>
-            <Card className="bg-gray-800 rounded-3xl p-4 shadow-xl border-0 text-center">
+            <Card className="bg-gray-800 rounded-3xl p-4 shadow-xl border-0 text-center" style={{backgroundColor: '#1f2937', color: 'white'}}>
               <Sparkles className="h-8 w-8 text-orange-400 mx-auto mb-2" />
-              <div className="text-sm font-medium text-white">Market Insights</div>
+              <div className="text-sm font-medium text-white" style={{color: 'white'}}>Market Insights</div>
             </Card>
           </div>
         </div>
