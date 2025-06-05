@@ -214,30 +214,7 @@ export const mapSidebarToNavigation = (): NavigationItem[] => {
       pinnedOrder: 4,
     },
     
-    // BLOG AND SOCIAL MEDIA
-    // ======================
-    {
-      id: 'blog_post_generator',
-      title: 'Blog Post Generator',
-      icon: 'BookOpen',
-      type: 'link',
-      href: '/tools/blog-post-generator',
-      badge: { text: 'AI', variant: 'beta' },
-      description: 'Generate blog content with AI',
-      category: 'create_publish',
-      pinnedOrder: 5,
-    },
-    {
-      id: 'social_media_generator',
-      title: 'Social Media Generator',
-      icon: 'Share2',
-      type: 'link',
-      href: '/tools/social-media-generator',
-      badge: { text: 'AI', variant: 'beta' },
-      description: 'Create social media content with AI',
-      category: 'create_publish',
-      pinnedOrder: 6,
-    },
+
     {
       id: 'homepage_setup',
       title: 'Homepage Builder',
