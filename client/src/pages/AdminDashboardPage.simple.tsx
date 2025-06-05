@@ -49,108 +49,125 @@ export default function AdminDashboardPageSimple() {
   ];
 
   return (
-    <AdminLayout title="Lead Intelligence">
-      <div className="admin-dashboard min-h-screen bg-gray-900 text-white">
-        <div className="admin-header p-8 mb-8 bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl border border-gray-700 shadow-2xl backdrop-blur-xl">
-        <div className="flex items-start mb-4">
-          <img 
-            src="/nextmonth-logo.png" 
-            alt="NextMonth Logo" 
-            className="h-8 mr-4"
-            onError={(e) => {
-              e.currentTarget.style.display = 'none';
-            }}
-          />
-          <div className="flex-1">
-            <div className="flex justify-between items-center mb-1">
-              <h1 className="text-3xl font-bold bg-gradient-to-r from-purple-400 via-blue-400 to-purple-500 bg-clip-text text-transparent">
-                <span>Lead </span>
-                <span className="text-emerald-400">Tracker</span>
-              </h1>
-              <div className="text-sm text-gray-300 bg-gray-800 px-4 py-2 rounded-full border border-purple-500/20">
-                Credits <span className="font-semibold text-purple-400">35/100</span>
+    <AdminLayout title="SmartSite Control Room">
+      <div className="min-h-screen bg-slate-900 p-6">
+        {/* Header */}
+        <div className="mb-8">
+          <h1 className="text-2xl font-bold text-white mb-2">SmartSite Control Room</h1>
+          <p className="text-slate-400">Intelligent automation and insights for your website</p>
+        </div>
+        
+        {/* Main Dashboard Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          {/* Live Chat Monitoring Card */}
+          <Card className="bg-white rounded-3xl p-6 shadow-lg border-0">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center">
+                <Users className="h-4 w-4 text-purple-600" />
+              </div>
+              <span className="text-xs font-medium text-gray-500 uppercase">ACTIVE CHATS TODAY</span>
+            </div>
+            <p className="text-sm text-gray-600 mb-6">Review live chats, score leads, take over the assistant</p>
+            
+            <div className="flex items-center gap-8 mb-6">
+              <div className="text-center">
+                <div className="text-3xl font-bold text-gray-900">0</div>
+                <div className="text-xs text-gray-500">ACTIVE CHATS TODAY</div>
+              </div>
+              <div className="text-center">
+                <div className="text-3xl font-bold text-gray-900">0</div>
+                <div className="text-xs text-gray-500">LEADS THIS WEEK</div>
               </div>
             </div>
-            <p className="text-gray-300 text-base">Transform visitor data into actionable sales insights</p>
-          </div>
-        </div>
-        
-          <div className="flex gap-4 mt-8">
-            <Button size="sm" className="bg-gradient-to-r from-purple-500 to-blue-500 text-white hover:from-purple-600 hover:to-blue-600 shadow-lg shadow-purple-500/25 flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all duration-300 hover:scale-105">
-              <Sparkles className="h-4 w-4" /> Generate Signal
+            
+            <div className="flex gap-2">
+              <Button size="sm" className="bg-black text-white rounded-full px-4 py-2 text-xs hover:bg-gray-800">
+                View Insights
+              </Button>
+              <Button size="sm" variant="outline" className="rounded-full px-4 py-2 text-xs border-gray-300">
+                CRM
+              </Button>
+              <Button size="sm" variant="outline" className="rounded-full px-4 py-2 text-xs border-gray-300">
+                Autopilot
+              </Button>
+            </div>
+          </Card>
+
+          {/* Content Creation Card */}
+          <Card className="bg-gradient-to-br from-yellow-50 to-orange-50 rounded-3xl p-6 shadow-lg border-0">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center">
+                <Sparkles className="h-4 w-4 text-orange-600" />
+              </div>
+              <span className="text-xs font-medium text-gray-500 uppercase">DRAFTS PENDING</span>
+            </div>
+            <p className="text-sm text-gray-600 mb-6">See what's resonating. Create blog posts or social content</p>
+            
+            <div className="mb-6">
+              <div className="text-2xl font-bold text-gray-900 mb-1">Page engagement</div>
+              <div className="text-2xl font-bold text-gray-900 mb-1">up 15%</div>
+              <div className="text-xs text-gray-500">TOP INSIGHT</div>
+              <div className="text-3xl font-bold text-gray-900 mt-4">0</div>
+              <div className="text-xs text-gray-500">DRAFTS PENDING</div>
+            </div>
+            
+            <div className="flex gap-2">
+              <Button size="sm" className="bg-black text-white rounded-full px-4 py-2 text-xs hover:bg-gray-800">
+                View Insights
+              </Button>
+              <Button size="sm" className="bg-black text-white rounded-full px-4 py-2 text-xs hover:bg-gray-800">
+                Blog Posts
+              </Button>
+              <Button size="sm" className="bg-black text-white rounded-full px-4 py-2 text-xs hover:bg-gray-800">
+                Social Posts
+              </Button>
+            </div>
+          </Card>
+
+          {/* Premium Upgrade Card */}
+          <Card className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-3xl p-6 shadow-lg border-0 relative">
+            <div className="absolute top-4 right-4">
+              <Badge className="bg-yellow-500 text-black text-xs px-2 py-1 rounded-full">Premium</Badge>
+            </div>
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
+                <Building2 className="h-4 w-4 text-blue-600" />
+              </div>
+              <span className="text-xs font-medium text-gray-500 uppercase">STATUS</span>
+            </div>
+            <p className="text-sm text-gray-600 mb-6">Industry trends, competitor moves, smart suggestions</p>
+            
+            <div className="mb-6">
+              <div className="text-2xl font-bold text-gray-900 mb-4">Upgrade Required</div>
+              <div className="text-lg font-bold text-gray-900">12+ premium tools</div>
+              <div className="text-xs text-gray-500">FEATURES</div>
+            </div>
+            
+            <Button size="sm" className="bg-black text-white rounded-full px-4 py-2 text-xs hover:bg-gray-800 w-full">
+              Upgrade Now
             </Button>
-            <Button variant="outline" size="sm" className="text-gray-300 hover:bg-gray-800 border-gray-600 hover:border-purple-500/50 flex items-center gap-2 px-6 py-3 rounded-xl font-medium transition-all duration-300">
-              <BarChart4 className="h-4 w-4" /> Documentation
-            </Button>
+          </Card>
+
+          {/* Quick Actions Row */}
+          <div className="grid grid-cols-2 gap-3">
+            <Card className="bg-white rounded-3xl p-4 shadow-lg border-0 text-center">
+              <BarChart4 className="h-8 w-8 text-blue-500 mx-auto mb-2" />
+              <div className="text-sm font-medium text-gray-900">Active Chats</div>
+            </Card>
+            <Card className="bg-white rounded-3xl p-4 shadow-lg border-0 text-center">
+              <Users className="h-8 w-8 text-green-500 mx-auto mb-2" />
+              <div className="text-sm font-medium text-gray-900">New Leads</div>
+            </Card>
+            <Card className="bg-white rounded-3xl p-4 shadow-lg border-0 text-center">
+              <LineChart className="h-8 w-8 text-purple-500 mx-auto mb-2" />
+              <div className="text-sm font-medium text-gray-900">Drafts Pending</div>
+            </Card>
+            <Card className="bg-white rounded-3xl p-4 shadow-lg border-0 text-center">
+              <Sparkles className="h-8 w-8 text-orange-500 mx-auto mb-2" />
+              <div className="text-sm font-medium text-gray-900">Market Insights</div>
+            </Card>
           </div>
         </div>
-        
-        <Tabs defaultValue="overview" className="space-y-8">
-          <div className="flex items-center justify-between">
-            <TabsList className="bg-gray-800 border border-gray-700 rounded-2xl p-2 h-14 backdrop-blur-xl shadow-xl">
-            <TabsTrigger 
-              value="overview" 
-              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-500 data-[state=active]:to-blue-500 data-[state=active]:text-white data-[state=active]:shadow-lg rounded-xl h-10 gap-2 px-6 font-medium transition-all duration-300 text-gray-300"
-            >
-              <LayoutDashboard className="h-4 w-4" /> Overview
-            </TabsTrigger>
-            <TabsTrigger 
-              value="profiles" 
-              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-500 data-[state=active]:to-blue-500 data-[state=active]:text-white data-[state=active]:shadow-lg rounded-xl h-10 gap-2 px-6 font-medium transition-all duration-300 text-gray-300"
-            >
-              <Users className="h-4 w-4" /> Lead Profiles
-            </TabsTrigger>
-            <TabsTrigger 
-              value="signals" 
-              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-500 data-[state=active]:to-blue-500 data-[state=active]:text-white data-[state=active]:shadow-lg rounded-xl h-10 gap-2 px-6 font-medium transition-all duration-300 text-gray-300"
-            >
-              <Zap className="h-4 w-4" /> Signals
-            </TabsTrigger>
-            <TabsTrigger 
-              value="matches" 
-              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-500 data-[state=active]:to-blue-500 data-[state=active]:text-white data-[state=active]:shadow-lg rounded-xl h-10 gap-2 px-6 font-medium transition-all duration-300 text-gray-300"
-            >
-              <Building2 className="h-4 w-4" /> Matches
-            </TabsTrigger>
-            <TabsTrigger 
-              value="insights" 
-              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-500 data-[state=active]:to-blue-500 data-[state=active]:text-white data-[state=active]:shadow-lg rounded-xl h-10 gap-2 px-6 font-medium transition-all duration-300 text-gray-300"
-            >
-              <Sparkles className="h-4 w-4" /> Insights
-            </TabsTrigger>
-          </TabsList>
-        </div>
-        
-        <div className="flex items-center space-x-3 mt-8">
-          <Badge variant="outline" className="px-4 py-2 rounded-xl bg-gray-800 border-gray-600 text-gray-300 hover:bg-gray-700 transition-all duration-300">Today</Badge>
-          <Badge variant="outline" className="px-4 py-2 rounded-xl bg-gray-800 border-gray-600 text-gray-300 hover:bg-gray-700 transition-all duration-300">Yesterday</Badge>
-          <Badge variant="outline" className="px-4 py-2 rounded-xl bg-gradient-to-r from-purple-500/20 to-blue-500/20 text-purple-400 border-purple-500/50 shadow-lg">Last 7 days</Badge>
-          <Badge variant="outline" className="px-4 py-2 rounded-xl bg-gray-800 border-gray-600 text-gray-300 hover:bg-gray-700 transition-all duration-300">Last 30 days</Badge>
-          <Badge variant="outline" className="px-4 py-2 rounded-xl bg-gray-800 border-gray-600 text-gray-300 hover:bg-gray-700 transition-all duration-300">Custom</Badge>
-        </div>
-        
-        <TabsContent value="overview" className="mt-0">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {stats.map((stat, index) => (
-              <Card key={index} className="bg-gradient-to-br from-gray-800 to-gray-900 border border-gray-700 shadow-2xl hover:shadow-purple-500/20 transition-all duration-500 hover:scale-105 backdrop-blur-xl">
-                <CardContent className="p-8">
-                  <div className="flex justify-between items-start mb-6">
-                    <div className={`${stat.color} p-4 rounded-2xl shadow-lg`}>
-                      {stat.icon}
-                    </div>
-                    <Badge variant="outline" className="flex items-center bg-emerald-500/20 text-emerald-400 border-emerald-500/30 px-3 py-1 rounded-full">
-                      <ArrowUpRight className="h-3 w-3 mr-1" />
-                      {stat.change}
-                    </Badge>
-                  </div>
-                  <div className="space-y-2">
-                    <p className="text-sm font-medium text-gray-400">{stat.title}</p>
-                    <h4 className="text-3xl font-bold text-white">{stat.value}</h4>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
           
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-12">
             <Card className="col-span-2 bg-gradient-to-br from-gray-800 to-gray-900 border border-gray-700 shadow-2xl backdrop-blur-xl">
