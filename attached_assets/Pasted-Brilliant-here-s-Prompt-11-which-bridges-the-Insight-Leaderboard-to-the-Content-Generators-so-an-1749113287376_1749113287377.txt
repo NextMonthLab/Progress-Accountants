@@ -1,0 +1,73 @@
+Brilliant — here’s Prompt 11, which bridges the Insight Leaderboard to the Content Generators, so any insight can instantly become a blog post or social media draft.
+
+⸻
+
+✅ REPLIT PROMPT 11
+
+Title: Add “Write a Post” and “Create Social Snippet” Buttons to Insight Leaderboard
+Purpose: Let admins instantly turn high-performing insights into blog or social content using AI-powered generation flows.
+
+✍️ TASK: CONNECT INSIGHT LEADERBOARD TO CONTENT GENERATORS
+
+You are now enhancing the Insight Leaderboard by letting admins turn top insights into blog posts or social content in one click.
+
+---
+
+🧭 AFFECTED ROUTE:  
+- `/admin/insights-dashboard`  
+📁 Component: `InsightLeaderboard.tsx`
+
+---
+
+🧩 FEATURE ADDITION:
+
+For each row or card in the leaderboard, add two buttons:
+
+1. **“✍️ Write a Post”**  
+   - Action: Open `/admin/content/blog-posts` with the insight preloaded as the prompt
+   - Prefill blog generator:
+     - Suggested title based on the insight
+     - Full insight text in body editor
+     - Option to edit tone (default to “Informative”)
+
+2. **“📣 Create Social Snippet”**  
+   - Action: Open `/admin/content/social-posts` with insight as the caption prompt
+   - Prefill social generator:
+     - Suggested post for LinkedIn or X
+     - Add related hashtag if available from topic category
+
+Use router state or query params to pass the selected insight content to the respective generator pages.
+
+---
+
+🛠️ TECH SPECS:
+
+- Use `useNavigate` or router push with embedded payload or `?prompt=` param
+- Make sure `BlogPostGenerator.tsx` and `SocialPostGenerator.tsx` check for preloaded insight content
+- Use markdown or basic HTML parsing to preserve formatting where needed
+
+Example param:
+```ts
+navigate('/admin/content/blog-posts?prompt=Great customer story from Tuesday’s delivery feedback...')
+
+
+⸻
+
+🎨 UI/UX NOTES:
+	•	Buttons appear as small inline actions under or beside each insight
+	•	Use light gray buttons with teal icon/text hover
+	•	Tooltip: “Turn this insight into a new blog post” / “Convert to social post”
+
+⸻
+
+📣 OUTPUT:
+	1.	Buttons live and working in Insight Leaderboard
+	2.	Blog + Social generators accept and prefill the content
+	3.	Confirmed insight context carries through properly
+	4.	Optional: Toast or banner when content generator opens prefilled
+
+Let’s help businesses turn raw intelligence into visible action — instantly.
+
+---
+
+Would you like Prompt 12 to focus on building `/feed` — the public-facing blog page that serves posts from SmartSite automatically?

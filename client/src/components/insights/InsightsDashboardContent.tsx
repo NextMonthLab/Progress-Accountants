@@ -1,6 +1,7 @@
 import { useState, useTransition } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { format, parseISO } from 'date-fns';
+import { useLocation } from 'wouter';
 import {
   Card,
   CardContent,
@@ -14,8 +15,15 @@ import {
   TabsList,
   TabsTrigger
 } from '@/components/ui/tabs';
-import { Medal, TrendingUp, BarChart3, Award, Loader2 } from 'lucide-react';
-import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip } from 'recharts';
+import { Button } from '@/components/ui/button';
+import {
+  Tooltip as UITooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
+import { Medal, TrendingUp, BarChart3, Award, Loader2, Edit3, Share2 } from 'lucide-react';
+import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip as ChartTooltip } from 'recharts';
 
 // Define the types we're using in this component
 type LeaderboardEntry = {
@@ -54,6 +62,21 @@ function LoadingSpinner() {
 export default function InsightsDashboardContent() {
   const [period, setPeriod] = useState('week');
   const [isPending, startTransition] = useTransition();
+  const [, setLocation] = useLocation();
+
+  // Function to navigate to content generators with preloaded insight
+  const generateBlogPost = (insight: string, title?: string) => {
+    const params = new URLSearchParams();
+    params.set('prompt', insight);
+    if (title) params.set('title', title);
+    setLocation(`/admin/content/blog-posts?${params.toString()}`);
+  };
+
+  const generateSocialPost = (insight: string) => {
+    const params = new URLSearchParams();
+    params.set('prompt', insight);
+    setLocation(`/admin/content/social-posts?${params.toString()}`);
+  };
   
   // Use React Query without suspense option to avoid React 18 suspension issues
   const { data: leaderboard, isLoading: loadingLeaderboard } = useQuery<LeaderboardEntry[]>({
@@ -215,7 +238,7 @@ export default function InsightsDashboardContent() {
                   <BarChart data={formattedActivityData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
                     <XAxis dataKey="date" />
                     <YAxis allowDecimals={false} />
-                    <Tooltip 
+                    <ChartTooltip 
                       formatter={(value: any) => [`${value} insights`, 'Count']}
                       labelFormatter={(label: any) => `Date: ${label}`}
                     />
@@ -302,7 +325,44 @@ function AiSummaryCard({ summary }: { summary: InsightSummary }) {
             <div className="space-y-2">
               {summary.topInsights.map((insight, i) => (
                 <div key={i} className="bg-muted p-3 rounded-md">
-                  <div className="text-sm text-muted-foreground">{insight.reason}</div>
+                  <div className="text-sm text-muted-foreground mb-2">{insight.reason}</div>
+                  <TooltipProvider>
+                    <div className="flex gap-2">
+                      <UITooltip>
+                        <TooltipTrigger asChild>
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            className="h-8 px-3 text-xs border-cyan-200 hover:border-cyan-400 hover:bg-cyan-50"
+                            onClick={() => generateBlogPost(insight.reason, `Insight: ${insight.reason.substring(0, 50)}...`)}
+                          >
+                            <Edit3 className="h-3 w-3 mr-1 text-cyan-600" />
+                            Write a Post
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>Turn this insight into a new blog post</p>
+                        </TooltipContent>
+                      </UITooltip>
+                      
+                      <UITooltip>
+                        <TooltipTrigger asChild>
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            className="h-8 px-3 text-xs border-cyan-200 hover:border-cyan-400 hover:bg-cyan-50"
+                            onClick={() => generateSocialPost(insight.reason)}
+                          >
+                            <Share2 className="h-3 w-3 mr-1 text-cyan-600" />
+                            Create Social Snippet
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>Convert to social post</p>
+                        </TooltipContent>
+                      </UITooltip>
+                    </div>
+                  </TooltipProvider>
                 </div>
               ))}
             </div>

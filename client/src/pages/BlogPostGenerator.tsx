@@ -65,6 +65,26 @@ export default function BlogPostGenerator() {
   const [newTag, setNewTag] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
 
+  // Check for preloaded insight from URL parameters
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const preloadedPrompt = urlParams.get('prompt');
+    const preloadedTitle = urlParams.get('title');
+    
+    if (preloadedPrompt) {
+      setBlogPost(prev => ({
+        ...prev,
+        body: preloadedPrompt,
+        title: preloadedTitle || `Blog Post from Insight: ${preloadedPrompt.substring(0, 50)}...`
+      }));
+      
+      toast({
+        title: "Insight Loaded",
+        description: "Content has been preloaded from your insight selection.",
+      });
+    }
+  }, [toast]);
+
   // Fetch insight data for content generation
   const { data: insightData, isLoading: loadingInsights } = useQuery<InsightData>({
     queryKey: ["/api/insights/content-data"],
