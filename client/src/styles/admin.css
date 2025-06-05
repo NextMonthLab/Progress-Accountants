@@ -85,20 +85,63 @@
   background-color: var(--admin-settings-hover);
 }
 
+/* Force Dark Cards for Admin Dashboard */
+.admin-dashboard [data-card],
+.admin-dashboard .bg-gray-800,
+.admin-dashboard [class*="bg-gray-800"],
+.admin-dashboard .card,
+.admin-dashboard [data-testid="card"],
+.admin-dashboard div[class*="Card"],
+.admin-dashboard div[class*="bg-white"],
+.admin-dashboard div[class*="bg-gradient"],
+.admin-dashboard > div > div:not(.admin-header) > div > div {
+  background-color: #1f2937 !important;
+  color: white !important;
+}
+
+/* Override any white backgrounds */
+.admin-dashboard [class*="bg-white"] {
+  background-color: #1f2937 !important;
+}
+
+.admin-dashboard .text-white {
+  color: white !important;
+}
+
+.admin-dashboard .text-gray-300 {
+  color: #d1d5db !important;
+}
+
+.admin-dashboard .text-gray-400 {
+  color: #9ca3af !important;
+}
+
+.admin-dashboard .text-gray-900 {
+  color: white !important;
+}
+
+.admin-dashboard .text-gray-600 {
+  color: #d1d5db !important;
+}
+
+.admin-dashboard .text-gray-500 {
+  color: #9ca3af !important;
+}
+
 /* Ultra-Premium Card System */
 .admin-card,
 [data-admin] .card,
 [data-admin] .Card,
 body:has([data-admin]) .card,
 .admin-layout .card {
-  background: var(--admin-gradient-card) !important;
+  background: #1f2937 !important;
   border: 1px solid var(--admin-card-border) !important;
   border-radius: 1.25rem !important;
   box-shadow: 
     0 8px 32px rgba(0, 0, 0, 0.12),
     0 4px 16px rgba(0, 0, 0, 0.08),
     inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
-  color: var(--admin-text-primary) !important;
+  color: white !important;
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
   backdrop-filter: blur(12px) saturate(180%) !important;
   position: relative !important;
