@@ -132,6 +132,71 @@ export default function InsightsDashboardContent() {
   const latestWeeklySummary = weeklySummary && weeklySummary.length > 0 ? weeklySummary[0] : null;
   const latestMonthlySummary = monthlySummary && monthlySummary.length > 0 ? monthlySummary[0] : null;
   
+  // Check if we have any data at all
+  const hasAnyData = (leaderboard && leaderboard.length > 0) || 
+                     (activityData && activityData.length > 0) || 
+                     latestWeeklySummary || 
+                     latestMonthlySummary;
+
+  // If no data exists and we're not loading, show empty state
+  if (!hasAnyData && !loadingLeaderboard && !loadingActivity && !loadingWeeklySummary && !loadingMonthlySummary) {
+    return (
+      <div className="py-6">
+        <div className="flex justify-between items-center mb-6">
+          <h1 className="text-3xl font-bold">Insights Dashboard</h1>
+        </div>
+        
+        <Card className="mx-auto max-w-2xl">
+          <CardHeader className="text-center">
+            <div className="mx-auto mb-4 h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center">
+              <BarChart3 className="h-6 w-6 text-blue-600" />
+            </div>
+            <CardTitle className="text-xl">Welcome to Insights Dashboard</CardTitle>
+            <CardDescription>
+              Start collecting visitor insights to see analytics, leaderboards, and AI-generated summaries
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="grid gap-4">
+              <div className="flex items-start space-x-3 p-4 border rounded-lg">
+                <div className="h-8 w-8 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0">
+                  <span className="text-green-600 font-semibold text-sm">1</span>
+                </div>
+                <div>
+                  <h4 className="font-medium">Set up insight collection</h4>
+                  <p className="text-sm text-muted-foreground">Configure your website to start collecting visitor insights and feedback</p>
+                </div>
+              </div>
+              <div className="flex items-start space-x-3 p-4 border rounded-lg">
+                <div className="h-8 w-8 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0">
+                  <span className="text-blue-600 font-semibold text-sm">2</span>
+                </div>
+                <div>
+                  <h4 className="font-medium">Add insight users</h4>
+                  <p className="text-sm text-muted-foreground">Invite team members to contribute insights and participate in the leaderboard</p>
+                </div>
+              </div>
+              <div className="flex items-start space-x-3 p-4 border rounded-lg">
+                <div className="h-8 w-8 rounded-full bg-purple-100 flex items-center justify-center flex-shrink-0">
+                  <span className="text-purple-600 font-semibold text-sm">3</span>
+                </div>
+                <div>
+                  <h4 className="font-medium">Generate AI summaries</h4>
+                  <p className="text-sm text-muted-foreground">Once data is collected, AI will generate weekly and monthly insight summaries</p>
+                </div>
+              </div>
+            </div>
+            <div className="flex justify-center pt-4">
+              <Button onClick={() => setLocation('/admin/setup')} className="bg-blue-600 hover:bg-blue-700">
+                Get Started with Setup
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
   return (
     <div className="py-6">
       <div className="flex justify-between items-center mb-6">
@@ -232,7 +297,7 @@ export default function InsightsDashboardContent() {
           <CardContent className="pt-6">
             {loadingActivity ? (
               <LoadingSpinner />
-            ) : (
+            ) : formattedActivityData && formattedActivityData.length > 0 ? (
               <div className="h-64">
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={formattedActivityData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
@@ -245,6 +310,16 @@ export default function InsightsDashboardContent() {
                     <Bar dataKey="count" fill="#3f83f8" radius={[4, 4, 0, 0]} />
                   </BarChart>
                 </ResponsiveContainer>
+              </div>
+            ) : (
+              <div className="h-64 flex flex-col items-center justify-center text-center">
+                <div className="h-16 w-16 rounded-full bg-gray-100 flex items-center justify-center mb-4">
+                  <TrendingUp className="h-8 w-8 text-gray-400" />
+                </div>
+                <h3 className="font-medium text-gray-900 mb-2">No Activity Data Yet</h3>
+                <p className="text-sm text-gray-500 max-w-sm">
+                  Activity data will appear here once your team starts submitting insights and visitor interactions begin.
+                </p>
               </div>
             )}
           </CardContent>
