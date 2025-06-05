@@ -415,15 +415,7 @@ function Router() {
         )}
         allowedRoles={['admin', 'super_admin']} 
       />
-      <ProtectedRoute 
-        path="/admin/content/blog-posts" 
-        component={(props: Record<string, any>) => (
-          <Suspense fallback={<LoadingFallback />}>
-            <BlogPostGenerator {...props} />
-          </Suspense>
-        )}
-        allowedRoles={['admin', 'super_admin', 'editor']} 
-      />
+
       <ProtectedRoute 
         path="/admin/content/social-posts" 
         component={(props: Record<string, any>) => (

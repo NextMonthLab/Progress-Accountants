@@ -101,17 +101,6 @@ export const mapSidebarToNavigation = (): NavigationItem[] => {
 
     // Removed page builder navigation (front-end editing)
     {
-      id: 'blog_content',
-      title: 'Blog Content',
-      icon: 'BookOpen',
-      type: 'link',
-      href: '/admin/content/blog-posts',
-      requiresStaff: true,
-      description: 'Create and manage blog posts',
-      category: 'create_publish',
-      pinnedOrder: 2,
-    },
-    {
       id: 'social_media_content',
       title: 'Social Media Content',
       icon: 'Share2',
