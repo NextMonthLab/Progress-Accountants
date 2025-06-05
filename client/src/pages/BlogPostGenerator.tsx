@@ -21,7 +21,12 @@ import {
   TrendingUp,
   Calendar,
   Tag,
-  Eye
+  Eye,
+  Search,
+  Filter,
+  Edit,
+  Trash2,
+  Copy
 } from "lucide-react";
 
 interface BlogPost {
@@ -31,6 +36,18 @@ interface BlogPost {
   tags: string[];
   status: "draft" | "published";
   publishedAt?: string;
+}
+
+interface StoredBlogPost {
+  id: number;
+  title: string;
+  content: string;
+  excerpt?: string;
+  keywords?: string[];
+  status: string;
+  publishedAt?: Date;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 interface InsightData {
@@ -64,6 +81,11 @@ export default function BlogPostGenerator() {
   });
   const [newTag, setNewTag] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
+  
+  // Filter states for stored blog posts
+  const [searchTerm, setSearchTerm] = useState("");
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [sortBy, setSortBy] = useState("newest");
 
   // Check for preloaded insight from URL parameters
   useEffect(() => {
@@ -101,6 +123,16 @@ export default function BlogPostGenerator() {
       const response = await apiRequest("GET", "/api/content/blog-posts");
       return response.json();
     }
+  });
+
+  // Fetch all stored blog posts for the list
+  const { data: storedBlogPosts = [], isLoading: isLoadingPosts, refetch: refetchPosts } = useQuery({
+    queryKey: ["/api/content/blog-posts", "all"],
+    queryFn: async () => {
+      const response = await apiRequest("GET", "/api/content/blog-posts?all=true");
+      return response.json();
+    },
+    enabled: !!user,
   });
 
   const generateContent = useMutation({
@@ -143,6 +175,7 @@ export default function BlogPostGenerator() {
         title: "Blog post saved",
         description: blogPost.status === "published" ? "Your post has been published to the SmartSite feed." : "Your draft has been saved.",
       });
+      refetchPosts(); // Refresh the posts list
       if (blogPost.status === "published") {
         setBlogPost({
           title: "",
@@ -156,6 +189,54 @@ export default function BlogPostGenerator() {
     onError: (error: Error) => {
       toast({
         title: "Save failed",
+        description: error.message,
+        variant: "destructive",
+      });
+    },
+  });
+
+  // Filter stored blog posts based on search, status, and sort criteria
+  const filteredBlogPosts = storedBlogPosts
+    .filter((post: StoredBlogPost) => {
+      const matchesSearch = searchTerm === "" || 
+        post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (post.content && post.content.toLowerCase().includes(searchTerm.toLowerCase()));
+      
+      const matchesStatus = statusFilter === "all" || post.status === statusFilter;
+      
+      return matchesSearch && matchesStatus;
+    })
+    .sort((a: StoredBlogPost, b: StoredBlogPost) => {
+      switch (sortBy) {
+        case "newest":
+          return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+        case "oldest":
+          return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+        case "title":
+          return a.title.localeCompare(b.title);
+        case "status":
+          return a.status.localeCompare(b.status);
+        default:
+          return 0;
+      }
+    });
+
+  // Delete blog post mutation
+  const deleteBlogPost = useMutation({
+    mutationFn: async (postId: number) => {
+      const response = await apiRequest("DELETE", `/api/content/blog-posts/${postId}`);
+      return response.json();
+    },
+    onSuccess: () => {
+      toast({
+        title: "Post deleted",
+        description: "The blog post has been permanently removed.",
+      });
+      refetchPosts();
+    },
+    onError: (error: Error) => {
+      toast({
+        title: "Delete failed",
         description: error.message,
         variant: "destructive",
       });
