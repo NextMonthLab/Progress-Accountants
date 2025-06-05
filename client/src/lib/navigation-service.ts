@@ -67,16 +67,6 @@ export const mapSidebarToNavigation = (): NavigationItem[] => {
     },
     */
     {
-      id: 'create_new_page',
-      title: 'Create New Page',
-      icon: 'FileText',
-      type: 'link',
-      href: '/page-builder/new',
-      description: 'Create a new page for your website',
-      category: 'quick_actions',
-      pinnedOrder: 2,
-    },
-    {
       id: 'view_insights',
       title: 'Insights Dashboard',
       icon: 'BarChart2',
@@ -84,17 +74,7 @@ export const mapSidebarToNavigation = (): NavigationItem[] => {
       href: '/admin/insights-dashboard',
       description: 'View client feedback and content insights',
       category: 'quick_actions',
-      pinnedOrder: 3,
-    },
-    {
-      id: 'update_branding',
-      title: 'Update Branding',
-      icon: 'Palette',
-      type: 'link',
-      href: '/brand-center',
-      description: 'Update your brand colors and styles',
-      category: 'quick_actions',
-      pinnedOrder: 4,
+      pinnedOrder: 1,
     },
     
     // Moving previous items to new categories

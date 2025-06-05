@@ -50,7 +50,7 @@ const DiagnosticDashboard = lazy(() => import("@/pages/DiagnosticDashboard"));
 const CRMViewPage = lazy(() => import("@/pages/CRMViewPage"));
 const CRMViewPageEnhanced = lazy(() => import("@/pages/CRMViewPageEnhanced"));
 const ToolsDashboardPage = lazy(() => import("@/pages/ToolsDashboardPage"));
-const BlueprintOnboardingPage = lazy(() => import("@/pages/BlueprintOnboardingPage"));
+// Removed BlueprintOnboardingPage (front-end templating)
 const ToolsLandingPage = lazy(() => import("@/pages/ToolsLandingPage"));
 const ToolMarketplaceBrowserPage = lazy(() => import("@/pages/ToolMarketplaceBrowserPage"));
 const ComponentDemo = lazy(() => import("@/pages/ComponentDemo"));
@@ -441,11 +441,7 @@ function Router() {
         allowedRoles={['admin', 'super_admin', 'editor']} 
       />
       {/* Removed /admin/clone-template (front-end templating) */}
-      <ProtectedRoute 
-        path="/admin/onboarding" 
-        component={BlueprintOnboardingPage} 
-        allowedRoles={['admin', 'super_admin']} 
-      />
+      {/* Removed /admin/onboarding (front-end templating) */}
 
       {/* Client dashboard routes - financial dashboard for Progress clients */}
       <ProtectedRoute 
