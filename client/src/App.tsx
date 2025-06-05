@@ -74,7 +74,7 @@ const TestimonialsPage = lazy(() => import("@/pages/TestimonialsPage"));
 const PrivacyPolicyPage = lazy(() => import("@/pages/PrivacyPolicyPage"));
 const TermsOfServicePage = lazy(() => import("@/pages/TermsOfServicePage"));
 const CookiePolicyPage = lazy(() => import("@/pages/CookiePolicyPage"));
-const BlogPage = lazy(() => import("@/pages/BlogPage"));
+
 
 // Admin interface pages
 const InsightUsersPage = lazy(() => import("@/pages/InsightUsersPage"));
@@ -133,7 +133,6 @@ import ContentStudioPage from "@/pages/ContentStudioPage";
 import AnalyticsPage from "@/pages/AnalyticsPage";
 import AccountPage from "@/pages/AccountPage";
 const AutopilotControlPanel = lazy(() => import("@/pages/AutopilotControlPanel"));
-import NewsPage from "@/pages/NewsPage";
 import BusinessNetworkPage from "@/pages/BusinessNetworkPage";
 import BusinessDiscoverPage from "@/pages/BusinessDiscoverPage";
 // Removed CloneTemplatePage (front-end templating)
@@ -295,12 +294,6 @@ function Router() {
         </Suspense>
       </Route>
       <Route path="/resources" component={ResourcesPage} />
-      <Route path="/news" component={NewsPage} />
-      <Route path="/blog">
-        <Suspense fallback={<LoadingFallback />}>
-          <BlogPage />
-        </Suspense>
-      </Route>
 
       {/* Support System routes */}
       <Route path="/support/assistant" component={AssistantPage} />
