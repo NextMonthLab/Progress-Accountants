@@ -138,7 +138,7 @@ export default function AutopilotControlPanel() {
                 </p>
               </div>
               <Switch
-                checked={formData.blogAutopilotEnabled}
+                checked={Boolean(formData.blogAutopilotEnabled)}
                 onCheckedChange={(checked) => updateFormData("blogAutopilotEnabled", checked)}
               />
             </div>

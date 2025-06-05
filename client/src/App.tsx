@@ -123,6 +123,7 @@ import SocialMediaGeneratorPage from "@/pages/SocialMediaGeneratorPage";
 import ContentStudioPage from "@/pages/ContentStudioPage";
 import AnalyticsPage from "@/pages/AnalyticsPage";
 import AccountPage from "@/pages/AccountPage";
+const AutopilotControlPanel = lazy(() => import("@/pages/AutopilotControlPanel"));
 import NewsPage from "@/pages/NewsPage";
 import BusinessNetworkPage from "@/pages/BusinessNetworkPage";
 import BusinessDiscoverPage from "@/pages/BusinessDiscoverPage";

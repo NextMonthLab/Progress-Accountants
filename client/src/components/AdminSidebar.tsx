@@ -33,7 +33,8 @@ import {
   Newspaper,
   User,
   TrendingUp,
-  Brain
+  Brain,
+  Bot
 } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import { useState, useEffect, useRef } from "react";
@@ -269,6 +270,13 @@ export default function AdminSidebar() {
           title: "Conversation Insights", 
           href: "/admin/conversation-insights", 
           icon: <Sparkles className="h-5 w-5" />,
+          requiresStaff: true,
+          badge: { text: "Pro", variant: "pro" }
+        },
+        { 
+          title: "SmartSite Autopilot", 
+          href: "/admin/autopilot", 
+          icon: <Bot className="h-5 w-5" />,
           requiresStaff: true,
           badge: { text: "New", variant: "new" },
           isNew: true
