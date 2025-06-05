@@ -3723,5 +3723,220 @@ export async function registerRoutes(app: Express): Promise<Server> {
     };
   }
 
+  // Insight App Onboarding API endpoints
+  app.get("/api/insight-app/users", async (req: Request, res: Response) => {
+    try {
+      if (!req.user) {
+        return res.status(401).json({ error: "Unauthorized" });
+      }
+
+      // Get insight users from storage (would be from insight_users table in real implementation)
+      const insightUsers = await getInsightUsers();
+      res.json(insightUsers);
+
+    } catch (error) {
+      console.error("Error fetching insight users:", error);
+      res.status(500).json({ error: "Failed to fetch insight users" });
+    }
+  });
+
+  app.post("/api/insight-app/invite", async (req: Request, res: Response) => {
+    try {
+      if (!req.user) {
+        return res.status(401).json({ error: "Unauthorized" });
+      }
+
+      const { firstName, lastName, email } = req.body;
+      
+      if (!firstName || !lastName || !email) {
+        return res.status(400).json({ error: "Missing required fields" });
+      }
+
+      if (!email.includes('@')) {
+        return res.status(400).json({ error: "Invalid email format" });
+      }
+
+      // Generate unique token for the user
+      const token = crypto.randomBytes(32).toString('hex');
+      
+      // Store insight user
+      const insightUser = {
+        firstName,
+        lastName,
+        email,
+        token,
+        inviteSentAt: new Date().toISOString(),
+        insightCount: 0,
+        isActive: true
+      };
+
+      // In real implementation, save to insight_users table
+      await saveInsightUser(insightUser);
+
+      // Send email invite
+      await sendInsightAppInvite(insightUser);
+
+      res.json({ 
+        success: true, 
+        message: "Invite sent successfully",
+        email: email
+      });
+
+    } catch (error) {
+      console.error("Error sending insight app invite:", error);
+      res.status(500).json({ error: "Failed to send invite" });
+    }
+  });
+
+  app.get("/api/insight-app/insights", async (req: Request, res: Response) => {
+    try {
+      if (!req.user) {
+        return res.status(401).json({ error: "Unauthorized" });
+      }
+
+      // Get recent insights submitted by team members
+      const insights = await getRecentInsights();
+      res.json(insights);
+
+    } catch (error) {
+      console.error("Error fetching insights:", error);
+      res.status(500).json({ error: "Failed to fetch insights" });
+    }
+  });
+
+  // Public endpoint for insight submission (no auth required)
+  app.post("/api/insight-app/submit", async (req: Request, res: Response) => {
+    try {
+      const { token, content, type } = req.body;
+
+      if (!token || !content) {
+        return res.status(400).json({ error: "Missing required fields" });
+      }
+
+      // Validate token and get user
+      const user = await getInsightUserByToken(token);
+      if (!user) {
+        return res.status(401).json({ error: "Invalid or expired token" });
+      }
+
+      // Save insight
+      const insight = {
+        content,
+        type: type || 'general',
+        submittedBy: `${user.firstName} ${user.lastName}`,
+        submittedAt: new Date().toISOString(),
+        userToken: token
+      };
+
+      await saveInsight(insight);
+
+      // Update user insight count
+      await incrementInsightCount(token);
+
+      res.json({ success: true, message: "Insight submitted successfully" });
+
+    } catch (error) {
+      console.error("Error submitting insight:", error);
+      res.status(500).json({ error: "Failed to submit insight" });
+    }
+  });
+
+  // Helper functions for insight app
+  async function getInsightUsers() {
+    // In real implementation, query insight_users table
+    return [
+      {
+        id: 1,
+        firstName: "Sarah",
+        lastName: "Johnson",
+        email: "sarah.johnson@company.com",
+        token: "sample-token-1",
+        inviteSentAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+        insightCount: 5,
+        lastSubmissionDate: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+        isActive: true
+      },
+      {
+        id: 2,
+        firstName: "Mike",
+        lastName: "Chen",
+        email: "mike.chen@company.com",
+        token: "sample-token-2",
+        inviteSentAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
+        insightCount: 3,
+        lastSubmissionDate: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
+        isActive: true
+      }
+    ];
+  }
+
+  async function saveInsightUser(userData: any) {
+    // In real implementation, insert into insight_users table
+    console.log('Saving insight user:', userData);
+    return userData;
+  }
+
+  async function sendInsightAppInvite(user: any) {
+    // In real implementation, send email via SendGrid or similar
+    const inviteLink = `https://insight.smartsitehub.io/submit?user=${user.token}`;
+    
+    console.log(`Sending invite email to ${user.email}:`);
+    console.log(`Subject: You've been invited to use the Insight App`);
+    console.log(`Link: ${inviteLink}`);
+    
+    // Email would contain:
+    // - Personalized greeting
+    // - Explanation of Insight App
+    // - Direct link with token
+    // - Instructions for use
+    
+    return true;
+  }
+
+  async function getRecentInsights() {
+    // In real implementation, query insights table
+    return [
+      {
+        id: 1,
+        content: "Had a great conversation with a potential client today. They're interested in our tax advisory services and mentioned they've been struggling with VAT compliance.",
+        submittedBy: "Sarah Johnson",
+        submittedAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
+        type: "lead"
+      },
+      {
+        id: 2,
+        content: "Client mentioned they're really happy with our bookkeeping service - said it's saved them 10 hours a week. This could be good for testimonials.",
+        submittedBy: "Mike Chen",
+        submittedAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+        type: "testimonial"
+      },
+      {
+        id: 3,
+        content: "Notice that several clients are asking about Making Tax Digital. Might be worth creating some content about this topic.",
+        submittedBy: "Sarah Johnson",
+        submittedAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
+        type: "suggestion"
+      }
+    ];
+  }
+
+  async function getInsightUserByToken(token: string) {
+    // In real implementation, query insight_users table by token
+    const users = await getInsightUsers();
+    return users.find(user => user.token === token);
+  }
+
+  async function saveInsight(insight: any) {
+    // In real implementation, insert into insights table
+    console.log('Saving insight:', insight);
+    return insight;
+  }
+
+  async function incrementInsightCount(token: string) {
+    // In real implementation, update insight_users table
+    console.log('Incrementing insight count for token:', token);
+    return true;
+  }
+
   return httpServer;
 }

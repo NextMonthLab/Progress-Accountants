@@ -83,6 +83,7 @@ const SmartSiteSetupPanel = lazy(() => import("@/pages/SmartSiteSetupPanel"));
 const BlogPostGenerator = lazy(() => import("@/pages/BlogPostGenerator"));
 const SocialPostGenerator = lazy(() => import("@/pages/SocialPostGenerator"));
 const MarketIntelligencePanel = lazy(() => import("@/pages/MarketIntelligencePanel"));
+const InsightAppOnboarding = lazy(() => import("@/pages/InsightAppOnboarding"));
 const SotManagerPage = lazy(() => import("@/pages/admin/SotManagerPage"));
 const ScopeRequestPage = lazy(() => import("@/pages/ScopeRequestPage"));
 const ModuleGalleryPage = lazy(() => import("@/pages/ModuleGalleryPage"));
@@ -436,6 +437,15 @@ function Router() {
         component={(props: Record<string, any>) => (
           <Suspense fallback={<LoadingFallback />}>
             <MarketIntelligencePanel {...props} />
+          </Suspense>
+        )}
+        allowedRoles={['admin', 'super_admin']} 
+      />
+      <ProtectedRoute 
+        path="/admin/insight-app" 
+        component={(props: Record<string, any>) => (
+          <Suspense fallback={<LoadingFallback />}>
+            <InsightAppOnboarding {...props} />
           </Suspense>
         )}
         allowedRoles={['admin', 'super_admin']} 

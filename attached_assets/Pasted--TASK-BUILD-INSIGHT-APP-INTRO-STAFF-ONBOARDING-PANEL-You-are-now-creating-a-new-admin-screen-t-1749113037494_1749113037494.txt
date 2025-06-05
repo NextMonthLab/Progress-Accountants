@@ -1,0 +1,92 @@
+🧠 TASK: BUILD INSIGHT APP INTRO & STAFF ONBOARDING PANEL
+
+You are now creating a new admin screen that:
+
+1. Introduces the Insight App (a lightweight tool for team members to submit observations, stories, or issues).
+2. Allows Admins to assign users to receive the app via email.
+3. Ensures submitted insights route directly into the SmartSite Insight Leaderboard.
+
+---
+
+🧭 Route: `/admin/insight-app`  
+📁 Component: `InsightAppOnboarding.tsx`  
+🔒 Access: Admin, Super Admin only
+
+---
+
+🧩 PANEL STRUCTURE
+
+### 📣 Section 1: What is the Insight App?
+
+Use content blocks or expandable text to explain the concept:
+
+> "The Insight App gives every member of your team a way to share important stories, ideas, and feedback — in 30 seconds or less."
+
+- Good news stories and testimonials
+- Employee frustrations or wins
+- Customer complaints or praise
+- Suggestions for improvement
+- Employee satisfaction cues
+- Lead triggers from casual convos
+- Pain points before they escalate
+
+✨ All insights feed directly into your leaderboard — no login needed.
+
+---
+
+### 👥 Section 2: Add a Team Member
+
+Simple form:
+
+- [ ] First Name  
+- [ ] Last Name  
+- [ ] Email Address  
+- Button: `Send Insight App Invite`
+
+📧 This triggers an email with:
+- Subject: “You’ve been invited to use the Insight App”  
+- Body:
+  > “[Your Company] has given you access to the Insight App — a lightweight tool for quickly sharing ideas, stories, or feedback. Just click the link and start typing — no login required.”
+
+- Link structure: `https://insight.smartsitehub.io/submit?user=XYZ_TOKEN`
+
+Tokens are one-time created and tied to email/user.
+
+---
+
+### 📈 Section 3: Submitted Insights
+
+Show a mini-table of:
+- Name / Email
+- Number of insights submitted
+- Last submission date
+- Button: `View Leaderboard` (links to `/admin/insights-dashboard`)
+
+---
+
+🎨 UI NOTES:
+
+- Use card layout
+- Include info icon popovers on “Why collect insights?”
+- Add subtle teal success messages on invite sent
+
+---
+
+📁 FILES TO CREATE:
+
+- `src/routes/admin/insight-app.tsx`
+- `src/components/admin/InsightAppOnboarding.tsx`
+- `src/services/insightUserService.ts` – create, store, validate tokens
+- `src/utils/emailSender.ts` – send app invite emails
+- Extend Insight Leaderboard backend to support “SubmittedBy: userID”
+
+---
+
+📣 OUTPUT:
+
+1. Working onboarding form and invite flow
+2. Confirmation that email/token system is active
+3. Insights from staff show up in leaderboard
+4. Table of assigned users and submission activity
+
+Let’s make every staff member a sensor — and make sure every moment worth capturing *is*.
