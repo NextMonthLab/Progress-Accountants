@@ -151,7 +151,7 @@ export default function AutopilotControlPanel() {
                 <div className="space-y-2">
                   <Label className="text-white font-medium">Posting Frequency</Label>
                   <Select
-                    value={formData.postingFrequency}
+                    value={formData.postingFrequency || ""}
                     onValueChange={(value) => updateFormData("postingFrequency", value)}
                   >
                     <SelectTrigger className="bg-gray-900 border-gray-600 text-white">
@@ -180,11 +180,11 @@ export default function AutopilotControlPanel() {
                     ].map((source) => (
                       <Button
                         key={source.id}
-                        variant={formData.contentSources?.includes(source.id) ? "default" : "outline"}
+                        variant={Array.isArray(formData.contentSources) && formData.contentSources.includes(source.id) ? "default" : "outline"}
                         size="sm"
                         onClick={() => toggleContentSource(source.id)}
                         className={`${
-                          formData.contentSources?.includes(source.id)
+                          Array.isArray(formData.contentSources) && formData.contentSources.includes(source.id)
                             ? "bg-teal-600 hover:bg-teal-700 text-white border-teal-600"
                             : "bg-gray-800 hover:bg-gray-700 text-gray-300 border-gray-600"
                         }`}
@@ -199,7 +199,7 @@ export default function AutopilotControlPanel() {
                 <div className="space-y-2">
                   <Label className="text-white font-medium">AI Tone Preference</Label>
                   <Select
-                    value={formData.aiTonePreference}
+                    value={formData.aiTonePreference || ""}
                     onValueChange={(value) => updateFormData("aiTonePreference", value)}
                   >
                     <SelectTrigger className="bg-gray-900 border-gray-600 text-white">

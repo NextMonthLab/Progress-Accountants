@@ -3087,5 +3087,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Register NextMonth marketplace integration routes
   app.use('/api/marketplace', MarketplaceApiRouter);
 
+  // Register SmartSite Autopilot routes
+  registerAutopilotRoutes(app);
+
   return httpServer;
 }
