@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Loader2, Calendar, User, ArrowRight } from 'lucide-react';
+import { Loader2, Calendar, User, ArrowRight, FileText } from 'lucide-react';
 import { format } from 'date-fns';
 import MainLayout from '@/layouts/MainLayout';
 import { useLocation } from 'wouter';
@@ -12,10 +12,14 @@ type BlogPost = {
   slug: string;
   content: string;
   excerpt: string;
-  author: string;
+  author: number;
+  tenantId: string;
+  status: string;
   publishedAt: string;
-  tags: string[];
-  featured: boolean;
+  keywords: string[];
+  featuredImage?: string;
+  createdAt: string;
+  updatedAt: string;
 };
 
 export default function BlogPage() {
@@ -98,11 +102,11 @@ export default function BlogPage() {
                     <div className="flex items-center gap-4 text-sm text-muted-foreground mb-2">
                       <div className="flex items-center gap-1">
                         <Calendar className="h-4 w-4" />
-                        {format(new Date(post.publishedAt), 'MMM d, yyyy')}
+                        {post.publishedAt ? format(new Date(post.publishedAt), 'MMM d, yyyy') : format(new Date(post.createdAt), 'MMM d, yyyy')}
                       </div>
                       <div className="flex items-center gap-1">
                         <User className="h-4 w-4" />
-                        {post.author}
+                        Progress Accountants
                       </div>
                     </div>
                     <CardTitle className="text-2xl hover:text-primary cursor-pointer" 

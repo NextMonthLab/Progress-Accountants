@@ -1314,10 +1314,15 @@ export class DatabaseStorage implements IStorage {
   // Blog post operations
   async getBlogPosts(tenantId?: string): Promise<BlogPost[]> {
     try {
+      let query = db
+        .select()
+        .from(blogPosts)
+        .where(eq(blogPosts.status, "published"));
+
       if (tenantId) {
-        return db.select().from(blogPosts).where(eq(blogPosts.tenantId, tenantId));
+        query = query.where(eq(blogPosts.tenantId, tenantId));
       }
-      return db.select().from(blogPosts);
+      return query;
     } catch (error) {
       console.error("Error fetching blog posts:", error);
       return [];
