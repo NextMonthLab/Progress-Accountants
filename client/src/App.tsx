@@ -79,6 +79,7 @@ const CookiePolicyPage = lazy(() => import("@/pages/CookiePolicyPage"));
 const InsightUsersPage = lazy(() => import("@/pages/InsightUsersPage"));
 const InsightsDashboardPage = lazy(() => import("@/pages/InsightsDashboardPage"));
 const SmartSiteDashboard = lazy(() => import("@/pages/SmartSiteDashboard"));
+const SmartSiteSetupPanel = lazy(() => import("@/pages/SmartSiteSetupPanel"));
 const SotManagerPage = lazy(() => import("@/pages/admin/SotManagerPage"));
 const ScopeRequestPage = lazy(() => import("@/pages/ScopeRequestPage"));
 const ModuleGalleryPage = lazy(() => import("@/pages/ModuleGalleryPage"));
@@ -399,6 +400,15 @@ function Router() {
         path="/admin/insights-dashboard" 
         component={InsightsDashboardPage} 
         allowedRoles={['admin', 'super_admin', 'editor']} 
+      />
+      <ProtectedRoute 
+        path="/admin/setup" 
+        component={(props: Record<string, any>) => (
+          <Suspense fallback={<LoadingFallback />}>
+            <SmartSiteSetupPanel {...props} />
+          </Suspense>
+        )}
+        allowedRoles={['admin', 'super_admin']} 
       />
       {/* Add redirect from /insights to the proper dashboard path */}
       <ProtectedRoute 

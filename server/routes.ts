@@ -860,6 +860,45 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // SETUP REQUEST ENDPOINT
+  app.post("/api/setup/request", async (req: Request, res: Response) => {
+    try {
+      const { hostingProvider, domainRegistrar, websiteUrl, developerContact, secureNotes } = req.body;
+      
+      if (!hostingProvider || !websiteUrl) {
+        return res.status(400).json({
+          error: "Missing required fields: hostingProvider and websiteUrl are required"
+        });
+      }
+
+      // Store setup request
+      const setupRequest = {
+        id: Date.now(),
+        userId: req.user?.id || null,
+        hostingProvider,
+        domainRegistrar,
+        websiteUrl,
+        developerContact: developerContact || null,
+        secureNotes,
+        status: "pending",
+        submittedAt: new Date().toISOString()
+      };
+
+      // In a real implementation, this would be stored in the database
+      // For now, we'll log it and return success
+      console.log("Setup request received:", setupRequest);
+
+      res.status(201).json({
+        success: true,
+        message: "Setup request submitted successfully",
+        requestId: setupRequest.id
+      });
+    } catch (error) {
+      console.error("Setup request error:", error);
+      res.status(500).json({ error: "Failed to submit setup request" });
+    }
+  });
+
   // FEATURE REQUEST SCOPING ASSISTANT ENDPOINTS
   
   // In-memory conversation storage
