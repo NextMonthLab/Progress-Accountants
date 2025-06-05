@@ -1,0 +1,70 @@
+🧱 TASK: CREATE MARKETPLACE PLACEHOLDER SCREEN
+
+You are now creating a new route inside the SmartSite Admin Panel:
+
+🧭 Route: `/admin/marketplace`  
+📁 Component: `MarketplacePlaceholder.tsx`  
+🔒 Access: Admin, Super Admin
+
+---
+
+🧩 OBJECTIVE:
+
+This screen will eventually become the **gateway to the NextMonth Lab ecosystem**, allowing users to browse and activate advanced tools, services, and plugins. For now, it is a structured placeholder.
+
+---
+
+### 🧩 DESIGN STRUCTURE:
+
+✅ Section 1: Intro
+
+- Title: “Marketplace”
+- Subtitle: “Enhance your SmartSite with advanced tools from NextMonth Lab”
+- Description:
+  > “From AI-powered schedulers to video transcription engines, the Marketplace will allow you to extend your site with cutting-edge tools — built by the NextMonth ecosystem.”
+
+✅ Section 2: Coming Soon Cards (3–4)
+
+Mock cards with placeholders like:
+- 📹 “Video Snippet Generator” – Auto-create social clips from long-form video
+- 📆 “AI Scheduler” – Let visitors book services via your assistant
+- 🗂 “SmartSite CRM Pro” – Upgrade your lead handling
+- 🧠 “Dev Council Add-on” – Embedded in-app bug feedback + improvement loop
+
+Each card includes:
+- Title
+- Icon
+- Short 1–2 sentence description
+- Disabled “Add to SmartSite” button
+
+✅ Section 3: Notify Me Form (Optional)
+
+> “Want early access to new tools?”
+- Email field + Submit button
+- Saves to local DB or placeholder webhook
+
+---
+
+🎨 UI NOTES:
+
+- Card grid layout (3-column on desktop, 1-column mobile)
+- Use subtle gray tones for disabled features
+- Highlight NextMonth Lab branding in intro
+
+---
+
+📁 FILES TO CREATE:
+
+- `src/routes/admin/marketplace.tsx`
+- `src/components/admin/MarketplacePlaceholder.tsx`
+- Optional: `src/mock/marketplaceMockData.ts` to store placeholder tool data
+
+---
+
+📣 OUTPUT:
+
+1. A styled placeholder UI with 3–4 mock tools
+2. Confirmation that route is live and navigable
+3. Stub webhook or console log on form submission (if Notify Me form is included)
+
+Let’s give SmartSite a visible runway into the larger ecosystem — starting now.

@@ -3938,5 +3938,50 @@ export async function registerRoutes(app: Express): Promise<Server> {
     return true;
   }
 
+  // Marketplace API endpoints
+  app.post("/api/marketplace/notify", async (req: Request, res: Response) => {
+    try {
+      if (!req.user) {
+        return res.status(401).json({ error: "Unauthorized" });
+      }
+
+      const { email } = req.body;
+      
+      if (!email) {
+        return res.status(400).json({ error: "Email is required" });
+      }
+
+      if (!email.includes('@')) {
+        return res.status(400).json({ error: "Invalid email format" });
+      }
+
+      // In real implementation, save to marketplace_notifications table
+      const notification = {
+        email,
+        userId: req.user.id,
+        subscribedAt: new Date().toISOString(),
+        active: true
+      };
+
+      await saveMarketplaceNotification(notification);
+
+      res.json({ 
+        success: true, 
+        message: "Successfully subscribed to marketplace notifications"
+      });
+
+    } catch (error) {
+      console.error("Error saving marketplace notification:", error);
+      res.status(500).json({ error: "Failed to save notification preference" });
+    }
+  });
+
+  // Helper function for marketplace notifications
+  async function saveMarketplaceNotification(notification: any) {
+    // In real implementation, insert into marketplace_notifications table
+    console.log('Saving marketplace notification:', notification);
+    return notification;
+  }
+
   return httpServer;
 }
