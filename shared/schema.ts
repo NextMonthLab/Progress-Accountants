@@ -752,7 +752,7 @@ export const blogPosts = pgTable("blog_posts", {
   metaDescription: text("meta_description"),
   featuredImage: text("featured_image"),
   keywords: text("keywords").array(),
-  author: integer("author").references(() => users.id),
+  author: integer("author_id").references(() => users.id),
   tenantId: text("tenant_id"),
   status: text("status").default("draft").notNull(), // draft, published, archived
   publishedAt: timestamp("published_at", { mode: 'date' }),
