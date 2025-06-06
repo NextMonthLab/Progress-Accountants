@@ -32,38 +32,47 @@ const SmartContextBanner: React.FC = () => {
     const getContextForRoute = () => {
       if (location.startsWith('/admin/dashboard')) {
         return {
-          context: "Dashboard Overview",
+          context: "SmartSite Control Room",
           lastActivity: "2 minutes ago",
           suggestions: [
-            "Review visitor patterns in the analytics section",
-            "Update your business hours for the holiday season"
+            "3 new insights ready for review",
+            "Content autopilot suggestions available"
           ]
         };
-      } else if (location.startsWith('/admin/pages')) {
+      } else if (location.startsWith('/admin/setup')) {
         return {
-          context: "Page Editor",
-          lastActivity: "Yesterday at 3:42 PM",
+          context: "SmartSite Setup Panel",
+          lastActivity: "10 minutes ago",
           suggestions: [
-            "Optimize your About page by adding team information",
-            "Add seasonal content to increase engagement"
+            "Complete site configuration",
+            "Enable autopilot features"
           ]
         };
-      } else if (location.startsWith('/admin/social-media')) {
+      } else if (location.startsWith('/admin/content')) {
         return {
-          context: "Social Media Generator",
-          lastActivity: "4 days ago",
+          context: "Content Intelligence",
+          lastActivity: "1 hour ago",
           suggestions: [
-            "Schedule posts for the upcoming business event",
-            "Create a carousel post about your new service offerings"
+            "5 content ideas generated",
+            "SEO optimization ready"
+          ]
+        };
+      } else if (location.startsWith('/admin/insights')) {
+        return {
+          context: "Market Intelligence",
+          lastActivity: "15 minutes ago",
+          suggestions: [
+            "New trend analysis available",
+            "Competitor insights updated"
           ]
         };
       } else {
         return {
-          context: "Admin Tools",
-          lastActivity: "30 minutes ago",
+          context: "SmartSite Admin",
+          lastActivity: "5 minutes ago",
           suggestions: [
-            "Complete your site configuration setup",
-            "Add more team members to collaborate on content"
+            "System optimization suggestions",
+            "Performance insights ready"
           ]
         };
       }
@@ -82,98 +91,71 @@ const SmartContextBanner: React.FC = () => {
   if (!isOpen || !smartContext || navigationState.focusedMode) return null;
 
   return (
-    <div className="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700 p-2 px-3 sm:px-4 text-sm relative">
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex items-center">
-          <div className="bg-blue-50 dark:bg-blue-900/20 p-1.5 rounded-md">
-            <Brain className="h-4 w-4 text-navy dark:text-blue-400" />
+    <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-gray-800 dark:to-gray-900 border-b border-blue-100 dark:border-gray-700 px-4 py-3">
+      <div className="flex items-center justify-between">
+        {/* Main Context Information */}
+        <div className="flex items-center space-x-3">
+          <div className="bg-blue-100 dark:bg-blue-900/30 p-1.5 rounded-lg">
+            <Brain className="h-4 w-4 text-blue-600 dark:text-blue-400" />
           </div>
-          <span className="font-medium text-navy dark:text-blue-300 ml-2">Smart Context</span>
-          {loading ? (
-            <div className="ml-3 h-4 w-32 bg-gray-200 dark:bg-gray-700 rounded animate-pulse"></div>
-          ) : (
-            <span className="ml-3 text-gray-700 dark:text-gray-300 font-medium">{smartContext.context}</span>
-          )}
-
-          <div className="hidden sm:flex items-center ml-6 text-xs text-gray-500 dark:text-gray-400">
-            <Clock className="h-3 w-3 mr-1" />
+          
+          <div className="flex flex-col">
             {loading ? (
-              <div className="h-3 w-24 bg-gray-200 dark:bg-gray-700 rounded animate-pulse"></div>
+              <div className="space-y-1">
+                <div className="h-4 w-32 bg-gray-200 dark:bg-gray-700 rounded animate-pulse"></div>
+                <div className="h-3 w-24 bg-gray-200 dark:bg-gray-700 rounded animate-pulse"></div>
+              </div>
             ) : (
-              <span>Last activity: {smartContext.lastActivity}</span>
+              <>
+                <span className="font-semibold text-gray-900 dark:text-white text-sm">
+                  {smartContext.context}
+                </span>
+                <span className="text-xs text-gray-600 dark:text-gray-400">
+                  Last activity: {smartContext.lastActivity}
+                </span>
+              </>
             )}
           </div>
         </div>
 
-        <div className="flex items-center mt-1 sm:mt-0">
-          <div className="flex sm:hidden items-center text-xs text-gray-500 dark:text-gray-400 mr-2">
-            <Clock className="h-3 w-3 mr-1" />
-            {loading ? (
-              <div className="h-3 w-24 bg-gray-200 dark:bg-gray-700 rounded animate-pulse"></div>
-            ) : (
-              <span>Last activity: {smartContext.lastActivity}</span>
-            )}
-          </div>
-
-          {/* Quick Actions Dropdown */}
-          <div className="mr-2">
-            <QuickActions />
-          </div>
-
-          {/* Notifications Panel */}
-          <div className="mr-2">
-            <NotificationsPanel />
-          </div>
-
-          {/* Keyboard Shortcuts Button */}
-          <div className="mr-2">
-            <KeyboardShortcutsButton />
-          </div>
-
-          {/* Theme Toggle Button */}
-          <div className="mr-2">
-            {/* ThemeToggle removed - system uses permanent dark mode */}
-          </div>
-
-          {/* View Website Button */}
-          <a 
-            href="/" 
-            target="_blank" 
-            rel="noopener noreferrer" 
-            className="h-7 px-3 mr-2 inline-flex items-center justify-center rounded-md text-xs font-medium text-white bg-gradient-to-r from-[#36d1dc] to-[#5b86e5] hover:opacity-90 transition-opacity"
-          >
-            <Globe className="h-3 w-3 mr-1" />
-            View Website
-          </a>
-
+        {/* Action Controls */}
+        <div className="flex items-center space-x-2">
+          <NotificationsPanel />
+          <QuickActions />
+          
           <Button 
             variant="ghost" 
             size="sm" 
-            className="h-7 px-2 text-xs text-gray-600 hover:bg-[#F65C9A]/10 hover:text-[#F65C9A] transition-all"
+            className="h-8 px-2 text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
             onClick={() => setIsOpen(false)}
           >
-            <X className="h-3 w-3 mr-1" />
-            Dismiss
+            <X className="h-4 w-4" />
           </Button>
         </div>
       </div>
 
-      {/* Intelligent Suggestions */}
+      {/* Smart Suggestions - Single Row */}
       {!loading && smartContext.suggestions.length > 0 && (
-        <div className="mt-2 pl-2 sm:pl-6 flex flex-col sm:flex-row sm:items-center text-xs">
-          <div className="flex items-center">
-            <div className="bg-amber-50 dark:bg-amber-900/20 p-1 rounded-md">
-              <LightbulbIcon className="h-3 w-3 text-amber-500 dark:text-amber-400" />
+        <div className="mt-3 pt-3 border-t border-blue-100 dark:border-gray-700">
+          <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2 flex-shrink-0">
+              <LightbulbIcon className="h-3 w-3 text-amber-500" />
+              <span className="text-xs font-medium text-gray-700 dark:text-gray-300">
+                Suggestions
+              </span>
             </div>
-            <span className="text-gray-700 dark:text-gray-300 font-medium ml-2 mr-2">Smart suggestions:</span>
+            
+            <div className="flex space-x-3 overflow-x-auto scrollbar-hide">
+              {smartContext.suggestions.slice(0, 2).map((suggestion, index) => (
+                <div
+                  key={index}
+                  className="flex-shrink-0 bg-white dark:bg-gray-800 px-3 py-1.5 rounded-md text-xs text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-600 hover:border-blue-300 dark:hover:border-blue-500 cursor-pointer transition-colors"
+                >
+                  {suggestion}
+                </div>
+              ))}
+            </div>
           </div>
-          <ul className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4 mt-2 sm:mt-0 ml-6 sm:ml-0">
-            {smartContext.suggestions.map((suggestion, index) => (
-              <li key={index} className="text-navy dark:text-blue-300 hover:text-[#F65C9A] dark:hover:text-[#F65C9A] transition-colors bg-gray-50 dark:bg-gray-700/50 py-1 px-2 sm:py-0.5 sm:px-2 rounded-md">
-                {suggestion}
-              </li>
-            ))}
-          </ul>
         </div>
       )}
     </div>
