@@ -1,5 +1,6 @@
 import { Link } from "wouter";
 import { Facebook, Linkedin, Twitter } from "lucide-react";
+import progressLogoPath from "@assets/Light Logo.png";
 
 export default function Footer() {
   return (
@@ -8,53 +9,13 @@ export default function Footer() {
         <div className="grid md:grid-cols-4 gap-8">
           <div>
             <div className="mb-4">
-              <svg 
-                width="400" 
-                height="110" 
-                viewBox="0 0 1024 280" 
-                className="h-16 w-auto"
-                aria-label="Progress Accountants | Advisors | Growth Partners"
-              >
-                <defs>
-                  <linearGradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stopColor="#C026D3" stopOpacity="1" />
-                    <stop offset="60%" stopColor="#8B5CF6" stopOpacity="1" />
-                    <stop offset="100%" stopColor="#3B82F6" stopOpacity="1" />
-                  </linearGradient>
-                </defs>
-                
-                {/* Recreated arrow shape matching your exact logo */}
-                <path 
-                  d="M20 50 L20 230 L130 230 L220 140 L130 50 Z" 
-                  fill="url(#progressGradient)" 
+              <Link href="/" className="no-underline flex items-center">
+                <img 
+                  src={progressLogoPath} 
+                  alt="Progress Accountants | Advisors | Growth Partners" 
+                  className="h-16 w-auto" 
                 />
-                
-                {/* PROGRESS text with exact styling */}
-                <text 
-                  x="260" 
-                  y="165" 
-                  fontFamily="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" 
-                  fontSize="85" 
-                  fontWeight="900" 
-                  fill="white"
-                  letterSpacing="0px"
-                >
-                  PROGRESS
-                </text>
-                
-                {/* Tagline matching your design */}
-                <text 
-                  x="260" 
-                  y="220" 
-                  fontFamily="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" 
-                  fontSize="28" 
-                  fontWeight="400" 
-                  fill="white"
-                  letterSpacing="0.5px"
-                >
-                  Accountants | Advisors | Growth Partners
-                </text>
-              </svg>
+              </Link>
             </div>
             <p className="mb-4 text-gray-300">
               We don't just talk about growth. We build the tools that drive it.
