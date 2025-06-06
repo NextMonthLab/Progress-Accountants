@@ -5,8 +5,9 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Switch } from '@/components/ui/switch';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Loader2, Brain, Zap, Check, Star } from 'lucide-react';
-import { aiSettingsService, type AISettingsResponse } from '@/services/ai-settings';
+import { Progress } from '@/components/ui/progress';
+import { Loader2, Brain, Zap, Check, Star, TrendingUp, AlertTriangle } from 'lucide-react';
+import { aiSettingsService, type AISettingsResponse, type AIUsageStats } from '@/services/ai-settings';
 import { queryClient } from '@/lib/queryClient';
 import { useToast } from '@/hooks/use-toast';
 
@@ -17,6 +18,12 @@ export default function AISettingsPage() {
   const { data: settings, isLoading, error } = useQuery<AISettingsResponse>({
     queryKey: ['/api/ai/settings'],
     queryFn: () => aiSettingsService.getSettings(),
+  });
+
+  const { data: usageStats, isLoading: usageLoading } = useQuery<AIUsageStats>({
+    queryKey: ['/api/ai/usage'],
+    queryFn: () => aiSettingsService.getUsageStats(),
+    refetchInterval: 30000, // Refetch every 30 seconds
   });
 
   const updateSettingsMutation = useMutation({
@@ -112,6 +119,96 @@ export default function AISettingsPage() {
           </div>
         </CardContent>
       </Card>
+
+      {/* AI Usage Tracking */}
+      {usageStats && (
+        <Card className="mb-6">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <TrendingUp className="h-5 w-5" />
+              AI Usage This Month
+            </CardTitle>
+            <CardDescription>
+              Track your AI model usage and monitor your monthly limits
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              {/* Usage Progress Bar */}
+              <div className="space-y-2">
+                <div className="flex items-center justify-between text-sm">
+                  <span>Current Usage</span>
+                  <span className="font-mono">
+                    {usageStats.currentMonthUsage} / {usageStats.isProAIUser ? 'Unlimited' : usageStats.proAILimit} calls
+                  </span>
+                </div>
+                {!usageStats.isProAIUser && (
+                  <Progress 
+                    value={Math.min((usageStats.currentMonthUsage / usageStats.proAILimit) * 100, 100)}
+                    className={`h-2 ${
+                      usageStats.currentMonthUsage >= usageStats.proAILimit ? 'bg-red-100' :
+                      usageStats.currentMonthUsage >= usageStats.proAILimit * 0.8 ? 'bg-yellow-100' : 
+                      'bg-green-100'
+                    }`}
+                  />
+                )}
+              </div>
+
+              {/* Usage Statistics */}
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-1">
+                  <div className="text-sm text-muted-foreground">Most Used Model</div>
+                  <div className="font-medium">{usageStats.mostUsedModel || 'N/A'}</div>
+                </div>
+                <div className="space-y-1">
+                  <div className="text-sm text-muted-foreground">Total AI Calls</div>
+                  <div className="font-medium">{usageStats.totalCalls}</div>
+                </div>
+              </div>
+
+              {/* Usage Warnings */}
+              {!usageStats.isProAIUser && (
+                <>
+                  {usageStats.currentMonthUsage >= usageStats.proAILimit && (
+                    <Alert variant="destructive">
+                      <AlertTriangle className="h-4 w-4" />
+                      <AlertDescription>
+                        You've reached your monthly AI limit. Upgrade to Pro AI for unlimited access.
+                      </AlertDescription>
+                    </Alert>
+                  )}
+                  {usageStats.currentMonthUsage >= usageStats.proAILimit * 0.8 && 
+                   usageStats.currentMonthUsage < usageStats.proAILimit && (
+                    <Alert>
+                      <AlertTriangle className="h-4 w-4" />
+                      <AlertDescription>
+                        You're approaching your monthly AI limit ({Math.round((usageStats.currentMonthUsage / usageStats.proAILimit) * 100)}% used).
+                      </AlertDescription>
+                    </Alert>
+                  )}
+                </>
+              )}
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Loading state for usage stats */}
+      {usageLoading && !usageStats && (
+        <Card className="mb-6">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <TrendingUp className="h-5 w-5" />
+              AI Usage This Month
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="flex items-center justify-center py-8">
+              <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Pro AI Toggle */}
       <Card className="mb-6">
