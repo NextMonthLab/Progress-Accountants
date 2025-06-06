@@ -99,16 +99,16 @@ export default function AboutPage() {
       </Helmet>
 
       {/* 1. Hero Section */}
-      <section className="relative overflow-hidden py-16 md:py-24">
+      <section className="relative overflow-hidden py-16 md:py-24 min-h-[80vh] flex items-end">
         <div className="absolute inset-0">
           <img 
             src="https://res.cloudinary.com/drl0fxrkq/image/upload/v1747743047/P1023677_dp5dyw.jpg"
             alt="Progress Accountants office background"
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover object-top"
           />
-          <div className="absolute inset-0 bg-black/70"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
         </div>
-        <div className="container relative z-10 mx-auto px-6 md:px-8">
+        <div className="container relative z-10 mx-auto px-6 md:px-8 pb-8">
           <div className="max-w-4xl mx-auto text-center">
             <FadeIn delay={0.1}>
               <span className="inline-block px-6 py-3 rounded-full bg-gradient-to-r from-purple-500/20 to-blue-500/20 backdrop-blur-sm border border-purple-500/30 text-purple-200 text-sm font-medium mb-6">
