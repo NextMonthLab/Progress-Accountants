@@ -306,6 +306,19 @@ export default function SmartSiteDashboard() {
             </CardContent>
           </Card>
         </div>
+
+        {/* AI Gateway Demo Section */}
+        <div className="mt-8">
+          <div className="mb-6">
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+              AI Gateway Architecture
+            </h2>
+            <p className="text-gray-600 dark:text-gray-400">
+              Test the unified AI system that powers all SmartSite intelligence features
+            </p>
+          </div>
+          <AIGatewayDemo />
+        </div>
       </div>
     </div>
   );
