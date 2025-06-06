@@ -296,41 +296,44 @@ export default function ProfessionalServicesPage() {
       {/* Tech Support Section */}
       <section className="py-20 bg-gray-900/30">
         <div className="container mx-auto px-6 md:px-8">
-          <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-bold mb-6">Our Tech-Forward Support</h2>
-              <p className="text-xl text-gray-300 max-w-3xl mx-auto mb-8">
-                We use cloud platforms like Xero to automate your invoicing, payments, and reporting—freeing you up to focus on client work.
-              </p>
-            </div>
-            
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-              <div className="bg-gray-800/50 rounded-xl p-6 border border-gray-700 text-center">
-                <div className="w-12 h-12 rounded-lg bg-gradient-to-r from-[#4F46E5] to-[#E935C1] flex items-center justify-center mb-4 mx-auto">
-                  <BarChart3 className="w-6 h-6 text-white" />
+          <div className="max-w-6xl mx-auto bg-gray-900 rounded-xl shadow-md border border-gray-800 overflow-hidden">
+            <div className="grid lg:grid-cols-2 gap-0">
+              {/* Content side */}
+              <div className="p-8 md:p-10 flex flex-col justify-center">
+                <h2 className="text-2xl md:text-3xl font-bold text-white mb-6">Our Tech-Forward Support</h2>
+                <p className="text-gray-300 mb-6">
+                  We use cloud platforms like Xero to automate your invoicing, payments, and reporting—freeing you up to focus on client work.
+                </p>
+                
+                <div className="space-y-4 mb-6">
+                  <div className="flex items-start">
+                    <BarChart3 className="h-5 w-5 text-purple-400 mr-3 shrink-0 mt-1" />
+                    <p className="text-gray-300">Live income dashboards</p>
+                  </div>
+                  <div className="flex items-start">
+                    <FileText className="h-5 w-5 text-purple-400 mr-3 shrink-0 mt-1" />
+                    <p className="text-gray-300">Time/project-based expense tracking</p>
+                  </div>
+                  <div className="flex items-start">
+                    <Calculator className="h-5 w-5 text-purple-400 mr-3 shrink-0 mt-1" />
+                    <p className="text-gray-300">Real-time tax estimates</p>
+                  </div>
+                  <div className="flex items-start">
+                    <TrendingUp className="h-5 w-5 text-purple-400 mr-3 shrink-0 mt-1" />
+                    <p className="text-gray-300">Automation for invoicing and payment reminders</p>
+                  </div>
                 </div>
-                <p className="text-gray-300">Live income dashboards</p>
               </div>
               
-              <div className="bg-gray-800/50 rounded-xl p-6 border border-gray-700 text-center">
-                <div className="w-12 h-12 rounded-lg bg-gradient-to-r from-[#4F46E5] to-[#E935C1] flex items-center justify-center mb-4 mx-auto">
-                  <FileText className="w-6 h-6 text-white" />
+              {/* Image side */}
+              <div className="relative lg:min-h-[400px] flex items-center justify-center bg-gray-800">
+                <div className="p-6 w-full h-full flex items-center justify-center">
+                  <img 
+                    src="https://res.cloudinary.com/drl0fxrkq/image/upload/v1749050354/image_sigbl2.png"
+                    alt="Professional services management dashboard and analytics"
+                    className="w-full h-auto max-h-full object-contain rounded-lg shadow-lg"
+                  />
                 </div>
-                <p className="text-gray-300">Time/project-based expense tracking</p>
-              </div>
-              
-              <div className="bg-gray-800/50 rounded-xl p-6 border border-gray-700 text-center">
-                <div className="w-12 h-12 rounded-lg bg-gradient-to-r from-[#4F46E5] to-[#E935C1] flex items-center justify-center mb-4 mx-auto">
-                  <Calculator className="w-6 h-6 text-white" />
-                </div>
-                <p className="text-gray-300">Real-time tax estimates</p>
-              </div>
-              
-              <div className="bg-gray-800/50 rounded-xl p-6 border border-gray-700 text-center">
-                <div className="w-12 h-12 rounded-lg bg-gradient-to-r from-[#4F46E5] to-[#E935C1] flex items-center justify-center mb-4 mx-auto">
-                  <TrendingUp className="w-6 h-6 text-white" />
-                </div>
-                <p className="text-gray-300">Automation for invoicing and payment reminders</p>
               </div>
             </div>
           </div>
