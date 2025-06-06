@@ -267,26 +267,8 @@ export const mapSidebarToNavigation = (): NavigationItem[] => {
       category: 'system',
     },
     */
-    {
-      id: 'admin_settings',
-      title: 'System Settings',
-      icon: 'Settings',
-      type: 'link',
-      href: '/admin/settings',
-      requiresStaff: true,
-      description: 'Configure system preferences',
-      category: 'system',
-    },
-    {
-      id: 'ai_companion',
-      title: 'AI Assistant Settings',
-      icon: 'Bot',
-      type: 'link',
-      href: '/admin/companion-settings',
-      requiresStaff: true,
-      description: 'Configure AI behavior',
-      category: 'system',
-    },
+
+
     /* Removed Diagnostics for Hetzner v1 deployment
     {
       id: 'diagnostics_dashboard',
