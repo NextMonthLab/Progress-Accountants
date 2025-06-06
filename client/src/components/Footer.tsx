@@ -179,9 +179,12 @@ export default function Footer() {
           <p className="mt-2">
             <Link href="/privacy-policy" className="hover:text-purple-400 transition">
               Privacy Policy
-            </Link> | 
-            <Link href="/terms-of-service" className="hover:text-purple-400 transition ml-1">
-              Terms of Service
+            </Link> • 
+            <Link href="/terms-of-service" className="hover:text-purple-400 transition mx-2">
+              Provision of Service
+            </Link> • 
+            <Link href="/cookie-policy" className="hover:text-purple-400 transition ml-2">
+              Cookie Policy
             </Link>
           </p>
           <div className="mt-4 flex justify-center">
