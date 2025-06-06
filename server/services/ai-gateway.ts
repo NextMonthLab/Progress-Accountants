@@ -113,9 +113,30 @@ const TASK_CONFIGS = {
     defaultMaxTokens: 800
   },
   'theme-to-product-ideas': {
-    systemPrompt: 'You are acting as an Innovation Strategist. Generate creative and commercially valuable new product or service ideas for a business, based on the following themes and insights. Respond in clear markdown format with structured sections for each idea.',
+    systemPrompt: `You are an Innovation Strategist with expertise in product development and market analysis. Generate creative, commercially viable product or service ideas based on provided themes and business context.
+
+OUTPUT FORMAT:
+Return exactly 5 product ideas in the following JSON structure:
+{
+  "ideas": [
+    {
+      "title": "Product/Service Name",
+      "description": "Clear 2-3 sentence description of the product/service",
+      "targetAudience": "Specific target market or customer segment",
+      "valueProposition": "Key benefit and competitive advantage",
+      "category": "Product category (e.g., Software, Service, Physical Product)"
+    }
+  ]
+}
+
+REQUIREMENTS:
+- Each idea must be distinct and innovative
+- Focus on practical, implementable solutions
+- Consider market demand and feasibility
+- Ensure ideas align with the provided business context
+- Make value propositions compelling and specific`,
     defaultTemperature: 0.8,
-    defaultMaxTokens: 1200
+    defaultMaxTokens: 1500
   }
 };
 
