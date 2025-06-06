@@ -136,26 +136,7 @@ export const mapSidebarToNavigation = (): NavigationItem[] => {
       pinnedOrder: 2,
     },
     /* Removed duplicate Insights Dashboard entry - using only the Quick Actions version */
-    {
-      id: 'system_health',
-      title: 'System Health',
-      icon: 'ActivitySquare',
-      type: 'link',
-      href: '/system-health',
-      description: 'View system performance and alerts',
-      category: 'manage_monitor',
-      pinnedOrder: 4,
-    },
-    {
-      id: 'forms_submissions',
-      title: 'Form Submissions',
-      icon: 'ClipboardCheck',
-      type: 'link',
-      href: '/form-submissions',
-      description: 'Manage website form submissions',
-      category: 'manage_monitor',
-      pinnedOrder: 5,
-    },
+
     
     // SETTINGS & ADVANCED
     // ===================
@@ -206,17 +187,7 @@ export const mapSidebarToNavigation = (): NavigationItem[] => {
     
 
 
-    {
-      id: 'launch_ready',
-      title: 'Launch Checklist',
-      icon: 'FastForward',
-      type: 'link',
-      href: '/launch-ready',
-      requiresStaff: true,
-      description: 'Prepare your site for launch',
-      category: 'manage_monitor',
-      pinnedOrder: 6,
-    },
+
     
     // SEO & INTEGRATIONS
     // ===================

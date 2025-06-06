@@ -105,7 +105,7 @@ const ServicesSetupPage = lazy(() => import("@/pages/ServicesSetupPage"));
 const ContactSetupPage = lazy(() => import("@/pages/ContactSetupPage"));
 const TestimonialsSetupPage = lazy(() => import("@/pages/TestimonialsSetupPage"));
 import FAQSetupPage from "@/pages/FAQSetupPage";
-import LaunchReadyPage from "@/pages/LaunchReadyPage";
+
 import OnboardingWelcomePage from "@/pages/OnboardingWelcomePage";
 import WebsiteIntentPage from "@/pages/WebsiteIntentPage";
 import AdminSettingsPage from "@/pages/AdminSettingsPage";
@@ -485,12 +485,7 @@ function Router() {
         component={HealthDashboardPage} 
         allowedRoles={['admin', 'super_admin']} 
       />
-      {/* Add dedicated route for /system-health */}
-      <ProtectedRoute 
-        path="/system-health" 
-        component={HealthDashboardPage} 
-        allowedRoles={['admin', 'super_admin']} 
-      />
+
       <ProtectedRoute 
         path="/admin/support-digests" 
         component={DigestPage} 
@@ -788,7 +783,7 @@ function FirstTimeUserDetector({ children }: { children: React.ReactNode }) {
       location.startsWith('/admin/social-media-generator') ||
       location.startsWith('/homepage-setup') || 
       location.startsWith('/foundation-pages') || 
-      location.startsWith('/launch-ready') ||
+
       location.startsWith('/marketplace') ||
       location.startsWith('/page-builder');
 
