@@ -194,34 +194,34 @@ export default function SmartSiteDashboard() {
                     <div className="flex items-center space-x-3">
                       {card.icon}
                       <div>
-                        <CardTitle className="text-lg font-semibold text-white">
+                        <CardTitle className="text-base font-semibold text-gray-900 dark:text-white">
                           {card.title}
                         </CardTitle>
                       </div>
                     </div>
                     {card.id === "market" && !stats?.marketViewUnlocked && (
-                      <Badge variant="secondary" className="bg-yellow-100 text-yellow-800">
+                      <Badge variant="secondary" className="bg-yellow-100 text-yellow-800 text-xs">
                         Premium
                       </Badge>
                     )}
                   </div>
-                  <CardDescription className="text-gray-300">
+                  <CardDescription className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
                     {card.subtitle}
                   </CardDescription>
                 </CardHeader>
 
                 <CardContent className="space-y-4">
                   {/* Stats */}
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-2 gap-3">
                     {card.stats.map((stat, index) => (
                       <div key={index} className="text-center">
-                        <div className="text-2xl font-bold text-white">
+                        <div className="text-lg font-bold text-gray-900 dark:text-white">
                           {typeof stat.value === 'number' && stat.value > 1000 
                             ? `${(stat.value / 1000).toFixed(1)}k`
                             : stat.value
                           }
                         </div>
-                        <div className="text-xs text-gray-400 uppercase tracking-wide">
+                        <div className="text-xs text-gray-500 dark:text-gray-400 leading-tight">
                           {stat.label}
                         </div>
                       </div>
@@ -229,11 +229,11 @@ export default function SmartSiteDashboard() {
                   </div>
 
                   {/* Quick Actions */}
-                  <div className="pt-4 border-t border-gray-600">
+                  <div className="pt-3 border-t border-gray-200 dark:border-gray-600">
                     <div className="flex flex-wrap gap-2">
                       {card.actions.map((action, index) => {
                         // Color coding for different action types
-                        let buttonClass = "text-white border-gray-500 hover:bg-gray-600 hover:text-white";
+                        let buttonClass = "text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-500 hover:bg-gray-100 dark:hover:bg-gray-600";
                         
                         if (action.label.includes("View") || action.label.includes("Insights")) {
                           buttonClass = "bg-blue-600 text-white border-blue-500 hover:bg-blue-700";
@@ -253,7 +253,7 @@ export default function SmartSiteDashboard() {
                             asChild
                             variant="outline"
                             size="sm"
-                            className={buttonClass}
+                            className={`${buttonClass} text-xs px-3 py-1 whitespace-nowrap`}
                           >
                             <Link href={action.href}>
                               {action.label}

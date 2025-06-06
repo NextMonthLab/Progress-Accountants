@@ -566,15 +566,12 @@ export default function AdminSidebar() {
           
           {/* Powered by NextMonth */}
           {!collapsed && (
-            <div className="flex items-center justify-center text-xs text-gray-500 space-x-2 mt-2">
-              <span>Powered by</span>
-              <div 
-                className="w-16 h-4 bg-contain bg-center bg-no-repeat opacity-80"
-                style={{
-                  backgroundImage: `url('https://res.cloudinary.com/drl0fxrkq/image/upload/v1746537994/8A3D82EC-31EF-4209-85E2-D1D284F5E960_lnzuah.png')`,
-                  filter: 'brightness(0.8) contrast(1.2)'
-                }}
-                title="NextMonth"
+            <div className="flex flex-col items-center justify-center mt-2 space-y-1">
+              <span className="text-xs text-gray-500">Powered by</span>
+              <img 
+                src="/assets/New Logo (white).png"
+                alt="NextMonth"
+                className="w-20 h-auto opacity-80"
               />
             </div>
           )}
