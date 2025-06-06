@@ -229,6 +229,24 @@ export async function processAIRequest(request: AIGatewayRequest, tenantId: stri
     
     // If Pro AI user has exceeded their limit, return limit-exceeded response
     if (IS_PRO_AI_USER && !usageLimitCheck.allowed) {
+      // Log the limit exceeded event
+      try {
+        await AIEventLogger.logEvent({
+          tenantId,
+          eventType: 'usage_limit_exceeded',
+          modelUsed: 'gpt-4o',
+          tokensUsed: null,
+          detail: {
+            taskType,
+            currentUsage: usageLimitCheck.currentUsage,
+            limit: usageLimitCheck.limit,
+            fallbackAvailable: FALLBACK_AVAILABLE
+          }
+        });
+      } catch (logError) {
+        console.error('Failed to log limit exceeded event:', logError);
+      }
+
       return {
         status: 'limit-exceeded',
         data: '',
@@ -338,6 +356,19 @@ export async function processAIRequest(request: AIGatewayRequest, tenantId: stri
         metadata: {
           processingTimeMs: Date.now() - startTime,
           error: errorMessage
+        }
+      });
+
+      // Log AI error event for analytics and Mission Control
+      await AIEventLogger.logEvent({
+        tenantId,
+        eventType: 'ai_error',
+        modelUsed: modelUsed || 'unknown',
+        tokensUsed: null,
+        detail: {
+          taskType: request.taskType,
+          errorMessage,
+          processingTimeMs: Date.now() - startTime
         }
       });
     } catch (logError) {
