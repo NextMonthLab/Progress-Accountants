@@ -6,7 +6,7 @@ import { useToast } from '@/hooks/use-toast';
 export interface AIGatewayRequest {
   prompt: string;
   context?: object;
-  taskType: 'assistant' | 'insight-trends' | 'social-post' | 'blog-post' | 'theme-to-blog' | 'theme-to-agenda';
+  taskType: 'assistant' | 'insight-trends' | 'social-post' | 'blog-post' | 'theme-to-blog' | 'theme-to-agenda' | 'theme-to-product-ideas';
   temperature?: number;
   maxTokens?: number;
   tenantId?: string;
@@ -133,8 +133,25 @@ export function useAIGateway() {
     aiGatewayMutation.mutate(request);
   };
 
+  // Convenience methods for specific task types
+  const generateProductIdeas = async (theme: string, context?: object): Promise<AIGatewayResponse> => {
+    return new Promise((resolve, reject) => {
+      const request: AIGatewayRequest = {
+        prompt: `Generate innovative product or service ideas based on this theme and business context: ${theme}. Focus on actionable, market-ready concepts with clear value propositions.`,
+        context,
+        taskType: 'theme-to-product-ideas'
+      };
+
+      aiGatewayMutation.mutate(request, {
+        onSuccess: (data) => resolve(data),
+        onError: (error) => reject(error)
+      });
+    });
+  };
+
   return {
     executeAIRequest,
+    generateProductIdeas,
     handleUseFallback,
     handleDismissAlert,
     usageAlert,

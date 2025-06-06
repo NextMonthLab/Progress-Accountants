@@ -129,6 +129,14 @@ class AIGatewayClient {
     });
   }
 
+  async themeToProductIdeas(theme: string, context?: object): Promise<AIGatewayResponse> {
+    return this.sendRequest({
+      prompt: `Generate innovative product or service ideas based on this theme and business context: ${theme}. Focus on actionable, market-ready concepts with clear value propositions.`,
+      context,
+      taskType: 'theme-to-product-ideas'
+    });
+  }
+
   /**
    * Check AI service health
    */

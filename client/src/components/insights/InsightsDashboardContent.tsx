@@ -22,10 +22,11 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
-import { Medal, TrendingUp, BarChart3, Award, Loader2, Edit3, Share2, Brain, Sparkles } from 'lucide-react';
+import { Medal, TrendingUp, BarChart3, Award, Loader2, Edit3, Share2, Brain, Sparkles, Lightbulb, FileText, Calendar } from 'lucide-react';
 import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip as ChartTooltip } from 'recharts';
 import { aiGateway } from '@/services/ai-gateway';
 import { useToast } from '@/hooks/use-toast';
+import ProductIdeasModal from '@/components/ProductIdeasModal';
 
 // Define the types we're using in this component
 type LeaderboardEntry = {
@@ -290,6 +291,102 @@ export default function InsightsDashboardContent() {
               {aiAnalysisResult.split('\n').map((line, index) => (
                 <p key={index} className="mb-2">{line}</p>
               ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Theme Actions Section */}
+      {(weeklySummary?.length || monthlySummary?.length || aiAnalysisResult) && (
+        <Card className="mb-6">
+          <CardHeader>
+            <CardTitle className="flex items-center">
+              <Lightbulb className="mr-2 h-5 w-5 text-amber-500" />
+              Theme Actions
+            </CardTitle>
+            <CardDescription>
+              Transform insights and themes into actionable content and business opportunities
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="grid gap-3 md:grid-cols-3">
+              <ProductIdeasModal
+                theme={weeklySummary?.[0]?.themes?.join(', ') || monthlySummary?.[0]?.themes?.join(', ') || 'business insights'}
+                trigger={
+                  <Button variant="outline" className="h-20 flex flex-col items-center gap-2 border-green-200 hover:border-green-400">
+                    <Lightbulb className="h-6 w-6 text-green-600" />
+                    <span className="text-sm font-medium">Generate Product Ideas</span>
+                    <span className="text-xs text-muted-foreground">AI Innovation</span>
+                  </Button>
+                }
+              />
+              
+              <Button
+                onClick={async () => {
+                  try {
+                    const themes = [...(weeklySummary?.[0]?.themes || []), ...(monthlySummary?.[0]?.themes || [])];
+                    const themeText = themes.length ? themes.join(', ') : 'current business insights';
+                    
+                    const response = await aiGateway.themeToBlog(themeText, {
+                      businessContext: 'Professional services',
+                      targetAudience: 'Business professionals'
+                    });
+                    
+                    if (response.status === 'success') {
+                      setLocation('/tools/blog-post-generator');
+                      toast({
+                        title: "Blog Content Generated",
+                        description: "Navigate to the blog generator to view your content."
+                      });
+                    }
+                  } catch (error) {
+                    toast({
+                      title: "Generation Failed",
+                      description: "Unable to generate blog content from themes.",
+                      variant: "destructive"
+                    });
+                  }
+                }}
+                variant="outline"
+                className="h-20 flex flex-col items-center gap-2 border-blue-200 hover:border-blue-400"
+              >
+                <FileText className="h-6 w-6 text-blue-600" />
+                <span className="text-sm font-medium">Create Blog Post</span>
+                <span className="text-xs text-muted-foreground">From Themes</span>
+              </Button>
+              
+              <Button
+                onClick={async () => {
+                  try {
+                    const themes = [...(weeklySummary?.[0]?.themes || []), ...(monthlySummary?.[0]?.themes || [])];
+                    const themeText = themes.length ? themes.join(', ') : 'current business insights';
+                    
+                    const response = await aiGateway.themeToAgenda(themeText, {
+                      meetingType: 'Strategy planning',
+                      duration: '60 minutes'
+                    });
+                    
+                    if (response.status === 'success') {
+                      toast({
+                        title: "Meeting Agenda Created",
+                        description: "Agenda generated from your themes and insights."
+                      });
+                    }
+                  } catch (error) {
+                    toast({
+                      title: "Generation Failed",
+                      description: "Unable to generate meeting agenda from themes.",
+                      variant: "destructive"
+                    });
+                  }
+                }}
+                variant="outline"
+                className="h-20 flex flex-col items-center gap-2 border-purple-200 hover:border-purple-400"
+              >
+                <Calendar className="h-6 w-6 text-purple-600" />
+                <span className="text-sm font-medium">Meeting Agenda</span>
+                <span className="text-xs text-muted-foreground">From Themes</span>
+              </Button>
             </div>
           </CardContent>
         </Card>
