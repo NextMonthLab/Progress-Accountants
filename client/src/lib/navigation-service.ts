@@ -191,41 +191,7 @@ export const mapSidebarToNavigation = (): NavigationItem[] => {
     },
     */
     
-    // WEBSITE SETTINGS
-    // ==============
-    {
-      id: 'navigation_menus',
-      title: 'Navigation Menus',
-      icon: 'ListOrdered',
-      type: 'link',
-      href: '/admin/menu-management',
-      requiresStaff: true,
-      description: 'Configure site navigation',
-      category: 'website_setup',
-    },
-    /* Removed SEO Settings for Hetzner v1 deployment
-    {
-      id: 'seo_manager',
-      title: 'SEO Settings',
-      icon: 'Search',
-      type: 'link',
-      href: '/admin/seo',
-      requiresStaff: true,
-      description: 'Optimize for search engines',
-      category: 'website_setup',
-    },
-    */
-    {
-      id: 'domain_settings',
-      title: 'Domain Settings',
-      icon: 'Link',
-      type: 'link',
-      href: '/admin/domain-mapping',
-      requiresStaff: true,
-      description: 'Manage custom domains',
-      badge: { text: 'New', variant: 'new' },
-      category: 'website_setup',
-    },
+
     
     // BRAND CENTER
     // ===========
