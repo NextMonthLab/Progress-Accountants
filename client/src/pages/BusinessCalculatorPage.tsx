@@ -1113,7 +1113,13 @@ const BusinessCalculatorPage = () => {
     <div>
       {/* Hero Section */}
       <div className="relative py-20 md:py-28 mb-12 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-purple-900/40"></div>
+        <div 
+          className="absolute inset-0 bg-cover bg-center"
+          style={{
+            backgroundImage: 'url(https://res.cloudinary.com/drl0fxrkq/image/upload/v1749050581/Screenshot_2025-06-04_at_16.22.35_khjg5h.png)'
+          }}
+        ></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-slate-900/85 via-slate-800/80 to-purple-900/70"></div>
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-900/20 via-transparent to-transparent"></div>
         
         <div className="container mx-auto px-12 md:px-16 relative z-10">
