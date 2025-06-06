@@ -20,6 +20,10 @@ export async function migrateInnovationFeed() {
         "model_used" varchar(50) NOT NULL,
         "task_type" varchar(50) DEFAULT 'theme-to-product-ideas' NOT NULL,
         "generated_by_user" varchar(255),
+        "action_status" varchar(20) DEFAULT 'none' NOT NULL,
+        "action_notes" text,
+        "action_updated_by_user_id" integer REFERENCES "users"("id"),
+        "action_updated_at" timestamp,
         "created_at" timestamp DEFAULT now() NOT NULL
       );
     `);
@@ -35,7 +39,35 @@ export async function migrateInnovationFeed() {
       CREATE INDEX IF NOT EXISTS "innovation_feed_task_type_idx" 
       ON "innovation_feed_items" ("task_type");
     `);
+    
+    await db.execute(`
+      CREATE INDEX IF NOT EXISTS "innovation_feed_action_status_idx" 
+      ON "innovation_feed_items" ("action_status");
+    `);
     console.log('✅ Innovation Feed indexes created');
+
+    // Add action tracking columns to existing tables if they don't exist
+    try {
+      await db.execute(`
+        ALTER TABLE "innovation_feed_items" 
+        ADD COLUMN IF NOT EXISTS "action_status" varchar(20) DEFAULT 'none' NOT NULL;
+      `);
+      await db.execute(`
+        ALTER TABLE "innovation_feed_items" 
+        ADD COLUMN IF NOT EXISTS "action_notes" text;
+      `);
+      await db.execute(`
+        ALTER TABLE "innovation_feed_items" 
+        ADD COLUMN IF NOT EXISTS "action_updated_by_user_id" integer REFERENCES "users"("id");
+      `);
+      await db.execute(`
+        ALTER TABLE "innovation_feed_items" 
+        ADD COLUMN IF NOT EXISTS "action_updated_at" timestamp;
+      `);
+      console.log('✅ Action tracking columns added to existing tables');
+    } catch (error) {
+      console.log('ℹ️ Action tracking columns already exist or cannot be added:', error.message);
+    }
 
     console.log('✅ Innovation Feed database migration completed successfully');
   } catch (error) {
