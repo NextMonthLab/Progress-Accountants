@@ -55,23 +55,23 @@ function AdminSidebarLogo({ collapsed }: { collapsed: boolean }) {
     return null;
   }
 
-  // Use Progress Accountants logo with fallback
+  // Use the provided logo with fallback
   return (
-    <Link href="/admin/dashboard" className="no-underline flex items-center">
+    <Link href="/admin/dashboard" className="no-underline flex flex-col items-center py-4">
+      <div className="text-xs text-gray-400 mb-2">Powered by</div>
       {!logoError ? (
         <img 
-          src="/progress-logo.png" 
-          alt="Progress Accountants - Advisors | Growth Partners" 
+          src="https://res.cloudinary.com/drl0fxrkq/image/upload/v1746537994/8A3D82EC-31EF-4209-85E2-D1D284F5E960_lnzuah.png" 
+          alt="SmartSite Logo" 
           className="max-h-8 object-contain"
           onError={() => setLogoError(true)}
           onLoad={() => setLogoError(false)}
         />
       ) : (
         <div className="text-white font-bold text-lg">
-          Progress Accountants
+          SmartSite
         </div>
       )}
-      <span className="ml-2 font-bold text-cyan-500">Admin</span>
     </Link>
   );
 }

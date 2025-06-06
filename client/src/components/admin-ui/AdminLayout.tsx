@@ -97,7 +97,7 @@ export function AdminLayoutV2({
             {/* Logo or brand */}
             <div className="mr-8">
               <span className="font-bold text-lg dark:text-white text-gray-900">
-                Progress <span className="bg-gradient-to-r from-[#3CBFAE] to-[#F65C9A] bg-clip-text text-transparent">Accountants</span>
+                SmartSite <span className="bg-gradient-to-r from-cyan-500 to-blue-500 bg-clip-text text-transparent">Admin</span>
               </span>
             </div>
             
