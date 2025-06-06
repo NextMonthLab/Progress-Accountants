@@ -89,29 +89,7 @@ export class AIEventLogger {
   // Get event logs for admin/Mission Control (paginated)
   static async getEvents(filters: any = {}, limit: number = 100, offset: number = 0): Promise<any[]> {
     try {
-      let query = db.select().from(aiEventLogs);
-      
-      if (filters.tenantId) {
-        query = query.where(eq(aiEventLogs.tenantId, filters.tenantId));
-      }
-      
-      if (filters.eventType) {
-        query = query.where(eq(aiEventLogs.eventType, filters.eventType));
-      }
-      
-      if (filters.modelUsed) {
-        query = query.where(eq(aiEventLogs.modelUsed, filters.modelUsed));
-      }
-      
-      if (filters.startDate) {
-        query = query.where(gte(aiEventLogs.timestamp, filters.startDate));
-      }
-      
-      if (filters.endDate) {
-        query = query.where(lte(aiEventLogs.timestamp, filters.endDate));
-      }
-      
-      const results = await query
+      const results = await db.select().from(aiEventLogs)
         .orderBy(desc(aiEventLogs.timestamp))
         .limit(limit)
         .offset(offset);
@@ -129,23 +107,14 @@ export class AIEventLogger {
       const startDate = new Date();
       startDate.setDate(startDate.getDate() - periodDays);
 
-      let query = db.select().from(aiEventLogs);
-      
-      if (tenantId) {
-        query = query.where(and(
-          eq(aiEventLogs.tenantId, tenantId),
-          gte(aiEventLogs.timestamp, startDate)
-        ));
-      } else {
-        query = query.where(gte(aiEventLogs.timestamp, startDate));
-      }
-
-      const events = await query;
+      const events = await db.select().from(aiEventLogs)
+        .where(gte(aiEventLogs.timestamp, startDate));
 
       // Aggregate analytics
       const totalCalls = events.length;
       const modelBreakdown = events.reduce((acc, event) => {
-        acc[event.modelUsed] = (acc[event.modelUsed] || 0) + 1;
+        const model = event.modelUsed || 'unknown';
+        acc[model] = (acc[model] || 0) + 1;
         return acc;
       }, {} as Record<string, number>);
 
@@ -197,7 +166,7 @@ export class AIEventLogger {
           count: errorEvents.length,
           recentErrors: errorEvents.slice(0, 5).map(e => ({
             timestamp: e.timestamp,
-            model: e.modelUsed,
+            model: e.modelUsed || 'unknown',
             details: e.detail
           }))
         },
@@ -211,7 +180,8 @@ export class AIEventLogger {
         },
         proAiChanges: proAiEvents.length,
         modelUsage: events.reduce((acc, event) => {
-          acc[event.modelUsed] = (acc[event.modelUsed] || 0) + 1;
+          const model = event.modelUsed || 'unknown';
+          acc[model] = (acc[model] || 0) + 1;
           return acc;
         }, {} as Record<string, number>)
       };
