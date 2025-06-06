@@ -111,8 +111,9 @@ export default function AboutPage() {
         <div className="container relative z-10 mx-auto px-6 md:px-8 pb-32 pt-32">
           <div className="max-w-4xl mx-auto text-center">
             <FadeIn delay={0.1}>
-              <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-purple-400 via-blue-400 to-purple-300 bg-clip-text text-transparent">
-                Forward-thinking Accounting for Modern Businesses
+              <h1 className="text-4xl md:text-6xl font-bold mb-6">
+                <span className="text-white">Forward-thinking Accounting for </span>
+                <span className="bg-gradient-to-r from-purple-400 via-blue-400 to-purple-300 bg-clip-text text-transparent">Modern Businesses</span>
               </h1>
             </FadeIn>
             <FadeIn delay={0.2}>
