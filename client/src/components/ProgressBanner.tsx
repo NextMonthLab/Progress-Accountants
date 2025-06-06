@@ -10,7 +10,7 @@ interface ProgressBannerProps {
  */
 export function ProgressBanner({ className = "" }: ProgressBannerProps) {
   return (
-    <div className={`bg-primary/10 py-3 px-3 text-center rounded-md ${className}`}>
+    <div className={`bg-primary/10 px-3 text-center rounded-md ${className}`}>
       <div className="flex flex-col sm:flex-row justify-center items-center gap-2">
         <p className="text-sm font-medium text-primary">
           Expert financial guidance for modern businesses
