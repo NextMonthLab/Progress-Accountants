@@ -572,6 +572,10 @@ export default function AdminSidebar() {
                 src="/assets/New Logo (white).png"
                 alt="NextMonth"
                 className="w-20 h-auto opacity-80"
+                onError={(e) => {
+                  console.error('Failed to load NextMonth logo');
+                  e.currentTarget.style.display = 'none';
+                }}
               />
             </div>
           )}

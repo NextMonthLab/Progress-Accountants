@@ -79,46 +79,8 @@ const QuickSelectItem: React.FC<QuickSelectItemProps> = ({ item, onRemove }) => 
 };
 
 const QuickSelectMenu: React.FC = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const { getItemsForQuickSelect, removePinnedItem, navigationState } = useNavigation();
-  const quickSelectItems = getItemsForQuickSelect().filter(item => item.type === 'link') as NavigationLink[];
-
-  if (!navigationState.quickSelectEnabled) {
-    return null;
-  }
-
-  return (
-    <div className="fixed right-6 bottom-24 z-50">
-      <div className={cn(
-        "flex flex-col items-center gap-2 mb-2 transition-all duration-300",
-        isOpen ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4 pointer-events-none"
-      )}>
-        {quickSelectItems.map((item) => (
-          <QuickSelectItem 
-            key={item.id}
-            item={item} 
-            onRemove={removePinnedItem} 
-          />
-        ))}
-        {quickSelectItems.length === 0 && isOpen && (
-          <div className="bg-muted p-3 rounded-lg text-sm text-center max-w-[200px]">
-            Pin your favorite tools here for quick access
-          </div>
-        )}
-      </div>
-      
-      <Button
-        onClick={() => setIsOpen(!isOpen)}
-        size="lg"
-        className={cn(
-          "rounded-full w-14 h-14 flex items-center justify-center shadow-lg",
-          isOpen ? "bg-primary text-primary-foreground" : "bg-muted/90 backdrop-blur-sm"
-        )}
-      >
-        {isOpen ? <X className="h-6 w-6" /> : <MenuIcon className="h-6 w-6" />}
-      </Button>
-    </div>
-  );
+  // Pin tools functionality has been replaced with AI Navigation Assistant
+  return null;
 };
 
 export default QuickSelectMenu;
