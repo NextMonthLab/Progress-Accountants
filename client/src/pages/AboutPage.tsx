@@ -100,7 +100,14 @@ export default function AboutPage() {
 
       {/* 1. Hero Section */}
       <section className="relative overflow-hidden py-16 md:py-24">
-        <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-purple-900/30 to-slate-800" />
+        <div className="absolute inset-0">
+          <img 
+            src="https://res.cloudinary.com/drl0fxrkq/image/upload/v1747743047/P1023677_dp5dyw.jpg"
+            alt="Progress Accountants office background"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-black/70"></div>
+        </div>
         <div className="container relative z-10 mx-auto px-6 md:px-8">
           <div className="max-w-4xl mx-auto text-center">
             <FadeIn delay={0.1}>
