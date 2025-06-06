@@ -40,6 +40,7 @@ import { registerBusinessNetworkRoutes } from "./controllers/registerBusinessNet
 import { registerBusinessDiscoverRoutes } from "./controllers/registerBusinessDiscoverRoutes";
 import { registerAgoraRoutes } from "./routes/agoraRoutes";
 import { registerAutopilotRoutes } from "./autopilot";
+import { registerAISettingsRoutes } from "./routes/ai-settings";
 import { 
   getAllResources, 
   getPublicResources, 
@@ -3472,6 +3473,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // Register SmartSite Autopilot routes
   registerAutopilotRoutes(app);
+  
+  // Register AI Settings routes
+  registerAISettingsRoutes(app);
 
   // Market Intelligence Panel API endpoints
   app.get("/api/market-intelligence/data", async (req: Request, res: Response) => {
