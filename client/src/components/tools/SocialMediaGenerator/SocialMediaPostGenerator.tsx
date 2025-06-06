@@ -7,6 +7,7 @@ import { usePermissions } from "@/hooks/use-permissions";
 import { useToast } from "@/hooks/use-toast";
 import { useBusinessIdentity } from "@/hooks/use-business-identity";
 import { Loader2, Copy, Download, RefreshCw, Image, Share2, ExternalLink, AlertCircle, InfoIcon, Link as LinkIcon } from "lucide-react";
+import { aiGateway } from "@/services/ai-gateway";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -194,26 +195,25 @@ const SocialMediaPostGenerator: React.FC = () => {
         prompt += ` ${data.additionalContext}`;
       }
 
-      // Call our backend API which will use OpenAI and integrate business identity
-      const response = await fetch("/api/social-media/generate-post", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          prompt,
-          platform: data.platform
-        }),
+      // Use AI Gateway for content generation with platform-specific context
+      const aiPrompt = `Create an engaging social media post for ${data.platform} about: "${prompt}". ${guide ? `Platform guidelines: ${guide}` : ''}`;
+      
+      const response = await aiGateway.sendRequest({
+        prompt: aiPrompt,
+        taskType: 'social-post',
+        context: { 
+          platform: data.platform,
+          subject: data.subject,
+          businessType: 'accounting-firm'
+        }
       });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData?.details || "Failed to generate caption");
+      if (response.status === 'success') {
+        setGeneratedCaption(response.data);
+        return response.data;
+      } else {
+        throw new Error("AI service unavailable");
       }
-
-      const result = await response.json();
-      setGeneratedCaption(result.text);
-      return result.text;
     } catch (error: any) {
       console.error("Error generating caption:", error);
       

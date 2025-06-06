@@ -65,6 +65,60 @@ export default function InsightsDashboardContent() {
   const [period, setPeriod] = useState('week');
   const [isPending, startTransition] = useTransition();
   const [, setLocation] = useLocation();
+  const [aiAnalysisLoading, setAiAnalysisLoading] = useState(false);
+  const [aiAnalysisResult, setAiAnalysisResult] = useState<string | null>(null);
+  const { toast } = useToast();
+
+  // AI Trend Analysis function
+  const analyzeInsightTrends = async () => {
+    setAiAnalysisLoading(true);
+    setAiAnalysisResult(null);
+    
+    try {
+      // Collect current insight data for analysis
+      const insightTexts = [];
+      if (weeklySummary?.length) {
+        insightTexts.push(...weeklySummary.map(s => s.aiSummary));
+      }
+      if (monthlySummary?.length) {
+        insightTexts.push(...monthlySummary.map(s => s.aiSummary));
+      }
+      
+      const combinedInsights = insightTexts.join('\n\n');
+      
+      const response = await aiGateway.sendRequest({
+        prompt: `Analyze these business insights and identify key trends, patterns, and actionable recommendations:\n\n${combinedInsights}`,
+        taskType: 'insight-trends',
+        context: { 
+          period,
+          totalInsights: insightTexts.length,
+          analysisType: 'trend-analysis' 
+        }
+      });
+
+      if (response.status === 'success') {
+        setAiAnalysisResult(response.data);
+        toast({
+          title: "Trend Analysis Complete",
+          description: "AI has identified key patterns in your insights",
+        });
+      } else {
+        toast({
+          title: "Analysis Unavailable",
+          description: "AI analysis service is currently unavailable",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Analysis Error",
+        description: "Unable to analyze trends at this time",
+        variant: "destructive",
+      });
+    } finally {
+      setAiAnalysisLoading(false);
+    }
+  };
 
   // Function to navigate to content generators with preloaded insight
   const generateBlogPost = (insight: string, title?: string) => {
@@ -203,7 +257,43 @@ export default function InsightsDashboardContent() {
     <div className="py-6">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold">Insights Dashboard</h1>
+        <Button 
+          onClick={analyzeInsightTrends}
+          disabled={aiAnalysisLoading || (!weeklySummary?.length && !monthlySummary?.length)}
+          className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+        >
+          {aiAnalysisLoading ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              Analyzing...
+            </>
+          ) : (
+            <>
+              <Brain className="mr-2 h-4 w-4" />
+              Analyze Insights
+            </>
+          )}
+        </Button>
       </div>
+
+      {/* AI Analysis Results */}
+      {aiAnalysisResult && (
+        <Card className="mb-6 border-blue-200 bg-blue-50/50">
+          <CardHeader>
+            <CardTitle className="flex items-center text-blue-900">
+              <Sparkles className="mr-2 h-5 w-5" />
+              AI Trend Analysis
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="prose prose-sm max-w-none text-blue-800">
+              {aiAnalysisResult.split('\n').map((line, index) => (
+                <p key={index} className="mb-2">{line}</p>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
       
       {/* Leaderboard Section */}
       <div className="mb-8">

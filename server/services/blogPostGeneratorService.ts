@@ -1,12 +1,4 @@
-import OpenAI from "openai";
-
-// Initialize OpenAI client with API key
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
-
-// Validate that OpenAI API key is set
-if (!process.env.OPENAI_API_KEY) {
-  console.warn("⚠️ OPENAI_API_KEY environment variable is not set. AI features will not work.");
-}
+import { aiGatewayService } from './ai-gateway';
 
 /**
  * Generate blog post content using GPT-4
