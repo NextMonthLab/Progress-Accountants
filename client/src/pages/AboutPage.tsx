@@ -111,14 +111,14 @@ export default function AboutPage() {
         <div className="container relative z-10 mx-auto px-6 md:px-8 pb-12">
           <div className="max-w-4xl mx-auto text-center">
             <FadeIn delay={0.1}>
-              <span className="inline-block px-6 py-3 rounded-full bg-gradient-to-r from-purple-500/20 to-blue-500/20 backdrop-blur-sm border border-purple-500/30 text-purple-200 text-sm font-medium mb-6">
-                Established {yearFounded} • {numberOfEmployees} Team Members
-              </span>
-            </FadeIn>
-            <FadeIn delay={0.2}>
               <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-purple-400 via-blue-400 to-purple-300 bg-clip-text text-transparent">
                 Forward-thinking Accounting for Modern Businesses
               </h1>
+            </FadeIn>
+            <FadeIn delay={0.2}>
+              <span className="inline-block px-6 py-3 rounded-full bg-gradient-to-r from-purple-500/20 to-blue-500/20 backdrop-blur-sm border border-purple-500/30 text-purple-200 text-sm font-medium mb-6">
+                Established {yearFounded} • {numberOfEmployees} Team Members
+              </span>
             </FadeIn>
             <FadeIn delay={0.3}>
               <p className="text-xl md:text-2xl text-gray-300 mb-8">
