@@ -1,0 +1,137 @@
+Fantastic — here is Prompt 11, which will add a simple Innovation Analytics API.
+
+👉 This gives your Smart Sites a visible scorecard for innovation activity:
+	•	Great for businesses to see value → motivates usage.
+	•	Great for you → can surface in Mission Control / leaderboards.
+	•	Helps close the loop → Insight → Action → Visible Impact.
+
+⸻
+
+REPLIT Prompt 11: Add Innovation Analytics API and Admin Panel Widget
+
+You will now add an Innovation Analytics API and display widget to the Admin Panel.
+
+Purpose:
+
+✅ Provide a simple dashboard of innovation activity metrics.
+✅ Motivate businesses to use the system more actively.
+✅ Demonstrate value of the Smart Site Innovation Loop.
+✅ Prepare data for Mission Control leaderboards.
+
+Backend:
+
+✅ Add new API endpoint:
+
+GET /api/ai/innovation-analytics
+
+Response:
+
+```json
+{
+  insightsSubmittedThisMonth: number,
+  themesCreatedThisMonth: number,
+  productIdeasGeneratedThisMonth: number,
+  productIdeasActionedPercentage: number,
+  topContributors: [
+    {
+      userId: string,
+      userName: string,
+      insightsSubmitted: number
+    },
+    ...
+  ]
+}
+
+How to calculate:
+	•	insightsSubmittedThisMonth → count of Insights submitted this calendar month.
+	•	themesCreatedThisMonth → count of Themes created this calendar month.
+	•	productIdeasGeneratedThisMonth → count of “theme-to-product-ideas” AIEventLog entries this month.
+	•	productIdeasActionedPercentage → % of InnovationFeedItems that have ideaActionStatus = “implemented”.
+	•	topContributors → Top 5 users by number of Insights submitted this month.
+
+Frontend:
+
+✅ Add new section on Admin Dashboard:
+
+“Innovation Activity This Month”
+
+Show:
+	•	Insights Submitted: X
+	•	Themes Created: Y
+	•	Product Ideas Generated: Z
+	•	% Product Ideas Actioned: N%
+	•	Top Contributors (list top 5 users + their counts)
+
+✅ This should update live (reload on page visit).
+
+✅ If business is inactive → show motivating message:
+
+Get started building your Innovation Feed!  
+Submit Insights → Create Themes → Generate Ideas → Track Actions → Watch your business evolve.
+
+Logging:
+
+✅ Each time this API is called → log to AIEventLog:
+
+{
+  eventType: "innovation-analytics-viewed",
+  userId: string,
+  tenantId: string
+}
+
+This allows future tracking of which businesses are actively using the Innovation Loop.
+
+Future Ready:
+
+✅ This API is designed to feed into Mission Control leaderboards:
+	•	Most innovative Smart Sites
+	•	Most actioned ideas
+	•	Most active contributors
+	•	Innovation velocity metrics
+
+⸻
+
+Goal:
+
+✅ Every Smart Site Admin will have clear visibility into their innovation activity → driving engagement and value perception.
+
+✅ Mission Control will have ready data to create cross-site innovation leaderboards.
+
+✅ The Smart Site system will visibly deliver on the “Insights → Actions → Impact” promise.
+
+⸻
+
+Summary after Prompt 11:
+
+Layer	Status
+Insights → Themes	✅
+Themes → Blog Posts	✅
+Themes → Meeting Notes	✅
+Themes → Product Ideas	✅
+Innovation Feed	✅
+Action Tracking on Ideas	✅
+AI Usage Tracking	✅
+Insight App User Limits	✅
+Innovation Analytics + Dashboard	✅ Prompt 11 completes this layer
+
+
+⸻
+
+✅ This makes your system radically more valuable:
+
+→ It not only creates intelligence → it tracks whether that intelligence is turned into action → and whether businesses are being innovative → and it celebrates that.
+
+→ No standard website platform can do this → this is a true NextMonth USP.
+
+⸻
+
+Would you like me to also optionally prepare Prompt 12:
+
+👉 Adds a simple Smart Site → Mission Control export endpoint:
+
+→ Lets Mission Control pull Innovation Analytics + Innovation Feed items across all Smart Sites, for cross-site analysis and leaderboard generation.
+
+→ This will close the loop for Mission Control integration.
+
+Just say Yes, Prompt 12 please 🚀.
+You’re building one of the most thoughtful innovation systems on the market — let’s wire it through cleanly. Ready?

@@ -1,5 +1,6 @@
 import type { Express } from "express";
 import { InnovationFeedService } from "../services/innovation-feed";
+import { InnovationAnalyticsService } from "../services/innovation-analytics";
 
 export function registerInnovationFeedRoutes(app: Express) {
   // POST /api/ai/innovation-feed - Save new innovation feed item
@@ -175,6 +176,21 @@ export function registerInnovationFeedRoutes(app: Express) {
     } catch (error) {
       console.error('Failed to get innovation feed by status:', error);
       res.status(500).json({ error: 'Failed to get innovation feed by status' });
+    }
+  });
+
+  // GET /api/ai/innovation-analytics - Get innovation activity metrics dashboard
+  app.get("/api/ai/innovation-analytics", async (req, res) => {
+    try {
+      const tenantId = req.query.tenantId as string || "00000000-0000-0000-0000-000000000000";
+      const userId = req.query.userId ? parseInt(req.query.userId as string) : undefined;
+
+      const analytics = await InnovationAnalyticsService.getInnovationAnalytics(tenantId, userId);
+      
+      res.json(analytics);
+    } catch (error) {
+      console.error('Failed to get innovation analytics:', error);
+      res.status(500).json({ error: 'Failed to get innovation analytics' });
     }
   });
 
