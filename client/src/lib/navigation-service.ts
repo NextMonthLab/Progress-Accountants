@@ -67,6 +67,16 @@ export const mapSidebarToNavigation = (): NavigationItem[] => {
     },
     */
     {
+      id: 'dashboard',
+      title: 'Main Dashboard',
+      icon: 'LayoutDashboard',
+      type: 'link',
+      href: '/admin/dashboard',
+      description: 'View your site performance at a glance',
+      category: 'quick_actions',
+      pinnedOrder: 1,
+    },
+    {
       id: 'view_insights',
       title: 'Insights Dashboard',
       icon: 'BarChart2',
@@ -87,16 +97,6 @@ export const mapSidebarToNavigation = (): NavigationItem[] => {
       description: 'Open your public website in a new tab',
       category: 'quick_actions',
       pinnedOrder: 3,
-    },
-    {
-      id: 'dashboard',
-      title: 'Main Dashboard',
-      icon: 'LayoutDashboard',
-      type: 'link',
-      href: '/admin/dashboard',
-      description: 'View your site performance at a glance',
-      category: 'quick_actions',
-      pinnedOrder: 1,
     },
 
     // Removed page builder navigation (front-end editing)
