@@ -99,8 +99,7 @@ const MyToolsPage = lazy(() => import("@/pages/MyToolsPage"));
 
 const BrandGuidelinesPage = lazy(() => import("@/pages/BrandGuidelinesPage"));
 const BusinessIdentityPage = lazy(() => import("@/pages/BusinessIdentityPage"));
-import HomepageSetupPage from "@/pages/HomepageSetupPage";
-import FoundationPagesOverviewPage from "@/pages/FoundationPagesOverviewPage";
+
 const AboutSetupPage = lazy(() => import("@/pages/AboutSetupPage"));
 const ServicesSetupPage = lazy(() => import("@/pages/ServicesSetupPage"));
 const ContactSetupPage = lazy(() => import("@/pages/ContactSetupPage"));
@@ -631,12 +630,7 @@ function Router() {
           <BusinessIdentityPage />
         </Suspense>
       </Route>
-      <ProtectedRoute path="/homepage-setup" component={HomepageSetupPage} />
-      <Route path="/foundation-pages">
-        <Suspense fallback={<LoadingFallback />}>
-          <FoundationPagesOverviewPage />
-        </Suspense>
-      </Route>
+
       {/* Removed all front-end editing routes:
         - /create-new-page (page creation)
         - /about-setup, /services-setup, /contact-setup, /testimonials-setup (page setup)

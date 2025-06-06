@@ -122,17 +122,7 @@ export const mapSidebarToNavigation = (): NavigationItem[] => {
       category: 'create_publish',
       pinnedOrder: 3,
     },
-    {
-      id: 'media_hub',
-      title: 'Media Library',
-      icon: 'FileImage',
-      type: 'link',
-      href: '/media',
-      requiresStaff: true,
-      description: 'Manage images, videos and documents',
-      category: 'create_publish',
-      pinnedOrder: 4,
-    },
+
     // ANALYTICS & MANAGEMENT ITEMS
     // ========================
     {
@@ -215,28 +205,7 @@ export const mapSidebarToNavigation = (): NavigationItem[] => {
     },
     
 
-    {
-      id: 'homepage_setup',
-      title: 'Homepage Builder',
-      icon: 'Home',
-      type: 'link',
-      href: '/homepage-setup',
-      requiresStaff: true,
-      description: 'Configure your site homepage',
-      category: 'create_publish',
-      pinnedOrder: 7,
-    },
-    {
-      id: 'foundation_pages',
-      title: 'Foundation Pages',
-      icon: 'Layout',
-      type: 'link',
-      href: '/foundation-pages',
-      requiresStaff: true,
-      description: 'Manage essential pages',
-      category: 'create_publish',
-      pinnedOrder: 8,
-    },
+
     {
       id: 'launch_ready',
       title: 'Launch Checklist',
