@@ -209,7 +209,7 @@ export const mapSidebarToNavigation = (): NavigationItem[] => {
     */
     {
       id: 'business_identity',
-      title: 'Business Profile',
+      title: 'Business DNA',
       icon: 'CircleUser',
       type: 'link',
       href: '/business-identity',
@@ -217,16 +217,7 @@ export const mapSidebarToNavigation = (): NavigationItem[] => {
       description: 'Your company information',
       category: 'brand_center',
     },
-    {
-      id: 'site_branding',
-      title: 'Visual Branding',
-      icon: 'Palette',
-      type: 'link',
-      href: '/admin/site-branding',
-      requiresStaff: true,
-      description: 'Logo, colors and visual elements',
-      category: 'brand_center',
-    },
+
 
     /* Temporarily removed Growth & Networking section for Hetzner deployment
     // GROWTH & NETWORKING
