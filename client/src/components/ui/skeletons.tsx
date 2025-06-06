@@ -185,3 +185,72 @@ export function LogoCloudSkeleton({ count = 5 }: { count?: number }) {
     </div>
   );
 }
+
+// Navigation skeleton
+export function NavigationSkeleton() {
+  return (
+    <div className="flex items-center justify-between p-4">
+      <Skeleton className="h-8 w-32" />
+      <div className="flex space-x-4">
+        <Skeleton className="h-6 w-16" />
+        <Skeleton className="h-6 w-20" />
+        <Skeleton className="h-6 w-18" />
+        <Skeleton className="h-6 w-16" />
+      </div>
+    </div>
+  );
+}
+
+// Dashboard skeleton
+export function DashboardSkeleton() {
+  return (
+    <div className="space-y-6 p-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <Skeleton className="h-24 w-full rounded-lg" />
+        <Skeleton className="h-24 w-full rounded-lg" />
+        <Skeleton className="h-24 w-full rounded-lg" />
+      </div>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <Skeleton className="h-64 w-full rounded-lg" />
+        <Skeleton className="h-64 w-full rounded-lg" />
+      </div>
+      <Skeleton className="h-48 w-full rounded-lg" />
+    </div>
+  );
+}
+
+// Blog post skeleton
+export function BlogPostSkeleton({ count = 3 }: { count?: number }) {
+  return (
+    <div className="space-y-8">
+      {Array.from({ length: count }).map((_, i) => (
+        <div key={i} className="border-b pb-8 last:border-b-0">
+          <Skeleton className="h-48 w-full rounded-lg mb-4" />
+          <Skeleton className="h-7 w-3/4 mb-3" />
+          <Skeleton className="h-4 w-full mb-2" />
+          <Skeleton className="h-4 w-full mb-2" />
+          <Skeleton className="h-4 w-2/3 mb-4" />
+          <div className="flex items-center space-x-4">
+            <Skeleton className="h-8 w-8 rounded-full" />
+            <Skeleton className="h-4 w-24" />
+            <Skeleton className="h-4 w-20" />
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+// Stats section skeleton
+export function StatsSkeleton({ count = 4 }: { count?: number }) {
+  return (
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      {Array.from({ length: count }).map((_, i) => (
+        <div key={i} className="text-center">
+          <Skeleton className="h-12 w-20 mx-auto mb-2" />
+          <Skeleton className="h-5 w-32 mx-auto" />
+        </div>
+      ))}
+    </div>
+  );
+}
