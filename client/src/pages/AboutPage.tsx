@@ -104,11 +104,11 @@ export default function AboutPage() {
           <img 
             src="https://res.cloudinary.com/drl0fxrkq/image/upload/v1747743047/P1023677_dp5dyw.jpg"
             alt="Progress Accountants office background"
-            className="w-full h-full object-cover object-top"
+            className="w-full h-full object-cover object-bottom"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/70 to-black/50"></div>
         </div>
-        <div className="container relative z-10 mx-auto px-6 md:px-8 pb-8">
+        <div className="container relative z-10 mx-auto px-6 md:px-8 pb-12">
           <div className="max-w-4xl mx-auto text-center">
             <FadeIn delay={0.1}>
               <span className="inline-block px-6 py-3 rounded-full bg-gradient-to-r from-purple-500/20 to-blue-500/20 backdrop-blur-sm border border-purple-500/30 text-purple-200 text-sm font-medium mb-6">
