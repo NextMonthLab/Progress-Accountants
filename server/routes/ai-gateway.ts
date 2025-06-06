@@ -6,7 +6,7 @@ const router = Router();
 // POST /api/ai/gateway - Main AI Gateway endpoint
 router.post('/gateway', async (req, res) => {
   try {
-    const { prompt, context, taskType, temperature, maxTokens } = req.body;
+    const { prompt, context, taskType, temperature, maxTokens, tenantId } = req.body;
 
     // Validate required fields
     if (!prompt || !taskType) {
@@ -57,7 +57,7 @@ router.post('/gateway', async (req, res) => {
       maxTokens
     };
 
-    const response = await processAIRequest(aiRequest);
+    const response = await processAIRequest(aiRequest, tenantId || "00000000-0000-0000-0000-000000000000");
     
     // Log the request for monitoring
     console.log(`[AI Gateway] ${taskType} request processed - Status: ${response.status}`);

@@ -1,5 +1,6 @@
 import OpenAI from 'openai';
 import Anthropic from '@anthropic-ai/sdk';
+import { storage } from '../storage';
 
 // AI Gateway Types
 export interface AIGatewayRequest {
@@ -145,18 +146,24 @@ async function callAnthropicAPI(prompt: string, systemPrompt: string, temperatur
 }
 
 // Main AI Gateway function
-export async function processAIRequest(request: AIGatewayRequest): Promise<AIGatewayResponse> {
+export async function processAIRequest(request: AIGatewayRequest, tenantId: string = "00000000-0000-0000-0000-000000000000"): Promise<AIGatewayResponse> {
+  const startTime = Date.now();
+  let modelUsed = '';
+  let success = false;
+  let errorMessage = '';
+
   try {
     const { prompt, context, taskType, temperature, maxTokens } = request;
     
     // Get task configuration
     const taskConfig = TASK_CONFIGS[taskType];
     if (!taskConfig) {
+      errorMessage = `Unknown task type: ${taskType}`;
       return {
         status: 'error',
         data: '',
         taskType,
-        error: `Unknown task type: ${taskType}`
+        error: errorMessage
       };
     }
 
@@ -173,16 +180,43 @@ export async function processAIRequest(request: AIGatewayRequest): Promise<AIGat
 
     let aiResponse: string;
 
-    // Route to appropriate AI service
+    // Route to appropriate AI service and track which model is used
     if (IS_PRO_AI_USER && OPENAI_API_KEY) {
       // Pro users get OpenAI GPT-4o
+      modelUsed = 'gpt-4o';
       aiResponse = await callOpenAIAPI(enhancedPrompt, systemPrompt, finalTemperature, finalMaxTokens);
     } else if (ANTHROPIC_API_KEY) {
       // Fallback to Anthropic if available
+      modelUsed = 'claude-3-sonnet';
       aiResponse = await callAnthropicAPI(enhancedPrompt, systemPrompt, finalTemperature, finalMaxTokens);
     } else {
       // Default to local Mistral 7B
+      modelUsed = 'mistral-7b';
       aiResponse = await callMistralAPI(enhancedPrompt, systemPrompt, finalTemperature, finalMaxTokens);
+    }
+
+    success = true;
+
+    // Log successful AI usage
+    try {
+      await storage.logAiUsage({
+        tenantId,
+        taskType,
+        modelUsed,
+        tokensUsed: null, // Token counting can be added later
+        success: true,
+        errorMessage: null,
+        metadata: {
+          temperature: finalTemperature,
+          maxTokens: finalMaxTokens,
+          promptLength: enhancedPrompt.length,
+          responseLength: aiResponse.length,
+          processingTimeMs: Date.now() - startTime
+        }
+      });
+    } catch (logError) {
+      console.error('Failed to log AI usage:', logError);
+      // Don't fail the request if logging fails
     }
 
     return {
@@ -193,11 +227,31 @@ export async function processAIRequest(request: AIGatewayRequest): Promise<AIGat
 
   } catch (error) {
     console.error('AI Gateway error:', error);
+    errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+    
+    // Log failed AI usage
+    try {
+      await storage.logAiUsage({
+        tenantId,
+        taskType: request.taskType,
+        modelUsed: modelUsed || 'unknown',
+        tokensUsed: null,
+        success: false,
+        errorMessage,
+        metadata: {
+          processingTimeMs: Date.now() - startTime,
+          error: errorMessage
+        }
+      });
+    } catch (logError) {
+      console.error('Failed to log AI usage error:', logError);
+    }
+
     return {
       status: 'error',
       data: '',
       taskType: request.taskType,
-      error: error instanceof Error ? error.message : 'Unknown error occurred'
+      error: errorMessage
     };
   }
 }
