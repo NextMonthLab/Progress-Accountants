@@ -106,9 +106,9 @@ export default function AboutPage() {
             alt="Progress Accountants office background"
             className="w-full h-full object-cover object-center"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/70 to-black/50"></div>
         </div>
-        <div className="container relative z-10 mx-auto px-6 md:px-8 pb-20">
+        <div className="container relative z-10 mx-auto px-6 md:px-8 pb-32 pt-32">
           <div className="max-w-4xl mx-auto text-center">
             <FadeIn delay={0.1}>
               <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-purple-400 via-blue-400 to-purple-300 bg-clip-text text-transparent">
