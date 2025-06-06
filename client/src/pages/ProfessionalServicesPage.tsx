@@ -92,7 +92,7 @@ export default function ProfessionalServicesPage() {
             className="w-full h-full object-cover opacity-20"
           />
         </div>
-        <div className="absolute inset-0 bg-gradient-to-br from-[#4F46E5]/40 via-black/60 to-[#E935C1]/30" />
+        <div className="absolute inset-0 bg-black/60" />
         <div className="container mx-auto px-6 md:px-8 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
             <Badge variant="secondary" className="mb-6 bg-gray-800 text-white border-gray-700">
