@@ -140,17 +140,7 @@ export const mapSidebarToNavigation = (): NavigationItem[] => {
     
     // SETTINGS & ADVANCED
     // ===================
-    {
-      id: 'site_branding',
-      title: 'Site Branding',
-      icon: 'Palette',
-      type: 'link',
-      href: '/brand-center',
-      requiresStaff: true,
-      description: 'Manage site colors, logos, and brand identity',
-      category: 'settings_advanced',
-      pinnedOrder: 1,
-    },
+
     {
       id: 'user_management',
       title: 'User Management',
@@ -173,17 +163,7 @@ export const mapSidebarToNavigation = (): NavigationItem[] => {
       category: 'settings_advanced',
       pinnedOrder: 3,
     },
-    {
-      id: 'admin_settings',
-      title: 'Admin Settings',
-      icon: 'Settings',
-      type: 'link',
-      href: '/admin/settings',
-      requiresStaff: true,
-      description: 'Advanced system configuration',
-      category: 'settings_advanced',
-      pinnedOrder: 4,
-    },
+
     
 
 
@@ -191,42 +171,10 @@ export const mapSidebarToNavigation = (): NavigationItem[] => {
     
     // SEO & INTEGRATIONS
     // ===================
-    {
-      id: 'seo_settings',
-      title: 'SEO Settings',
-      icon: 'Search',
-      type: 'link',
-      href: '/seo',
-      requiresStaff: true,
-      description: 'Manage search engine optimization',
-      category: 'settings_advanced',
-      pinnedOrder: 5,
-    },
-    {
-      id: 'integrations',
-      title: 'Integrations',
-      icon: 'Link',
-      type: 'link',
-      href: '/integrations',
-      requiresStaff: true,
-      description: 'Connect with third-party services',
-      category: 'settings_advanced',
-      pinnedOrder: 6,
-    },
+
     
     // ADVANCED TOOLS
     // =============
-    {
-      id: 'client_registration',
-      title: 'Client Registration',
-      icon: 'UserPlus',
-      type: 'link',
-      href: '/client-registration',
-      requiresStaff: true,
-      description: 'Register and manage clients',
-      category: 'settings_advanced',
-      pinnedOrder: 7,
-    },
 
     /* Removed third duplicate Insights Dashboard entry - using only the Quick Actions version */
     /* Removed CRM for Hetzner v1 deployment
