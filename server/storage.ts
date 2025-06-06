@@ -66,7 +66,10 @@ import {
   type InsertCompanionConfig,
   autopilotSettings,
   type AutopilotSettings,
-  type InsertAutopilotSettings
+  type InsertAutopilotSettings,
+  aiUsageLogs,
+  type AiUsageLog,
+  type InsertAiUsageLog
 } from "@shared/schema";
 import { PageMetadata, PageComplexityAssessment } from "@shared/page_metadata";
 import { 
@@ -332,6 +335,20 @@ export interface IStorage {
   // Feed settings operations
   getFeedSettings(tenantId: string): Promise<FeedSettings | undefined>;
   updateFeedSettings(tenantId: string, data: Partial<InsertFeedSettings>): Promise<FeedSettings>;
+  
+  // AI Usage Tracking operations
+  logAiUsage(data: InsertAiUsageLog): Promise<AiUsageLog>;
+  getAiUsageForTenant(tenantId: string, startDate?: Date, endDate?: Date): Promise<AiUsageLog[]>;
+  getAiUsageByModel(tenantId: string, modelUsed: string, startDate?: Date, endDate?: Date): Promise<AiUsageLog[]>;
+  getAiUsageByTaskType(tenantId: string, taskType: string, startDate?: Date, endDate?: Date): Promise<AiUsageLog[]>;
+  getTotalAiUsageForMonth(tenantId: string, year: number, month: number): Promise<number>;
+  getAiUsageStats(tenantId: string, year: number, month: number): Promise<{
+    totalCalls: number;
+    gptCalls: number;
+    claudeCalls: number;
+    mistralCalls: number;
+    successRate: number;
+  }>;
 }
 
 // Database-backed implementation of IStorage

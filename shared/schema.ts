@@ -1432,3 +1432,41 @@ export const crmContactsRelations = relations(crmContacts, ({ one }) => ({
     references: [users.id],
   }),
 }));
+
+export type InsertCrmContact = z.infer<typeof insertCrmContactSchema>;
+export type CrmContact = typeof crmContacts.$inferSelect;
+
+// AI Usage Tracking table
+export const aiUsageLogs = pgTable("ai_usage_logs", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  tenantId: uuid("tenant_id").references(() => tenants.id).notNull(),
+  timestamp: timestamp("timestamp").defaultNow().notNull(),
+  taskType: varchar("task_type", { length: 100 }).notNull(), // e.g., "blog_generation", "social_post", "content_analysis"
+  modelUsed: varchar("model_used", { length: 50 }).notNull(), // e.g., "gpt-4o", "claude-3-sonnet", "mistral-7b"
+  tokensUsed: integer("tokens_used"), // Optional token count if available
+  success: boolean("success").default(true), // Whether the AI call was successful
+  errorMessage: text("error_message"), // Error details if failed
+  metadata: jsonb("metadata"), // Additional request metadata
+}, (table) => {
+  return {
+    tenantIdx: index("idx_ai_usage_tenant").on(table.tenantId),
+    timestampIdx: index("idx_ai_usage_timestamp").on(table.timestamp),
+    taskTypeIdx: index("idx_ai_usage_task_type").on(table.taskType),
+    modelIdx: index("idx_ai_usage_model").on(table.modelUsed),
+  };
+});
+
+export const insertAiUsageLogSchema = createInsertSchema(aiUsageLogs).omit({
+  id: true,
+  timestamp: true,
+});
+
+export const aiUsageLogsRelations = relations(aiUsageLogs, ({ one }) => ({
+  tenant: one(tenants, {
+    fields: [aiUsageLogs.tenantId],
+    references: [tenants.id],
+  }),
+}));
+
+export type InsertAiUsageLog = z.infer<typeof insertAiUsageLogSchema>;
+export type AiUsageLog = typeof aiUsageLogs.$inferSelect;
