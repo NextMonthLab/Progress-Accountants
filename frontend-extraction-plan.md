@@ -1,28 +1,54 @@
-# Progress Accountants Frontend Extraction Plan
+# Progress Accountants Frontend Extraction - Hetzner Deployment Ready
 
-## Files to Extract
-- client/ → root directory
-- vite.config.ts
-- tailwind.config.ts  
-- postcss.config.js
-- package.json (cleaned)
-- .env.example
+## Complete Package Structure
 
-## Files to Remove/Exclude
-- server/ (entire backend)
-- drizzle.config.ts
-- shared/ (unless types needed)
-- Backend dependencies
-- Admin routes and auth
+### Files to Extract
+```
+FROM current project → TO standalone frontend:
 
-## Configuration Updates
-1. Update API calls to use VITE_API_URL
-2. Handle auth gracefully for public demo
-3. Clean package.json scripts
-4. Add demo labeling
-5. Remove admin navigation
+client/src/           → src/
+client/public/        → public/
+attached_assets/      → assets/
+tailwind.config.ts    → tailwind.config.ts
+postcss.config.js     → postcss.config.js
+frontend-package.json → package.json
+frontend-vite.config.ts → vite.config.ts
+frontend-env.example  → .env.example
+```
 
-## Build Target
-- Static Vite build for Hetzner/Netlify deployment
-- No backend dependencies
-- Clean demo site ready for production
+### Hetzner VPS Deployment Commands
+```bash
+# Build for production
+npm install
+npm run build
+
+# Deploy dist/ folder to NGINX
+# Copy dist/ contents to /var/www/html/
+# NGINX serves static files directly
+```
+
+### NGINX Configuration
+```nginx
+server {
+    listen 80;
+    server_name your-domain.com;
+    root /var/www/html;
+    index index.html;
+    
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+    
+    location /assets/ {
+        expires 1y;
+        add_header Cache-Control "public, immutable";
+    }
+}
+```
+
+### Confirmed Ready For:
+- Static hosting (no server required)
+- NGINX on Hetzner VPS
+- CDN deployment
+- Zero backend dependencies
+- All authentic Progress Accountants content preserved

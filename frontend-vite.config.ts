@@ -4,6 +4,7 @@ import path from "path";
 
 export default defineConfig({
   plugins: [react()],
+  base: "/",
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
@@ -14,11 +15,13 @@ export default defineConfig({
     outDir: "dist",
     sourcemap: false,
     minify: "esbuild",
+    assetsDir: "assets",
     rollupOptions: {
       output: {
         manualChunks: {
           vendor: ["react", "react-dom"],
-          ui: ["@radix-ui/react-dialog", "@radix-ui/react-dropdown-menu"],
+          ui: ["@radix-ui/react-dialog", "@radix-ui/react-dropdown-menu", "framer-motion"],
+          utils: ["clsx", "tailwind-merge", "date-fns"],
         },
       },
     },
