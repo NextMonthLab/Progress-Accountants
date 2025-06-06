@@ -1,5 +1,6 @@
 import { Router } from 'express';
-import { processAIRequest, checkAIServiceHealth, AIGatewayRequest } from '../services/ai-gateway';
+import { processAIRequest, checkAIServiceHealth, AIGatewayRequest, processAIRequestWithFallback } from '../services/ai-gateway';
+import { storage } from '../storage';
 
 const router = Router();
 
@@ -72,6 +73,81 @@ router.post('/gateway', async (req, res) => {
       taskType: req.body.taskType || 'unknown',
       error: 'Internal server error'
     });
+  }
+});
+
+// POST /api/ai/gateway/fallback - Fallback endpoint for Mistral when limits exceeded
+router.post('/gateway/fallback', async (req, res) => {
+  try {
+    const { prompt, context, taskType, temperature, maxTokens, tenantId } = req.body;
+
+    // Validate required fields
+    if (!prompt || !taskType) {
+      return res.status(400).json({
+        status: 'error',
+        data: '',
+        taskType: taskType || 'unknown',
+        error: 'Missing required fields: prompt and taskType'
+      });
+    }
+
+    // Validate taskType
+    const validTaskTypes = ['assistant', 'insight-trends', 'social-post', 'blog-post', 'theme-to-blog', 'theme-to-agenda'];
+    if (!validTaskTypes.includes(taskType)) {
+      return res.status(400).json({
+        status: 'error',
+        data: '',
+        taskType,
+        error: `Invalid taskType. Must be one of: ${validTaskTypes.join(', ')}`
+      });
+    }
+
+    // Process the AI request with forced Mistral fallback
+    const aiRequest: AIGatewayRequest = {
+      prompt,
+      context,
+      taskType,
+      temperature,
+      maxTokens
+    };
+
+    const response = await processAIRequestWithFallback(aiRequest, tenantId || "00000000-0000-0000-0000-000000000000");
+    
+    // Log the fallback request for monitoring
+    console.log(`[AI Gateway] ${taskType} fallback request processed - Status: ${response.status}`);
+    
+    return res.json(response);
+
+  } catch (error) {
+    console.error('[AI Gateway] Fallback endpoint error:', error);
+    return res.status(500).json({
+      status: 'error',
+      data: '',
+      taskType: req.body.taskType || 'unknown',
+      error: 'Internal server error'
+    });
+  }
+});
+
+// POST /api/ai/usage/fallback - Track fallback usage acceptance
+router.post('/usage/fallback', async (req, res) => {
+  try {
+    const { tenantId, taskType } = req.body;
+    
+    // Log that user accepted fallback (for analytics)
+    await storage.logAiUsage({
+      tenantId: tenantId || "00000000-0000-0000-0000-000000000000",
+      modelUsed: 'mistral-7b-fallback-accepted',
+      taskType: taskType || 'assistant',
+      success: true,
+      responseTimeMs: 0,
+      errorMessage: null
+    });
+
+    return res.json({ success: true, message: 'Fallback usage logged' });
+  } catch (error) {
+    console.error('[AI Gateway] Error logging fallback usage:', error);
+    return res.status(500).json({ success: false, error: 'Failed to log fallback usage' });
   }
 });
 

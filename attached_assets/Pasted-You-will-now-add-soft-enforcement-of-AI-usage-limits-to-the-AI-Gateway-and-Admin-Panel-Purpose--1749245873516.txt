@@ -1,0 +1,77 @@
+You will now add soft enforcement of AI usage limits to the AI Gateway and Admin Panel.
+
+Purpose:
+
+✅ Prevent unlimited Pro AI use beyond free or plan limits
+✅ Provide a graceful fallback (Mistral or error message)
+✅ Enable subscription upsells / AI credits in the future
+✅ Provide clear UX when limits are reached
+
+Backend (AI Gateway):
+
+✅ On every /api/ai/gateway request:
+
+- Check AIUsageLog for current month's usage for this tenant
+- If IS_PRO_AI_USER is true:
+    - Check against proAILimit (configurable, default 100 calls/month)
+    - If under limit → allow call and log usage
+    - If over limit → return:
+
+    {
+      status: "limit-exceeded",
+      message: "You have reached your Pro AI usage limit for this month.",
+      fallbackAvailable: true | false
+    }
+
+- If IS_PRO_AI_USER is false → allow Mistral call (no limit) → log usage
+
+Frontend (Admin Panel):
+
+✅ For each AI-enabled feature:
+
+- If response status is "limit-exceeded":
+    - Show modal or inline message:
+
+    > "You've reached your Pro AI limit for this month.  
+    > Upgrade your plan or wait until next month to continue using Advanced AI features."
+
+✅ If fallbackAvailable is true:
+    - Offer option:
+
+    > "Use basic AI (Mistral 7B) instead."
+
+    → If user accepts → send new request with forced fallback to Mistral.
+
+✅ /admin/ai-settings:
+
+- Show clear message if limit reached.
+- Show CTA: "Upgrade to higher AI plan" (this can link to a placeholder for now).
+
+Optional API additions:
+
+✅ POST /api/ai/usage/fallback → log that user accepted fallback (optional tracking).
+
+Config:
+
+- proAILimit → configurable per tenant or global.
+- fallbackAvailable → true by default (unless business decision changes).
+
+Notes:
+
+✅ Must NOT hard error → always offer user friendly message.
+✅ Must gracefully fallback to Mistral where applicable.
+✅ Must support future subscription system easily.
+✅ "Upgrade" button can link to placeholder route or external subscription page.
+
+---
+
+Goal:
+
+✅ The Admin Panel will now handle Pro AI usage limits cleanly.  
+✅ Users will understand what is happening and can take action.  
+✅ The system will not incur unexpected API costs.  
+✅ You are now commercially ready to offer paid AI plans.
+
+---
+
+Please implement this logic now and ensure all AI-enabled features respect this flow.

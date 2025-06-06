@@ -2,6 +2,55 @@ import OpenAI from 'openai';
 import Anthropic from '@anthropic-ai/sdk';
 import { storage } from '../storage';
 
+// Configuration for AI usage limits
+const DEFAULT_PRO_AI_LIMIT = 100; // calls per month
+const FALLBACK_AVAILABLE = true;
+
+// Function to check AI usage limits
+async function checkUsageLimits(tenantId: string, isProAIUser: boolean): Promise<{
+  allowed: boolean;
+  currentUsage: number;
+  limit: number;
+  message?: string;
+}> {
+  try {
+    // Get current month usage for this tenant
+    const now = new Date();
+    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+    const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59);
+
+    const usageStats = await storage.getAIUsageStats(tenantId, startOfMonth, endOfMonth);
+    
+    if (!isProAIUser) {
+      // Free users have unlimited Mistral access
+      return {
+        allowed: true,
+        currentUsage: usageStats.totalCalls,
+        limit: -1 // Unlimited
+      };
+    }
+
+    // Pro AI users have monthly limits
+    const limit = DEFAULT_PRO_AI_LIMIT;
+    const allowed = usageStats.currentMonthUsage < limit;
+
+    return {
+      allowed,
+      currentUsage: usageStats.currentMonthUsage,
+      limit,
+      message: allowed ? undefined : "You have reached your Pro AI usage limit for this month."
+    };
+  } catch (error) {
+    console.error('[AI Gateway] Error checking usage limits:', error);
+    // On error, allow the request to proceed to avoid blocking users
+    return {
+      allowed: true,
+      currentUsage: 0,
+      limit: DEFAULT_PRO_AI_LIMIT
+    };
+  }
+}
+
 // AI Gateway Types
 export interface AIGatewayRequest {
   prompt: string;
@@ -12,10 +61,12 @@ export interface AIGatewayRequest {
 }
 
 export interface AIGatewayResponse {
-  status: 'success' | 'error';
+  status: 'success' | 'error' | 'limit-exceeded';
   data: string;
   taskType: string;
   error?: string;
+  message?: string;
+  fallbackAvailable?: boolean;
 }
 
 // Configuration
@@ -167,6 +218,20 @@ export async function processAIRequest(request: AIGatewayRequest, tenantId: stri
       };
     }
 
+    // Check usage limits for Pro AI users
+    const usageLimitCheck = await checkUsageLimits(tenantId, IS_PRO_AI_USER);
+    
+    // If Pro AI user has exceeded their limit, return limit-exceeded response
+    if (IS_PRO_AI_USER && !usageLimitCheck.allowed) {
+      return {
+        status: 'limit-exceeded',
+        data: '',
+        taskType,
+        message: usageLimitCheck.message,
+        fallbackAvailable: FALLBACK_AVAILABLE
+      };
+    }
+
     // Build enhanced prompt with context
     let enhancedPrompt = prompt;
     if (context) {
@@ -180,9 +245,9 @@ export async function processAIRequest(request: AIGatewayRequest, tenantId: stri
 
     let aiResponse: string;
 
-    // Route to appropriate AI service and track which model is used
-    if (IS_PRO_AI_USER && OPENAI_API_KEY) {
-      // Pro users get OpenAI GPT-4o
+    // Route to appropriate AI service based on user status and limits
+    if (IS_PRO_AI_USER && usageLimitCheck.allowed && OPENAI_API_KEY) {
+      // Pro users within limits get OpenAI GPT-4o
       modelUsed = 'gpt-4o';
       aiResponse = await callOpenAIAPI(enhancedPrompt, systemPrompt, finalTemperature, finalMaxTokens);
     } else if (ANTHROPIC_API_KEY) {
@@ -190,7 +255,7 @@ export async function processAIRequest(request: AIGatewayRequest, tenantId: stri
       modelUsed = 'claude-3-sonnet';
       aiResponse = await callAnthropicAPI(enhancedPrompt, systemPrompt, finalTemperature, finalMaxTokens);
     } else {
-      // Default to local Mistral 7B
+      // Default to local Mistral 7B (unlimited for free users)
       modelUsed = 'mistral-7b';
       aiResponse = await callMistralAPI(enhancedPrompt, systemPrompt, finalTemperature, finalMaxTokens);
     }
@@ -257,6 +322,90 @@ export async function processAIRequest(request: AIGatewayRequest, tenantId: stri
 }
 
 // Helper function to check AI service availability
+// Fallback function that forces Mistral usage regardless of user status
+export async function processAIRequestWithFallback(request: AIGatewayRequest, tenantId: string = "00000000-0000-0000-0000-000000000000"): Promise<AIGatewayResponse> {
+  const startTime = Date.now();
+  let success = false;
+  let errorMessage = '';
+
+  try {
+    const { prompt, context, taskType, temperature, maxTokens } = request;
+    
+    // Get task configuration
+    const taskConfig = TASK_CONFIGS[taskType];
+    if (!taskConfig) {
+      errorMessage = `Unknown task type: ${taskType}`;
+      return {
+        status: 'error',
+        data: '',
+        taskType,
+        error: errorMessage
+      };
+    }
+
+    // Build enhanced prompt with context
+    let enhancedPrompt = prompt;
+    if (context) {
+      enhancedPrompt = `Context: ${JSON.stringify(context)}\n\nRequest: ${prompt}`;
+    }
+
+    // Use provided values or defaults
+    const finalTemperature = temperature ?? taskConfig.defaultTemperature;
+    const finalMaxTokens = maxTokens ?? taskConfig.defaultMaxTokens;
+    const systemPrompt = taskConfig.systemPrompt;
+
+    // Force use of Mistral 7B
+    const aiResponse = await callMistralAPI(enhancedPrompt, systemPrompt, finalTemperature, finalMaxTokens);
+    success = true;
+
+    // Log fallback AI usage
+    try {
+      await storage.logAiUsage({
+        tenantId,
+        modelUsed: 'mistral-7b-fallback',
+        taskType,
+        success: true,
+        responseTimeMs: Date.now() - startTime,
+        errorMessage: null
+      });
+    } catch (logError) {
+      console.error('[AI Gateway] Failed to log fallback usage:', logError);
+    }
+
+    return {
+      status: 'success',
+      data: aiResponse,
+      taskType
+    };
+
+  } catch (error) {
+    success = false;
+    errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+    
+    // Log failed fallback usage
+    try {
+      await storage.logAiUsage({
+        tenantId,
+        modelUsed: 'mistral-7b-fallback',
+        taskType: request.taskType,
+        success: false,
+        responseTimeMs: Date.now() - startTime,
+        errorMessage
+      });
+    } catch (logError) {
+      console.error('[AI Gateway] Failed to log failed fallback usage:', logError);
+    }
+
+    console.error('[AI Gateway] Fallback request failed:', error);
+    return {
+      status: 'error',
+      data: '',
+      taskType: request.taskType,
+      error: errorMessage
+    };
+  }
+}
+
 export async function checkAIServiceHealth(): Promise<{
   proAI: boolean;
   mistral: boolean;
