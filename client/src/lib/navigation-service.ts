@@ -95,7 +95,7 @@ export const mapSidebarToNavigation = (): NavigationItem[] => {
       type: 'link',
       href: '/admin/dashboard',
       description: 'View your site performance at a glance',
-      category: 'manage_monitor',
+      category: 'quick_actions',
       pinnedOrder: 1,
     },
 
