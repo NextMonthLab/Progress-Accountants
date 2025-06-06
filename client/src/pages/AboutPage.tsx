@@ -179,8 +179,12 @@ export default function AboutPage() {
               </SlideInLeft>
               <FadeIn delay={0.2}>
                 <div className="flex justify-center">
-                  <div className="p-8 rounded-full bg-gradient-to-br from-purple-500/20 to-blue-500/20 backdrop-blur-sm border border-purple-500/30 inline-flex items-center justify-center">
-                    <Zap size={120} className="text-purple-400" />
+                  <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-purple-500/10 to-blue-500/10 backdrop-blur-sm border border-purple-500/20 p-4">
+                    <img 
+                      src="https://res.cloudinary.com/drl0fxrkq/image/upload/v1749050605/Screenshot_2025-06-04_at_16.20.45_ufpx78.png"
+                      alt="Progress Accountants client collaboration illustration"
+                      className="w-full max-w-md h-auto rounded-xl shadow-lg"
+                    />
                   </div>
                 </div>
               </FadeIn>
