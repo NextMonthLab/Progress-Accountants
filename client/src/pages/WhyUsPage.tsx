@@ -197,70 +197,86 @@ export default function WhyUsPage() {
 
       {/* Our Values */}
       <section className="py-16 md:py-24 bg-gray-800">
-        <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto text-center mb-16">
-            <h2 className="text-2xl md:text-3xl font-bold mb-6 bg-gradient-to-r from-pink-400 to-blue-400 bg-clip-text text-transparent">
-              Our Values
-            </h2>
-            <p className="text-lg text-gray-300">
-              These core principles guide every interaction and decision we make.
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-4xl mx-auto">
-            <div className="flex items-start p-6 bg-gray-900 rounded-lg shadow-lg hover:shadow-xl transition-all border border-gray-700">
-              <div className="mr-4 text-blue-400">
-                <span className="text-2xl">✨</span>
+        <div className="container mx-auto px-6 md:px-8">
+          <div className="bg-gray-900 rounded-lg shadow-xl overflow-hidden border border-gray-700">
+            <div className="grid md:grid-cols-2 gap-0">
+              {/* Left: Image */}
+              <div className="h-64 md:h-auto bg-gradient-to-br from-pink-500/10 to-blue-500/10 backdrop-blur-sm border-r border-gray-700 p-8 flex items-center justify-center">
+                <div className="relative overflow-hidden rounded-xl">
+                  <img 
+                    src="https://res.cloudinary.com/drl0fxrkq/image/upload/v1749050580/Screenshot_2025-06-04_at_16.21.43_bj2spm.png"
+                    alt="Progress Accountants professional team values"
+                    className="w-full max-w-sm h-auto rounded-xl shadow-lg"
+                  />
+                </div>
               </div>
-              <div>
-                <h3 className="font-bold mb-2 text-white">
-                  Simplicity
-                </h3>
-                <p className="text-gray-300 text-sm">
-                  We keep things clear, clean, and straightforward—because confidence starts with understanding.
+              
+              {/* Right: Content */}
+              <div className="p-8">
+                <h2 className="text-2xl md:text-3xl font-bold mb-6 bg-gradient-to-r from-pink-400 to-blue-400 bg-clip-text text-transparent">
+                  Our Values
+                </h2>
+                <p className="text-lg text-gray-300 mb-8">
+                  These core principles guide every interaction and decision we make.
                 </p>
-              </div>
-            </div>
-            
-            <div className="flex items-start p-6 bg-gray-900 rounded-lg shadow-lg hover:shadow-xl transition-all border border-gray-700">
-              <div className="mr-4 text-pink-400">
-                <span className="text-2xl">🤝</span>
-              </div>
-              <div>
-                <h3 className="font-bold mb-2 text-white">
-                  Partnership
-                </h3>
-                <p className="text-gray-300 text-sm">
-                  We're in it with you. Whether you're launching, scaling, or stuck—we're right there alongside you.
-                </p>
-              </div>
-            </div>
-            
-            <div className="flex items-start p-6 bg-gray-900 rounded-lg shadow-lg hover:shadow-xl transition-all border border-gray-700">
-              <div className="mr-4 text-blue-400">
-                <span className="text-2xl">🧠</span>
-              </div>
-              <div>
-                <h3 className="font-bold mb-2 text-white">
-                  Curiosity
-                </h3>
-                <p className="text-gray-300 text-sm">
-                  We don't just tick boxes. We ask questions, spot patterns, and look ahead.
-                </p>
-              </div>
-            </div>
-            
-            <div className="flex items-start p-6 bg-gray-900 rounded-lg shadow-lg hover:shadow-xl transition-all border border-gray-700">
-              <div className="mr-4 text-pink-400">
-                <span className="text-2xl">⚡</span>
-              </div>
-              <div>
-                <h3 className="font-bold mb-2 text-white">
-                  Proactivity
-                </h3>
-                <p className="text-gray-300 text-sm">
-                  We don't wait for year-end—we flag opportunities and issues early, so you stay in control.
-                </p>
+                
+                <div className="grid grid-cols-1 gap-6">
+                  <div className="flex items-start">
+                    <div className="mr-4 text-blue-400">
+                      <span className="text-2xl">✨</span>
+                    </div>
+                    <div>
+                      <h3 className="font-bold mb-2 text-white">
+                        Simplicity
+                      </h3>
+                      <p className="text-gray-300 text-sm">
+                        We keep things clear, clean, and straightforward—because confidence starts with understanding.
+                      </p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-start">
+                    <div className="mr-4 text-pink-400">
+                      <span className="text-2xl">🤝</span>
+                    </div>
+                    <div>
+                      <h3 className="font-bold mb-2 text-white">
+                        Partnership
+                      </h3>
+                      <p className="text-gray-300 text-sm">
+                        We're in it with you. Whether you're launching, scaling, or stuck—we're right there alongside you.
+                      </p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-start">
+                    <div className="mr-4 text-blue-400">
+                      <span className="text-2xl">🧠</span>
+                    </div>
+                    <div>
+                      <h3 className="font-bold mb-2 text-white">
+                        Curiosity
+                      </h3>
+                      <p className="text-gray-300 text-sm">
+                        We don't just tick boxes. We ask questions, spot patterns, and look ahead.
+                      </p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-start">
+                    <div className="mr-4 text-pink-400">
+                      <span className="text-2xl">⚡</span>
+                    </div>
+                    <div>
+                      <h3 className="font-bold mb-2 text-white">
+                        Proactivity
+                      </h3>
+                      <p className="text-gray-300 text-sm">
+                        We don't wait for year-end—we flag opportunities and issues early, so you stay in control.
+                      </p>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
