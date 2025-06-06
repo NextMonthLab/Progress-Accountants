@@ -246,6 +246,22 @@ export default function ServicesPage() {
                 <h3 className="text-white font-bold mb-3">SME Resource Hub</h3>
                 <p className="text-gray-300 text-sm">Access our downloadable PDFs, tax calendars, and business contact directory—free for UK business owners.</p>
               </div>
+              
+              <div className="bg-gray-900 rounded-xl p-6 border border-gray-700 text-center">
+                <div className="w-12 h-12 rounded-lg bg-gradient-to-r from-blue-400 to-pink-400 flex items-center justify-center mb-4 mx-auto">
+                  <span className="text-2xl">🏗️</span>
+                </div>
+                <h3 className="text-white font-bold mb-3">Construction Accounting</h3>
+                <p className="text-gray-300 text-sm">Specialist CIS schemes, subcontractor management, and project cost tracking for construction businesses.</p>
+              </div>
+              
+              <div className="bg-gray-900 rounded-xl p-6 border border-gray-700 text-center">
+                <div className="w-12 h-12 rounded-lg bg-gradient-to-r from-blue-400 to-pink-400 flex items-center justify-center mb-4 mx-auto">
+                  <span className="text-2xl">🎬</span>
+                </div>
+                <h3 className="text-white font-bold mb-3">Creative Industries</h3>
+                <p className="text-gray-300 text-sm">Film tax relief, music royalty accounting, and creative sector compliance for artists and production companies.</p>
+              </div>
             </div>
           </div>
         </div>
