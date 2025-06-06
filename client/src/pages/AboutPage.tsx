@@ -430,7 +430,7 @@ export default function AboutPage() {
               </div>
 
               {/* Team Image */}
-              <SlideInRight delay={0.2}>
+              <FadeIn delay={0.2}>
                 <div className="relative">
                   <img 
                     src="https://res.cloudinary.com/drl0fxrkq/image/upload/v1747742829/P1013106-Enhanced-NR_adzlje.jpg"
@@ -439,7 +439,7 @@ export default function AboutPage() {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-xl"></div>
                 </div>
-              </SlideInRight>
+              </FadeIn>
             </div>
           </div>
         </div>
