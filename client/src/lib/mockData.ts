@@ -53,6 +53,39 @@ export const mockSeoConfig = {
   canonicalUrl: "https://progressaccountants.com"
 };
 
+export const mockClients = [
+  {
+    id: 1,
+    name: "Mitchell Construction Ltd",
+    email: "david@mitchellconstruction.co.uk",
+    phone: "01295 123456",
+    company: "Mitchell Construction Ltd",
+    status: "active",
+    lastContact: "2024-12-15",
+    notes: "Construction industry specialist client"
+  },
+  {
+    id: 2,
+    name: "Pemberton Film Productions",
+    email: "sarah@pembertonfilms.com",
+    phone: "01295 234567",
+    company: "Pemberton Film Productions",
+    status: "active",
+    lastContact: "2024-12-10",
+    notes: "Film industry tax relief specialist"
+  },
+  {
+    id: 3,
+    name: "Wilson & Associates",
+    email: "james@wilsonassoc.co.uk",
+    phone: "01295 345678",
+    company: "Wilson & Associates",
+    status: "active",
+    lastContact: "2024-12-08",
+    notes: "Professional services client"
+  }
+];
+
 // Mock API functions that return promises to mimic real API calls
 export const mockApi = {
   getBusinessIdentity: () => Promise.resolve(mockBusinessIdentity),

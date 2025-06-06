@@ -19,7 +19,7 @@ interface AdminLayoutProps {
   breadcrumbs?: Array<{ label: string; href: string }>;
 }
 
-export default function AdminLayout({ children, title, subtitle, breadcrumbs = [] }: AdminLayoutProps) {
+export function AdminLayout({ children, title, subtitle, breadcrumbs = [] }: AdminLayoutProps) {
   const navItems = [
     { label: 'Dashboard', icon: <LayoutGrid className="h-5 w-5" />, href: '/admin/dashboard' },
     { label: 'Marketplace', icon: <Package className="h-5 w-5" />, href: '/admin/marketplace' },
