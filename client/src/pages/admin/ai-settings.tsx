@@ -6,14 +6,28 @@ import { Badge } from '@/components/ui/badge';
 import { Switch } from '@/components/ui/switch';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Progress } from '@/components/ui/progress';
-import { Loader2, Brain, Zap, Check, Star, TrendingUp, AlertTriangle } from 'lucide-react';
+import { Textarea } from '@/components/ui/textarea';
+import { Loader2, Brain, Zap, Check, Star, TrendingUp, AlertTriangle, TestTube } from 'lucide-react';
 import { aiSettingsService, type AISettingsResponse, type AIUsageStats } from '@/services/ai-settings';
 import { queryClient } from '@/lib/queryClient';
 import { useToast } from '@/hooks/use-toast';
+import { useAIGateway } from '@/hooks/use-ai-gateway';
+import { AIUsageLimitModal } from '@/components/ai-usage-limit-modal';
 
 export default function AISettingsPage() {
   const { toast } = useToast();
   const [isToggling, setIsToggling] = useState(false);
+  const [testPrompt, setTestPrompt] = useState("Write a brief social media post about accounting best practices.");
+  
+  const {
+    executeAIRequest,
+    handleUseFallback,
+    handleDismissAlert,
+    usageAlert,
+    isLoading: aiLoading,
+    response: aiResponse,
+    isSuccess: aiSuccess
+  } = useAIGateway();
 
   const { data: settings, isLoading, error } = useQuery<AISettingsResponse>({
     queryKey: ['/api/ai/settings'],
@@ -338,6 +352,86 @@ export default function AISettingsPage() {
         </div>
       </div>
 
+      {/* AI Limit Testing Interface */}
+      <Card className="mt-6">
+        <CardHeader>
+          <div className="flex items-center gap-3">
+            <TestTube className="h-5 w-5 text-blue-600" />
+            <div>
+              <CardTitle>AI Limit Enforcement Test</CardTitle>
+              <CardDescription>
+                Test the usage limit enforcement system and fallback mechanisms
+              </CardDescription>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="space-y-2">
+            <label className="text-sm font-medium">Test Prompt</label>
+            <Textarea
+              value={testPrompt}
+              onChange={(e) => setTestPrompt(e.target.value)}
+              placeholder="Enter a prompt to test AI functionality..."
+              className="min-h-[80px]"
+            />
+          </div>
+
+          <div className="flex items-center gap-3">
+            <Button
+              onClick={() => executeAIRequest({
+                prompt: testPrompt,
+                taskType: 'social-post',
+                tenantId: "00000000-0000-0000-0000-000000000000"
+              })}
+              disabled={aiLoading || !testPrompt.trim()}
+              className="flex items-center gap-2"
+            >
+              {aiLoading ? (
+                <>
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  Processing...
+                </>
+              ) : (
+                <>
+                  <Zap className="h-4 w-4" />
+                  Test AI Request
+                </>
+              )}
+            </Button>
+
+            {aiSuccess && aiResponse && (
+              <Badge variant="outline" className="text-green-600 border-green-200">
+                ✓ Request Completed
+              </Badge>
+            )}
+          </div>
+
+          {aiSuccess && aiResponse && aiResponse.status === 'success' && (
+            <div className="mt-4 p-4 bg-green-50 border border-green-200 rounded-lg dark:bg-green-900/10 dark:border-green-800">
+              <div className="flex items-center gap-2 mb-2">
+                <Check className="h-4 w-4 text-green-600" />
+                <span className="text-sm font-medium text-green-800 dark:text-green-200">
+                  AI Response
+                </span>
+              </div>
+              <p className="text-sm text-green-700 dark:text-green-300 whitespace-pre-wrap">
+                {aiResponse.data}
+              </p>
+            </div>
+          )}
+
+          <div className="text-xs text-muted-foreground mt-2">
+            <p><strong>How it works:</strong></p>
+            <ul className="list-disc list-inside space-y-1 mt-1">
+              <li>If you're under your usage limit, the request processes normally with your selected AI model</li>
+              <li>If you've exceeded your Pro AI limit, you'll see a modal offering Mistral 7B as an alternative</li>
+              <li>Usage limits reset monthly and are tracked in real-time</li>
+              <li>Fallback requests are unlimited and don't count toward your Pro AI usage</li>
+            </ul>
+          </div>
+        </CardContent>
+      </Card>
+
       {/* Information Panel */}
       <Alert className="mt-6">
         <Brain className="h-4 w-4" />
@@ -351,6 +445,14 @@ export default function AISettingsPage() {
           )}
         </AlertDescription>
       </Alert>
+
+      {/* Usage Limit Modal */}
+      <AIUsageLimitModal
+        usageAlert={usageAlert}
+        onUseFallback={handleUseFallback}
+        onDismiss={handleDismissAlert}
+        isLoading={aiLoading}
+      />
     </div>
   );
 }
