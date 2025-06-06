@@ -1,7 +1,7 @@
-import { aiGatewayService } from './ai-gateway';
+import { processAIRequest } from './ai-gateway';
 
 /**
- * Generate blog post content using GPT-4
+ * Generate blog post content using AI Gateway
  * @param topic Main topic for the blog post
  * @param keywords Keywords to include in the blog post
  * @param targetAudience Target audience for the blog post
@@ -58,34 +58,43 @@ The blog post should be a comprehensive expansion of this social media content, 
       userMessage = `Generate a blog post about "${topic}". Include these keywords: ${keywords}.`;
     }
     
-    const response = await openai.chat.completions.create({
-      model: "gpt-4o", // the newest OpenAI model is "gpt-4o" which was released May 13, 2024
-      messages: [
-        {
-          role: "system",
-          content: systemPrompt
-        },
-        {
-          role: "user",
-          content: userMessage
-        }
-      ],
-      temperature: 0.7,
-      max_tokens: getMaxTokensForLength(contentLength),
-      response_format: { type: "json_object" },
+    const response = await processAIRequest({
+      prompt: userMessage,
+      taskType: 'blog-post',
+      context: {
+        systemPrompt,
+        topic,
+        keywords,
+        targetAudience,
+        contentLength,
+        toneOfVoice,
+        businessName: businessIdentity?.core?.businessName || 'Progress Accountants'
+      }
     });
-    
-    const contentStr = response.choices[0].message.content;
-    
-    if (!contentStr) {
-      throw new Error("No content was generated");
+
+    if (response.status !== 'success') {
+      throw new Error('AI service unavailable');
     }
+
+    // Parse the response - the AI Gateway returns the full response text
+    const responseText = response.data;
     
-    const generatedContent = JSON.parse(contentStr);
+    // Try to parse as JSON first, fallback to plain text if needed
+    let generatedContent;
+    try {
+      generatedContent = JSON.parse(responseText);
+    } catch {
+      // If not JSON, treat as plain text and structure it
+      generatedContent = {
+        title: `${topic}: A Comprehensive Guide`,
+        content: responseText,
+        metaDescription: `Learn about ${topic} and how it can benefit ${targetAudience}.`
+      };
+    }
     
     return {
       title: generatedContent.title || `How ${topic} is Transforming Modern Business`,
-      content: generatedContent.content || "Content generation failed.",
+      content: generatedContent.content || responseText,
       metaDescription: generatedContent.metaDescription || `Learn about ${topic} and how it can benefit ${targetAudience}.`
     };
   } catch (error) {
