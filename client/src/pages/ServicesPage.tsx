@@ -159,12 +159,24 @@ export default function ServicesPage() {
         <meta name="description" content="Explore the comprehensive accounting and financial services offered by Progress Accountants to help your business thrive." />
       </Helmet>
 
-      {/* Hero Section */}
-      <section className="bg-gray-800 text-white py-16 md:py-24">
-        <div className="container mx-auto px-6 md:px-8">
+      {/* Hero Section with Background Image */}
+      <section className="relative text-white py-16 md:py-24 overflow-hidden">
+        {/* Background Image */}
+        <div className="absolute inset-0 z-0">
+          <img 
+            src="https://res.cloudinary.com/drl0fxrkq/image/upload/v1749050579/Screenshot_2025-06-04_at_16.22.23_sisfjv.png"
+            alt="Progress Accountants services background"
+            className="w-full h-full object-cover"
+          />
+          {/* Dark Overlay */}
+          <div className="absolute inset-0 bg-black/70"></div>
+        </div>
+        
+        {/* Content */}
+        <div className="relative z-10 container mx-auto px-6 md:px-8">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-3xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-blue-400 to-pink-400 bg-clip-text text-transparent">🧾 Our Services</h1>
-            <p className="text-xl text-gray-300">
+            <p className="text-xl text-gray-100">
               Accounting, Tax, and Strategic Support for Growing Businesses
             </p>
           </div>
