@@ -4,9 +4,8 @@ import { useLocation } from 'wouter';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { useNavigation } from '@/contexts/NavigationContext';
-import QuickActions from '@/components/QuickActions';
+import AINavigationAssistant from '@/components/AINavigationAssistant';
 import NotificationsPanel from '@/components/NotificationsPanel';
-import KeyboardShortcutsButton from '@/components/KeyboardShortcutsButton';
 // ThemeToggle removed - system uses permanent dark mode
 
 interface SmartContext {
@@ -121,7 +120,7 @@ const SmartContextBanner: React.FC = () => {
         {/* Action Controls */}
         <div className="flex items-center space-x-2">
           <NotificationsPanel />
-          <QuickActions />
+          <AINavigationAssistant />
           
           <Button 
             variant="ghost" 
