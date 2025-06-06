@@ -188,27 +188,27 @@ For support, contact your SmartSite administrator.`;
               {/* DIY Setup Tab */}
               <TabsContent value="diy" className="space-y-6">
                 <div className="text-center mb-6">
-                  <h2 className="text-xl font-semibold mb-2">
+                  <h2 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white">
                     If you or your developer manage your website, follow these steps
                   </h2>
-                  <p className="text-gray-600">Complete setup in under 10 minutes</p>
+                  <p className="text-gray-600 dark:text-gray-300">Complete setup in under 10 minutes</p>
                 </div>
 
                 {/* Step 1: Subdomain */}
-                <Card className="border-l-4 border-l-cyan-500">
+                <Card className="border-l-4 border-l-cyan-500 bg-white dark:bg-gray-800 shadow-sm hover:shadow-md transition-shadow border border-gray-200 dark:border-gray-700">
                   <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
+                    <CardTitle className="flex items-center gap-2 text-gray-900 dark:text-white">
                       <Globe className="h-5 w-5 text-cyan-600" />
                       Step 1: Create a subdomain
                     </CardTitle>
-                    <CardDescription>
+                    <CardDescription className="text-gray-600 dark:text-gray-300">
                       Set up a subdomain for SmartSite's content feeds
                     </CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-4">
-                    <div className="bg-gray-50 p-4 rounded-lg">
-                      <p className="font-medium mb-2">Suggested: feed.yourdomain.com</p>
-                      <div className="text-sm space-y-1">
+                    <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                      <p className="font-medium mb-2 text-gray-900 dark:text-white">Suggested: feed.yourdomain.com</p>
+                      <div className="text-sm space-y-1 text-gray-700 dark:text-gray-300">
                         <p><strong>DNS Instructions:</strong></p>
                         <p>• Type: CNAME</p>
                         <p>• Name: feed</p>
@@ -219,13 +219,13 @@ For support, contact your SmartSite administrator.`;
                 </Card>
 
                 {/* Step 2: Embed Script */}
-                <Card className="border-l-4 border-l-green-500">
+                <Card className="border-l-4 border-l-green-500 bg-white dark:bg-gray-800 shadow-sm hover:shadow-md transition-shadow border border-gray-200 dark:border-gray-700">
                   <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
+                    <CardTitle className="flex items-center gap-2 text-gray-900 dark:text-white">
                       <Code className="h-5 w-5 text-green-600" />
                       Step 2: Add embed script
                     </CardTitle>
-                    <CardDescription>
+                    <CardDescription className="text-gray-600 dark:text-gray-300">
                       Place this script in the &lt;head&gt; tag on every page
                     </CardDescription>
                   </CardHeader>
@@ -257,13 +257,13 @@ For support, contact your SmartSite administrator.`;
                 </Card>
 
                 {/* Step 3: Test Connection */}
-                <Card className="border-l-4 border-l-blue-500">
+                <Card className="border-l-4 border-l-blue-500 bg-white dark:bg-gray-800 shadow-sm hover:shadow-md transition-shadow border border-gray-200 dark:border-gray-700">
                   <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
+                    <CardTitle className="flex items-center gap-2 text-gray-900 dark:text-white">
                       <CheckCircle className="h-5 w-5 text-blue-600" />
                       Step 3: Test your connection
                     </CardTitle>
-                    <CardDescription>
+                    <CardDescription className="text-gray-600 dark:text-gray-300">
                       Validate that SmartSite is properly installed
                     </CardDescription>
                   </CardHeader>
@@ -320,19 +320,19 @@ For support, contact your SmartSite administrator.`;
               {/* Professional Setup Tab */}
               <TabsContent value="professional" className="space-y-6">
                 <div className="text-center mb-6">
-                  <h2 className="text-xl font-semibold mb-2">
+                  <h2 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white">
                     Let our team handle the setup
                   </h2>
-                  <p className="text-gray-600">Professional installation with 24-hour turnaround</p>
-                  <Badge variant="secondary" className="mt-2 bg-cyan-100 text-cyan-800">
+                  <p className="text-gray-600 dark:text-gray-300">Professional installation with 24-hour turnaround</p>
+                  <Badge variant="secondary" className="mt-2 bg-cyan-100 text-cyan-800 dark:bg-cyan-900 dark:text-cyan-200">
                     £99 one-off setup fee
                   </Badge>
                 </div>
 
-                <Card>
+                <Card className="border-l-4 border-l-purple-500 bg-white dark:bg-gray-800 shadow-sm hover:shadow-md transition-shadow border border-gray-200 dark:border-gray-700">
                   <CardHeader>
-                    <CardTitle>Setup Request Form</CardTitle>
-                    <CardDescription>
+                    <CardTitle className="text-gray-900 dark:text-white">Setup Request Form</CardTitle>
+                    <CardDescription className="text-gray-600 dark:text-gray-300">
                       Provide your website details and we'll handle the rest
                     </CardDescription>
                   </CardHeader>

@@ -99,7 +99,12 @@ function StatCard({
   };
 
   return (
-    <Card className={`overflow-hidden border ${isGradient ? 'shadow-lg shadow-' + color + '/10 border-0' : 'shadow-md border ' + scheme[color].border} ${className} hover:shadow-lg transition-all`}>
+    <Card className={`overflow-hidden border border-l-4 ${
+      color === 'navy' ? 'border-l-cyan-500' : 
+      color === 'orange' ? 'border-l-orange-500' : 
+      color === 'emerald' ? 'border-l-emerald-500' : 
+      'border-l-indigo-500'
+    } ${isGradient ? 'shadow-lg shadow-' + color + '/10 border-0' : 'shadow-md border ' + scheme[color].border} ${className} hover:shadow-lg transition-all`}>
       <div className={`${scheme[color].bg} p-4 sm:p-6`}>
         <div className="flex justify-between items-center">
           <div>
@@ -672,10 +677,10 @@ export default function AdminDashboardPage() {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               <div className="lg:col-span-2 space-y-6">
                 {/* Analytics Coming Soon Placeholder */}
-                <Card className="dark:bg-gray-800 dark:border-gray-700">
+                <Card className="border-l-4 border-l-indigo-500 bg-white dark:bg-gray-800 shadow-sm hover:shadow-md transition-shadow border border-gray-200 dark:border-gray-700">
                   <CardHeader>
-                    <CardTitle className="dark:text-gray-100">Website Performance</CardTitle>
-                    <CardDescription className="text-gray-700 dark:text-gray-400">Analytics will be available after launch</CardDescription>
+                    <CardTitle className="text-gray-900 dark:text-gray-100">Website Performance</CardTitle>
+                    <CardDescription className="text-gray-600 dark:text-gray-400">Analytics will be available after launch</CardDescription>
                   </CardHeader>
                   <CardContent className="p-10">
                     <div className="flex flex-col items-center justify-center text-center space-y-4">
@@ -693,10 +698,10 @@ export default function AdminDashboardPage() {
                 </Card>
 
                 {/* Activity Feature Coming Soon */}
-                <Card className="dark:bg-gray-800 dark:border-gray-700">
+                <Card className="border-l-4 border-l-blue-500 bg-white dark:bg-gray-800 shadow-sm hover:shadow-md transition-shadow border border-gray-200 dark:border-gray-700">
                   <CardHeader>
-                    <CardTitle className="dark:text-gray-100">Activity Log</CardTitle>
-                    <CardDescription className="text-gray-700 dark:text-gray-400">Track website activities and updates</CardDescription>
+                    <CardTitle className="text-gray-900 dark:text-gray-100">Activity Log</CardTitle>
+                    <CardDescription className="text-gray-600 dark:text-gray-400">Track website activities and updates</CardDescription>
                   </CardHeader>
                   <CardContent className="p-8">
                     <div className="flex flex-col items-center justify-center text-center space-y-4">
