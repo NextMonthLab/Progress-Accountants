@@ -55,7 +55,7 @@ async function checkUsageLimits(tenantId: string, isProAIUser: boolean): Promise
 export interface AIGatewayRequest {
   prompt: string;
   context?: object;
-  taskType: 'assistant' | 'insight-trends' | 'social-post' | 'blog-post' | 'theme-to-blog' | 'theme-to-agenda';
+  taskType: 'assistant' | 'insight-trends' | 'social-post' | 'blog-post' | 'theme-to-blog' | 'theme-to-agenda' | 'theme-to-product-ideas';
   temperature?: number;
   maxTokens?: number;
 }
@@ -110,6 +110,11 @@ const TASK_CONFIGS = {
     systemPrompt: 'Transform the provided theme into a structured meeting agenda with clear objectives, discussion points, and action items.',
     defaultTemperature: 0.5,
     defaultMaxTokens: 800
+  },
+  'theme-to-product-ideas': {
+    systemPrompt: 'Generate innovative product or service ideas based on the provided theme, insights, and business context. Format as a structured list with clear titles, descriptions, target audiences, and value propositions.',
+    defaultTemperature: 0.8,
+    defaultMaxTokens: 512
   }
 };
 

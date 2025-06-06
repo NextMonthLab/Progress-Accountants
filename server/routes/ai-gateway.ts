@@ -20,7 +20,7 @@ router.post('/gateway', async (req, res) => {
     }
 
     // Validate taskType
-    const validTaskTypes = ['assistant', 'insight-trends', 'social-post', 'blog-post', 'theme-to-blog', 'theme-to-agenda'];
+    const validTaskTypes = ['assistant', 'insight-trends', 'social-post', 'blog-post', 'theme-to-blog', 'theme-to-agenda', 'theme-to-product-ideas'];
     if (!validTaskTypes.includes(taskType)) {
       return res.status(400).json({
         status: 'error',
@@ -92,7 +92,7 @@ router.post('/gateway/fallback', async (req, res) => {
     }
 
     // Validate taskType
-    const validTaskTypes = ['assistant', 'insight-trends', 'social-post', 'blog-post', 'theme-to-blog', 'theme-to-agenda'];
+    const validTaskTypes = ['assistant', 'insight-trends', 'social-post', 'blog-post', 'theme-to-blog', 'theme-to-agenda', 'theme-to-product-ideas'];
     if (!validTaskTypes.includes(taskType)) {
       return res.status(400).json({
         status: 'error',
