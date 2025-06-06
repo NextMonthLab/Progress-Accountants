@@ -43,7 +43,7 @@ export const teamMembers: TeamMember[] = [
     role: "Manager",
     biography: "Henry joined in 2024, bringing nearly 10 years of practice experience and a deep commitment to strategic business growth. He leads operations and supports clients across key sectors, including construction and media.",
     interests: "An underground music DJ, hosts a radio show on Sigil Radio, and supports Birmingham City FC.",
-    placeholderComponent: henryPlaceholder,
+    photoUrl: "https://res.cloudinary.com/drl0fxrkq/image/upload/v1749198731/Screenshot_2025-06-06_at_09.31.48_dr07tk.png",
     socialLinks: {
       linkedin: "https://linkedin.com/in/henrysimons",
       twitter: "https://twitter.com/henrysimonsacco"
