@@ -28,7 +28,7 @@ interface NavigationContextType {
 
 const DEFAULT_NAVIGATION_STATE: NavigationState = {
   pinnedItems: [],
-  expandedGroups: ['quick_actions', 'create_publish'], // Default expanded groups
+  expandedGroups: ['dashboard_overview', 'content_creation'], // Default expanded groups
   expandedSubmenus: [],
   sidebarCollapsed: false,
   mobileSidebarCollapsed: true, // Default to collapsed on mobile
