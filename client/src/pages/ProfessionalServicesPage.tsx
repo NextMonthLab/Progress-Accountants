@@ -85,7 +85,14 @@ export default function ProfessionalServicesPage() {
   return (
     <div className="min-h-screen bg-black text-white">
       <section className="py-20 md:py-32 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-[#4F46E5]/20 via-black to-[#E935C1]/10" />
+        <div className="absolute inset-0">
+          <img 
+            src="https://res.cloudinary.com/drl0fxrkq/image/upload/v1749050351/Business_Owner_Presenting_Annual_Sales_Accounting_Reports_With_Investors_original_2609109_zt1n1z.jpg"
+            alt="Business presentation background"
+            className="w-full h-full object-cover opacity-20"
+          />
+        </div>
+        <div className="absolute inset-0 bg-gradient-to-br from-[#4F46E5]/40 via-black/60 to-[#E935C1]/30" />
         <div className="container mx-auto px-6 md:px-8 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
             <Badge variant="secondary" className="mb-6 bg-gray-800 text-white border-gray-700">
