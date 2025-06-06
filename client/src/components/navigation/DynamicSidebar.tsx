@@ -162,39 +162,62 @@ const DynamicSidebar: React.FC = () => {
     // Special handling for "View Website" link to open in a new tab
     const isViewWebsiteLink = item.id === 'view_website';
     
+    const linkContent = (
+      <a
+        href={item.href}
+        className={cn(
+          "flex items-center rounded-lg px-3 py-2 transition-all duration-200 no-underline nav-item",
+          isActive(item.href) && !isViewWebsiteLink
+            ? "active font-medium dark:text-white" 
+            : "text-[var(--text-headline)] dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700",
+          isNested && "ml-6 text-sm",
+          isViewWebsiteLink && "text-[var(--secondary-text)] dark:text-[#6fcfcf] bg-[var(--secondary-bg)] dark:bg-[#1e3a3a] hover:bg-[var(--secondary-hover)] dark:hover:bg-[#23474a]",
+          sidebarCollapsed && "justify-center px-2"
+        )}
+        target={isViewWebsiteLink ? "_blank" : undefined}
+        rel={isViewWebsiteLink ? "noopener noreferrer" : undefined}
+        onClick={(e) => {
+          // If on mobile, close the sidebar after clicking
+          if (isMobile) {
+            toggleMobileSidebar();
+          }
+        }}
+      >
+        <div className={cn("flex items-center", sidebarCollapsed && "justify-center")}>
+          <IconComponent className={cn("h-5 w-5", !sidebarCollapsed && "mr-2", isViewWebsiteLink ? "text-[#008080] dark:text-[#6fcfcf]" : "dark:text-gray-300")} />
+          {!sidebarCollapsed && <span>{item.title}</span>}
+        </div>
+        
+        {!sidebarCollapsed && item.badge && <SidebarItemBadge badge={item.badge} />}
+        
+        {/* Add external link icon for view website */}
+        {!sidebarCollapsed && isViewWebsiteLink && (
+          <ExternalLink className="h-3 w-3 ml-2 text-[#008080] dark:text-[#6fcfcf]" />
+        )}
+      </a>
+    );
+    
+    // Wrap with tooltip when collapsed
+    if (sidebarCollapsed) {
+      return (
+        <div className="group" key={item.id}>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                {linkContent}
+              </TooltipTrigger>
+              <TooltipContent side="right" className="text-xs">
+                {item.title}
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        </div>
+      );
+    }
+    
     return (
       <div className="group" key={item.id}>
-        <a
-          href={item.href}
-          className={cn(
-            "flex items-center justify-between rounded-lg px-3 py-2 transition-all duration-200 no-underline nav-item",
-            isActive(item.href) && !isViewWebsiteLink
-              ? "active font-medium dark:text-white" 
-              : "text-[var(--text-headline)] dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700",
-            isNested && "ml-6 text-sm",
-            isViewWebsiteLink && "text-[var(--secondary-text)] dark:text-[#6fcfcf] bg-[var(--secondary-bg)] dark:bg-[#1e3a3a] hover:bg-[var(--secondary-hover)] dark:hover:bg-[#23474a]"
-          )}
-          target={isViewWebsiteLink ? "_blank" : undefined}
-          rel={isViewWebsiteLink ? "noopener noreferrer" : undefined}
-          onClick={(e) => {
-            // If on mobile, close the sidebar after clicking
-            if (isMobile) {
-              toggleMobileSidebar();
-            }
-          }}
-        >
-          <div className="flex items-center">
-            <IconComponent className={cn("h-5 w-5 mr-2", isViewWebsiteLink ? "text-[#008080] dark:text-[#6fcfcf]" : "dark:text-gray-300")} />
-            <span>{item.title}</span>
-          </div>
-          
-          {item.badge && <SidebarItemBadge badge={item.badge} />}
-          
-          {/* Add external link icon for view website */}
-          {isViewWebsiteLink && (
-            <ExternalLink className="h-3 w-3 ml-2 text-[#008080] dark:text-[#6fcfcf]" />
-          )}
-        </a>
+        {linkContent}
       </div>
     );
   };
@@ -240,7 +263,7 @@ const DynamicSidebar: React.FC = () => {
   return (
     <div className={cn(
       "flex flex-col h-screen border-r border-gray-200 dark:border-gray-700 bg-gray-100 dark:bg-gray-800 transition-all duration-300",
-      !isMobile && (sidebarCollapsed ? "w-[70px]" : "w-64"),
+      !isMobile && (sidebarCollapsed ? "w-16" : "w-64"),
       isMobile && (mobileSidebarCollapsed ? "w-0 border-r-0" : "fixed w-[90%] max-w-[280px] shadow-lg z-50")
     )}>
       {/* Desktop Smart Site Collapse Toggle */}
@@ -311,11 +334,6 @@ const DynamicSidebar: React.FC = () => {
             <div className="h-8 w-8 rounded-full bg-primary/10 dark:bg-primary/20 flex items-center justify-center text-primary dark:text-primary-foreground font-semibold">
               {user.username ? user.username.charAt(0).toUpperCase() : 'U'}
             </div>
-            {!sidebarCollapsed && (
-              <div className="absolute -bottom-1 -right-1">
-                <OnboardingProgressRing size={20} />
-              </div>
-            )}
           </div>
           {!sidebarCollapsed && (
             <div className="flex-1 min-w-0">
@@ -325,11 +343,6 @@ const DynamicSidebar: React.FC = () => {
                   ? 'Super Admin' 
                   : user.userType === 'admin' ? 'Admin' : 'User'}
               </p>
-            </div>
-          )}
-          {sidebarCollapsed && (
-            <div className="absolute right-0 top-20">
-              <OnboardingProgressRing size={24} />
             </div>
           )}
         </div>
