@@ -1,0 +1,73 @@
+{
+  "project": "Progress Client Site",
+  "feature": "Website Dashboard",
+  "route": "/admin/dashboard",
+  "type": "admin/core",
+  "title": "Website Dashboard",
+  "description": "A central admin-only dashboard designed to manage and monitor the health, growth, and structure of the website — think of it like a WordPress Site Admin, but smarter and more useful.",
+  "components": [
+    {
+      "type": "section",
+      "title": "Site Overview",
+      "items": [
+        { "label": "Total Pages", "valueFrom": "/api/pages/count" },
+        { "label": "Total Tools Installed", "valueFrom": "/api/tools/installed/count" },
+        { "label": "Latest Page Created", "valueFrom": "/api/pages/latest" },
+        { "label": "Last Updated", "valueFrom": "/api/site/last_updated" }
+      ]
+    },
+    {
+      "type": "section",
+      "title": "Visitor Insights",
+      "items": [
+        { "label": "Visitors Today", "valueFrom": "/api/analytics/today" },
+        { "label": "Most Visited Page", "valueFrom": "/api/analytics/top-page" },
+        { "label": "Bounce Rate", "valueFrom": "/api/analytics/bounce-rate" }
+      ]
+    },
+    {
+      "type": "section",
+      "title": "Tool Status",
+      "items": [
+        { "label": "Lead Tracker Installed", "valueFrom": "/api/tools/lead-tracker/status" },
+        { "label": "Plugin Generator Installed", "valueFrom": "/api/tools/plugin-generator/status" },
+        { "label": "Other Tools Active", "valueFrom": "/api/tools/active/count" }
+      ]
+    },
+    {
+      "type": "section",
+      "title": "Quick Actions",
+      "buttons": [
+        { "label": "Create New Page", "link": "/admin/pages/create" },
+        { "label": "Install Tool from Marketplace", "link": "/admin/tools/marketplace" },
+        { "label": "Connect Custom Domain", "link": "/admin/setup/domain-mapping" },
+        { "label": "View Site", "link": "/", "target": "_blank" }
+      ]
+    },
+    {
+      "type": "section",
+      "title": "Industry News",
+      "note": "Displays the latest headlines from the client's industry, based on their Business Identity category.",
+      "items": [
+        { "label": "Top Story 1", "valueFrom": "/api/newsfeed/top/1" },
+        { "label": "Top Story 2", "valueFrom": "/api/newsfeed/top/2" },
+        { "label": "Top Story 3", "valueFrom": "/api/newsfeed/top/3" }
+      ],
+      "link": { "label": "View All News", "url": "/admin/news" }
+    },
+    {
+      "type": "section",
+      "title": "System Health",
+      "items": [
+        { "label": "Blueprint Version", "valueFrom": "/api/system/version" },
+        { "label": "Storage Used", "valueFrom": "/api/system/storage" },
+        { "label": "Last Backup", "valueFrom": "/api/system/last_backup" }
+      ]
+    }
+  ],
+  "logic": {
+    "auth": "Admin only",
+    "refreshInterval": "5min",
+    "newsContext": "Pull industry from /api/business-identity and fetch curated stories from /api/newsfeed"
+  }
+}

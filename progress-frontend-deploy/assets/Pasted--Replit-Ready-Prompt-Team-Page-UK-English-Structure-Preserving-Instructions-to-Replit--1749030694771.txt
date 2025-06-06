@@ -1,0 +1,86 @@
+✏️ Replit-Ready Prompt — Team Page (UK English, Structure-Preserving)
+
+⚠️ Instructions to Replit:  
+Do not change the page layout or structure. Only replace text content with the version below. Ensure all spelling follows UK English conventions. Maintain headings, section order, and UI elements as-is.
+
+---
+
+Header:
+Meet Our Expert Team  
+Our experienced professionals bring decades of combined expertise in accounting, tax strategy, and business advisory—helping UK businesses grow with confidence.
+
+—
+
+Subheading:
+The People Behind Progress  
+A passionate, people-first team—driven to deliver exceptional service and strategic insight.
+
+—
+
+Team Member Cards:
+
+LR  
+Lee Rogers  
+Lead Accountant  
+Lee Rogers FMAAT  
+Lead Accountant  
+
+Lee has spent over a decade helping SMEs navigate tax, growth, and compliance. As our lead accountant, he champions the use of modern accounting tech to deliver a proactive client experience.  
+
+CTA: Read More
+
+—
+
+HS  
+Henry Simons  
+Manager  
+Henry Simons MAAT  
+Manager  
+
+Henry joined in 2024, bringing nearly 10 years of practice experience and a deep commitment to strategic business growth. He leads operations and supports clients across key sectors, including construction and media.  
+
+CTA: Read More
+
+—
+
+JB  
+Jackie Bosch  
+Assistant Accountant  
+Jackie Bosch  
+Assistant Accountant  
+
+With more than 30 years of experience, Jackie is known for her attention to detail, reliability, and calm professionalism. She plays a vital role in supporting our SME clients with day-to-day bookkeeping and compliance.  
+
+CTA: Read More
+
+—
+
+JH  
+Joy Holloway  
+Business Administrator  
+Joy Holloway  
+Business Administrator  
+
+Joy ensures every client interaction is smooth, professional, and human. From document handling to scheduling, she’s the behind-the-scenes engine keeping your accounting experience stress-free.  
+
+CTA: Read More
+
+—
+
+MA  
+Manny Abayomi  
+Digital Marketing Executive  
+Manny Abayomi  
+Digital Marketing Executive  
+
+Manny leads our digital presence—managing campaigns, brand messaging, and online outreach. He helps keep Progress visible, relevant, and connected to clients across the UK.  
+
+CTA: Read More
+
+—
+
+Join Our Team CTA:
+Interested in Joining Our Team?  
+We’re always on the lookout for passionate professionals to join our growing firm. If you care about small business success and want to be part of a forward-thinking team, we’d love to hear from you.  
+
+CTA: Contact Us

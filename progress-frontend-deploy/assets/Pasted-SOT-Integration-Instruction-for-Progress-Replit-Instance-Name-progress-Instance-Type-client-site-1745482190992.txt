@@ -1,0 +1,64 @@
+SOT Integration Instruction for Progress Replit
+Instance Name: progress
+Instance Type: client_site
+SOT Blueprint Version: v1.1.2
+Issued On: 2025-04-24T20:04Z
+________________________________________
+Context Summary
+You are receiving this prompt because the Progress client site is now being transitioned into a fully SOT-compliant ecosystem member within the NextMonth platform.
+The previous coordination layer, Guardian, is now deprecated.
+From this point forward, all critical logic, tool awareness, and system-wide instructions will flow through the SOT (Single Source of Truth), available at:
+https://source-of-truth.replit.app
+This change is part of a strategic upgrade to unify all business sites, tools, automations, and analytics under a consistent, versioned coordination model.
+________________________________________
+Why This Matters to You
+As a client site, the Progress instance will:
+•	Receive tool updates from the SOT
+•	Be notified when shared packages change (e.g. content tools, automation templates)
+•	Report back to the SOT on installed tools, page configurations, and sync status
+•	Gain access to a dedicated website dashboard, showing:
+o	Site-wide analytics (page count, tool usage, etc.)
+o	Top industry news (via dynamic feeds)
+o	Tool update notices and statuses
+o	Deployment history and sync status
+________________________________________
+Your Responsibilities
+You do not need to author or manage system-wide protocols. Instead, your instance must:
+1.	Declare itself to the SOT
+o	Endpoint: POST /api/sot/declaration
+o	Payload example:
+o	{
+o	  "instance_id": "progress",
+o	  "instance_type": "client_site",
+o	  "blueprint_version": "1.1.2",
+o	  "tools_supported": ["page_builder", "tool_launcher", "dashboard_analytics"],
+o	  "callback_url": "https://progress.replit.app/api/sot/callback",
+o	  "status": "active"
+o	}
+2.	Listen for protocol updates
+o	Implement /api/sot/callback to receive schema/tool updates from SOT
+3.	Sync basic metrics
+o	Total pages
+o	Installed tools
+o	Last sync timestamp
+o	This helps SOT maintain ecosystem-wide visibility
+4.	Remove all Guardian references
+o	Guardian should no longer be referenced in any routes, dashboards, or admin logic.
+________________________________________
+Optional Enhancements
+If your dashboard supports it, consider:
+•	A “SOT Status” panel to show:
+o	Sync freshness
+o	Last update received
+o	Blueprint compatibility check
+•	A “Refresh from SOT” button in the admin
+________________________________________
+Next Steps
+Please confirm the following actions are complete:
+•	Your SOT declaration has been sent
+•	Guardian has been removed
+•	Your callback endpoint is listening
+•	Your dashboard reflects the SOT sync status
+When ready, reply with:
+"Progress is SOT-ready. Awaiting verification."
+And I’ll generate a final confirmation payload to lock you in.

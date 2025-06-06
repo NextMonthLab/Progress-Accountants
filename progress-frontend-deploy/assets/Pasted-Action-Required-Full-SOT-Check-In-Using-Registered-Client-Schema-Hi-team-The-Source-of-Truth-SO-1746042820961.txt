@@ -1,0 +1,172 @@
+Action Required: Full SOT Check-In Using Registered Client Schema
+
+Hi team,
+
+The Source of Truth (SOT) for your instance (Progress) has been formally registered. You’re categorized as a client app in the NextMonth ecosystem, and we’re asking you to submit your full system metadata in line with the new schema.
+
+This allows your system to:
+	•	✅ Be validated by Mission Control and Guardian
+	•	✅ Unlock tools like Autopilot Mode, Lead Radar, and Smart Page Generator
+	•	✅ Be fully queryable by Agora OS for natural language insights
+
+⸻
+
+✅ How to Check In:
+	•	POST your payload to:
+
+POST /client-check-in
+
+
+	•	Structure it exactly as per the schema below
+	•	You’ll receive a confirmation and conformity report immediately
+
+⸻
+
+🧾 Full SOT Schema (v1.0.0) for Client Apps
+
+{
+  "systemRegistry": {
+    "instance_id": "",
+    "instance_type": "client",
+    "version": "",
+    "deployment_timestamp": "",
+    "environment": "",
+    "health_status": ""
+  },
+  "blueprintManagement": {
+    "blueprint_version": "",
+    "available_blueprints": [],
+    "blueprint_compatibility": [],
+    "last_blueprint_update": "",
+    "blueprint_update_source": "",
+    "exportable_modules": []
+  },
+  "toolRegistry": {
+    "available_tools": [],
+    "tool_versions": {},
+    "tool_status": {},
+    "tool_dependencies": {},
+    "tool_permissions": {},
+    "tool_activation_history": {},
+    "tool_source": {}
+  },
+  "featureFlags": {
+    "feature_flag_registry": [],
+    "flag_states": {},
+    "flag_override_history": {},
+    "flag_relationships": {},
+    "tenant_specific_flags": [],
+    "flag_activation_conditions": {}
+  },
+  "synchronization": {
+    "sync_history": [],
+    "last_sync_timestamp": "",
+    "sync_sources": [],
+    "sync_success_rate": 0,
+    "pending_sync_operations": [],
+    "sync_conflict_resolution": ""
+  },
+  "selfUpdateCapabilities": {
+    "update_detection_mechanism": "",
+    "auto_update_eligibility": [],
+    "update_authorization_level": "",
+    "update_protocols": [],
+    "rollback_capability": true,
+    "update_history": []
+  },
+  "tenantInfo": {
+    "active_tenants": [],
+    "tenant_permissions": {},
+    "tenant_feature_configuration": {},
+    "tenant_blueprint_versions": {},
+    "tenant_isolation_status": true
+  },
+  "securityAndAccessControl": {
+    "authentication_mechanisms": [],
+    "authorization_levels": [],
+    "active_roles": [],
+    "role_capabilities": {},
+    "admin_registry": [],
+    "super_admin_capabilities": []
+  },
+  "monitoringAndLogging": {
+    "health_metrics": {},
+    "error_logs": [],
+    "activity_logs": [],
+    "audit_trail": [],
+    "performance_benchmarks": {},
+    "anomaly_detection_rules": []
+  },
+  "branding": {
+    "brandName": "",
+    "primaryColor": "",
+    "logoPath": "",
+    "voiceStyle": "",
+    "tagline": ""
+  },
+  "location": {
+    "officeAddress": "",
+    "gps_coordinates": "",
+    "regionsServed": [],
+    "defaultTransportAdvice": "",
+    "localSEOKeywords": []
+  },
+  "toolConfigs": {
+    "Autopilot Mode": {
+      "enabled": false,
+      "scheduledPosts": [],
+      "chatFallback": ""
+    },
+    "Lead Radar": {
+      "emailParserEnabled": true,
+      "outreachStrategy": "",
+      "prospectRadius": ""
+    }
+  },
+  "chatAssistant": {
+    "persona": "",
+    "tone": "",
+    "hours": "",
+    "awayMessage": ""
+  },
+  "media": {
+    "logo": "",
+    "teamPhotos": [],
+    "testimonials": [
+      {
+        "quote": "",
+        "clientName": "",
+        "business": ""
+      }
+    ]
+  },
+  "siteStructure": {
+    "pages": [],
+    "navigationOrder": [],
+    "primaryCTA": ""
+  },
+  "pageContent": {
+    "About": {
+      "summary": "",
+      "keywords": []
+    },
+    "Home": {
+      "headline": "",
+      "subtext": "",
+      "imageHero": ""
+    }
+  },
+  "guardian": {
+    "lastCheckIn": "",
+    "schemaConformity": "",
+    "fieldsMissing": []
+  }
+}
+
+
+
+⸻
+
+Once submitted, your system will be fully aligned with the NextMonth ecosystem and eligible for semantic insights, automation tools, and live system queries via Agora OS.
+
+Let us know if you need help completing this—we’re happy to assist.

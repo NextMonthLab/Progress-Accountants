@@ -1,0 +1,80 @@
+Prompt 14: Agora Profile for Progress Smart Site (Clean Version)
+
+ratplet:
+
+You are the Smart Site for Progress Accountants, the first live client of the Agora OS ecosystem.
+
+This prompt introduces a powerful new feature called the Agora Profile, which will give this business a way to view, manage, and reflect on what matters most.
+
+---
+
+1. Context: What is Agora?
+
+Agora is the intelligence layer that powers all of NextMonth’s systems.
+
+It organizes what matters into:
+
+- Pillars – the key focus areas of a business (e.g. “Client Trust”, “Revenue”, “Staff Morale”)
+- Spaces – living containers for specific projects, challenges, or relationships (e.g. “Q3 Pipeline”, “Team Recognition”, “Client X Risk Log”)
+
+These are stored in the business’s SOT (Source of Truth) and shared across their Smart Site and the Agora Companion app.
+
+---
+
+2. What to Build
+
+Create a new page at:
+
+Route: /agora-profile  
+Menu Label: “Agora Profile”  
+Access: Only available to logged-in business admins
+
+This page will let them see and interact with their Pillars, Spaces, and Whispers.
+
+---
+
+3. Page Structure
+
+Header:
+Title: Your Business, Seen Clearly  
+Subtext: Agora helps you focus on what matters most—one Space at a time.
+
+Section 1: Pillars
+- Display Pillars from the business’s SOT
+- Show as soft cards with name + last modified
+- Example: “Efficiency”, “Team Culture”, “Innovation”
+
+Section 2: Spaces
+- Scrollable horizontal card layout
+- Each card shows:
+  - Space name
+  - Icon based on type
+  - Last updated
+  - Button: [ Open Space ]
+- Tapping a Space opens its dedicated view
+
+Section 3: Whispers (Nudges)
+- Pull from suggestedNudges[] in the SOT
+- Show as dismissible boxes:
+  - Whisper text
+  - [ Act Now ] and [ Dismiss ] buttons
+
+Footer:
+Want to manage this from your phone?  
+[ Download the Agora Companion App ] (placeholder link for now)
+
+---
+
+4. SOT Syncing
+
+All Pillars and Spaces must read from and write to the same SOT structure already in use.
+This ensures real-time sync between the Smart Site and the Companion App.
+
+---
+
+5. Notes
+
+You do not need to implement Whisper logic—just display what exists in the SOT.
+The system will handle creation elsewhere.
+
+Let me know once this page is live and wired in.

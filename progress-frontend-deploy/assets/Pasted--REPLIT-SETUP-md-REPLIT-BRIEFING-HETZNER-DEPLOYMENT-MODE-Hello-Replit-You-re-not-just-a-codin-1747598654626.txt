@@ -1,0 +1,106 @@
+
+REPLIT_SETUP.md
+
+# REPLIT BRIEFING: HETZNER DEPLOYMENT MODE
+
+Hello Replit.
+
+You’re not just a coding sandbox. You are a trusted member of the Agora/NextMonth development team. This project is part of a unified, VPS-hosted infrastructure—where each Replit instance acts like a developer working on a specific module of the system.
+
+We’re preparing to deploy to Hetzner, our production-grade server environment. That means your job is to **clean, prepare, and stabilize** all files before we push to GitHub.
+
+This is your human-readable checklist to get things Hetzner-ready:
+
+---
+
+## 1. Mission Context
+
+This project will be exported into a Hetzner VPS using Docker. Each app becomes a container. Ports are manually mapped. No Replit magic will be available in production.
+
+Think of yourself as the prep environment. The better your prep, the smoother the launch.
+
+---
+
+## 2. Static File Handling
+
+Replit is forgiving about how you serve static files. Hetzner isn’t.
+
+Please make sure we use absolute file paths when serving public content.
+
+**Example Fix:**
+
+```ts
+const staticPath = "/app/dist/public";
+app.use(express.static(staticPath));
+
+Avoid:
+	•	"public"
+	•	path.resolve(...)
+	•	import.meta.url
+
+⸻
+
+3. TypeScript Build Integrity
+
+Before we leave you and head to GitHub, please:
+
+rm -rf dist
+npx tsc
+
+Fix all TypeScript errors, even minor ones. Hetzner runs strict builds.
+
+⸻
+
+4. Docker Alignment
+
+Make sure you include a valid:
+	•	Dockerfile (with proper EXPOSE and CMD)
+	•	docker-compose.yml (with defined ports, volumes, and environment variables)
+
+Test your Docker setup inside Replit first using:
+
+docker compose up --build
+
+
+⸻
+
+5. Environment Variables
+
+Replit manages these invisibly. Hetzner does not.
+
+Please make sure we include:
+	•	.env (for local use)
+	•	.env.example (for GitHub)
+	•	Add .env to .gitignore
+
+⸻
+
+6. Port Mapping
+
+Replit auto-exposes. Hetzner expects this:
+
+ports:
+  - "3000:3000"
+
+Define all ports explicitly in your docker-compose.yml.
+
+⸻
+
+7. Final Push Checklist
+
+Before sending to GitHub:
+	•	Build works with npx tsc
+	•	Docker builds cleanly
+	•	Static files are absolute
+	•	Ports are mapped
+	•	.env.example exists
+
+If everything is green, we’re ready to ship.
+
+⸻
+
+Thank You
+
+You’re a brilliant teammate, Replit. We appreciate the creative flexibility and live-editing you give us. You make ideas real.
+
+Now let’s build something that lasts.

@@ -1,0 +1,64 @@
+### **How the Client Sites Will Be Connected**
+
+- **Each client site (clone) is its own independent instance.**  
+  - Separate database (or database namespace).
+  - Separate user accounts.
+  - Separate public pages.
+
+- **NextMonthDev acts as a Central Authority / Satellite Hub**, but **not a content host**.
+  - It stores system-wide tooling (the Marketplace).
+  - It stores system blueprints and upgrades.
+  - It monitors health and upgrades via Mission Control.
+  - It **does not** store actual client user content or business data directly.
+  - It might broker inter-client communication when needed.
+
+- **Inter-client communication (e.g., Networking Pages)** must happen via a **shared service layer**:
+  - Example: A secure **NextMonth Hub API** that both client sites can query.
+  - Each client site pushes *only* intended networking data (e.g., public profiles, public posts) into the shared hub.
+  - Sites query the hub for other users’ public info.
+
+**Diagrammatically:**
+
+```
+Client Site A →    |
+                   | → NextMonth Hub API → Combined Networking Data
+Client Site B →    |
+                   |
+Progress →         |
+```
+
+- **Messages** would also route through the **NextMonth Hub**:
+  - Users never communicate *directly* between databases.
+  - Instead, they send a message → Hub → routed to the intended user's site inbox.
+
+---
+
+### **Networking Page Design Advice**
+
+1. **Profile Structure:**
+   - Each user has a **local profile** stored in their own site's DB.
+   - **Public profile info** (name, headline, about, maybe business name) is synced to the Hub if networking is enabled.
+
+2. **Posts/Content Feed:**
+   - Local posts stay local unless user chooses to publish to the shared feed.
+   - Feed page pulls cross-client posts via Hub API.
+
+3. **Messaging Across Sites:**
+   - Users can message anyone visible on the Hub feed.
+   - Messages are routed through the Hub (stored briefly, delivered to recipient site inbox).
+   - Notifications stay within each site instance.
+
+4. **Security + Privacy Layer:**
+   - Only data specifically authorized for networking leaves the local site.
+   - All inter-site data must be **opt-in**.
+   - Personal data not designated for networking **never leaves** the client site DB.
+
+---
+
+### **Summary**
+
+- **NextMonthDev is the mothership** — holds blueprints, system health, tools.
+- **Each site is an independent planet** — self-sufficient unless it *chooses* to connect.
+- **NextMonth Hub API is the interstellar relay station** — allowing connection, networking, messaging safely and efficiently.
+- **Networking pages pull from local AND shared sources** depending on user's privacy settings.
+

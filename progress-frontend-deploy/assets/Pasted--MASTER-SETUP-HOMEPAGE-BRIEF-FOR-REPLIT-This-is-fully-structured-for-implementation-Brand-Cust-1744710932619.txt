@@ -1,0 +1,199 @@
+✅ MASTER SETUP: HOMEPAGE BRIEF FOR REPLIT
+This is fully structured for implementation:
+
+Brand & Customer Context
+
+SEO Keywords
+
+Expanded Homepage Copy (with SEO baked in)
+
+Meta Title + Description
+
+Design Guidance Recap
+
+🧬 BRAND & CUSTOMER CONTEXT (for system memory)
+Business Name: Progress Accountants
+Location: Banbury, Oxfordshire (with clients UK-wide)
+Tagline: “We don’t just talk about growth. We build the tools that drive it.”
+
+👤 Ideal Client Profile (ICP)
+SMEs or entrepreneurs, £100k–£2m turnover
+
+Especially in Film, Music, and Construction
+
+Looking for proactive, tech-enabled financial guidance
+
+Often frustrated with “just compliance” accounting firms
+
+Need: clarity, insight, and tangible growth support
+
+⚔️ Brand Differentiators
+Tangible tools:
+
+Custom financial dashboard (24/7 KPIs + clarity)
+
+In-house podcast + video studio (build personal brand + audience)
+
+Strategic finance support:
+
+Virtual Finance Director services
+
+Clear, confident, jargon-free communication
+
+Fixed pricing + seamless onboarding
+
+🔍 SEO STRATEGY
+🥇 Primary Keyword Target:
+Accountants in Banbury
+
+🔑 Supporting Keywords to Blend In:
+Banbury accountants
+
+Small business accountant
+
+Xero accountant
+
+Bookkeeping and tax returns
+
+Virtual finance director
+
+Finance dashboard
+
+Construction accounting
+
+Creative industry accountant
+
+Podcast studio for businesses
+
+These keywords should appear naturally throughout the homepage copy.
+
+🧾 EXPANDED HOMEPAGE COPY (SEO Optimised)
+🔥 HERO SECTION
+H1:
+Accountants in Banbury who actually help you grow.
+
+Subhead:
+Most firms just talk about growth. At Progress, we give you the tools to make it happen — from real-time financial dashboards to your own podcast and video studio.
+
+CTA:
+👉 Book Your Free Strategy Call
+
+🧰 SECTION: TANGIBLE TOOLS FOR TANGIBLE GROWTH
+Title:
+Real tools. Real support. Real progress.
+
+Intro Copy:
+Progress Accountants is different. We’re not just your accountant — we’re your growth partner. That’s why we’ve built a system to help you scale your business from the inside out.
+
+Three Cards:
+
+🎙️ Podcast & Video Studio
+Record professional content in our in-house media suite — and grow your audience like never before.
+
+📊 Custom Financial Dashboard
+We build you a live dashboard showing your business’s financial health — key metrics, trends, cashflow, tax, and more.
+
+🧠 Virtual Finance Director
+Get expert strategy sessions, forecasting help, and actionable advice — whenever you need it.
+
+🌍 SECTION: WHO WE HELP (INDUSTRY PANEL)
+Title:
+Specialists in complex industries
+
+Copy:
+We serve a wide range of small businesses, but we have deep experience in sectors that demand more than basic bookkeeping.
+
+Three industry blocks:
+
+🎬 Film Industry
+From freelance tax setups to R&D tax credits — we’ve worked with independent producers, directors, and studios.
+
+🎵 Music Industry
+Touring, royalties, self-employment, label accounting — we handle the numbers so you can stay creative.
+
+🏗️ Construction
+We understand CIS, contractor management, and project-based finance. We’ve got the site and the spreadsheet covered.
+
+🤝 SECTION: WHY BUSINESSES STAY WITH PROGRESS
+Headline:
+Clarity. Confidence. Control.
+
+Layout:
+Two-column:
+
+Left: bullet points
+
+Right: dashboard mockup or testimonial
+
+Bullets:
+
+Fixed pricing, no surprises
+
+Seamless onboarding
+
+Straight-talking advice
+
+Fast replies from real people
+
+Real-time insight into your financial performance
+
+Quote Example:
+
+“Since joining Progress, I understand my numbers, I’ve built a podcast audience, and I’ve made smarter decisions every month.”
+— Client Name, Company Name
+
+📍 SECTION: BANBURY ACCOUNTANTS WHO GET RESULTS (SEO Footer Block)
+H2:
+Looking for a proactive accountant in Banbury?
+
+Copy:
+We’re based in Banbury and proudly serve ambitious businesses across Oxfordshire and beyond. Whether you need bookkeeping, tax returns, or a finance director who understands your goals — Progress is here to help.
+
+We specialise in small business accounting, and we’re certified Xero accountants too. But most of all, we help our clients grow — with practical, forward-thinking support you won’t find anywhere else.
+
+CTA:
+👉 Let’s build your growth engine — book your free discovery call.
+
+🧾 META SEO SNIPPETS
+Meta Title:
+Accountants in Banbury | Progress Accountants – Real Tools for Business Growth
+
+Meta Description:
+Looking for an accountant in Banbury? Progress Accountants offers expert bookkeeping, tax returns, and a custom dashboard to grow your business. Book your free call today.
+
+🖌️ FINAL DESIGN GUIDANCE FOR REPLIT
+Fonts:
+
+Headlines: Poppins
+
+Body: Inter or Lato
+
+Colors:
+
+Navy: #003865 (headings, background blocks)
+
+Burnt Orange: #F27030 (CTA buttons, icon accents)
+
+Grey: #F9F9F9 background, #666 text, #E6E6E6 dividers
+
+White: #FFFFFF for breathing space
+
+Buttons:
+
+Burnt orange fill, white text
+
+Rounded corners
+
+On hover: glow or swipe underline animation
+
+Iconography:
+
+Minimal flat icons or emojis (🎙️ 📊 🧠 🎬 🎵 🏗️)
+
+Visuals Needed:
+
+Mockup of finance dashboard (use placeholder if needed)
+
+Studio photo or stylised illustration
+
+Optional line animation (metrics loading in dashboard)

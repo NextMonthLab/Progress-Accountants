@@ -1,0 +1,48 @@
+✨ Replit Prompt: Personalized Newsfeed in Client Admin Dashboard (Corrected)
+
+⸻
+
+🎯 Objective
+
+We want to enhance the admin dashboard experience for each client:
+	•	Currently, the admin dashboard displays a default newsfeed (general updates).
+	•	Moving forward, each client site should have its own bespoke, industry-specific newsfeed displayed inside the admin dashboard — not on the public homepage.
+	•	When creating and deploying a Blueprint, we must be able to select which newsfeed source the client admin dashboard pulls from.
+
+⸻
+
+⚡ Key Requirements
+	1.	Blueprint Flexibility:
+During site creation (Blueprint stage), we should be able to:
+	•	Select an industry category (e.g., Accounting News, Legal News, Construction News, etc.)
+	•	OR manually enter a custom RSS or API feed if needed.
+	2.	Deployment Logic:
+When the Blueprint is deployed:
+	•	The selected newsfeed source should automatically integrate into the client’s admin dashboard feed panel.
+	•	No manual code editing after deployment should be necessary.
+	3.	Client Admin Dashboard Behavior:
+	•	Admin dashboard displays dynamic, real-time news pulled from the assigned feed.
+	•	News items refresh periodically (e.g., every 30–60 mins).
+	•	If feed is unavailable, display a premium fallback message like:
+“Currently no new updates. Your feed will refresh automatically.”
+
+⸻
+
+🛠️ Key Questions (Sense Check)
+	•	Is it technically feasible with our current Blueprint + Deploy system to parameterize the admin dashboard newsfeed source during deployment?
+	•	Would you recommend:
+	•	Setting the feed source via dynamic environment variables at build time?
+	•	Including a config file per deployment that defines the client’s feed URL?
+	•	Another method for lightweight, modular feed assignment?
+	•	Is there a best practice you suggest for RSS/API pull + refreshing inside an admin dashboard view?
+
+⸻
+
+🧠 Ratplet Reminders
+	•	Newsfeeds must stay modular and scalable (1 → 1,000+ client dashboards).
+	•	No separate admin dashboard codebases per client — must all stay unified under Blueprint principles.
+	•	Future-proof idea: support multi-feed widgets later (e.g., “Company News + Industry News”) if needed.
+
+⸻
+
+✨ End of Prompt (Corrected)

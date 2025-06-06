@@ -1,0 +1,425 @@
+/* Import dedicated stylesheets for public and admin sections to avoid style leakage */
+@import './styles/public.css';
+@import './styles/admin.css';
+@import './styles/navigation-dark-mode.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  /* Progress Design System Utilities */
+  .gradient-bg {
+    background: linear-gradient(to right, #4F46E5 0%, #4F46E5 60%, #E935C1 100%);
+  }
+
+  .gradient-text {
+    background: linear-gradient(135deg, #7B3FE4, #3FA4E4);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+
+  .dark-theme-text {
+    @apply text-white;
+  }
+
+  .dark-theme-paragraph {
+    @apply text-gray-200;
+  }
+
+  .dark-theme-card {
+    @apply bg-zinc-800 text-white border-zinc-700;
+  }
+
+  .progress-button {
+    @apply relative overflow-hidden transition-all duration-300 ease-in-out;
+    position: relative;
+    z-index: 1;
+  }
+
+  .progress-button::before {
+    content: '';
+    @apply absolute top-0 left-0 w-full h-full transition-all duration-300 ease-in-out;
+    background: linear-gradient(135deg, #7B3FE4, #3FA4E4);
+    z-index: -1;
+  }
+
+  .progress-button:hover::before {
+    @apply opacity-90 scale-105;
+  }
+
+  /* Grid pattern background for cards */
+  .bg-grid-black {
+    background-size: 40px 40px;
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0.1) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(0, 0, 0, 0.1) 1px, transparent 1px);
+  }
+  
+  .bg-grid-white {
+    background-size: 40px 40px;
+    background-image: linear-gradient(to right, rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+  }
+}
+
+:root {
+  --navy: #1a365d;
+  --navy-dark: #132b4d;
+  /* Progress Brand Colors */
+  --progress-purple: #7B3FE4;
+  --progress-blue: #3FA4E4;
+  --accent-teal: #059669;
+  /* Updated color palette for modern UI */
+  --primary: #7B3FE4;
+  --primary-hover: #6366F1;
+  --secondary-bg: #1F2937;
+  --secondary-text: #7B3FE4;
+  --secondary-hover: #374151;
+  --secondary-border: #4B5563;
+  --ai-accent: #14B8A6;
+  --background: #000000;
+  --card-bg: #1F2937;
+  --text-headline: #FFFFFF;
+  --text-body: #D1D5DB;
+  --light-grey: #374151;
+  --dark-grey: #4a5568;
+  --orange: #F4A261;
+  --nextmonth-teal: #000000;
+  
+  /* Force black background for all theme states */
+  --background: 0 0% 0% !important;
+  --card: 0 0% 0% !important;
+  --popover: 0 0% 0% !important;
+  --primary: 263 83% 57% !important;
+  --primary-foreground: 210 40% 98% !important;
+}
+
+/* GLOBAL: Control all rounded corners site-wide */
+/* Override all Tailwind rounded classes */
+.rounded,
+.rounded-sm,
+.rounded-md,
+.rounded-lg,
+.rounded-xl,
+.rounded-2xl,
+.rounded-3xl,
+.rounded-full,
+*[class*="rounded"] {
+  border-radius: 25px !important;
+}
+
+/* Specific admin panel overrides */
+html body div[data-admin] *,
+html body div.admin-layout * {
+  border-radius: 25px !important;
+}
+
+/* Frontend Progress branding areas - can be adjusted separately if needed */
+body:not([data-admin]) .rounded-full {
+  border-radius: 25px !important;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  /* Force dark mode permanently - only override background */
+  html {
+    color-scheme: dark;
+    background-color: black !important;
+    --background: 0 0% 0% !important;
+  }
+  
+  /* Override theme system background only */
+  html.dark {
+    --background: 0 0% 0% !important;
+    background-color: black !important;
+  }
+  
+  html.light {
+    --background: 0 0% 0% !important;
+    background-color: black !important;
+  }
+  
+  #root {
+    background: #000000 !important;
+    background-color: #000000 !important;
+  }
+  
+  html.dark {
+    color-scheme: dark;
+  }
+
+  body {
+    @apply font-sans antialiased text-white;
+    font-family: 'Inter', sans-serif;
+    background: #000000 !important;
+  }
+
+  /* Admin pages always use dark theme */
+  [data-admin="true"] {
+    @apply bg-slate-900 text-white;
+  }
+
+  /* Only apply Progress branding to public pages */
+  body.public-page {
+    @apply bg-background text-foreground;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Poppins', sans-serif;
+  }
+}
+
+@layer components {
+  /* Only apply container padding to public pages */
+  .public-page .container {
+    @apply px-8;
+  }
+
+  /* Updated button styles for modern UI */
+  .btn-primary {
+    @apply bg-[var(--primary)] text-white rounded-lg py-2 px-4 sm:px-4 md:px-6 transition-all;
+    @apply hover:bg-[var(--primary-hover)] hover:shadow-sm focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:ring-opacity-50;
+  }
+
+  .btn-secondary {
+    @apply bg-[var(--secondary-bg)] text-[var(--secondary-text)] rounded-lg py-2 px-4 sm:px-4 md:px-6 transition-all;
+    @apply border border-[var(--secondary-border)] hover:bg-[var(--secondary-hover)] focus:outline-none focus:ring-2 focus:ring-[var(--secondary-text)] focus:ring-opacity-50;
+  }
+
+  /* Card styling */
+  .card-modern {
+    @apply bg-[var(--card-bg)] rounded-lg p-4 sm:p-5 md:p-6 transition-all;
+    @apply shadow-sm hover:shadow-md border border-gray-100;
+  }
+
+  /* Modern badge styling */
+  .badge-flat {
+    @apply text-xs rounded-full px-2 py-0.5 font-normal border;
+  }
+  
+  /* AI feature badges */
+  .badge-ai {
+    color: var(--ai-accent);
+    background-color: rgba(20, 184, 166, 0.1);
+    border: 1px solid rgba(20, 184, 166, 0.2);
+    @apply text-xs rounded-full px-2 py-0.5 font-normal;
+  }
+}
+
+/* Animation utilities */
+.fade-in-section {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.fade-in-section.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Blob animation for Hero section */
+@keyframes blob {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(30px, -50px) scale(1.1);
+  }
+  66% {
+    transform: translate(-20px, 20px) scale(0.9);
+  }
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+}
+
+.animate-blob {
+  animation: blob 15s infinite ease-in-out;
+}
+
+/* Glow animation for Hero section light streaks */
+@keyframes glow {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.animate-glow {
+  animation: glow 3s infinite ease-in-out;
+}
+
+/* Dashboard animation */
+@keyframes pulse {
+  0% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.6;
+  }
+}
+
+.pulse-animation {
+  animation: pulse 2s infinite;
+}
+
+/* Image styles */
+.image-container {
+  overflow: hidden;
+  border-radius: 0.5rem;
+}
+
+.image-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.image-container:hover img {
+  transform: scale(1.05);
+}
+
+/* Button hover effects - updated for new color scheme */
+.glow-on-hover:hover {
+  box-shadow: 0 0 15px rgba(79, 70, 229, 0.3);
+}
+
+/* Card hover effects - more subtle scaling */
+.hover-scale {
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.hover-scale:hover {
+  transform: scale(1.02);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+/* Hide scrollbar but keep functionality */
+.hide-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;  /* Chrome, Safari and Opera */
+}
+
+/* Animation delays for staggered animations */
+.animation-delay-2000 {
+  animation-delay: 2s;
+}
+
+.animation-delay-4000 {
+  animation-delay: 4s;
+}
+
+/* Modern backdrop blur utilities */
+.backdrop-blur-xs {
+  backdrop-filter: blur(2px);
+}
+
+.backdrop-blur-sm {
+  backdrop-filter: blur(4px);
+}
+
+.backdrop-blur-md {
+  backdrop-filter: blur(8px);
+}
+
+.backdrop-blur-lg {
+  backdrop-filter: blur(16px);
+}
+
+/* Glass morphism utilities - refined for modern UI */
+.glass {
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.glass-dark {
+  background: rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Background colors for layout elements */
+.bg-modern {
+  background: #000000 !important;
+}
+
+.bg-card {
+  background: #000000 !important;
+}
+
+/* Enhanced sophisticated dark textured background */
+body, html, #root {
+  background: #0a0a0a !important;
+  background-image: 
+    radial-gradient(circle at 15% 40%, rgba(30, 41, 59, 0.08) 0%, transparent 60%),
+    radial-gradient(circle at 85% 25%, rgba(15, 23, 42, 0.06) 0%, transparent 55%),
+    radial-gradient(circle at 45% 85%, rgba(17, 24, 39, 0.05) 0%, transparent 50%),
+    radial-gradient(circle at 70% 15%, rgba(31, 41, 55, 0.04) 0%, transparent 45%),
+    linear-gradient(135deg, rgba(15, 23, 42, 0.02) 0%, transparent 40%, rgba(17, 24, 39, 0.02) 80%, transparent 100%),
+    repeating-linear-gradient(
+      30deg,
+      transparent,
+      transparent 60px,
+      rgba(255, 255, 255, 0.008) 60px,
+      rgba(255, 255, 255, 0.008) 62px
+    ),
+    repeating-linear-gradient(
+      -30deg,
+      transparent,
+      transparent 60px,
+      rgba(255, 255, 255, 0.006) 60px,
+      rgba(255, 255, 255, 0.006) 62px
+    ),
+    radial-gradient(ellipse at center, rgba(15, 23, 42, 0.03) 0%, transparent 70%) !important;
+}
+
+main, .min-h-screen {
+  background: transparent !important;
+}
+
+/* Text styles for modern UI */
+.text-headline {
+  color: var(--text-headline);
+}
+
+.text-body {
+  color: var(--text-body);
+}
+
+/* Updated sidebar navigation items */
+.nav-item {
+  @apply rounded-md transition-all duration-200 hover:bg-gray-100 dark:hover:bg-gray-800;
+}
+
+.nav-item.active {
+  background-color: rgba(79, 70, 229, 0.1);
+  @apply text-[var(--primary)];
+  @apply border-l-2 border-[var(--primary)];
+}
+
+/* Flat badges for sidebar */
+.badge-flat {
+  @apply text-xs font-normal px-2 py-0.5 rounded-md;
+  @apply bg-opacity-10 border-none uppercase tracking-wide;
+}

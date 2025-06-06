@@ -1,0 +1,80 @@
+🌐 TASK: BUILD MARKET INTELLIGENCE PANEL (UPGRADE FEATURE)
+
+You are now creating the third and final panel in the SmartSite Admin Control Room: **Market Intelligence**.
+
+---
+
+🧭 Route: `/admin/market-intelligence`  
+📁 Component: `MarketIntelligencePanel.tsx`  
+🔒 Access:
+- If plan = Free → show teaser and CTA
+- If plan = Pro or Upgrade Unlocked → show full panel
+
+---
+
+🧩 STRUCTURE & MODULES:
+
+✅ Section 1: “Trending in Your Industry”
+- Top 5 keywords or topics pulled from industry news APIs, newsletter feeds, Reddit, or scraped RSS feeds
+- Show:
+  - Topic
+  - Brief description or summary
+  - Popularity trend indicator (📈/📉)
+
+✅ Section 2: “Suggested Post Ideas”
+- AI-generated blog titles and social post snippets based on the trends above
+- Include a “Send to Blog Generator” button to prefill content
+
+✅ Section 3: “Competitor Watch”
+- Manual input: List of competitors (up to 5 URLs)
+- Show:
+  - What pages changed recently (e.g. via changelog service or scraped diff)
+  - Latest blog/news headlines
+  - Optional: Price changes or new product launches (stub placeholder)
+
+✅ Section 4: “Monthly Summary Report”
+- Download PDF or Email Summary button
+- Preview this month’s key market shifts + what they published + what you haven’t yet
+
+---
+
+🛒 UPGRADE LOGIC
+
+If user is **not upgraded**, show:
+> "Want to see what’s trending in your industry and what your competitors are launching?"  
+> 🔓 Unlock Market Intelligence for £9.99/mo  
+> [Pay Now] button (connect to LemonSqueezy or Stripe)
+
+✅ After payment:
+- Unlock `/admin/market-intelligence`
+- Store flag in user settings
+
+---
+
+🎨 UI NOTES:
+
+- Use card layout with soft dividers
+- Teal-accented upgrade section with lock icon for gated users
+- Support dark mode styling fallback
+- Add “Market View” button to `/admin/dashboard` if plan = Pro
+
+---
+
+📁 FILES TO CREATE:
+
+- `src/routes/admin/market-intelligence.tsx`
+- `src/components/admin/MarketIntelligencePanel.tsx`
+- `src/services/marketTrendsService.ts`
+- `src/utils/competitorWatcher.ts` (stub ok)
+- Upgrade config/flag logic inside user settings or planService
+
+---
+
+📣 OUTPUT:
+
+1. Full panel view for unlocked users
+2. Teaser/locked view for free users
+3. Payment connection logic (even if stubbed)
+4. Summary of future integration points (e.g. feed sources, scraping, etc.)
+
+Let’s give every business a telescope into their market — and help them act first.

@@ -1,0 +1,738 @@
+NextMonth Client Marketplace Integration Guide
+For Progress Accountants Client Instance
+This comprehensive documentation explains how to integrate your Progress Accountants Replit instance with the NextMonth Dev Marketplace, allowing you to browse, install, and manage tools published by NextMonth Lab and approved by NextMonth Dev.
+
+1. Client Integration Overview
+The NextMonth Marketplace system allows client instances to:
+
+Browse available tools published by NextMonth Dev
+Install tools with custom configurations for your business needs
+Manage installed tools (view, configure, uninstall)
+Get automatic updates when tools are improved
+Unsupported image
+
+2. Getting Started
+2.1 Installation Prerequisites
+Before connecting to the marketplace, ensure your Progress Accountants instance has:
+
+Node.js v14+ environment
+Network access to NextMonth Dev API endpoints
+Your unique client tenant ID (provided during client setup)
+Optional: API key for enhanced security
+2.2 Installing the Client Adapter
+Add the NextMonth Marketplace client adapter to your project:
+
+# If using npm
+npm install @nextmonth/marketplace-client-adapter
+# If using yarn
+yarn add @nextmonth/marketplace-client-adapter
+Or add the client adapter directly by copying marketplace/client-marketplace-adapter.js to your project.
+
+2.3 Basic Setup
+Initialize the client adapter in your application:
+
+// Import the marketplace adapter
+const { createClient } = require('./marketplace/client-marketplace-adapter');
+// or if using the npm package:
+// const { createClient } = require('@nextmonth/marketplace-client-adapter');
+// Create marketplace client
+const marketplaceClient = createClient(
+  'progress-accountants-tenant-id', // Replace with your actual tenant ID
+  'https://nextmonth-dev.replit.app',  // NextMonth Dev URL
+  process.env.MARKETPLACE_API_KEY  // Optional API key
+);
+// Now you can use marketplaceClient to interact with the marketplace
+3. Client API Reference
+3.1 Browsing Available Tools
+// Get all published tools
+async function browseMarketplace() {
+  try {
+    // Get all available tools
+    const allTools = await marketplaceClient.getAvailableTools();
+    console.log(`Found ${allTools.length} available tools`);
+    
+    // Get tools by category
+    const analyticsTools = await marketplaceClient.getAvailableTools({
+      category: 'Analytics'
+    });
+    console.log(`Found ${analyticsTools.length} analytics tools`);
+    
+    // Get available categories
+    const categories = await marketplaceClient.getCategories();
+    console.log('Available categories:', categories);
+    
+    return allTools;
+  } catch (error) {
+    console.error('Error browsing marketplace:', error.message);
+    throw error;
+  }
+}
+3.2 Installing Tools
+// Install a tool with custom configuration
+async function installTool(toolId, customConfig = {}) {
+  try {
+    // Example custom configuration
+    const config = {
+      // Override default settings
+      display_limit: 100,
+      report_format: 'PDF',
+      
+      // Business-specific settings
+      business_name: 'Progress Accountants',
+      tax_jurisdiction: 'UK',
+      
+      // Integration settings
+      webhook_url: 'https://progress-accountants.replit.app/api/webhook',
+      notification_email: 'admin@progress-accountants.example.com'
+    };
+    
+    // Merge provided config with defaults
+    const finalConfig = { ...config, ...customConfig };
+    
+    // Install the tool
+    const result = await marketplaceClient.installTool(
+      toolId,
+      finalConfig,
+      'admin@progress-accountants.example.com' // User performing installation
+    );
+    
+    console.log('Tool installed successfully:', result);
+    return result;
+  } catch (error) {
+    console.error('Error installing tool:', error.message);
+    throw error;
+  }
+}
+3.3 Managing Installed Tools
+// Get all tools installed for this client
+async function getInstalledTools() {
+  try {
+    const installedTools = await marketplaceClient.getInstalledTools();
+    console.log(`Found ${installedTools.length} installed tools`);
+    return installedTools;
+  } catch (error) {
+    console.error('Error fetching installed tools:', error.message);
+    throw error;
+  }
+}
+// Uninstall a tool
+async function uninstallTool(installationId) {
+  try {
+    const result = await marketplaceClient.uninstallTool(installationId);
+    console.log('Tool uninstallation result:', result);
+    return result;
+  } catch (error) {
+    console.error('Error uninstalling tool:', error.message);
+    throw error;
+  }
+}
+4. Implementing a Client-Side Marketplace UI
+4.1 Basic Dashboard Implementation
+Here's a simple Express route for a marketplace dashboard:
+
+const express = require('express');
+const router = express.Router();
+const { createClient } = require('./marketplace/client-marketplace-adapter');
+// Initialize marketplace client
+const marketplaceClient = createClient(
+  'progress-accountants-tenant-id',
+  'https://nextmonth-dev.replit.app'
+);
+// Marketplace dashboard route
+router.get('/marketplace', async (req, res) => {
+  try {
+    // Get available tools and categories
+    const [tools, categories, installedTools] = await Promise.all([
+      marketplaceClient.getAvailableTools(),
+      marketplaceClient.getCategories(),
+      marketplaceClient.getInstalledTools()
+    ]);
+    
+    // Render marketplace dashboard
+    res.render('marketplace', {
+      tools,
+      categories,
+      installedTools,
+      selectedCategory: req.query.category || ''
+    });
+  } catch (error) {
+    console.error('Marketplace error:', error);
+    res.status(500).render('error', { message: 'Failed to load marketplace' });
+  }
+});
+// Route for filtering by category
+router.get('/marketplace/category/:category', async (req, res) => {
+  try {
+    const tools = await marketplaceClient.getAvailableTools({
+      category: req.params.category
+    });
+    
+    res.json(tools);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+// Install tool route
+router.post('/marketplace/install/:toolId', async (req, res) => {
+  try {
+    const result = await marketplaceClient.installTool(
+      req.params.toolId,
+      req.body.configuration || {},
+      req.session.user.email
+    );
+    
+    res.json({ success: true, installation: result });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+// Uninstall tool route
+router.post('/marketplace/uninstall/:installationId', async (req, res) => {
+  try {
+    const result = await marketplaceClient.uninstallTool(
+      req.params.installationId
+    );
+    
+    res.json({ success: true, result });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+module.exports = router;
+4.2 HTML Template Example
+Basic Handlebars/EJS template for your marketplace page:
+
+<!-- marketplace.ejs or marketplace.hbs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Progress Accountants - Tool Marketplace</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1>NextMonth Tool Marketplace</h1>
+    
+    <div class="marketplace-filters">
+      <h3>Categories</h3>
+      <ul class="category-list">
+        <li><a href="/marketplace" class="<%= !selectedCategory ? 'active' : '' %>">All</a></li>
+        <% categories.forEach(category => { %>
+          <li>
+            <a href="/marketplace?category=<%= category %>" 
+               class="<%= selectedCategory === category ? 'active' : '' %>">
+              <%= category %>
+            </a>
+          </li>
+        <% }); %>
+      </ul>
+    </div>
+    
+    <div class="marketplace-content">
+      <h2>Available Tools</h2>
+      
+      <div class="tools-grid">
+        <% tools.forEach(tool => { %>
+          <div class="tool-card" data-tool-id="<%= tool.id %>">
+            <div class="tool-header">
+              <h3><%= tool.tool_name %></h3>
+              <span class="version">v<%= tool.tool_version %></span>
+            </div>
+            <div class="tool-body">
+              <p><%= tool.description %></p>
+              <div class="tool-meta">
+                <span class="category"><%= tool.tool_category %></span>
+              </div>
+            </div>
+            <div class="tool-footer">
+              <button class="btn btn-primary install-tool" 
+                      data-tool-id="<%= tool.id %>">
+                Install
+              </button>
+              <button class="btn btn-secondary view-details" 
+                      data-tool-id="<%= tool.id %>">
+                Details
+              </button>
+            </div>
+          </div>
+        <% }); %>
+      </div>
+      
+      <h2>Installed Tools</h2>
+      
+      <div class="tools-grid">
+        <% installedTools.forEach(tool => { %>
+          <div class="tool-card installed" data-tool-id="<%= tool.tool_id %>">
+            <div class="tool-header">
+              <h3><%= tool.tool_name %></h3>
+              <span class="version">v<%= tool.tool_version %></span>
+            </div>
+            <div class="tool-body">
+              <p><%= tool.description %></p>
+              <div class="tool-meta">
+                <span class="category"><%= tool.tool_category %></span>
+                <span class="installed-date">
+                  Installed: <%= new Date(tool.installed_at).toLocaleDateString() %>
+                </span>
+              </div>
+            </div>
+            <div class="tool-footer">
+              <button class="btn btn-danger uninstall-tool" 
+                      data-installation-id="<%= tool.id %>">
+                Uninstall
+              </button>
+              <button class="btn btn-secondary view-config" 
+                      data-installation-id="<%= tool.id %>">
+                Configuration
+              </button>
+            </div>
+          </div>
+        <% }); %>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Installation Modal -->
+  <div id="installModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Install Tool</h2>
+      <form id="installForm">
+        <input type="hidden" id="toolId" name="toolId">
+        <div class="form-group">
+          <label for="customConfig">Custom Configuration:</label>
+          <textarea id="customConfig" name="customConfig" rows="10" 
+                    placeholder="{&#10;  // Enter your custom configuration here&#10;}"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Install</button>
+      </form>
+    </div>
+  </div>
+  
+  <script src="/js/marketplace.js"></script>
+</body>
+</html>
+4.3 Client-Side JavaScript
+// public/js/marketplace.js
+document.addEventListener('DOMContentLoaded', function() {
+  // Get modal elements
+  const installModal = document.getElementById('installModal');
+  const closeBtn = installModal.querySelector('.close');
+  const installForm = document.getElementById('installForm');
+  const toolIdInput = document.getElementById('toolId');
+  const customConfigTextarea = document.getElementById('customConfig');
+  
+  // Installation buttons
+  document.querySelectorAll('.install-tool').forEach(button => {
+    button.addEventListener('click', function() {
+      const toolId = this.getAttribute('data-tool-id');
+      toolIdInput.value = toolId;
+      customConfigTextarea.value = '{\n  // Enter your custom configuration here\n}';
+      installModal.style.display = 'block';
+    });
+  });
+  
+  // Uninstallation buttons
+  document.querySelectorAll('.uninstall-tool').forEach(button => {
+    button.addEventListener('click', function() {
+      if (confirm('Are you sure you want to uninstall this tool?')) {
+        const installationId = this.getAttribute('data-installation-id');
+        uninstallTool(installationId);
+      }
+    });
+  });
+  
+  // View configuration buttons
+  document.querySelectorAll('.view-config').forEach(button => {
+    button.addEventListener('click', function() {
+      const installationId = this.getAttribute('data-installation-id');
+      // Fetch and display configuration
+      fetch(`/api/tool-installations/${installationId}/config`)
+        .then(response => response.json())
+        .then(data => {
+          alert(JSON.stringify(data.configuration, null, 2));
+        })
+        .catch(error => {
+          console.error('Error fetching configuration:', error);
+          alert('Failed to load configuration');
+        });
+    });
+  });
+  
+  // Close modal
+  closeBtn.addEventListener('click', function() {
+    installModal.style.display = 'none';
+  });
+  
+  // Click outside modal to close
+  window.addEventListener('click', function(event) {
+    if (event.target === installModal) {
+      installModal.style.display = 'none';
+    }
+  });
+  
+  // Handle installation form submission
+  installForm.addEventListener('submit', function(event) {
+    event.preventDefault();
+    
+    const toolId = toolIdInput.value;
+    let customConfig = {};
+    
+    try {
+      // Parse the JSON configuration if provided
+      if (customConfigTextarea.value.trim()) {
+        customConfig = JSON.parse(customConfigTextarea.value);
+      }
+    } catch (error) {
+      alert('Invalid JSON configuration. Please check your syntax.');
+      return;
+    }
+    
+    // Submit installation request
+    fetch(`/marketplace/install/${toolId}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ configuration: customConfig })
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        alert('Tool installed successfully!');
+        location.reload(); // Refresh to show updated list
+      } else {
+        alert(`Installation failed: ${data.error}`);
+      }
+    })
+    .catch(error => {
+      console.error('Error installing tool:', error);
+      alert('Installation failed. Please try again.');
+    });
+    
+    installModal.style.display = 'none';
+  });
+  
+  // Function to uninstall a tool
+  function uninstallTool(installationId) {
+    fetch(`/marketplace/uninstall/${installationId}`, {
+      method: 'POST'
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        alert('Tool uninstalled successfully!');
+        location.reload(); // Refresh to show updated list
+      } else {
+        alert(`Uninstallation failed: ${data.error}`);
+      }
+    })
+    .catch(error => {
+      console.error('Error uninstalling tool:', error);
+      alert('Uninstallation failed. Please try again.');
+    });
+  }
+});
+5. Tool Integration Patterns
+5.1 Handling Tool Functionality
+Once a tool is installed, you'll need to integrate it with your client application. There are three common patterns:
+
+5.1.1 API-Based Integration
+For tools that provide API endpoints:
+
+// Assuming the tool provides data endpoints
+async function getToolData(toolName, params = {}) {
+  // First get installed tools to find the right one
+  const installedTools = await marketplaceClient.getInstalledTools();
+  const toolInstallation = installedTools.find(t => t.tool_name === toolName);
+  
+  if (!toolInstallation) {
+    throw new Error(`Tool ${toolName} is not installed`);
+  }
+  
+  // Extract the endpoint from the tool's endpoints
+  const dataEndpoint = toolInstallation.endpoints.data;
+  
+  // Make request to NextMonth Dev
+  const response = await fetch(`https://nextmonth-dev.replit.app${dataEndpoint}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Tenant-ID': 'progress-accountants-tenant-id'
+    },
+    body: JSON.stringify(params)
+  });
+  
+  if (!response.ok) {
+    throw new Error(`Tool API error: ${response.status}`);
+  }
+  
+  return await response.json();
+}
+5.1.2 Widget-Based Integration
+For tools that provide UI components:
+
+// In your main layout or specific pages where you want to show tool widgets
+function loadToolWidgets() {
+  // Get container for widgets
+  const widgetContainer = document.getElementById('tool-widgets');
+  
+  // Fetch installed tools
+  fetch('/api/installed-tools')
+    .then(response => response.json())
+    .then(tools => {
+      // For each installed tool that has a widget
+      tools.forEach(tool => {
+        if (tool.widget_url) {
+          // Create iframe for the widget
+          const widget = document.createElement('iframe');
+          widget.src = `https://nextmonth-dev.replit.app${tool.widget_url}?tenant_id=progress-accountants-tenant-id`;
+          widget.className = 'tool-widget';
+          widget.title = tool.tool_name;
+          widget.setAttribute('data-tool-id', tool.tool_id);
+          
+          // Add to container
+          widgetContainer.appendChild(widget);
+        }
+      });
+    })
+    .catch(error => {
+      console.error('Error loading tool widgets:', error);
+    });
+}
+5.1.3 Data Processing Integration
+For tools that process data:
+
+// Example: Use a reporting tool to generate reports
+async function generateReport(reportType, data) {
+  // Find the reporting tool
+  const installedTools = await marketplaceClient.getInstalledTools();
+  const reportingTool = installedTools.find(t => t.tool_category === 'Reporting');
+  
+  if (!reportingTool) {
+    throw new Error('No reporting tool installed');
+  }
+  
+  // Use the tool's processing endpoint
+  const processEndpoint = reportingTool.endpoints.process;
+  
+  // Send data for processing
+  const response = await fetch(`https://nextmonth-dev.replit.app${processEndpoint}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Tenant-ID': 'progress-accountants-tenant-id'
+    },
+    body: JSON.stringify({
+      report_type: reportType,
+      data: data,
+      format: 'pdf', // or any format supported by the tool
+      config: reportingTool.custom_configuration
+    })
+  });
+  
+  if (!response.ok) {
+    throw new Error(`Report generation failed: ${response.status}`);
+  }
+  
+  // Handle binary data for PDF reports
+  if (reportType === 'pdf') {
+    return await response.blob();
+  }
+  
+  return await response.json();
+}
+5.2 Tool Data Storage
+Tools may need to store data. There are two recommended approaches:
+
+5.2.1 Remote Storage (Recommended)
+Data is stored in NextMonth Dev's environment:
+
+// Store data using the tool's storage endpoint
+async function storeToolData(toolName, dataKey, dataValue) {
+  const installedTools = await marketplaceClient.getInstalledTools();
+  const tool = installedTools.find(t => t.tool_name === toolName);
+  
+  if (!tool) {
+    throw new Error(`Tool ${toolName} is not installed`);
+  }
+  
+  const storageEndpoint = tool.endpoints.storage;
+  
+  const response = await fetch(`https://nextmonth-dev.replit.app${storageEndpoint}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Tenant-ID': 'progress-accountants-tenant-id'
+    },
+    body: JSON.stringify({
+      key: dataKey,
+      value: dataValue
+    })
+  });
+  
+  return await response.json();
+}
+5.2.2 Local Storage (Alternative)
+Store data in your client application's database with a tool-specific schema:
+
+// Assuming you have a database connection
+async function storeLocalToolData(toolId, dataKey, dataValue) {
+  // Using a generic tool_data table
+  await db.query(
+    'INSERT INTO tool_data (tool_id, data_key, data_value) VALUES (?, ?, ?) ' +
+    'ON DUPLICATE KEY UPDATE data_value = VALUES(data_value)',
+    [toolId, dataKey, JSON.stringify(dataValue)]
+  );
+}
+async function getLocalToolData(toolId, dataKey) {
+  const result = await db.query(
+    'SELECT data_value FROM tool_data WHERE tool_id = ? AND data_key = ?',
+    [toolId, dataKey]
+  );
+  
+  if (result.length === 0) {
+    return null;
+  }
+  
+  return JSON.parse(result[0].data_value);
+}
+6. Security Considerations
+6.1 API Key Management
+Store your marketplace API key securely:
+
+// In your .env file
+MARKETPLACE_API_KEY=your_secret_key_here
+// In your code
+require('dotenv').config();
+const apiKey = process.env.MARKETPLACE_API_KEY;
+6.2 Data Validation
+Always validate configuration data and API responses:
+
+function validateToolConfig(config, schema) {
+  // Basic validation example - in production use a schema validation library
+  const errors = [];
+  
+  // Check required fields
+  for (const field of schema.required || []) {
+    if (!(field in config)) {
+      errors.push(`Missing required field: ${field}`);
+    }
+  }
+  
+  // Check field types
+  for (const [field, value] of Object.entries(config)) {
+    const expectedType = schema.properties?.[field]?.type;
+    if (expectedType && typeof value !== expectedType) {
+      errors.push(`Field ${field} should be of type ${expectedType}`);
+    }
+  }
+  
+  return {
+    valid: errors.length === 0,
+    errors
+  };
+}
+6.3 Error Handling
+Implement robust error handling:
+
+async function safeToolOperation(operationFn) {
+  try {
+    return await operationFn();
+  } catch (error) {
+    // Log the error
+    console.error('Tool operation failed:', error);
+    
+    // Notify administrators
+    await notifyAdmins({
+      type: 'tool_error',
+      message: error.message,
+      stack: error.stack,
+      timestamp: new Date().toISOString()
+    });
+    
+    // Return safe error response
+    return {
+      success: false,
+      error: 'Operation failed. Please contact support if the issue persists.'
+    };
+  }
+}
+// Usage
+app.get('/api/tool-data', async (req, res) => {
+  const result = await safeToolOperation(async () => {
+    return await getToolData('AnalyticsTool', req.query);
+  });
+  
+  if (result.success === false) {
+    return res.status(500).json({ error: result.error });
+  }
+  
+  res.json(result);
+});
+7. Troubleshooting
+7.1 Common Issues and Solutions
+Issue	Possible Cause	Solution
+Connection refused	Network/firewall issue	Check network settings, ensure outbound connections to NextMonth Dev are allowed
+401 Unauthorized	Invalid API key	Verify your API key is correct and not expired
+404 Not Found	Incorrect tenant ID	Confirm your tenant ID is correct
+Tool installation fails	Incompatible configuration	Ensure your custom configuration matches the tool's schema
+7.2 Health Check Endpoint
+Create a health check endpoint to verify your marketplace connection:
+
+app.get('/api/marketplace-health', async (req, res) => {
+  try {
+    // Try to fetch categories to check connection
+    const categories = await marketplaceClient.getCategories();
+    
+    // Check installed tools
+    const installedTools = await marketplaceClient.getInstalledTools();
+    
+    res.json({
+      status: 'healthy',
+      connection: 'successful',
+      categories_count: categories.length,
+      installed_tools_count: installedTools.length
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: 'unhealthy',
+      connection: 'failed',
+      error: error.message
+    });
+  }
+});
+8. Support Resources
+8.1 Contact Information
+For marketplace-related support:
+
+Email: marketplace-support@nextmonth.example.com
+Support Portal: https://nextmonth-dev.replit.app/support
+Emergency Contact: +1-555-123-4567
+8.2 Documentation Resources
+NextMonth Dev API Documentation
+Tool Schema Reference
+Client Integration Examples
+9. FAQ
+Q: Are tools automatically updated when new versions are published?
+A: No, you need to manually update to new versions of tools. This ensures compatibility with your custom configurations.
+
+Q: Can we modify tool configurations after installation?
+A: Yes, you can update a tool's configuration by calling the API endpoint:
+
+marketplaceClient.updateToolConfiguration(installationId, updatedConfig);
+Q: How can we limit which users can install tools from the marketplace?
+A: Implement role-based access control in your application:
+
+function canManageMarketplace(user) {
+  return user.roles.includes('admin') || user.roles.includes('marketplace_manager');
+}
+Q: How can we test tools before installing them in production?
+A: Contact NextMonth Dev to request a sandbox environment for testing tools before deploying them to your production instance.
+
+Q: Is there a limit to how many tools we can install?
+A: No hard limit is imposed, but consider performance implications of installing many tools. Monitor system resources.
+
+This documentation is maintained by the NextMonth Dev Client Integration Team. Last updated: April 21, 2025.

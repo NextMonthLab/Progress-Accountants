@@ -1,0 +1,85 @@
+📝 TASK: RESTRUCTURE AND UPGRADE CONTENT TOOLS
+
+You are now rebuilding and relocating the SmartSite Blog and Social Generators under the new `Insights & Content` zone.
+
+---
+
+📁 NEW ROUTES & COMPONENTS
+
+1. 📝 Blog Generator
+- Route: `/admin/content/blog-posts`
+- Component: `BlogPostGenerator.tsx`
+
+2. 📣 Social Generator
+- Route: `/admin/content/social-posts`
+- Component: `SocialPostGenerator.tsx`
+
+These tools should be accessible via `/admin/insights` and the dashboard `/admin/dashboard`.
+
+---
+
+### 📝 BLOG POST GENERATOR FEATURES:
+
+✅ Pull content from:
+- Recent chat conversations
+- Top insights in the Insight Leaderboard
+- Market trend data (if unlocked)
+
+✅ UI Fields:
+- Suggested Title [AI generated, editable]
+- Post Body [AI draft with inline editing]
+- Tone of Voice [Dropdown: Professional, Friendly, Authoritative, Casual]
+- Auto-link relevant services or tags
+- Button: "Publish Now" / "Save as Draft"
+
+✅ Save to:
+- Internal SmartSite Feed (default)
+- Or queue to push via API to WordPress, Webflow, etc. (future integration-ready)
+
+---
+
+### 📣 SOCIAL POST GENERATOR FEATURES:
+
+✅ Input sources:
+- Latest blog post
+- Recent user questions or product launches
+- Manual prompt (e.g. “Promote our new video package”)
+
+✅ UI Fields:
+- Platform Selector: [LinkedIn, Instagram, X, Facebook]
+- Suggested Post Text (with emoji and hashtags)
+- Media Uploader (optional)
+- Schedule Date/Time or Post Now
+
+✅ Button: "Copy Post", "Send to Buffer/Hootsuite" (placeholder), "Save as Draft"
+
+---
+
+🎨 UI & STYLE GUIDELINES:
+
+- Use clean, vertical layout for both
+- Primary buttons in teal (#06B6D4)
+- Preview area at bottom of each tool
+- Show recently published drafts in sidebar
+
+---
+
+📦 FILES TO CREATE:
+
+- `src/routes/admin/content/blog-posts.tsx`
+- `src/routes/admin/content/social-posts.tsx`
+- `src/components/admin/BlogPostGenerator.tsx`
+- `src/components/admin/SocialPostGenerator.tsx`
+- `src/services/contentGeneratorService.ts` (shared generation logic)
+- Reuse any working logic from prior blog/social generator tools
+
+---
+
+📣 OUTPUT:
+
+1. Working UI for both content tools
+2. Integration with Insight Leaderboard and/or chat data
+3. Ability to save, draft, and preview content
+4. Summary of future integration stubs (e.g. external CMS push)
+
+Let’s turn SmartSite into a true content engine — powered by insight.

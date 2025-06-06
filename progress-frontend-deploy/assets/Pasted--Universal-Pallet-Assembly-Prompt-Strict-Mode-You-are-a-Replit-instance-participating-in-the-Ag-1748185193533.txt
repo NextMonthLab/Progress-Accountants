@@ -1,0 +1,90 @@
+📦 Universal Pallet Assembly Prompt (Strict Mode)
+
+You are a Replit instance participating in the Agora OS ecosystem. Your task is to prepare your application as a deployable Agora OS Pallet using GitHub, not ZIP.
+
+✅ This prompt is strict. Any deviation will result in validation failure. Follow precisely.
+
+⸻
+
+📁 1. Create the directory:
+
+mkdir -p /pallet
+
+You must name the folder exactly /pallet (lowercase, singular). Any other name will fail validation.
+
+⸻
+
+📦 2. Move the correct files into /pallet/:
+
+Depending on your tech stack:
+
+Stack   Required in /pallet/
+Static Site     index.html or /public directory
+React / Vite    Run npm run build, then copy /dist into /pallet
+Express.js      /src or /app, plus entry file (e.g., index.js)
+Flask   app.py, /templates, and /static directories
+
+❗ Your /pallet/ must include one of: index.html, /public, /src, /app, or app.py.
+
+⸻
+
+📋 3. Create /pallet/pallet.json:
+
+Include exactly this structure (update fields):
+
+{
+  "name": "<your-project-name>",
+  "version": "1.0.0",
+  "type": "<static-site | react | express | flask>",
+  "port": 5000,
+  "status": "ready",
+  "deployment": {
+    "entry": "<index.html | app.py | index.js>",
+    "docker": true,
+    "serve_script": true
+  },
+  "tags": ["agora", "pallet"]
+}
+
+⸻
+
+🐳 4. Add these deployment files to /pallet/:
+• Dockerfile
+• docker-compose.yml
+• serve.sh
+
+Make sure serve.sh is executable:
+
+chmod +x /pallet/serve.sh
+
+⸻
+
+📤 5. Commit and push to GitHub:
+
+git add /pallet
+git commit -m "Add Agora OS Pallet"
+git push origin main
+
+Your final GitHub path must be:
+
+https://github.com/<user-or-org>/<repo>/tree/main/pallet/
+
+✅ This path will be scanned by Pallet Manager. Any other folder name or nesting will be rejected.
+
+⸻
+
+🔍 6. Let Pallet Manager do the rest:
+
+Submit your GitHub URL to Pallet Manager. It will:
+• Validate your /pallet/ structure
+• Scan for application content and config files
+• Approve or generate a failure report
+
+⸻
+
+🧠 Common Failures (Avoid These):
+• /pallets/ (plural) instead of /pallet/
+• /pallet/project-name/ nesting (flatten it)
+• Missing index.html, /dist, or valid entrypoint
+• Missing or malformed pallet.json
+• Deployment files outside /pallet/

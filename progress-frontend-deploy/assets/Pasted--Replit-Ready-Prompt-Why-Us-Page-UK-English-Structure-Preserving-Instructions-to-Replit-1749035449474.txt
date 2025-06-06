@@ -1,0 +1,71 @@
+✏️ Replit-Ready Prompt — Why Us Page (UK English, Structure-Preserving)
+
+⚠️ Instructions to Replit:  
+Do not change the page layout or structure. Only replace text content with the version below. Ensure all spelling follows UK English conventions. Maintain headings, section order, and UI elements as-is.
+
+---
+
+Header:
+💡 Why Choose Progress?  
+We’re not just your accountants—we’re your growth partners.
+
+Intro:
+Progress Accountants exists to help ambitious businesses build strong financial foundations, make confident decisions, and unlock lasting growth.
+
+We combine real human relationships with smart systems and sector expertise—delivering support that’s proactive, not just reactive.
+
+—
+
+Section: What Makes Us Different
+
+🚀 Growth-Focused  
+We go beyond compliance to help you plan, forecast, and scale—whatever growth means to you.
+
+🧑‍💻 Tech-Savvy  
+From cloud dashboards to automation, we bring the tools and know-how to make your finances run smoother.
+
+📞 Always Human  
+Real people. Straight answers. You’ll always have someone on your side who speaks your language.
+
+📊 Clarity Over Complexity  
+No jargon. No surprises. Just clear, actionable insight into what’s working, what’s changing, and what to do next.
+
+🎯 Sector-Specific Knowledge  
+We don’t try to be everything to everyone—we specialise in Construction, Film, Music, Property, and Professional Services.
+
+—
+
+Section: Our Values
+
+✨ Simplicity  
+We keep things clear, clean, and straightforward—because confidence starts with understanding.
+
+🤝 Partnership  
+We’re in it with you. Whether you’re launching, scaling, or stuck—we’re right there alongside you.
+
+🧠 Curiosity  
+We don’t just tick boxes. We ask questions, spot patterns, and look ahead.
+
+⚡ Proactivity  
+We don’t wait for year-end—we flag opportunities and issues early, so you stay in control.
+
+—
+
+Section: What Clients Say
+
+★★★★★  
+"Progress helped us make sense of our numbers and plan for the future. It’s not just accounting—it’s guidance."  
+— Consultancy Owner, Midlands
+
+★★★★★  
+"I finally feel like we have accountants who care. Fast replies, good advice, and no more chasing."  
+— Creative Director, London
+
+—
+
+Final CTA:
+See the difference for yourself  
+Book a free consultation and discover how Progress can support your business—not just your bookkeeping.
+
+CTA: Book a Free Consultation  
+CTA: Explore Our Services

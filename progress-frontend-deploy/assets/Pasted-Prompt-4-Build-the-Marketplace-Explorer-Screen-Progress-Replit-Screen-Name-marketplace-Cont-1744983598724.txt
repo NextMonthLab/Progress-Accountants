@@ -1,0 +1,137 @@
+Prompt 4: Build the Marketplace Explorer Screen – Progress Replit
+
+Screen Name: marketplace
+
+⸻
+
+Context for Replit:
+
+This is the first screen users see after completing onboarding (after launch-ready).
+It acts as their dashboard for growth—a clean, modular space to browse and activate tools, templates, and features inside their NextMonth system.
+
+This Marketplace will:
+	•	Showcase what the platform can do
+	•	Let users explore new screens, tools, and automations
+	•	Evolve over time as new features are added
+	•	Display which features are already activated or locked
+
+⸻
+
+Screen Purpose:
+	•	Encourage users to explore and expand their OS
+	•	Provide categorized cards for:
+	•	Page Templates
+	•	Campaign Tools
+	•	Content Generators
+	•	Utility Modules
+	•	Let users activate screens or tools with one click
+	•	Display current activation status
+	•	Optionally show credit cost for premium tools (not active yet)
+
+⸻
+
+Layout:
+
+1. Header Area
+
+Explore the NextMonth Marketplace
+Add new screens, tools, and automations to expand your Business OS. No code. No friction.
+
+⸻
+
+2. Categorized Modules (Card Grid Layout)
+
+Categories to Include:
+
+⸻
+
+A. Page Templates
+	•	Case Study Template
+
+Tell the story of your client success—auto-formatted and conversion-ready.
+[ Activate ] / [ Preview ]
+
+	•	Team Page Template
+
+Showcase your team in a clean, on-brand layout.
+[ Activate ]
+
+	•	Pricing Page Template (optional)
+
+Display your offers clearly and confidently.
+[ Activate ]
+
+⸻
+
+B. Campaign Tools
+	•	Lead Tracker
+
+Track anonymous visitors and convert traffic into opportunities.
+[ Activated ]
+
+	•	Script Builder
+
+Generate pitch scripts for outreach or landing pages.
+[ Activate ]
+
+	•	Email Campaign Composer
+
+Create email sequences using your brand tone and business goals.
+[ Activate ]
+
+⸻
+
+C. Content Tools
+	•	Blog Generator
+
+Generate SEO-friendly articles based on your expertise and target audience.
+[ Activate ]
+
+	•	Social Post Pack
+
+Auto-generate branded post series for campaigns, launches, or testimonials.
+[ Activate ]
+
+⸻
+
+D. Utility Modules
+	•	Brand Guidelines Editor (Already Active)
+
+Update your core visuals and messaging.
+[ Open ]
+
+	•	Business Identity Editor (Already Active)
+
+Refine your tone, values, and market focus.
+[ Open ]
+
+⸻
+
+Functionality:
+	•	Each card can have:
+	•	[ Activate ] button (updates project_context.modules)
+	•	Status: “Activated”, “Locked”, or “Not Yet Used”
+	•	Optional preview modal (Markdown or component preview)
+	•	Activated modules should appear in main sidebar/nav
+
+⸻
+
+Storage Example:
+
+project_context.modules = {
+  lead_tracker: "active",
+  blog_generator: "pending",
+  team_page: "inactive",
+  ...
+}
+
+
+
+⸻
+
+Design Notes:
+	•	Clean, bright grid layout with soft shadows
+	•	Card-based browsing
+	•	Optional filter or tab navigation per category
+	•	Use icons or emoji placeholders if visuals are not ready
+	•	Mobile friendly, responsive

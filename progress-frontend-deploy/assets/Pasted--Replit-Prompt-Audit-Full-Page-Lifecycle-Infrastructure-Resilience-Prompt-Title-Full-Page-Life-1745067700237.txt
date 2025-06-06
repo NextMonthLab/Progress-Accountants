@@ -1,0 +1,71 @@
+✅ Replit Prompt: Audit Full Page Lifecycle & Infrastructure Resilience
+
+Prompt Title: Full Page Lifecycle Evaluation – Progress OS
+
+I’d like you to run a full diagnostic on how our system currently handles the following real-world user scenarios. For each step, confirm:
+	•	The process flow from a technical and UI/UX perspective
+	•	Where that logic lives (which files / modules)
+	•	Any limitations or risks
+	•	Whether fallback or alert systems exist
+	•	If the Guardian or Vault are informed at any point
+
+⸻
+
+1. First-Time Login and Foundation Journey
+	•	What routes/pages are served when a user logs in for the first time?
+	•	How are the Foundation Pages surfaced? Are they required to proceed?
+	•	Where is the progress stored (local/session/server)?
+	•	What happens if a user refreshes or abandons mid-way?
+
+2. Bespoke Page Request
+	•	When a user submits a feature request or bespoke page idea, where does that data go?
+	•	Is it analyzed via OpenAI and classified? If so, how?
+	•	How do we decide if it’s feasible, and how is that decision communicated to the user?
+	•	Are responses stored or synced with Dev/Vault/Guardian?
+
+3. Marketplace Page Download
+	•	When a user downloads a page/module from the Marketplace:
+	•	Where is the download initiated from?
+	•	How is it added to their visible pages?
+	•	Is the Vault notified or versioned?
+	•	What if the page requires special config (e.g. custom form)?
+
+4. Handling Complicated Pages
+	•	If a user’s requested page is deemed too complex:
+	•	How do we detect this?
+	•	What guidance is given (in-app, Companion, Guardian)?
+	•	Is the request flagged for human review or reclassified?
+
+5. Page Viewing and Awareness
+	•	Once a page is added (Marketplace or bespoke), how is the user:
+	•	Notified?
+	•	Guided to view or edit the page?
+	•	Informed if the page has failed to render or import?
+	•	What systems log this interaction (Vault, Guardian, local logs)?
+
+6. Internal vs External Page Logic
+	•	How does the system differentiate:
+	•	Internal pages (e.g. dashboards, client portals)
+	•	Public/external pages (e.g. service landing pages)
+	•	Is there a tag, flag, or directory structure?
+	•	Do external pages automatically trigger SEO modules?
+
+7. SEO Tools & Enhancements
+	•	What SEO modules are currently in place?
+	•	Title/meta management?
+	•	URL optimization?
+	•	Canonical linking?
+	•	Sitemap generation?
+	•	Where does this logic live? (plugin, component, Vault CPT?)
+	•	How do we handle SEO for pages added via Marketplace?
+
+8. Handling Page Tweaks + UI/Design Changes
+	•	If a user wants to tweak a page’s design or layout:
+	•	What system handles that (Live Editor? Form + Preview?)
+	•	Where is the update stored? Is it versioned?
+	•	Do minor updates require Guardian/Vault resync?
+	•	Is there an alert if design rules are broken (e.g. brand consistency)?
+
+⸻
+
+For each of these eight flows, I’d like a clear technical answer plus any recommendations for improvement. If the system currently lacks a response for any of them, flag that visibly and propose a fix.

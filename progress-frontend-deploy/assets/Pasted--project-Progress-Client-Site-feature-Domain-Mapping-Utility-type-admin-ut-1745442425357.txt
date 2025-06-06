@@ -1,0 +1,58 @@
+{
+  "project": "Progress Client Site",
+  "feature": "Domain Mapping Utility",
+  "type": "admin/utility",
+  "placement": "Hidden inside Admin > Setup > Advanced Options",
+  "description": "A tucked-away screen for clients to connect their own custom domain via simple DNS instructions.",
+  "ui": {
+    "route": "/admin/setup/domain-mapping",
+    "title": "Connect Your Custom Domain",
+    "components": [
+      {
+        "type": "text",
+        "content": "You can connect your own domain to this site by updating your domain provider’s DNS settings."
+      },
+      {
+        "type": "form",
+        "fields": [
+          {
+            "label": "Your Domain (e.g. www.yourcompany.com)",
+            "name": "custom_domain",
+            "type": "text",
+            "placeholder": "Enter your full domain"
+          }
+        ],
+        "submitText": "Show DNS Instructions"
+      },
+      {
+        "type": "dynamicInstructionBlock",
+        "triggerField": "custom_domain",
+        "instructions": {
+          "header": "Please update your DNS settings as follows:",
+          "dnsRecords": [
+            {
+              "type": "CNAME",
+              "host": "www",
+              "pointsTo": "progress.nextmonth.site"
+            },
+            {
+              "type": "TXT",
+              "host": "_verify",
+              "value": "progress-site-verification"
+            }
+          ],
+          "note": "It may take up to 24 hours for changes to propagate. Once done, we’ll automatically check and verify your domain."
+        }
+      },
+      {
+        "type": "supportNote",
+        "content": "Not sure how to update your DNS? See help articles for: [GoDaddy](https://www.godaddy.com/help/add-a-cname-record-19236), [Namecheap](https://www.namecheap.com/support/knowledgebase/article.aspx/9640/10/how-to-create-a-cname-record/), [Cloudflare](https://developers.cloudflare.com/dns/manage-dns-records/how-to/create-dns-records/)."
+      }
+    ]
+  },
+  "logic": {
+    "onSubmit": "Show DNS instructions for domain input",
+    "onVerify": "Run background TXT record check every 6 hours",
+    "onSuccess": "Display confirmation and auto-activate domain"
+  }
+}

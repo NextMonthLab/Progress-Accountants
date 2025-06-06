@@ -1,0 +1,104 @@
+Prompt 2: Build the Foundation Pages Overview Screen
+
+Context for Replit:
+
+Now that the user has completed their homepage setup, we want to guide them through a series of essential foundation pages (About, Services, Contact, etc.). These are optional but recommended.
+
+Each page has:
+	•	A clean visual card
+	•	A “Start Setup” button
+	•	A completion status indicator
+	•	Option to skip—but only after actively choosing to skip
+
+Once the user completes (or skips) all foundation pages, they’re taken to Launch Mode, where they can access the Marketplace and build freely.
+
+⸻
+
+Screen Name: foundation-pages-overview
+
+Screen Purpose:
+
+Provide a visual, confidence-inspiring interface where the user can:
+	•	See what key pages are available to set up
+	•	Launch into the setup screen for each
+	•	Track which pages are complete
+	•	Skip pages only after consciously choosing to
+
+⸻
+
+Layout:
+
+Header Area
+
+Build the foundation of your business site
+These pages give your customers confidence—and give you a system to grow with.
+
+Page Cards (Grid or Stacked Layout)
+
+Each card includes:
+	•	Page Title (e.g. About, Services, Contact)
+	•	Short Description
+	•	Icon or Placeholder Preview
+	•	[ Start Setup ] button
+	•	Status Badge: “Not started”, “In progress”, or “Complete”
+	•	Optional Skip button with tooltip: “You can set this up later.”
+
+⸻
+
+Pages to Include (with copy):
+	1.	About
+
+Tell your story. Who you are, what you stand for, and why clients trust you.
+
+	2.	Services
+
+Showcase what you offer—clear, benefit-led, and structured for growth.
+
+	3.	Contact
+
+Make it easy to reach you. Include forms, links, or scheduling tools.
+
+	4.	Testimonials
+
+Build trust with real words from real clients.
+
+	5.	Pricing or FAQ (optional depending on business type)
+
+Answer common questions or explain your packages.
+
+⸻
+
+State Management:
+
+Each setup screen stores to:
+
+project_context.pages.about = { ... }
+project_context.pages.services = { ... }
+project_context.pages.contact = { ... }
+...
+
+Track status per page:
+
+project_context.page_status = {
+  about: "complete",
+  services: "in_progress",
+  contact: "not_started",
+  ...
+}
+
+
+
+⸻
+
+Navigation Logic:
+	•	Once all pages are marked complete or skipped, user is shown a “Continue to Launch” button at bottom of screen.
+	•	Button is disabled until all pages have been acknowledged (completed or skipped).
+	•	Upon clicking, route to: /launch-ready
+
+⸻
+
+Design Notes:
+	•	Use cards with hover/focus effects for good UX
+	•	Visually distinct “Start Setup” vs “Skip for Now” buttons
+	•	Completion status visually reinforces progress
+	•	Use progress bar or tracker if needed

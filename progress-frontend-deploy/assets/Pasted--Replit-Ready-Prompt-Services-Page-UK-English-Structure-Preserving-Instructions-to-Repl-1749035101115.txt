@@ -1,0 +1,62 @@
+✏️ Replit-Ready Prompt — Services Page (UK English, Structure-Preserving)
+
+⚠️ Instructions to Replit:  
+Do not change the page layout or structure. Only replace text content with the version below. Ensure all spelling follows UK English conventions. Maintain headings, section order, and UI elements as-is.
+
+---
+
+Header:
+🧾 Our Services  
+Accounting, Tax, and Strategic Support for Growing Businesses
+
+Intro:
+At Progress, we do more than keep you compliant—we help you grow. From day-to-day bookkeeping to long-term planning, our services are built around your goals, not just your deadlines.
+
+We specialise in small business support, construction, film, music, property, and professional services. Explore how we can help you stay in control and one step ahead.
+
+—
+
+Section: Core Services
+
+📊 Tax Planning & Preparation  
+Minimise liabilities and plan ahead with strategic tax support tailored to your business type and income streams.
+
+📚 Bookkeeping  
+Stay organised and up to date with clear, reliable bookkeeping that keeps your business running smoothly.
+
+📈 Business Advisory  
+Get real insight into your business performance with tailored advice, forecasts, and strategy sessions.
+
+📄 Financial Reporting  
+Understand your numbers in plain English with detailed, timely reports that support better decisions.
+
+🔍 Audit Support  
+Whether required or voluntary, we help you prepare for audits and reviews with clarity and confidence.
+
+☁️ Cloud Accounting  
+We use tools like Xero and QuickBooks to give you real-time visibility, automated workflows, and remote access.
+
+—
+
+Section: Specialist Services
+
+🎬 Industry-Specific Accounting  
+Tailored support for Construction, Film, Music, and Property—aligned to your sector’s compliance, tax, and financial structure needs.
+
+📅 Virtual Finance Director (VFD)  
+On-demand financial leadership without the overhead. Strategic planning, forecasting, and accountability for your growth journey.
+
+📉 Business Forecasting  
+Plan for the future with cash flow projections, growth targets, and scenario modelling tailored to your goals.
+
+🧰 SME Resource Hub  
+Access our downloadable PDFs, tax calendars, and business contact directory—free for UK business owners.
+
+—
+
+Final CTA:
+Not sure where to start?  
+Book a free discovery call and we’ll help map the right support for your business.
+
+CTA: Book a Consultation  
+CTA: Explore Our Sectors

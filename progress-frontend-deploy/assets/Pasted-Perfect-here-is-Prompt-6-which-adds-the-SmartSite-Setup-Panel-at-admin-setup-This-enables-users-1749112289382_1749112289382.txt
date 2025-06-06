@@ -1,0 +1,107 @@
+Perfect — here is Prompt 6, which adds the SmartSite Setup Panel at /admin/setup. This enables users to either embed SmartSite themselves with clear DIY instructions, or securely hand it off to your team for a one-off fee.
+
+⸻
+
+✅ REPLIT PROMPT 6
+
+Title: SmartSite Setup & Integration Panel (Embed or Let Us Handle It)
+Purpose: Create a first-time setup screen that supports both technical users and done-for-you clients.
+
+🚀 TASK: BUILD SMARTSITE SETUP PANEL
+
+You are now adding a new admin screen that helps clients **connect SmartSite to their existing website** — either on their own or by paying for hands-free setup.
+
+---
+
+🧭 Route: `/admin/setup`  
+📁 Component: `SmartSiteSetupPanel.tsx`  
+🔒 Access: Admin, Super Admin only
+
+---
+
+🧩 PANEL STRUCTURE:
+
+Split the page into two clean tabs or collapsible sections:
+
+---
+
+### 🛠️ SECTION 1: "Do It Yourself"
+
+> “If you or your developer manage your website, follow these steps to connect SmartSite manually.”
+
+✅ **Step 1: Create a subdomain**
+- Suggested: `feed.yourdomain.com`
+- DNS Instructions:
+  - Type: CNAME  
+  - Name: `feed`  
+  - Points to: `blog.smartsitehub.io` *(placeholder domain)*
+
+✅ **Step 2: Add this embed script**
+```html
+<!-- SmartSite Assistant + Tracking -->
+<script src="https://cdn.smartsitehub.io/loader.js" data-site-id="YOUR_SITE_ID"></script>
+
+	•	Should be placed in the <head> tag on every page of their site
+
+✅ Step 3: Test your connection
+	•	Button: Run Setup Check
+	•	Validates:
+	•	Script is live
+	•	Subdomain resolves
+	•	Assistant is initialized
+
+📎 Option to download PDF setup guide or copy to clipboard.
+
+⸻
+
+👨‍🔧 SECTION 2: “Let Us Do It For You”
+
+“Not sure how to do this? Let our team handle the setup.”
+
+📋 Form Fields:
+	•	Hosting Provider (Text input)
+	•	Domain Registrar (Text input)
+	•	Website Login / Admin URL
+	•	Developer Contact Info (optional)
+	•	Secure Notes (Text area for passwords or instructions)
+
+💰 Price: £99 one-off setup fee
+	•	Integrate LemonSqueezy or Stripe payment button
+	•	Trigger email to internal support team on form submit + webhook
+	•	Save request to /admin/requests/setup (optional tracking UI)
+
+✅ After payment:
+	•	Show message:
+
+“We’ve received your setup request. You’ll be notified once everything is live.”
+
+⸻
+
+🎨 UI NOTES:
+	•	Use two clear sections, tabs, or accordions
+	•	Use icons: 🛠️ for DIY, 👨‍🔧 for Paid Setup
+	•	Use teal accent for primary buttons
+	•	Button at top of dashboard (/admin/dashboard):
+“Set up SmartSite on your website” → /admin/setup
+
+⸻
+
+📁 FILES TO CREATE:
+	•	src/routes/admin/setup.tsx
+	•	src/components/admin/SmartSiteSetupPanel.tsx
+	•	src/services/setupService.ts (to handle form submissions)
+	•	Optional: src/utils/dnsCheck.ts for script/pixel detection
+
+⸻
+
+📣 OUTPUT:
+	1.	UI screenshot or structure summary
+	2.	Test URL or console log confirming successful DNS/script check
+	3.	Placeholder webhook logic for paid requests
+	4.	Confirmation that dashboard button links correctly
+
+Let’s make it frictionless to connect any site — whether DIY or done-for-you.
+
+---
+
+Ready for **Prompt 7** to build `/admin/content/blog-posts` and `/admin/content/social-posts` as renamed, intelligence-linked tools? Or want to validate Prompts 4–6 first in Replit?

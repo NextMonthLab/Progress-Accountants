@@ -1,0 +1,62 @@
+Prompt: Tool Publishing, Marketplace Sync & Client Deployment Protocol
+(Awareness vs. Responsibility Clarification Included)
+
+Please implement the following universal protocol for the publishing, syncing, and deployment of tools across the NextMonth ecosystem.
+
+Note: All Replit instances (Lab, Dev, Client) must be aware of this full workflow for visibility and continuity, but each instance is only expected to action its own responsibilities.
+
+⸻
+
+1. Tool Publishing from Lab
+
+Lab Instance Responsibilities Only
+	•	When a tool is finalized, Lab must:
+	•	Assign:
+	•	tool_name
+	•	tool_version (semantic format: e.g., v1.0.0)
+	•	tool_category (e.g., CRM, Analytics, SEO)
+	•	Package the tool with schema, endpoints, and configuration
+	•	Push the tool to NextMonth Dev marked as draft_for_marketplace
+	•	Notify Dev and Guardian of intent to publish
+
+⸻
+
+2. Syncing to the Marketplace via Dev
+
+Dev Instance Responsibilities Only
+	•	When Dev receives a tool from Lab:
+	•	Review and approve the tool metadata
+	•	Publish the tool to the Tools Marketplace
+	•	Change status to published_in_marketplace
+	•	Confirm publishing success back to Lab and Guardian
+	•	Notify all active client instances of the new tool availability
+
+⸻
+
+3. Tool Installation by Clients
+
+Client Instances (e.g., Progress) Responsibilities Only
+	•	Clients may browse tools via /api/tools/marketplace
+	•	Upon installing a tool:
+	•	Register it under installed_tools with tenant_id
+	•	Respect tool_version and tool configuration
+	•	Use the tool’s local options to customize for the tenant
+	•	Optionally notify Dev of any feedback or incompatibilities
+
+⸻
+
+4. System-Wide Logging and Vault Sync
+
+Responsibilities:
+	•	All instances must log their own actions with:
+	•	actor, timestamp, tool_name, tool_version, and action
+	•	Dev is responsible for syncing all published tools to Vault (WordPress)
+	•	Guardian tracks all stages and alerts on any errors, mismatches, or deployment gaps
+
+⸻
+
+5. Tool Categories & Discovery
+
+Lab sets, Dev validates
+	•	All tools must have a tool_category for sorting in the Marketplace
+	•	Dev ensures categories are valid and consistent across Marketplace

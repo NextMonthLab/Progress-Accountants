@@ -1,0 +1,85 @@
+🛠️ Replit Prompt: Build the “Services” Page for Progress Accountants
+Objective:
+Design a responsive and modern Services page for the Progress Accountants web app. This page should provide an overview of all services offered, reflecting the firm's tech-forward and client-centric approach. Each service should be presented with a brief description and a link to its dedicated landing page.​
+
+📄 Page Structure & Content
+Hero Section
+
+Headline:
+“Accounting Services Designed for Growth”
+
+Subheading:
+“At Progress Accountants, we combine cutting-edge technology with proactive expertise to help your business thrive.”
+
+Design Notes:
+Full-width background image reflecting modern business or technology themes. Overlay with headline and subheading centered both vertically and horizontally.
+
+Services Grid
+
+Layout:
+Responsive grid layout (e.g., 2 columns on desktop, 1 column on mobile) showcasing each service as a card or tile.
+
+Each Service Card Should Include:
+
+Service Name (as a heading)
+
+Brief Description (2-3 sentences)
+
+“Learn More” Link directing to the dedicated service landing page.
+
+Services to Include:
+
+1. Accounting & Compliance
+Ensure your business stays compliant with accurate financial statements and timely filings, all handled with precision and care.
+
+2. Bookkeeping
+Maintain clear and organized financial records with our efficient and reliable bookkeeping services.
+
+3. Tax Planning & Preparation
+Optimize your tax position and ensure compliance with our proactive tax planning and preparation services.
+
+4. Payroll Services
+Streamline your payroll process, ensuring your team is paid accurately and on time, every time.
+
+5. Financial Forecasting & Budgeting
+Plan for the future with confidence using our detailed financial forecasting and budgeting services.
+
+6. Business Advisory
+Receive strategic advice tailored to your business goals, helping you make informed decisions and drive growth.
+
+7. Cloud Accounting Solutions
+Leverage the power of cloud accounting to access your financial data anytime, anywhere, with real-time insights.
+
+8. Virtual CFO Services
+Gain executive-level financial expertise without the full-time commitment, guiding your business towards financial success.
+
+Design Notes:
+Each card should have a consistent style, with icons or images representing each service. Include hover effects for interactivity.
+
+Call to Action (CTA) Section
+
+Content:
+“Ready to Elevate Your Business Finances?”
+Contact us today to discover how our services can support your business growth.
+
+CTA Button:
+“Get in Touch” – Links to the Contact Us page.
+
+Design Notes:
+Distinct background color to differentiate from the rest of the page. Centered text and button.
+
+🎨 Design & Development Guidelines
+Brand Consistency:
+Use Progress Accountants' established color palette, typography, and branding elements.​
+
+Responsiveness:
+Ensure the page is fully responsive, providing an optimal viewing experience across all devices.​
+
+Accessibility:
+Implement best practices for accessibility, including appropriate contrast ratios, alt text for images, and keyboard navigability.​
+
+Modularity:
+Structure the page using modular components to facilitate future updates and scalability.​
+
+Note:
+Each service listed should link to its respective detailed landing page, which will provide in-depth information and further CTAs specific to that service.

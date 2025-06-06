@@ -1,0 +1,69 @@
+// 📦 Prompt 12d: Create Feed Control Panel in SmartSite Admin
+
+You are the backend and UI developer of SmartSite Admin — the control hub for all client-facing SmartSite components.
+
+A new app has been deployed called the **SmartSite Feed**, which acts as a public, branded, headless feed showing:
+- Blog Posts
+- Social Media (YouTube, Instagram, etc.)
+- Customer Insights & Testimonials
+- Company Events
+- Public Feedback Forms
+
+Your job is to now build the **Admin Screen** to configure, control, and connect this feed from within SmartSite Admin.
+
+---
+
+🔧 FILE STRUCTURE:
+
+Create the following files:
+
+- `pages/feed-settings.tsx` → new admin page to configure the feed
+- `lib/feedConfigApi.ts` → API helpers to save/update feed settings (mock endpoints for now)
+- Optional: `components/forms/FeedSettingsForm.tsx`
+
+---
+
+🧠 PAGE FEATURES:
+
+1. **Toggle modules ON/OFF**:
+   - [x] Blog Posts
+   - [x] Insights
+   - [x] Social Feed (sub-toggle for each channel: YouTube, Instagram, TikTok, X)
+   - [x] Events
+   - [x] Feedback Form
+
+2. **Autopilot Posting**:
+   - Interval selector (Daily / Weekly / Monthly)
+   - Topic selector (dropdown of tags or themes)
+   - Optional approval toggle before publishing
+
+3. **Branding Sync**:
+   - Show whether branding.json has been linked
+   - Button to push branding to SmartSite Feed
+
+4. **Public Subdomain Setup**:
+   - Input box to specify desired subdomain (e.g. `feed.mybrand.com`)
+   - Button to "Generate Setup Instructions"
+   - Downloadable PDF or Markdown copy with:
+     - CNAME record setup
+     - Optional iframe embed instructions
+     - Developer instructions (JS snippet, embed options)
+
+5. **Live Preview Link**:
+   - View button (if deployed)
+   - Copy public link
+
+---
+
+💡 Developer Notes:
+
+- Assume all config is stored in a backend endpoint `/api/feed/settings`
+- When toggles are changed, send PATCH request
+- On initial load, call `GET /api/feed/settings` to populate fields
+- UI should match the rest of SmartSite Admin style (TailwindCSS + Radix + modern spacing)
+
+---
+
+Once complete, return the following console log:
+
+✅ Feed Settings Page created at `/feed-settings`

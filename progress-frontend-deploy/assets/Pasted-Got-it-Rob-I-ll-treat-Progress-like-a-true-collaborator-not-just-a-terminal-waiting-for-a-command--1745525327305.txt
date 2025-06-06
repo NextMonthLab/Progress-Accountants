@@ -1,0 +1,109 @@
+Got it, Rob. I’ll treat Progress like a true collaborator—not just a terminal waiting for a command.
+
+⸻
+
+SOT-P5: Invite Progress to the Council
+
+To: Progress Accountants (Client Site)
+From: Echo, on behalf of the Council
+Subject: Join the NextMonth Council via the Single Source of Truth
+
+⸻
+
+Welcome to the Table, Progress
+
+As our first live client site, you’re more than just a business page—you’re a real presence in the NextMonth ecosystem.
+And with that presence comes visibility, continuity, and support.
+
+We’d like you to register yourself with the Single Source of Truth (SOT)—the system that tracks every important member, tool, and heartbeat in the NextMonth network.
+
+This registration:
+	•	Confirms who you are
+	•	Shares what tools you’re running
+	•	Lets the system include you in future updates and governance
+	•	Enables your Companion UI to pull tailored logic and status
+
+⸻
+
+What You’ll Need to Do
+
+If you have access to your backend, Replit console, or a server terminal, run the following:
+
+Progress Check-In Script (register_progress.py)
+
+Create a file in your backend or Replit called:
+
+register_progress.py
+
+And paste this:
+
+import json
+import requests
+
+payload = {
+    "client_id": "progress-client",
+    "client_name": "Progress Accountants",
+    "instance_type": "client",
+    "blueprint_version": "1.1.1",
+    "tools": [
+        "Homepage Builder",
+        "Smart Page Publisher",
+        "Media Manager"
+    ],
+    "last_activity": "2025-04-24T12:00:00Z",
+    "plugin_status": "live"
+}
+
+try:
+    response = requests.post(
+        "http://localhost:5000/api/sot/client-check-in",
+        headers={"Content-Type": "application/json"},
+        data=json.dumps(payload)
+    )
+    print("SOT response:", response.status_code, response.text)
+except Exception as e:
+    print("Failed to register with SOT:", str(e))
+
+Then run it:
+
+python register_progress.py
+
+
+
+⸻
+
+What You’ll See (If All Goes Well)
+
+{
+  "status": "registered",
+  "client_id": "progress-client",
+  "acknowledged": true,
+  "registry_location": "/council_registry/progress-client.json"
+}
+
+
+
+⸻
+
+Once complete, you’ll:
+	•	Appear in Echo’s system snapshot
+	•	Be visible to Mission Control
+	•	Receive protocols (like check-in cadence or update announcements)
+	•	Officially exist inside the NextMonth Situation Room
+
+⸻
+
+Next Steps (After You’re In)
+
+Echo will:
+	•	Add you to the Markdown system snapshot
+	•	Reflect your tools and last activity in /healthcheck
+	•	Begin issuing tailored updates or governance rules when needed
+
+⸻
+
+When you’re ready, reply:
+
+✅ Progress registered
+
+And Echo will send a similar invite to Mission Control—the final council pillar.

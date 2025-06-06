@@ -1,0 +1,116 @@
+✏️ Replit-Ready Prompt — SME Support Hub Page (UK English, Structure-Preserving)
+
+⚠️ Instructions to Replit:  
+Do not change the page layout or structure. Only replace text content with the version below. Ensure all spelling follows UK English conventions. Maintain headings, section order, and UI elements as-is.
+
+---
+
+Header:
+📚 Business Resource Hub  
+Everything Your Business Needs—All in One Place
+
+—
+
+Intro:
+From Companies House deadlines to HMRC contact lines, this page helps you stay compliant, informed, and in control. Built for small business owners who need quick answers and up-to-date resources—without digging through government websites.
+
+CTA: Download Resources  
+CTA: Browse Directory
+
+—
+
+Why We Built This Hub:
+Running a business often feels like juggling a dozen tasks at once. That’s why we created the SME Support Hub: to bring you the essential information every UK business owner needs—in one reliable, regularly updated place.
+
+—
+
+Features Grid:
+Directory  
+All the key contacts for government departments and support bodies in one easy-to-browse list.
+
+Deadlines  
+Never miss a tax filing or compliance date again—stay ahead with our official calendar.
+
+Downloads  
+Print-ready PDF resources for your desk, inbox, or team documentation.
+
+—
+
+Section: National SME Directory  
+Trusted Organisations & Contact Details for UK Businesses  
+We keep this directory current, so you’re always connected to the right support.
+
+Search field placeholder: Search organisations...
+
+Example Entries (keep styling and UI cards intact):
+
+HM Revenue & Customs (HMRC)  
+The UK’s tax authority for Self Assessment, VAT, PAYE, and business enquiries.  
+Website: gov.uk/contact-hmrc  
+General: 0300 200 3300  
+Self Assessment: 0300 200 3310  
+VAT: 0300 200 3700  
+CIS: 0300 200 3210  
+Hours: Mon–Fri 8am–8pm, Sat 8am–4pm
+
+Companies House  
+Handles business registrations, annual returns, and company updates.  
+Website: gov.uk/contact-companies-house  
+Phone: 0303 1234 500  
+Email: enquiries@companieshouse.gov.uk  
+Hours: Mon–Fri 8:30am–6pm
+
+Small Business Commissioner  
+Supports SMEs facing late payments or unfair treatment by larger firms.  
+Website: smallbusinesscommissioner.gov.uk  
+Phone: 0121 695 7770  
+Email: enquiries@smallbusinesscommissioner.gov.uk  
+Hours: Mon–Fri 9am–5pm
+
+Federation of Small Businesses (FSB)  
+Offers legal advice, business banking, and support services for members.  
+Website: fsb.org.uk  
+Phone: 0808 20 20 888  
+Email: customerservices@fsb.org.uk  
+Hours: Mon–Fri 9am–5pm
+
+British Business Bank  
+Government-owned bank helping small businesses access finance.  
+Website: british-business-bank.co.uk  
+Phone: 0114 206 2131 / 0203 772 1340
+
+Information Commissioner’s Office (ICO)  
+UK regulator for data protection, GDPR, and privacy compliance.  
+Website: ico.org.uk  
+Phone: 0303 123 1113  
+Textphone: 18001 0303 123 1113  
+Hours: Mon–Fri 9am–5pm
+
+—
+
+Downloads Section:
+📝 Download & Print Your Essentials  
+Keep your key contacts and deadlines close with our free PDF packs—ideal for business owners, finance teams, and directors.
+
+Available Resources:
+• Essential SME Contacts (2025)  
+A ready-to-print directory of UK business support organisations and government departments.
+
+• Key Business Deadlines (2025)  
+All key tax dates, annual filings, and reporting deadlines for the 2024/25 financial year.
+
+Download Form Fields:
+Full Name  
+Email  
+Business Name (Optional)  
+☑️ I agree to receive occasional updates and resources from Progress Accountants. You can unsubscribe anytime.
+
+CTA: Get Access to Resources
+
+—
+
+Closing CTA:
+Need help staying on top of your deadlines?  
+Book a call with our team—we’ll walk you through compliance steps and help set up reminders and systems tailored to your business.
+
+CTA: Schedule a Call

@@ -1,0 +1,69 @@
+Prompt Title: Begin Phase 3 – SEO + Brand Design Versioning System
+
+Send to: Progress Accountants Replit Instance
+
+⸻
+
+✅ Phase 3 Objective
+
+Strengthen the system’s public-facing maturity and visual consistency by implementing:
+
+⸻
+
+1. SEO System Upgrade
+
+Goal: Move from static metadata to dynamic, optimized SEO for each page.
+
+Actions:
+	•	Replace the current static DocumentHead.tsx system with a dynamic SEO component.
+	•	Create an SEO config file (seo-config.ts) with route-level metadata.
+	•	Auto-generate:
+	•	<title> and <meta description>
+	•	<link rel="canonical">
+	•	JSON-LD structured data blocks (where applicable)
+	•	Add fallback metadata rules for any missing pages.
+	•	Add /seo-health route to view indexed pages + gaps.
+	•	POST SEO status to Guardian for analysis.
+
+⸻
+
+2. Canonical URL System
+
+Goal: Prevent duplicate content and signal preferred URLs.
+
+Actions:
+	•	Implement canonical logic per route in SEO middleware or within DocumentHead.
+	•	Default to exact route path unless overridden in seo-config.ts.
+
+⸻
+
+3. Brand Design Versioning
+
+Goal: Track visual identity changes and enforce design consistency.
+
+Actions:
+	•	Extend the brand guidelines editor to:
+	•	Capture version snapshots (v1.0.0, v1.1.0, etc.)
+	•	Include typography, colors, logos, tone, layout preferences
+	•	Store design versions in a brand_versions table
+	•	Add ability to:
+	•	Preview before applying
+	•	Rollback to previous version
+	•	Sync version to Guardian + Vault on apply
+
+⸻
+
+4. Vault + Guardian Integration
+	•	Vault: Save SEO config and brand design version metadata at /vault/blueprint/branding
+	•	Guardian:
+	•	Receive POSTs from /client-check-in with current SEO coverage and active design version
+	•	Notify if metadata is missing or if visual inconsistencies are detected in future reports
+
+⸻
+
+📤 Expected Outputs
+	•	seo-config.ts with page-level SEO definitions
+	•	Upgraded DocumentHead for dynamic SEO
+	•	brand_versions table + UI integration
+	•	Guardian and Vault sync hooks for both SEO and brand metadata
+	•	Optional /seo-health debug route

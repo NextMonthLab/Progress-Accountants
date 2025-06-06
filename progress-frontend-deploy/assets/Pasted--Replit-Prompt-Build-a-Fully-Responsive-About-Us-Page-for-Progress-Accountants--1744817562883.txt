@@ -1,0 +1,89 @@
+✅ Replit Prompt: Build a Fully Responsive “About Us” Page for Progress Accountants
+________________________________________
+Objective:
+Design and implement a full-width, mobile-friendly About Us page for the Progress Accountants web app using the exact copy provided below. The layout should be clean, modern, and consistent with the existing Progress branding.
+________________________________________
+Layout Structure:
+The page should be broken into the following 7 sections, each with distinct styling and responsive behavior.
+________________________________________
+1. 🧠 Hero Section
+Content:
+Headline: Modern Accountancy for Forward-Thinking Businesses  
+Subheading: We’re not just your accountants—we’re your growth partners.  
+Progress Accountants helps ambitious businesses unlock their full financial potential through smart systems, strategic thinking, and a genuinely human approach.
+Design Notes:
+•	Center-aligned
+•	Light background or subtle animated backdrop
+•	Large, modern font
+________________________________________
+2. 💡 What Makes Progress Different
+Content:
+Most accounting firms deliver the basics. We deliver insight.  
+At Progress, we combine cutting-edge technology with a proactive mindset to help our clients stay ahead—whether that means making smarter decisions, saving time, or unlocking new opportunities.
+
+We believe that financial clarity should be effortless, and we’ve built systems that make it feel that way.
+Design Notes:
+•	2-column layout (text on left, optional icon or graphic on right)
+•	Use padding and spacing to create hierarchy
+________________________________________
+3. 🔧 How We Work
+Content: Display as 3 cards or info blocks:
+•	Technology that works for you.
+Our client dashboards and automation tools are designed to give you real-time insight, eliminate bottlenecks, and keep everything flowing smoothly.
+•	Proactive, not reactive.
+We don’t wait for deadlines to chase you—we flag what’s needed in advance, guide you through it, and get things done early.
+•	People-first mindset.
+We may be tech-led, but we’re human at heart. You’ll always have someone on your side, ready to explain, support, and go the extra mile.
+Design Notes:
+•	Use icons or subtle animations on hover
+•	Cards should stack vertically on mobile
+________________________________________
+4. 💬 Who We Help
+Content:
+We work best with ambitious small-to-medium sized businesses that want to:
+- Get control of their finances without drowning in spreadsheets
+- Automate the boring stuff and focus on growth
+- Understand their numbers—and use them to make confident decisions
+- Feel like someone’s actually *on their side*, not just ticking boxes
+
+If that sounds like you, we’d love to talk.
+Design Notes:
+•	Bullet points with tick icons or checkmarks
+•	Add visual clarity between bullet and closing statement
+________________________________________
+5. 👥 Meet the Team
+Content:
+Progress Accountants is powered by a team of experienced professionals who care deeply about your business journey.
+Design Notes:
+•	Keep this as a short block with a button: [View Our Team →]
+•	Link to the “Meet the Team” page already built
+________________________________________
+6. 🛠️ The Tools We Use
+Content:
+We’ve built our own tech stack into your workflow:
+- Real-time financial dashboards
+- Secure document portals
+- Automated reminders and status updates
+- AI-powered insights and reporting
+
+All of this is designed to save you time, reduce risk, and give you full visibility at a glance.
+Design Notes:
+•	Use icons or a grid layout if helpful
+•	Ensure readability across mobile/tablet/desktop
+________________________________________
+7. 🚀 Call to Action
+Content:
+Ready to Make Progress?
+
+We’re here to help you get clear, get confident, and get ahead.  
+Let’s start with a simple conversation.
+Design Notes:
+•	Bold CTA with centered alignment
+•	Prominent button: [Contact Us →]
+•	Consider using a contrasting background to help this stand out
+________________________________________
+Global Design Requirements:
+•	Use existing Progress web app font, colors, and spacing styles
+•	Ensure responsive behavior for all screen sizes
+•	Follow accessibility best practices (alt tags, readable contrast, mobile tap targets)
+•	Structure components modularly so each section can be reused or moved independently

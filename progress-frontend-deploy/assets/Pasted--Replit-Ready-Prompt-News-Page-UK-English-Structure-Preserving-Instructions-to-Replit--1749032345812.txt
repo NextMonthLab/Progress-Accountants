@@ -1,0 +1,73 @@
+✏️ Replit-Ready Prompt — News Page (UK English, Structure-Preserving)
+
+⚠️ Instructions to Replit:  
+Do not change the page layout or structure. Only replace text content with the version below. Ensure all spelling follows UK English conventions. Maintain headings, section order, and UI elements as-is.
+
+---
+
+Header:
+🗞️ News & Insights  
+Stay up to date with expert advice, tax updates, and financial strategies to help your business thrive.
+
+—
+
+Intro:
+Here you’ll find timely accounting news, in-depth industry insights, and practical guides for UK business owners. Whether you’re looking for the latest changes to HMRC rules or strategic tips to grow your business—we’ve got you covered.
+
+—
+
+Section: Latest Articles  
+Stay informed with our most recent updates on tax, accounting, and business finance.
+
+CTA: Browse Articles
+
+—
+
+Section: Industry Insights  
+Explore our deep dives into the trends shaping the Construction, Film, Music, and Property sectors.
+
+CTA: Explore Insights
+
+—
+
+Section: Tax Guides  
+Clear, jargon-free guides to help you navigate complex UK tax rules—ideal for small businesses and growing firms.
+
+CTA: View Guides
+
+—
+
+Live Article Placeholder Section:
+📭 0 Articles Found  
+We’re currently preparing our first batch of expert content. Please check back soon for updates—or use the filters to adjust your view.
+
+Search field placeholder: Search articles...  
+Category dropdown: All Categories  
+Fallback Text: No articles found. Try adjusting your search or filter criteria to find what you’re looking for.  
+CTA: Reset Filters
+
+—
+
+Subscribe Section:
+📬 Subscribe to Updates  
+Get the latest articles and expert tips straight to your inbox.
+
+Field: Your email address  
+CTA: Subscribe
+
+—
+
+Sidebar:
+Categories  
+Browse articles by category to find insights most relevant to your business.
+
+Tags  
+Discover trending topics and key terms used in our content.
+
+—
+
+Closing CTA:
+Need Accounting Help?  
+Our team is here to assist with tax queries, financial planning, or compliance questions.
+
+CTA: Contact Us

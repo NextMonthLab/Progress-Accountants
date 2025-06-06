@@ -1,0 +1,104 @@
+Phase 3 Frontend: Next-Level Rollout
+
+⸻
+
+Module 1: Admin Screen – SEO Config Manager
+
+Purpose:
+
+Manage per-page SEO configs with real-time previews and fallback warnings.
+
+Components:
+	•	SEOConfigList – table of all pages with:
+	•	title, description, canonical, last_updated
+	•	SEOConfigEditor (modal or side panel)
+	•	Form to update config per route
+	•	Live preview of how it would look in Google
+	•	Add New Config button (auto-suggests unsaved routes)
+
+Bonus:
+	•	Show warning if a config is older than 90 days
+	•	Tag configs as “synced” or “local-only”
+
+⸻
+
+Module 2: Admin Screen – Brand Version Manager
+
+Purpose:
+
+Track visual identity changes and allow historical rollbacks or syncs.
+
+Components:
+	•	VersionTimeline (list view or horizontal slider)
+	•	Each version shows: version_tag, author, timestamp, synced_status
+	•	UploadBrandAssets (logo, colour hexes, typography, style guide PDF)
+	•	ApplyVersion – push this version to Vault + live UI (optional)
+
+Bonus:
+	•	Diff checker to highlight changes between versions
+	•	“Sync with Guardian” toggle if branding is externally validated
+
+⸻
+
+Module 3: Dynamic DocumentHead Replacement
+
+File: components/DocumentHead.tsx
+
+Let’s replace static content with this:
+
+import { useEffect, useState } from 'react';
+import Head from 'next/head';
+import { fetchSEOConfig } from '@/lib/api'; // endpoint you already built
+
+export function DocumentHead({ route }: { route: string }) {
+  const [seo, setSeo] = useState<any>(null);
+
+  useEffect(() => {
+    fetchSEOConfig(route).then(setSeo).catch(console.error);
+  }, [route]);
+
+  if (!seo) return null;
+
+  return (
+    <Head>
+      <title>{seo.title}</title>
+      <meta name="description" content={seo.description} />
+      <link rel="canonical" href={seo.canonical} />
+      <meta property="og:title" content={seo.title} />
+      <meta property="og:description" content={seo.description} />
+      {seo.image && <meta property="og:image" content={seo.image} />}
+    </Head>
+  );
+}
+
+Then, in any page:
+
+<DocumentHead route="/services/accounting" />
+
+
+
+⸻
+
+Module 4: /seo-health Route
+
+Purpose:
+
+Single page audit showing what’s missing or at risk.
+
+Sections:
+	•	Missing SEO – pages with no config
+	•	Duplicates – matching titles/descriptions
+	•	Stale – SEO configs not updated in 6+ months
+	•	Conflicts – canonical mismatch warnings
+
+Bonus:
+	•	Add a “Fix Now” button beside each issue (opens modal)
+	•	Sync button to Guardian for audit logging
+
+⸻
+
+Deployment Strategy
+	1.	Build UI screens in parallel using mock data if needed
+	2.	Connect to live endpoints once finalised
+	3.	Add Guardian/Vault sync buttons where applicable
+	4.	Track usage + SEO health logs in /seo-health

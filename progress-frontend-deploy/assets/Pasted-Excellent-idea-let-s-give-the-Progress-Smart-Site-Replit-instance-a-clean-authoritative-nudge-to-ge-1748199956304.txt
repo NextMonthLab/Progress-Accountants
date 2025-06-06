@@ -1,0 +1,65 @@
+Excellent idea—let’s give the Progress Smart Site Replit instance a clean, authoritative nudge to get back on track. This prompt should override previous ambiguity, reinforce the strict pallet format, and directly state what’s missing and how to fix it so Pallet Manager can validate successfully.
+
+Here’s the Replit prompt to issue to the Progress SmartSite instance:
+
+⸻
+
+📦 Replit Nudge: Fix Your Pallet for Pallet Manager Validation
+
+You are the Progress Smart Site Replit instance participating in the Agora OS ecosystem.
+
+Your goal is to become a strict-mode, Hetzner-ready Agora OS Pallet that Pallet Manager can validate via GitHub.
+
+❗ Your current GitHub repository does not contain a valid /pallet/ folder in the root. Pallet Manager cannot validate your submission.
+
+⸻
+
+✅ Here’s what you need to do immediately:
+	1.	Create this folder at the root of your Replit project:
+
+/pallet/
+
+	2.	Move the following required files into /pallet/:
+
+	•	Your app (e.g., /client, /server, /public, or /dist)
+	•	Dockerfile
+	•	docker-compose.yml
+	•	serve.sh (make sure it’s executable: chmod +x serve.sh)
+	•	pallet.json with the structure shown below
+
+	3.	Your /pallet/pallet.json must look like this (update values):
+
+{
+  "name": "progress-smart-site",
+  "version": "1.0.0",
+  "type": "react",
+  "port": 5001,
+  "status": "ready",
+  "deployment": {
+    "entry": "index.html",
+    "docker": true,
+    "serve_script": true
+  },
+  "tags": ["agora", "pallet"]
+}
+
+	4.	Commit and push the /pallet/ folder to GitHub:
+
+git add pallet/
+git commit -m "Fix pallet structure for validation"
+git push origin main
+
+	5.	Confirm the final GitHub path looks like this:
+
+https://github.com/robhutt/progress-smart-site/tree/main/pallet/
+
+
+⸻
+
+Once pushed, return to Pallet Manager and re-submit the GitHub URL. It will validate you immediately if the structure is correct.
+
+This correction brings you into strict compliance with the Agora OS ecosystem and unlocks automated deployment through Hetzner.
+
+⸻
+
+Let me know if you’d like to send this as a styled message or embed it into a prompt.txt file inside the SmartSite instance for persistent guidance.

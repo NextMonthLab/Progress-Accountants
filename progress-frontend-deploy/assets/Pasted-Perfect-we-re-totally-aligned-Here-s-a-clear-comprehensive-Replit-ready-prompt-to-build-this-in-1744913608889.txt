@@ -1,0 +1,129 @@
+Perfect — we’re totally aligned. Here’s a clear, comprehensive, Replit-ready prompt to build this internal backend scoping page inside the Progress Accountants Replit instance.
+
+⸻
+
+🟢 Prompt for Replit (Progress Accountants Instance)
+
+Project Name: Progress Accountants
+Feature Name: Internal Chat Assistant – Scoping Page
+Purpose: To scope and structure new functionality requests before sending them to NextMonth Dev
+
+⸻
+
+🎯 Objective
+
+Build a backend-facing admin page called “New Request” that features a chat interface powered by ChatGPT.
+
+This interface is not designed to answer questions, give recommendations, or simulate live chat.
+Its sole purpose is to:
+	•	Ask smart, scoped questions
+	•	Help the user refine a vague idea into a solid build request
+	•	Generate a structured JSON payload
+	•	Confirm user approval before sending
+	•	POST the final payload to the NextMonth Dev /listen endpoint
+
+⸻
+
+🖥️ Page Requirements
+
+1. Page Location
+	•	Route: /admin/new-request or /scope-request
+	•	Only accessible to logged-in internal users (can hardcode for MVP)
+
+2. Page Layout
+	•	Header: “New Feature Request”
+	•	Description: “Use the assistant below to scope your idea. Once you’re ready, it’ll format everything and send it to the Dev team.”
+	•	Main component: Chat window
+	•	Final step: JSON preview + confirmation (“Send to NextMonth Dev” button)
+
+3. Chat Assistant Behavior
+
+Use ChatGPT API (system prompt defined below) to:
+	•	Ask guiding questions (see below)
+	•	Wait for user replies
+	•	Structure answers into a JSON build brief
+	•	Display the structured brief for review
+	•	On confirmation, POST to https://nextmonth-dev.replit.app/listen
+
+⸻
+
+🤖 System Prompt for GPT Integration
+
+You are a scoping assistant helping internal Progress Accountants staff prepare feature requests for the NextMonth Dev team.
+
+Your goal is to turn rough ideas into a structured JSON prompt for development.
+
+Ask only simple, focused questions. Avoid technical jargon.
+
+Once the user has answered enough questions, say:  
+“Great! I’ve structured this request. Shall I send it to NextMonth Dev for review?”
+
+When confirmed, prepare a JSON output in the following format:
+
+{
+  "project": "progress_accountants",
+  "type": "screen_request",
+  "payload": {
+    "screen_name": "...",
+    "description": "...",
+    "features": [ "...", "...", "..." ]
+  }
+}
+
+
+
+⸻
+
+💬 Sample Question Flow (Assistant → User)
+	1.	What do you want this new feature or page to do?
+	2.	Who is it for — clients, staff, or both?
+	3.	What should people be able to see or do on the page?
+	4.	Should it connect to any existing tools or data?
+	5.	Do you want any filters, search, or file uploads?
+	6.	Is this urgent, experimental, or long-term?
+	7.	(When enough info) → Ready to send this to NextMonth Dev?
+
+⸻
+
+🔄 POST Payload Structure
+
+Send the structured JSON to:
+
+POST https://nextmonth-dev.replit.app/listen
+Headers: Content-Type: application/json
+
+Body:
+
+{
+  "project": "progress_accountants",
+  "type": "screen_request",
+  "payload": {
+    "screen_name": "Tax Dates Finder",
+    "description": "A searchable page of important tax deadlines for UK businesses and individuals.",
+    "features": [
+      "Search by category (PAYE, Self-Assessment, VAT)",
+      "Filter by year",
+      "Download calendar reminder (.ics)"
+    ]
+  }
+}
+
+
+
+⸻
+
+🛠 Stack Notes
+	•	Use existing Express/React setup
+	•	If using OpenAI via Replit secrets or environment, ensure OPENAI_API_KEY is configured
+	•	The assistant does not need memory — just scoped back-and-forth
+	•	Can log all submitted requests locally for admin history (optional)
+
+⸻
+
+Once this is built and the JSON hits Dev, the next trigger in the flow will be:
+	•	Show the new request inside Dev’s “Prompt Manager”
+	•	Allow approval, edit, or generation as normal
+
+⸻
+
+Ready to send this over to Replit as the live instruction?
