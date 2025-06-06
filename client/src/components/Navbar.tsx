@@ -211,22 +211,7 @@ export default function Navbar() {
             </>
           )}
 
-          {/* Show admin dashboard link with high visibility for staff */}
-          {isStaff && (
-            <Button 
-              variant="settings"
-              className="shadow-sm hover:shadow-md transition-all font-medium"
-              asChild
-            >
-              <Link 
-                href="/admin/dashboard" 
-                className="no-underline flex items-center"
-              >
-                <LayoutDashboard className="h-4 w-4 mr-2" />
-                Admin Dashboard
-              </Link>
-            </Button>
-          )}
+
 
           {/* Decoupled "Book a Call" button using Progress brand colors */}
           <a 
@@ -315,26 +300,7 @@ export default function Navbar() {
             </div>
           )}
 
-          {/* Admin link if staff */}
-          {isStaff && (
-            <div className="py-2">
-              <h4 className="text-sm uppercase tracking-wider text-gray-400 mb-2 px-2">Admin</h4>
-              <Button 
-                variant="default"
-                className="w-full gradient-bg text-white hover:shadow-md transition-colors font-medium progress-button"
-                onClick={closeMenu}
-                asChild
-              >
-                <Link 
-                  href="/admin/dashboard" 
-                  className="flex items-center justify-center py-2 no-underline"
-                >
-                  <LayoutDashboard className="h-4 w-4 mr-2" />
-                  Admin Dashboard
-                </Link>
-              </Button>
-            </div>
-          )}
+
 
           {/* Call to action */}
           <div className="py-4">
