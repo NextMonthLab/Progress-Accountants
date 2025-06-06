@@ -1325,6 +1325,33 @@ export const insertAiEventLogSchema = createInsertSchema(aiEventLogs).omit({
 export type InsertAiEventLog = z.infer<typeof insertAiEventLogSchema>;
 export type AiEventLog = typeof aiEventLogs.$inferSelect;
 
+// Innovation Feed table for storing AI-generated product/service ideas
+export const innovationFeedItems = pgTable("innovation_feed_items", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  tenantId: uuid("tenant_id").references(() => tenants.id).notNull(),
+  userId: integer("user_id").references(() => users.id),
+  timestamp: timestamp("timestamp").defaultNow().notNull(),
+  themeSummary: text("theme_summary").notNull(),
+  selectedScope: varchar("selected_scope", { length: 100 }).notNull(),
+  ideasMarkdown: text("ideas_markdown").notNull(), // Full AI response
+  modelUsed: varchar("model_used", { length: 50 }).notNull(),
+  taskType: varchar("task_type", { length: 50 }).default("theme-to-product-ideas").notNull(),
+  generatedByUser: varchar("generated_by_user", { length: 255 }), // User name/email if available
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+}, (table) => ({
+  tenantTimestampIdx: index("innovation_feed_tenant_timestamp_idx").on(table.tenantId, table.timestamp),
+  taskTypeIdx: index("innovation_feed_task_type_idx").on(table.taskType),
+}));
+
+export const insertInnovationFeedItemSchema = createInsertSchema(innovationFeedItems).omit({
+  id: true,
+  timestamp: true,
+  createdAt: true,
+});
+
+export type InsertInnovationFeedItem = z.infer<typeof insertInnovationFeedItemSchema>;
+export type InnovationFeedItem = typeof innovationFeedItems.$inferSelect;
+
 // Feed Settings table for SmartSite Feed Control Panel
 export const feedSettings = pgTable("feed_settings", {
   id: serial("id").primaryKey(),

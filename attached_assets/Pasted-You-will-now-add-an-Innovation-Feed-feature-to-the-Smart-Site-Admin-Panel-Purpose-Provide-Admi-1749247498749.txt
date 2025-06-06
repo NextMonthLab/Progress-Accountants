@@ -1,0 +1,117 @@
+You will now add an Innovation Feed feature to the Smart Site Admin Panel.
+
+Purpose:
+
+✅ Provide Admin users with a persistent, evolving feed of:
+- Product/Service Ideas generated from Themes
+- (Future ready) Other Innovation prompts (Process Ideas, Partnership Ideas, etc.)
+
+✅ Ensure ideas are easily revisited, shared, and built upon.
+✅ Honour the original "Insight Wall → Themes → Ideas → Actions" flow.
+
+Backend:
+
+✅ Add new API endpoint:
+
+GET /api/ai/innovation-feed
+
+Response:
+
+{
+  items: [
+    {
+      id: UUID,
+      timestamp: datetime,
+      themeSummary: string,
+      selectedScope: string,
+      generatedByUser: string (if available),
+      ideasMarkdown: string (full AI response used),
+      taskType: string, // for now always "theme-to-product-ideas"
+      modelUsed: string
+    },
+    ...
+  ]
+}
+
+✅ When "Generate Product/Service Ideas" completes successfully:
+
+- Save the full result to a new table / collection: InnovationFeedItem
+- Structure:
+
+{
+  id,
+  tenantId,
+  userId,
+  timestamp,
+  themeSummary,
+  selectedScope,
+  ideasMarkdown (AI response),
+  modelUsed,
+  taskType ("theme-to-product-ideas")
+}
+
+✅ The feed should support:
+- Pagination (10 items per page)
+- Sorting by newest first
+
+Frontend:
+
+✅ Add new screen:
+
+📍 /admin/innovation-feed → "Innovation Feed" in Admin Panel sidebar (under Insights or a new "Innovation" section)
+
+✅ Display for each InnovationFeedItem:
+
+- Date generated
+- Theme Summary (short preview)
+- Selected Scope
+- User who triggered (if known)
+- Model used (Mistral / ChatGPT)
+- Full Ideas rendered from ideasMarkdown (support markdown rendering)
+- Copy to clipboard button
+- Export to Markdown / PDF button (optional, future)
+
+UX Notes:
+
+✅ Items should persist across sessions — this is not just an AI chat log, it is an Innovation Memory.
+
+✅ Make clear this is a *creative support tool* — Admin users can revisit and build upon ideas over time.
+
+✅ Support filtering in future:
+- By scope
+- By user
+- By date range
+
+✅ Support API export to Mission Control in future.
+
+---
+
+Goal:
+
+✅ The Admin Panel will now have an "Innovation Feed" where Admin users can revisit all AI-generated Product/Service Ideas.  
+✅ The system will progressively build an "Innovation Memory" for the business — a strategic asset.
+
+✅ This will deeply align with the original Insight Wall → Themes → Ideas → Actions model of creative innovation.
+
+---
+
+Summary of Flow:
+
+👉 **Insights → Themes → Actions → Innovation Feed → Business Impact**  
+→ Beautiful creative loop.
+
+---
+
+Would you like me to also prepare an optional **Prompt 9**:
+
+👉 Adds an **"Action Taken" Tracker** → so that Admin users can log when they have *implemented* an idea → closing the loop even further.
+
+- Mark an Innovation Feed item as "Idea Implemented" → with notes.
+- Shows on feed which ideas have been actioned.
+
+This is extremely powerful for:
+- Driving business value
+- Reporting
+- Team alignment
+
+Just say **Yes, Prompt 9 please** 🚀.

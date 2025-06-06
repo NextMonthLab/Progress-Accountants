@@ -55,6 +55,33 @@ export default function ProductIdeasModal({
   const { generateProductIdeas } = useAIGateway();
   const { toast } = useToast();
 
+  // Save generated ideas to Innovation Feed
+  const saveToInnovationFeed = async (data: {
+    themeSummary: string;
+    selectedScope: string;
+    ideasMarkdown: string;
+    modelUsed: string;
+    taskType: string;
+  }) => {
+    try {
+      const response = await fetch('/api/ai/innovation-feed', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          tenantId: "00000000-0000-0000-0000-000000000000",
+          ...data
+        })
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to save to Innovation Feed');
+      }
+    } catch (error) {
+      console.error('Failed to save to Innovation Feed:', error);
+      // Don't throw - this is a background operation
+    }
+  };
+
   const handleGenerate = async () => {
     if (!theme.trim()) {
       toast({
@@ -80,9 +107,18 @@ export default function ProductIdeasModal({
         const ideas = parseProductIdeas(response.data);
         setGeneratedIdeas(ideas);
         
+        // Save to Innovation Feed for persistent memory
+        await saveToInnovationFeed({
+          themeSummary: theme,
+          selectedScope: businessContext || "General business context",
+          ideasMarkdown: response.data,
+          modelUsed: response.modelUsed || 'unknown',
+          taskType: 'theme-to-product-ideas'
+        });
+        
         toast({
           title: "Ideas Generated",
-          description: `Generated ${ideas.length} innovative product/service ideas from your theme.`
+          description: `Generated ${ideas.length} innovative product/service ideas and saved to Innovation Feed.`
         });
       } else {
         throw new Error(response.error || "Failed to generate product ideas");
