@@ -44,19 +44,18 @@ export default function AdminLayout({ children, useNewNavigation = true }: Admin
 
             {/* Powered by NextMonth footer */}
             <div className="px-6 py-3 border-t border-gray-200 dark:border-gray-800 mt-auto">
-              <a 
-                href="https://nextmonth.io" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 opacity-70 hover:opacity-100 transition-opacity"
-              >
+              <div className="flex flex-col items-center gap-1 opacity-70">
                 <span className="text-xs text-muted-foreground">Powered by</span>
                 <img 
-                  src="/assets/logos/progress-logo.png?v=2024" 
-                  alt="Progress Accountants | Advisors | Growth Partners" 
-                  className="h-[3.75rem]"
+                  src="/assets/New Logo (white).png" 
+                  alt="NextMonth" 
+                  className="h-6 w-auto"
+                  onError={(e) => {
+                    console.error('Failed to load NextMonth logo');
+                    e.currentTarget.style.display = 'none';
+                  }}
                 />
-              </a>
+              </div>
             </div>
 
             {/* Quick Select Menu - floating UI */}
@@ -86,19 +85,18 @@ export default function AdminLayout({ children, useNewNavigation = true }: Admin
 
             {/* Powered by NextMonth footer */}
             <div className="px-6 py-3 border-t border-gray-200 dark:border-gray-800 mt-auto">
-              <a 
-                href="https://nextmonth.io" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 opacity-70 hover:opacity-100 transition-opacity"
-              >
+              <div className="flex flex-col items-center gap-1 opacity-70">
                 <span className="text-xs text-muted-foreground">Powered by</span>
                 <img 
-                  src="/assets/logos/progress-logo.png?v=2024" 
-                  alt="Progress Accountants | Advisors | Growth Partners" 
-                  className="h-[3.75rem]"
+                  src="/assets/New Logo (white).png" 
+                  alt="NextMonth" 
+                  className="h-6 w-auto"
+                  onError={(e) => {
+                    console.error('Failed to load NextMonth logo');
+                    e.currentTarget.style.display = 'none';
+                  }}
                 />
-              </a>
+              </div>
             </div>
           </div>
         </>
