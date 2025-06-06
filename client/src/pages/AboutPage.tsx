@@ -188,8 +188,8 @@ export default function AboutPage() {
                 <div className="flex justify-center">
                   <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-purple-500/10 to-blue-500/10 backdrop-blur-sm border border-purple-500/20 p-4">
                     <img 
-                      src="https://res.cloudinary.com/drl0fxrkq/image/upload/v1749050605/Screenshot_2025-06-04_at_16.20.45_ufpx78.png"
-                      alt="Progress Accountants client collaboration illustration"
+                      src="https://res.cloudinary.com/drl0fxrkq/image/upload/v1747743049/P1013280_sqftkw.jpg"
+                      alt="Progress Accountants office environment"
                       className="w-full max-w-md h-auto rounded-xl shadow-lg"
                     />
                   </div>
