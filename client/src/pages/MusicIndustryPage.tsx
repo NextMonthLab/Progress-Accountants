@@ -379,35 +379,47 @@ const MusicIndustryPage = () => {
           viewport={{ once: true, margin: "-100px" }}
           variants={containerVariants}
         >
-          <motion.div variants={itemVariants} className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-white mb-6">Our Tech-Forward Approach</h2>
-            <p className="text-lg text-gray-300 max-w-3xl mx-auto mb-8">
-              We use cloud-based platforms like Xero to give you real-time visibility into your income and expenses:
-            </p>
-          </motion.div>
-          
-          <div className="max-w-4xl mx-auto">
-            <motion.div variants={itemVariants} className="bg-gray-900 rounded-xl shadow-md p-6 md:p-8 mb-12 border border-gray-800">
-              <ul className="space-y-4">
-                <li className="flex items-start">
-                  <CheckCircle className="h-5 w-5 text-purple-400 mr-3 shrink-0 mt-1" />
-                  <p className="text-gray-300">Real-time views of income from streaming, distributors, and live performances</p>
-                </li>
-                <li className="flex items-start">
-                  <CheckCircle className="h-5 w-5 text-purple-400 mr-3 shrink-0 mt-1" />
-                  <p className="text-gray-300">Categorised expenses from tours, equipment purchases, and studio costs</p>
-                </li>
-                <li className="flex items-start">
-                  <CheckCircle className="h-5 w-5 text-purple-400 mr-3 shrink-0 mt-1" />
-                  <p className="text-gray-300">Live tax estimates so there are no unexpected bills</p>
-                </li>
-              </ul>
-              
-              <div className="mt-6 pt-6 border-t border-gray-800">
-                <p className="text-white font-medium">More comfortable with voice notes than spreadsheets? We adapt to your workflow—not the other way around.</p>
+          <motion.div variants={itemVariants} className="max-w-6xl mx-auto bg-gray-900 rounded-xl shadow-md border border-gray-800 overflow-hidden">
+            <div className="grid lg:grid-cols-2 gap-0">
+              {/* Content side */}
+              <div className="p-8 md:p-10 flex flex-col justify-center">
+                <h2 className="text-2xl md:text-3xl font-bold text-white mb-6">Our Tech-Forward Approach</h2>
+                <p className="text-gray-300 mb-6">
+                  We use cloud-based platforms like Xero to give you real-time visibility into your income and expenses:
+                </p>
+                
+                <div className="space-y-4 mb-6">
+                  <div className="flex items-start">
+                    <CheckCircle className="h-5 w-5 text-purple-400 mr-3 shrink-0 mt-1" />
+                    <p className="text-gray-300">Real-time views of income from streaming, distributors, and live performances</p>
+                  </div>
+                  <div className="flex items-start">
+                    <CheckCircle className="h-5 w-5 text-purple-400 mr-3 shrink-0 mt-1" />
+                    <p className="text-gray-300">Categorised expenses from tours, equipment purchases, and studio costs</p>
+                  </div>
+                  <div className="flex items-start">
+                    <CheckCircle className="h-5 w-5 text-purple-400 mr-3 shrink-0 mt-1" />
+                    <p className="text-gray-300">Live tax estimates so there are no unexpected bills</p>
+                  </div>
+                </div>
+                
+                <div className="pt-6 border-t border-gray-800">
+                  <p className="text-white font-medium">More comfortable with voice notes than spreadsheets? We adapt to your workflow—not the other way around.</p>
+                </div>
               </div>
-            </motion.div>
-          </div>
+              
+              {/* Image side */}
+              <div className="relative lg:min-h-[400px] flex items-center justify-center bg-gray-800">
+                <div className="p-6 w-full h-full flex items-center justify-center">
+                  <img 
+                    src="https://res.cloudinary.com/drl0fxrkq/image/upload/v1749050354/image_3_zggavz.png"
+                    alt="Music industry analytics and technology dashboard"
+                    className="w-full h-auto max-h-full object-contain rounded-lg shadow-lg"
+                  />
+                </div>
+              </div>
+            </div>
+          </motion.div>
           
           {/* CTA section */}
           <CTASection />
