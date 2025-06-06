@@ -30,7 +30,7 @@ export const teamMembers: TeamMember[] = [
     role: "Lead Accountant",
     biography: "Lee has spent over a decade helping SMEs navigate tax, growth, and compliance. As our lead accountant, he champions the use of modern accounting tech to deliver a proactive client experience.",
     interests: "Enjoys swimming with his children, running, and staying updated with the latest tech.",
-    placeholderComponent: leePlaceholder,
+    photoUrl: "https://res.cloudinary.com/drl0fxrkq/image/upload/v1749206791/IMG_9419_htet0f.jpg",
     socialLinks: {
       linkedin: "https://linkedin.com/in/leerogers",
       email: "lee@progressaccountants.com"
