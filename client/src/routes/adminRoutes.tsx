@@ -17,6 +17,7 @@ const TenantCustomizationPage = lazy(() => import("@/pages/admin/TenantCustomiza
 const ThemeManagementPage = lazy(() => import("@/pages/admin/ThemeManagementPage"));
 const SiteBrandingPage = lazy(() => import("@/pages/admin/SiteBrandingPage"));
 const CompanionSettingsPage = lazy(() => import("@/pages/admin/companion-settings"));
+const AISettingsPage = lazy(() => import("@/pages/admin/ai-settings"));
 const MenuManagementPage = lazy(() => import("@/pages/admin/MenuManagementPage"));
 const DomainMappingPage = lazy(() => import("@/pages/DomainMappingPage"));
 const SotManagementPage = lazy(() => import("@/pages/SotManagementPage"));
@@ -101,6 +102,11 @@ export function AdminRoutes() {
       <ProtectedRoute 
         path="/admin/companion-settings" 
         component={CompanionSettingsPage} 
+        allowedRoles={['admin', 'super_admin']} 
+      />
+      <ProtectedRoute 
+        path="/admin/ai-settings" 
+        component={AISettingsPage} 
         allowedRoles={['admin', 'super_admin']} 
       />
       <ProtectedRoute 

@@ -266,6 +266,14 @@ export default function AdminSidebar() {
           requiresStaff: true 
         },
         { 
+          title: "AI Settings", 
+          href: "/admin/ai-settings", 
+          icon: <Brain className="h-5 w-5" />,
+          requiresStaff: true,
+          badge: { text: "New", variant: "new" },
+          isNew: true
+        },
+        { 
           title: "Clone Template", 
           href: "/admin/clone-template", 
           icon: <Lightbulb className="h-5 w-5" />,
