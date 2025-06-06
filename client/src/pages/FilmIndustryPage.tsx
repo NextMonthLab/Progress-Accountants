@@ -379,27 +379,7 @@ const FilmIndustryPage = () => {
         </motion.div>
       </div>
       
-      {/* Featured Image Section - Subtle placement */}
-      <div className="container mx-auto px-6 md:px-8 py-8">
-        <motion.div 
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-          variants={containerVariants}
-        >
-          <motion.div variants={itemVariants} className="max-w-3xl mx-auto">
-            <div className="bg-slate-800/30 backdrop-blur-sm p-4 rounded-lg border border-slate-600/40 overflow-hidden">
-              <img 
-                src="https://res.cloudinary.com/drl0fxrkq/image/upload/v1749050355/image_1_i0ldjo.png"
-                alt="Film industry professional services"
-                className="w-full h-auto max-h-64 object-cover rounded-lg shadow-md opacity-90"
-              />
-            </div>
-          </motion.div>
-        </motion.div>
-      </div>
-
-      {/* Tech approach section */}
+      {/* Tech approach section with split layout */}
       <div className="container mx-auto px-6 md:px-8 py-12">
         <motion.div 
           initial="hidden"
@@ -407,30 +387,44 @@ const FilmIndustryPage = () => {
           viewport={{ once: true, margin: "-100px" }}
           variants={containerVariants}
         >
-          <motion.div variants={itemVariants} className="max-w-4xl mx-auto bg-gray-900 rounded-xl shadow-md border border-gray-800 overflow-hidden">
-            <div className="p-8 md:p-10">
-              <h2 className="text-2xl md:text-3xl font-bold text-white mb-6">Our Tech-Savvy Approach</h2>
-              <p className="text-gray-300 mb-6">
-                We work with cloud-based systems like Xero—and integrate your tools for seamless reporting and cash burn visibility. Prefer a hands-off approach? We'll automate where possible and flag what matters.
-              </p>
-              <p className="text-gray-300 mb-8">
-                We understand your world. That's why we offer:
-              </p>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {[
-                  "Digital dashboards tailored to film finance",
-                  "Real-time spend and burn tracking",
-                  "Budget variance reports",
-                  "Expense categorisation optimised for creative accounts"
-                ].map((feature, index) => (
-                  <div key={index} className="flex items-center">
-                    <div className="h-8 w-8 rounded-full bg-purple-900/20 flex items-center justify-center mr-3">
-                      <CheckCircle className="h-5 w-5 text-purple-400" />
+          <motion.div variants={itemVariants} className="max-w-6xl mx-auto bg-gray-900 rounded-xl shadow-md border border-gray-800 overflow-hidden">
+            <div className="grid lg:grid-cols-2 gap-0">
+              {/* Content side */}
+              <div className="p-8 md:p-10 flex flex-col justify-center">
+                <h2 className="text-2xl md:text-3xl font-bold text-white mb-6">Our Tech-Savvy Approach</h2>
+                <p className="text-gray-300 mb-6">
+                  We work with cloud-based systems like Xero—and integrate your tools for seamless reporting and cash burn visibility. Prefer a hands-off approach? We'll automate where possible and flag what matters.
+                </p>
+                <p className="text-gray-300 mb-8">
+                  We understand your world. That's why we offer:
+                </p>
+                
+                <div className="grid grid-cols-1 gap-4">
+                  {[
+                    "Digital dashboards tailored to film finance",
+                    "Real-time spend and burn tracking",
+                    "Budget variance reports",
+                    "Expense categorisation optimised for creative accounts"
+                  ].map((feature, index) => (
+                    <div key={index} className="flex items-center">
+                      <div className="h-8 w-8 rounded-full bg-purple-900/20 flex items-center justify-center mr-3 flex-shrink-0">
+                        <CheckCircle className="h-5 w-5 text-purple-400" />
+                      </div>
+                      <span className="text-gray-300">{feature}</span>
                     </div>
-                    <span className="text-gray-300">{feature}</span>
-                  </div>
-                ))}
+                  ))}
+                </div>
+              </div>
+              
+              {/* Image side */}
+              <div className="relative lg:min-h-[400px] flex items-center justify-center bg-gray-800">
+                <div className="p-6 w-full h-full flex items-center justify-center">
+                  <img 
+                    src="https://res.cloudinary.com/drl0fxrkq/image/upload/v1749050355/image_1_i0ldjo.png"
+                    alt="Film industry professional services and analytics"
+                    className="w-full h-auto max-h-full object-contain rounded-lg shadow-lg"
+                  />
+                </div>
               </div>
             </div>
           </motion.div>
