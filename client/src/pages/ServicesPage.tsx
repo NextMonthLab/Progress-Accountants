@@ -175,7 +175,10 @@ export default function ServicesPage() {
         {/* Content */}
         <div className="relative z-10 container mx-auto px-6 md:px-8">
           <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-3xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-blue-400 to-pink-400 bg-clip-text text-transparent">🧾 Our Services</h1>
+            <h1 className="text-3xl md:text-5xl font-bold mb-6">
+              <span className="text-white">Our </span>
+              <span className="bg-gradient-to-r from-purple-400 via-blue-400 to-blue-500 bg-clip-text text-transparent">Expert Services</span>
+            </h1>
             <p className="text-xl text-gray-100">
               Accounting, Tax, and Strategic Support for Growing Businesses
             </p>
