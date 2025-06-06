@@ -11,7 +11,7 @@ interface ProgressBannerProps {
 export function ProgressBanner({ className = "" }: ProgressBannerProps) {
   return (
     <div className={`bg-primary/10 p-3 text-center rounded-md ${className}`}>
-      <div className="flex flex-col sm:flex-row justify-center items-center gap-2">
+      <div className="flex flex-col sm:flex-row justify-center items-center gap-2 min-h-[44px]">
         <p className="text-sm font-medium text-primary">
           Expert financial guidance for modern businesses
         </p>
