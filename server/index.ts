@@ -21,6 +21,7 @@ import { migrateSupportSystemTables } from './db-migrate-support-system';
 import { migrateHealthMonitoringTables } from './db-migrate-health-monitoring';
 import { runAiUsageMigrations } from './db-migrate-ai-usage';
 import { migrateAiEventLog } from './db-migrate-ai-event-log';
+import { migrateInnovationFeed } from './db-migrate-innovation-feed';
 import { registerNavigationRoutes } from './controllers/navigationController';
 import { registerDomainMappingRoutes } from './controllers/domainMappingController';
 import { registerSotRoutes } from './routes/sot-routes';
@@ -36,6 +37,7 @@ import { registerOnboardingRoutes } from './controllers/onboardingController';
 import { registerHealthRoutes } from './health-routes';
 import { initScheduler } from './scheduler';
 import { registerAiEventRoutes } from './routes/ai-event-routes';
+import { registerInnovationFeedRoutes } from './routes/innovation-feed-routes';
 import path from 'path';
 
 const app = express();
@@ -112,6 +114,8 @@ app.use((req, res, next) => {
     await runAiUsageMigrations();
     console.log('Running AI Event Logger migrations...');
     await migrateAiEventLog();
+    console.log('Running Innovation Feed migrations...');
+    await migrateInnovationFeed();
   } catch (error) {
     console.error('Error running migrations:', error);
   }
@@ -160,6 +164,9 @@ app.use((req, res, next) => {
 
   // Register AI Event Logger routes
   registerAiEventRoutes(app);
+
+  // Register Innovation Feed routes
+  registerInnovationFeedRoutes(app);
 
   app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
     const status = err.status || err.statusCode || 500;
