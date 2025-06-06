@@ -22,8 +22,10 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
-import { Medal, TrendingUp, BarChart3, Award, Loader2, Edit3, Share2 } from 'lucide-react';
+import { Medal, TrendingUp, BarChart3, Award, Loader2, Edit3, Share2, Brain, Sparkles } from 'lucide-react';
 import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip as ChartTooltip } from 'recharts';
+import { aiGateway } from '@/services/ai-gateway';
+import { useToast } from '@/hooks/use-toast';
 
 // Define the types we're using in this component
 type LeaderboardEntry = {

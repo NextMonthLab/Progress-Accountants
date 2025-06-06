@@ -1,0 +1,69 @@
+Now that we have a unified AI Gateway endpoint at:
+
+POST /api/ai/gateway
+
+You will now update the Admin Panel frontend to call this endpoint cleanly for the following features:
+
+✅ Internal Admin Assistant (panel chatbot):
+- Route all assistant chat messages through /api/ai/gateway with:
+  taskType: "assistant"
+
+✅ Insight Trend Analyzer:
+- When user clicks "Analyze Insights", send current insight texts through /api/ai/gateway with:
+  taskType: "insight-trends"
+
+✅ Social Media Generator:
+- When user triggers social media post generation, send context + desired style/length through /api/ai/gateway with:
+  taskType: "social-post"
+
+✅ Blog Post Generator:
+- When user triggers blog post generation, send topic or seed content through /api/ai/gateway with:
+  taskType: "blog-post"
+
+✅ Theme-to-Blog Post Generator:
+- When user selects an insight theme and clicks "Generate Blog Post", send theme summary through /api/ai/gateway with:
+  taskType: "theme-to-blog"
+
+✅ Theme-to-Agenda Generator:
+- When user selects an insight theme and clicks "Generate Agenda", send theme summary through /api/ai/gateway with:
+  taskType: "theme-to-agenda"
+
+API Call format:
+
+POST /api/ai/gateway
+
+Payload:
+
+{
+  prompt: string (constructed based on the task),
+  context: object (optional - e.g. selected insights, selected theme),
+  taskType: string,
+  temperature: number (optional - default 0.7),
+  maxTokens: number (optional - default 512 or suitable per task)
+}
+
+Response format:
+
+{
+  status: "success" | "error",
+  data: string (AI generated content),
+  taskType: string
+}
+
+✅ The Admin Panel should display AI loading states while waiting for a response.
+
+✅ AI response content should appear in a clean display component:
+- Assistant chat → chat bubble
+- Insight Trends → summary box
+- Social Post → editable text field
+- Blog Post → rich text editor
+- Meeting Agenda → formatted list or text block
+
+✅ Notes:
+- Do NOT call OpenAI or Mistral directly from frontend — always use the AI Gateway.
+- System must support future addition of new taskTypes.
+- If the user does not have Pro AI enabled, it should gracefully fallback to Mistral (handled server-side, no frontend logic needed).
+
+---
+
+Please implement this wiring now so the Admin Panel is ready to fully leverage the AI Gateway architecture.

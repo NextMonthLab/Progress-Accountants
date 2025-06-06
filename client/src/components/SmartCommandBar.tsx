@@ -4,6 +4,8 @@ import { Sparkles, Command, Search, X, ArrowRight, Brain, CheckSquare } from 'lu
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { aiGateway } from '@/services/ai-gateway';
+import { useToast } from '@/hooks/use-toast';
 
 // Interface for command results
 interface CommandResult {
@@ -23,6 +25,42 @@ const SmartCommandBar: React.FC = () => {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [_, navigate] = useLocation();
+  const { toast } = useToast();
+
+  // Process AI command through gateway
+  const processAICommand = async (query: string) => {
+    setLoading(true);
+    try {
+      const response = await aiGateway.sendRequest({
+        prompt: `Help the user with this SmartSite admin request: "${query}". Provide specific guidance or action steps.`,
+        taskType: 'assistant',
+        context: { source: 'smart-command-bar', userQuery: query }
+      });
+
+      if (response.status === 'success') {
+        toast({
+          title: "AI Assistant",
+          description: response.data,
+          duration: 8000,
+        });
+      } else {
+        toast({
+          title: "AI Assistant Unavailable",
+          description: "Try using specific commands like 'create page' or 'view analytics'",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "AI Assistant Error",
+        description: "Please try again or use specific commands",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+      setOpen(false);
+    }
+  };
 
   // Register keyboard shortcut for command bar (Cmd+K or Ctrl+K)
   useEffect(() => {
@@ -122,18 +160,14 @@ const SmartCommandBar: React.FC = () => {
         });
       }
 
-      // If no commands match, provide a default help command
+      // If no commands match, provide AI assistant fallback
       if (commands.length === 0) {
         commands.push({
           id: 'ai-process',
-          title: `AI Processing: "${input}"`,
-          description: 'Let the AI assistant handle this request',
+          title: `AI Assistant: "${input}"`,
+          description: 'Let the AI assistant help with this request',
           icon: <Brain className="h-4 w-4" />,
-          action: () => {
-            // This would connect to an actual AI backend
-            alert(`The AI is processing your request: "${input}"`);
-            setOpen(false);
-          }
+          action: () => processAICommand(input)
         });
       }
 
