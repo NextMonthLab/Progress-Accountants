@@ -60,8 +60,8 @@ export default function MainLayout({ children }: MainLayoutProps) {
       <main className="flex-grow">
         {children}
       </main>
-      <div className="container mx-auto px-6 md:px-8 mb-6">
-        <ProgressBanner />
+      <div className="container mx-auto px-6 md:px-8 mb-6 flex items-center justify-center min-h-[80px]">
+        <ProgressBanner className="w-full" />
       </div>
       <Footer />
       <CookieNotification />
