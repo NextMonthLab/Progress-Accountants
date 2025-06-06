@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Helmet } from 'react-helmet';
-import AdminLayout from '@/layouts/AdminLayout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -93,7 +92,7 @@ const AIAssistantSettingsPage = () => {
   };
 
   return (
-    <AdminLayout>
+    <>
       <Helmet>
         <title>AI Assistant Settings | Progress Accountants Admin</title>
       </Helmet>
@@ -503,7 +502,7 @@ const AIAssistantSettingsPage = () => {
           </TabsContent>
         </Tabs>
       </div>
-    </AdminLayout>
+    </>
   );
 };
 
