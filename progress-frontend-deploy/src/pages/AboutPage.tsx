@@ -1,33 +1,31 @@
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { Link } from 'wouter';
 import { Button } from '@/components/ui/button';
-import { Check, ArrowRight, Zap, Clock, Users, FileText, BarChart, Shield, Sparkles, Award, LifeBuoy } from 'lucide-react';
+import { ArrowRight, Zap, Clock, Users, FileText, BarChart, Shield, Sparkles, Award, LifeBuoy } from 'lucide-react';
 import { 
   PageHeaderSkeleton, 
   FeaturesSkeleton, 
-  CardSkeleton,
-  TestimonialsSkeleton
+  CardSkeleton
 } from '@/components/ui/skeletons';
 import { businessIdentity } from '@/data/staticBusinessData';
 import { FadeIn, SlideUp, SlideInLeft } from '@/components/ui/ScrollAnimation';
 
 export default function AboutPage() {
   const [isLoading, setIsLoading] = useState(true);
-  const { businessIdentity, isLoading: isLoadingIdentity } = useBusinessIdentity();
   
   useEffect(() => {
-    // Combine real data loading with synthetic loading for a smooth experience
+    // Simulate loading for smooth user experience
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, isLoadingIdentity ? 2000 : 1500);
+    }, 1500);
     
     return () => clearTimeout(timer);
-  }, [isLoadingIdentity]);
+  }, []);
 
   // Return skeleton during loading state
-  if (isLoading || isLoadingIdentity) {
+  if (isLoading) {
     return (
       <div className="min-h-screen bg-black text-white">
         <Helmet>
@@ -77,18 +75,17 @@ export default function AboutPage() {
     );
   }
 
-  // Extract business identity information
-  const businessName = businessIdentity?.core?.businessName || "Progress Accountants";
-  const tagline = businessIdentity?.core?.tagline || "Forward-thinking accounting for modern businesses";
-  const description = businessIdentity?.core?.description || "We provide innovative accounting solutions tailored to your business needs.";
-  const yearFounded = businessIdentity?.core?.yearFounded || "2018";
-  const numberOfEmployees = businessIdentity?.core?.numberOfEmployees || "25-50";
-  const usps = businessIdentity?.personality?.usps || [];
-  const missionStatement = businessIdentity?.personality?.missionStatement || "";
-  const toneOfVoice = businessIdentity?.personality?.toneOfVoice || [];
-  const targetAudience = businessIdentity?.market?.targetAudience || "Small to medium-sized businesses";
-  const geographicFocus = businessIdentity?.market?.geographicFocus || "United Kingdom";
-  const services = businessIdentity?.services || [];
+  // Extract business identity information from static data
+  const businessName = businessIdentity.core.businessName;
+  const tagline = businessIdentity.core.tagline;
+  const yearFounded = businessIdentity.core.yearEstablished;
+  const targetAudience = businessIdentity.market.targetAudience;
+  const serviceAreas = businessIdentity.market.serviceAreas;
+  const coreServices = businessIdentity.services.core;
+  const specializedServices = businessIdentity.services.specialized;
+  const values = businessIdentity.personality.values;
+  const certifications = businessIdentity.certifications;
+  const usps = businessIdentity.uniqueSellingPoints;
 
   // Return actual content once loaded
   return (
@@ -118,7 +115,7 @@ export default function AboutPage() {
             </FadeIn>
             <FadeIn delay={0.2}>
               <span className="inline-block px-6 py-3 rounded-full bg-gradient-to-r from-purple-500/20 to-blue-500/20 backdrop-blur-sm border border-purple-500/30 text-purple-200 text-sm font-medium mb-6">
-                Established {yearFounded} • {numberOfEmployees} Team Members
+                Established {yearFounded} • 25-50 Team Members
               </span>
             </FadeIn>
             <FadeIn delay={0.3}>
@@ -331,7 +328,7 @@ export default function AboutPage() {
       </section>
 
       {/* 5. Our Services */}
-      {services.length > 0 && (
+      {coreServices.length > 0 && (
         <section className="py-16 md:py-24 bg-black">
           <div className="container mx-auto px-6 md:px-8">
             <div className="max-w-7xl mx-auto">
