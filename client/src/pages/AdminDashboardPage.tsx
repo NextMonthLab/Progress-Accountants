@@ -48,6 +48,7 @@ import {
   XCircle,
   Zap
 } from "lucide-react";
+import { PremiumLoader, PremiumCardSkeleton } from "@/components/admin-ui/PremiumLoader";
 
 // Lazy load chart component for better performance
 const AnalyticsChart = lazy(() => import('@/components/dashboard/AnalyticsChart'));
@@ -338,10 +339,13 @@ function SystemHealth({ components = [], isLoading = false }: SystemHealthProps)
   if (isLoading) {
     return (
       <div className="space-y-4">
+        <div className="flex justify-center py-8">
+          <PremiumLoader size="md" text="Checking system health..." />
+        </div>
         {[1, 2, 3, 4].map((_, i) => (
-          <div key={i} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-[#1E3A46] rounded-md animate-pulse">
-            <div className="h-4 bg-gray-200 dark:bg-[#2A3052] rounded w-1/3"></div>
-            <div className="h-4 bg-gray-200 dark:bg-[#2A3052] rounded w-1/4"></div>
+          <div key={i} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-md animate-pulse">
+            <div className="h-4 bg-gray-200 dark:bg-gray-600 rounded w-1/3"></div>
+            <div className="h-4 bg-gray-200 dark:bg-gray-600 rounded w-1/4"></div>
           </div>
         ))}
       </div>

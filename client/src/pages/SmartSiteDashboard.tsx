@@ -16,6 +16,7 @@ import {
   Target,
   Bot
 } from "lucide-react";
+import { PremiumLoader, PremiumCardSkeleton } from "@/components/admin-ui/PremiumLoader";
 
 interface DashboardStats {
   activeChatsToday: number;
@@ -102,14 +103,37 @@ export default function SmartSiteDashboard() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 p-8">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-8">
         <div className="max-w-7xl mx-auto">
-          <div className="animate-pulse space-y-8">
-            <div className="h-32 bg-gray-200 rounded-lg"></div>
+          <div className="space-y-8">
+            {/* Header skeleton with premium styling */}
+            <div className="border-l-4 border-l-cyan-500 bg-white dark:bg-gray-800 shadow-sm border border-gray-200 dark:border-gray-700 rounded-lg p-8 animate-pulse">
+              <div className="flex items-center justify-between">
+                <div className="space-y-3">
+                  <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded w-64"></div>
+                  <div className="h-4 bg-gray-100 dark:bg-gray-600 rounded w-96"></div>
+                </div>
+                <div className="w-16 h-16 bg-gray-200 dark:bg-gray-700 rounded-lg"></div>
+              </div>
+            </div>
+
+            {/* Intelligence zones skeleton */}
             <div className="grid md:grid-cols-3 gap-6">
               {[1, 2, 3].map((i) => (
-                <div key={i} className="h-64 bg-gray-200 rounded-lg"></div>
+                <PremiumCardSkeleton key={i} className="h-64" />
               ))}
+            </div>
+
+            {/* Stats skeleton */}
+            <div className="grid md:grid-cols-4 gap-4">
+              {[1, 2, 3, 4].map((i) => (
+                <PremiumCardSkeleton key={i} className="h-32" />
+              ))}
+            </div>
+
+            {/* Central loading indicator */}
+            <div className="flex justify-center py-12">
+              <PremiumLoader size="lg" text="Loading SmartSite Intelligence Dashboard..." />
             </div>
           </div>
         </div>

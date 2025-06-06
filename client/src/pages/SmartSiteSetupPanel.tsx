@@ -11,6 +11,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useToast } from "@/hooks/use-toast";
 import { useMutation } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
+import { PremiumLoader } from "@/components/admin-ui/PremiumLoader";
 import { 
   Wrench, 
   UserCheck, 
