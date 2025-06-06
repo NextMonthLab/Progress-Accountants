@@ -162,7 +162,7 @@ export default function SmartSiteDashboard() {
           {dashboardCards.map((card) => (
             <Card 
               key={card.id} 
-              className={`${card.color} transition-all duration-200 hover:shadow-lg cursor-pointer`}
+              className="border-l-4 border-l-cyan-500 bg-white dark:bg-gray-800 shadow-sm hover:shadow-md transition-shadow border border-gray-200 dark:border-gray-700 cursor-pointer"
             >
               <Link href={card.href} className="block h-full">
                 <CardHeader className="pb-4">
@@ -247,37 +247,37 @@ export default function SmartSiteDashboard() {
 
         {/* Quick Stats Overview */}
         <div className="grid md:grid-cols-4 gap-4">
-          <Card className="bg-gray-800 border-gray-600">
+          <Card className="border-l-4 border-l-cyan-500 bg-white dark:bg-gray-800 shadow-sm hover:shadow-md transition-shadow border border-gray-200 dark:border-gray-700">
             <CardContent className="p-6 text-center">
               <BarChart3 className="h-8 w-8 text-cyan-400 mx-auto mb-2" />
-              <div className="text-2xl font-bold text-white">{stats?.activeChatsToday || 0}</div>
-              <div className="text-sm text-gray-400">Active Chats</div>
+              <div className="text-2xl font-bold text-gray-900 dark:text-white">{stats?.activeChatsToday || 0}</div>
+              <div className="text-sm text-gray-600 dark:text-gray-400">Active Chats</div>
             </CardContent>
           </Card>
           
-          <Card className="bg-gray-800 border-gray-600">
+          <Card className="border-l-4 border-l-cyan-500 bg-white dark:bg-gray-800 shadow-sm hover:shadow-md transition-shadow border border-gray-200 dark:border-gray-700">
             <CardContent className="p-6 text-center">
               <Users className="h-8 w-8 text-green-400 mx-auto mb-2" />
-              <div className="text-2xl font-bold text-white">{stats?.leadsThisWeek || 0}</div>
-              <div className="text-sm text-gray-400">New Leads</div>
+              <div className="text-2xl font-bold text-gray-900 dark:text-white">{stats?.leadsThisWeek || 0}</div>
+              <div className="text-sm text-gray-600 dark:text-gray-400">New Leads</div>
             </CardContent>
           </Card>
           
-          <Card className="bg-gray-800 border-gray-600">
+          <Card className="border-l-4 border-l-cyan-500 bg-white dark:bg-gray-800 shadow-sm hover:shadow-md transition-shadow border border-gray-200 dark:border-gray-700">
             <CardContent className="p-6 text-center">
               <FileText className="h-8 w-8 text-blue-400 mx-auto mb-2" />
-              <div className="text-2xl font-bold text-white">{stats?.draftsAwaitingApproval || 0}</div>
-              <div className="text-sm text-gray-400">Drafts Pending</div>
+              <div className="text-2xl font-bold text-gray-900 dark:text-white">{stats?.draftsAwaitingApproval || 0}</div>
+              <div className="text-sm text-gray-600 dark:text-gray-400">Drafts Pending</div>
             </CardContent>
           </Card>
           
-          <Card className="bg-gray-800 border-gray-600">
+          <Card className="border-l-4 border-l-cyan-500 bg-white dark:bg-gray-800 shadow-sm hover:shadow-md transition-shadow border border-gray-200 dark:border-gray-700">
             <CardContent className="p-6 text-center">
               <Target className="h-8 w-8 text-purple-400 mx-auto mb-2" />
-              <div className="text-2xl font-bold text-white">
+              <div className="text-2xl font-bold text-gray-900 dark:text-white">
                 {stats?.marketViewUnlocked ? "12" : "0"}
               </div>
-              <div className="text-sm text-gray-400">Market Insights</div>
+              <div className="text-sm text-gray-600 dark:text-gray-400">Market Insights</div>
             </CardContent>
           </Card>
         </div>

@@ -104,7 +104,7 @@ function StatCard({
       color === 'orange' ? 'border-l-orange-500' : 
       color === 'emerald' ? 'border-l-emerald-500' : 
       'border-l-indigo-500'
-    } ${isGradient ? 'shadow-lg shadow-' + color + '/10 border-0' : 'shadow-md border ' + scheme[color].border} ${className} hover:shadow-lg transition-all`}>
+    } bg-white dark:bg-gray-800 shadow-sm hover:shadow-md transition-shadow border-gray-200 dark:border-gray-700 ${className}`}>
       <div className={`${scheme[color].bg} p-4 sm:p-6`}>
         <div className="flex justify-between items-center">
           <div>
@@ -677,7 +677,7 @@ export default function AdminDashboardPage() {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               <div className="lg:col-span-2 space-y-6">
                 {/* Analytics Coming Soon Placeholder */}
-                <Card className="border-l-4 border-l-indigo-500 bg-white dark:bg-gray-800 shadow-sm hover:shadow-md transition-shadow border border-gray-200 dark:border-gray-700">
+                <Card className="border-l-4 border-l-cyan-500 bg-white dark:bg-gray-800 shadow-sm hover:shadow-md transition-shadow border border-gray-200 dark:border-gray-700">
                   <CardHeader>
                     <CardTitle className="text-gray-900 dark:text-gray-100">Website Performance</CardTitle>
                     <CardDescription className="text-gray-600 dark:text-gray-400">Analytics will be available after launch</CardDescription>
@@ -698,7 +698,7 @@ export default function AdminDashboardPage() {
                 </Card>
 
                 {/* Activity Feature Coming Soon */}
-                <Card className="border-l-4 border-l-blue-500 bg-white dark:bg-gray-800 shadow-sm hover:shadow-md transition-shadow border border-gray-200 dark:border-gray-700">
+                <Card className="border-l-4 border-l-cyan-500 bg-white dark:bg-gray-800 shadow-sm hover:shadow-md transition-shadow border border-gray-200 dark:border-gray-700">
                   <CardHeader>
                     <CardTitle className="text-gray-900 dark:text-gray-100">Activity Log</CardTitle>
                     <CardDescription className="text-gray-600 dark:text-gray-400">Track website activities and updates</CardDescription>
@@ -721,10 +721,10 @@ export default function AdminDashboardPage() {
 
               <div className="space-y-6">
                 {/* Quick Actions Card */}
-                <Card className="dark:bg-gray-800 dark:border-gray-700">
+                <Card className="border-l-4 border-l-cyan-500 bg-white dark:bg-gray-800 shadow-sm hover:shadow-md transition-shadow border border-gray-200 dark:border-gray-700">
                   <CardHeader>
-                    <CardTitle className="dark:text-gray-100">Quick Actions</CardTitle>
-                    <CardDescription className="text-gray-700 dark:text-gray-400">Common tasks and actions</CardDescription>
+                    <CardTitle className="text-gray-900 dark:text-gray-100">Quick Actions</CardTitle>
+                    <CardDescription className="text-gray-600 dark:text-gray-400">Common tasks and actions</CardDescription>
                   </CardHeader>
                   <CardContent className="grid gap-5">
                     {/* Create Section */}
@@ -819,15 +819,15 @@ export default function AdminDashboardPage() {
                 </Suspense>
 
                 {/* System Health */}
-                <Card className="dark:bg-gray-800 dark:border-gray-700">
+                <Card className="border-l-4 border-l-cyan-500 bg-white dark:bg-gray-800 shadow-sm hover:shadow-md transition-shadow border border-gray-200 dark:border-gray-700">
                   <CardHeader>
-                    <CardTitle className="flex items-center gap-2 dark:text-gray-100">
+                    <CardTitle className="flex items-center gap-2 text-gray-900 dark:text-gray-100">
                       System Health
                       <Badge variant="teal-blue" className="ml-2">
                         Healthy
                       </Badge>
                     </CardTitle>
-                    <CardDescription className="text-gray-700 dark:text-gray-400">Current system status</CardDescription>
+                    <CardDescription className="text-gray-600 dark:text-gray-400">Current system status</CardDescription>
                     <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">Demo data shown</p>
                   </CardHeader>
                   <CardContent>
