@@ -39,13 +39,7 @@ const HeroSection = () => {
   }, [isLoadingIdentity]);
 
   if (isLoading || isLoadingIdentity) {
-    return (
-      <section
-        className="bg-black text-white py-16 min-h-[90vh] flex items-center"
-      >
-        <HeroSkeleton />
-      </section>
-    );
+    return <HeroSkeleton />;
   }
 
   // Extract business information from business identity
