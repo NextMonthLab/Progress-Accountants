@@ -104,7 +104,7 @@ export default function AboutPage() {
           <img 
             src="https://res.cloudinary.com/drl0fxrkq/image/upload/v1747743047/P1023677_dp5dyw.jpg"
             alt="Progress Accountants office background"
-            className="w-full h-full object-cover object-center"
+            className="w-full h-full object-cover object-top"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/70 to-black/50"></div>
         </div>
