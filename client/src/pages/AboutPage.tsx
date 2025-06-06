@@ -397,28 +397,50 @@ export default function AboutPage() {
       {/* 6. Meet the Team */}
       <section className="py-16 md:py-20 bg-slate-900/50">
         <div className="container mx-auto px-6 md:px-8">
-          <div className="max-w-3xl mx-auto text-center">
-            <FadeIn delay={0.1}>
-              <h2 className="text-3xl md:text-4xl font-bold mb-6 bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
-                Meet the Team
-              </h2>
-            </FadeIn>
-            <FadeIn delay={0.2}>
-              <p className="text-xl text-gray-300 mb-8">
-                Progress is powered by a team of 25–50 professionals who care deeply about helping UK businesses thrive.
-              </p>
-            </FadeIn>
-            <FadeIn delay={0.3}>
-              <Link href="/team">
-                <Button 
-                  className="progress-button bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex items-center gap-2"
-                  size="lg"
-                >
-                  <span>View Our Team</span>
-                  <ArrowRight size={16} />
-                </Button>
-              </Link>
-            </FadeIn>
+          <div className="max-w-7xl mx-auto">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+              {/* Text Content */}
+              <div className="text-center lg:text-left">
+                <FadeIn delay={0.1}>
+                  <h2 className="text-3xl md:text-4xl font-bold mb-6 bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
+                    Meet the Team
+                  </h2>
+                </FadeIn>
+                <FadeIn delay={0.2}>
+                  <p className="text-xl text-gray-300 mb-6">
+                    Progress is powered by a team of 25–50 professionals who care deeply about helping UK businesses thrive.
+                  </p>
+                </FadeIn>
+                <FadeIn delay={0.3}>
+                  <p className="text-gray-400 mb-8">
+                    Our diverse team brings together expertise in accounting, technology, and strategic business advisory to deliver exceptional results for our clients.
+                  </p>
+                </FadeIn>
+                <FadeIn delay={0.4}>
+                  <Link href="/team">
+                    <Button 
+                      className="progress-button bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex items-center gap-2"
+                      size="lg"
+                    >
+                      <span>View Our Team</span>
+                      <ArrowRight size={16} />
+                    </Button>
+                  </Link>
+                </FadeIn>
+              </div>
+
+              {/* Team Image */}
+              <SlideInRight delay={0.2}>
+                <div className="relative">
+                  <img 
+                    src="https://res.cloudinary.com/drl0fxrkq/image/upload/v1747742829/P1013106-Enhanced-NR_adzlje.jpg"
+                    alt="Progress Accountants team members"
+                    className="w-full h-[500px] object-cover rounded-xl shadow-2xl"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-xl"></div>
+                </div>
+              </SlideInRight>
+            </div>
           </div>
         </div>
       </section>
