@@ -1,0 +1,4 @@
+# Progress Accountants Frontend Configuration
+VITE_API_URL=https://your-backend-api.com
+VITE_SITE_NAME=Progress Accountants
+VITE_DEMO_MODE=true

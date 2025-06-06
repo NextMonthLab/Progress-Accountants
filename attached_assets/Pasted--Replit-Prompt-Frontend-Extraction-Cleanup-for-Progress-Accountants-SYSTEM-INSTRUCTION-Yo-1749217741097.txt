@@ -1,0 +1,84 @@
+
+✅ Replit Prompt — Frontend Extraction & Cleanup for Progress Accountants
+
+🧠 SYSTEM INSTRUCTION
+
+You are now preparing the Progress Accountants project for a clean, standalone frontend deployment. The goal is to deploy a demo version of the **Progress public-facing site only** — no backend or admin logic included.
+
+---
+
+✅ STEP 1: WHAT TO EXTRACT
+
+• Extract the entire `client/` directory as the new root of the project.
+• Copy `shared/schema.ts` **only if necessary** for typed components — otherwise remove unused references.
+• Include these config files:
+  - `vite.config.ts`
+  - `tailwind.config.ts`
+  - `postcss.config.js`
+  - `index.html` if used
+
+---
+
+✅ STEP 2: WHAT TO REMOVE / LEAVE BEHIND
+
+• Do NOT include:
+  - `server/` directory (entire backend)
+  - `drizzle.config.ts` or any backend DB config
+  - Server-specific dependencies in `package.json` (clean this list!)
+  - Old server scripts in `package.json` (keep only frontend build + preview commands)
+
+---
+
+✅ STEP 3: API CONFIGURATION
+
+• Set up `VITE_API_URL` in `.env` to point to the existing backend (if public API needed), or a **demo mock URL**.
+• Update all API calls to use `import.meta.env.VITE_API_URL` as base.
+• If any API endpoints require authentication → fallback to **anonymous mode** or mock content for demo.
+
+---
+
+✅ STEP 4: AUTH HANDLING
+
+• If frontend includes `auth hooks`:
+  - Make sure they handle “not authenticated” state gracefully.
+  - Do not redirect to backend auth pages in this public demo build.
+  - Optionally show “Login disabled in demo mode” if needed.
+
+---
+
+✅ STEP 5: DEMO LABELING (for today’s demo)
+
+• In navbar and footer, append:  
+  → “Progress Accountants | Demo Site”  
+• Remove links to admin areas or backend routes.
+
+---
+
+✅ STEP 6: BUILD CONFIG
+
+• Prepare the project to deploy as:
+  - A **Vite static build** (preferred: Hetzner-ready or Netlify-ready)
+• Confirm `vite.config.ts` paths do not alias to `/server` or backend.
+• Confirm build runs cleanly with:
+  ```bash
+  npm run build
+
+
+⸻
+
+✅ RETURN SUMMARY
+
+After making these changes, return:
+
+✅ Files extracted
+✅ Files removed
+✅ Package.json cleaned
+✅ API_URL configured
+✅ Auth hooks reviewed
+✅ Demo labeling applied
+✅ Build tested
+
+⸻
+
+Your goal:
+Deploy a standalone, clean Progress Accountants frontend demo site — with correct branding and no backend coupling — today.
