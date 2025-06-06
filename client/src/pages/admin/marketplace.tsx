@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { AdminLayout } from '@/components/admin/AdminLayout';
+import AdminLayout from '@/layouts/AdminLayout';
 import { MarketplaceToolGrid } from '@/components/marketplace/MarketplaceToolGrid';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useQuery } from '@tanstack/react-query';

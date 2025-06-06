@@ -1,7 +1,7 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import AdminLayout from '@/components/admin/AdminLayout';
-import MarketplaceToolGrid from '@/components/marketplace/MarketplaceToolGrid';
+import { AdminLayout } from '@/components/admin/AdminLayout';
+import { MarketplaceToolGrid } from '@/components/marketplace/MarketplaceToolGrid';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
 import { Loader2 } from 'lucide-react';
