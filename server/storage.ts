@@ -2176,6 +2176,181 @@ export class DatabaseStorage implements IStorage {
       throw error;
     }
   }
+
+  // AI Usage Tracking implementation
+  async logAiUsage(data: InsertAiUsageLog): Promise<AiUsageLog> {
+    try {
+      const [usage] = await db
+        .insert(aiUsageLogs)
+        .values(data)
+        .returning();
+      return usage;
+    } catch (error) {
+      console.error("Error logging AI usage:", error);
+      throw error;
+    }
+  }
+
+  async getAiUsageForTenant(tenantId: string, startDate?: Date, endDate?: Date): Promise<AiUsageLog[]> {
+    try {
+      let query = db
+        .select()
+        .from(aiUsageLogs)
+        .where(eq(aiUsageLogs.tenantId, tenantId));
+
+      if (startDate && endDate) {
+        query = query.where(
+          and(
+            eq(aiUsageLogs.tenantId, tenantId),
+            sql`${aiUsageLogs.timestamp} >= ${startDate}`,
+            sql`${aiUsageLogs.timestamp} <= ${endDate}`
+          )
+        );
+      }
+
+      const usage = await query.orderBy(desc(aiUsageLogs.timestamp));
+      return usage;
+    } catch (error) {
+      console.error("Error fetching AI usage for tenant:", error);
+      return [];
+    }
+  }
+
+  async getAiUsageByModel(tenantId: string, modelUsed: string, startDate?: Date, endDate?: Date): Promise<AiUsageLog[]> {
+    try {
+      let query = db
+        .select()
+        .from(aiUsageLogs)
+        .where(
+          and(
+            eq(aiUsageLogs.tenantId, tenantId),
+            eq(aiUsageLogs.modelUsed, modelUsed)
+          )
+        );
+
+      if (startDate && endDate) {
+        query = query.where(
+          and(
+            eq(aiUsageLogs.tenantId, tenantId),
+            eq(aiUsageLogs.modelUsed, modelUsed),
+            sql`${aiUsageLogs.timestamp} >= ${startDate}`,
+            sql`${aiUsageLogs.timestamp} <= ${endDate}`
+          )
+        );
+      }
+
+      const usage = await query.orderBy(desc(aiUsageLogs.timestamp));
+      return usage;
+    } catch (error) {
+      console.error("Error fetching AI usage by model:", error);
+      return [];
+    }
+  }
+
+  async getAiUsageByTaskType(tenantId: string, taskType: string, startDate?: Date, endDate?: Date): Promise<AiUsageLog[]> {
+    try {
+      let query = db
+        .select()
+        .from(aiUsageLogs)
+        .where(
+          and(
+            eq(aiUsageLogs.tenantId, tenantId),
+            eq(aiUsageLogs.taskType, taskType)
+          )
+        );
+
+      if (startDate && endDate) {
+        query = query.where(
+          and(
+            eq(aiUsageLogs.tenantId, tenantId),
+            eq(aiUsageLogs.taskType, taskType),
+            sql`${aiUsageLogs.timestamp} >= ${startDate}`,
+            sql`${aiUsageLogs.timestamp} <= ${endDate}`
+          )
+        );
+      }
+
+      const usage = await query.orderBy(desc(aiUsageLogs.timestamp));
+      return usage;
+    } catch (error) {
+      console.error("Error fetching AI usage by task type:", error);
+      return [];
+    }
+  }
+
+  async getTotalAiUsageForMonth(tenantId: string, year: number, month: number): Promise<number> {
+    try {
+      const startDate = new Date(year, month - 1, 1);
+      const endDate = new Date(year, month, 0, 23, 59, 59, 999);
+
+      const result = await db
+        .select({ count: sql<number>`count(*)` })
+        .from(aiUsageLogs)
+        .where(
+          and(
+            eq(aiUsageLogs.tenantId, tenantId),
+            sql`${aiUsageLogs.timestamp} >= ${startDate}`,
+            sql`${aiUsageLogs.timestamp} <= ${endDate}`
+          )
+        );
+
+      return result[0]?.count || 0;
+    } catch (error) {
+      console.error("Error getting total AI usage for month:", error);
+      return 0;
+    }
+  }
+
+  async getAiUsageStats(tenantId: string, year: number, month: number): Promise<{
+    totalCalls: number;
+    gptCalls: number;
+    claudeCalls: number;
+    mistralCalls: number;
+    successRate: number;
+  }> {
+    try {
+      const startDate = new Date(year, month - 1, 1);
+      const endDate = new Date(year, month, 0, 23, 59, 59, 999);
+
+      const stats = await db
+        .select({
+          total: sql<number>`count(*)`,
+          gptCalls: sql<number>`count(case when ${aiUsageLogs.modelUsed} like '%gpt%' then 1 end)`,
+          claudeCalls: sql<number>`count(case when ${aiUsageLogs.modelUsed} like '%claude%' then 1 end)`,
+          mistralCalls: sql<number>`count(case when ${aiUsageLogs.modelUsed} like '%mistral%' then 1 end)`,
+          successfulCalls: sql<number>`count(case when ${aiUsageLogs.success} = true then 1 end)`,
+        })
+        .from(aiUsageLogs)
+        .where(
+          and(
+            eq(aiUsageLogs.tenantId, tenantId),
+            sql`${aiUsageLogs.timestamp} >= ${startDate}`,
+            sql`${aiUsageLogs.timestamp} <= ${endDate}`
+          )
+        );
+
+      const result = stats[0];
+      const totalCalls = result?.total || 0;
+      const successRate = totalCalls > 0 ? (result?.successfulCalls || 0) / totalCalls * 100 : 100;
+
+      return {
+        totalCalls,
+        gptCalls: result?.gptCalls || 0,
+        claudeCalls: result?.claudeCalls || 0,
+        mistralCalls: result?.mistralCalls || 0,
+        successRate: Math.round(successRate * 100) / 100
+      };
+    } catch (error) {
+      console.error("Error getting AI usage stats:", error);
+      return {
+        totalCalls: 0,
+        gptCalls: 0,
+        claudeCalls: 0,
+        mistralCalls: 0,
+        successRate: 100
+      };
+    }
+  }
 }
 
 // Using the DatabaseStorage implementation for production

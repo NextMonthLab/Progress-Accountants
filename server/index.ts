@@ -19,6 +19,7 @@ import { migrateOnboardingTables } from './db-migrate-onboarding';
 import { migrateSupportTables } from './db-migrate-support';
 import { migrateSupportSystemTables } from './db-migrate-support-system';
 import { migrateHealthMonitoringTables } from './db-migrate-health-monitoring';
+import { runAiUsageMigrations } from './db-migrate-ai-usage';
 import { registerNavigationRoutes } from './controllers/navigationController';
 import { registerDomainMappingRoutes } from './controllers/domainMappingController';
 import { registerSotRoutes } from './routes/sot-routes';
@@ -105,6 +106,7 @@ app.use((req, res, next) => {
     await migrateSupportSystemTables();
     console.log('Running Health Monitoring System migrations...');
     await migrateHealthMonitoringTables();
+    await runAiUsageMigrations();
   } catch (error) {
     console.error('Error running migrations:', error);
   }
