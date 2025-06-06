@@ -1337,10 +1337,16 @@ export const innovationFeedItems = pgTable("innovation_feed_items", {
   modelUsed: varchar("model_used", { length: 50 }).notNull(),
   taskType: varchar("task_type", { length: 50 }).default("theme-to-product-ideas").notNull(),
   generatedByUser: varchar("generated_by_user", { length: 255 }), // User name/email if available
+  // Idea Action Tracking for innovation loop completion
+  actionStatus: varchar("action_status", { length: 20 }).default("none").notNull(), // none, implemented, archived, wishlist
+  actionNotes: text("action_notes"), // Optional notes about action taken
+  actionUpdatedByUserId: integer("action_updated_by_user_id").references(() => users.id),
+  actionUpdatedAt: timestamp("action_updated_at"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 }, (table) => ({
   tenantTimestampIdx: index("innovation_feed_tenant_timestamp_idx").on(table.tenantId, table.timestamp),
   taskTypeIdx: index("innovation_feed_task_type_idx").on(table.taskType),
+  actionStatusIdx: index("innovation_feed_action_status_idx").on(table.actionStatus),
 }));
 
 export const insertInnovationFeedItemSchema = createInsertSchema(innovationFeedItems).omit({

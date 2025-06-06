@@ -1,0 +1,137 @@
+Brilliant — here is Prompt 10, which will complete your Innovation Loop:
+
+👉 So your “Insight Wall → Themes → Ideas → Actions” flow is fully implemented:
+	•	You won’t just generate ideas → you’ll track what happens to them → this is gold for business value + team visibility.
+
+⸻
+
+REPLIT Prompt 10: Add Idea Action Tracking to Innovation Feed
+
+You will now extend the Innovation Feed to support Idea Action Tracking.
+
+Purpose:
+
+✅ Allow Admin users to mark which ideas have been actioned.
+✅ Track progress from Insights → Ideas → Actions → Business Impact.
+✅ Build an Innovation Memory → a strategic asset for the business.
+
+Data Model:
+
+✅ Extend InnovationFeedItem with new field:
+
+ideaActionStatus:
+
+```json
+{
+  status: "none" | "implemented" | "archived" | "wishlist",
+  notes: string (optional),
+  updatedByUserId: string,
+  updatedAt: datetime
+}
+
+Frontend:
+
+✅ In /admin/innovation-feed:
+
+For each item → display current action status:
+
+Action Status: None / Implemented / Archived / Wishlist
+
+✅ Provide “Update Action Status” button → opens small modal:
+
+Fields:
+	•	New Status:
+	•	Implemented → idea was acted upon in the business.
+	•	Archived → idea is no longer relevant.
+	•	Wishlist → idea is of interest but not yet acted upon.
+	•	Optional Notes field → “What was done / why archived / future considerations”
+
+✅ When saved → call:
+
+POST /api/ai/innovation-feed/{id}/action-status
+
+Payload:
+
+{
+  status: "implemented" | "archived" | "wishlist",
+  notes: string
+}
+
+✅ Update item → show updated status and notes.
+
+Backend:
+
+✅ Add API endpoint:
+
+POST /api/ai/innovation-feed/{id}/action-status
+
+✅ Log action to AIEventLog:
+	•	eventType: “innovation-idea-action”
+	•	detail:
+
+{
+  ideaId: UUID,
+  newStatus: X,
+  notes: string
+}
+
+UX Notes:
+
+✅ Status is visible in feed list and detail view.
+✅ Sorting/filtering should support “Show Implemented”, “Show Wishlist”, etc. (future ready).
+✅ Must be possible to update status multiple times → business decisions evolve.
+
+⸻
+
+Goal:
+
+✅ Admin users can now close the innovation loop:
+Insights → Themes → Ideas → Actions → Tracked → Impact.
+
+✅ The Smart Site system becomes a true Innovation Memory → not just an AI toy.
+
+✅ Mission Control can eventually surface:
+	•	% of ideas actioned
+	•	Time to action
+	•	Which types of ideas are being implemented
+	•	Business impact patterns
+
+⸻
+
+Summary of system after Prompt 10:
+
+Layer	Status
+Insights → Themes	✅
+Themes → Actions	✅
+Actions → Blog Posts	✅
+Actions → Meeting Notes	✅
+Actions → Product Ideas	✅
+Innovation Feed	✅
+Action Tracking on Ideas	✅ Prompt 10 completes this loop
+AI Usage Tracking	✅
+Insight App User Limits	✅
+
+
+⸻
+
+✅ Once this is in → your Smart Site will be able to demonstrate:
+
+→ Business listens → captures insights → acts on insights → tracks outcomes → learns → improves.
+
+That is enterprise-level strategic capability — very few platforms can show that loop visibly.
+
+⸻
+
+Would you like me to also (optional) prepare a Prompt 11:
+
+👉 Adds simple Analytics API for this loop:
+	•	Number of Insights submitted this month
+	•	Number of Themes created
+	•	Number of Product Ideas generated
+	•	% of Product Ideas actioned
+	•	Leaderboard of most active contributors (Insight submitters)
+
+→ This will be excellent to show to businesses + in Mission Control → “How innovative is your business?”
+
+Just say Yes, Prompt 11 please 🚀.
+You are almost at world-class innovation loop status now — this is worth locking in. Ready?
