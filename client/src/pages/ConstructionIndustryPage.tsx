@@ -471,38 +471,50 @@ const ConstructionIndustryPage = () => {
           viewport={{ once: true, margin: "-100px" }}
           variants={containerVariants}
         >
-          <motion.div variants={itemVariants} className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-white mb-6">Our Tech-Savvy Construction Support</h2>
-            <p className="text-lg text-gray-300 max-w-3xl mx-auto mb-8">
-              We integrate tools like Xero and cloud-based job costing systems to give you fast, useful, and construction-specific insights.
-            </p>
+          <motion.div variants={itemVariants} className="max-w-6xl mx-auto bg-gray-900 rounded-xl shadow-md border border-gray-800 overflow-hidden mb-12">
+            <div className="grid lg:grid-cols-2 gap-0">
+              {/* Content side */}
+              <div className="p-8 md:p-10 flex flex-col justify-center">
+                <h2 className="text-2xl md:text-3xl font-bold text-white mb-6">Our Tech-Savvy Construction Support</h2>
+                <p className="text-gray-300 mb-6">
+                  We integrate tools like Xero and cloud-based job costing systems to give you fast, useful, and construction-specific insights.
+                </p>
+                
+                <div className="space-y-4 mb-6">
+                  <div className="flex items-start">
+                    <CheckCircle className="h-5 w-5 text-purple-400 mr-3 shrink-0 mt-1" />
+                    <p className="text-gray-300">Weekly/monthly cash flow views</p>
+                  </div>
+                  <div className="flex items-start">
+                    <CheckCircle className="h-5 w-5 text-purple-400 mr-3 shrink-0 mt-1" />
+                    <p className="text-gray-300">Project-by-project profit tracking</p>
+                  </div>
+                  <div className="flex items-start">
+                    <CheckCircle className="h-5 w-5 text-purple-400 mr-3 shrink-0 mt-1" />
+                    <p className="text-gray-300">Real-time alerts and tax deadline reminders</p>
+                  </div>
+                  <div className="flex items-start">
+                    <CheckCircle className="h-5 w-5 text-purple-400 mr-3 shrink-0 mt-1" />
+                    <p className="text-gray-300">Practical advice tailored to your trade</p>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Image side */}
+              <div className="relative lg:min-h-[400px] flex items-center justify-center bg-gray-800">
+                <div className="p-6 w-full h-full flex items-center justify-center">
+                  <img 
+                    src="https://res.cloudinary.com/drl0fxrkq/image/upload/v1749050354/image_2_mw8ih4.png"
+                    alt="Construction industry management dashboard and analytics"
+                    className="w-full h-auto max-h-full object-contain rounded-lg shadow-lg"
+                  />
+                </div>
+              </div>
+            </div>
           </motion.div>
           
-          <div className="max-w-4xl mx-auto">
-            <motion.div variants={itemVariants} className="bg-gray-900 rounded-xl shadow-md p-6 md:p-8 mb-12 border border-gray-800">
-              <ul className="space-y-4">
-                <li className="flex items-start">
-                  <CheckCircle className="h-5 w-5 text-purple-400 mr-3 shrink-0 mt-1" />
-                  <p className="text-gray-300">Weekly/monthly cash flow views</p>
-                </li>
-                <li className="flex items-start">
-                  <CheckCircle className="h-5 w-5 text-purple-400 mr-3 shrink-0 mt-1" />
-                  <p className="text-gray-300">Project-by-project profit tracking</p>
-                </li>
-                <li className="flex items-start">
-                  <CheckCircle className="h-5 w-5 text-purple-400 mr-3 shrink-0 mt-1" />
-                  <p className="text-gray-300">Real-time alerts and tax deadline reminders</p>
-                </li>
-                <li className="flex items-start">
-                  <CheckCircle className="h-5 w-5 text-purple-400 mr-3 shrink-0 mt-1" />
-                  <p className="text-gray-300">Practical advice tailored to your trade</p>
-                </li>
-              </ul>
-            </motion.div>
-            
-            {/* CTA Section */}
-            <CTASection />
-          </div>
+          {/* CTA Section */}
+          <CTASection />
         </motion.div>
       </div>
     </div>
