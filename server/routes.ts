@@ -67,6 +67,7 @@ import {
 } from "./controllers/marketplaceController";
 import { registerSocialMediaRoutes } from "./controllers/registerSocialMediaRoutes";
 import { registerBlogPostGeneratorRoutes } from "./controllers/registerBlogPostGeneratorRoutes";
+import aiGatewayRouter from "./routes/ai-gateway";
 import { setupAuth, hashPassword } from "./auth";
 import { simpleStorage } from "./simpleStorage";
 import { 
@@ -3465,6 +3466,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // Register NextMonth marketplace integration routes
   app.use('/api/marketplace', MarketplaceApiRouter);
+
+  // Register AI Gateway routes
+  app.use('/api/ai', aiGatewayRouter);
 
   // Register SmartSite Autopilot routes
   registerAutopilotRoutes(app);
