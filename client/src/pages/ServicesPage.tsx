@@ -354,11 +354,14 @@ export default function ServicesPage() {
                 </Link>
               </div>
               
-              {/* Right: Image/Placeholder */}
-              <div className="h-64 md:h-auto bg-gray-700 flex items-center justify-center p-8">
-                <div className="text-center">
-                  <h3 className="text-2xl font-bold mb-2 bg-gradient-to-r from-pink-400 to-blue-400 bg-clip-text text-transparent">Client Portal</h3>
-                  <p className="text-gray-300 mb-6">Your finances at your fingertips</p>
+              {/* Right: Image */}
+              <div className="h-64 md:h-auto bg-gradient-to-br from-pink-500/10 to-blue-500/10 backdrop-blur-sm border-l border-gray-700 p-8 flex items-center justify-center">
+                <div className="relative overflow-hidden rounded-xl">
+                  <img 
+                    src="https://res.cloudinary.com/drl0fxrkq/image/upload/v1749050582/Screenshot_2025-06-04_at_16.22.10_rzqcnj.png"
+                    alt="Progress Accountants client dashboard interface"
+                    className="w-full max-w-sm h-auto rounded-xl shadow-lg"
+                  />
                 </div>
               </div>
             </div>
