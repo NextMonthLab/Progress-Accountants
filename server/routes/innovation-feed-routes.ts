@@ -42,25 +42,6 @@ export function registerInnovationFeedRoutes(app: Express) {
     }
   });
 
-  // GET /api/ai/innovation-feed/:id - Get specific innovation feed item
-  app.get("/api/ai/innovation-feed/:id", async (req, res) => {
-    try {
-      const { id } = req.params;
-      const tenantId = req.query.tenantId as string || "00000000-0000-0000-0000-000000000000";
-
-      const item = await InnovationFeedService.getFeedItem(id, tenantId);
-      
-      if (!item) {
-        return res.status(404).json({ error: 'Innovation feed item not found' });
-      }
-
-      res.json(item);
-    } catch (error) {
-      console.error('Failed to get innovation feed item:', error);
-      res.status(500).json({ error: 'Failed to get innovation feed item' });
-    }
-  });
-
   // GET /api/ai/innovation-feed/recent - Get recent items for dashboard
   app.get("/api/ai/innovation-feed/recent", async (req, res) => {
     try {
@@ -85,6 +66,38 @@ export function registerInnovationFeedRoutes(app: Express) {
     } catch (error) {
       console.error('Failed to get innovation feed stats:', error);
       res.status(500).json({ error: 'Failed to get innovation feed stats' });
+    }
+  });
+
+  // GET /api/ai/innovation-feed-analytics - Get action analytics for innovation loop tracking
+  app.get("/api/ai/innovation-feed-analytics", async (req, res) => {
+    try {
+      const tenantId = req.query.tenantId as string || "00000000-0000-0000-0000-000000000000";
+
+      const analytics = await InnovationFeedService.getActionAnalytics(tenantId);
+      res.json(analytics);
+    } catch (error) {
+      console.error('Failed to get innovation analytics:', error);
+      res.status(500).json({ error: 'Failed to get innovation analytics' });
+    }
+  });
+
+  // GET /api/ai/innovation-feed/:id - Get specific innovation feed item
+  app.get("/api/ai/innovation-feed/:id", async (req, res) => {
+    try {
+      const { id } = req.params;
+      const tenantId = req.query.tenantId as string || "00000000-0000-0000-0000-000000000000";
+
+      const item = await InnovationFeedService.getFeedItem(id, tenantId);
+      
+      if (!item) {
+        return res.status(404).json({ error: 'Innovation feed item not found' });
+      }
+
+      res.json(item);
+    } catch (error) {
+      console.error('Failed to get innovation feed item:', error);
+      res.status(500).json({ error: 'Failed to get innovation feed item' });
     }
   });
 
@@ -162,19 +175,6 @@ export function registerInnovationFeedRoutes(app: Express) {
     } catch (error) {
       console.error('Failed to get innovation feed by status:', error);
       res.status(500).json({ error: 'Failed to get innovation feed by status' });
-    }
-  });
-
-  // GET /api/ai/innovation-feed/analytics - Get action analytics for innovation loop tracking
-  app.get("/api/ai/innovation-feed/analytics", async (req, res) => {
-    try {
-      const tenantId = req.query.tenantId as string || "00000000-0000-0000-0000-000000000000";
-
-      const analytics = await InnovationFeedService.getActionAnalytics(tenantId);
-      res.json(analytics);
-    } catch (error) {
-      console.error('Failed to get innovation analytics:', error);
-      res.status(500).json({ error: 'Failed to get innovation analytics' });
     }
   });
 
