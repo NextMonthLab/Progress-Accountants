@@ -102,7 +102,10 @@ export default function WhyUsPage() {
         {/* Content */}
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-3xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-blue-400 to-pink-400 bg-clip-text text-transparent">Why Choose Progress?</h1>
+            <h1 className="text-3xl md:text-5xl font-bold mb-6">
+              <span className="text-white">Why Choose </span>
+              <span className="bg-gradient-to-r from-purple-400 via-blue-400 to-blue-500 bg-clip-text text-transparent">Progress?</span>
+            </h1>
             <p className="text-xl md:text-2xl text-gray-100 mb-8">
               We're not just your accountants—we're your growth partners.
             </p>
