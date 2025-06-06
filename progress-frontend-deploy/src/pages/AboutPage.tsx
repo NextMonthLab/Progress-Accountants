@@ -10,7 +10,7 @@ import {
   CardSkeleton,
   TestimonialsSkeleton
 } from '@/components/ui/skeletons';
-import { useBusinessIdentity } from '@/hooks/use-business-identity';
+import { businessIdentity } from '@/data/staticBusinessData';
 import { FadeIn, SlideUp, SlideInLeft } from '@/components/ui/ScrollAnimation';
 
 export default function AboutPage() {
