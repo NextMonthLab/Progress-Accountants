@@ -41,8 +41,7 @@ const HeroSection = () => {
   if (isLoading || isLoadingIdentity) {
     return (
       <section
-        style={{ backgroundColor: 'var(--navy)' }}
-        className="text-white py-16 min-h-[90vh] flex items-center"
+        className="bg-black text-white py-16 min-h-[90vh] flex items-center"
       >
         <HeroSkeleton />
       </section>
