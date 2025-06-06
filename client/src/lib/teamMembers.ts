@@ -77,7 +77,7 @@ export const teamMembers: TeamMember[] = [
     role: "Digital Marketing Executive",
     biography: "Manny leads our digital presence—managing campaigns, brand messaging, and online outreach. He helps keep Progress visible, relevant, and connected to clients across the UK.",
     interests: "Enjoys gym workouts and plays as a defender for his local football team.",
-    placeholderComponent: mannyPlaceholder,
+    photoUrl: "https://res.cloudinary.com/drl0fxrkq/image/upload/v1749198731/Screenshot_2025-06-06_at_09.30.24_qahuzv.png",
     socialLinks: {
       linkedin: "https://linkedin.com/in/mannyabayomi",
       twitter: "https://twitter.com/mannydigital"
