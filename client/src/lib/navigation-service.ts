@@ -74,7 +74,7 @@ export const mapSidebarToNavigation = (): NavigationItem[] => {
       href: '/admin/insights-dashboard',
       description: 'View client feedback and content insights',
       category: 'quick_actions',
-      pinnedOrder: 1,
+      pinnedOrder: 2,
     },
     
     // Moving previous items to new categories
@@ -86,11 +86,11 @@ export const mapSidebarToNavigation = (): NavigationItem[] => {
       href: '/',
       description: 'Open your public website in a new tab',
       category: 'quick_actions',
-      pinnedOrder: 5,
+      pinnedOrder: 3,
     },
     {
       id: 'dashboard',
-      title: 'Dashboard',
+      title: 'Main Dashboard',
       icon: 'LayoutDashboard',
       type: 'link',
       href: '/admin/dashboard',
