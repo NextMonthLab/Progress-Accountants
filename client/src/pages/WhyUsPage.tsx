@@ -100,23 +100,15 @@ export default function WhyUsPage() {
         </div>
         
         {/* Content */}
-        <div className="container mx-auto px-4 relative z-10">
+        <div className="relative z-10 container mx-auto px-6 md:px-8">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-3xl md:text-5xl font-bold mb-6">
               <span className="text-white">Why Choose </span>
               <span className="bg-gradient-to-r from-purple-400 via-blue-400 to-blue-500 bg-clip-text text-transparent">Progress?</span>
             </h1>
-            <p className="text-xl md:text-2xl text-gray-100 mb-8">
+            <p className="text-xl text-gray-100">
               We're not just your accountants—we're your growth partners.
             </p>
-            
-            <div className="mt-6 p-6 bg-white/10 backdrop-blur-sm rounded-lg">
-              <p className="italic text-lg text-white/90">Progress Accountants exists to help ambitious businesses build strong financial foundations, make confident decisions, and unlock lasting growth. We combine real human relationships with smart systems and sector expertise—delivering support that's proactive, not just reactive.</p>
-            </div>
-            
-            <div className="mt-8 inline-block px-4 py-2 rounded-full bg-white/10 text-gray-300 text-sm font-medium">
-              Established {yearFounded} • Serving businesses with excellence
-            </div>
           </div>
         </div>
         <div className="absolute inset-0 bg-gradient-to-r from-blue-900/20 to-blue-900/10 pointer-events-none"></div>
