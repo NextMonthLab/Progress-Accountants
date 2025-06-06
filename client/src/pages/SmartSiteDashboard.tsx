@@ -17,6 +17,7 @@ import {
   Bot
 } from "lucide-react";
 import { PremiumLoader, PremiumCardSkeleton } from "@/components/admin-ui/PremiumLoader";
+import AIGatewayDemo from "@/components/ai/AIGatewayDemo";
 
 interface DashboardStats {
   activeChatsToday: number;
