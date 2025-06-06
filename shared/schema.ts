@@ -1299,6 +1299,32 @@ export const insertAiComponentRecommendationSchema = createInsertSchema(aiCompon
 export type InsertAiComponentRecommendation = z.infer<typeof insertAiComponentRecommendationSchema>;
 export type AiComponentRecommendation = typeof aiComponentRecommendations.$inferSelect;
 
+// AI Event Log for analytics and Mission Control integration
+export const aiEventLogs = pgTable("ai_event_logs", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  tenantId: uuid("tenant_id").references(() => tenants.id).notNull(),
+  userId: integer("user_id").references(() => users.id),
+  timestamp: timestamp("timestamp").defaultNow().notNull(),
+  eventType: varchar("event_type", { length: 50 }).notNull(), // ai-call, pro-ai-upgrade, pro-ai-downgrade, limit-exceeded, theme-to-product-ideas
+  taskType: varchar("task_type", { length: 50 }), // matches AIUsageLog taskType when applicable
+  detail: jsonb("detail"), // any useful metadata
+  modelUsed: varchar("model_used", { length: 50 }), // for AI calls
+  tokensUsed: integer("tokens_used"), // if available
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+}, (table) => ({
+  tenantTimestampIdx: index("ai_event_logs_tenant_timestamp_idx").on(table.tenantId, table.timestamp),
+  eventTypeIdx: index("ai_event_logs_event_type_idx").on(table.eventType),
+}));
+
+export const insertAiEventLogSchema = createInsertSchema(aiEventLogs).omit({
+  id: true,
+  timestamp: true,
+  createdAt: true,
+});
+
+export type InsertAiEventLog = z.infer<typeof insertAiEventLogSchema>;
+export type AiEventLog = typeof aiEventLogs.$inferSelect;
+
 // Feed Settings table for SmartSite Feed Control Panel
 export const feedSettings = pgTable("feed_settings", {
   id: serial("id").primaryKey(),

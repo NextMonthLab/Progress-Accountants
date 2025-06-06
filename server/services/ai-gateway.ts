@@ -1,6 +1,7 @@
 import OpenAI from 'openai';
 import Anthropic from '@anthropic-ai/sdk';
 import { storage } from '../storage';
+import { AIEventLogger } from './ai-event-logger';
 
 // Configuration for AI usage limits
 const DEFAULT_PRO_AI_LIMIT = 100; // calls per month
@@ -112,9 +113,9 @@ const TASK_CONFIGS = {
     defaultMaxTokens: 800
   },
   'theme-to-product-ideas': {
-    systemPrompt: 'Generate innovative product or service ideas based on the provided theme, insights, and business context. Format as a structured list with clear titles, descriptions, target audiences, and value propositions.',
+    systemPrompt: 'You are acting as an Innovation Strategist. Generate creative and commercially valuable new product or service ideas for a business, based on the following themes and insights. Respond in clear markdown format with structured sections for each idea.',
     defaultTemperature: 0.8,
-    defaultMaxTokens: 512
+    defaultMaxTokens: 1200
   }
 };
 
@@ -284,6 +285,32 @@ export async function processAIRequest(request: AIGatewayRequest, tenantId: stri
           processingTimeMs: Date.now() - startTime
         }
       });
+
+      // Log AI event for analytics and Mission Control
+      await AIEventLogger.logAiCall({
+        tenantId,
+        taskType,
+        modelUsed,
+        tokensUsed: null,
+        detail: {
+          temperature: finalTemperature,
+          maxTokens: finalMaxTokens,
+          promptLength: enhancedPrompt.length,
+          responseLength: aiResponse.length,
+          processingTimeMs: Date.now() - startTime
+        }
+      });
+
+      // Special logging for product ideas generation
+      if (taskType === 'theme-to-product-ideas') {
+        await AIEventLogger.logProductIdeasGeneration({
+          tenantId,
+          modelUsed,
+          selectedScope: context?.selectedScope,
+          themeSummary: context?.themeSummary,
+          tokensUsed: null
+        });
+      }
     } catch (logError) {
       console.error('Failed to log AI usage:', logError);
       // Don't fail the request if logging fails
