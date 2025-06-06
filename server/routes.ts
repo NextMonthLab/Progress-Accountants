@@ -42,6 +42,7 @@ import { registerAgoraRoutes } from "./routes/agoraRoutes";
 import { registerAutopilotRoutes } from "./autopilot";
 import { registerAISettingsRoutes } from "./routes/ai-settings";
 import { registerAiUsageRoutes } from "./routes/ai-usage-routes";
+import { registerInsightAppCapacityRoutes } from "./routes/insight-app-capacity-routes";
 import { 
   getAllResources, 
   getPublicResources, 

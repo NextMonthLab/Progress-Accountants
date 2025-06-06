@@ -1,0 +1,163 @@
+Yes — this is very wise thinking, and the right moment to bake it in.
+You are 100% correct:
+
+👉 Without a constraint:
+	•	Big org signs up → generates thousands of Insight App users → we incur email costs, API costs, data load → all for one flat fee → 💸 not scalable.
+
+👉 Even if you never get Microsoft, many businesses will try to abuse unlimited Insight App invites if it’s free.
+
+⸻
+
+Good model:
+
+✅ You already have the right instinct:
+
+→ First X Insight App users free → e.g. 10
+→ Then charge for bundles of e.g. 10, 25, 50 additional Insight users.
+
+⸻
+
+What this lets you do:
+
+✅ Small businesses → get value immediately → don’t feel blocked.
+✅ Larger businesses → happily pay for ability to engage more staff.
+✅ System prevents abuse by forcing purchases before mass invites.
+
+⸻
+
+Now — here is a very clean Prompt 9 you can send to REPLIT:
+
+⸻
+
+REPLIT Prompt 9: Add Insight App User Limit & Monetization Logic
+
+You will now add controlled user limits and monetization logic to the Insight App user invitations system.
+
+Purpose:
+
+✅ Prevent large businesses from inviting unlimited Insight App users.
+✅ Provide clear upgrade path to add more Insight App user capacity.
+✅ Protect Smart Site scalability and operating costs.
+
+Core Rule:
+
+- First N Insight App users = free (default N = 10, configurable per tenant)
+- Additional users require paid capacity (bundles):
+
+    - +10 users → £X
+    - +25 users → £Y
+    - +50 users → £Z
+    - (actual pricing to be configured later)
+
+✅ System must support:
+- Manual adjustment of per-tenant limits (super admin can override in SOT)
+- Future automated purchase flows (integrated with subscription system)
+
+Backend:
+
+✅ Add new table / collection: InsightAppUserCapacity
+
+Structure:
+
+{
+  tenantId: string,
+  baseFreeCapacity: number (default 10),
+  additionalPurchasedCapacity: number (starts at 0),
+  totalCapacity: computed (baseFreeCapacity + additionalPurchasedCapacity),
+  currentUsage: computed (active Insight App users invited),
+  lastUpdated: datetime
+}
+
+✅ When Admin invites a new Insight App user:
+
+- Check currentUsage against totalCapacity.
+- If within capacity → allow invitation.
+- If over capacity → block invitation and return error:
+
+```json
+{
+  status: "limit-exceeded",
+  message: "You've reached your Insight App user limit. Please purchase more capacity to invite additional users."
+}
+
+✅ Log each invite in AIEventLog with eventType: “insight-user-invite”.
+
+Frontend:
+
+✅ In Insight App User Management screen:
+	•	Display clearly:
+
+Insight App Users:
+X of Y slots used.
+[Purchase More Capacity] button
+
+✅ If limit reached → show message and disable “Add User” button unless more capacity is purchased.
+
+✅ For now, “Purchase More Capacity” can link to placeholder screen or trigger modal:
+
+This feature requires additional Insight App user capacity.  
+Please contact support or visit our Marketplace to purchase more capacity.
+
+✅ System must support API endpoint to adjust capacity:
+
+POST /api/insight-app/capacity → Admin-only:
+
+{
+  additionalPurchasedCapacity: number
+}
+
+✅ System must expose current capacity via:
+
+GET /api/insight-app/capacity
+
+Returns:
+
+{
+  baseFreeCapacity: number,
+  additionalPurchasedCapacity: number,
+  totalCapacity: number,
+  currentUsage: number
+}
+
+Additional Notes:
+
+✅ System must gracefully support very large limits once purchased (future enterprise plan support).
+✅ UX must clearly inform Admin when limit is reached — no “silent failure.”
+✅ Super Admins must be able to override limits in SOT for special cases (enterprise deals).
+
+⸻
+
+Goal:
+
+✅ Insight App user growth is now controlled and monetizable.
+✅ Small businesses get immediate value.
+✅ Large businesses must pay to scale.
+✅ System is protected against abuse.
+
+⸻
+
+Summary of architecture now:
+
+Component	Status
+Insights → Themes → Ideas	✅ fully wired
+AI Gateway & Usage Limits	✅ fully wired
+Innovation Feed	✅ fully wired
+Idea Action Tracking	✅ Prompt 8 (pending)
+Insight App User Limits	✅ Prompt 9 (this prompt)
+
+
+⸻
+
+✅ Would you like me to also prepare Prompt 10 next:
+
+👉 Adds the Action Taken Tracker to Innovation Feed (Prompt 8 extension):
+
+→ So Admins can mark ideas as:
+	•	Action Taken → with notes
+	•	Archived → not relevant
+	•	Wishlist → keep for future
+
+→ This closes the full innovation loop in the system.
+
+Just say Yes, Prompt 10 please 🚀.
+You are building a world-class innovation-capable Smart Site system — this will give it real strategic depth. Ready?

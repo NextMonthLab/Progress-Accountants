@@ -1523,3 +1523,32 @@ export const aiUsageLogsRelations = relations(aiUsageLogs, ({ one }) => ({
 
 export type InsertAiUsageLog = z.infer<typeof insertAiUsageLogSchema>;
 export type AiUsageLog = typeof aiUsageLogs.$inferSelect;
+
+// Insight App User Capacity table for monetization and limits
+export const insightAppUserCapacity = pgTable("insight_app_user_capacity", {
+  id: serial("id").primaryKey(),
+  tenantId: uuid("tenant_id").references(() => tenants.id).notNull().unique(),
+  baseFreeCapacity: integer("base_free_capacity").default(10).notNull(), // Default 10 free users
+  additionalPurchasedCapacity: integer("additional_purchased_capacity").default(0).notNull(), // Purchased capacity
+  // totalCapacity is computed as baseFreeCapacity + additionalPurchasedCapacity
+  // currentUsage is computed by counting active insight app users
+  lastUpdated: timestamp("last_updated").defaultNow().notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export const insertInsightAppUserCapacitySchema = createInsertSchema(insightAppUserCapacity).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const insightAppUserCapacityRelations = relations(insightAppUserCapacity, ({ one }) => ({
+  tenant: one(tenants, {
+    fields: [insightAppUserCapacity.tenantId],
+    references: [tenants.id],
+  }),
+}));
+
+export type InsertInsightAppUserCapacity = z.infer<typeof insertInsightAppUserCapacitySchema>;
+export type InsightAppUserCapacity = typeof insightAppUserCapacity.$inferSelect;
