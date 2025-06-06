@@ -239,38 +239,36 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      {/* Podcast Studio Feature */}
+      {/* Why Choose Progress Accountants */}
       <section className="py-16 bg-gray-800">
         <div className="container mx-auto px-6 md:px-8">
           <div className="bg-gray-900 rounded-lg shadow-xl overflow-hidden border border-gray-700">
             <div className="grid md:grid-cols-2 gap-0">
               {/* Left: Image */}
-              <div className="h-64 md:h-auto bg-gray-700 flex items-center justify-center p-8">
-                <div className="text-center">
-                  <h3 className="text-2xl font-bold mb-2 bg-gradient-to-r from-blue-400 to-pink-400 bg-clip-text text-transparent">Podcast & Video Studio</h3>
-                  <p className="text-gray-300 mb-6">A cutting-edge facility for content creators</p>
-                  <Link href="/studio-banbury">
-                    <Button className="bg-white text-gray-900 hover:bg-gray-100 hover:shadow-md hover:-translate-y-[2px] transition duration-300">
-                      Explore the Studio
-                    </Button>
-                  </Link>
+              <div className="h-64 md:h-auto bg-gradient-to-br from-blue-500/10 to-pink-500/10 backdrop-blur-sm border-r border-gray-700 p-8 flex items-center justify-center">
+                <div className="relative overflow-hidden rounded-xl">
+                  <img 
+                    src="https://res.cloudinary.com/drl0fxrkq/image/upload/v1749050580/Screenshot_2025-06-04_at_16.21.26_axyqwj.png"
+                    alt="Progress Accountants professional services illustration"
+                    className="w-full max-w-sm h-auto rounded-xl shadow-lg"
+                  />
                 </div>
               </div>
               
               {/* Right: Content */}
               <div className="p-8">
-                <h3 className="text-2xl font-bold mb-4 text-white">More Than Just Accounting</h3>
+                <h3 className="text-2xl font-bold mb-4 text-white">Why Choose Progress Accountants</h3>
                 <p className="text-gray-300 mb-4">
-                  Progress Accountants offers more than just financial services. Our state-of-the-art podcast and video studio in Banbury provides a professional environment for content creation.
+                  We combine cutting-edge technology with personal service to deliver accounting solutions that genuinely support your business growth.
                 </p>
-                <ul className="space-y-2 mb-6">
+                <ul className="space-y-3 mb-6">
                   <li className="flex items-start">
                     <div className="text-blue-400 mr-3 mt-1">
                       <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                         <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                       </svg>
                     </div>
-                    <span className="text-gray-300">Professional recording equipment</span>
+                    <span className="text-gray-300">Dedicated account managers who know your business</span>
                   </li>
                   <li className="flex items-start">
                     <div className="text-pink-400 mr-3 mt-1">
@@ -278,7 +276,7 @@ export default function ServicesPage() {
                         <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                       </svg>
                     </div>
-                    <span className="text-gray-300">Acoustically treated space</span>
+                    <span className="text-gray-300">Cloud-based systems for real-time financial visibility</span>
                   </li>
                   <li className="flex items-start">
                     <div className="text-blue-400 mr-3 mt-1">
@@ -286,7 +284,7 @@ export default function ServicesPage() {
                         <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                       </svg>
                     </div>
-                    <span className="text-gray-300">Lighting and camera setup</span>
+                    <span className="text-gray-300">Proactive tax planning to minimize liabilities</span>
                   </li>
                   <li className="flex items-start">
                     <div className="text-pink-400 mr-3 mt-1">
@@ -294,7 +292,7 @@ export default function ServicesPage() {
                         <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                       </svg>
                     </div>
-                    <span className="text-gray-300">Available for hourly and daily rental</span>
+                    <span className="text-gray-300">Industry expertise in construction, film, and creative sectors</span>
                   </li>
                 </ul>
               </div>
