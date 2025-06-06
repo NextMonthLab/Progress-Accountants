@@ -470,6 +470,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Register Agora business intelligence routes
   registerAgoraRoutes(app);
   
+  // Register Insight App Capacity routes
+  registerInsightAppCapacityRoutes(app);
+  
   // Newsfeed routes
   app.get("/api/newsfeed/industry", getIndustryNews);
   app.post("/api/newsfeed/config", updateNewsfeedConfig);
