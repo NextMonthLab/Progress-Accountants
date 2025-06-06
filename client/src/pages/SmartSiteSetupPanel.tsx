@@ -157,21 +157,21 @@ For support, contact your SmartSite administrator.`;
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-8">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-8">
       <div className="max-w-4xl mx-auto space-y-8">
         {/* Header */}
         <div className="text-center space-y-4">
-          <h1 className="text-3xl font-bold text-gray-900">
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
             SmartSite Setup & Integration
           </h1>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
             Connect SmartSite to your existing website in just a few steps. 
             Choose to set it up yourself or let our team handle everything for you.
           </p>
         </div>
 
         {/* Setup Options */}
-        <Card className="bg-white shadow-lg">
+        <Card className="bg-white dark:bg-gray-800 shadow-lg border border-gray-200 dark:border-gray-700">
           <CardContent className="p-6">
             <Tabs defaultValue="diy" className="w-full">
               <TabsList className="grid w-full grid-cols-2 mb-8">
