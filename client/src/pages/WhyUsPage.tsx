@@ -86,12 +86,24 @@ export default function WhyUsPage() {
         <meta name="description" content={`Discover what makes ${businessName} different and why businesses choose us for their accounting needs. Expertise, technology, and a client-first approach.`} />
       </Helmet>
 
-      {/* Hero Section */}
-      <section className="bg-gray-800 text-white py-16 md:py-24 relative overflow-hidden">
+      {/* Hero Section with Background Image */}
+      <section className="relative text-white py-16 md:py-24 overflow-hidden">
+        {/* Background Image */}
+        <div className="absolute inset-0 z-0">
+          <img 
+            src="https://res.cloudinary.com/drl0fxrkq/image/upload/v1749050356/Contemporary_Business_Owner..._original_546357_k7pinx.jpg"
+            alt="Contemporary business owner background"
+            className="w-full h-full object-cover"
+          />
+          {/* Dark Overlay */}
+          <div className="absolute inset-0 bg-black/70"></div>
+        </div>
+        
+        {/* Content */}
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-3xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-blue-400 to-pink-400 bg-clip-text text-transparent">💡 Why Choose Progress?</h1>
-            <p className="text-xl md:text-2xl text-gray-300 mb-8">
+            <p className="text-xl md:text-2xl text-gray-100 mb-8">
               We're not just your accountants—we're your growth partners.
             </p>
             
