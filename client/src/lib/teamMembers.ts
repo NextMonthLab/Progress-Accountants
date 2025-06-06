@@ -66,7 +66,7 @@ export const teamMembers: TeamMember[] = [
     role: "Business Administrator",
     biography: "Joy ensures every client interaction is smooth, professional, and human. From document handling to scheduling, she's the behind-the-scenes engine keeping your accounting experience stress-free.",
     interests: "Enjoys time with her family and her dog, Fred; fan of Italian food and the movie Dirty Dancing.",
-    placeholderComponent: joyPlaceholder,
+    photoUrl: "https://res.cloudinary.com/drl0fxrkq/image/upload/v1749198731/Screenshot_2025-06-06_at_09.29.31_xvd7b2.png",
     socialLinks: {
       linkedin: "https://linkedin.com/in/joyholloway"
     }
