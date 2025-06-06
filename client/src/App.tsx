@@ -95,6 +95,7 @@ const InstalledToolsPage = lazy(() => import("@/pages/InstalledToolsPage"));
 const MarketplacePage = lazy(() => import("@/pages/MarketplacePage"));
 const EnhancedMarketplacePage = lazy(() => import("@/pages/EnhancedMarketplacePage"));
 const AdminMarketplacePage = lazy(() => import("@/pages/admin/marketplace"));
+const AIAssistantSettingsPage = lazy(() => import("@/pages/admin/AIAssistantSettingsPage"));
 const MyToolsPage = lazy(() => import("@/pages/MyToolsPage"));
 
 const BrandGuidelinesPage = lazy(() => import("@/pages/BrandGuidelinesPage"));
@@ -343,6 +344,11 @@ function Router() {
       <ProtectedRoute 
         path="/admin/settings" 
         component={AdminSettingsPage} 
+        allowedRoles={['admin', 'super_admin']} 
+      />
+      <ProtectedRoute 
+        path="/admin/ai-assistant-settings" 
+        component={AIAssistantSettingsPage} 
         allowedRoles={['admin', 'super_admin']} 
       />
       {/* Removed front-end editing routes:
