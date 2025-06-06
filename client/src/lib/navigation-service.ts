@@ -8,31 +8,31 @@ import {
 // Define the new navigation structure with main collapsible groups
 export const NAVIGATION_GROUPS = [
   {
-    id: 'quick_actions',
-    title: 'Quick Actions',
-    icon: 'Zap',
-    category: 'quick_actions',
+    id: 'dashboard_overview',
+    title: 'Dashboard & Overview',
+    icon: 'LayoutDashboard',
+    category: 'dashboard_overview',
     defaultExpanded: true,
   },
   {
-    id: 'create_publish',
-    title: 'Create & Publish',
+    id: 'content_creation',
+    title: 'Content Creation',
     icon: 'PenTool',
-    category: 'create_publish',
+    category: 'content_creation',
     defaultExpanded: true,
   },
   {
-    id: 'manage_monitor',
-    title: 'Manage & Monitor',
-    icon: 'BarChart',
-    category: 'manage_monitor',
+    id: 'business_management',
+    title: 'Business Management',
+    icon: 'Building2',
+    category: 'business_management',
     defaultExpanded: false,
   },
   {
-    id: 'settings_advanced',
-    title: 'Settings & Advanced',
+    id: 'system_configuration',
+    title: 'System Configuration',
     icon: 'Settings',
-    category: 'settings_advanced',
+    category: 'system_configuration',
     defaultExpanded: false,
   }
 ];
@@ -73,7 +73,7 @@ export const mapSidebarToNavigation = (): NavigationItem[] => {
       type: 'link',
       href: '/admin/dashboard',
       description: 'View your site performance at a glance',
-      category: 'quick_actions',
+      category: 'dashboard_overview',
       pinnedOrder: 1,
     },
     {
@@ -83,11 +83,9 @@ export const mapSidebarToNavigation = (): NavigationItem[] => {
       type: 'link',
       href: '/admin/insights-dashboard',
       description: 'View client feedback and content insights',
-      category: 'quick_actions',
+      category: 'dashboard_overview',
       pinnedOrder: 2,
     },
-    
-    // Moving previous items to new categories
     {
       id: 'view_website',
       title: 'View Website',
@@ -95,7 +93,7 @@ export const mapSidebarToNavigation = (): NavigationItem[] => {
       type: 'link',
       href: '/',
       description: 'Open your public website in a new tab',
-      category: 'quick_actions',
+      category: 'dashboard_overview',
       pinnedOrder: 3,
     },
 
@@ -108,8 +106,8 @@ export const mapSidebarToNavigation = (): NavigationItem[] => {
       href: '/admin/blog-post-generator',
       requiresStaff: true,
       description: 'Generate blog posts with AI',
-      category: 'create_publish',
-      pinnedOrder: 2,
+      category: 'content_creation',
+      pinnedOrder: 1,
     },
     {
       id: 'social_media_generator',
@@ -119,8 +117,8 @@ export const mapSidebarToNavigation = (): NavigationItem[] => {
       href: '/admin/content/social-posts',
       requiresStaff: true,
       description: 'Generate social media posts with AI',
-      category: 'create_publish',
-      pinnedOrder: 3,
+      category: 'content_creation',
+      pinnedOrder: 2,
     },
 
     // ANALYTICS & MANAGEMENT ITEMS
@@ -132,15 +130,9 @@ export const mapSidebarToNavigation = (): NavigationItem[] => {
       type: 'link',
       href: '/analytics',
       description: 'View website analytics and traffic',
-      category: 'manage_monitor',
-      pinnedOrder: 2,
+      category: 'business_management',
+      pinnedOrder: 1,
     },
-    /* Removed duplicate Insights Dashboard entry - using only the Quick Actions version */
-
-    
-    // SETTINGS & ADVANCED
-    // ===================
-
     {
       id: 'user_management',
       title: 'User Management',
@@ -149,7 +141,7 @@ export const mapSidebarToNavigation = (): NavigationItem[] => {
       href: '/users',
       requiresStaff: true,
       description: 'Manage user accounts and permissions',
-      category: 'settings_advanced',
+      category: 'business_management',
       pinnedOrder: 2,
     },
     {
@@ -160,8 +152,8 @@ export const mapSidebarToNavigation = (): NavigationItem[] => {
       href: '/admin/ai-assistant-settings',
       requiresStaff: true,
       description: 'Configure AI assistant for website frontend and backend',
-      category: 'settings_advanced',
-      pinnedOrder: 3,
+      category: 'system_configuration',
+      pinnedOrder: 1,
     },
 
     
@@ -215,7 +207,8 @@ export const mapSidebarToNavigation = (): NavigationItem[] => {
       href: '/business-identity',
       requiresStaff: true,
       description: 'Your company information',
-      category: 'brand_center',
+      category: 'system_configuration',
+      pinnedOrder: 2,
     },
 
 

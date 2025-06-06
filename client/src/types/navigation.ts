@@ -10,7 +10,12 @@ export type NavigationItemCategory =
   | 'brand_center'
   | 'website_setup'
   | 'uncategorized'
-  // New categories for reorganized sidebar
+  // New consolidated categories
+  | 'dashboard_overview'
+  | 'content_creation'
+  | 'business_management'
+  | 'system_configuration'
+  // Legacy categories (keeping for compatibility)
   | 'quick_actions'
   | 'create_publish'
   | 'manage_monitor'
