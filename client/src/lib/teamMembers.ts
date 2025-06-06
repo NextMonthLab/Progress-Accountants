@@ -55,7 +55,7 @@ export const teamMembers: TeamMember[] = [
     role: "Assistant Accountant",
     biography: "With more than 30 years of experience, Jackie is known for her attention to detail, reliability, and calm professionalism. She plays a vital role in supporting our SME clients with day-to-day bookkeeping and compliance.",
     interests: "Loves family time, long walks in Oxfordshire, and planning travel adventures.",
-    placeholderComponent: jackiePlaceholder,
+    photoUrl: "https://res.cloudinary.com/drl0fxrkq/image/upload/v1749198731/Screenshot_2025-06-06_at_08.58.48_qrjfxz.png",
     socialLinks: {
       email: "jackie@progressaccountants.com"
     }
