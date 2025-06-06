@@ -266,32 +266,7 @@ const DynamicSidebar: React.FC = () => {
       !isMobile && (sidebarCollapsed ? "w-16" : "w-64"),
       isMobile && (mobileSidebarCollapsed ? "w-0 border-r-0" : "fixed w-[90%] max-w-[280px] shadow-lg z-50")
     )}>
-      {/* Desktop Smart Site Collapse Toggle */}
-      {!isMobile && (
-        <div className="absolute -right-3 top-24 z-10">
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <button
-                  onClick={toggleSidebar}
-                  className={cn(
-                    "flex items-center justify-center w-6 h-6 rounded-full bg-white dark:bg-gray-700 border border-gray-100 dark:border-gray-600 shadow-sm hover:bg-[var(--secondary-bg)] dark:hover:bg-gray-600 transition-all duration-150",
-                  )}
-                  aria-label={sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
-                >
-                  <ChevronRight className={cn(
-                    "h-3 w-3 text-[var(--text-body)] dark:text-gray-300 transition-transform duration-200",
-                    sidebarCollapsed ? "rotate-180" : ""
-                  )} />
-                </button>
-              </TooltipTrigger>
-              <TooltipContent side="right" className="text-xs">
-                {sidebarCollapsed ? "Expand Smart Navigation" : "Collapse Smart Navigation"}
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-        </div>
-      )}
+
       
       {/* Mobile Menu Close Button */}
       {isMobile && !mobileSidebarCollapsed && (
