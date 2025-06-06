@@ -138,6 +138,19 @@ export default function AdminSidebar() {
   // Define all admin menu sections
   const sidebarSections: SidebarSection[] = [
     {
+      title: "Quick Actions",
+      icon: <LayoutDashboard className="h-5 w-5" />,
+      isExpandable: false,
+      items: [
+        { 
+          title: "Dashboard", 
+          href: "/admin/dashboard", 
+          icon: <LayoutDashboard className="h-5 w-5" />,
+          description: "Main admin dashboard"
+        }
+      ]
+    },
+    {
       title: "🗨️ Conversations & Customers",
       icon: <MessageSquare className="h-5 w-5" />,
       isExpandable: true,
