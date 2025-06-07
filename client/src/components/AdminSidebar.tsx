@@ -281,6 +281,14 @@ export default function AdminSidebar() {
           badge: { text: "New", variant: "new" },
           isNew: true
         },
+        { 
+          title: "Embed on Your Site", 
+          href: "/admin/embed-code-generator", 
+          icon: <Globe className="h-5 w-5" />,
+          description: "Generate embed code for any website",
+          badge: { text: "New", variant: "new" },
+          isNew: true
+        },
       ]
     }
   ];

@@ -22,6 +22,7 @@ import { migrateHealthMonitoringTables } from './db-migrate-health-monitoring';
 import { runAiUsageMigrations } from './db-migrate-ai-usage';
 import { migrateAiEventLog } from './db-migrate-ai-event-log';
 import { migrateInnovationFeed } from './db-migrate-innovation-feed';
+import { runEmbedAnalyticsMigrations } from './db-migrate-embed-analytics';
 import { registerNavigationRoutes } from './controllers/navigationController';
 import { registerDomainMappingRoutes } from './controllers/domainMappingController';
 import { registerSotRoutes } from './routes/sot-routes';
@@ -116,6 +117,10 @@ app.use((req, res, next) => {
     await migrateAiEventLog();
     console.log('Running Innovation Feed migrations...');
     await migrateInnovationFeed();
+    
+    // Run Embed Analytics migrations
+    console.log('Running Embed Analytics migrations...');
+    await runEmbedAnalyticsMigrations();
   } catch (error) {
     console.error('Error running migrations:', error);
   }

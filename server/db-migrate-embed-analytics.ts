@@ -76,7 +76,7 @@ export async function runEmbedAnalyticsMigrations() {
 }
 
 // Auto-run migrations if this file is executed directly
-if (require.main === module) {
+if (process.argv[1] === new URL(import.meta.url).pathname) {
   runEmbedAnalyticsMigrations()
     .then(() => {
       console.log('Migration completed successfully');

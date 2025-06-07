@@ -21,7 +21,7 @@ export default function AdminEmbedCodeGenerator() {
     queryKey: ['/api/tenant/00000000-0000-0000-0000-000000000000']
   });
 
-  const tenantId = tenant?.id || '00000000-0000-0000-0000-000000000000';
+  const tenantId = (tenant as any)?.id || '00000000-0000-0000-0000-000000000000';
   const currentDomain = window.location.origin;
   
   const embedCode = `<script src="${currentDomain}/embed.js?tenantId=${tenantId}" async></script>`;

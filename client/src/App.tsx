@@ -88,6 +88,7 @@ const InsightAppOnboarding = lazy(() => import("@/pages/InsightAppOnboarding"));
 const MarketplacePlaceholder = lazy(() => import("@/pages/MarketplacePlaceholder"));
 const FeedSettings = lazy(() => import("@/pages/FeedSettings"));
 const AdminInnovationDashboard = lazy(() => import("@/pages/admin-innovation-dashboard"));
+const AdminEmbedCodeGenerator = lazy(() => import("@/pages/admin-embed-code-generator"));
 const SotManagerPage = lazy(() => import("@/pages/admin/SotManagerPage"));
 const ScopeRequestPage = lazy(() => import("@/pages/ScopeRequestPage"));
 const ModuleGalleryPage = lazy(() => import("@/pages/ModuleGalleryPage"));
