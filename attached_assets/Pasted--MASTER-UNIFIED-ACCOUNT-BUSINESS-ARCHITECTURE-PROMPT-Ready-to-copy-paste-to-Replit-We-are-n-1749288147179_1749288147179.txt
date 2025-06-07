@@ -1,0 +1,172 @@
+
+🚀 MASTER UNIFIED ACCOUNT & BUSINESS ARCHITECTURE PROMPT
+
+(Ready to copy-paste to Replit)
+
+We are now defining the Master Business Identity Architecture for the entire NextMonth ecosystem.
+
+This architecture is MANDATORY for ALL NextMonth apps:
+
+✅ NextMonth Home (marketing site + registration)  
+✅ NextMonth SmartSite (Admin Panel)  
+✅ NextGen Blog (public-facing content feed)  
+✅ Insight App (Insight submission app for employees)  
+✅ NextMonth Lab (Tool builder)  
+✅ NextMonth Dev (Advanced dev tools / APIs)  
+✅ SOT (Source of Truth — authoritative record of business state)
+
+---
+
+### CORE PRINCIPLE
+
+✅ The universal glue of the system is **businessId** → also called tenantId.  
+✅ All data in the system MUST be linked to tenantId.
+
+No app should create or store data without linking it to a valid tenantId.
+
+---
+
+### MASTER FLOW
+
+#### 1️⃣ Account Creation → Business Registration
+
+✅ Happens on **NextMonth Home**:
+
+- User enters email, password, businessName, industry, websiteURL → proceeds to payment.
+- On successful payment:
+
+```json
+{
+  userId: UUID,
+  businessId (tenantId): UUID,
+  email: userEmail,
+  role: "admin",
+  paymentStatus: "active",
+  plan: "smart_site_basic",
+  createdAt
+}
+
+✅ Business Profile MUST be written to SOT:
+
+/businesses/tenantId/identity.json
+{
+  businessId: tenantId,
+  businessName,
+  industry,
+  websiteURL,
+  createdAt,
+  adminUserId: userId,
+  paymentStatus: "active",
+  plan: "smart_site_basic"
+}
+
+
+⸻
+
+2️⃣ Authentication (ALL Apps)
+
+✅ All authenticated apps issue JWT tokens with this payload:
+
+{
+  userId: UUID,
+  tenantId: UUID,
+  role: "admin" | "editor" | "insightUser" | "labUser" | "devUser",
+  exp: timestamp
+}
+
+✅ All API calls MUST carry this JWT → backend must scope all actions to tenantId.
+
+⸻
+
+3️⃣ SOT Structure
+
+All apps must write their data into the SOT, under this directory:
+
+/businesses/tenantId/
+    identity.json
+    users/admin-userId.json
+    insight-users/insightAppUserId.json
+    insights/insightId.json
+    blog-posts/postId.json
+    themes/themeId.json
+    innovation-ideas/ideaId.json
+    analytics-events/eventId.json
+    ai-event-log/eventId.json
+    tools/toolId.json  ← Lab + Dev
+
+✅ No data should be written outside of this tenant-scoped structure.
+
+✅ This ensures clean multi-tenant behavior and safe scaling.
+
+⸻
+
+4️⃣ App Responsibilities
+
+✅ NextMonth Home:
+	•	Implements signup → creates tenantId.
+	•	Seeds SOT business profile.
+
+✅ NextMonth SmartSite (Admin Panel):
+	•	All actions scoped to tenantId from JWT.
+	•	Admin can invite Insight App Users → insightAppUserId linked to tenantId.
+	•	All content, Insights, AI Usage, Analytics must be written to SOT under tenantId.
+
+✅ NextGen Blog:
+	•	Public API MUST scope posts to /api/blog?tenantId=XYZ
+	•	Must read only posts tagged to correct tenantId.
+
+✅ Insight App:
+	•	Insight App Users submit Insights → must include tenantId + insightAppUserId.
+	•	Insights written to /businesses/tenantId/insights/.
+
+✅ NextMonth Lab:
+	•	All Tools built must be linked to tenantId.
+	•	Tools stored in /businesses/tenantId/tools/.
+	•	Tools surfaced in SmartSite Admin Panel for that tenantId only.
+
+✅ NextMonth Dev:
+	•	Same as Lab — advanced tools, APIs must be linked to tenantId and stored accordingly.
+
+✅ SOT:
+	•	Authoritative source of truth for ALL apps.
+	•	No cross-tenant data leakage is allowed.
+	•	All apps must respect tenantId when reading/writing to SOT.
+
+⸻
+
+5️⃣ Business Identity Locking
+
+✅ Embed Code for Chat + Analytics:
+
+<script src="https://smart.nextmonth.io/embed.js?tenantId=XYZ" async></script>
+
+✅ NextGen Blog → scoped to tenantId.
+
+✅ Insight App → submissions scoped to tenantId.
+
+✅ NextMonth Lab + Dev → tools linked to tenantId → visible only in SmartSite Admin Panel for that tenant.
+
+⸻
+
+NON-NEGOTIABLE:
+
+✅ ALL apps must adopt this model.
+✅ No app may use its own notion of identity or store unlinked data.
+✅ This ensures system-wide data integrity and multi-tenant scaling.
+
+⸻
+
+Final Notes:
+
+✅ All apps will soon receive individual prompts to implement THEIR participation in this architecture.
+✅ THIS PROMPT is to establish the shared SYSTEM CONTRACT across all apps first.
+
+✅ Please acknowledge receipt and understanding of this architecture.
+
+⸻
+
+When you acknowledge this prompt, you must confirm:
+
+✅ “I understand that all data must be scoped to tenantId.”
+✅ “I understand that all API calls must include tenantId via JWT.”
+✅ “I understand that the SOT is the authoritative source of truth and must be written to correctly.”

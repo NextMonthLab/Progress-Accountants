@@ -18,18 +18,18 @@ const JWT_EXPIRES_IN = "1d"; // Token expiration
 
 interface JwtPayload {
   userId: number;
+  tenantId: string; // MANDATORY - all data must be scoped to tenantId
   username: string;
-  userType: UserRole;
+  role: "admin" | "editor" | "insightUser" | "labUser" | "devUser";
   email?: string;
-  tenantId?: string;
-  isSuperAdmin: boolean;
+  isSuperAdmin?: boolean;
   iat: number;
   exp: number;
   expiresAt: number;
 }
 
 /**
- * Generate a JWT token for a user
+ * Generate a JWT token for a user following Master Unified Architecture
  */
 export function generateToken(user: User): string {
   // Calculate expiration timestamp
@@ -37,12 +37,25 @@ export function generateToken(user: User): string {
   const expirySeconds = 60 * 60 * 24; // 1 day in seconds
   const expiresAt = now + expirySeconds;
   
+  // MANDATORY: All JWT tokens must include tenantId
+  if (!user.tenantId) {
+    throw new Error("Cannot generate token: user must have tenantId");
+  }
+  
+  // Map userType to unified role system
+  const roleMapping: Record<string, string> = {
+    'admin': 'admin',
+    'editor': 'editor', 
+    'super_admin': 'admin',
+    'public': 'editor'
+  };
+  
   const payload = {
     userId: user.id,
+    tenantId: user.tenantId, // MANDATORY for all data scoping
     username: user.username,
-    userType: user.userType as UserRole,
+    role: roleMapping[user.userType] || 'editor',
     email: user.email,
-    tenantId: user.tenantId,
     isSuperAdmin: user.isSuperAdmin || false,
     expiresAt
   };

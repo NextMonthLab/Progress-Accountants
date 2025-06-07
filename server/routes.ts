@@ -44,6 +44,7 @@ import { registerAISettingsRoutes } from "./routes/ai-settings";
 import { registerAiUsageRoutes } from "./routes/ai-usage-routes";
 import { registerInsightAppCapacityRoutes } from "./routes/insight-app-capacity-routes";
 import { registerEmbedRoutes } from "./routes/embed-routes";
+import { businessIdentityRoutes } from "./routes/business-identity-routes";
 import { 
   getAllResources, 
   getPublicResources, 
