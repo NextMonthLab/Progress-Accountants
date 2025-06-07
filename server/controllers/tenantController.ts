@@ -260,9 +260,9 @@ export async function updateTenant(req: Request, res: Response) {
  * Register tenant management routes
  */
 export function registerTenantRoutes(app: any) {
-  app.get('/api/tenants', requireSuperAdmin(), getAllTenants);
-  app.get('/api/tenants/overview', requireSuperAdmin(), getTenantOverview);
-  app.post('/api/tenants/switch', requireSuperAdmin(), switchTenant);
-  app.post('/api/tenants', requireSuperAdmin(), createTenant);
-  app.patch('/api/tenants/:id', requireSuperAdmin(), updateTenant);
+  app.get('/api/tenants', requireSuperAdmin, getAllTenants);
+  app.get('/api/tenants/overview', requireSuperAdmin, getTenantOverview);
+  app.post('/api/tenants/switch', requireSuperAdmin, switchTenant);
+  app.post('/api/tenants', requireSuperAdmin, createTenant);
+  app.patch('/api/tenants/:id', requireSuperAdmin, updateTenant);
 }

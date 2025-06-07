@@ -45,7 +45,7 @@ import { registerAiUsageRoutes } from "./routes/ai-usage-routes";
 import { registerInsightAppCapacityRoutes } from "./routes/insight-app-capacity-routes";
 import { registerEmbedRoutes } from "./routes/embed-routes";
 import { businessIdentityRoutes } from "./routes/business-identity-routes";
-import { tenantAdminRoutes } from "./routes/tenant-admin-routes";
+import { simpleTenantAdminRoutes } from "./routes/simple-tenant-admin";
 import { 
   getAllResources, 
   getPublicResources, 
@@ -4188,7 +4188,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.use("/api/business-identity", businessIdentityRoutes);
   
   // Tenant-scoped Admin Panel routes with full multi-tenant support
-  app.use("/api/tenant-admin", tenantAdminRoutes);
+  app.use("/api/tenant-admin", simpleTenantAdminRoutes);
   console.log("✅ Business Identity Management routes registered");
   console.log("✅ Tenant-scoped Admin Panel routes registered");
 

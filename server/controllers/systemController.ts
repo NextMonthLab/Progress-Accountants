@@ -128,9 +128,9 @@ export async function checkExternalServices(req: Request, res: Response) {
  * Register system monitoring routes
  */
 export function registerSystemRoutes(app: any) {
-  app.get('/api/system/status', requireSuperAdmin(), getSystemStatus);
-  app.get('/api/system/logs', requireSuperAdmin(), getSystemLogs);
-  app.get('/api/system/external-services', requireSuperAdmin(), checkExternalServices);
+  app.get('/api/system/status', requireSuperAdmin, getSystemStatus);
+  app.get('/api/system/logs', requireSuperAdmin, getSystemLogs);
+  app.get('/api/system/external-services', requireSuperAdmin, checkExternalServices);
 }
 
 // Helper functions
