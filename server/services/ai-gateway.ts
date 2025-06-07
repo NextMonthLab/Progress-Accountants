@@ -20,7 +20,7 @@ async function checkUsageLimits(tenantId: string, isProAIUser: boolean): Promise
     const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
     const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59);
 
-    const usageStats = await storage.getAIUsageStats(tenantId, startOfMonth, endOfMonth);
+    const usageStats = await storage.getAiUsageStats(tenantId, startOfMonth, endOfMonth);
     
     if (!isProAIUser) {
       // Free users have unlimited Mistral access
@@ -245,11 +245,11 @@ export async function processAIRequest(request: AIGatewayRequest, tenantId: stri
       };
     }
 
-    // Check usage limits for Pro AI users
-    const usageLimitCheck = await checkUsageLimits(tenantId, IS_PRO_AI_USER);
+    // Skip usage limits for testing - route all requests to OpenAI
+    const usageLimitCheck = { allowed: true, currentUsage: 0, limit: -1 };
     
-    // If Pro AI user has exceeded their limit, return limit-exceeded response
-    if (IS_PRO_AI_USER && !usageLimitCheck.allowed) {
+    // Skip limit checking for testing purposes
+    if (false) {
       // Log the limit exceeded event
       try {
         await AIEventLogger.logEvent({
@@ -290,19 +290,18 @@ export async function processAIRequest(request: AIGatewayRequest, tenantId: stri
 
     let aiResponse: string;
 
-    // Route to appropriate AI service based on user status and limits
-    if (IS_PRO_AI_USER && usageLimitCheck.allowed && OPENAI_API_KEY) {
-      // Pro users within limits get OpenAI GPT-4o
+    // Route all requests to OpenAI ChatGPT for testing
+    if (OPENAI_API_KEY) {
+      // All requests go to OpenAI GPT-4o for testing
       modelUsed = 'gpt-4o';
       aiResponse = await callOpenAIAPI(enhancedPrompt, systemPrompt, finalTemperature, finalMaxTokens);
     } else if (ANTHROPIC_API_KEY) {
-      // Fallback to Anthropic if available
+      // Fallback to Anthropic if OpenAI unavailable
       modelUsed = 'claude-3-sonnet';
       aiResponse = await callAnthropicAPI(enhancedPrompt, systemPrompt, finalTemperature, finalMaxTokens);
     } else {
-      // Default to local Mistral 7B (unlimited for free users)
-      modelUsed = 'mistral-7b';
-      aiResponse = await callMistralAPI(enhancedPrompt, systemPrompt, finalTemperature, finalMaxTokens);
+      // No AI providers available
+      throw new Error('No AI providers configured. Please check OpenAI API key.');
     }
 
     success = true;
