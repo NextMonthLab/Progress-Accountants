@@ -43,6 +43,7 @@ import { registerAutopilotRoutes } from "./autopilot";
 import { registerAISettingsRoutes } from "./routes/ai-settings";
 import { registerAiUsageRoutes } from "./routes/ai-usage-routes";
 import { registerInsightAppCapacityRoutes } from "./routes/insight-app-capacity-routes";
+import { registerEmbedRoutes } from "./routes/embed-routes";
 import { 
   getAllResources, 
   getPublicResources, 

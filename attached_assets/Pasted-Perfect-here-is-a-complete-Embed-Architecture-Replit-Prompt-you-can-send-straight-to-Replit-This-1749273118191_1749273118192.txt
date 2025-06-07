@@ -1,0 +1,156 @@
+Perfect — here is a complete Embed Architecture Replit Prompt you can send straight to Replit.
+
+This will:
+
+✅ Create an Embed Code Generator screen in the Admin Panel
+✅ Add the /embed.js endpoint → serves the JS loader
+✅ Add basic Analytics API endpoints → page views + event tracking
+✅ Wire it to your existing Admin Panel so businesses can generate their code → paste it into any site → see results in Admin
+
+⸻
+
+REPLIT Prompt: Add Embed Architecture to Smart Site
+
+You will now add the core Embed Architecture to the Smart Site.
+
+Purpose:
+
+✅ Allow any business to copy a simple embed code and paste it into their existing website.
+✅ The embed script will:
+    - Load the Smart Site AI Chat Assistant onto every page.
+    - Track page views.
+    - Track custom events (optional).
+✅ All data will flow back to the Smart Site backend and appear in the Admin Panel, scoped per tenant.
+
+Part 1 — Backend
+
+✅ Add new API endpoint:
+
+GET /embed.js
+
+Behavior:
+
+- Responds with JS (content-type: application/javascript)
+- Script is parameterized via `?tenantId=XYZ`
+- Example usage:
+
+```html
+<script src="https://smart.nextmonth.io/embed.js?tenantId=ABC123" async></script>
+
+✅ The embed.js script must:
+	•	Load an iframe or Shadow DOM-based Chat Assistant into the page (placeholder for now — can wire in later)
+	•	Send a POST to /api/analytics/page-view on page load with:
+
+{
+  tenantId: XYZ,
+  pageUrl: current page URL,
+  referrer: document.referrer,
+  timestamp: current timestamp,
+  sessionId: random session UUID (persisted per session)
+}
+
+✅ Expose a JS API for event tracking:
+
+window.NextMonthSmartSite.trackEvent('event_name', { customData });
+
+POST /api/analytics/event → payload:
+
+{
+  tenantId: XYZ,
+  pageUrl: current page URL,
+  eventName: "event_name",
+  eventData: { ... },
+  timestamp: current timestamp,
+  sessionId: same session UUID
+}
+
+✅ Log all analytics calls in AIEventLog:
+	•	eventType: “page_view” or “custom_event”
+	•	Include all fields above.
+
+Part 2 — Frontend (Admin Panel)
+
+✅ Add new screen: /admin/embed-code-generator
+
+Sidebar label: Embed on Your Site
+
+Screen content:
+	•	Short explanation:
+
+"Paste this one line of code into your existing website.  
+It will instantly enable your AI Chat Assistant and traffic tracking."
+
+"You can install this on any CMS, site builder, or custom site.  
+No backend integration required."
+
+- Display unique embed snippet:
+
+```html
+<script src="https://smart.nextmonth.io/embed.js?tenantId=ABC123" async></script>
+
+	•	[Copy to Clipboard] button
+	•	Basic guidance on where to place the script (head or body).
+
+✅ Optional future feature (placeholder):
+	•	Toggle options:
+	•	Enable Chat Assistant? ✅
+	•	Enable Page Tracking? ✅
+	•	Enable Event Tracking? ✅
+	•	(For now all defaults to ON)
+
+Part 3 — Notes
+
+✅ The backend must validate that tenantId is valid and active before serving embed.js or accepting analytics POSTs.
+
+✅ This embed architecture must be fully functional even if the customer site is not hosted on Hetzner → works universally.
+
+✅ The system must gracefully handle invalid tenantIds → log error, return 404 or error script.
+
+✅ All tracked data must appear in Admin Panel (Analytics Dashboard) → we can add full visual Analytics page in follow-up prompt.
+
+✅ The Chat Assistant can initially be a placeholder iframe to /chat-widget or similar → will wire in fully later.
+
+⸻
+
+Goal:
+
+✅ Each Smart Site Admin can generate a unique embed snippet.
+✅ They can paste it into their existing website.
+✅ Smart Site will then:
+- Track page views.
+- Track custom events.
+- Display AI Chat Assistant.
+✅ Admin can log in and see all data.
+
+⸻
+
+When complete, please confirm:
+
+✅ /embed.js endpoint is live and serving script correctly.
+✅ Admin Embed Code Generator screen is present and usable.
+✅ /api/analytics/page-view endpoint works and is logging.
+✅ /api/analytics/event endpoint works and is logging.
+
+⸻
+
+Do not modify front-facing pages of customer sites → all functionality must be opt-in and driven by explicit script inclusion via Embed Code Generator.
+
+⸻
+
+Once this is complete, I can provide the next prompt to:
+
+✅ Build a full Analytics Dashboard in the Admin Panel:
+- Traffic by page
+- Traffic by referrer
+- Event counts
+- Chat volume per page
+
+⸻
+
+Summary:
+This is a core part of making Smart Sites valuable → frictionless deployment → works with any site → sticky → drives Smart Site value.
+
+⸻
+
+Would you like me to also prepare the follow-up Analytics Dashboard Prompt now, so you have it ready once this is complete?
+Just say Yes, Analytics Dashboard Prompt please 🚀. You are building an incredibly powerful system here!
