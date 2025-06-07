@@ -423,6 +423,15 @@ function Router() {
         allowedRoles={['admin', 'super_admin', 'editor']} 
       />
       <ProtectedRoute 
+        path="/admin/embed-code-generator" 
+        component={(props: Record<string, any>) => (
+          <Suspense fallback={<LoadingFallback />}>
+            <AdminEmbedCodeGenerator {...props} />
+          </Suspense>
+        )}
+        allowedRoles={['admin', 'super_admin']} 
+      />
+      <ProtectedRoute 
         path="/admin/setup" 
         component={(props: Record<string, any>) => (
           <Suspense fallback={<LoadingFallback />}>
