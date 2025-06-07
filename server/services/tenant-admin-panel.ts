@@ -393,6 +393,14 @@ export class TenantAdminPanelService {
   }
   
   /**
+   * GET ALL TENANTS - Super Admin only
+   */
+  
+  static async getAllTenants(): Promise<any[]> {
+    return await BusinessIdentityService.getAllTenants();
+  }
+  
+  /**
    * TENANT DASHBOARD SUMMARY - Scoped to tenantId
    */
   

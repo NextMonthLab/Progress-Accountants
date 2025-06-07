@@ -4186,7 +4186,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // Register Business Identity Management routes
   app.use("/api/business-identity", businessIdentityRoutes);
+  
+  // Tenant-scoped Admin Panel routes with full multi-tenant support
+  app.use("/api/tenant-admin", tenantAdminRoutes);
   console.log("✅ Business Identity Management routes registered");
+  console.log("✅ Tenant-scoped Admin Panel routes registered");
 
   return httpServer;
 }
