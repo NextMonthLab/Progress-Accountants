@@ -1,0 +1,13 @@
+{
+  "id": "insight_00000000_1749297994066_brnp3hbs9",
+  "tenantId": "00000000-0000-0000-0000-000000000000",
+  "firstName": "John",
+  "lastName": "Smith",
+  "email": "john.smith@test.com",
+  "token": "3367b8395b6b7c5f0abf44476aa72f74a81b6b787259790954a93488f807e79d",
+  "inviteSentAt": "2025-06-07T12:06:34.066Z",
+  "insightCount": 0,
+  "isActive": true,
+  "createdAt": "2025-06-07T12:06:34.075Z",
+  "updatedAt": "2025-06-07T12:06:34.075Z"
+}

@@ -1,0 +1,13 @@
+{
+  "id": "analytics_1749297994078_llr7cmr3n",
+  "tenantId": "00000000-0000-0000-0000-000000000000",
+  "eventType": "insight_user_invited",
+  "eventData": {
+    "email": "john.smith@test.com",
+    "insightUserId": "insight_00000000_1749297994066_brnp3hbs9"
+  },
+  "source": "admin_panel",
+  "timestamp": "2025-06-07T12:06:34.078Z",
+  "createdAt": "2025-06-07T12:06:34.078Z",
+  "updatedAt": "2025-06-07T12:06:34.078Z"
+}
