@@ -4183,5 +4183,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Register Business Identity Management routes
+  app.use("/api/business-identity", businessIdentityRoutes);
+  console.log("✅ Business Identity Management routes registered");
+
   return httpServer;
 }

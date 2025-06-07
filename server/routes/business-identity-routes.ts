@@ -1,7 +1,7 @@
 import { Request, Response, Router } from "express";
 import { BusinessIdentityService } from "../services/business-identity";
 import { authenticateJwt } from "../middleware/jwt";
-import { requireAdmin, requireSuperAdmin } from "../middleware/rbac";
+import { requireSuperAdmin } from "../middleware/rbac";
 import { hashPassword } from "../auth";
 
 const router = Router();

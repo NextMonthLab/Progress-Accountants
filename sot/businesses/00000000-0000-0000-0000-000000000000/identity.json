@@ -1,0 +1,10 @@
+{
+  "businessId": "00000000-0000-0000-0000-000000000000",
+  "businessName": "Progress Accountants",
+  "industry": "Accounting & Finance",
+  "websiteURL": "progressaccountants.co.uk",
+  "adminUserId": 1,
+  "paymentStatus": "active",
+  "plan": "smart_site_basic",
+  "createdAt": "2025-06-07T09:26:50.628Z"
+}
