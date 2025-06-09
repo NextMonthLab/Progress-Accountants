@@ -157,6 +157,30 @@ export default function MessagesPage() {
         </div>
       </div>
 
+      {/* AI Auto-Response Settings */}
+      <Card>
+        <CardContent className="p-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <Bot className="h-5 w-5 text-primary" />
+              <div>
+                <Label htmlFor="ai-auto-response" className="text-sm font-medium">
+                  Auto-respond to new messages with AI
+                </Label>
+                <p className="text-xs text-muted-foreground">
+                  Generate intelligent responses using business identity
+                </p>
+              </div>
+            </div>
+            <Switch
+              id="ai-auto-response"
+              checked={aiAutoResponseEnabled}
+              onCheckedChange={setAiAutoResponseEnabled}
+            />
+          </div>
+        </CardContent>
+      </Card>
+
       {/* Search and Filter Controls */}
       <Card>
         <CardContent className="p-4">
@@ -400,6 +424,25 @@ export default function MessagesPage() {
                   </Button>
                 )}
               </div>
+
+              {/* AI Auto-Response Display */}
+              {selectedMessage.aiResponse && (
+                <div className="space-y-3">
+                  <div className="flex items-center gap-2">
+                    <Bot className="h-4 w-4 text-primary" />
+                    <p className="text-sm font-medium">AI Auto-Response Sent</p>
+                    {selectedMessage.aiResponseSentAt && (
+                      <Badge variant="outline" className="text-xs">
+                        <Clock className="h-3 w-3 mr-1" />
+                        {format(new Date(selectedMessage.aiResponseSentAt), 'PPp')}
+                      </Badge>
+                    )}
+                  </div>
+                  <div className="bg-blue-50 border border-blue-200 p-4 rounded-lg">
+                    <p className="whitespace-pre-wrap text-sm">{selectedMessage.aiResponse}</p>
+                  </div>
+                </div>
+              )}
 
               {selectedMessage.autoResponseText && (
                 <div>

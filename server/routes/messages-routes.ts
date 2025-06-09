@@ -3,6 +3,7 @@ import { z } from 'zod';
 import { storage } from '../storage';
 import { insertMessageSchema } from '@shared/schema';
 import { sendEmail } from '../sendgrid';
+import { apiRequest } from '../utils';
 
 const router = Router();
 
