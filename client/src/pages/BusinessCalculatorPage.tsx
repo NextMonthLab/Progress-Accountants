@@ -4,7 +4,7 @@ import {
   ArrowRight, ArrowLeft, BarChart3, Calculator, CheckCircle, 
   LucideIcon, PieChart, Users, Building, MapPin, PoundSterling, 
   CreditCard, Briefcase, TrendingUp, Download, Mail,
-  Award, FileText, Sparkles, Shield, Clock, LifeBuoy, Zap
+  Award, FileText, Sparkles, Shield, Clock, LifeBuoy, Zap, DollarSign
 } from "lucide-react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
