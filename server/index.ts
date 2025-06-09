@@ -25,6 +25,7 @@ import { migrateInnovationFeed } from './db-migrate-innovation-feed';
 import { runEmbedAnalyticsMigrations } from './db-migrate-embed-analytics';
 import { runBusinessIdentityMigrations } from './db-migrate-business-identity';
 import { migrateMessagesTable } from './db-migrate-messages';
+import { migrateAiResponseFields } from './db-migrate-ai-response';
 import { registerNavigationRoutes } from './controllers/navigationController';
 import { registerDomainMappingRoutes } from './controllers/domainMappingController';
 import messagesRoutes from './routes/messages-routes';
@@ -132,6 +133,10 @@ app.use((req, res, next) => {
     // Run Messages table migrations for SmartSite Contact Intelligence
     console.log('Running Messages table migrations...');
     await migrateMessagesTable();
+    
+    // Run AI Response fields migrations for Universal Mistral Response UX
+    console.log('Running AI Response fields migration...');
+    await migrateAiResponseFields();
   } catch (error) {
     console.error('Error running migrations:', error);
   }

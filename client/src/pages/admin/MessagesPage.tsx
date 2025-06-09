@@ -8,7 +8,9 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Loader2, Search, Filter, Mail, MailOpen, ExternalLink, Calendar, User, AtSign } from 'lucide-react';
+import { Switch } from '@/components/ui/switch';
+import { Label } from '@/components/ui/label';
+import { Loader2, Search, Filter, Mail, MailOpen, ExternalLink, Calendar, User, AtSign, Bot, Clock } from 'lucide-react';
 import { format } from 'date-fns';
 import { apiRequest } from '@/lib/queryClient';
 
@@ -24,6 +26,8 @@ interface Message {
   autoResponseStatus: 'pending' | 'sent' | 'failed';
   autoResponseText: string | null;
   adminNotes: string | null;
+  aiResponse: string | null;
+  aiResponseSentAt: string | null;
   createdAt: string;
   updatedAt: string;
   readAt?: string | null;
@@ -45,6 +49,7 @@ export default function MessagesPage() {
   const [filterStatus, setFilterStatus] = useState<'all' | 'unread' | 'read'>('all');
   const [currentPage, setCurrentPage] = useState(0);
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
+  const [aiAutoResponseEnabled, setAiAutoResponseEnabled] = useState(false);
   
   const queryClient = useQueryClient();
   const limit = 20;
