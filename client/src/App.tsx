@@ -61,6 +61,12 @@ const ServicesPage = lazy(() => import("@/pages/ServicesPage"));
 const ServiceDetailPage = lazy(() => import("@/pages/ServiceDetailPage"));
 const TaxPlanningPage = lazy(() => import("@/pages/services/TaxPlanningPage"));
 const BookkeepingPage = lazy(() => import("@/pages/services/BookkeepingPage"));
+const BusinessAdvisoryPage = lazy(() => import("@/pages/services/BusinessAdvisoryPage"));
+const FinancialReportingPage = lazy(() => import("@/pages/services/FinancialReportingPage"));
+const AuditSupportPage = lazy(() => import("@/pages/services/AuditSupportPage"));
+const CloudAccountingPage = lazy(() => import("@/pages/services/CloudAccountingPage"));
+const IndustrySpecificPage = lazy(() => import("@/pages/services/IndustrySpecificPage"));
+const VirtualFinanceDirectorPage = lazy(() => import("@/pages/services/VirtualFinanceDirectorPage"));
 const IndustriesPage = lazy(() => import("@/pages/IndustriesPage"));
 const FilmIndustryPage = lazy(() => import("@/pages/FilmIndustryPage"));
 const MusicIndustryPage = lazy(() => import("@/pages/MusicIndustryPage"));
@@ -214,6 +220,36 @@ function Router() {
       <Route path="/services/bookkeeping">
         <Suspense fallback={<LoadingFallback />}>
           <BookkeepingPage />
+        </Suspense>
+      </Route>
+      <Route path="/services/business-advisory">
+        <Suspense fallback={<LoadingFallback />}>
+          <BusinessAdvisoryPage />
+        </Suspense>
+      </Route>
+      <Route path="/services/financial-reporting">
+        <Suspense fallback={<LoadingFallback />}>
+          <FinancialReportingPage />
+        </Suspense>
+      </Route>
+      <Route path="/services/audit-support">
+        <Suspense fallback={<LoadingFallback />}>
+          <AuditSupportPage />
+        </Suspense>
+      </Route>
+      <Route path="/services/cloud-accounting">
+        <Suspense fallback={<LoadingFallback />}>
+          <CloudAccountingPage />
+        </Suspense>
+      </Route>
+      <Route path="/services/industry-specific">
+        <Suspense fallback={<LoadingFallback />}>
+          <IndustrySpecificPage />
+        </Suspense>
+      </Route>
+      <Route path="/services/virtual-finance-director">
+        <Suspense fallback={<LoadingFallback />}>
+          <VirtualFinanceDirectorPage />
         </Suspense>
       </Route>
       <Route path="/services/:slug">
