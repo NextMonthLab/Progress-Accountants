@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   ArrowRight, ArrowLeft, BarChart3, Calculator, CheckCircle, 
-  LucideIcon, PieChart, Users, Building, MapPin, DollarSign, 
+  LucideIcon, PieChart, Users, Building, MapPin, PoundSterling, 
   CreditCard, Briefcase, TrendingUp, Download, Mail,
   Award, FileText, Sparkles, Shield, Clock, LifeBuoy, Zap
 } from "lucide-react";
@@ -299,7 +299,7 @@ const FinancialsStep = ({ onNext, onBack, defaultValues }: StepProps) => {
     >
       <div className="text-center">
         <div className="bg-navy/10 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
-          <DollarSign className="h-6 w-6 text-navy" />
+          <PoundSterling className="h-6 w-6 text-navy" />
         </div>
         <h2 className="text-2xl font-bold text-navy">Financial Information</h2>
         <p className="text-gray-600 mt-2">Share your current financial picture to receive accurate forecasts</p>
