@@ -46,6 +46,7 @@ import { registerInsightAppCapacityRoutes } from "./routes/insight-app-capacity-
 import { registerEmbedRoutes } from "./routes/embed-routes";
 import { businessIdentityRoutes } from "./routes/business-identity-routes";
 import { simpleTenantAdminRoutes } from "./routes/simple-tenant-admin";
+import messagesRoutes from "./routes/messages-routes";
 import { 
   getAllResources, 
   getPublicResources, 
@@ -254,6 +255,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
   
   // Register media upload endpoints
   registerMediaRoutes(app);
+  
+  // Register Messages API for SmartSite Contact Intelligence Layer
+  app.use('/api/messages', messagesRoutes);
   
   // Register page origin protection endpoints
   app.get("/api/page-origin/:id", checkPageOrigin);
