@@ -4,7 +4,7 @@ import {
   Menu, X, LayoutDashboard, ChevronDown, Users, Briefcase, 
   Phone, Layout, BookOpen, FastForward, Sparkles, UserPlus,
   ArrowLeftCircle, Newspaper, Film, Music, Building2, Building,
-  Calculator, Calendar, PhoneCall
+  Calculator, Calendar, PhoneCall, Award
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/use-auth";
