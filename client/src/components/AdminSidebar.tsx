@@ -37,7 +37,8 @@ import {
   User,
   Brain,
   Bot,
-  TrendingUp
+  TrendingUp,
+  Mail
 } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import { useState, useEffect, useRef } from "react";
@@ -155,6 +156,12 @@ export default function AdminSidebar() {
       icon: <MessageSquare className="h-5 w-5" />,
       isExpandable: true,
       items: [
+        { 
+          title: "Messages", 
+          href: "/admin/messages", 
+          icon: <Mail className="h-5 w-5" />,
+          description: "Contact form submissions and inquiries"
+        },
         { 
           title: "Conversation Insights", 
           href: "/admin/conversation-insights", 

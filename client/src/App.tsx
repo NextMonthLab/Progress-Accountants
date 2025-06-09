@@ -403,6 +403,11 @@ function Router() {
         component={AIAssistantSettingsPage} 
         allowedRoles={['admin', 'super_admin']} 
       />
+      <ProtectedRoute 
+        path="/admin/messages" 
+        component={MessagesPage} 
+        allowedRoles={['admin', 'super_admin', 'editor']} 
+      />
       {/* Removed front-end editing routes:
         - /admin/seo (static page SEO management)
         - /admin/brand (front-end branding)
