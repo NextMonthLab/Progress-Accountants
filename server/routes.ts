@@ -47,6 +47,7 @@ import { registerEmbedRoutes } from "./routes/embed-routes";
 import { businessIdentityRoutes } from "./routes/business-identity-routes";
 import { simpleTenantAdminRoutes } from "./routes/simple-tenant-admin";
 import messagesRoutes from "./routes/messages-routes";
+import testRoutes from "./routes/test-routes";
 import { 
   getAllResources, 
   getPublicResources, 
@@ -258,6 +259,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
   
   // Register Messages API for SmartSite Contact Intelligence Layer
   app.use('/api/messages', messagesRoutes);
+  
+  // Register test routes for SendGrid validation
+  app.use('/api/test', testRoutes);
   
   // Register page origin protection endpoints
   app.get("/api/page-origin/:id", checkPageOrigin);
