@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartSite Contact Form - Embeddable Template</title>
+    <style>
+        /* SmartSite Contact Form Styles - Minimal & Clean */
+        .smartsite-contact-form {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e5e7eb;
+        }
+
+        .smartsite-contact-form h3 {
+            margin: 0 0 20px 0;
+            color: #1f2937;
+            font-size: 24px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .smartsite-form-group {
+            margin-bottom: 16px;
+        }
+
+        .smartsite-form-group label {
+            display: block;
+            margin-bottom: 6px;
+            color: #374151;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .smartsite-form-group input,
+        .smartsite-form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 16px;
+            color: #1f2937;
+            background-color: #ffffff;
+            transition: border-color 0.2s ease;
+            box-sizing: border-box;
+        }
+
+        .smartsite-form-group input:focus,
+        .smartsite-form-group textarea:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .smartsite-form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .smartsite-submit-btn {
+            width: 100%;
+            padding: 12px 24px;
+            background-color: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .smartsite-submit-btn:hover {
+            background-color: #2563eb;
+        }
+
+        .smartsite-submit-btn:disabled {
+            background-color: #9ca3af;
+            cursor: not-allowed;
+        }
+
+        .smartsite-success-message {
+            text-align: center;
+            padding: 40px 20px;
+            color: #059669;
+            font-size: 18px;
+            font-weight: 500;
+        }
+
+        .smartsite-success-message .check-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+            display: block;
+        }
+
+        .smartsite-error-message {
+            background-color: #fef2f2;
+            border: 1px solid #fecaca;
+            color: #dc2626;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 16px;
+            font-size: 14px;
+        }
+
+        .smartsite-loading {
+            display: none;
+            text-align: center;
+            color: #6b7280;
+            font-size: 14px;
+            margin-top: 8px;
+        }
+
+        /* Required field indicator */
+        .smartsite-required {
+            color: #dc2626;
+        }
+    </style>
+</head>
+<body>
+    <!-- 
+    =================================================================
+    SMARTSITE CONTACT FORM - EMBEDDABLE TEMPLATE
+    =================================================================
+    
+    Instructions for embedding:
+    1. Copy the entire form div below (including styles and script)
+    2. Paste into your website where you want the contact form
+    3. Update the CLIENT_ID in the script section to match your client ID
+    4. Update the API_ENDPOINT if using a different domain
+    
+    The form will automatically:
+    - Capture the current page URL
+    - Submit to NextMonth Lab messages API
+    - Show success/error messages
+    - Work on any website without dependencies
+    
+    =================================================================
+    -->
+
+    <div class="smartsite-contact-form" id="smartsite-contact-form">
+        <h3>Get In Touch</h3>
+        
+        <div class="smartsite-error-message" id="smartsite-error" style="display: none;"></div>
+        
+        <form id="smartsite-form">
+            <div class="smartsite-form-group">
+                <label for="smartsite-name">Name <span class="smartsite-required">*</span></label>
+                <input type="text" id="smartsite-name" name="name" required>
+            </div>
+            
+            <div class="smartsite-form-group">
+                <label for="smartsite-email">Email <span class="smartsite-required">*</span></label>
+                <input type="email" id="smartsite-email" name="email" required>
+            </div>
+            
+            <div class="smartsite-form-group">
+                <label for="smartsite-subject">Subject <span class="smartsite-required">*</span></label>
+                <input type="text" id="smartsite-subject" name="subject" required>
+            </div>
+            
+            <div class="smartsite-form-group">
+                <label for="smartsite-message">Message <span class="smartsite-required">*</span></label>
+                <textarea id="smartsite-message" name="message" required placeholder="How can we help you?"></textarea>
+            </div>
+            
+            <button type="submit" class="smartsite-submit-btn" id="smartsite-submit">
+                Send Message
+            </button>
+            
+            <div class="smartsite-loading" id="smartsite-loading">
+                Sending your message...
+            </div>
+        </form>
+    </div>
+
+    <script>
+        (function() {
+            // =================================================================
+            // CONFIGURATION - UPDATE THESE VALUES FOR YOUR CLIENT
+            // =================================================================
+            
+            const CLIENT_ID = 'progress-accountants'; // Change this to your client ID
+            const API_ENDPOINT = 'http://localhost:5000/api/messages'; // Update for production
+            
+            // =================================================================
+            // FORM FUNCTIONALITY - NO CHANGES NEEDED BELOW THIS LINE
+            // =================================================================
+            
+            const form = document.getElementById('smartsite-form');
+            const submitBtn = document.getElementById('smartsite-submit');
+            const loadingMsg = document.getElementById('smartsite-loading');
+            const errorMsg = document.getElementById('smartsite-error');
+            const formContainer = document.getElementById('smartsite-contact-form');
+            
+            // Auto-detect source URL
+            const sourceUrl = window.location.href;
+            
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                // Clear previous errors
+                hideError();
+                
+                // Get form data
+                const formData = new FormData(form);
+                const data = {
+                    clientId: CLIENT_ID,
+                    sourceUrl: sourceUrl,
+                    name: formData.get('name'),
+                    email: formData.get('email'),
+                    subject: formData.get('subject'),
+                    messageBody: formData.get('message')
+                };
+                
+                // Validate required fields
+                if (!data.name || !data.email || !data.subject || !data.messageBody) {
+                    showError('Please fill in all required fields.');
+                    return;
+                }
+                
+                // Show loading state
+                setLoading(true);
+                
+                try {
+                    const response = await fetch(API_ENDPOINT, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(data)
+                    });
+                    
+                    const result = await response.json();
+                    
+                    if (response.ok && result.success) {
+                        showSuccessMessage();
+                    } else {
+                        throw new Error(result.error || 'Failed to send message');
+                    }
+                } catch (error) {
+                    console.error('SmartSite Contact Form Error:', error);
+                    showError('Sorry, there was an error sending your message. Please try again or contact us directly.');
+                } finally {
+                    setLoading(false);
+                }
+            });
+            
+            function setLoading(loading) {
+                submitBtn.disabled = loading;
+                loadingMsg.style.display = loading ? 'block' : 'none';
+                submitBtn.textContent = loading ? 'Sending...' : 'Send Message';
+            }
+            
+            function showError(message) {
+                errorMsg.textContent = message;
+                errorMsg.style.display = 'block';
+                errorMsg.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+            
+            function hideError() {
+                errorMsg.style.display = 'none';
+            }
+            
+            function showSuccessMessage() {
+                formContainer.innerHTML = `
+                    <div class="smartsite-success-message">
+                        <span class="check-icon">✓</span>
+                        <div>Thank you for your message!</div>
+                        <div style="font-size: 14px; margin-top: 8px; font-weight: normal; color: #6b7280;">
+                            We've received your inquiry and will get back to you shortly.
+                        </div>
+                    </div>
+                `;
+            }
+        })();
+    </script>
+</body>
+</html>

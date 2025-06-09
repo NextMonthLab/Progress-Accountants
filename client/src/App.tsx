@@ -107,6 +107,7 @@ const MarketplacePage = lazy(() => import("@/pages/MarketplacePage"));
 const EnhancedMarketplacePage = lazy(() => import("@/pages/EnhancedMarketplacePage"));
 const AdminMarketplacePage = lazy(() => import("@/pages/admin/marketplace"));
 const AIAssistantSettingsPage = lazy(() => import("@/pages/admin/AIAssistantSettingsPage"));
+const MessagesPage = lazy(() => import("@/pages/admin/MessagesPage"));
 const MyToolsPage = lazy(() => import("@/pages/MyToolsPage"));
 
 const BrandGuidelinesPage = lazy(() => import("@/pages/BrandGuidelinesPage"));
