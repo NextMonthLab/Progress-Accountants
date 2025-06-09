@@ -1,0 +1,89 @@
+📜 3AX → Universal Mistral Response UX for Smart Site Messages
+
+👉 Corrected and ready for Replit (copy this fully):
+
+⸻
+
+👉 Now that the core Messages pipeline + SendGrid hooks are in place:
+
+Please implement this final UX and intelligence layer:
+
+⸻
+
+1️⃣ Mistral Response UX — Identity-Aware:
+
+✅ Add a toggle in Admin > Messages tab:
+	•	Label: Auto-respond to new messages with AI
+	•	Default: OFF
+
+✅ When ON:
+	•	For each new message received:
+	•	System triggers POST /api/ai/respond-to-message.
+	•	Mistral 7B is instructed to:
+	•	Read the Business Identity for this Smart Site (from the SOT).
+	•	Generate a polite, warm holding pattern response in the business’ tone of voice.
+	•	Clearly state the message was received and a human will follow up.
+	•	If Business Identity is missing, use a neutral, friendly business tone.
+
+✅ Generated response is stored in: messages.ai_response.
+
+✅ Response is displayed in Messages tab, alongside the original message:
+	•	Label: AI Auto-Response Sent
+	•	Show timestamp + response text.
+
+✅ Response is also sent to the original sender via SendGrid.
+
+⸻
+
+2️⃣ Supporting Endpoint:
+
+✅ Implement:
+
+POST /api/ai/respond-to-message
+
+Input:
+
+{
+  "message_id": "<ID of message>",
+  "business_id": "<BusinessID>",
+  "business_identity": "<Business Identity text>",
+  "message_content": "<User message content>"
+}
+
+Expected Output:
+
+{
+  "ai_response": "<Generated AI response text>",
+  "timestamp": "<UTC timestamp>"
+}
+
+✅ Behavior:
+	•	Calls Mistral 7B (Hetzner API).
+	•	Provides context:
+	•	Business Identity
+	•	Message content
+	•	Receives high-quality polite AI response.
+	•	Stores result in messages.ai_response.
+	•	Triggers SendGrid send to user.
+
+⸻
+
+3️⃣ Summary of Why:
+
+✅ Makes Smart Sites feel intelligent and responsive.
+
+✅ Ensures each Smart Site reflects its own tone and brand voice → not generic.
+
+✅ Adds huge value for clients:
+	•	No backend setup required.
+	•	AI handles first reply → improves customer experience.
+
+✅ Works for any business, not just Progress.
+
+⸻
+
+Final Notes:
+	•	You must use Business Identity (from SOT) as primary context source.
+	•	If missing, fallback to safe neutral tone.
+	•	DO NOT hardcode Progress tone — this must be universal for all Smart Sites.
+	•	Response should always act as holding message, not as a full conversation starter.

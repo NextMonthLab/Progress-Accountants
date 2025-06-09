@@ -458,6 +458,8 @@ export const messages = pgTable("messages", {
   autoResponseStatus: varchar("auto_response_status", { length: 20 }).default("pending").notNull(),
   autoResponseText: text("auto_response_text"),
   adminNotes: text("admin_notes"),
+  aiResponse: text("ai_response"),
+  aiResponseSentAt: timestamp("ai_response_sent_at"),
 }, (table) => ({
   clientIdIdx: index("idx_messages_client_id").on(table.clientId),
   createdAtIdx: index("idx_messages_created_at").on(table.createdAt),
