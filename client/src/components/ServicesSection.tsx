@@ -224,23 +224,23 @@ const ServicesSection = () => {
       id="services" 
       className="py-16 md:py-24 relative bg-black"
     >
-      <div className="container mx-auto px-12 md:px-16 relative z-10">
+      <div className="container mx-auto px-4 sm:px-6 md:px-12 lg:px-16 relative z-10">
         <div className="mx-auto">
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <div className="inline-block mb-4 px-4 py-1 rounded-full bg-gradient-to-r from-[#7B3FE4]/20 to-[#3FA4E4]/20 text-purple-300 text-sm font-medium border border-purple-400/30">
+          <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
+            <div className="inline-block mb-4 px-3 sm:px-4 py-1 rounded-full bg-gradient-to-r from-[#7B3FE4]/20 to-[#3FA4E4]/20 text-purple-300 text-xs sm:text-sm font-medium border border-purple-400/30">
               <span className="mr-1">✦</span> Designed for Modern Businesses <span className="ml-1">✦</span>
             </div>
-            <h2 className="font-bold text-3xl md:text-4xl mb-4 text-white"
+            <h2 className="font-bold text-2xl sm:text-3xl md:text-4xl mb-4 text-white"
             >
               Our Premium Services
             </h2>
-            <p className="text-lg leading-relaxed text-gray-300">
+            <p className="text-base sm:text-lg leading-relaxed text-gray-300 px-4 sm:px-0">
               At Progress Accountants, we're more than just number-crunchers—we're strategic partners helping SMEs grow, adapt, and thrive.
             </p>
           </div>
           
           {/* Premium Services Section */}
-          <div className="grid md:grid-cols-3 gap-6 md:gap-8 mb-16">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 mb-12 sm:mb-16">
             {premiumServices.map((serviceName, index) => {
               const service = serviceIcons[serviceName] || {
                 description: "Innovative service tailored to your business needs.",
@@ -263,16 +263,16 @@ const ServicesSection = () => {
           {/* Standard Services Section */}
           {standardServices.length > 0 && (
             <>
-              <div className="text-center max-w-3xl mx-auto mb-10 mt-16">
-                <h2 className="font-bold text-2xl md:text-3xl mb-4 gradient-text">
+              <div className="text-center max-w-3xl mx-auto mb-8 sm:mb-10 mt-12 sm:mt-16">
+                <h2 className="font-bold text-xl sm:text-2xl md:text-3xl mb-4 gradient-text">
                   Standard Services
                 </h2>
-                <p className="text-md max-w-xl mx-auto text-gray-300">
+                <p className="text-sm sm:text-base max-w-xl mx-auto text-gray-300 px-4 sm:px-0">
                   All your accounting needs in one place—delivered with clarity, reliability, and results.
                 </p>
               </div>
               
-              <div className="grid md:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
                 {standardServices.map((serviceName, index) => {
                   const service = serviceIcons[serviceName] || {
                     description: "Professional service tailored to your business needs."

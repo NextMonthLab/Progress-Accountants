@@ -25,21 +25,21 @@ const HomePage = () => {
       <WhyUsSection />
 
       {/* Enhanced Contact Section with Dark Theme */}
-      <section className="py-16 bg-black" id="contact">
-        <div className="container mx-auto px-12 md:px-16">
+      <section className="py-12 sm:py-16 bg-black" id="contact">
+        <div className="container mx-auto px-4 sm:px-6 md:px-12 lg:px-16">
           <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-10">
-              <h2 className="text-3xl font-bold mb-3 text-white">
+            <div className="text-center mb-8 sm:mb-10">
+              <h2 className="text-2xl sm:text-3xl font-bold mb-3 text-white px-4">
                 Looking for a proactive accountant in United Kingdom?
               </h2>
-              <p className="text-lg text-slate-300 mb-6 max-w-2xl mx-auto leading-relaxed">
+              <p className="text-base sm:text-lg text-slate-300 mb-6 max-w-2xl mx-auto leading-relaxed px-4">
                 Start your conversation with us today. Let's discuss your business goals and see how we can support your growth.
               </p>
             </div>
 
             {/* Enhanced Contact Form Section */}
-            <div className="mb-14">
-              <div className="bg-slate-900/80 backdrop-blur-sm p-8 rounded-xl shadow-2xl border border-slate-700/60 relative overflow-hidden">
+            <div className="mb-12 sm:mb-14">
+              <div className="bg-slate-900/80 backdrop-blur-sm p-4 sm:p-6 md:p-8 rounded-xl shadow-2xl border border-slate-700/60 relative overflow-hidden">
                 {/* Enhanced background with texture */}
                 <div className="absolute inset-0 bg-gradient-to-br from-slate-800/30 via-zinc-900/50 to-gray-900/60 pointer-events-none"></div>
                 <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_30%_70%,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[length:40px_40px] pointer-events-none"></div>
@@ -63,9 +63,9 @@ const HomePage = () => {
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                  <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8">
                     <div className="lg:col-span-1">
-                      <div className="bg-slate-800/50 backdrop-blur-sm p-6 rounded-lg border border-slate-600/60 h-full">
+                      <div className="bg-slate-800/50 backdrop-blur-sm p-4 sm:p-6 rounded-lg border border-slate-600/60 h-full">
                         <div className="flex items-start mb-6">
                           <div className="h-8 w-8 rounded-full bg-gradient-to-r from-[#7B3FE4]/20 to-[#3FA4E4]/20 flex items-center justify-center mr-3 mt-1 flex-shrink-0">
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-[#7B3FE4]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
