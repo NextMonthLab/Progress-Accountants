@@ -48,6 +48,9 @@ import {
   type InsertTool,
   toolRequests,
   type ToolRequest,
+  messages,
+  type Message,
+  type InsertMessage,
   type InsertToolRequest,
   pageToolIntegrations,
   type PageToolIntegration,
@@ -172,6 +175,14 @@ export interface IStorage {
   // Contact operations
   saveContactSubmission(data: InsertContactSubmission): Promise<ContactSubmission>;
   getContactSubmissions(): Promise<ContactSubmission[]>;
+  
+  // Messages operations for SmartSite Contact Intelligence Layer
+  saveMessage(data: InsertMessage): Promise<Message>;
+  getMessages(clientId?: string): Promise<Message[]>;
+  getMessageById(id: string): Promise<Message | undefined>;
+  updateMessage(id: string, data: Partial<Message>): Promise<Message | undefined>;
+  archiveMessage(id: string): Promise<Message | undefined>;
+  updateAutoResponseStatus(id: string, status: string, responseText?: string): Promise<Message | undefined>;
   
   // Activity logging
   logActivity(activity: InsertActivityLog): Promise<ActivityLog>;
@@ -572,6 +583,78 @@ export class DatabaseStorage implements IStorage {
       .select()
       .from(contactSubmissions)
       .orderBy(desc(contactSubmissions.date));
+  }
+
+  // Messages operations for SmartSite Contact Intelligence Layer
+  async saveMessage(data: InsertMessage): Promise<Message> {
+    const [message] = await db
+      .insert(messages)
+      .values(data)
+      .returning();
+    return message;
+  }
+
+  async getMessages(clientId?: string): Promise<Message[]> {
+    let query = db
+      .select()
+      .from(messages)
+      .orderBy(desc(messages.createdAt));
+    
+    if (clientId) {
+      query = query.where(eq(messages.clientId, clientId));
+    }
+    
+    return query;
+  }
+
+  async getMessageById(id: string): Promise<Message | undefined> {
+    const [message] = await db
+      .select()
+      .from(messages)
+      .where(eq(messages.id, id));
+    return message || undefined;
+  }
+
+  async updateMessage(id: string, data: Partial<Message>): Promise<Message | undefined> {
+    const [message] = await db
+      .update(messages)
+      .set({
+        ...data,
+        updatedAt: new Date()
+      })
+      .where(eq(messages.id, id))
+      .returning();
+    return message || undefined;
+  }
+
+  async archiveMessage(id: string): Promise<Message | undefined> {
+    const [message] = await db
+      .update(messages)
+      .set({
+        archived: true,
+        updatedAt: new Date()
+      })
+      .where(eq(messages.id, id))
+      .returning();
+    return message || undefined;
+  }
+
+  async updateAutoResponseStatus(id: string, status: string, responseText?: string): Promise<Message | undefined> {
+    const updateData: any = {
+      autoResponseStatus: status,
+      updatedAt: new Date()
+    };
+    
+    if (responseText) {
+      updateData.autoResponseText = responseText;
+    }
+    
+    const [message] = await db
+      .update(messages)
+      .set(updateData)
+      .where(eq(messages.id, id))
+      .returning();
+    return message || undefined;
   }
 
   // Activity logging

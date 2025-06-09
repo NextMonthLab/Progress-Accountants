@@ -24,6 +24,7 @@ import { migrateAiEventLog } from './db-migrate-ai-event-log';
 import { migrateInnovationFeed } from './db-migrate-innovation-feed';
 import { runEmbedAnalyticsMigrations } from './db-migrate-embed-analytics';
 import { runBusinessIdentityMigrations } from './db-migrate-business-identity';
+import { migrateMessagesTable } from './db-migrate-messages';
 import { registerNavigationRoutes } from './controllers/navigationController';
 import { registerDomainMappingRoutes } from './controllers/domainMappingController';
 import { registerSotRoutes } from './routes/sot-routes';
@@ -126,6 +127,10 @@ app.use((req, res, next) => {
     // Run Business Identity migrations for Master Unified Architecture
     console.log('Running Business Identity migrations...');
     await runBusinessIdentityMigrations();
+    
+    // Run Messages table migrations for SmartSite Contact Intelligence
+    console.log('Running Messages table migrations...');
+    await migrateMessagesTable();
   } catch (error) {
     console.error('Error running migrations:', error);
   }

@@ -443,6 +443,38 @@ export const insertCreditUsageLogSchema = createInsertSchema(creditUsageLog).omi
   updatedAt: true,
 });
 
+// Messages table for SmartSite Contact Intelligence Layer
+export const messages = pgTable("messages", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+  clientId: varchar("client_id", { length: 255 }).notNull(),
+  sourceUrl: text("source_url"),
+  name: varchar("name", { length: 255 }).notNull(),
+  email: varchar("email", { length: 255 }).notNull(),
+  subject: varchar("subject", { length: 500 }),
+  messageBody: text("message_body").notNull(),
+  archived: boolean("archived").default(false),
+  autoResponseStatus: varchar("auto_response_status", { length: 20 }).default("pending").notNull(),
+  autoResponseText: text("auto_response_text"),
+  adminNotes: text("admin_notes"),
+}, (table) => ({
+  clientIdIdx: index("idx_messages_client_id").on(table.clientId),
+  createdAtIdx: index("idx_messages_created_at").on(table.createdAt),
+  clientCreatedIdx: index("idx_messages_client_created").on(table.clientId, table.createdAt),
+  archivedIdx: index("idx_messages_archived").on(table.archived),
+  autoResponseStatusIdx: index("idx_messages_auto_response_status").on(table.autoResponseStatus),
+}));
+
+export const insertMessageSchema = createInsertSchema(messages).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export type Message = typeof messages.$inferSelect;
+export type InsertMessage = z.infer<typeof insertMessageSchema>;
+
 // Resources table for custom resource page
 export const resources = pgTable("resources", {
   id: serial("id").primaryKey(),
