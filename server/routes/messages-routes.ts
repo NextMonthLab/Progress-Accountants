@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { z } from 'zod';
 import { storage } from '../storage';
 import { insertMessageSchema } from '@shared/schema';
+import { sendEmail } from '../sendgrid';
 
 const router = Router();
 
@@ -32,6 +33,24 @@ router.post('/', async (req, res) => {
     const messageData = saveMessageSchema.parse(req.body);
     
     const newMessage = await storage.saveMessage(messageData);
+    
+    // Send email notification to Progress team (only if SendGrid is configured)
+    if (process.env.SENDGRID_API_KEY && process.env.SENDGRID_CONTACT_TO_EMAIL && process.env.SENDGRID_FROM_EMAIL) {
+      try {
+        await sendEmail({
+          to: process.env.SENDGRID_CONTACT_TO_EMAIL,
+          from: process.env.SENDGRID_FROM_EMAIL,
+          subject: `New Contact Form Message from ${newMessage.name}`,
+          text: `${newMessage.messageBody}\n\nFrom: ${newMessage.name} (${newMessage.email})\nSubject: ${newMessage.subject}\nSource: ${newMessage.sourceUrl || 'Direct form submission'}`,
+        });
+        console.log('[SendGrid] Contact form notification sent successfully');
+      } catch (emailError) {
+        console.error('[SendGrid] Failed to send contact form notification:', emailError);
+        // Don't fail the request if email fails - message is still saved
+      }
+    } else {
+      console.log('[SendGrid] Email notification skipped - SendGrid not configured');
+    }
     
     res.status(201).json({
       success: true,
@@ -254,6 +273,46 @@ router.get('/stats/:clientId', async (req, res) => {
     res.status(500).json({
       success: false,
       error: 'Failed to fetch message statistics',
+    });
+  }
+});
+
+// GET /api/test/sendgrid - Test SendGrid configuration (temporary route)
+router.get('/test/sendgrid', async (req, res) => {
+  try {
+    if (!process.env.SENDGRID_API_KEY) {
+      return res.status(400).json({
+        success: false,
+        error: 'SendGrid API key not configured',
+      });
+    }
+
+    if (!process.env.SENDGRID_FROM_EMAIL || !process.env.SENDGRID_CONTACT_TO_EMAIL) {
+      return res.status(400).json({
+        success: false,
+        error: 'SendGrid email addresses not configured',
+      });
+    }
+
+    await sendEmail({
+      to: process.env.SENDGRID_CONTACT_TO_EMAIL,
+      from: process.env.SENDGRID_FROM_EMAIL,
+      subject: 'NextMonth Lab SendGrid Test',
+      text: 'Hello from NextMonth Lab test email. SendGrid integration is working correctly!',
+    });
+
+    console.log('[SendGrid] Test email sent successfully');
+    
+    res.json({
+      success: true,
+      message: 'Email sent successfully',
+    });
+  } catch (error) {
+    console.error('[SendGrid] Test email failed:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to send test email',
+      details: error instanceof Error ? error.message : 'Unknown error',
     });
   }
 });
