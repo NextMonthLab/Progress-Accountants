@@ -47,7 +47,7 @@ import {
 } from "@/components/ui/card";
 
 // Import the pound symbol background image
-import poundSymbolBg from "../assets/pound-symbol-bg.png";
+import poundSymbolBg from "@assets/calculator-pound-bg.png";
 
 // Type definitions
 type BusinessFormValues = {
