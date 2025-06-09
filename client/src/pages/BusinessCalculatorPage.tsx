@@ -730,25 +730,55 @@ const ResultsStep = ({ calculatorData }: { calculatorData: any }) => {
 
   // Real calculation logic based on user inputs
   const calculateResults = (data: any): CalculatorResults => {
+    // Convert revenue range strings to numerical values
+    const parseRevenueRange = (range: string): number => {
+      switch (range) {
+        case "under_50k": return 35000; // Average for range
+        case "50k_100k": return 75000;
+        case "100k_250k": return 175000;
+        case "250k_500k": return 375000;
+        case "500k_1m": return 750000;
+        case "1m_5m": return 2500000;
+        case "over_5m": return 7500000;
+        default: return 0;
+      }
+    };
+
+    // Convert expense range strings to numerical values
+    const parseExpenseRange = (range: string): number => {
+      switch (range) {
+        case "under_5k": return 3500; // Average for range
+        case "5k_10k": return 7500;
+        case "10k_25k": return 17500;
+        case "25k_50k": return 37500;
+        case "50k_100k": return 75000;
+        case "over_100k": return 150000;
+        default: return 0;
+      }
+    };
+
     // Input validation and parsing with safety checks
-    const annualRevenue = Math.max(0, parseFloat(data.financials?.annualRevenue) || 0);
-    const monthlyExpenses = Math.max(0, parseFloat(data.financials?.monthlyExpenses) || 0);
+    const annualRevenue = Math.max(0, parseRevenueRange(data.financials?.annualRevenue || ""));
+    const monthlyExpenses = Math.max(0, parseExpenseRange(data.financials?.monthlyExpenses || ""));
     const profitMargin = Math.max(0, Math.min(100, data.financials?.profitMargin || 0));
     const taxRate = Math.max(0, Math.min(100, data.financials?.taxRate || 19));
     const plannedHires = Math.max(0, parseInt(data.growth?.plannedHires) || 0);
     
+    // Convert investment range strings to numerical values
+    const parseInvestmentRange = (range: string): number => {
+      switch (range) {
+        case "none": return 0;
+        case "under_10k": return 5000; // Average for range
+        case "10k_50k": return 30000;
+        case "50k_100k": return 75000;
+        case "100k_500k": return 300000;
+        case "over_500k": return 750000;
+        default: return 0;
+      }
+    };
+
     // Handle investment amount based on selection
-    let plannedInvestment = 0;
-    const investmentValue = data.growth?.plannedInvestment;
-    if (investmentValue) {
-      if (investmentValue === "none") plannedInvestment = 0;
-      else if (investmentValue === "5000") plannedInvestment = 5000;
-      else if (investmentValue === "10000") plannedInvestment = 10000;
-      else if (investmentValue === "25000") plannedInvestment = 25000;
-      else if (investmentValue === "50000") plannedInvestment = 50000;
-      else if (investmentValue === "100000") plannedInvestment = 100000;
-      else plannedInvestment = parseFloat(investmentValue) || 0;
-    }
+    const plannedInvestment = parseInvestmentRange(data.growth?.plannedInvestment || "");
     
     // Core calculations with safety checks
     const monthlyRevenue = annualRevenue / 12;
