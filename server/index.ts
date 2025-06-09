@@ -27,6 +27,7 @@ import { runBusinessIdentityMigrations } from './db-migrate-business-identity';
 import { migrateMessagesTable } from './db-migrate-messages';
 import { registerNavigationRoutes } from './controllers/navigationController';
 import { registerDomainMappingRoutes } from './controllers/domainMappingController';
+import messagesRoutes from './routes/messages-routes';
 import { registerSotRoutes } from './routes/sot-routes';
 import { registerClientCheckInRoutes } from './routes/client-check-in-routes';
 import { registerSiteInventoryRoutes } from './routes/site-inventory-routes';
@@ -182,6 +183,10 @@ app.use((req, res, next) => {
 
   // Register Innovation Feed routes
   registerInnovationFeedRoutes(app);
+
+  // Register Messages routes for SmartSite Contact Intelligence Layer
+  app.use('/api/messages', messagesRoutes);
+  console.log('✅ Messages routes registered for SmartSite Contact Intelligence');
 
   app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
     const status = err.status || err.statusCode || 500;
