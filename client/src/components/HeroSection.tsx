@@ -75,48 +75,49 @@ const HeroSection = () => {
         <div className="absolute bottom-0 right-1/3 w-80 h-80 bg-gradient-radial from-zinc-700/8 to-transparent rounded-full blur-3xl"></div>
       </div>
       
-      <div className="container mx-auto px-12 md:px-16 z-10 relative">
-        <div className="flex flex-col md:flex-row items-center gap-8 lg:gap-12">
+      <div className="container mx-auto px-4 sm:px-6 md:px-12 lg:px-16 z-10 relative">
+        <div className="flex flex-col md:flex-row items-center gap-6 md:gap-8 lg:gap-12">
           {/* Left content - Text content */}
-          <div className="md:w-2/5 md:pr-6 text-center md:text-left">
-            <span className="text-purple-300 text-sm font-medium tracking-wide inline-block mb-4">
+          <div className="w-full md:w-2/5 md:pr-6 text-center md:text-left">
+            <span className="text-purple-300 text-xs sm:text-sm font-medium tracking-wide inline-block mb-3 sm:mb-4">
               Premium Financial Advisory
             </span>
             
-            <h1 className="font-bold text-4xl md:text-5xl lg:text-6xl mb-6 leading-tight">
+            <h1 className="font-bold text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl mb-4 sm:mb-6 leading-tight">
               <span className="text-white">{businessName}</span>
-              <span className="block mt-3 gradient-text text-2xl md:text-3xl lg:text-4xl">
+              <span className="block mt-2 sm:mt-3 gradient-text text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl">
                 Forward-thinking Accountants for UK Businesses
               </span>
             </h1>
             
-            <p className="text-lg md:text-xl mb-8 text-gray-200 max-w-xl leading-relaxed">
+            <p className="text-base sm:text-lg md:text-xl mb-6 sm:mb-8 text-gray-200 max-w-xl leading-relaxed px-2 sm:px-0">
               Empowering your business with strategic financial planning, expert tax optimisation, and tailored insights—delivered with tech-savvy clarity.
             </p>
             
-            <div className="mb-8">
+            <div className="mb-6 sm:mb-8">
               {usps.length > 0 && (
-                <ul className="list-none space-y-3 max-w-lg">
+                <ul className="list-none space-y-2 sm:space-y-3 max-w-lg">
                   {usps.slice(0, 3).map((usp, index) => (
                     <li key={index} className="flex items-start">
-                      <span className="flex items-center justify-center bg-gradient-to-r from-[#8B5CF6] to-[#A855F7] w-6 h-6 rounded-full mr-3 shrink-0">
+                      <span className="flex items-center justify-center bg-gradient-to-r from-[#8B5CF6] to-[#A855F7] w-5 h-5 sm:w-6 sm:h-6 rounded-full mr-2 sm:mr-3 shrink-0 mt-0.5">
                         <span className="text-white text-xs">✓</span>
                       </span> 
-                      <span className="text-gray-200">{usp}</span>
+                      <span className="text-gray-200 text-sm sm:text-base leading-relaxed">{usp}</span>
                     </li>
                   ))}
                 </ul>
               )}
             </div>
             
-            <div className="flex flex-wrap gap-4">
-              <a href="#book-call">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+              <a href="#book-call" className="w-full sm:w-auto">
                 <Button 
                   size="lg" 
-                  className="px-6 py-3 rounded-full gradient-bg hover:shadow-lg text-white progress-button"
+                  className="w-full sm:w-auto px-4 sm:px-6 py-3 rounded-full gradient-bg hover:shadow-lg text-white progress-button text-sm sm:text-base"
                 >
-                  <span className="font-medium flex items-center">
-                    Book Your Free Strategy Consultation
+                  <span className="font-medium flex items-center justify-center">
+                    <span className="hidden sm:inline">Book Your Free Strategy Consultation</span>
+                    <span className="sm:hidden">Book Free Consultation</span>
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </span>
                 </Button>
@@ -124,7 +125,7 @@ const HeroSection = () => {
               
               <Button 
                 variant="ghost" 
-                className="px-6 py-3 rounded-full text-white border border-purple-400/30 hover:bg-purple-500/20"
+                className="w-full sm:w-auto px-4 sm:px-6 py-3 rounded-full text-white border border-purple-400/30 hover:bg-purple-500/20 text-sm sm:text-base"
                 onClick={scrollToContent}
               >
                 <span>Explore Our Services</span>
@@ -134,10 +135,10 @@ const HeroSection = () => {
           </div>
           
           {/* Right content - Prominent team image */}
-          <div className="md:w-3/5 mt-10 md:mt-0">
+          <div className="w-full md:w-3/5 mt-8 md:mt-0">
             <div className="relative">
               {/* Enlarged, simplified image frame */}
-              <div className="relative rounded-xl shadow-xl transform hover:scale-[1.02] transition-transform duration-500 bg-slate-800/50 p-4">
+              <div className="relative rounded-xl shadow-xl transform hover:scale-[1.02] transition-transform duration-500 bg-slate-800/50 p-2 sm:p-4">
                 <OptimizedImage 
                   src="https://res.cloudinary.com/drl0fxrkq/image/upload/v1747742806/P1023674_di2j3g.jpg" 
                   alt={`${businessName} Team`}

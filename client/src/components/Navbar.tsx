@@ -172,18 +172,18 @@ export default function Navbar() {
 
   return (
     <header className="bg-black/95 backdrop-blur-sm border-b border-gray-800 sticky top-0 z-50">
-      <nav className="container mx-auto px-12 md:px-16 py-4 flex items-center">
+      <nav className="container mx-auto px-4 sm:px-6 md:px-12 lg:px-16 py-4 flex items-center justify-between">
         <div className="flex items-center flex-shrink-0">
           <NavbarLogo />
         </div>
 
         {/* Desktop Menu - Public-facing menu only */}
-        <div className="hidden md:flex items-center space-x-8 ml-16">
+        <div className="hidden lg:flex items-center space-x-6 xl:space-x-8">
           {publicMenuGroups.map(renderDesktopDropdown)}
         </div>
 
         {/* Right side buttons */}
-        <div className="hidden md:flex items-center space-x-6 ml-auto">
+        <div className="hidden md:flex items-center space-x-4 lg:space-x-6">
           {/* Show login button and potentially client registration for non-authenticated users */}
           {!user && (
             <>
@@ -249,7 +249,7 @@ export default function Navbar() {
 
         {/* Mobile menu button */}
         <button 
-          className="md:hidden flex items-center" 
+          className="lg:hidden flex items-center p-2" 
           onClick={toggleMenu}
           aria-label="Toggle mobile menu"
         >
@@ -263,9 +263,9 @@ export default function Navbar() {
 
       {/* Mobile Menu - Public-facing only */}
       <div 
-        className={`md:hidden bg-zinc-900 w-full absolute z-20 shadow-md border-t border-zinc-700 overflow-y-auto max-h-[80vh] ${isMenuOpen ? '' : 'hidden'}`}
+        className={`lg:hidden bg-zinc-900 w-full absolute z-20 shadow-md border-t border-zinc-700 overflow-y-auto max-h-[80vh] ${isMenuOpen ? '' : 'hidden'}`}
       >
-        <div className="container mx-auto px-12 md:px-16 py-3 flex flex-col divide-y">
+        <div className="container mx-auto px-4 sm:px-6 py-4 flex flex-col divide-y divide-zinc-700">
           {publicMenuGroups.map(renderMobileMenuGroup)}
 
           {/* Login section for non-authenticated users */}
