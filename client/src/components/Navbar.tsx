@@ -28,7 +28,7 @@ function NavbarLogo() {
       <img 
         src={progressLogoPath} 
         alt="Progress Accountants | Advisors | Growth Partners" 
-        className="h-10 object-contain"
+        className="h-[50px] object-contain"
       />
     </Link>
   );
