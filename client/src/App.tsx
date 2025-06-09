@@ -59,6 +59,7 @@ const TeamPage = lazy(() => import("@/pages/TeamPage"));
 const AboutPage = lazy(() => import("@/pages/AboutPage"));
 const ServicesPage = lazy(() => import("@/pages/ServicesPage"));
 const ServiceDetailPage = lazy(() => import("@/pages/ServiceDetailPage"));
+const TaxPlanningPage = lazy(() => import("@/pages/services/TaxPlanningPage"));
 const IndustriesPage = lazy(() => import("@/pages/IndustriesPage"));
 const FilmIndustryPage = lazy(() => import("@/pages/FilmIndustryPage"));
 const MusicIndustryPage = lazy(() => import("@/pages/MusicIndustryPage"));
@@ -202,6 +203,11 @@ function Router() {
       <Route path="/services">
         <Suspense fallback={<LoadingFallback />}>
           <ServicesPage />
+        </Suspense>
+      </Route>
+      <Route path="/services/tax-planning">
+        <Suspense fallback={<LoadingFallback />}>
+          <TaxPlanningPage />
         </Suspense>
       </Route>
       <Route path="/services/:slug">

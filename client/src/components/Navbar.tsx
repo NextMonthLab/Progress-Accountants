@@ -63,9 +63,14 @@ export default function Navbar() {
       label: "Services",
       items: [
         { label: "All Services", href: "/services", icon: <Briefcase className="h-4 w-4 mr-2" /> },
-        { label: "Why Choose Us", href: "/why-us", icon: <Sparkles className="h-4 w-4 mr-2" /> },
-        { label: "Business Calculator", href: "/business-calculator", icon: <Calculator className="h-4 w-4 mr-2" /> },
-        { label: "SME Support Hub", href: "/sme-support-hub", icon: <Building2 className="h-4 w-4 mr-2" /> },
+        { label: "Tax Planning & Preparation", href: "/services/tax-planning", icon: <Calculator className="h-4 w-4 mr-2" /> },
+        { label: "Bookkeeping", href: "/services/bookkeeping", icon: <BookOpen className="h-4 w-4 mr-2" /> },
+        { label: "Business Advisory", href: "/services/business-advisory", icon: <Briefcase className="h-4 w-4 mr-2" /> },
+        { label: "Financial Reporting", href: "/services/financial-reporting", icon: <Layout className="h-4 w-4 mr-2" /> },
+        { label: "Audit Support", href: "/services/audit-support", icon: <Building className="h-4 w-4 mr-2" /> },
+        { label: "Cloud Accounting", href: "/services/cloud-accounting", icon: <Building2 className="h-4 w-4 mr-2" /> },
+        { label: "Industry-Specific Accounting", href: "/services/industry-specific", icon: <Building className="h-4 w-4 mr-2" /> },
+        { label: "Virtual Finance Director", href: "/services/virtual-finance-director", icon: <Users className="h-4 w-4 mr-2" /> },
       ]
     },
     {
