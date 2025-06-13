@@ -144,9 +144,6 @@ app.use((req, res, next) => {
 
   // Register API routes
   await registerRoutes(app);
-  
-  // Create HTTP server
-  const server = createServer(app);
 
   // Register navigation routes
   registerNavigationRoutes(app);
@@ -205,26 +202,18 @@ app.use((req, res, next) => {
     throw err;
   });
 
-  // importantly only setup vite in development and after
-  // setting up all the other routes so the catch-all route
-  // doesn't interfere with the other routes
-  if (app.get("env") === "development") {
-    await setupVite(app, server);
-  } else {
-    const publicPath = path.join(__dirname, '../public');
-    app.use(express.static(publicPath));
-  }
-
   // Use environment port or default to 5000 with fallback ports
   const preferredPort = parseInt(process.env.PORT || '5000');
   const host = "0.0.0.0";
   
   // Function to try starting server on a port
-  const tryStartServer = (port: number): Promise<void> => {
+  const tryStartServer = (port: number): Promise<Server> => {
     return new Promise((resolve, reject) => {
+      const server = createServer(app);
+      
       const serverInstance = server.listen(port, host, () => {
         log(`serving on port ${port}`);
-        resolve();
+        resolve(server);
       });
       
       serverInstance.on('error', (err: any) => {
@@ -239,12 +228,11 @@ app.use((req, res, next) => {
   
   // Try preferred port, then fallback ports
   const portsToTry = [preferredPort, 5001, 5002, 5003, 3000, 8000];
-  let serverStarted = false;
+  let server: Server | null = null;
   
   for (const port of portsToTry) {
     try {
-      await tryStartServer(port);
-      serverStarted = true;
+      server = await tryStartServer(port);
       break;
     } catch (error) {
       log(`Port ${port} unavailable, trying next port...`);
@@ -252,8 +240,18 @@ app.use((req, res, next) => {
     }
   }
   
-  if (!serverStarted) {
+  if (!server) {
     throw new Error('Unable to start server - all ports in use');
+  }
+
+  // importantly only setup vite in development and after
+  // setting up all the other routes so the catch-all route
+  // doesn't interfere with the other routes
+  if (app.get("env") === "development") {
+    await setupVite(app, server);
+  } else {
+    const publicPath = path.join(__dirname, '../public');
+    app.use(express.static(publicPath));
   }
 
   // Schedule daily backup at 6pm UTC (18:00)

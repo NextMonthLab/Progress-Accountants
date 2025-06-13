@@ -28,11 +28,7 @@ export async function registerHealthRoutes(app: Express) {
 
   // Start the health monitoring service with greatly reduced activity frequency
   try {
-    await healthMonitor.start({
-      statusCheckIntervalMs: 900000, // 15 minutes (instead of 5 minutes)
-      dbCheckIntervalMs: 1800000,    // 30 minutes (instead of 10 minutes)
-      incidentRetentionDays: 7,      // Store incidents for 7 days (reduced from 14 days)
-    });
+    await healthMonitor.start(900000); // 15 minutes interval
     
     console.log('Health monitoring service started successfully');
   } catch (error) {
