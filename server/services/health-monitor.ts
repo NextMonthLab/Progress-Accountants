@@ -73,6 +73,7 @@ export class HealthMonitorService {
   private apiErrorCounts: Map<string, number[]> = new Map(); // Store timestamps of errors
   private sessionFailures: number[] = []; // Store timestamps of session failures
   private uploadFailures: { success: boolean; timestamp: number }[] = [];
+  private isStarted: boolean = false;
 
   private constructor() {
     // Initialize the Maps for various metrics
@@ -99,12 +100,12 @@ export class HealthMonitorService {
    * Start the health monitoring service
    */
   public async start(intervalMs: number = 60000): Promise<void> {
-    if (this.monitoringInterval) {
-      console.log('Health monitoring is already running');
+    if (this.isStarted || this.monitoringInterval) {
       return;
     }
 
     console.log(`Starting health monitoring service (interval: ${intervalMs}ms)`);
+    this.isStarted = true;
     
     try {
       // Check if tables exist first
@@ -112,6 +113,7 @@ export class HealthMonitorService {
       
       if (!tablesExist) {
         console.log('Health monitoring tables not ready. Service will wait for migrations to complete.');
+        this.isStarted = false;
         // Try again in 10 seconds
         setTimeout(() => this.start(intervalMs), 10000);
         return;
@@ -131,6 +133,7 @@ export class HealthMonitorService {
       console.log('Health monitoring service started successfully');
     } catch (error) {
       console.error('Error starting health monitoring service:', error);
+      this.isStarted = false;
       // Try again in 10 seconds
       setTimeout(() => this.start(intervalMs), 10000);
     }
