@@ -211,26 +211,55 @@ app.use((req, res, next) => {
     app.use(express.static(publicPath));
   }
 
-  // ALWAYS serve the app on port 5000
-  // this serves both the API and the client.
-  // It is the only port that is not firewalled.
-  const port = 5000;
-  server.listen({
-    port,
-    host: "0.0.0.0",
-    reusePort: true,
-  }, () => {
-    log(`serving on port ${port}`);
-
-    // Schedule daily backup at 6pm UTC (18:00)
-    cron.schedule('0 18 * * *', async () => {
-      log('Running scheduled backup...');
-      await triggerBackup();
+  // Use environment port or default to 5000 with fallback ports
+  const preferredPort = parseInt(process.env.PORT || '5000');
+  const host = "0.0.0.0";
+  
+  // Function to try starting server on a port
+  const tryStartServer = (port: number): Promise<void> => {
+    return new Promise((resolve, reject) => {
+      const serverInstance = server.listen({ port, host }, () => {
+        log(`serving on port ${port}`);
+        resolve();
+      });
+      
+      serverInstance.on('error', (err: any) => {
+        if (err.code === 'EADDRINUSE') {
+          reject(new Error(`Port ${port} is already in use`));
+        } else {
+          reject(err);
+        }
+      });
     });
+  };
+  
+  // Try preferred port, then fallback ports
+  const portsToTry = [preferredPort, 5001, 5002, 5003, 3000, 8000];
+  let serverStarted = false;
+  
+  for (const port of portsToTry) {
+    try {
+      await tryStartServer(port);
+      serverStarted = true;
+      break;
+    } catch (error) {
+      log(`Port ${port} unavailable, trying next port...`);
+      continue;
+    }
+  }
+  
+  if (!serverStarted) {
+    throw new Error('Unable to start server - all ports in use');
+  }
 
-    log('Backup scheduler initialized');
-
-    // Initialize insights summary scheduler
-    initScheduler();
+  // Schedule daily backup at 6pm UTC (18:00)
+  cron.schedule('0 18 * * *', async () => {
+    log('Running scheduled backup...');
+    await triggerBackup();
   });
+
+  log('Backup scheduler initialized');
+
+  // Initialize insights summary scheduler
+  initScheduler();
 })();
