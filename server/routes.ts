@@ -2576,9 +2576,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
   
   // Register Blueprint Export routes
   registerLegacyBlueprintRoutes(app);
-  
-  // Create HTTP server
-  const httpServer = createServer(app);
 
   // SEO Configuration API Endpoints
   app.get("/api/seo/configs", async (req: Request, res: Response) => {

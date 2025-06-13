@@ -141,7 +141,7 @@ app.use((req, res, next) => {
     console.error('Error running migrations:', error);
   }
 
-  // Register API routes
+  // Register API routes and get the HTTP server
   const server = await registerRoutes(app);
 
   // Register navigation routes
@@ -218,7 +218,7 @@ app.use((req, res, next) => {
   // Function to try starting server on a port
   const tryStartServer = (port: number): Promise<void> => {
     return new Promise((resolve, reject) => {
-      const serverInstance = server.listen({ port, host }, () => {
+      const serverInstance = server.listen(port, host, () => {
         log(`serving on port ${port}`);
         resolve();
       });
