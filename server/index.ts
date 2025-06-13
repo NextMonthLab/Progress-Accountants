@@ -1,4 +1,5 @@
 import express, { type Request, Response, NextFunction } from "express";
+import { createServer, type Server } from "http";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
 import cron from 'node-cron';
@@ -141,8 +142,11 @@ app.use((req, res, next) => {
     console.error('Error running migrations:', error);
   }
 
-  // Register API routes and get the HTTP server
-  const server = await registerRoutes(app);
+  // Register API routes
+  await registerRoutes(app);
+  
+  // Create HTTP server
+  const server = createServer(app);
 
   // Register navigation routes
   registerNavigationRoutes(app);

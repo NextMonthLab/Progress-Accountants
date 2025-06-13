@@ -1,5 +1,4 @@
 import type { Express, Request, Response } from "express";
-import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import crypto from "crypto";
 import { 
@@ -251,7 +250,7 @@ const requireSuperAdmin = (req: Request, res: Response, next: Function) => {
   next();
 };
 
-export async function registerRoutes(app: Express): Promise<Server> {
+export async function registerRoutes(app: Express): Promise<Express> {
   // Set up authentication
   setupAuth(app);
   
@@ -4201,5 +4200,5 @@ export async function registerRoutes(app: Express): Promise<Server> {
   console.log("✅ Business Identity Management routes registered");
   console.log("✅ Tenant-scoped Admin Panel routes registered");
 
-  return httpServer;
+  return app;
 }
