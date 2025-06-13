@@ -11,7 +11,7 @@ import { TenantProvider } from "@/hooks/use-tenant";
 import { PermissionsProvider } from "@/hooks/use-permissions";
 import { CompanionContextProvider } from "@/hooks/use-companion-context";
 import { DualModeCompanion } from "@/components/companions/DualModeCompanion";
-import { UpgradeAnnouncement } from "@/components/UpgradeAnnouncement";
+
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { HelpProvider } from "@/contexts/HelpContext";
 import { HealthProvider } from "@/contexts/HealthContext";
@@ -774,7 +774,6 @@ function App() {
                         </MainLayout>
                       </FirstTimeUserDetector>
                       <DualModeCompanion />
-                      <UpgradeAnnouncement />
                       <InstantHelpWidget />
                       <ContextSuggestion />
                       <HealthTracker />
@@ -810,7 +809,6 @@ function App() {
                         </MainLayout>
                       </FirstTimeUserDetector>
                       <DualModeCompanion />
-                      <UpgradeAnnouncement />
                       <InstantHelpWidget />
                       <ContextSuggestion />
                       <HealthTracker />
