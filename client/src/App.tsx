@@ -171,7 +171,7 @@ import CreateEmbedWizard from "@/pages/tools/wizards/CreateEmbedWizard";
 import { ClientDataProvider, withAuth } from "@/components/ClientDataProvider";
 
 // Protected routes with auth requirements
-const ProtectedClientDashboard = withAuth(ClientDashboardPage, 'client');
+const ProtectedClientDashboard = withAuth(ClientDashboardPage2, 'client');
 const ProtectedCRMView = withAuth(CRMViewPage, 'staff');
 const ProtectedCRMViewEnhanced = withAuth(CRMViewPageEnhanced, 'staff');
 const ProtectedDashboard = withAuth(DashboardPage);
@@ -604,13 +604,13 @@ function Router() {
 
       {/* Client dashboard routes - financial dashboard for Progress clients */}
       <ProtectedRoute 
-        path="/client-dashboard" 
-        component={ClientDashboardPage} 
+        path="/client-dashboard-old" 
+        component={ClientDashboardPage2} 
         allowedRoles={['client', 'admin', 'super_admin']} 
       />
       <ProtectedRoute 
         path="/client-portal" 
-        component={ClientDashboardPage} 
+        component={ClientDashboardPage2} 
         allowedRoles={['client', 'admin', 'super_admin']} 
       />
       <ProtectedRoute 
