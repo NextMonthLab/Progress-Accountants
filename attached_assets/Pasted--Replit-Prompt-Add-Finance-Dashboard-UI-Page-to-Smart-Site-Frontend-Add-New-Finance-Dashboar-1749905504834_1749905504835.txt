@@ -1,0 +1,90 @@
+ Replit Prompt: Add Finance Dashboard UI Page to Smart Site Frontend
+
+/*
+📄 Add New Finance Dashboard Page (Client Portal)
+This prompt will:
+1. Create a dedicated page at /client-dashboard
+2. Add the link to the main navigation under “Resources”
+3. Scaffold isolated components for FinanceSummary, DocumentChecklist, MessageThread, UpcomingDeadlines
+4. Ensure clean route registration with no side effects
+*/
+
+🧱 1. Create file: `/pages/client-dashboard.tsx`
+
+```tsx
+import FinanceSummary from "@/components/client-dashboard/FinanceSummary";
+import DocumentChecklist from "@/components/client-dashboard/DocumentChecklist";
+import MessageThread from "@/components/client-dashboard/MessageThread";
+import UpcomingDeadlines from "@/components/client-dashboard/UpcomingDeadlines";
+
+export default function ClientDashboardPage() {
+  return (
+    <main className="container py-10 space-y-10">
+      <h1 className="text-3xl font-bold">Your Business Dashboard</h1>
+      <FinanceSummary />
+      <DocumentChecklist />
+      <MessageThread />
+      <UpcomingDeadlines />
+    </main>
+  );
+}
+
+
+⸻
+
+🧱 2. Create UI Components in: /components/client-dashboard/
+
+Each component should use dummy data for now:
+	•	FinanceSummary.tsx
+	•	DocumentChecklist.tsx
+	•	MessageThread.tsx
+	•	UpcomingDeadlines.tsx
+
+Example:
+
+// components/client-dashboard/FinanceSummary.tsx
+export default function FinanceSummary() {
+  return (
+    <section>
+      <h2 className="text-xl font-semibold mb-2">Financial Summary</h2>
+      <ul className="list-disc ml-6 space-y-1">
+        <li>You have £12,431 across all business accounts.</li>
+        <li>You're owed £9,850 from 6 clients.</li>
+        <li>You owe £6,200 to suppliers.</li>
+        <li>Net position: £3,650 in the black.</li>
+      </ul>
+    </section>
+  );
+}
+
+
+⸻
+
+🧱 3. Modify Navigation
+
+Locate the file where your site menu is configured, e.g. components/layout/Nav.tsx or similar.
+
+Insert:
+
+<li>
+  <Link href="/client-dashboard" className="hover:underline">
+    Finance Dashboard
+  </Link>
+</li>
+
+Place it inside the "Resources" section if that’s already structured — or wrap it in a new nav group if not.
+
+⸻
+
+🧪 4. Final Checks
+	•	Run npm run dev or your Replit preview
+	•	Visit /client-dashboard and verify clean UI load
+	•	Check that the existing layout, routes, and styles are untouched
+	•	Confirm new nav link appears under “Resources” with no breakage
+
+⸻
+
+✅ Deployment Notes
+	•	This is UI-only and ready for dummy/testing content
+	•	No API logic is included — safe for deployment now
+	•	Claude can later be instructed to connect this UI to the backend add-on via manifest matching
