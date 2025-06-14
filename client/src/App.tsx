@@ -109,6 +109,7 @@ const AdminMarketplacePage = lazy(() => import("@/pages/admin/marketplace"));
 const AIAssistantSettingsPage = lazy(() => import("@/pages/admin/AIAssistantSettingsPage"));
 const MessagesPage = lazy(() => import("@/pages/admin/MessagesPage"));
 const MyToolsPage = lazy(() => import("@/pages/MyToolsPage"));
+const AdminStyleDemo = lazy(() => import("@/pages/AdminStyleDemo"));
 
 const BrandGuidelinesPage = lazy(() => import("@/pages/BrandGuidelinesPage"));
 const BusinessIdentityPage = lazy(() => import("@/pages/BusinessIdentityPage"));
@@ -288,6 +289,11 @@ function Router() {
       <Route path="/conversion-demo">
         <Suspense fallback={<LoadingFallback />}>
           <ConversionDemo />
+        </Suspense>
+      </Route>
+      <Route path="/admin-style-demo">
+        <Suspense fallback={<LoadingFallback />}>
+          <AdminStyleDemo />
         </Suspense>
       </Route>
       <Route path="/sme-support-hub">
