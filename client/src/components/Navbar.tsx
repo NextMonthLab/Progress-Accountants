@@ -85,6 +85,7 @@ export default function Navbar() {
     {
       label: "Resources",
       items: [
+        { label: "Client Dashboard", href: "/client-dashboard", icon: <LayoutDashboard className="h-4 w-4 mr-2" /> },
         { label: "Business Calculator", href: "/business-calculator", icon: <Calculator className="h-4 w-4 mr-2" /> },
         { label: "SME Support Hub", href: "/sme-support-hub", icon: <Building2 className="h-4 w-4 mr-2" /> },
         { label: "Podcast Studio", href: "/studio-banbury", icon: <Layout className="h-4 w-4 mr-2" /> },
