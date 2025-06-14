@@ -130,7 +130,7 @@ export default function UpcomingDeadlines() {
                   </div>
                   <div className="flex justify-between items-center">
                     <div className="flex items-center space-x-2">
-                      <Badge variant="outline" size="sm" className={getPriorityColor(deadline.priority)}>
+                      <Badge variant="outline" className={getPriorityColor(deadline.priority)}>
                         {deadline.daysUntil} days
                       </Badge>
                       <span className="text-xs text-gray-500">{formatDate(deadline.dueDate)}</span>
@@ -165,13 +165,13 @@ export default function UpcomingDeadlines() {
                     <div>
                       <p className="font-medium text-sm">{deadline.title}</p>
                       <div className="flex items-center space-x-2 mt-1">
-                        <Badge variant="outline" size="sm">{deadline.category}</Badge>
+                        <Badge variant="outline">{deadline.category}</Badge>
                         <span className="text-xs text-gray-500">{formatDate(deadline.dueDate)}</span>
                       </div>
                     </div>
                   </div>
                   <div className="text-right">
-                    <Badge variant="outline" size="sm" className={getPriorityColor(deadline.priority)}>
+                    <Badge variant="outline" className={getPriorityColor(deadline.priority)}>
                       {deadline.daysUntil}d
                     </Badge>
                   </div>

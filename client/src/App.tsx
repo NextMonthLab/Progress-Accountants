@@ -41,7 +41,7 @@ const DashboardPage = lazy(() => import("@/pages/DashboardPage"));
 const AgoraProfilePage = lazy(() => import("@/pages/agora-profile"));
 const AgoraProfileTestPage = lazy(() => import("@/pages/agora-profile-test"));
 const ClientRegistrationPage = lazy(() => import("@/pages/ClientRegistrationPage"));
-const ClientDashboardPage = lazy(() => import("@/pages/ClientDashboardPage"));
+// Removed conflicting ClientDashboardPage import - using ClientDashboardPage2 instead
 const ClientDashboardPage2 = lazy(() => import("@/pages/ClientDashboardPage2"));
 const RedesignedDashboardPage = lazy(() => import("@/pages/RedesignedDashboardPage"));
 const AdminDashboardPage = lazy(() => import("@/pages/AdminDashboardPage"));
@@ -110,6 +110,7 @@ const AIAssistantSettingsPage = lazy(() => import("@/pages/admin/AIAssistantSett
 const MessagesPage = lazy(() => import("@/pages/admin/MessagesPage"));
 const MyToolsPage = lazy(() => import("@/pages/MyToolsPage"));
 const AdminStyleDemo = lazy(() => import("@/pages/AdminStyleDemo"));
+const FinanceDashboardPage = lazy(() => import("@/pages/FinanceDashboardPage"));
 
 const BrandGuidelinesPage = lazy(() => import("@/pages/BrandGuidelinesPage"));
 const BusinessIdentityPage = lazy(() => import("@/pages/BusinessIdentityPage"));
@@ -294,6 +295,11 @@ function Router() {
       <Route path="/admin-style-demo">
         <Suspense fallback={<LoadingFallback />}>
           <AdminStyleDemo />
+        </Suspense>
+      </Route>
+      <Route path="/client-dashboard">
+        <Suspense fallback={<LoadingFallback />}>
+          <FinanceDashboardPage />
         </Suspense>
       </Route>
       <Route path="/sme-support-hub">
