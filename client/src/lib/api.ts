@@ -17,9 +17,7 @@ export const clientDashboardApi = {
   // Get activity log for the client
   getActivityLog: async (clientId: number) => {
     try {
-      const data = await smartFetchJson(`/api/finance/:tenantId/activity/${clientId}`, {
-        requiresAuth: true
-      });
+      const data = await smartFetch(`/api/finance/:tenantId/activity/${clientId}`);
       return { success: true, data };
     } catch (error) {
       console.error('Error fetching activity log:', error);
@@ -30,10 +28,9 @@ export const clientDashboardApi = {
   // Complete a task
   completeTask: async (taskId: number, clientId: number) => {
     try {
-      const data = await smartFetchJson(`/api/finance/:tenantId/tasks/${taskId}/complete`, {
+      const data = await smartFetch(`/api/finance/:tenantId/tasks/${taskId}/complete`, {
         method: 'POST',
-        body: JSON.stringify({ clientId }),
-        requiresAuth: true
+        body: JSON.stringify({ clientId })
       });
       return { success: true, data };
     } catch (error) {
@@ -45,10 +42,9 @@ export const clientDashboardApi = {
   // Send a message
   sendMessage: async (content: string, clientId: number) => {
     try {
-      const data = await smartFetchJson(`/api/messages/:tenantId/client/${clientId}`, {
+      const data = await smartFetch(`/api/messages/:tenantId/client/${clientId}`, {
         method: 'POST',
-        body: JSON.stringify({ content }),
-        requiresAuth: true
+        body: JSON.stringify({ content })
       });
       return { success: true, data };
     } catch (error) {
@@ -60,10 +56,9 @@ export const clientDashboardApi = {
   // Upload a document
   uploadDocument: async (file: { name: string, type: string, size: string }, clientId: number) => {
     try {
-      const data = await smartFetchJson(`/api/finance/:tenantId/documents/${clientId}`, {
+      const data = await smartFetch(`/api/finance/:tenantId/documents/${clientId}`, {
         method: 'POST',
-        body: JSON.stringify({ file }),
-        requiresAuth: true
+        body: JSON.stringify({ file })
       });
       return { success: true, data };
     } catch (error) {
