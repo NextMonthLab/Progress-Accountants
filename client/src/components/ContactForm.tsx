@@ -48,11 +48,21 @@ export default function ContactForm({ compact = false, className = "" }: Contact
     
     try {
       console.log('Form submission data:', data);
-      const result = await smartFetch('/api/forms/:tenantId/contact', {
+      
+      // Direct fetch to local API endpoint
+      const response = await fetch('/api/forms/progress-accountants-uk/contact', {
         method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify(data)
       });
       
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+      
+      const result = await response.json();
       console.log('Form submission response:', result);
       
       // Reset the form on successful submission
