@@ -58,6 +58,8 @@ import {
   updateResourceOrder 
 } from "./controllers/resourcesController";
 import { registerResourcesRoutes } from "./controllers/resourcesController";
+import { registerFinanceRoutes } from "./finance-routes";
+import { registerContactRoutes } from "./contact-routes";
 import { registerCompanionRoutes } from "./controllers/companionController";
 import { checkPageOrigin, checkOverridePermission } from "./controllers/pageOriginController";
 import { registerCompanionConfigRoutes } from "./controllers/registerCompanionConfigRoutes";
