@@ -5,17 +5,31 @@ export async function smartFetch(path: string, options: RequestInit = {}) {
   const baseUrl = "http://localhost:5000";
   const fullUrl = `${baseUrl}${path.replace(":tenantId", tenantId)}`;
 
-  const res = await fetch(fullUrl, {
-    ...options,
-    headers: {
-      "Content-Type": "application/json",
-      ...(options.headers || {}),
-    },
-  });
+  console.log('SmartFetch attempting:', fullUrl);
+  console.log('SmartFetch options:', options);
 
-  if (!res.ok) {
-    throw new Error(`HTTP ${res.status}: ${res.statusText} - ${fullUrl}`);
+  try {
+    const res = await fetch(fullUrl, {
+      ...options,
+      headers: {
+        "Content-Type": "application/json",
+        ...(options.headers || {}),
+      },
+    });
+
+    console.log('SmartFetch response status:', res.status);
+    
+    if (!res.ok) {
+      const errorText = await res.text();
+      console.error('SmartFetch error response:', errorText);
+      throw new Error(`HTTP ${res.status}: ${res.statusText} - ${fullUrl}`);
+    }
+
+    const result = await res.json();
+    console.log('SmartFetch success result:', result);
+    return result;
+  } catch (error) {
+    console.error('SmartFetch caught error:', error);
+    throw error;
   }
-
-  return res.json();
 }
