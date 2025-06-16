@@ -1,61 +1,39 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Calendar, Clock, AlertTriangle, CheckCircle, Plus } from "lucide-react";
+import { Calendar, Clock, AlertTriangle, CheckCircle, Plus, Loader2 } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { smartFetchJson } from "@/lib/fetch-wrapper";
+
+interface Deadline {
+  id: number;
+  title: string;
+  description: string;
+  dueDate: string;
+  daysUntil: number;
+  priority: "urgent" | "high" | "medium" | "low";
+  category: string;
+  status: "pending" | "in-progress" | "completed";
+}
+
+interface DeadlineSummary {
+  urgentCount: number;
+  highCount: number;
+  mediumCount: number;
+  lowCount: number;
+  totalCount: number;
+}
 
 export default function UpcomingDeadlines() {
-  const deadlines = [
-    {
-      id: 1,
-      title: "VAT Return Q1 2025",
-      description: "Submit quarterly VAT return to HMRC",
-      dueDate: "2025-04-30",
-      daysUntil: 15,
-      priority: "high",
-      category: "VAT",
-      status: "pending"
-    },
-    {
-      id: 2,
-      title: "Corporation Tax Payment",
-      description: "Final payment for 2024 tax year",
-      dueDate: "2025-03-31",
-      daysUntil: 45,
-      priority: "medium",
-      category: "Tax",
-      status: "pending"
-    },
-    {
-      id: 3,
-      title: "Annual Return Filing",
-      description: "Submit annual return to Companies House",
-      dueDate: "2025-05-15",
-      daysUntil: 30,
-      priority: "medium",
-      category: "Compliance",
-      status: "in-progress"
-    },
-    {
-      id: 4,
-      title: "Payroll Submission",
-      description: "February payroll and RTI submission",
-      dueDate: "2025-03-19",
-      daysUntil: 3,
-      priority: "urgent",
-      category: "Payroll",
-      status: "pending"
-    },
-    {
-      id: 5,
-      title: "P11D Forms",
-      description: "Benefits in kind reporting deadline",
-      dueDate: "2025-07-06",
-      daysUntil: 90,
-      priority: "low",
-      category: "HR",
-      status: "pending"
-    }
-  ];
+  const { data: deadlines, isLoading: deadlinesLoading, error: deadlinesError } = useQuery<Deadline[]>({
+    queryKey: ['/api/finance/:tenantId/deadlines'],
+    queryFn: () => smartFetchJson('/api/finance/:tenantId/deadlines', { requiresAuth: true }),
+  });
+
+  const { data: summary } = useQuery<DeadlineSummary>({
+    queryKey: ['/api/finance/:tenantId/deadlines/summary'],
+    queryFn: () => smartFetchJson('/api/finance/:tenantId/deadlines/summary', { requiresAuth: true }),
+  });
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {
@@ -95,6 +73,30 @@ export default function UpcomingDeadlines() {
     });
   };
 
+  if (deadlinesLoading) {
+    return (
+      <section className="space-y-4">
+        <h2 className="text-xl font-semibold">Upcoming Deadlines</h2>
+        <div className="flex items-center justify-center p-8">
+          <Loader2 className="h-8 w-8 animate-spin" />
+        </div>
+      </section>
+    );
+  }
+
+  if (deadlinesError) {
+    return (
+      <section className="space-y-4">
+        <h2 className="text-xl font-semibold">Upcoming Deadlines</h2>
+        <Card>
+          <CardContent className="p-6">
+            <p className="text-muted-foreground">Unable to load upcoming deadlines. Please try again later.</p>
+          </CardContent>
+        </Card>
+      </section>
+    );
+  }
+
   return (
     <section className="space-y-4">
       <div className="flex justify-between items-center">
@@ -117,9 +119,10 @@ export default function UpcomingDeadlines() {
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
-              {deadlines
-                .filter(d => d.priority === "urgent" || d.priority === "high")
-                .map((deadline) => (
+              {deadlines && deadlines.length > 0 ? (
+                deadlines
+                  .filter(d => d.priority === "urgent" || d.priority === "high")
+                  .map((deadline) => (
                 <div key={deadline.id} className="p-3 border border-red-200 rounded-lg bg-red-50">
                   <div className="flex justify-between items-start mb-2">
                     <div className="flex-1">

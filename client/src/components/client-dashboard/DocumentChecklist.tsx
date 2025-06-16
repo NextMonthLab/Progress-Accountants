@@ -120,18 +120,20 @@ export default function DocumentChecklist() {
             ))}
           </div>
 
-          <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-            <div className="flex items-start space-x-3">
-              <AlertCircle className="h-5 w-5 text-blue-600 mt-0.5" />
-              <div>
-                <p className="font-medium text-blue-900">Action Required</p>
-                <p className="text-sm text-blue-700 mt-1">
-                  You have 1 overdue document and 2 items due within the next 30 days. 
-                  Please prioritize these submissions to avoid penalties.
-                </p>
+          {summary && (summary.overdueCount > 0 || summary.dueSoonCount > 0) && (
+            <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+              <div className="flex items-start space-x-3">
+                <AlertCircle className="h-5 w-5 text-blue-600 mt-0.5" />
+                <div>
+                  <p className="font-medium text-blue-900">Action Required</p>
+                  <p className="text-sm text-blue-700 mt-1">
+                    You have {summary.overdueCount} overdue document{summary.overdueCount !== 1 ? 's' : ''} and {summary.dueSoonCount} item{summary.dueSoonCount !== 1 ? 's' : ''} due within the next 30 days. 
+                    Please prioritize these submissions to avoid penalties.
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
+          )}
         </CardContent>
       </Card>
     </section>
