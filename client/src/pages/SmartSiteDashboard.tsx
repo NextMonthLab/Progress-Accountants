@@ -18,7 +18,7 @@ import {
 } from "lucide-react";
 import { PremiumLoader, PremiumCardSkeleton } from "@/components/admin-ui/PremiumLoader";
 import AIGatewayDemo from "@/components/ai/AIGatewayDemo";
-import { smartFetchJson } from "@/lib/fetch-wrapper";
+import { smartFetch } from "@/utils/smartFetch";
 
 interface DashboardStats {
   activeChatsToday: number;

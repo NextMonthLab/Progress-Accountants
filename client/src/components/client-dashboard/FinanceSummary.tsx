@@ -2,7 +2,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { TrendingUp, PoundSterling, Users, AlertCircle, Loader2 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
-import { smartFetchJson } from "@/lib/fetch-wrapper";
+import { smartFetch } from "@/utils/smartFetch";
 
 interface FinancialSummary {
   totalBalance: number;
@@ -16,7 +16,7 @@ interface FinancialSummary {
 export default function FinanceSummary() {
   const { data: summary, isLoading, error } = useQuery<FinancialSummary>({
     queryKey: ['/api/finance/:tenantId/summary'],
-    queryFn: () => smartFetchJson('/api/finance/:tenantId/summary', { requiresAuth: true }),
+    queryFn: () => smartFetch('/api/finance/:tenantId/summary'),
   });
 
   if (isLoading) {

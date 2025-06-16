@@ -3,7 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { CheckCircle, Clock, Upload, FileText, AlertCircle, Loader2 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
-import { smartFetchJson } from "@/lib/fetch-wrapper";
+import { smartFetch } from "@/utils/smartFetch";
 
 interface Document {
   id: number;
@@ -22,12 +22,12 @@ interface DocumentSummary {
 export default function DocumentChecklist() {
   const { data: documents, isLoading: documentsLoading, error: documentsError } = useQuery<Document[]>({
     queryKey: ['/api/finance/:tenantId/documents'],
-    queryFn: () => smartFetchJson('/api/finance/:tenantId/documents', { requiresAuth: true }),
+    queryFn: () => smartFetch('/api/finance/:tenantId/documents'),
   });
 
   const { data: summary } = useQuery<DocumentSummary>({
     queryKey: ['/api/finance/:tenantId/documents/summary'],
-    queryFn: () => smartFetchJson('/api/finance/:tenantId/documents/summary', { requiresAuth: true }),
+    queryFn: () => smartFetch('/api/finance/:tenantId/documents/summary'),
   });
 
   const getStatusIcon = (status: string) => {

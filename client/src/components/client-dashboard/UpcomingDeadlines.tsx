@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Calendar, Clock, AlertTriangle, CheckCircle, Plus, Loader2 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
-import { smartFetchJson } from "@/lib/fetch-wrapper";
+import { smartFetch } from "@/utils/smartFetch";
 
 interface Deadline {
   id: number;
@@ -27,12 +27,12 @@ interface DeadlineSummary {
 export default function UpcomingDeadlines() {
   const { data: deadlines, isLoading: deadlinesLoading, error: deadlinesError } = useQuery<Deadline[]>({
     queryKey: ['/api/finance/:tenantId/deadlines'],
-    queryFn: () => smartFetchJson('/api/finance/:tenantId/deadlines', { requiresAuth: true }),
+    queryFn: () => smartFetch('/api/finance/:tenantId/deadlines'),
   });
 
   const { data: summary } = useQuery<DeadlineSummary>({
     queryKey: ['/api/finance/:tenantId/deadlines/summary'],
-    queryFn: () => smartFetchJson('/api/finance/:tenantId/deadlines/summary', { requiresAuth: true }),
+    queryFn: () => smartFetch('/api/finance/:tenantId/deadlines/summary'),
   });
 
   const getPriorityColor = (priority: string) => {

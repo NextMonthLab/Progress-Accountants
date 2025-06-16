@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { MessageSquare, Send, Paperclip, MoreHorizontal, Loader2 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
-import { smartFetchJson } from "@/lib/fetch-wrapper";
+import { smartFetch } from "@/utils/smartFetch";
 
 interface Message {
   id: number;
@@ -24,12 +24,12 @@ interface MessageSummary {
 export default function MessageThread() {
   const { data: messages, isLoading: messagesLoading, error: messagesError } = useQuery<Message[]>({
     queryKey: ['/api/messages/:tenantId/recent'],
-    queryFn: () => smartFetchJson('/api/messages/:tenantId/recent', { requiresAuth: true }),
+    queryFn: () => smartFetch('/api/messages/:tenantId/recent'),
   });
 
   const { data: summary } = useQuery<MessageSummary>({
     queryKey: ['/api/messages/:tenantId/summary'],
-    queryFn: () => smartFetchJson('/api/messages/:tenantId/summary', { requiresAuth: true }),
+    queryFn: () => smartFetch('/api/messages/:tenantId/summary'),
   });
 
   if (messagesLoading) {
