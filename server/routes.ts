@@ -259,6 +259,12 @@ export async function registerRoutes(app: Express): Promise<Express> {
   // Register media upload endpoints
   registerMediaRoutes(app);
   
+  // Register Finance Dashboard API routes
+  registerFinanceRoutes(app);
+  
+  // Register Contact Form and Message API routes
+  registerContactRoutes(app);
+  
   // Register Messages API for SmartSite Contact Intelligence Layer
   app.use('/api/messages', messagesRoutes);
   
