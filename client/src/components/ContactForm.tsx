@@ -47,10 +47,14 @@ export default function ContactForm({ compact = false, className = "" }: Contact
     setIsSubmitting(true);
     
     try {
+      console.log('Form submission data:', data);
       const response = await smartFetch('/api/forms/:tenantId/contact', {
         method: 'POST',
         body: JSON.stringify(data)
       });
+      
+      const result = await response.json();
+      console.log('Form submission response:', result);
       
       // Reset the form on successful submission
       form.reset();
@@ -61,10 +65,25 @@ export default function ContactForm({ compact = false, className = "" }: Contact
         variant: "default",
       });
     } catch (error) {
-      console.error('Error submitting form:', error);
+      console.error('Form submission failed:', error);
+      console.error('Full fetch URL:', import.meta.env.VITE_ADMIN_API + '/api/forms/progress-accountants-uk/contact');
+      console.error('VITE_ADMIN_API value:', import.meta.env.VITE_ADMIN_API);
+      
+      // Log additional error details if available
+      if (error instanceof Response) {
+        console.error('Status code:', error.status);
+        console.error('Status text:', error.statusText);
+        try {
+          const errorText = await error.text();
+          console.error('Response text:', errorText);
+        } catch (e) {
+          console.error('Could not read response text:', e);
+        }
+      }
+      
       toast({
-        title: "Something went wrong",
-        description: error instanceof Error ? error.message : "Failed to submit the form. Please try again.",
+        title: "Could not send message",
+        description: "⚠️ Could not send message. Check connection to SmartSite Admin Panel.",
         variant: "destructive",
       });
     } finally {

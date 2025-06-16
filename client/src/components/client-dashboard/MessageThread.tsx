@@ -1,9 +1,11 @@
+import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { MessageSquare, Send, Paperclip, MoreHorizontal, Loader2 } from "lucide-react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useToast } from "@/hooks/use-toast";
 import { smartFetch } from "@/utils/smartFetch";
 
 interface Message {
@@ -22,6 +24,10 @@ interface MessageSummary {
 }
 
 export default function MessageThread() {
+  const [messageText, setMessageText] = useState('');
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
+
   const { data: messages, isLoading: messagesLoading, error: messagesError } = useQuery<Message[]>({
     queryKey: ['/api/messages/:tenantId/recent'],
     queryFn: () => smartFetch('/api/messages/:tenantId/recent'),
@@ -31,6 +37,62 @@ export default function MessageThread() {
     queryKey: ['/api/messages/:tenantId/summary'],
     queryFn: () => smartFetch('/api/messages/:tenantId/summary'),
   });
+
+  const sendMessageMutation = useMutation({
+    mutationFn: async (content: string) => {
+      try {
+        console.log('Message submission data:', { content });
+        const response = await smartFetch('/api/messages/:tenantId/send', {
+          method: 'POST',
+          body: JSON.stringify({ content, clientId: 1 }) // Using default client ID for now
+        });
+        
+        const result = await response.json();
+        console.log('Message submission response:', result);
+        return result;
+      } catch (error) {
+        console.error('Message submission failed:', error);
+        console.error('Full fetch URL:', import.meta.env.VITE_ADMIN_API + '/api/messages/progress-accountants-uk/send');
+        console.error('VITE_ADMIN_API value:', import.meta.env.VITE_ADMIN_API);
+        
+        // Log additional error details if available
+        if (error instanceof Response) {
+          console.error('Status code:', error.status);
+          console.error('Status text:', error.statusText);
+          try {
+            const errorText = await error.text();
+            console.error('Response text:', errorText);
+          } catch (e) {
+            console.error('Could not read response text:', e);
+          }
+        }
+        throw error;
+      }
+    },
+    onSuccess: () => {
+      // Clear the input and refresh messages
+      setMessageText('');
+      queryClient.invalidateQueries({ queryKey: ['/api/messages/:tenantId/recent'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/messages/:tenantId/summary'] });
+      
+      toast({
+        title: "Message sent",
+        description: "Your message has been sent successfully.",
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: "Could not send message",
+        description: "⚠️ Could not send message. Check connection to SmartSite Admin Panel.",
+        variant: "destructive",
+      });
+    }
+  });
+
+  const handleSendMessage = () => {
+    if (!messageText.trim()) return;
+    sendMessageMutation.mutate(messageText);
+  };
 
   if (messagesLoading) {
     return (
@@ -117,14 +179,26 @@ export default function MessageThread() {
                 <input 
                   type="text" 
                   placeholder="Type your message..."
+                  value={messageText}
+                  onChange={(e) => setMessageText(e.target.value)}
+                  onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
                   className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  disabled={sendMessageMutation.isPending}
                 />
               </div>
               <Button variant="outline" size="sm">
                 <Paperclip className="h-4 w-4" />
               </Button>
-              <Button size="sm">
-                <Send className="h-4 w-4" />
+              <Button 
+                size="sm" 
+                onClick={handleSendMessage}
+                disabled={sendMessageMutation.isPending || !messageText.trim()}
+              >
+                {sendMessageMutation.isPending ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <Send className="h-4 w-4" />
+                )}
               </Button>
             </div>
           </div>
