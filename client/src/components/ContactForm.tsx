@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { Loader2 } from 'lucide-react';
+import { smartFetch } from '@/lib/fetch-wrapper';
 
 // Form validation schema
 const formSchema = z.object({
@@ -46,12 +47,10 @@ export default function ContactForm({ compact = false, className = "" }: Contact
     setIsSubmitting(true);
     
     try {
-      const response = await fetch('/api/contact', {
+      const response = await smartFetch('/api/forms/:tenantId/contact', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
         body: JSON.stringify(data),
+        requiresAuth: false
       });
       
       if (!response.ok) {

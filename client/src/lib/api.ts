@@ -1,12 +1,14 @@
 import { apiRequest, queryClient } from './queryClient';
+import { smartFetch, smartFetchJson } from './fetch-wrapper';
 
 // Client Dashboard API functions
 export const clientDashboardApi = {
   // Get the client dashboard data
   getClientDashboard: async (clientId: number) => {
     try {
-      const response = await apiRequest('GET', `/api/client-dashboard/${clientId}`);
-      const data = await response.json();
+      const data = await smartFetchJson(`/api/finance/:tenantId/dashboard/${clientId}`, {
+        requiresAuth: true
+      });
       return { success: true, data };
     } catch (error) {
       console.error('Error fetching client dashboard:', error);
