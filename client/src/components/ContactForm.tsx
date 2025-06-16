@@ -8,7 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { Loader2 } from 'lucide-react';
-import { smartFetch } from '@/lib/fetch-wrapper';
+import { smartFetch } from '@/utils/smartFetch';
 
 // Form validation schema
 const formSchema = z.object({
@@ -49,13 +49,8 @@ export default function ContactForm({ compact = false, className = "" }: Contact
     try {
       const response = await smartFetch('/api/forms/:tenantId/contact', {
         method: 'POST',
-        body: JSON.stringify(data),
-        requiresAuth: false
+        body: JSON.stringify(data)
       });
-      
-      if (!response.ok) {
-        throw new Error('Failed to submit the form. Please try again.');
-      }
       
       // Reset the form on successful submission
       form.reset();
