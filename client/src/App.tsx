@@ -766,6 +766,12 @@ const queryClient = new QueryClient({
 });
 
 function App() {
+  // Log environment variables at app startup
+  useEffect(() => {
+    console.log("ENV:", import.meta.env.VITE_ADMIN_API);
+    console.log("SmartFetch import confirmed from: @/utils/smartFetch");
+  }, []);
+
   // FULL APP STRUCTURE
   return (
     <ErrorBoundary contentType="application">
