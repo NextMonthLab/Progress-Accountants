@@ -35,7 +35,7 @@ export default function SmartSiteDashboard() {
   // Fetch dashboard statistics
   const { data: stats, isLoading } = useQuery<DashboardStats>({
     queryKey: ["/api/insights/:tenantId/dashboard"],
-    queryFn: () => smartFetchJson("/api/insights/:tenantId/dashboard", { requiresAuth: true }),
+    queryFn: () => smartFetch("/api/insights/:tenantId/dashboard"),
     enabled: !!user,
   });
 

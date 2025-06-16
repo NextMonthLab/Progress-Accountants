@@ -1,14 +1,12 @@
 import { apiRequest, queryClient } from './queryClient';
-import { smartFetch, smartFetchJson } from './fetch-wrapper';
+import { smartFetch } from '@/utils/smartFetch';
 
 // Client Dashboard API functions
 export const clientDashboardApi = {
   // Get the client dashboard data
   getClientDashboard: async (clientId: number) => {
     try {
-      const data = await smartFetchJson(`/api/finance/:tenantId/dashboard/${clientId}`, {
-        requiresAuth: true
-      });
+      const data = await smartFetch(`/api/finance/:tenantId/dashboard/${clientId}`);
       return { success: true, data };
     } catch (error) {
       console.error('Error fetching client dashboard:', error);
@@ -88,9 +86,7 @@ export const crmApi = {
         }
       }
       
-      const data = await smartFetchJson(`/api/crm/:tenantId/clients?${queryParams.toString()}`, {
-        requiresAuth: true
-      });
+      const data = await smartFetch(`/api/crm/:tenantId/clients?${queryParams.toString()}`);
       return { success: true, data };
     } catch (error) {
       console.error('Error fetching clients:', error);
@@ -100,9 +96,7 @@ export const crmApi = {
   
   getClientDetails: async (clientId: number) => {
     try {
-      const data = await smartFetchJson(`/api/crm/:tenantId/clients/${clientId}`, {
-        requiresAuth: true
-      });
+      const data = await smartFetch(`/api/crm/:tenantId/clients/${clientId}`);
       return { success: true, data };
     } catch (error) {
       console.error('Error fetching client details:', error);
@@ -112,10 +106,9 @@ export const crmApi = {
   
   addNote: async (clientId: number, note: { content: string }) => {
     try {
-      const data = await smartFetchJson(`/api/crm/:tenantId/clients/${clientId}/notes`, {
+      const data = await smartFetch(`/api/crm/:tenantId/clients/${clientId}/notes`, {
         method: 'POST',
-        body: JSON.stringify(note),
-        requiresAuth: true
+        body: JSON.stringify(note)
       });
       return { success: true, data };
     } catch (error) {
@@ -126,9 +119,7 @@ export const crmApi = {
   
   getActivityLog: async (clientId: number) => {
     try {
-      const data = await smartFetchJson(`/api/crm/:tenantId/clients/${clientId}/activity`, {
-        requiresAuth: true
-      });
+      const data = await smartFetch(`/api/crm/:tenantId/clients/${clientId}/activity`);
       return { success: true, data };
     } catch (error) {
       console.error('Error fetching activity log:', error);
