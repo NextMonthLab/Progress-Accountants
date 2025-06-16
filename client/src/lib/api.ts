@@ -19,8 +19,9 @@ export const clientDashboardApi = {
   // Get activity log for the client
   getActivityLog: async (clientId: number) => {
     try {
-      const response = await apiRequest('GET', `/api/client-dashboard/${clientId}/activity`);
-      const data = await response.json();
+      const data = await smartFetchJson(`/api/finance/:tenantId/activity/${clientId}`, {
+        requiresAuth: true
+      });
       return { success: true, data };
     } catch (error) {
       console.error('Error fetching activity log:', error);
@@ -31,8 +32,11 @@ export const clientDashboardApi = {
   // Complete a task
   completeTask: async (taskId: number, clientId: number) => {
     try {
-      const response = await apiRequest('POST', `/api/client-dashboard/tasks/${taskId}/complete`, { clientId });
-      const data = await response.json();
+      const data = await smartFetchJson(`/api/finance/:tenantId/tasks/${taskId}/complete`, {
+        method: 'POST',
+        body: JSON.stringify({ clientId }),
+        requiresAuth: true
+      });
       return { success: true, data };
     } catch (error) {
       console.error('Error completing task:', error);
@@ -43,8 +47,11 @@ export const clientDashboardApi = {
   // Send a message
   sendMessage: async (content: string, clientId: number) => {
     try {
-      const response = await apiRequest('POST', `/api/client-dashboard/${clientId}/messages`, { content });
-      const data = await response.json();
+      const data = await smartFetchJson(`/api/messages/:tenantId/client/${clientId}`, {
+        method: 'POST',
+        body: JSON.stringify({ content }),
+        requiresAuth: true
+      });
       return { success: true, data };
     } catch (error) {
       console.error('Error sending message:', error);
@@ -55,8 +62,11 @@ export const clientDashboardApi = {
   // Upload a document
   uploadDocument: async (file: { name: string, type: string, size: string }, clientId: number) => {
     try {
-      const response = await apiRequest('POST', `/api/client-dashboard/${clientId}/documents`, { file });
-      const data = await response.json();
+      const data = await smartFetchJson(`/api/finance/:tenantId/documents/${clientId}`, {
+        method: 'POST',
+        body: JSON.stringify({ file }),
+        requiresAuth: true
+      });
       return { success: true, data };
     } catch (error) {
       console.error('Error uploading document:', error);
@@ -78,8 +88,9 @@ export const crmApi = {
         }
       }
       
-      const response = await apiRequest('GET', `/api/crm/clients?${queryParams.toString()}`);
-      const data = await response.json();
+      const data = await smartFetchJson(`/api/crm/:tenantId/clients?${queryParams.toString()}`, {
+        requiresAuth: true
+      });
       return { success: true, data };
     } catch (error) {
       console.error('Error fetching clients:', error);
@@ -89,8 +100,9 @@ export const crmApi = {
   
   getClientDetails: async (clientId: number) => {
     try {
-      const response = await apiRequest('GET', `/api/crm/clients/${clientId}`);
-      const data = await response.json();
+      const data = await smartFetchJson(`/api/crm/:tenantId/clients/${clientId}`, {
+        requiresAuth: true
+      });
       return { success: true, data };
     } catch (error) {
       console.error('Error fetching client details:', error);
@@ -100,8 +112,11 @@ export const crmApi = {
   
   addNote: async (clientId: number, note: { content: string }) => {
     try {
-      const response = await apiRequest('POST', `/api/crm/clients/${clientId}/notes`, note);
-      const data = await response.json();
+      const data = await smartFetchJson(`/api/crm/:tenantId/clients/${clientId}/notes`, {
+        method: 'POST',
+        body: JSON.stringify(note),
+        requiresAuth: true
+      });
       return { success: true, data };
     } catch (error) {
       console.error('Error adding note:', error);
@@ -111,8 +126,9 @@ export const crmApi = {
   
   getActivityLog: async (clientId: number) => {
     try {
-      const response = await apiRequest('GET', `/api/crm/clients/${clientId}/activity`);
-      const data = await response.json();
+      const data = await smartFetchJson(`/api/crm/:tenantId/clients/${clientId}/activity`, {
+        requiresAuth: true
+      });
       return { success: true, data };
     } catch (error) {
       console.error('Error fetching activity log:', error);

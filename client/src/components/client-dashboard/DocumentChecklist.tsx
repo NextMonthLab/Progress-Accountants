@@ -1,46 +1,34 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { CheckCircle, Clock, Upload, FileText, AlertCircle } from "lucide-react";
+import { CheckCircle, Clock, Upload, FileText, AlertCircle, Loader2 } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { smartFetchJson } from "@/lib/fetch-wrapper";
+
+interface Document {
+  id: number;
+  name: string;
+  status: 'completed' | 'pending' | 'in-progress' | 'overdue';
+  dueDate: string;
+  type: string;
+}
+
+interface DocumentSummary {
+  overdueCount: number;
+  dueSoonCount: number;
+  totalCount: number;
+}
 
 export default function DocumentChecklist() {
-  const documents = [
-    {
-      id: 1,
-      name: "VAT Return Q4 2024",
-      status: "completed",
-      dueDate: "31 Jan 2025",
-      type: "VAT"
-    },
-    {
-      id: 2,
-      name: "Annual Accounts 2024",
-      status: "pending",
-      dueDate: "31 Mar 2025",
-      type: "Accounts"
-    },
-    {
-      id: 3,
-      name: "Corporation Tax Return",
-      status: "in-progress",
-      dueDate: "31 Dec 2025",
-      type: "Tax"
-    },
-    {
-      id: 4,
-      name: "Payroll Summary December",
-      status: "overdue",
-      dueDate: "19 Jan 2025",
-      type: "Payroll"
-    },
-    {
-      id: 5,
-      name: "Expense Receipts January",
-      status: "pending",
-      dueDate: "15 Feb 2025",
-      type: "Expenses"
-    }
-  ];
+  const { data: documents, isLoading: documentsLoading, error: documentsError } = useQuery<Document[]>({
+    queryKey: ['/api/finance/:tenantId/documents'],
+    queryFn: () => smartFetchJson('/api/finance/:tenantId/documents', { requiresAuth: true }),
+  });
+
+  const { data: summary } = useQuery<DocumentSummary>({
+    queryKey: ['/api/finance/:tenantId/documents/summary'],
+    queryFn: () => smartFetchJson('/api/finance/:tenantId/documents/summary', { requiresAuth: true }),
+  });
 
   const getStatusIcon = (status: string) => {
     switch (status) {
@@ -68,6 +56,30 @@ export default function DocumentChecklist() {
     }
   };
 
+  if (documentsLoading) {
+    return (
+      <section className="space-y-4">
+        <h2 className="text-xl font-semibold">Document Checklist</h2>
+        <div className="flex items-center justify-center p-8">
+          <Loader2 className="h-8 w-8 animate-spin" />
+        </div>
+      </section>
+    );
+  }
+
+  if (documentsError) {
+    return (
+      <section className="space-y-4">
+        <h2 className="text-xl font-semibold">Document Checklist</h2>
+        <Card>
+          <CardContent className="p-6">
+            <p className="text-muted-foreground">Unable to load document checklist. Please try again later.</p>
+          </CardContent>
+        </Card>
+      </section>
+    );
+  }
+
   return (
     <section className="space-y-4">
       <div className="flex justify-between items-center">
@@ -85,7 +97,7 @@ export default function DocumentChecklist() {
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            {documents.map((doc) => (
+            {documents?.map((doc) => (
               <div key={doc.id} className="flex items-center justify-between p-4 border rounded-lg">
                 <div className="flex items-center space-x-3">
                   {getStatusIcon(doc.status)}

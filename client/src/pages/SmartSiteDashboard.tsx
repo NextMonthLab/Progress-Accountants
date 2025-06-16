@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import { PremiumLoader, PremiumCardSkeleton } from "@/components/admin-ui/PremiumLoader";
 import AIGatewayDemo from "@/components/ai/AIGatewayDemo";
+import { smartFetchJson } from "@/lib/fetch-wrapper";
 
 interface DashboardStats {
   activeChatsToday: number;
@@ -33,7 +34,8 @@ export default function SmartSiteDashboard() {
 
   // Fetch dashboard statistics
   const { data: stats, isLoading } = useQuery<DashboardStats>({
-    queryKey: ["/api/dashboard/stats"],
+    queryKey: ["/api/insights/:tenantId/dashboard"],
+    queryFn: () => smartFetchJson("/api/insights/:tenantId/dashboard", { requiresAuth: true }),
     enabled: !!user,
   });
 
