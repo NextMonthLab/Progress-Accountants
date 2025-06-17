@@ -1009,7 +1009,7 @@ const ResultsStep = ({ calculatorData, onShowLeadCaptureForm }: { calculatorData
       <div className="flex flex-col md:flex-row justify-center items-center gap-4 pt-4">
         <Button 
           className="w-full md:w-auto bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] hover:shadow-lg hover:shadow-purple-500/25 hover:-translate-y-1 transition-all duration-300 text-white"
-          onClick={() => setShowLeadCaptureForm(true)}
+          onClick={() => onShowLeadCaptureForm()}
         >
           <Download className="mr-2 h-4 w-4" />
           Download Full Report
@@ -1143,7 +1143,7 @@ const BusinessCalculatorPage = () => {
       case 4:
         return <ContactStep onNext={handleNextStep} onBack={handleBackStep} defaultValues={formData.contact} />;
       case 5:
-        return <ResultsStep calculatorData={formData} />;
+        return <ResultsStep calculatorData={formData} onShowLeadCaptureForm={() => setShowLeadCaptureForm(true)} />;
       default:
         return null;
     }

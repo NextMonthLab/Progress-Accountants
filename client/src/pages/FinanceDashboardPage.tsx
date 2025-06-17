@@ -5,21 +5,28 @@ import { useBusinessIdentity } from "@/hooks/use-business-identity";
 export default function FinanceDashboardPage() {
   const { businessIdentity, isLoading } = useBusinessIdentity();
   
-  // Configuration for iframe embed code
-  // Replace this with your actual iframe embed code when ready
-  const IFRAME_EMBED_CODE = `
-    <!-- Replace this comment with your iframe embed code -->
-    <!-- Example:
-    <iframe 
-      src="https://your-dashboard-url.com" 
-      width="100%" 
-      height="100%" 
-      frameborder="0"
-      style="border: none; min-height: 100vh;"
-      allowfullscreen>
-    </iframe>
-    -->
-  `;
+  // Finance Dashboard embed code
+  const IFRAME_EMBED_CODE = `<!-- Client Dashboard Widget -->
+<iframe
+  src="https://e40479db-edfd-4265-9a8b-1e462b5725d1-00-290zw6wfwpbn.picard.replit.dev/embed/client-dashboard?tenant=progress-accountants-uk"
+  style="width: 100%; min-height: 700px; border: none; border-radius: 8px;"
+  frameborder="0"
+  scrolling="auto"
+  sandbox="allow-scripts allow-same-origin"
+  title="Client Dashboard"
+></iframe>
+
+<script>
+  // Auto-resize iframe height
+  window.addEventListener('message', function(event) {
+    if (event.data.type === 'client-dashboard-resize' && event.data.height) {
+      var iframe = document.querySelector('iframe[src*="/embed/client-dashboard"]');
+      if (iframe) {
+        iframe.style.height = event.data.height + 'px';
+      }
+    }
+  });
+</script>`;
 
   const [iframeEmbedCode, setIframeEmbedCode] = useState<string>('');
 
@@ -44,7 +51,7 @@ export default function FinanceDashboardPage() {
   return (
     <div className="min-h-screen bg-black overflow-hidden">
       <Helmet>
-        <title>Client Dashboard - {businessIdentity?.core?.businessName || 'Progress Accountants'}</title>
+        <title>Client Dashboard - {(businessIdentity as any)?.core?.businessName || 'Progress Accountants'}</title>
         <meta name="description" content="Your personal financial dashboard with account summaries, documents, and deadlines." />
       </Helmet>
       
