@@ -268,19 +268,19 @@ const DeadlineRow = ({ deadline }: { deadline: typeof deadlines[0] }) => {
   return (
     <motion.tr
       variants={itemVariants}
-      className={`border-b border-gray-200 ${isUpcoming ? 'bg-purple-50' : ''}`}
+      className={`border-b border-gray-700 ${isUpcoming ? 'bg-purple-900/20' : ''}`}
     >
       <td className="py-4 px-4">
         <div className="flex items-center">
-          <CalendarIcon className="h-4 w-4 mr-2 text-gray-500" />
-          <span className="font-medium">{deadline.date}</span>
+          <CalendarIcon className="h-4 w-4 mr-2 text-gray-400" />
+          <span className="font-medium text-white">{deadline.date}</span>
         </div>
       </td>
       <td className="py-4 px-4">
         <div className="flex items-center">
-          <span className="text-gray-700">{deadline.description}</span>
+          <span className="text-gray-300">{deadline.description}</span>
           {isUpcoming && (
-            <Badge variant="outline" className="ml-2 bg-purple-100 text-purple-700 border-purple-200">
+            <Badge variant="outline" className="ml-2 bg-purple-900/30 text-purple-300 border-purple-600">
               Upcoming
             </Badge>
           )}
@@ -295,11 +295,15 @@ const DirectorySection = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedFilter, setSelectedFilter] = useState("All");
   
-  // Filter the organizations based on search term
-  const filteredOrganizations = organizations.filter(org => 
-    org.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
-    org.description.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // Filter the organizations based on search term and selected filter
+  const filteredOrganizations = organizations.filter(org => {
+    const matchesSearch = org.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
+                         org.description.toLowerCase().includes(searchTerm.toLowerCase());
+    // For now, filter functionality works with search only until categories are added to data
+    const matchesFilter = selectedFilter === "All" || 
+                         org.description.toLowerCase().includes(selectedFilter.toLowerCase());
+    return matchesSearch && matchesFilter;
+  });
 
   return (
     <section className="py-12 bg-black">
@@ -380,16 +384,16 @@ const DeadlinesSection = () => {
           className="max-w-4xl mx-auto"
         >
           <motion.div variants={itemVariants} className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-navy mb-4">Key Business Deadlines</h2>
-            <p className="text-gray-600 max-w-3xl mx-auto">
+            <h2 className="text-3xl font-bold text-white mb-4">Key Business Deadlines</h2>
+            <p className="text-gray-300 max-w-3xl mx-auto">
               Never miss an important deadline again. We keep track of the key dates and deadlines that matter to your business.
             </p>
           </motion.div>
           
-          <motion.div variants={itemVariants} className="bg-white rounded-xl shadow-md overflow-hidden">
+          <motion.div variants={itemVariants} className="bg-gray-800/50 border border-gray-700 rounded-xl shadow-lg overflow-hidden">
             <div className="overflow-x-auto">
               <table className="min-w-full">
-                <thead className="bg-navy text-white">
+                <thead className="bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] text-white">
                   <tr>
                     <th className="py-3 px-4 text-left font-medium">Date</th>
                     <th className="py-3 px-4 text-left font-medium">Deadline</th>
@@ -405,7 +409,7 @@ const DeadlinesSection = () => {
           </motion.div>
           
           <motion.div variants={itemVariants} className="mt-8 text-center">
-            <div className="inline-flex items-center bg-blue-50 text-blue-700 px-4 py-2 rounded-full">
+            <div className="inline-flex items-center bg-purple-900/20 text-purple-300 border border-purple-600/30 px-4 py-2 rounded-full">
               <Info className="h-5 w-5 mr-2" />
               <span className="text-sm font-medium">Deadlines shown are for the 2024/25 tax year</span>
             </div>
