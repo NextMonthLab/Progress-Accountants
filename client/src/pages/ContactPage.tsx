@@ -1,9 +1,18 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import ContactForm from '@/components/ContactForm';
 import { MapPin, Phone, Mail, Clock } from 'lucide-react';
 
 export default function ContactPage() {
+  const { EMBED_FORMS, hasValidEmbedCode, FORM_CONFIG } = await import('@/utils/embedForms');
+  const [contactFormEmbedCode, setContactFormEmbedCode] = useState<string>('');
+
+  useEffect(() => {
+    if (hasValidEmbedCode(EMBED_FORMS.CONTACT_FORM)) {
+      setContactFormEmbedCode(EMBED_FORMS.CONTACT_FORM);
+    }
+  }, []);
+
   return (
     <div className="min-h-screen bg-black text-white">
       <Helmet>
@@ -200,7 +209,15 @@ export default function ContactPage() {
             </div>
             
             <div className="bg-gradient-to-br from-slate-800/90 to-slate-900/90 border border-slate-600/50 p-8 rounded-xl shadow-lg backdrop-blur-sm">
-              <ContactForm />
+              {contactFormEmbedCode ? (
+                <div 
+                  className="w-full"
+                  style={{ minHeight: '600px' }}
+                  dangerouslySetInnerHTML={{ __html: contactFormEmbedCode }}
+                />
+              ) : (
+                <ContactForm />
+              )}
             </div>
           </div>
         </div>
