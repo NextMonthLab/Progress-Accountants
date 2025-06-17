@@ -85,12 +85,17 @@ export default function TaxPlanningPage() {
                   Get Started Today
                 </Button>
               </Link>
-              <Link href="/contact">
-                <Button variant="outline" size="lg" className="border-white text-white hover:bg-white hover:text-gray-900">
-                  <Calendar className="h-4 w-4 mr-2" />
-                  Book Consultation
-                </Button>
-              </Link>
+              <Button 
+                onClick={() => {
+                  window.open('https://calendly.com/progress-accountants/free-consultation-progress-accountants', '_blank', 'width=700,height=800,resizable=yes,scrollbars=yes');
+                }}
+                variant="outline" 
+                size="lg" 
+                className="border-white text-white hover:bg-white hover:text-gray-900 cursor-pointer"
+              >
+                <Calendar className="h-4 w-4 mr-2" />
+                Book Consultation
+              </Button>
             </div>
           </div>
         </div>
