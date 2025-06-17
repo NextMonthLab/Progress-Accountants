@@ -521,20 +521,54 @@ For professional advice tailored to your business, contact Progress Accountants
                   variant="ghost"
                   size="icon"
                   className="text-slate-400 hover:text-white"
-                  onClick={() => {
-                    // Generate and download the SME resources when closing
-                    const resourceContent = generateSMEResourcesContent();
-                    const element = document.createElement('a');
-                    const file = new Blob([resourceContent], { type: 'text/plain' });
-                    element.href = URL.createObjectURL(file);
-                    element.download = 'sme-resources-pack.txt';
-                    document.body.appendChild(element);
-                    element.click();
-                    document.body.removeChild(element);
-                    
-                    setIsSubmitted(true);
-                    setShowLeadCaptureForm(false);
-                    toast({ title: "Download complete", description: "Your SME resources pack has been downloaded." });
+                  onClick={async () => {
+                    try {
+                      // Generate branded PDF with SME support resources
+                      const smeData = {
+                        businessName: 'Your Business',
+                        industry: 'Small Business',
+                        challenges: [
+                          'Managing cash flow effectively',
+                          'Understanding tax obligations',
+                          'Keeping up with regulatory changes',
+                          'Finding reliable business support'
+                        ],
+                        priorityAreas: [
+                          'Tax planning and compliance',
+                          'Financial management systems', 
+                          'Business growth strategies',
+                          'Professional networking'
+                        ],
+                        recommendations: [
+                          'Implement quarterly financial reviews',
+                          'Set up automated bookkeeping systems',
+                          'Create a tax planning calendar',
+                          'Establish relationships with professional advisors'
+                        ],
+                        nextSteps: [
+                          'Contact Progress Accountants for a consultation',
+                          'Review your current financial processes',
+                          'Plan for upcoming tax deadlines',
+                          'Consider professional advisory services'
+                        ]
+                      };
+                      
+                      const pdfBlob = await generateSMEHubPDF(smeData);
+                      
+                      const element = document.createElement('a');
+                      element.href = URL.createObjectURL(pdfBlob);
+                      element.download = 'progress-sme-support-assessment.pdf';
+                      document.body.appendChild(element);
+                      element.click();
+                      document.body.removeChild(element);
+                      
+                      setIsSubmitted(true);
+                      setShowLeadCaptureForm(false);
+                      toast({ title: "Download complete", description: "Your branded SME support assessment has been downloaded." });
+                    } catch (error) {
+                      console.error('PDF generation failed:', error);
+                      toast({ title: "Download error", description: "There was an issue generating your report. Please try again.", variant: "destructive" });
+                    }
                   }}
                 >
                   <X className="h-6 w-6" />
@@ -561,19 +595,54 @@ For professional advice tailored to your business, contact Progress Accountants
                       The lead form is currently unavailable. You can still download your resources:
                     </p>
                     <Button
-                      onClick={() => {
-                        const resourceContent = generateSMEResourcesContent();
-                        const element = document.createElement('a');
-                        const file = new Blob([resourceContent], { type: 'text/plain' });
-                        element.href = URL.createObjectURL(file);
-                        element.download = 'sme-resources-pack.txt';
-                        document.body.appendChild(element);
-                        element.click();
-                        document.body.removeChild(element);
-                        
-                        setIsSubmitted(true);
-                        setShowLeadCaptureForm(false);
-                        toast({ title: "Download complete", description: "Your SME resources pack has been downloaded." });
+                      onClick={async () => {
+                        try {
+                          // Generate branded PDF with SME support resources
+                          const smeData = {
+                            businessName: 'Your Business',
+                            industry: 'Small Business',
+                            challenges: [
+                              'Managing cash flow effectively',
+                              'Understanding tax obligations',
+                              'Keeping up with regulatory changes',
+                              'Finding reliable business support'
+                            ],
+                            priorityAreas: [
+                              'Tax planning and compliance',
+                              'Financial management systems',
+                              'Business growth strategies',
+                              'Professional networking'
+                            ],
+                            recommendations: [
+                              'Implement quarterly financial reviews',
+                              'Set up automated bookkeeping systems',
+                              'Create a tax planning calendar',
+                              'Establish relationships with professional advisors'
+                            ],
+                            nextSteps: [
+                              'Contact Progress Accountants for a consultation',
+                              'Review your current financial processes',
+                              'Plan for upcoming tax deadlines',
+                              'Consider professional advisory services'
+                            ]
+                          };
+                          
+                          const pdfBlob = await generateSMEHubPDF(smeData);
+                          
+                          const element = document.createElement('a');
+                          element.href = URL.createObjectURL(pdfBlob);
+                          element.download = 'progress-sme-support-assessment.pdf';
+                          document.body.appendChild(element);
+                          element.click();
+                          document.body.removeChild(element);
+                          
+                          setIsSubmitted(true);
+                          setShowLeadCaptureForm(false);
+                          toast({ title: "Download complete", description: "Your branded SME support assessment has been downloaded." });
+                        } catch (error) {
+                          console.error('PDF generation failed:', error);
+                          toast({ title: "Download error", description: "There was an issue generating your report. Please try again.", variant: "destructive" });
+                        }
                       }}
                       className="bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] hover:shadow-lg hover:shadow-purple-500/25 text-white"
                       size="lg"
