@@ -25,6 +25,17 @@ export interface TeamMember {
 export const teamMembers: TeamMember[] = [
   {
     id: 1,
+    name: "Gareth Burton",
+    qualifications: "FCA",
+    role: "Founder & CEO",
+    biography: "Having built an award-winning pension audit and assurance practice, Gareth launched Progress Accountants in 2017. With over 25 years of experience as an accountant and over a decade as a business owner, Gareth understands the pain business owners experience when setting up and growing their businesses. From this experience, Gareth is keen to help clients avoid the pain points he faced by supporting them with an efficient and dynamic, tech-led firm that provides clients with detailed record-keeping, daily bookkeeping and forward-looking financial information and insight.",
+    interests: "Gareth enjoys watching football, travelling, spending time with family and friends, and walking his dog around the Oxfordshire countryside.",
+    socialLinks: {
+      email: "gareth@progressaccountants.com"
+    }
+  },
+  {
+    id: 2,
     name: "Lee Rogers",
     qualifications: "FMAAT",
     role: "Lead Accountant",
@@ -37,7 +48,7 @@ export const teamMembers: TeamMember[] = [
     }
   },
   {
-    id: 2,
+    id: 3,
     name: "Henry Simons",
     qualifications: "MAAT",
     role: "Manager",
@@ -50,7 +61,7 @@ export const teamMembers: TeamMember[] = [
     }
   },
   {
-    id: 3,
+    id: 4,
     name: "Jackie Bosch",
     role: "Assistant Accountant",
     biography: "With more than 30 years of experience, Jackie is known for her attention to detail, reliability, and calm professionalism. She plays a vital role in supporting our SME clients with day-to-day bookkeeping and compliance.",
@@ -61,7 +72,7 @@ export const teamMembers: TeamMember[] = [
     }
   },
   {
-    id: 4,
+    id: 5,
     name: "Joy Holloway",
     role: "Business Administrator",
     biography: "Joy ensures every client interaction is smooth, professional, and human. From document handling to scheduling, she's the behind-the-scenes engine keeping your accounting experience stress-free.",
@@ -72,7 +83,7 @@ export const teamMembers: TeamMember[] = [
     }
   },
   {
-    id: 5,
+    id: 6,
     name: "Manny Abayomi",
     role: "Digital Marketing Executive",
     biography: "Manny leads our digital presence—managing campaigns, brand messaging, and online outreach. He helps keep Progress visible, relevant, and connected to clients across the UK.",

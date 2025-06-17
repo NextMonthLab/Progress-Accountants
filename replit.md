@@ -127,6 +127,7 @@ Progress Accountants is a sophisticated SmartSite platform built with React/Type
 
 ```
 Changelog:
+- June 17, 2025: Added Gareth Burton FCA as Founder & CEO to team page with complete biography and qualifications
 - June 17, 2025: Restored external embed code chatbot script as requested by user
 - June 17, 2025: Fixed embedded chatbot display issue by creating new EmbeddedChatbot React component integrated across all public pages
 - June 17, 2025: Removed broken external chatbot script and replaced with native React implementation
