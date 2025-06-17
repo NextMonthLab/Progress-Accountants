@@ -109,7 +109,13 @@ const CTASection = () => (
         Let's build a better financial setup for your business—from CIS to scaling up.
       </p>
       <div className="flex flex-col sm:flex-row gap-4">
-        <Button size="lg" className="bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] hover:from-[#6B2FD4] hover:to-[#2F94D4] text-white border-none font-medium">
+        <Button 
+          onClick={() => {
+            window.open('https://calendly.com/progress-accountants/free-consultation-progress-accountants', '_blank', 'width=700,height=800,resizable=yes,scrollbars=yes');
+          }}
+          size="lg" 
+          className="bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] hover:from-[#6B2FD4] hover:to-[#2F94D4] text-white border-none font-medium cursor-pointer"
+        >
           Book a Consultation
         </Button>
         <Button size="lg" className="bg-gray-800 text-white hover:bg-gray-700 font-medium">

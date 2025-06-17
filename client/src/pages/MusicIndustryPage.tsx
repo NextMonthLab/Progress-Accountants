@@ -109,7 +109,13 @@ const CTASection = () => (
         Let's talk through your situation—whether you're a solo artist, studio owner, or label founder. We'll show you how to build a financial setup that supports your music, not smothers it.
       </p>
       <div className="flex flex-col sm:flex-row gap-4">
-        <Button size="lg" className="bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] hover:shadow-lg hover:shadow-purple-500/25 text-white border-none font-medium">
+        <Button 
+          onClick={() => {
+            window.open('https://calendly.com/progress-accountants/free-consultation-progress-accountants', '_blank', 'width=700,height=800,resizable=yes,scrollbars=yes');
+          }}
+          size="lg" 
+          className="bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] hover:shadow-lg hover:shadow-purple-500/25 text-white border-none font-medium cursor-pointer"
+        >
           Book a Consultation
         </Button>
         <Button size="lg" className="bg-white text-gray-900 hover:bg-gray-100 font-medium">

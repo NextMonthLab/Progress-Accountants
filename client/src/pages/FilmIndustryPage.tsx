@@ -114,7 +114,13 @@ const CTASection = () => (
         Whether you're applying for Film Tax Relief or planning your next pitch, book a call with our team and see how Progress can support your next project.
       </p>
       <div className="flex flex-col sm:flex-row gap-4">
-        <Button size="lg" className="bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] hover:shadow-lg hover:shadow-purple-500/25 text-white border-none font-medium">
+        <Button 
+          onClick={() => {
+            window.open('https://calendly.com/progress-accountants/free-consultation-progress-accountants', '_blank', 'width=700,height=800,resizable=yes,scrollbars=yes');
+          }}
+          size="lg" 
+          className="bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] hover:shadow-lg hover:shadow-purple-500/25 text-white border-none font-medium cursor-pointer"
+        >
           Book a Consultation
         </Button>
         <Button size="lg" className="bg-white text-gray-900 hover:bg-gray-100 font-medium">
