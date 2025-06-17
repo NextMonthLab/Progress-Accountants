@@ -15,6 +15,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { openCalendlyPopup } from "@/utils/calendly";
 
 interface BusinessIdentity {
   core?: {
@@ -359,14 +360,12 @@ export default function ProfessionalServicesPage() {
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button 
+                  onClick={openCalendlyPopup}
                   size="lg" 
                   className="progress-button-override px-8 py-6 text-lg font-semibold"
-                  asChild
                 >
-                  <Link href="/contact">
-                    Book a Consultation
-                    <ArrowRight className="ml-2 h-5 w-5" />
-                  </Link>
+                  Book a Consultation
+                  <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
                 <Button 
                   size="lg" 

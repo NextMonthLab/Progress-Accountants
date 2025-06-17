@@ -127,6 +127,7 @@ Progress Accountants is a sophisticated SmartSite platform built with React/Type
 
 ```
 Changelog:
+- June 17, 2025: Integrated Calendly popup widget for all booking buttons and implemented branded PDF downloads with Progress Accountants logo
 - June 17, 2025: Fixed Business Calculator lead form integration and messaging
 - June 14, 2025: Initial setup
 ```

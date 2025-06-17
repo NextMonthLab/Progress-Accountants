@@ -67,12 +67,14 @@ export default function BookkeepingPage() {
             </p>
             
             <div className="flex flex-wrap gap-4">
-              <Link href="/contact">
-                <Button size="lg" className="bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600">
-                  <Phone className="h-4 w-4 mr-2" />
-                  Get Started Today
-                </Button>
-              </Link>
+              <Button 
+                onClick={openCalendlyPopup}
+                size="lg" 
+                className="bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600"
+              >
+                <Phone className="h-4 w-4 mr-2" />
+                Get Started Today
+              </Button>
               <Button 
                 onClick={openCalendlyPopup}
                 variant="outline" 
