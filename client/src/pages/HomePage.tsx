@@ -10,27 +10,28 @@ import { useEffect } from "react";
 const HomePage = () => {
   const { businessIdentity, isLoading } = useBusinessIdentity();
 
-  // Override global anchor handler to allow Calendly links
+  // Completely disable global anchor handling that causes scroll interference
   useEffect(() => {
-    const overrideAnchorHandler = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-      const anchor = target.closest('a');
-      
-      if (!anchor) return;
-      
-      const href = anchor.getAttribute('href');
-      // Allow Calendly links to work normally
-      if (href && href.includes('calendly.com')) {
-        e.stopImmediatePropagation();
-        return;
+    // Remove any existing global click handlers that might be causing scroll
+    const originalAddEventListener = document.addEventListener;
+    const clickHandlers: Array<{ handler: EventListener; options?: boolean | AddEventListenerOptions }> = [];
+    
+    // Intercept and prevent anchor click handlers from being added
+    document.addEventListener = function(type: string, listener: EventListener, options?: boolean | AddEventListenerOptions) {
+      if (type === 'click') {
+        // Don't add click handlers that might interfere with our buttons
+        const handlerString = listener.toString();
+        if (handlerString.includes('anchor') || handlerString.includes('closest') || handlerString.includes('scrollTo')) {
+          console.log('Blocked interfering click handler');
+          return;
+        }
       }
+      return originalAddEventListener.call(this, type, listener, options);
     };
-
-    // Add with capture=true to run before other handlers
-    document.addEventListener('click', overrideAnchorHandler, true);
     
     return () => {
-      document.removeEventListener('click', overrideAnchorHandler, true);
+      // Restore original addEventListener
+      document.addEventListener = originalAddEventListener;
     };
   }, []);
 
