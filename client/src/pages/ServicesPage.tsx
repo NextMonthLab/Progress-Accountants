@@ -378,11 +378,14 @@ export default function ServicesPage() {
                   </li>
                 </ul>
                 
-                <Link href="/client-dashboard">
-                  <Button className="bg-gradient-to-br from-blue-600 to-pink-500 text-white hover:shadow-lg hover:-translate-y-[2px] transition duration-300">
-                    View Demo Dashboard
-                  </Button>
-                </Link>
+                <Button 
+                  onClick={() => {
+                    window.open('https://calendly.com/progress-accountants/free-consultation-progress-accountants', '_blank', 'width=700,height=800,resizable=yes,scrollbars=yes');
+                  }}
+                  className="bg-gradient-to-br from-blue-600 to-pink-500 text-white hover:shadow-lg hover:-translate-y-[2px] transition duration-300 cursor-pointer"
+                >
+                  Book a Consultation
+                </Button>
               </div>
               
               {/* Right: Image */}
@@ -408,14 +411,15 @@ export default function ServicesPage() {
             Book a free discovery call and we'll help map the right support for your business.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/contact">
-              <Button 
-                size="lg"
-                className="bg-white text-gray-900 hover:bg-gray-100 hover:shadow-lg hover:-translate-y-[2px] transition duration-300"
-              >
-                Book a Consultation
-              </Button>
-            </Link>
+            <Button 
+              onClick={() => {
+                window.open('https://calendly.com/progress-accountants/free-consultation-progress-accountants', '_blank', 'width=700,height=800,resizable=yes,scrollbars=yes');
+              }}
+              size="lg"
+              className="bg-white text-gray-900 hover:bg-gray-100 hover:shadow-lg hover:-translate-y-[2px] transition duration-300 cursor-pointer"
+            >
+              Book a Consultation
+            </Button>
             <Link href="/industries">
               <Button 
                 size="lg"
