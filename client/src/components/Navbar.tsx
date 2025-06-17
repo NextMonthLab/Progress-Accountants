@@ -221,8 +221,11 @@ export default function Navbar() {
 
 
           {/* Decoupled "Book a Call" button using Progress brand colors */}
-          <a 
-            href="#book-call" 
+          <button 
+            onClick={() => {
+              console.log('Button clicked - opening Calendly');
+              window.open('https://calendly.com/progress-accountants/free-consultation-progress-accountants', '_blank', 'width=700,height=800,resizable=yes,scrollbars=yes');
+            }}
             className="progress-button-override"
             style={{
               background: 'linear-gradient(135deg, #7B3FE4 0%, #3FA4E4 100%)',
@@ -240,12 +243,13 @@ export default function Navbar() {
               height: '40px',
               lineHeight: '1',
               whiteSpace: 'nowrap',
-              border: 'none'
+              border: 'none',
+              cursor: 'pointer'
             }}
           >
             <PhoneCall className="h-4 w-4" />
             <span>Book a Call</span>
-          </a>
+          </button>
         </div>
 
         {/* Mobile menu button */}
@@ -311,17 +315,31 @@ export default function Navbar() {
 
           {/* Call to action */}
           <div className="py-4">
-            <a 
-              href="#book-call"
-              onClick={closeMenu}
-              className="inline-block text-center w-full"
+            <button 
+              onClick={() => {
+                console.log('Button clicked - opening Calendly');
+                window.open('https://calendly.com/progress-accountants/free-consultation-progress-accountants', '_blank', 'width=700,height=800,resizable=yes,scrollbars=yes');
+                closeMenu();
+              }}
+              className="book-call-btn-mobile w-full"
+              style={{
+                background: 'linear-gradient(135deg, #7B3FE4 0%, #3FA4E4 100%)',
+                color: 'white',
+                padding: '12px 24px',
+                borderRadius: '8px',
+                fontSize: '16px',
+                fontWeight: '500',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '8px',
+                border: 'none',
+                cursor: 'pointer'
+              }}
             >
-              {/* Decoupled mobile "Book a Call" button using public-specific CSS classes */}
-              <button className="book-call-btn-mobile">
-                <PhoneCall className="h-4 w-4 mr-2" />
-                Book a Call
-              </button>
-            </a>
+              <PhoneCall className="h-4 w-4 mr-2" />
+              Book a Call
+            </button>
           </div>
         </div>
       </div>
