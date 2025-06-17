@@ -65,41 +65,46 @@ export default function SEOFooterSection() {
               We specialise in small business accounting, and we're certified Xero accountants too. But most of all, we help our clients grow — with practical, forward-thinking support you won't find anywhere else.
             </p>
             <div className="mb-10">
-              <a 
-                href="https://calendly.com/progress-accountants/free-consultation-progress-accountants"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ 
-                  backgroundColor: '#f15a29',
-                  cursor: 'pointer',
-                  padding: '1.5rem 2rem',
-                  fontSize: '1.125rem',
-                  borderRadius: '0.5rem',
+              <iframe 
+                src="data:text/html,
+                  <html>
+                    <body style='margin:0;padding:0;'>
+                      <a href='https://calendly.com/progress-accountants/free-consultation-progress-accountants' 
+                         target='_parent'
+                         style='
+                           background-color: #f15a29;
+                           cursor: pointer;
+                           padding: 1.5rem 2rem;
+                           font-size: 1.125rem;
+                           border-radius: 0.5rem;
+                           border: none;
+                           color: white;
+                           font-weight: 500;
+                           transition: all 0.3s ease;
+                           box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                           outline: none;
+                           display: inline-block;
+                           text-align: center;
+                           text-decoration: none;
+                           font-family: system-ui, -apple-system, sans-serif;
+                         '
+                         onmouseover='this.style.backgroundColor=\"#e54e26\"; this.style.transform=\"translateY(-2px)\";'
+                         onmouseout='this.style.backgroundColor=\"#f15a29\"; this.style.transform=\"translateY(0)\";'
+                      >
+                        👉 Let's build your growth engine — book your free discovery call
+                      </a>
+                    </body>
+                  </html>"
+                style={{
+                  width: '100%',
+                  height: '80px',
                   border: 'none',
-                  color: 'white',
-                  fontWeight: '500',
-                  transition: 'all 0.3s ease',
-                  pointerEvents: 'auto',
-                  position: 'relative',
-                  zIndex: 99999,
-                  boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-                  outline: 'none',
-                  display: 'inline-block',
-                  textAlign: 'center',
-                  userSelect: 'none',
-                  textDecoration: 'none'
+                  overflow: 'hidden',
+                  backgroundColor: 'transparent'
                 }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'translateY(-2px)';
-                  e.currentTarget.style.backgroundColor = '#e54e26';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'translateY(0)';
-                  e.currentTarget.style.backgroundColor = '#f15a29';
-                }}
-              >
-                👉 Let's build your growth engine — book your free discovery call
-              </a>
+                scrolling="no"
+                frameBorder="0"
+              />
             </div>
 
             {/* Contact Information */}
