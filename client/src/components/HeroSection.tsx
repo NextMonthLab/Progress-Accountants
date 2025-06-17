@@ -111,21 +111,19 @@ const HeroSection = () => {
             </div>
             
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-              <Button 
-                size="lg"
-                className="w-full sm:w-auto px-4 sm:px-6 py-3 rounded-full gradient-bg hover:shadow-lg text-white progress-button text-sm sm:text-base relative z-50"
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  console.log('BUTTON CLICKED - TESTING');
-                  openCalendlyPopup();
+              <button 
+                type="button"
+                className="w-full sm:w-auto px-4 sm:px-6 py-3 rounded-full gradient-bg hover:shadow-lg text-white progress-button text-sm sm:text-base relative z-50 cursor-pointer font-medium flex items-center justify-center gap-2 border-none"
+                onClick={() => {
+                  console.log('Button clicked - opening Calendly');
+                  // Direct Calendly URL open as fallback
+                  window.open('https://calendly.com/progress-accountants/free-consultation-progress-accountants', '_blank', 'width=700,height=800');
                 }}
-                style={{ pointerEvents: 'auto', cursor: 'pointer' }}
               >
                 <span className="hidden sm:inline">Book Your Free Strategy Consultation</span>
                 <span className="sm:hidden">Book Free Consultation</span>
                 <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
+              </button>
               
               <Button 
                 variant="ghost" 
