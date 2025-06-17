@@ -4,7 +4,7 @@ import {
   ArrowRight, ArrowLeft, BarChart3, Calculator, CheckCircle, 
   LucideIcon, PieChart, Users, Building, MapPin, PoundSterling, 
   CreditCard, Briefcase, TrendingUp, Download, Mail,
-  Award, FileText, Sparkles, Shield, Clock, LifeBuoy, Zap, DollarSign
+  Award, FileText, Sparkles, Shield, Clock, LifeBuoy, Zap
 } from "lucide-react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -266,7 +266,7 @@ const BusinessTypeStep = ({ onNext, defaultValues }: StepProps) => {
           <div className="flex justify-end pt-4">
             <Button 
               type="submit" 
-              className="bg-orange-500 hover:bg-orange-600 text-white"
+              className="bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] hover:shadow-lg hover:shadow-purple-500/25 hover:-translate-y-1 transition-all duration-300 text-white"
             >
               Continue
               <ArrowRight className="ml-2 h-4 w-4" />
@@ -1192,7 +1192,7 @@ const BusinessCalculatorPage = () => {
           className="max-w-3xl mx-auto bg-gradient-to-br from-slate-800/90 to-slate-900/90 border border-slate-600/50 p-6 md:p-8 rounded-2xl shadow-xl backdrop-blur-sm relative"
         >
           <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] text-white p-3 rounded-full shadow-lg">
-            <DollarSign className="h-6 w-6" />
+            <PoundSterling className="h-6 w-6" />
           </div>
           
           {/* Progress Stepper */}
