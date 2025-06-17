@@ -10,7 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
   Building2, Phone, Mail, Clock, Calendar, ExternalLink, 
   Filter, Search, Info, ArrowRight, CheckCircle, Calendar as CalendarIcon,
-  Download, FileText
+  Download, FileText, X
 } from "lucide-react";
 import {
   Form,
@@ -25,6 +25,7 @@ import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
 import { motion } from "framer-motion";
+import { EMBED_FORMS, hasValidEmbedCode, FORM_CONFIG } from "@/utils/embedForms";
 
 // Animation variants
 const containerVariants = {
@@ -511,7 +512,15 @@ type DownloadFormValues = z.infer<typeof downloadFormSchema>;
 // Downloadable resources section
 const DownloadResourcesSection = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [showLeadCaptureForm, setShowLeadCaptureForm] = useState(false);
+  const [leadCaptureEmbedCode, setLeadCaptureEmbedCode] = useState<string>('');
   const { toast } = useToast();
+
+  useEffect(() => {
+    if (hasValidEmbedCode(EMBED_FORMS.BUSINESS_CALCULATOR_LEAD_FORM)) {
+      setLeadCaptureEmbedCode(EMBED_FORMS.BUSINESS_CALCULATOR_LEAD_FORM);
+    }
+  }, []);
   
   const form = useForm<DownloadFormValues>({
     resolver: zodResolver(downloadFormSchema),
@@ -578,81 +587,17 @@ const DownloadResourcesSection = () => {
                   </ul>
                 </div>
                 
-                <div>
-                  <h3 className="text-xl font-semibold mb-4 text-white">Complete the form to download</h3>
-                  <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-                      <FormField
-                        control={form.control}
-                        name="name"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Full Name</FormLabel>
-                            <FormControl>
-                              <Input placeholder="John Smith" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      
-                      <FormField
-                        control={form.control}
-                        name="email"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Email</FormLabel>
-                            <FormControl>
-                              <Input placeholder="you@example.com" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      
-                      <FormField
-                        control={form.control}
-                        name="businessName"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Business Name (Optional)</FormLabel>
-                            <FormControl>
-                              <Input placeholder="Your Business Ltd" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      
-                      <FormField
-                        control={form.control}
-                        name="consent"
-                        render={({ field }) => (
-                          <FormItem className="flex flex-row items-start space-x-3 space-y-0 pt-2">
-                            <FormControl>
-                              <Checkbox
-                                checked={field.value}
-                                onCheckedChange={field.onChange}
-                              />
-                            </FormControl>
-                            <div className="space-y-1 leading-none">
-                              <FormLabel className="text-sm font-normal">
-                                I agree to receive occasional updates and resources from Progress Accountants. You can unsubscribe anytime.
-                              </FormLabel>
-                              <FormMessage />
-                            </div>
-                          </FormItem>
-                        )}
-                      />
-                      
-                      <Button 
-                        type="submit" 
-                        className="w-full bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] hover:shadow-lg hover:shadow-purple-500/25 hover:-translate-y-1 transition-all duration-300 text-white"
-                      >
-                        Get Access to Resources
-                      </Button>
-                    </form>
-                  </Form>
+                <div className="flex flex-col justify-center">
+                  <h3 className="text-xl font-semibold mb-4 text-white">Ready to Download?</h3>
+                  <p className="text-gray-300 mb-6">Get instant access to your free SME resources pack.</p>
+                  <Button 
+                    onClick={() => setShowLeadCaptureForm(true)}
+                    className="w-full bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] hover:shadow-lg hover:shadow-purple-500/25 hover:-translate-y-1 transition-all duration-300 text-white"
+                    size="lg"
+                  >
+                    <Download className="mr-2 h-5 w-5" />
+                    Download Resources Pack
+                  </Button>
                 </div>
               </div>
             ) : (
