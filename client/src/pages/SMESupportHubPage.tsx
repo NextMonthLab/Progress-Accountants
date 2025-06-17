@@ -296,6 +296,133 @@ const DownloadResourcesSection = () => {
     }
   }, []);
 
+  const generateSMEResourcesContent = () => {
+    return `
+SME RESOURCES PACK
+==================
+
+Generated: ${new Date().toLocaleDateString()}
+
+UK BUSINESS CONTACTS DIRECTORY
+==============================
+
+HMRC Contacts:
+- Self Assessment Helpline: 0300 200 3310
+- VAT Helpline: 0300 200 3700
+- PAYE Helpline: 0300 200 3200
+- Corporation Tax Helpline: 0300 200 3410
+
+Professional Bodies:
+- ICAEW (Institute of Chartered Accountants): 020 7920 8100
+- ACCA (Association of Chartered Certified Accountants): 0141 582 2000
+- CIMA (Chartered Institute of Management Accountants): 020 8849 2251
+
+Banking Support:
+- British Business Bank: 0114 206 2131
+- Start Up Loans: 0345 600 0006
+- Bounce Back Loan Scheme: Contact your bank directly
+
+KEY BUSINESS DEADLINES 2025
+============================
+
+January:
+- 31st Jan: Self Assessment tax return deadline
+- 31st Jan: Corporation Tax payment for companies with year-end 31st March 2024
+
+February:
+- 19th Feb: PAYE/NIC payment due
+- 28th Feb: Submit P60s to employees
+
+March:
+- 19th Mar: PAYE/NIC payment due
+- 31st Mar: End of tax year
+
+April:
+- 5th Apr: New tax year begins
+- 19th Apr: PAYE/NIC payment due
+
+May:
+- 19th May: PAYE/NIC payment due
+- 31st May: Submit P11D forms for benefits in kind
+
+June:
+- 19th Jun: PAYE/NIC payment due
+- 30th Jun: Corporation Tax filing deadline (companies with year-end 30th September 2024)
+
+July:
+- 6th Jul: P11D deadline
+- 19th Jul: PAYE/NIC payment due
+- 31st Jul: VAT return deadline (quarterly)
+
+August:
+- 19th Aug: PAYE/NIC payment due
+
+September:
+- 19th Sep: PAYE/NIC payment due
+- 30th Sep: Corporation Tax filing deadline (companies with year-end 31st December 2024)
+
+October:
+- 19th Oct: PAYE/NIC payment due
+- 31st Oct: VAT return deadline (quarterly)
+
+November:
+- 19th Nov: PAYE/NIC payment due
+
+December:
+- 19th Dec: PAYE/NIC payment due
+- 31st Dec: Corporation Tax filing deadline (companies with year-end 31st March 2024)
+
+TAX PLANNING ESSENTIALS
+========================
+
+Corporation Tax Rates 2024/25:
+- Small profits rate (£0 - £50,000): 19%
+- Marginal rate (£50,001 - £250,000): 26.5%
+- Main rate (£250,001+): 25%
+
+Capital Allowances:
+- Annual Investment Allowance: £1,000,000
+- Writing Down Allowance (Main Pool): 18%
+- Writing Down Allowance (Special Rate Pool): 6%
+
+VAT Thresholds:
+- Registration threshold: £90,000
+- Deregistration threshold: £88,000
+
+National Insurance 2024/25:
+- Employee: 12% on earnings £12,570 - £50,270, 2% above
+- Employer: 13.8% on earnings above £9,100
+
+BUSINESS SUPPORT RESOURCES
+===========================
+
+Government Schemes:
+- Research & Development Tax Credits
+- Patent Box Relief
+- Creative Industry Tax Reliefs
+- Enterprise Investment Scheme (EIS)
+- Seed Enterprise Investment Scheme (SEIS)
+
+Funding Options:
+- Start Up Loans (government-backed)
+- Innovate UK Grants
+- Local Enterprise Partnership Grants
+- Crowdfunding Platforms
+- Angel Investment Networks
+
+Business Development:
+- gov.uk/business-finance-support
+- British Business Bank
+- Local Growth Hubs
+- SCORE Mentorship
+- Small Business Administration
+
+---
+Resources compiled by Progress Accountants
+For professional advice tailored to your business, contact Progress Accountants
+    `.trim();
+  };
+
   return (
     <section className="py-16 bg-black">
       <div className="container mx-auto px-6 md:px-8">
@@ -406,19 +533,52 @@ const DownloadResourcesSection = () => {
                       style={{ minHeight: FORM_CONFIG.defaultHeight }}
                       dangerouslySetInnerHTML={{ __html: leadCaptureEmbedCode }}
                     />
-
+                    <div className="text-center pt-4 border-t border-slate-600/30">
+                      <p className="text-slate-300 mb-4">
+                        After completing the form above, download your SME resources:
+                      </p>
+                      <Button
+                        onClick={() => {
+                          const resourceContent = generateSMEResourcesContent();
+                          const element = document.createElement('a');
+                          const file = new Blob([resourceContent], { type: 'text/plain' });
+                          element.href = URL.createObjectURL(file);
+                          element.download = 'sme-resources-pack.txt';
+                          document.body.appendChild(element);
+                          element.click();
+                          document.body.removeChild(element);
+                          
+                          setIsSubmitted(true);
+                          setShowLeadCaptureForm(false);
+                          toast({ title: "Download complete", description: "Your SME resources pack has been downloaded." });
+                        }}
+                        className="bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] hover:shadow-lg hover:shadow-purple-500/25 text-white"
+                        size="lg"
+                      >
+                        Download SME Resources Pack
+                      </Button>
+                    </div>
                   </div>
                 ) : (
                   <div className="text-center py-12">
-                    <h4 className="text-xl font-semibold text-white mb-4">Download Your SME Resources</h4>
+                    <h4 className="text-xl font-semibold text-white mb-4">Form Not Available</h4>
                     <p className="text-slate-300 mb-6">
-                      Your free PDF resources pack is ready for download.
+                      The lead form is currently unavailable. You can still download your resources:
                     </p>
                     <Button
                       onClick={() => {
+                        const resourceContent = generateSMEResourcesContent();
+                        const element = document.createElement('a');
+                        const file = new Blob([resourceContent], { type: 'text/plain' });
+                        element.href = URL.createObjectURL(file);
+                        element.download = 'sme-resources-pack.txt';
+                        document.body.appendChild(element);
+                        element.click();
+                        document.body.removeChild(element);
+                        
                         setIsSubmitted(true);
                         setShowLeadCaptureForm(false);
-                        toast({ title: "Download started", description: "Your SME resources are being prepared." });
+                        toast({ title: "Download complete", description: "Your SME resources pack has been downloaded." });
                       }}
                       className="bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] hover:shadow-lg hover:shadow-purple-500/25 text-white"
                       size="lg"
