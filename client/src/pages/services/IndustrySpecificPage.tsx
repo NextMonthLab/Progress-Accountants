@@ -3,6 +3,7 @@ import { Helmet } from 'react-helmet';
 import { Link } from 'wouter';
 import { Briefcase, ArrowLeft, Phone, Mail, Calendar, CheckCircle, Building2, Film, Music, Home } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { openCalendlyPopup } from '@/utils/calendly';
 
 export default function IndustrySpecificPage() {
   const [isLoading, setIsLoading] = useState(true);
@@ -74,18 +75,21 @@ export default function IndustrySpecificPage() {
             </p>
             
             <div className="flex flex-wrap gap-4">
-              <Link href="/contact">
-                <Button size="lg" className="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600">
-                  <Phone className="h-4 w-4 mr-2" />
-                  Get Started Today
-                </Button>
-              </Link>
-              <Link href="/contact">
-                <Button variant="outline" size="lg" className="border-white text-white hover:bg-white hover:text-gray-900">
-                  <Calendar className="h-4 w-4 mr-2" />
-                  Book Consultation
-                </Button>
-              </Link>
+              <Button 
+                onClick={openCalendlyPopup}
+                className="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600"
+              >
+                <Phone className="h-4 w-4 mr-2" />
+                Get Started Today
+              </Button>
+              <Button 
+                onClick={openCalendlyPopup}
+                variant="outline" 
+                className="border-white text-white hover:bg-white hover:text-gray-900"
+              >
+                <Calendar className="h-4 w-4 mr-2" />
+                Book Consultation
+              </Button>
             </div>
           </div>
         </div>

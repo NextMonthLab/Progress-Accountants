@@ -3,6 +3,7 @@ import { Helmet } from 'react-helmet';
 import { Link } from 'wouter';
 import { Cloud, ArrowLeft, Phone, Mail, Calendar, CheckCircle, Smartphone, Zap, Globe, Shield } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { openCalendlyPopup } from '@/utils/calendly';
 
 export default function CloudAccountingPage() {
   const [isLoading, setIsLoading] = useState(true);
