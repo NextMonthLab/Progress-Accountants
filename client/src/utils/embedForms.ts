@@ -8,10 +8,10 @@ export const EMBED_FORMS = {
   `,
   
   // Business Calculator lead capture form (required before download)
-  BUSINESS_CALCULATOR_LEAD_FORM: `<iframe src="https://e40479db-edfd-4265-9a8b-1e462b5725d1-00-290zw6wfwpbn.picard.replit.dev/embeds/progress-accountants-uk/lead-form.html" width="100%" height="600" frameborder="0" style="border: none; border-radius: 8px;"></iframe>`,
+  BUSINESS_CALCULATOR_LEAD_FORM: ``,
   
   // SME Support Hub lead capture form
-  SME_SUPPORT_LEAD_FORM: `<iframe src="https://e40479db-edfd-4265-9a8b-1e462b5725d1-00-290zw6wfwpbn.picard.replit.dev/embeds/progress-accountants-uk/lead-form.html" width="100%" height="600" frameborder="0" style="border: none; border-radius: 8px;"></iframe>`,
+  SME_SUPPORT_LEAD_FORM: ``,
   
   // Client dashboard embed code
   CLIENT_DASHBOARD: `<!-- Client Dashboard Widget -->
