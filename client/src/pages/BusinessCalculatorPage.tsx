@@ -1451,26 +1451,52 @@ const BusinessCalculatorPage = () => {
               </Button>
             </div>
             <div className="p-6">
-              <div className="text-center py-12">
-                <h4 className="text-xl font-semibold text-white mb-4">Download Your Business Analysis</h4>
-                <p className="text-slate-300 mb-6">
-                  Your personalized business analysis report is ready for download.
-                </p>
-                <Button
-                  onClick={() => {
-                    setLeadFormCompleted(true);
-                    setShowLeadCaptureForm(false);
-                    toast({ title: "Download started", description: "Your business forecast report is being prepared." });
-                  }}
-                  className="bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] hover:shadow-lg hover:shadow-purple-500/25 text-white"
-                  size="lg"
-                >
-                  Download Business Analysis Report
-                </Button>
-                <p className="text-slate-400 text-sm mt-4">
-                  PDF report includes your calculated metrics and business insights
-                </p>
-              </div>
+              {leadCaptureEmbedCode ? (
+                <div className="space-y-4">
+                  <div 
+                    className="w-full"
+                    style={{ minHeight: FORM_CONFIG.defaultHeight }}
+                    dangerouslySetInnerHTML={{ __html: leadCaptureEmbedCode }}
+                  />
+                  <div className="text-center pt-4 border-t border-slate-600/30">
+                    <p className="text-slate-400 text-sm mb-3">
+                      Having trouble with the form? You can still download your report:
+                    </p>
+                    <Button
+                      onClick={() => {
+                        setLeadFormCompleted(true);
+                        setShowLeadCaptureForm(false);
+                        toast({ title: "Download started", description: "Your business forecast report is being prepared." });
+                      }}
+                      variant="outline"
+                      className="border-purple-500 text-purple-400 hover:bg-purple-50/10"
+                    >
+                      Skip Form & Download Report
+                    </Button>
+                  </div>
+                </div>
+              ) : (
+                <div className="text-center py-12">
+                  <h4 className="text-xl font-semibold text-white mb-4">Download Your Business Analysis</h4>
+                  <p className="text-slate-300 mb-6">
+                    Your personalized business analysis report is ready for download.
+                  </p>
+                  <Button
+                    onClick={() => {
+                      setLeadFormCompleted(true);
+                      setShowLeadCaptureForm(false);
+                      toast({ title: "Download started", description: "Your business forecast report is being prepared." });
+                    }}
+                    className="bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] hover:shadow-lg hover:shadow-purple-500/25 text-white"
+                    size="lg"
+                  >
+                    Download Business Analysis Report
+                  </Button>
+                  <p className="text-slate-400 text-sm mt-4">
+                    PDF report includes your calculated metrics and business insights
+                  </p>
+                </div>
+              )}
             </div>
           </div>
         </div>

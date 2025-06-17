@@ -399,26 +399,52 @@ const DownloadResourcesSection = () => {
                 </Button>
               </div>
               <div className="p-6">
-                <div className="text-center py-12">
-                  <h4 className="text-xl font-semibold text-white mb-4">Download Your SME Resources</h4>
-                  <p className="text-slate-300 mb-6">
-                    Your free PDF resources pack is ready for download.
-                  </p>
-                  <Button
-                    onClick={() => {
-                      setIsSubmitted(true);
-                      setShowLeadCaptureForm(false);
-                      toast({ title: "Download started", description: "Your SME resources are being prepared." });
-                    }}
-                    className="bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] hover:shadow-lg hover:shadow-purple-500/25 text-white"
-                    size="lg"
-                  >
-                    Download SME Resources Pack
-                  </Button>
-                  <p className="text-slate-400 text-sm mt-4">
-                    Includes UK business contacts directory and key deadlines calendar
-                  </p>
-                </div>
+                {leadCaptureEmbedCode ? (
+                  <div className="space-y-4">
+                    <div 
+                      className="w-full"
+                      style={{ minHeight: FORM_CONFIG.defaultHeight }}
+                      dangerouslySetInnerHTML={{ __html: leadCaptureEmbedCode }}
+                    />
+                    <div className="text-center pt-4 border-t border-slate-600/30">
+                      <p className="text-slate-400 text-sm mb-3">
+                        Having trouble with the form? You can still download your resources:
+                      </p>
+                      <Button
+                        onClick={() => {
+                          setIsSubmitted(true);
+                          setShowLeadCaptureForm(false);
+                          toast({ title: "Download started", description: "Your SME resources are being prepared." });
+                        }}
+                        variant="outline"
+                        className="border-purple-500 text-purple-400 hover:bg-purple-50/10"
+                      >
+                        Skip Form & Download Resources
+                      </Button>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="text-center py-12">
+                    <h4 className="text-xl font-semibold text-white mb-4">Download Your SME Resources</h4>
+                    <p className="text-slate-300 mb-6">
+                      Your free PDF resources pack is ready for download.
+                    </p>
+                    <Button
+                      onClick={() => {
+                        setIsSubmitted(true);
+                        setShowLeadCaptureForm(false);
+                        toast({ title: "Download started", description: "Your SME resources are being prepared." });
+                      }}
+                      className="bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] hover:shadow-lg hover:shadow-purple-500/25 text-white"
+                      size="lg"
+                    >
+                      Download SME Resources Pack
+                    </Button>
+                    <p className="text-slate-400 text-sm mt-4">
+                      Includes UK business contacts directory and key deadlines calendar
+                    </p>
+                  </div>
+                )}
               </div>
             </div>
           </div>
