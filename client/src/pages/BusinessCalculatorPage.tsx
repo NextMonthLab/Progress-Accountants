@@ -716,7 +716,7 @@ const ContactStep = ({ onNext, onBack, defaultValues }: StepProps) => {
 };
 
 // Results Component
-const ResultsStep = ({ calculatorData }: { calculatorData: any }) => {
+const ResultsStep = ({ calculatorData, onShowLeadCaptureForm }: { calculatorData: any; onShowLeadCaptureForm: () => void }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

@@ -15,7 +15,30 @@ export const EMBED_FORMS = {
   // SME Support Hub lead capture form
   SME_SUPPORT_LEAD_FORM: `
     <!-- Replace with your SME support hub lead form iframe embed code -->
-  `
+  `,
+  
+  // Client dashboard embed code
+  CLIENT_DASHBOARD: `<!-- Client Dashboard Widget -->
+<iframe
+  src="https://e40479db-edfd-4265-9a8b-1e462b5725d1-00-290zw6wfwpbn.picard.replit.dev/embed/client-dashboard?tenant=progress-accountants-uk"
+  style="width: 100%; min-height: 700px; border: none; border-radius: 8px;"
+  frameborder="0"
+  scrolling="auto"
+  sandbox="allow-scripts allow-same-origin"
+  title="Client Dashboard"
+></iframe>
+
+<script>
+  // Auto-resize iframe height
+  window.addEventListener('message', function(event) {
+    if (event.data.type === 'client-dashboard-resize' && event.data.height) {
+      var iframe = document.querySelector('iframe[src*="/embed/client-dashboard"]');
+      if (iframe) {
+        iframe.style.height = event.data.height + 'px';
+      }
+    }
+  });
+</script>`
 };
 
 // Helper function to check if embed code is ready

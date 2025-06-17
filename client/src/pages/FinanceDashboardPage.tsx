@@ -85,14 +85,16 @@ export default function FinanceDashboardPage() {
       </div>
 
       {/* CSS to ensure iframe responsiveness */}
-      <style jsx>{`
-        iframe {
-          width: 100% !important;
-          height: 100vh !important;
-          border: none !important;
-          display: block !important;
-        }
-      `}</style>
+      <style dangerouslySetInnerHTML={{
+        __html: `
+          iframe {
+            width: 100% !important;
+            height: 100vh !important;
+            border: none !important;
+            display: block !important;
+          }
+        `
+      }} />
     </div>
   );
 }
