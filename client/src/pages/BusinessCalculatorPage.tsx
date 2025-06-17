@@ -612,8 +612,8 @@ const ContactStep = ({ onNext, onBack, defaultValues }: StepProps) => {
         <div className="bg-navy/10 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
           <Mail className="h-6 w-6 text-navy" />
         </div>
-        <h2 className="text-2xl font-bold text-navy">Get Your Full Report</h2>
-        <p className="text-gray-600 mt-2">We'll email you a detailed PDF with your business forecast and recommendations</p>
+        <h2 className="text-2xl font-bold text-navy">Contact Information</h2>
+        <p className="text-gray-600 mt-2">Complete your details to finish the assessment</p>
       </div>
 
       <Form {...form}>

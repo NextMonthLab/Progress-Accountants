@@ -127,7 +127,8 @@ Progress Accountants is a sophisticated SmartSite platform built with React/Type
 
 ```
 Changelog:
-- June 14, 2025. Initial setup
+- June 17, 2025: Fixed Business Calculator lead form integration and messaging
+- June 14, 2025: Initial setup
 ```
 
 ## User Preferences
