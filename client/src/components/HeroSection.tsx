@@ -111,8 +111,8 @@ const HeroSection = () => {
             </div>
             
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-              <div 
-                className="w-full sm:w-auto px-4 sm:px-6 py-3 rounded-full text-white text-sm sm:text-base font-medium flex items-center justify-center gap-2 cursor-pointer border-none outline-none"
+              <Button 
+                className="w-full sm:w-auto px-4 sm:px-6 py-3 rounded-full text-white gradient-bg hover:shadow-lg text-sm sm:text-base"
                 onClick={(e) => {
                   e.preventDefault();
                   e.stopPropagation();
@@ -120,26 +120,15 @@ const HeroSection = () => {
                   window.open('https://calendly.com/progress-accountants/free-consultation-progress-accountants', '_blank', 'width=700,height=800,resizable=yes,scrollbars=yes');
                 }}
                 style={{ 
-                  background: 'linear-gradient(to right, #4F46E5 0%, #4F46E5 60%, #E935C1 100%)',
                   pointerEvents: 'auto',
                   position: 'relative',
-                  zIndex: 1000,
-                  cursor: 'pointer',
-                  transition: 'all 0.3s ease'
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'scale(1.02)';
-                  e.currentTarget.style.boxShadow = '0 8px 20px rgba(79, 70, 229, 0.3)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'scale(1)';
-                  e.currentTarget.style.boxShadow = 'none';
+                  zIndex: 1000
                 }}
               >
                 <span className="hidden sm:inline">Book Your Free Strategy Consultation</span>
                 <span className="sm:hidden">Book Free Consultation</span>
                 <ArrowRight className="ml-2 h-4 w-4" />
-              </div>
+              </Button>
               
               <Button 
                 variant="ghost" 
