@@ -3,7 +3,7 @@
 
 export const EMBED_FORMS = {
   // Contact page form
-  CONTACT_FORM: `<iframe src="https://e40479db-edfd-4265-9a8b-1e462b5725d1-00-290zw6wfwpbn.picard.replit.dev/embed/form/4" width="100%" height="750" frameborder="0" scrolling="no" style="border: none; border-radius: 8px; overflow: hidden;"></iframe>`,
+  CONTACT_FORM: `<iframe src="https://e40479db-edfd-4265-9a8b-1e462b5725d1-00-290zw6wfwpbn.picard.replit.dev/embed/form/4" width="100%" height="650" frameborder="0" style="border: none; border-radius: 8px;"></iframe>`,
   
   // Business Calculator lead capture form (required before download)
   BUSINESS_CALCULATOR_LEAD_FORM: `<iframe src="https://e40479db-edfd-4265-9a8b-1e462b5725d1-00-290zw6wfwpbn.picard.replit.dev/embed/form/1" width="100%" height="600" frameborder="0" style="border: none; border-radius: 8px;"></iframe>`,
@@ -44,8 +44,8 @@ export const hasValidEmbedCode = (embedCode: string): boolean => {
 
 // Form configuration
 export const FORM_CONFIG = {
-  defaultHeight: '750px',
+  defaultHeight: '650px',
   downloadRequiresForm: true, // Set to false to allow downloads without form completion
   formContainerClass: 'w-full bg-gradient-to-br from-slate-800/90 to-slate-900/90 border border-slate-600/50 p-6 rounded-xl shadow-lg',
-  iframeClass: 'w-full border-0 rounded-lg overflow-hidden'
+  iframeClass: 'w-full border-0 rounded-lg'
 };
