@@ -66,14 +66,22 @@ export default function SEOFooterSection() {
             </p>
             <div className="mb-10">
               <button 
+                type="button"
+                id="discovery-call-btn"
                 onClick={(e) => {
                   e.preventDefault();
                   e.stopPropagation();
-                  console.log('Button clicked - opening Calendly');
-                  window.open('https://calendly.com/progress-accountants/free-consultation-progress-accountants', '_blank', 'width=700,height=800,resizable=yes,scrollbars=yes');
+                  console.log('Discovery call button clicked - opening Calendly');
+                  try {
+                    window.open('https://calendly.com/progress-accountants/free-consultation-progress-accountants', '_blank', 'width=700,height=800,resizable=yes,scrollbars=yes');
+                  } catch (error) {
+                    console.error('Error opening Calendly:', error);
+                    window.location.href = 'https://calendly.com/progress-accountants/free-consultation-progress-accountants';
+                  }
+                  return false;
                 }}
                 style={{ 
-                  backgroundColor: 'var(--orange)', 
+                  backgroundColor: '#f15a29',
                   cursor: 'pointer',
                   padding: '1.5rem 2rem',
                   fontSize: '1.125rem',
@@ -84,11 +92,19 @@ export default function SEOFooterSection() {
                   transition: 'all 0.3s ease',
                   pointerEvents: 'auto',
                   position: 'relative',
-                  zIndex: 1000
+                  zIndex: 10000,
+                  boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+                  outline: 'none'
                 }}
-                className="glow-on-hover hover:-translate-y-[2px] transition duration-300"
-                onMouseOver={(e) => e.target.style.transform = 'translateY(-2px)'}
-                onMouseOut={(e) => e.target.style.transform = 'translateY(0)'}
+                className="discovery-call-button"
+                onMouseOver={(e) => {
+                  e.target.style.transform = 'translateY(-2px)';
+                  e.target.style.backgroundColor = '#e54e26';
+                }}
+                onMouseOut={(e) => {
+                  e.target.style.transform = 'translateY(0)';
+                  e.target.style.backgroundColor = '#f15a29';
+                }}
               >
                 👉 Let's build your growth engine — book your free discovery call
               </button>
