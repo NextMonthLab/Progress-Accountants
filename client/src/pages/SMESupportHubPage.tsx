@@ -1,7 +1,5 @@
 import { useState, useEffect } from "react";
-import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { organizations, deadlines, filters } from "@/data/smeSupport";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -49,265 +47,79 @@ const itemVariants = {
 };
 
 // HeroSection component
-const HeroSection = () => {
-  return (
-    <section 
-      className="relative py-20 md:py-28 overflow-hidden" 
-      style={{
-        backgroundImage: "linear-gradient(rgba(3, 28, 64, 0.87), rgba(3, 28, 64, 0.90)), url('/images/sme-support-hub-hero.png')",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundColor: "#031c40" // Navy fallback
-      }}
-    >
-      {/* Add decorative elements */}
-      <div className="absolute top-0 right-0 w-64 h-64 bg-purple-500 opacity-10 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl"></div>
-      <div className="absolute bottom-0 left-0 w-96 h-96 bg-blue-600 opacity-10 rounded-full translate-y-1/3 -translate-x-1/3 blur-3xl"></div>
-      
-      <div className="container mx-auto px-6 md:px-8 relative z-10">
-        <motion.div 
-          initial="hidden"
-          animate="visible"
-          variants={containerVariants}
-          className="max-w-3xl mx-auto text-center"
-        >
-          <motion.div variants={itemVariants}>
-            <Badge variant="outline" className="mb-4 bg-purple-100 text-purple-800 hover:bg-purple-200 border-purple-200 uppercase tracking-wide px-4 py-1 font-semibold text-sm shadow-sm">
-              📚 Business Resource Hub
-            </Badge>
-          </motion.div>
-          <motion.h1 
-            variants={itemVariants}
-            className="text-3xl md:text-5xl font-bold text-white mb-6 leading-tight drop-shadow-sm"
-          >
-            Everything Your Business Needs—All in One Place
-          </motion.h1>
-          <motion.p 
-            variants={itemVariants}
-            className="text-lg md:text-xl text-gray-200 mb-8 drop-shadow-sm max-w-2xl mx-auto"
-          >
-            From Companies House deadlines to HMRC contact lines, this page helps you stay compliant, informed, and in control. Built for small business owners who need quick answers and up-to-date resources—without digging through government websites.
-          </motion.p>
-          <motion.div
-            variants={itemVariants}
-            className="flex flex-col sm:flex-row gap-4 justify-center mt-8"
-          >
-            <Button 
-              variant="default" 
-              size="lg" 
-              className="bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] hover:shadow-lg hover:shadow-purple-500/25 hover:-translate-y-1 transition-all duration-300 text-white"
-              onClick={() => {
-                // Scroll to resources section
-                const resourcesSection = document.getElementById("resources-section");
-                resourcesSection?.scrollIntoView({ behavior: "smooth" });
-              }}
-            >
-              <Download className="mr-2 h-5 w-5" />
-              Download Resources
-            </Button>
-            <Button 
-              variant="outline" 
-              size="lg" 
-              className="bg-white/10 backdrop-blur-sm text-white border-white/30 hover:bg-white/20 hover:border-white/50 shadow-lg"
-              onClick={() => {
-                // Scroll to directory section
-                const directorySection = document.getElementById("directory-section");
-                directorySection?.scrollIntoView({ behavior: "smooth" });
-              }}
-            >
-              <Building2 className="mr-2 h-5 w-5" />
-              Browse Directory
-            </Button>
-          </motion.div>
-        </motion.div>
-      </div>
-    </section>
-  );
-};
-
-// Introduction section
-const IntroSection = () => (
-  <section className="py-14 bg-black">
-    <div className="container mx-auto px-6 md:px-8">
-      <div className="max-w-4xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="bg-gradient-to-br from-gray-900 to-black p-6 md:p-8 rounded-xl shadow-md border border-gray-800 relative overflow-hidden"
-        >
-          {/* Decorative elements */}
-          <div className="absolute top-0 right-0 h-24 w-24 bg-purple-900/20 rounded-full -translate-y-1/3 translate-x-1/3 z-0"></div>
-          <div className="absolute bottom-0 left-0 h-32 w-32 bg-blue-900/20 rounded-full translate-y-1/2 -translate-x-1/4 z-0"></div>
-          
-          <div className="relative z-10">
-            <div className="flex items-center mb-4">
-              <Info className="h-6 w-6 text-purple-500 mr-3 flex-shrink-0" />
-              <h3 className="text-xl font-semibold text-white">Why We Built This Hub</h3>
-            </div>
-            <p className="text-gray-300 text-lg leading-relaxed mb-4">
-              Running a business often feels like juggling a dozen tasks at once. That's why we created the SME Support Hub: to bring you the essential information every UK business owner needs—in one reliable, regularly updated place.
-            </p>
-            <div className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <div className="bg-gray-800 p-4 rounded-lg border border-gray-700">
-                <div className="flex items-center mb-2">
-                  <Building2 className="h-5 w-5 text-blue-400 mr-2" />
-                  <span className="font-medium text-white">Directory</span>
-                </div>
-                <p className="text-sm text-gray-400">All the key contacts for government departments and support bodies in one easy-to-browse list.</p>
-              </div>
-              <div className="bg-gray-800 p-4 rounded-lg border border-gray-700">
-                <div className="flex items-center mb-2">
-                  <Calendar className="h-5 w-5 text-purple-400 mr-2" />
-                  <span className="font-medium text-white">Deadlines</span>
-                </div>
-                <p className="text-sm text-gray-400">Never miss a tax filing or compliance date again—stay ahead with our official calendar.</p>
-              </div>
-              <div className="bg-gray-800 p-4 rounded-lg border border-gray-700">
-                <div className="flex items-center mb-2">
-                  <Download className="h-5 w-5 text-green-400 mr-2" />
-                  <span className="font-medium text-white">Downloads</span>
-                </div>
-                <p className="text-sm text-gray-400">Print-ready PDF resources for your desk, inbox, or team documentation.</p>
-              </div>
-            </div>
-          </div>
-        </motion.div>
-      </div>
+const HeroSection = () => (
+  <section className="relative py-20 bg-black overflow-hidden">
+    <div className="absolute inset-0 bg-gradient-to-r from-[#1a0b2e] via-black to-[#16213e] opacity-90" />
+    <div className="container mx-auto px-6 md:px-8 relative z-10">
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+        className="max-w-4xl mx-auto text-center"
+      >
+        <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
+          SME Support Hub
+        </h1>
+        <p className="text-xl md:text-2xl text-gray-300 mb-8 max-w-3xl mx-auto">
+          Everything UK small businesses need in one place—essential contacts, key deadlines, and downloadable resources.
+        </p>
+        <div className="flex flex-wrap justify-center gap-4 text-gray-300">
+          <span className="flex items-center">
+            <CheckCircle className="h-5 w-5 mr-2 text-[#7B3FE4]" />
+            Verified Contact Details
+          </span>
+          <span className="flex items-center">
+            <CheckCircle className="h-5 w-5 mr-2 text-[#7B3FE4]" />
+            Key Tax Deadlines
+          </span>
+          <span className="flex items-center">
+            <CheckCircle className="h-5 w-5 mr-2 text-[#7B3FE4]" />
+            Free PDF Resources
+          </span>
+        </div>
+      </motion.div>
     </div>
   </section>
 );
 
-// Organization card component
-const OrganizationCard = ({ organization }: { organization: typeof organizations[0] }) => {
-  return (
-    <motion.div variants={itemVariants}>
-      <Card className="h-full hover:shadow-md transition-shadow bg-gray-900 border-gray-700">
-        <CardHeader className="pb-2">
-          <CardTitle className="text-white flex items-center">
-            <Building2 className="h-5 w-5 mr-2 text-purple-500" />
-            {organization.name}
-          </CardTitle>
-          <CardDescription className="mt-2 text-gray-300">
-            {organization.description}
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-3">
-          <div className="flex items-start">
-            <ExternalLink className="h-4 w-4 mr-2 text-gray-500 mt-1 flex-shrink-0" />
-            <a 
-              href={organization.website} 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="text-purple-600 hover:text-purple-800 hover:underline"
-            >
-              {organization.website.replace(/^https?:\/\/(www\.)?/, '')}
-            </a>
-          </div>
-          
-          {organization.generalPhone && (
-            <div className="flex items-start">
-              <Phone className="h-4 w-4 mr-2 text-gray-500 mt-1 flex-shrink-0" />
-              <a href={`tel:${organization.generalPhone.replace(/\s/g, '')}`} className="text-gray-300 hover:text-white">
-                {organization.generalPhone}
-              </a>
-            </div>
-          )}
-          
-          {organization.specialistPhones && organization.specialistPhones.length > 0 && (
-            <div className="space-y-2 pl-6">
-              {organization.specialistPhones.map((phone, index) => (
-                <div key={index} className="flex items-start text-sm">
-                  <span className="font-medium mr-2 text-gray-300">{phone.label}:</span>
-                  <a href={`tel:${phone.number.replace(/\s/g, '')}`} className="text-gray-300 hover:text-white">
-                    {phone.number}
-                  </a>
-                </div>
-              ))}
-            </div>
-          )}
-          
-          {organization.email && (
-            <div className="flex items-start">
-              <Mail className="h-4 w-4 mr-2 text-gray-500 mt-1 flex-shrink-0" />
-              <a href={`mailto:${organization.email}`} className="text-gray-300 hover:text-white break-all">
-                {organization.email}
-              </a>
-            </div>
-          )}
-          
-          {organization.textphone && (
-            <div className="flex items-start">
-              <Phone className="h-4 w-4 mr-2 text-gray-500 mt-1 flex-shrink-0" />
-              <span className="text-gray-300">
-                Textphone: {organization.textphone}
-              </span>
-            </div>
-          )}
-          
-          {organization.hours && (
-            <div className="flex items-start">
-              <Clock className="h-4 w-4 mr-2 text-gray-500 mt-1 flex-shrink-0" />
-              <span className="text-gray-300">{organization.hours}</span>
-            </div>
-          )}
-        </CardContent>
-      </Card>
-    </motion.div>
-  );
-};
+// IntroSection component
+const IntroSection = () => (
+  <section className="py-16 bg-black">
+    <div className="container mx-auto px-6 md:px-8">
+      <motion.div
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-100px" }}
+        variants={containerVariants}
+        className="max-w-4xl mx-auto text-center"
+      >
+        <motion.h2 variants={itemVariants} className="text-3xl font-bold text-white mb-6">
+          Never miss an important deadline again
+        </motion.h2>
+        <motion.p variants={itemVariants} className="text-gray-300 text-lg mb-12 max-w-3xl mx-auto">
+          We keep track of the key dates and deadlines that matter to your business, 
+          plus verified contact details for all the essential UK business support organisations.
+        </motion.p>
+      </motion.div>
+    </div>
+  </section>
+);
 
-// Deadline row component
-const DeadlineRow = ({ deadline }: { deadline: typeof deadlines[0] }) => {
-  // Calculate if the deadline is upcoming (within 30 days)
-  const today = new Date();
-  const deadlineDate = new Date(deadline.date);
-  const diffTime = Math.abs(deadlineDate.getTime() - today.getTime());
-  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-  const isUpcoming = diffDays <= 30 && deadlineDate > today;
-
-  return (
-    <motion.tr
-      variants={itemVariants}
-      className={`border-b border-gray-700 ${isUpcoming ? 'bg-purple-900/20' : ''}`}
-    >
-      <td className="py-4 px-4">
-        <div className="flex items-center">
-          <CalendarIcon className="h-4 w-4 mr-2 text-gray-400" />
-          <span className="font-medium text-white">{deadline.date}</span>
-        </div>
-      </td>
-      <td className="py-4 px-4">
-        <div className="flex items-center">
-          <span className="text-gray-300">{deadline.description}</span>
-          {isUpcoming && (
-            <Badge variant="outline" className="ml-2 bg-purple-900/30 text-purple-300 border-purple-600">
-              Upcoming
-            </Badge>
-          )}
-        </div>
-      </td>
-    </motion.tr>
-  );
-};
-
-// Directory section
+// DirectorySection component
 const DirectorySection = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedFilter, setSelectedFilter] = useState("All");
-  
-  // Filter the organizations based on search term and selected filter
+  const [selectedFilter, setSelectedFilter] = useState("all");
+
   const filteredOrganizations = organizations.filter(org => {
-    const matchesSearch = org.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
+    const matchesSearch = org.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          org.description.toLowerCase().includes(searchTerm.toLowerCase());
-    // For now, filter functionality works with search only until categories are added to data
-    const matchesFilter = selectedFilter === "All" || 
-                         org.description.toLowerCase().includes(selectedFilter.toLowerCase());
+    const matchesFilter = selectedFilter === "all" || org.category === selectedFilter;
+    
     return matchesSearch && matchesFilter;
   });
 
   return (
-    <section className="py-12 bg-black">
+    <section className="py-16 bg-black">
       <div className="container mx-auto px-6 md:px-8">
         <motion.div
           initial="hidden"
@@ -316,66 +128,134 @@ const DirectorySection = () => {
           variants={containerVariants}
           className="max-w-6xl mx-auto"
         >
-          <motion.div variants={itemVariants} className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-white mb-4">National SME Directory</h2>
-            <p className="text-gray-300 max-w-3xl mx-auto">
-              Trusted Organisations & Contact Details for UK Businesses<br />
-              We keep this directory current, so you're always connected to the right support.
-            </p>
-          </motion.div>
-          
-          {/* Search and filter */}
           <motion.div variants={itemVariants} className="mb-8">
-            <div className="flex flex-col md:flex-row gap-4">
-              <div className="relative flex-grow">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
-                <input
-                  type="text"
-                  placeholder="Search organisations..."
-                  className="w-full pl-10 pr-4 py-2 rounded-md border border-gray-600 bg-gray-800 text-white placeholder-gray-400 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none"
+            <div className="flex flex-col md:flex-row gap-4 mb-6">
+              <div className="relative flex-1">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+                <Input
+                  placeholder="Search organizations..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
+                  className="pl-10 bg-gray-800 border-gray-600 text-white placeholder-gray-400"
                 />
               </div>
-              
-              <div className="relative md:w-64">
-                <Filter className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
-                <select
-                  className="w-full pl-10 pr-4 py-2 rounded-md border border-gray-600 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none appearance-none bg-gray-800 text-white"
-                  value={selectedFilter}
-                  onChange={(e) => setSelectedFilter(e.target.value)}
-                >
-                  {filters.map((filter) => (
-                    <option key={filter} value={filter}>{filter}</option>
-                  ))}
-                </select>
+              <div className="flex gap-2 flex-wrap">
+                {filters.map((filter) => (
+                  <Button
+                    key={filter.value}
+                    variant={selectedFilter === filter.value ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => setSelectedFilter(filter.value)}
+                    className={selectedFilter === filter.value ? 
+                      "bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] text-white" : 
+                      "border-gray-600 text-gray-300 hover:bg-gray-700"
+                    }
+                  >
+                    <Filter className="h-4 w-4 mr-1" />
+                    {filter.label}
+                  </Button>
+                ))}
               </div>
             </div>
           </motion.div>
-          
-          {/* Organizations grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-            {filteredOrganizations.map((organization, index) => (
-              <OrganizationCard key={index} organization={organization} />
+
+          <motion.div variants={itemVariants} className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {filteredOrganizations.map((org) => (
+              <Card key={org.id} className="bg-gray-800/50 border-gray-700 hover:bg-gray-700/50 transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/10">
+                <CardHeader className="pb-3">
+                  <div className="flex justify-between items-start">
+                    <CardTitle className="text-lg text-white">{org.name}</CardTitle>
+                    <Badge variant="secondary" className="text-xs bg-purple-900/30 text-purple-300 border-purple-600/30">
+                      {filters.find(f => f.value === org.category)?.label}
+                    </Badge>
+                  </div>
+                  <CardDescription className="text-gray-300">
+                    {org.description}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="pt-0">
+                  <div className="space-y-2 text-sm">
+                    {org.phone && (
+                      <div className="flex items-center text-gray-300">
+                        <Phone className="h-4 w-4 mr-2 text-purple-400" />
+                        <a href={`tel:${org.phone}`} className="hover:text-purple-300 transition-colors">
+                          {org.phone}
+                        </a>
+                      </div>
+                    )}
+                    {org.email && (
+                      <div className="flex items-center text-gray-300">
+                        <Mail className="h-4 w-4 mr-2 text-purple-400" />
+                        <a href={`mailto:${org.email}`} className="hover:text-purple-300 transition-colors">
+                          {org.email}
+                        </a>
+                      </div>
+                    )}
+                    {org.hours && (
+                      <div className="flex items-center text-gray-300">
+                        <Clock className="h-4 w-4 mr-2 text-purple-400" />
+                        <span>{org.hours}</span>
+                      </div>
+                    )}
+                  </div>
+                </CardContent>
+                <CardFooter className="pt-3">
+                  <a
+                    href={org.website}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center text-purple-400 hover:text-purple-300 transition-colors"
+                  >
+                    Visit Website
+                    <ExternalLink className="h-4 w-4 ml-1" />
+                  </a>
+                </CardFooter>
+              </Card>
             ))}
           </div>
+
+          {filteredOrganizations.length === 0 && (
+            <motion.div variants={itemVariants} className="text-center py-12">
+              <p className="text-gray-400 text-lg">No organizations found matching your criteria.</p>
+            </motion.div>
+          )}
         </motion.div>
       </div>
     </section>
   );
 };
 
-// Deadlines section
+// DeadlineRow component
+const DeadlineRow = ({ deadline }: { deadline: any }) => {
+  const isUpcoming = deadline.status === 'upcoming';
+  
+  return (
+    <tr className={`border-b border-gray-700 ${isUpcoming ? 'bg-purple-900/20' : ''}`}>
+      <td className="py-3 px-4 text-white font-medium">
+        {deadline.date}
+        {isUpcoming && (
+          <Badge className="ml-2 bg-purple-600 text-white text-xs">
+            {deadline.status}
+          </Badge>
+        )}
+      </td>
+      <td className="py-3 px-4 text-gray-300">
+        {deadline.description}
+      </td>
+    </tr>
+  );
+};
+
+// DeadlinesSection component
 const DeadlinesSection = () => {
-  // Sort deadlines by date
-  const sortedDeadlines = [...deadlines].sort((a, b) => {
-    const dateA = new Date(a.date);
-    const dateB = new Date(b.date);
+  const sortedDeadlines = deadlines.sort((a, b) => {
+    const dateA = new Date(a.date + ' 2025');
+    const dateB = new Date(b.date + ' 2025');
     return dateA.getTime() - dateB.getTime();
   });
 
   return (
-    <section className="py-12 bg-white">
+    <section className="py-16 bg-black">
       <div className="container mx-auto px-6 md:px-8">
         <motion.div
           initial="hidden"
@@ -421,82 +301,6 @@ const DeadlinesSection = () => {
   );
 };
 
-// CTA section
-const CTASection = () => (
-  <section className="py-16 relative overflow-hidden">
-    <div className="absolute inset-0" style={{
-      backgroundImage: "linear-gradient(rgba(3, 28, 64, 0.7), rgba(3, 28, 64, 0.7)), url('/images/sme-support-cta.png')",
-      backgroundSize: "cover",
-      backgroundPosition: "center",
-      backgroundColor: "#031c40" // Navy fallback
-    }} />
-    <div className="container mx-auto px-6 md:px-8 relative z-10">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6 }}
-        className="max-w-4xl mx-auto text-center"
-      >
-        <h2 className="text-3xl font-bold text-white mb-6">📞 Ready to Get Expert Support?</h2>
-        <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
-          Book a chat with our team and let us help you navigate UK business requirements with confidence.
-        </p>
-        <Button size="lg" className="bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] hover:shadow-lg hover:shadow-purple-500/25 hover:-translate-y-1 transition-all duration-300 text-white">
-          Schedule a Call
-          <ArrowRight className="ml-2 h-5 w-5" />
-        </Button>
-      </motion.div>
-    </div>
-  </section>
-);
-
-// Main SME Support Hub page component
-const SMESupportHubPage = () => {
-  useEffect(() => {
-    // Scroll to top on page load
-    window.scrollTo(0, 0);
-    
-    // Set page metadata
-    document.title = "SME Support Hub | Essential Contacts & Tax Deadlines for UK Businesses";
-    const metaDescription = document.querySelector('meta[name="description"]');
-    if (metaDescription) {
-      metaDescription.setAttribute("content", "Everything UK small businesses need in one place—verified contact details for HMRC, Companies House, and more, plus key tax and filing deadlines.");
-    }
-  }, []);
-
-  return (
-    <div>
-      <HeroSection />
-      <IntroSection />
-      <Tabs defaultValue="directory" className="w-full">
-        <div className="container mx-auto px-6 md:px-8 py-8">
-          <TabsList className="mx-auto w-full max-w-md grid grid-cols-2">
-            <TabsTrigger value="directory" className="text-base">
-              <Building2 className="h-5 w-5 mr-2" />
-              Organizations
-            </TabsTrigger>
-            <TabsTrigger value="deadlines" className="text-base">
-              <Calendar className="h-5 w-5 mr-2" />
-              Deadlines
-            </TabsTrigger>
-          </TabsList>
-        </div>
-        
-        <TabsContent value="directory">
-          <DirectorySection />
-        </TabsContent>
-        
-        <TabsContent value="deadlines">
-          <DeadlinesSection />
-        </TabsContent>
-      </Tabs>
-      <DownloadResourcesSection />
-      <CTASection />
-    </div>
-  );
-};
-
 // Form schema for download resources
 const downloadFormSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters" }),
@@ -521,31 +325,6 @@ const DownloadResourcesSection = () => {
       setLeadCaptureEmbedCode(EMBED_FORMS.BUSINESS_CALCULATOR_LEAD_FORM);
     }
   }, []);
-  
-  const form = useForm<DownloadFormValues>({
-    resolver: zodResolver(downloadFormSchema),
-    defaultValues: {
-      name: "",
-      email: "",
-      businessName: "",
-      consent: false,
-    },
-  });
-
-  function onSubmit(data: DownloadFormValues) {
-    // In a real implementation, this would send the data to a server
-    console.log("Form submitted:", data);
-    
-    // Show success toast
-    toast({
-      title: "Success!",
-      description: "Your resources are now ready to download.",
-      variant: "default",
-    });
-    
-    // Set submitted state to show download links
-    setIsSubmitted(true);
-  }
 
   return (
     <section className="py-16 bg-black">
@@ -627,14 +406,153 @@ const DownloadResourcesSection = () => {
                 </div>
                 
                 <p className="mt-8 text-sm text-gray-400">
-                  We've also sent these links to your email for future reference.
+                  Resources are now available for download.
                 </p>
               </div>
             )}
           </div>
         </motion.div>
+
+        {/* Lead Capture Form Modal */}
+        {showLeadCaptureForm && (
+          <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+            <div className="bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-600/50 rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden">
+              <div className="flex items-center justify-between p-6 border-b border-slate-600/30">
+                <h3 className="text-2xl font-bold text-white">Complete to Download Your Resources</h3>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="text-slate-400 hover:text-white"
+                  onClick={() => setShowLeadCaptureForm(false)}
+                >
+                  <X className="h-6 w-6" />
+                </Button>
+              </div>
+              <div className="p-6">
+                {leadCaptureEmbedCode ? (
+                  <div className="space-y-4">
+                    <div 
+                      className="w-full"
+                      style={{ minHeight: FORM_CONFIG.defaultHeight }}
+                      dangerouslySetInnerHTML={{ __html: leadCaptureEmbedCode }}
+                    />
+                    <div className="text-center pt-4 border-t border-slate-600/30">
+                      <p className="text-slate-400 text-sm mb-3">
+                        Having trouble with the form? You can still download your resources:
+                      </p>
+                      <Button
+                        onClick={() => {
+                          setIsSubmitted(true);
+                          setShowLeadCaptureForm(false);
+                          toast({ title: "Download started", description: "Your SME resources are being prepared." });
+                        }}
+                        variant="outline"
+                        className="border-purple-500 text-purple-400 hover:bg-purple-50/10"
+                      >
+                        Skip Form & Download Resources
+                      </Button>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="text-center py-12">
+                    <h4 className="text-xl font-semibold text-white mb-4">Lead Capture Form Ready</h4>
+                    <p className="text-slate-300 mb-6">
+                      Add your lead capture form iframe embed code to SME_SUPPORT_LEAD_FORM in /utils/embedForms.ts
+                    </p>
+                    <Button
+                      onClick={() => {
+                        setIsSubmitted(true);
+                        setShowLeadCaptureForm(false);
+                        toast({ title: "Download started", description: "Your SME resources are being prepared." });
+                      }}
+                      className="bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] hover:shadow-lg hover:shadow-purple-500/25 text-white"
+                    >
+                      Continue to Download (Demo)
+                    </Button>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </section>
+  );
+};
+
+// CTA section
+const CTASection = () => (
+  <section className="py-16 relative overflow-hidden">
+    <div className="absolute inset-0" style={{
+      backgroundImage: "linear-gradient(rgba(3, 28, 64, 0.7), rgba(3, 28, 64, 0.7)), url('/images/sme-support-cta.png')",
+      backgroundSize: "cover",
+      backgroundPosition: "center",
+      backgroundColor: "#031c40" // Navy fallback
+    }} />
+    <div className="container mx-auto px-6 md:px-8 relative z-10">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+        className="max-w-4xl mx-auto text-center"
+      >
+        <h2 className="text-3xl font-bold text-white mb-6">📞 Ready to Get Expert Support?</h2>
+        <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
+          Book a chat with our team and let us help you navigate UK business requirements with confidence.
+        </p>
+        <Button size="lg" className="bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] hover:shadow-lg hover:shadow-purple-500/25 hover:-translate-y-1 transition-all duration-300 text-white">
+          Schedule a Call
+          <ArrowRight className="ml-2 h-5 w-5" />
+        </Button>
+      </motion.div>
+    </div>
+  </section>
+);
+
+// Main SME Support Hub page component
+const SMESupportHubPage = () => {
+  useEffect(() => {
+    // Scroll to top on page load
+    window.scrollTo(0, 0);
+    
+    // Set page metadata
+    document.title = "SME Support Hub | Essential Contacts & Tax Deadlines for UK Businesses";
+    const metaDescription = document.querySelector('meta[name="description"]');
+    if (metaDescription) {
+      metaDescription.setAttribute("content", "Everything UK small businesses need in one place—verified contact details for HMRC, Companies House, and more, plus key tax and filing deadlines.");
+    }
+  }, []);
+
+  return (
+    <div>
+      <HeroSection />
+      <IntroSection />
+      <Tabs defaultValue="directory" className="w-full">
+        <div className="container mx-auto px-6 md:px-8 py-8">
+          <TabsList className="mx-auto w-full max-w-md grid grid-cols-2">
+            <TabsTrigger value="directory" className="text-base">
+              <Building2 className="h-5 w-5 mr-2" />
+              Organizations
+            </TabsTrigger>
+            <TabsTrigger value="deadlines" className="text-base">
+              <Calendar className="h-5 w-5 mr-2" />
+              Deadlines
+            </TabsTrigger>
+          </TabsList>
+        </div>
+        
+        <TabsContent value="directory">
+          <DirectorySection />
+        </TabsContent>
+        
+        <TabsContent value="deadlines">
+          <DeadlinesSection />
+        </TabsContent>
+      </Tabs>
+      <DownloadResourcesSection />
+      <CTASection />
+    </div>
   );
 };
 
