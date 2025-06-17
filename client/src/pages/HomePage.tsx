@@ -10,28 +10,43 @@ import { useEffect } from "react";
 const HomePage = () => {
   const { businessIdentity, isLoading } = useBusinessIdentity();
 
-  // Completely disable global anchor handling that causes scroll interference
+  // Add smart anchor handling that allows external links but handles internal ones
   useEffect(() => {
-    // Remove any existing global click handlers that might be causing scroll
-    const originalAddEventListener = document.addEventListener;
-    const clickHandlers: Array<{ handler: EventListener; options?: boolean | AddEventListenerOptions }> = [];
-    
-    // Intercept and prevent anchor click handlers from being added
-    document.addEventListener = function(type: string, listener: EventListener, options?: boolean | AddEventListenerOptions) {
-      if (type === 'click') {
-        // Don't add click handlers that might interfere with our buttons
-        const handlerString = listener.toString();
-        if (handlerString.includes('anchor') || handlerString.includes('closest') || handlerString.includes('scrollTo')) {
-          console.log('Blocked interfering click handler');
-          return;
-        }
+    const handleAnchorClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      const anchor = target.closest('a');
+      
+      if (!anchor) return;
+      
+      const href = anchor.getAttribute('href');
+      if (!href) return;
+      
+      // Allow external URLs (calendly, mailto, tel, etc.) to work normally
+      if (href.startsWith('http') || href.startsWith('mailto:') || href.startsWith('tel:') || href.includes('calendly')) {
+        return; // Let the browser handle these normally
       }
-      return originalAddEventListener.call(this, type, listener, options);
+      
+      // Only handle internal anchor links that start with #
+      if (!href.startsWith('#')) return;
+      
+      e.preventDefault();
+      
+      const targetId = href === '#' ? null : href;
+      if (!targetId) return;
+      
+      const targetElement = document.querySelector(targetId);
+      if (targetElement) {
+        window.scrollTo({
+          top: targetElement.getBoundingClientRect().top + window.scrollY - 80,
+          behavior: 'smooth'
+        });
+      }
     };
+
+    document.addEventListener('click', handleAnchorClick);
     
     return () => {
-      // Restore original addEventListener
-      document.addEventListener = originalAddEventListener;
+      document.removeEventListener('click', handleAnchorClick);
     };
   }, []);
 

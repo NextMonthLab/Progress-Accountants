@@ -3,7 +3,7 @@ import { footerBanburyTown, footerOfficeFront } from "../assets/imagePlaceholder
 import { useEffect, useRef } from "react";
 import { useBusinessIdentity } from "@/hooks/use-business-identity";
 import { MapPin, Phone, Mail, Globe } from "lucide-react";
-import CalendlyButton from "./CalendlyButton";
+
 
 export default function SEOFooterSection() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -65,7 +65,16 @@ export default function SEOFooterSection() {
             >
               We specialise in small business accounting, and we're certified Xero accountants too. But most of all, we help our clients grow — with practical, forward-thinking support you won't find anywhere else.
             </p>
-            <CalendlyButton />
+            <div className="mb-10">
+              <button
+                onClick={() => {
+                  window.open('https://calendly.com/progress-accountants/free-consultation-progress-accountants', '_blank');
+                }}
+                className="bg-[#f15a29] hover:bg-[#e54e26] text-white px-8 py-6 text-lg rounded-lg font-medium transition-all duration-300 hover:transform hover:-translate-y-1 shadow-lg"
+              >
+                👉 Let's build your growth engine — book your free discovery call
+              </button>
+            </div>
 
             {/* Contact Information */}
             <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-4">
