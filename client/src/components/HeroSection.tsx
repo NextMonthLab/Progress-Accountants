@@ -117,11 +117,7 @@ const HeroSection = () => {
                   e.preventDefault();
                   e.stopPropagation();
                   console.log('Button clicked - opening Calendly');
-                  alert('Button was clicked!');
                   window.open('https://calendly.com/progress-accountants/free-consultation-progress-accountants', '_blank', 'width=700,height=800,resizable=yes,scrollbars=yes');
-                }}
-                onMouseDown={(e) => {
-                  console.log('Mouse down on button');
                 }}
                 style={{ 
                   background: 'linear-gradient(to right, #4F46E5 0%, #4F46E5 60%, #E935C1 100%)',
@@ -132,8 +128,8 @@ const HeroSection = () => {
                   transition: 'all 0.3s ease'
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'scale(1.05)';
-                  e.currentTarget.style.boxShadow = '0 10px 25px rgba(79, 70, 229, 0.4)';
+                  e.currentTarget.style.transform = 'scale(1.02)';
+                  e.currentTarget.style.boxShadow = '0 8px 20px rgba(79, 70, 229, 0.3)';
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.transform = 'scale(1)';
