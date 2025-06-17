@@ -67,10 +67,18 @@ export default function SEOFooterSection() {
             </p>
             <div className="mb-10">
               <button
-                onClick={() => {
-                  window.open('https://calendly.com/progress-accountants/free-consultation-progress-accountants', '_blank');
+                onClick={(e) => {
+                  console.log('Discovery call button clicked');
+                  e.preventDefault();
+                  e.stopPropagation();
+                  const success = window.open('https://calendly.com/progress-accountants/free-consultation-progress-accountants', '_blank');
+                  if (!success) {
+                    console.log('Popup blocked, trying alternative');
+                    window.location.href = 'https://calendly.com/progress-accountants/free-consultation-progress-accountants';
+                  }
                 }}
                 className="bg-[#f15a29] hover:bg-[#e54e26] text-white px-8 py-6 text-lg rounded-lg font-medium transition-all duration-300 hover:transform hover:-translate-y-1 shadow-lg"
+                style={{ position: 'relative', zIndex: 9999 }}
               >
                 👉 Let's build your growth engine — book your free discovery call
               </button>
