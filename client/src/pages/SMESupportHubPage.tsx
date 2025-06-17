@@ -291,8 +291,8 @@ const DownloadResourcesSection = () => {
   const { toast } = useToast();
 
   useEffect(() => {
-    if (hasValidEmbedCode(EMBED_FORMS.BUSINESS_CALCULATOR_LEAD_FORM)) {
-      setLeadCaptureEmbedCode(EMBED_FORMS.BUSINESS_CALCULATOR_LEAD_FORM);
+    if (hasValidEmbedCode(EMBED_FORMS.SME_SUPPORT_LEAD_FORM)) {
+      setLeadCaptureEmbedCode(EMBED_FORMS.SME_SUPPORT_LEAD_FORM);
     }
   }, []);
 
