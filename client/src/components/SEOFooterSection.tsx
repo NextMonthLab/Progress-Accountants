@@ -65,17 +65,33 @@ export default function SEOFooterSection() {
               We specialise in small business accounting, and we're certified Xero accountants too. But most of all, we help our clients grow — with practical, forward-thinking support you won't find anywhere else.
             </p>
             <div className="mb-10">
-              <Button 
-                onClick={() => {
+              <button 
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
                   console.log('Button clicked - opening Calendly');
                   window.open('https://calendly.com/progress-accountants/free-consultation-progress-accountants', '_blank', 'width=700,height=800,resizable=yes,scrollbars=yes');
                 }}
-                size="lg" 
-                style={{ backgroundColor: 'var(--orange)', cursor: 'pointer' }}
-                className="px-8 py-6 text-lg glow-on-hover hover:-translate-y-[2px] transition duration-300"
+                style={{ 
+                  backgroundColor: 'var(--orange)', 
+                  cursor: 'pointer',
+                  padding: '1.5rem 2rem',
+                  fontSize: '1.125rem',
+                  borderRadius: '0.5rem',
+                  border: 'none',
+                  color: 'white',
+                  fontWeight: '500',
+                  transition: 'all 0.3s ease',
+                  pointerEvents: 'auto',
+                  position: 'relative',
+                  zIndex: 1000
+                }}
+                className="glow-on-hover hover:-translate-y-[2px] transition duration-300"
+                onMouseOver={(e) => e.target.style.transform = 'translateY(-2px)'}
+                onMouseOut={(e) => e.target.style.transform = 'translateY(0)'}
               >
                 👉 Let's build your growth engine — book your free discovery call
-              </Button>
+              </button>
             </div>
 
             {/* Contact Information */}
