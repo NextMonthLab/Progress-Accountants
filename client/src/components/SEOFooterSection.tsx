@@ -65,9 +65,10 @@ export default function SEOFooterSection() {
               We specialise in small business accounting, and we're certified Xero accountants too. But most of all, we help our clients grow — with practical, forward-thinking support you won't find anywhere else.
             </p>
             <div className="mb-10">
-              <span 
-                className="calendly-button-unique"
-                data-calendly-action="open"
+              <a 
+                href="https://calendly.com/progress-accountants/free-consultation-progress-accountants"
+                target="_blank"
+                rel="noopener noreferrer"
                 style={{ 
                   backgroundColor: '#f15a29',
                   cursor: 'pointer',
@@ -85,7 +86,8 @@ export default function SEOFooterSection() {
                   outline: 'none',
                   display: 'inline-block',
                   textAlign: 'center',
-                  userSelect: 'none'
+                  userSelect: 'none',
+                  textDecoration: 'none'
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.transform = 'translateY(-2px)';
@@ -97,39 +99,7 @@ export default function SEOFooterSection() {
                 }}
               >
                 👉 Let's build your growth engine — book your free discovery call
-              </span>
-              <script dangerouslySetInnerHTML={{
-                __html: `
-                  (function() {
-                    function initCalendlyButton() {
-                      const button = document.querySelector('.calendly-button-unique');
-                      if (button && !button.hasAttribute('data-calendly-initialized')) {
-                        button.setAttribute('data-calendly-initialized', 'true');
-                        button.addEventListener('click', function(e) {
-                          e.preventDefault();
-                          e.stopImmediatePropagation();
-                          console.log('Calendly button clicked directly');
-                          try {
-                            window.open('https://calendly.com/progress-accountants/free-consultation-progress-accountants', '_blank', 'width=700,height=800,resizable=yes,scrollbars=yes');
-                          } catch (error) {
-                            window.location.href = 'https://calendly.com/progress-accountants/free-consultation-progress-accountants';
-                          }
-                          return false;
-                        }, true);
-                      }
-                    }
-                    
-                    if (document.readyState === 'loading') {
-                      document.addEventListener('DOMContentLoaded', initCalendlyButton);
-                    } else {
-                      initCalendlyButton();
-                    }
-                    
-                    // Re-init after any page updates
-                    setTimeout(initCalendlyButton, 100);
-                  })();
-                `
-              }} />
+              </a>
             </div>
 
             {/* Contact Information */}
