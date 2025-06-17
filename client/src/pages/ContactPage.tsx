@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import ContactForm from '@/components/ContactForm';
 import { MapPin, Phone, Mail, Clock } from 'lucide-react';
+import { EMBED_FORMS, hasValidEmbedCode, FORM_CONFIG } from '@/utils/embedForms';
 
 export default function ContactPage() {
-  const { EMBED_FORMS, hasValidEmbedCode, FORM_CONFIG } = await import('@/utils/embedForms');
   const [contactFormEmbedCode, setContactFormEmbedCode] = useState<string>('');
 
   useEffect(() => {
@@ -212,11 +212,18 @@ export default function ContactPage() {
               {contactFormEmbedCode ? (
                 <div 
                   className="w-full"
-                  style={{ minHeight: '600px' }}
+                  style={{ minHeight: FORM_CONFIG.defaultHeight }}
                   dangerouslySetInnerHTML={{ __html: contactFormEmbedCode }}
                 />
               ) : (
-                <ContactForm />
+                <div>
+                  <ContactForm />
+                  <div className="mt-4 p-4 bg-blue-900/20 border border-blue-500/30 rounded-lg">
+                    <p className="text-sm text-blue-300">
+                      <strong>Ready for external form integration:</strong> Add your iframe embed code to the CONTACT_FORM configuration in /utils/embedForms.ts
+                    </p>
+                  </div>
+                </div>
               )}
             </div>
           </div>

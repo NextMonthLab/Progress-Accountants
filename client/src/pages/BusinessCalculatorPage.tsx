@@ -3,9 +3,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import { 
   ArrowRight, ArrowLeft, BarChart3, Calculator, CheckCircle, 
   LucideIcon, PieChart, Users, Building, MapPin, PoundSterling, 
-  CreditCard, Briefcase, TrendingUp, Download, Mail,
+  CreditCard, Briefcase, TrendingUp, Download, Mail, X,
   Award, FileText, Sparkles, Shield, Clock, LifeBuoy, Zap
 } from "lucide-react";
+import { EMBED_FORMS, hasValidEmbedCode, FORM_CONFIG } from "@/utils/embedForms";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -1007,7 +1008,8 @@ const ResultsStep = ({ calculatorData }: { calculatorData: any }) => {
 
       <div className="flex flex-col md:flex-row justify-center items-center gap-4 pt-4">
         <Button 
-          className="w-full md:w-auto bg-navy hover:bg-navy/90 text-white"
+          className="w-full md:w-auto bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] hover:shadow-lg hover:shadow-purple-500/25 hover:-translate-y-1 transition-all duration-300 text-white"
+          onClick={() => setShowLeadCaptureForm(true)}
         >
           <Download className="mr-2 h-4 w-4" />
           Download Full Report
@@ -1015,7 +1017,7 @@ const ResultsStep = ({ calculatorData }: { calculatorData: any }) => {
         
         <Button 
           variant="outline" 
-          className="w-full md:w-auto border-orange-500 text-orange-500 hover:bg-orange-50"
+          className="w-full md:w-auto border-purple-500 text-purple-400 hover:bg-purple-50/10"
         >
           Schedule a Free 15-Min Call
         </Button>
@@ -1074,7 +1076,16 @@ const BusinessCalculatorPage = () => {
     growth: {},
     contact: {},
   });
+  const [showLeadCaptureForm, setShowLeadCaptureForm] = useState(false);
+  const [leadFormCompleted, setLeadFormCompleted] = useState(false);
+  const [leadCaptureEmbedCode, setLeadCaptureEmbedCode] = useState<string>('');
   const { toast } = useToast();
+
+  useEffect(() => {
+    if (hasValidEmbedCode(EMBED_FORMS.BUSINESS_CALCULATOR_LEAD_FORM)) {
+      setLeadCaptureEmbedCode(EMBED_FORMS.BUSINESS_CALCULATOR_LEAD_FORM);
+    }
+  }, []);
   
   const totalSteps = 5;  // Including results step
 
@@ -1423,6 +1434,51 @@ const BusinessCalculatorPage = () => {
           </p>
         </div>
       </div>
+
+      {/* Lead Capture Form Modal */}
+      {showLeadCaptureForm && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-600/50 rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden">
+            <div className="flex items-center justify-between p-6 border-b border-slate-600/30">
+              <h3 className="text-2xl font-bold text-white">Complete to Download Your Report</h3>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="text-slate-400 hover:text-white"
+                onClick={() => setShowLeadCaptureForm(false)}
+              >
+                <X className="h-6 w-6" />
+              </Button>
+            </div>
+            <div className="p-6">
+              {leadCaptureEmbedCode ? (
+                <div 
+                  className="w-full"
+                  style={{ minHeight: FORM_CONFIG.defaultHeight }}
+                  dangerouslySetInnerHTML={{ __html: leadCaptureEmbedCode }}
+                />
+              ) : (
+                <div className="text-center py-12">
+                  <h4 className="text-xl font-semibold text-white mb-4">Lead Capture Form Ready</h4>
+                  <p className="text-slate-300 mb-6">
+                    Add your lead capture form iframe embed code to BUSINESS_CALCULATOR_LEAD_FORM in /utils/embedForms.ts
+                  </p>
+                  <Button
+                    onClick={() => {
+                      setLeadFormCompleted(true);
+                      setShowLeadCaptureForm(false);
+                      toast({ title: "Download started", description: "Your business forecast report is being prepared." });
+                    }}
+                    className="bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] hover:shadow-lg hover:shadow-purple-500/25 text-white"
+                  >
+                    Continue to Download (Demo)
+                  </Button>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
