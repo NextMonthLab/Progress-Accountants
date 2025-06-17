@@ -202,47 +202,14 @@ app.use((req, res, next) => {
     throw err;
   });
 
-  // Use environment port or default to 5000 with fallback ports
-  const preferredPort = parseInt(process.env.PORT || '5000');
+  // Force port 5000 for Finance Dashboard compatibility
+  const port = 5000;
   const host = "0.0.0.0";
   
-  // Function to try starting server on a port
-  const tryStartServer = (port: number): Promise<Server> => {
-    return new Promise((resolve, reject) => {
-      const server = createServer(app);
-      
-      const serverInstance = server.listen(port, host, () => {
-        log(`serving on port ${port}`);
-        resolve(server);
-      });
-      
-      serverInstance.on('error', (err: any) => {
-        if (err.code === 'EADDRINUSE') {
-          reject(new Error(`Port ${port} is already in use`));
-        } else {
-          reject(err);
-        }
-      });
-    });
-  };
-  
-  // Try preferred port, then fallback ports
-  const portsToTry = [preferredPort, 5001, 5002, 5003, 3000, 8000];
-  let server: Server | null = null;
-  
-  for (const port of portsToTry) {
-    try {
-      server = await tryStartServer(port);
-      break;
-    } catch (error) {
-      log(`Port ${port} unavailable, trying next port...`);
-      continue;
-    }
-  }
-  
-  if (!server) {
-    throw new Error('Unable to start server - all ports in use');
-  }
+  const server = createServer(app);
+  server.listen(port, host, () => {
+    log(`serving on port ${port}`);
+  });
 
   // importantly only setup vite in development and after
   // setting up all the other routes so the catch-all route
