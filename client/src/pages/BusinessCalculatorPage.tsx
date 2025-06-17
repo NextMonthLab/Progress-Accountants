@@ -1456,22 +1456,7 @@ const BusinessCalculatorPage = () => {
                     style={{ minHeight: FORM_CONFIG.defaultHeight }}
                     dangerouslySetInnerHTML={{ __html: leadCaptureEmbedCode }}
                   />
-                  <div className="text-center pt-4 border-t border-slate-600/30">
-                    <p className="text-slate-400 text-sm mb-3">
-                      Having trouble with the form? You can still download your report:
-                    </p>
-                    <Button
-                      onClick={() => {
-                        setLeadFormCompleted(true);
-                        setShowLeadCaptureForm(false);
-                        toast({ title: "Download started", description: "Your business forecast report is being prepared." });
-                      }}
-                      variant="outline"
-                      className="border-purple-500 text-purple-400 hover:bg-purple-50/10"
-                    >
-                      Skip Form & Download Report
-                    </Button>
-                  </div>
+
                 </div>
               ) : (
                 <div className="text-center py-12">
