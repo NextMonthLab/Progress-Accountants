@@ -1087,7 +1087,7 @@ const BusinessCalculatorPage = () => {
     }
   }, []);
   
-  const totalSteps = 5;  // Including results step
+  const totalSteps = 4;  // Including results step
 
   useEffect(() => {
     // Scroll to top when page loads
@@ -1141,8 +1141,6 @@ const BusinessCalculatorPage = () => {
       case 3:
         return <GrowthStep onNext={handleNextStep} onBack={handleBackStep} defaultValues={formData.growth} />;
       case 4:
-        return <ContactStep onNext={handleNextStep} onBack={handleBackStep} defaultValues={formData.contact} />;
-      case 5:
         return <ResultsStep calculatorData={formData} onShowLeadCaptureForm={() => setShowLeadCaptureForm(true)} />;
       default:
         return null;
