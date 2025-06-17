@@ -64,12 +64,14 @@ export default function ContactPage() {
                 </div>
                 
                 <div className="mb-12">
-                  <a 
-                    href="#send-message" 
-                    className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] text-white rounded-lg hover:shadow-lg hover:shadow-purple-500/25 hover:-translate-y-1 transition-all duration-300 font-medium"
+                  <button 
+                    onClick={() => {
+                      window.open('https://calendly.com/progress-accountants/free-consultation-progress-accountants', '_blank', 'width=700,height=800,resizable=yes,scrollbars=yes');
+                    }}
+                    className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] text-white rounded-lg hover:shadow-lg hover:shadow-purple-500/25 hover:-translate-y-1 transition-all duration-300 font-medium border-none cursor-pointer"
                   >
                     <span className="mr-2">🚀</span> Let's build your growth engine — book your free discovery call
-                  </a>
+                  </button>
                 </div>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
