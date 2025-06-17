@@ -9,15 +9,10 @@ import NotFound from "@/pages/not-found";
 import { useAuth, AuthProvider } from "@/hooks/use-auth";
 import { TenantProvider } from "@/hooks/use-tenant";
 import { PermissionsProvider } from "@/hooks/use-permissions";
-import { CompanionContextProvider } from "@/hooks/use-companion-context";
-import { DualModeCompanion } from "@/components/companions/DualModeCompanion";
-
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { HelpProvider } from "@/contexts/HelpContext";
 import { HealthProvider } from "@/contexts/HealthContext";
 import { NotificationsProvider } from "@/contexts/NotificationsContext";
-import InstantHelpWidget from "@/components/support/InstantHelpWidget";
-import ContextSuggestion from "@/components/support/ContextSuggestion";
 import ConversionDemo from "@/components/ConversionDemo";
 import HealthTracker from "@/components/health/HealthTracker";
 import AdminLayout from "@/layouts/AdminLayout";

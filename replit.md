@@ -127,6 +127,7 @@ Progress Accountants is a sophisticated SmartSite platform built with React/Type
 
 ```
 Changelog:
+- June 17, 2025: Removed native chatbot components (DualModeCompanion, InstantHelpWidget, ContextSuggestion) to test embedded version
 - June 17, 2025: Embedded Progress Accountants chatbot across all site pages
 - June 17, 2025: Re-enabled contact form scrollbar for better content accessibility at 650px height
 - June 17, 2025: Replaced contact page form with external iframe embed (form/4)
