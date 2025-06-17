@@ -84,6 +84,16 @@ export const teamMembers: TeamMember[] = [
   },
   {
     id: 6,
+    name: "Becky Rogers",
+    role: "Assistant Accountant",
+    biography: "Becky is an Assistant Accountant at Progress Accountants, supporting a wide variety of clients with care, professionalism, and precision. With a background in finance and a keen eye for detail, Becky plays a key role in ensuring clients stay on track with their bookkeeping, tax, and compliance needs. Her friendly, proactive approach makes her a valued part of the Progress team—someone clients know they can count on for clear communication and dependable support.",
+    interests: "",
+    socialLinks: {
+      email: "becky@progressaccountants.com"
+    }
+  },
+  {
+    id: 7,
     name: "Manny Abayomi",
     role: "Digital Marketing Executive",
     biography: "Manny leads our digital presence—managing campaigns, brand messaging, and online outreach. He helps keep Progress visible, relevant, and connected to clients across the UK.",
