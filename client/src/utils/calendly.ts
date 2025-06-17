@@ -79,7 +79,14 @@ export const openCalendlyPopup = () => {
     return;
   }
 
-  // For now, always use the popup window as it's more reliable
-  console.log('🔄 Calendly widget not ready, using popup window');
-  openPopupWindow();
+  // Always use the popup window as it's more reliable for testing
+  console.log('Using popup window method');
+  try {
+    openPopupWindow();
+    console.log('Popup window opened successfully');
+  } catch (error) {
+    console.error('Failed to open popup window:', error);
+    // Final fallback - open in same tab
+    window.location.href = 'https://calendly.com/progress-accountants/free-consultation-progress-accountants';
+  }
 };

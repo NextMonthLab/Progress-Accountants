@@ -114,7 +114,12 @@ const HeroSection = () => {
               <Button 
                 size="lg" 
                 className="w-full sm:w-auto px-4 sm:px-6 py-3 rounded-full gradient-bg hover:shadow-lg text-white progress-button text-sm sm:text-base"
-                onClick={openCalendlyPopup}
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  console.log('🟢 Button clicked!');
+                  openCalendlyPopup();
+                }}
               >
                 <span className="font-medium flex items-center justify-center">
                   <span className="hidden sm:inline">Book Your Free Strategy Consultation</span>
