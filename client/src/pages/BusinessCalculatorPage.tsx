@@ -921,7 +921,7 @@ const ResultsStep = ({ calculatorData, onShowLeadCaptureForm }: { calculatorData
         </div>
         <h2 className="text-2xl font-bold text-white">Your Business Forecast</h2>
         <p className="text-slate-300 mt-2">
-          We've emailed a detailed PDF report to {calculatorData.contact.email}
+          Your personalized business analysis is ready for review
         </p>
       </div>
 
