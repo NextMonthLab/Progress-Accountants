@@ -15,6 +15,7 @@ import { useToast } from "@/hooks/use-toast";
 import { motion } from "framer-motion";
 import { EMBED_FORMS, hasValidEmbedCode, FORM_CONFIG } from "@/utils/embedForms";
 import { generateSMEHubPDF } from "@/utils/pdfGenerator";
+import { openCalendlyPopup } from "@/utils/calendly";
 
 // Animation variants
 const containerVariants = {
@@ -679,7 +680,11 @@ const CTASection = () => (
         <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
           Book a chat with our team and let us help you navigate UK business requirements with confidence.
         </p>
-        <Button size="lg" className="bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] hover:shadow-lg hover:shadow-purple-500/25 hover:-translate-y-1 transition-all duration-300 text-white">
+        <Button 
+          onClick={openCalendlyPopup}
+          size="lg" 
+          className="bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] hover:shadow-lg hover:shadow-purple-500/25 hover:-translate-y-1 transition-all duration-300 text-white"
+        >
           Schedule a Call
           <ArrowRight className="ml-2 h-5 w-5" />
         </Button>

@@ -17,6 +17,7 @@ import {
 } from 'lucide-react';
 import { PageHeaderSkeleton, FeaturesSkeleton } from '@/components/ui/skeletons';
 import { useBusinessIdentity } from '@/hooks/use-business-identity';
+import { openCalendlyPopup } from '@/utils/calendly';
 
 export default function WhyUsPage() {
   const [isLoading, setIsLoading] = useState(true);
@@ -541,15 +542,14 @@ export default function WhyUsPage() {
               Book a free consultation and discover how Progress can support your business—not just your bookkeeping.
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-4">
-              <Link href="/contact">
-                <Button 
-                  size="lg"
-                  className="w-full sm:w-auto bg-white text-gray-900 hover:bg-gray-100 hover:shadow-lg hover:-translate-y-[2px] transition duration-300 flex items-center gap-2"
-                >
-                  <span>Book a Free Consultation</span>
-                  <ArrowRight size={16} />
-                </Button>
-              </Link>
+              <Button 
+                onClick={openCalendlyPopup}
+                size="lg"
+                className="w-full sm:w-auto bg-white text-gray-900 hover:bg-gray-100 hover:shadow-lg hover:-translate-y-[2px] transition duration-300 flex items-center gap-2"
+              >
+                <span>Book a Free Consultation</span>
+                <ArrowRight size={16} />
+              </Button>
               <Link href="/services">
                 <Button 
                   variant="outline"
