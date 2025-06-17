@@ -3,6 +3,7 @@ import { footerBanburyTown, footerOfficeFront } from "../assets/imagePlaceholder
 import { useEffect, useRef } from "react";
 import { useBusinessIdentity } from "@/hooks/use-business-identity";
 import { MapPin, Phone, Mail, Globe } from "lucide-react";
+import CalendlyButton from "./CalendlyButton";
 
 export default function SEOFooterSection() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -64,41 +65,7 @@ export default function SEOFooterSection() {
             >
               We specialise in small business accounting, and we're certified Xero accountants too. But most of all, we help our clients grow — with practical, forward-thinking support you won't find anywhere else.
             </p>
-            <div className="mb-10">
-              <a 
-                href="data:text/html,<script>window.open('https://calendly.com/progress-accountants/free-consultation-progress-accountants', '_blank'); window.close();</script>"
-                style={{ 
-                  backgroundColor: '#f15a29',
-                  cursor: 'pointer',
-                  padding: '1.5rem 2rem',
-                  fontSize: '1.125rem',
-                  borderRadius: '0.5rem',
-                  border: 'none',
-                  color: 'white',
-                  fontWeight: '500',
-                  transition: 'all 0.3s ease',
-                  pointerEvents: 'auto',
-                  position: 'relative',
-                  zIndex: 99999,
-                  boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-                  outline: 'none',
-                  display: 'inline-block',
-                  textAlign: 'center',
-                  userSelect: 'none',
-                  textDecoration: 'none'
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'translateY(-2px)';
-                  e.currentTarget.style.backgroundColor = '#e54e26';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'translateY(0)';
-                  e.currentTarget.style.backgroundColor = '#f15a29';
-                }}
-              >
-                👉 Let's build your growth engine — book your free discovery call
-              </a>
-            </div>
+            <CalendlyButton />
 
             {/* Contact Information */}
             <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-4">
