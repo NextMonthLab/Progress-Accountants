@@ -25,6 +25,7 @@ import { ThemeProvider } from "@/components/ThemeProvider";
 import ErrorBoundary from "@/components/error/ErrorBoundary";
 import ContentLoader from "@/components/error/ContentLoader";
 import CookieNotification from "@/components/CookieNotification";
+import EmbeddedChatbot from "@/components/EmbeddedChatbot";
 
 // Eagerly loaded components for critical paths
 import HomePage from "@/pages/HomePage";
@@ -362,6 +363,7 @@ function App() {
                         </MainLayout>
                       </FirstTimeUserDetector>
                       <HealthTracker />
+                      <EmbeddedChatbot />
                       <Toaster />
                     </HealthProvider>
                   </HelpProvider>
