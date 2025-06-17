@@ -111,14 +111,14 @@ export default function ProfessionalServicesPage() {
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button 
+                onClick={() => {
+                  window.open('https://calendly.com/progress-accountants/free-consultation-progress-accountants', '_blank', 'width=700,height=800,resizable=yes,scrollbars=yes');
+                }}
                 size="lg" 
-                className="progress-button-override px-8 py-6 text-lg font-semibold"
-                asChild
+                className="progress-button-override px-8 py-6 text-lg font-semibold cursor-pointer"
               >
-                <Link href="/contact">
-                  Book a Free Consultation
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </Link>
+                Book a Free Consultation
+                <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
               <Button 
                 size="lg" 

@@ -127,6 +127,7 @@ Progress Accountants is a sophisticated SmartSite platform built with React/Type
 
 ```
 Changelog:
+- June 17, 2025: Added Calendly integration to all industry pages (Film, Music, Construction, Professional Services)
 - June 17, 2025: Implemented comprehensive Calendly integration across all service pages and main booking buttons
 - June 17, 2025: Fixed homepage and contact page discovery call buttons to open Calendly directly
 - June 17, 2025: Updated all service page "Book Consultation" buttons to use direct Calendly integration
