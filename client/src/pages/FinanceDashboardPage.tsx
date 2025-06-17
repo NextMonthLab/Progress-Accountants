@@ -31,9 +31,9 @@ export default function FinanceDashboardPage() {
   const [iframeEmbedCode, setIframeEmbedCode] = useState<string>('');
 
   useEffect(() => {
-    // Check if we have actual iframe code (not just comments)
+    // Check if we have actual iframe code
     const hasIframeContent = IFRAME_EMBED_CODE.includes('<iframe') && 
-                            !IFRAME_EMBED_CODE.trim().startsWith('<!--');
+                            IFRAME_EMBED_CODE.includes('src=');
     
     if (hasIframeContent) {
       setIframeEmbedCode(IFRAME_EMBED_CODE);
