@@ -9,6 +9,7 @@ import NotFound from "@/pages/not-found";
 import { useAuth, AuthProvider } from "@/hooks/use-auth";
 import { TenantProvider } from "@/hooks/use-tenant";
 import { PermissionsProvider } from "@/hooks/use-permissions";
+import { CompanionContextProvider } from "@/hooks/use-companion-context";
 
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { HelpProvider } from "@/contexts/HelpContext";
@@ -49,14 +50,14 @@ const ContactPage = lazy(() => import("@/pages/ContactPage"));
 const TeamPage = lazy(() => import("@/pages/TeamPage"));
 const AboutPage = lazy(() => import("@/pages/AboutPage"));
 const ServicesPage = lazy(() => import("@/pages/ServicesPage"));
-const TaxPlanningPage = lazy(() => import("@/pages/TaxPlanningPage"));
-const BookkeepingPage = lazy(() => import("@/pages/BookkeepingPage"));
-const BusinessAdvisoryPage = lazy(() => import("@/pages/BusinessAdvisoryPage"));
-const FinancialReportingPage = lazy(() => import("@/pages/FinancialReportingPage"));
-const AuditSupportPage = lazy(() => import("@/pages/AuditSupportPage"));
-const CloudAccountingPage = lazy(() => import("@/pages/CloudAccountingPage"));
-const IndustrySpecificPage = lazy(() => import("@/pages/IndustrySpecificPage"));
-const VirtualFinanceDirectorPage = lazy(() => import("@/pages/VirtualFinanceDirectorPage"));
+const TaxPlanningPage = lazy(() => import("@/pages/services/TaxPlanningPage"));
+const BookkeepingPage = lazy(() => import("@/pages/services/BookkeepingPage"));
+const BusinessAdvisoryPage = lazy(() => import("@/pages/services/BusinessAdvisoryPage"));
+const FinancialReportingPage = lazy(() => import("@/pages/services/FinancialReportingPage"));
+const AuditSupportPage = lazy(() => import("@/pages/services/AuditSupportPage"));
+const CloudAccountingPage = lazy(() => import("@/pages/services/CloudAccountingPage"));
+const IndustrySpecificPage = lazy(() => import("@/pages/services/IndustrySpecificPage"));
+const VirtualFinanceDirectorPage = lazy(() => import("@/pages/services/VirtualFinanceDirectorPage"));
 const BusinessCalculatorPage = lazy(() => import("@/pages/BusinessCalculatorPage"));
 const SMESupportHubPage = lazy(() => import("@/pages/SMESupportHubPage"));
 const NewsPage = lazy(() => import("@/pages/NewsPage"));
@@ -67,16 +68,15 @@ const ProfessionalServicesPage = lazy(() => import("@/pages/ProfessionalServices
 const WhyUsPage = lazy(() => import("@/pages/WhyUsPage"));
 const StudioBanburyPage = lazy(() => import("@/pages/StudioBanburyPage"));
 // Removed missing admin components
-const AdminMarketplacePage = lazy(() => import("@/pages/admin/AdminMarketplacePage"));
-const AdminSettingsPage = lazy(() => import("@/pages/admin/AdminSettingsPage"));
+const AdminSettingsPage = lazy(() => import("@/pages/AdminSettingsPage"));
 const AIAssistantSettingsPage = lazy(() => import("@/pages/admin/AIAssistantSettingsPage"));
-const DomainMappingPage = lazy(() => import("@/pages/admin/DomainMappingPage"));
-const SotManagementPage = lazy(() => import("@/pages/admin/SotManagementPage"));
+const DomainMappingPage = lazy(() => import("@/pages/DomainMappingPage"));
+const SotManagementPage = lazy(() => import("@/pages/SotManagementPage"));
 const SotManagerPage = lazy(() => import("@/pages/admin/SotManagerPage"));
-const ConversationInsightsPage = lazy(() => import("@/pages/admin/ConversationInsightsPage"));
-const InsightsDashboardPage = lazy(() => import("@/pages/admin/InsightsDashboardPage"));
-const OnboardingPage = lazy(() => import("@/pages/onboarding/OnboardingPage"));
-const OnboardingIntroPage = lazy(() => import("@/pages/onboarding/OnboardingIntroPage"));
+const ConversationInsightsPage = lazy(() => import("@/pages/ConversationInsightsPage"));
+const InsightsDashboardPage = lazy(() => import("@/pages/InsightsDashboardPage"));
+const OnboardingPage = lazy(() => import("@/pages/NewClientOnboarding"));
+const OnboardingIntroPage = lazy(() => import("@/pages/OnboardingWelcomePage"));
 const MessagesPage = lazy(() => import("@/pages/admin/MessagesPage"));
 const ResourcesPage = lazy(() => import("@/pages/ResourcesPage"));
 const AssistantPage = lazy(() => import("@/pages/support/AssistantPage"));
@@ -281,7 +281,7 @@ function Router() {
       />
       <ProtectedRoute 
         path="/admin/marketplace" 
-        component={AdminMarketplacePage} 
+        component={() => <div>Marketplace Page</div>} 
         allowedRoles={['admin', 'super_admin', 'editor']} 
       />
       <ProtectedRoute 
@@ -350,20 +350,22 @@ function App() {
           <PermissionsProvider>
             <ThemeProvider>
               <TenantProvider>
-                <HelpProvider>
-                  <HealthProvider>
-                    <DocumentHead route="/" />
-                    <FirstTimeUserDetector>
-                      <MainLayout>
-                        <ErrorBoundary contentType="page">
-                          <Router />
-                        </ErrorBoundary>
-                      </MainLayout>
-                    </FirstTimeUserDetector>
-                    <HealthTracker />
-                    <Toaster />
-                  </HealthProvider>
-                </HelpProvider>
+                <CompanionContextProvider>
+                  <HelpProvider>
+                    <HealthProvider>
+                      <DocumentHead route="/" />
+                      <FirstTimeUserDetector>
+                        <MainLayout>
+                          <ErrorBoundary contentType="page">
+                            <Router />
+                          </ErrorBoundary>
+                        </MainLayout>
+                      </FirstTimeUserDetector>
+                      <HealthTracker />
+                      <Toaster />
+                    </HealthProvider>
+                  </HelpProvider>
+                </CompanionContextProvider>
               </TenantProvider>
             </ThemeProvider>
           </PermissionsProvider>
