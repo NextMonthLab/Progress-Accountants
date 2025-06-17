@@ -65,20 +65,36 @@ export default function SEOFooterSection() {
               We specialise in small business accounting, and we're certified Xero accountants too. But most of all, we help our clients grow — with practical, forward-thinking support you won't find anywhere else.
             </p>
             <div className="mb-10">
-              <button 
-                type="button"
-                id="discovery-call-btn"
-                onClick={(e) => {
+              <div 
+                role="button"
+                tabIndex={0}
+                onMouseDown={(e) => {
                   e.preventDefault();
                   e.stopPropagation();
-                  console.log('Discovery call button clicked - opening Calendly');
-                  try {
-                    window.open('https://calendly.com/progress-accountants/free-consultation-progress-accountants', '_blank', 'width=700,height=800,resizable=yes,scrollbars=yes');
-                  } catch (error) {
-                    console.error('Error opening Calendly:', error);
-                    window.location.href = 'https://calendly.com/progress-accountants/free-consultation-progress-accountants';
-                  }
+                  console.log('Discovery call clicked - opening Calendly in new window');
+                  setTimeout(() => {
+                    const calendlyWindow = window.open(
+                      'https://calendly.com/progress-accountants/free-consultation-progress-accountants', 
+                      'calendly_popup', 
+                      'width=700,height=800,left=' + 
+                      (window.screen.width/2 - 350) + ',top=' + 
+                      (window.screen.height/2 - 400) + 
+                      ',resizable=yes,scrollbars=yes,status=yes'
+                    );
+                    if (!calendlyWindow) {
+                      window.location.href = 'https://calendly.com/progress-accountants/free-consultation-progress-accountants';
+                    }
+                  }, 10);
                   return false;
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    setTimeout(() => {
+                      window.open('https://calendly.com/progress-accountants/free-consultation-progress-accountants', '_blank');
+                    }, 10);
+                  }
                 }}
                 style={{ 
                   backgroundColor: '#f15a29',
@@ -92,22 +108,24 @@ export default function SEOFooterSection() {
                   transition: 'all 0.3s ease',
                   pointerEvents: 'auto',
                   position: 'relative',
-                  zIndex: 10000,
+                  zIndex: 99999,
                   boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-                  outline: 'none'
+                  outline: 'none',
+                  display: 'inline-block',
+                  textAlign: 'center',
+                  userSelect: 'none'
                 }}
-                className="discovery-call-button"
-                onMouseOver={(e) => {
-                  e.target.style.transform = 'translateY(-2px)';
-                  e.target.style.backgroundColor = '#e54e26';
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'translateY(-2px)';
+                  e.currentTarget.style.backgroundColor = '#e54e26';
                 }}
-                onMouseOut={(e) => {
-                  e.target.style.transform = 'translateY(0)';
-                  e.target.style.backgroundColor = '#f15a29';
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'translateY(0)';
+                  e.currentTarget.style.backgroundColor = '#f15a29';
                 }}
               >
                 👉 Let's build your growth engine — book your free discovery call
-              </button>
+              </div>
             </div>
 
             {/* Contact Information */}
