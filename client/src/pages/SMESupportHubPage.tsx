@@ -520,7 +520,21 @@ For professional advice tailored to your business, contact Progress Accountants
                   variant="ghost"
                   size="icon"
                   className="text-slate-400 hover:text-white"
-                  onClick={() => setShowLeadCaptureForm(false)}
+                  onClick={() => {
+                    // Generate and download the SME resources when closing
+                    const resourceContent = generateSMEResourcesContent();
+                    const element = document.createElement('a');
+                    const file = new Blob([resourceContent], { type: 'text/plain' });
+                    element.href = URL.createObjectURL(file);
+                    element.download = 'sme-resources-pack.txt';
+                    document.body.appendChild(element);
+                    element.click();
+                    document.body.removeChild(element);
+                    
+                    setIsSubmitted(true);
+                    setShowLeadCaptureForm(false);
+                    toast({ title: "Download complete", description: "Your SME resources pack has been downloaded." });
+                  }}
                 >
                   <X className="h-6 w-6" />
                 </Button>
@@ -535,28 +549,8 @@ For professional advice tailored to your business, contact Progress Accountants
                     />
                     <div className="text-center pt-4 border-t border-slate-600/30">
                       <p className="text-slate-300 mb-4">
-                        After completing the form above, download your SME resources:
+                        Close this box once you've completed the form to download your resources
                       </p>
-                      <Button
-                        onClick={() => {
-                          const resourceContent = generateSMEResourcesContent();
-                          const element = document.createElement('a');
-                          const file = new Blob([resourceContent], { type: 'text/plain' });
-                          element.href = URL.createObjectURL(file);
-                          element.download = 'sme-resources-pack.txt';
-                          document.body.appendChild(element);
-                          element.click();
-                          document.body.removeChild(element);
-                          
-                          setIsSubmitted(true);
-                          setShowLeadCaptureForm(false);
-                          toast({ title: "Download complete", description: "Your SME resources pack has been downloaded." });
-                        }}
-                        className="bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] hover:shadow-lg hover:shadow-purple-500/25 text-white"
-                        size="lg"
-                      >
-                        Download SME Resources Pack
-                      </Button>
                     </div>
                   </div>
                 ) : (

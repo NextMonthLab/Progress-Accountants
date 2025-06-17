@@ -1445,7 +1445,21 @@ const BusinessCalculatorPage = () => {
                 variant="ghost"
                 size="icon"
                 className="text-slate-400 hover:text-white"
-                onClick={() => setShowLeadCaptureForm(false)}
+                onClick={() => {
+                  // Generate and download the report when closing
+                  const element = document.createElement('a');
+                  const reportContent = `BUSINESS ANALYSIS REPORT\n\nGenerated: ${new Date().toLocaleDateString()}\n\nYour personalized business analysis has been prepared.\n\nFor detailed financial projections and strategic recommendations, contact Progress Accountants.\n\nThank you for using our Business Calculator.`;
+                  const file = new Blob([reportContent], { type: 'text/plain' });
+                  element.href = URL.createObjectURL(file);
+                  element.download = 'business-analysis-report.txt';
+                  document.body.appendChild(element);
+                  element.click();
+                  document.body.removeChild(element);
+                  
+                  setLeadFormCompleted(true);
+                  setShowLeadCaptureForm(false);
+                  toast({ title: "Download complete", description: "Your business analysis report has been downloaded." });
+                }}
               >
                 <X className="h-6 w-6" />
               </Button>
@@ -1460,28 +1474,8 @@ const BusinessCalculatorPage = () => {
                   />
                   <div className="text-center pt-4 border-t border-slate-600/30">
                     <p className="text-slate-300 mb-4">
-                      After completing the form above, download your business analysis:
+                      Close this box once you've completed the form to download your report
                     </p>
-                    <Button
-                      onClick={() => {
-                        const element = document.createElement('a');
-                        const reportContent = `BUSINESS ANALYSIS REPORT\n\nGenerated: ${new Date().toLocaleDateString()}\n\nYour personalized business analysis has been prepared.\n\nFor detailed financial projections and strategic recommendations, contact Progress Accountants.\n\nThank you for using our Business Calculator.`;
-                        const file = new Blob([reportContent], { type: 'text/plain' });
-                        element.href = URL.createObjectURL(file);
-                        element.download = 'business-analysis-report.txt';
-                        document.body.appendChild(element);
-                        element.click();
-                        document.body.removeChild(element);
-                        
-                        setLeadFormCompleted(true);
-                        setShowLeadCaptureForm(false);
-                        toast({ title: "Download complete", description: "Your business analysis report has been downloaded." });
-                      }}
-                      className="bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] hover:shadow-lg hover:shadow-purple-500/25 text-white"
-                      size="lg"
-                    >
-                      Download Business Analysis Report
-                    </Button>
                   </div>
                 </div>
               ) : (
