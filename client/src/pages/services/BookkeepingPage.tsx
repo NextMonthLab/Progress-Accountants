@@ -3,6 +3,7 @@ import { Helmet } from 'react-helmet';
 import { Link } from 'wouter';
 import { BookOpen, ArrowLeft, Phone, Mail, Calendar, CheckCircle, Clock, Shield, Users, BarChart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { openCalendlyPopup } from '@/utils/calendly';
 
 export default function BookkeepingPage() {
   const [isLoading, setIsLoading] = useState(true);
@@ -72,12 +73,15 @@ export default function BookkeepingPage() {
                   Get Started Today
                 </Button>
               </Link>
-              <Link href="/contact">
-                <Button variant="outline" size="lg" className="border-white text-white hover:bg-white hover:text-gray-900">
-                  <Calendar className="h-4 w-4 mr-2" />
-                  Book Consultation
-                </Button>
-              </Link>
+              <Button 
+                onClick={openCalendlyPopup}
+                variant="outline" 
+                size="lg" 
+                className="border-white text-white hover:bg-white hover:text-gray-900"
+              >
+                <Calendar className="h-4 w-4 mr-2" />
+                Book Consultation
+              </Button>
             </div>
           </div>
         </div>
