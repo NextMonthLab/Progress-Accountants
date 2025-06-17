@@ -66,6 +66,16 @@ export default function SEOFooterSection() {
               We specialise in small business accounting, and we're certified Xero accountants too. But most of all, we help our clients grow — with practical, forward-thinking support you won't find anywhere else.
             </p>
 
+            <div className="mb-10">
+              <button
+                onClick={() => {
+                  window.open('https://calendly.com/progress-accountants/free-consultation-progress-accountants', '_blank', 'width=700,height=800,resizable=yes,scrollbars=yes');
+                }}
+                className="bg-gradient-to-r from-[#F15A29] to-[#F15A29] hover:from-[#E04A1A] hover:to-[#E04A1A] text-white px-8 py-6 text-lg rounded-lg font-medium transition-all duration-300 hover:transform hover:-translate-y-1 shadow-lg border-none cursor-pointer"
+              >
+                👉 Let's build your growth engine — book your free discovery call
+              </button>
+            </div>
 
             {/* Contact Information */}
             <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-4">
