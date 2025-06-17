@@ -206,6 +206,27 @@ function Router() {
           <ProfessionalServicesPage />
         </Suspense>
       </Route>
+      {/* Industry-specific routes with /industries/ prefix */}
+      <Route path="/industries/film">
+        <Suspense fallback={<LoadingFallback />}>
+          <FilmIndustryPage />
+        </Suspense>
+      </Route>
+      <Route path="/industries/music">
+        <Suspense fallback={<LoadingFallback />}>
+          <MusicIndustryPage />
+        </Suspense>
+      </Route>
+      <Route path="/industries/construction">
+        <Suspense fallback={<LoadingFallback />}>
+          <ConstructionIndustryPage />
+        </Suspense>
+      </Route>
+      <Route path="/industries/professional-services">
+        <Suspense fallback={<LoadingFallback />}>
+          <ProfessionalServicesPage />
+        </Suspense>
+      </Route>
       <Route path="/why-us">
         <Suspense fallback={<LoadingFallback />}>
           <WhyUsPage />
