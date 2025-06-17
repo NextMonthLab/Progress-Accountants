@@ -280,7 +280,13 @@ const ConstructionIndustryPage = () => {
                 </p>
               </motion.div>
               <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-4">
-                <Button size="lg" className="bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] hover:from-[#6B2FD4] hover:to-[#2F94D4] text-white font-medium">
+                <Button 
+                  onClick={() => {
+                    window.open('https://calendly.com/progress-accountants/free-consultation-progress-accountants', '_blank', 'width=700,height=800,resizable=yes,scrollbars=yes');
+                  }}
+                  size="lg" 
+                  className="bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] hover:from-[#6B2FD4] hover:to-[#2F94D4] text-white font-medium cursor-pointer"
+                >
                   Book a Free Consultation
                 </Button>
                 <Button size="lg" className="bg-gray-800 border-gray-700 text-white hover:bg-gray-700 font-medium">
