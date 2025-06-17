@@ -65,37 +65,9 @@ export default function SEOFooterSection() {
               We specialise in small business accounting, and we're certified Xero accountants too. But most of all, we help our clients grow — with practical, forward-thinking support you won't find anywhere else.
             </p>
             <div className="mb-10">
-              <div 
-                role="button"
-                tabIndex={0}
-                onMouseDown={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  console.log('Discovery call clicked - opening Calendly in new window');
-                  setTimeout(() => {
-                    const calendlyWindow = window.open(
-                      'https://calendly.com/progress-accountants/free-consultation-progress-accountants', 
-                      'calendly_popup', 
-                      'width=700,height=800,left=' + 
-                      (window.screen.width/2 - 350) + ',top=' + 
-                      (window.screen.height/2 - 400) + 
-                      ',resizable=yes,scrollbars=yes,status=yes'
-                    );
-                    if (!calendlyWindow) {
-                      window.location.href = 'https://calendly.com/progress-accountants/free-consultation-progress-accountants';
-                    }
-                  }, 10);
-                  return false;
-                }}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    setTimeout(() => {
-                      window.open('https://calendly.com/progress-accountants/free-consultation-progress-accountants', '_blank');
-                    }, 10);
-                  }
-                }}
+              <span 
+                className="calendly-button-unique"
+                data-calendly-action="open"
                 style={{ 
                   backgroundColor: '#f15a29',
                   cursor: 'pointer',
@@ -125,7 +97,39 @@ export default function SEOFooterSection() {
                 }}
               >
                 👉 Let's build your growth engine — book your free discovery call
-              </div>
+              </span>
+              <script dangerouslySetInnerHTML={{
+                __html: `
+                  (function() {
+                    function initCalendlyButton() {
+                      const button = document.querySelector('.calendly-button-unique');
+                      if (button && !button.hasAttribute('data-calendly-initialized')) {
+                        button.setAttribute('data-calendly-initialized', 'true');
+                        button.addEventListener('click', function(e) {
+                          e.preventDefault();
+                          e.stopImmediatePropagation();
+                          console.log('Calendly button clicked directly');
+                          try {
+                            window.open('https://calendly.com/progress-accountants/free-consultation-progress-accountants', '_blank', 'width=700,height=800,resizable=yes,scrollbars=yes');
+                          } catch (error) {
+                            window.location.href = 'https://calendly.com/progress-accountants/free-consultation-progress-accountants';
+                          }
+                          return false;
+                        }, true);
+                      }
+                    }
+                    
+                    if (document.readyState === 'loading') {
+                      document.addEventListener('DOMContentLoaded', initCalendlyButton);
+                    } else {
+                      initCalendlyButton();
+                    }
+                    
+                    // Re-init after any page updates
+                    setTimeout(initCalendlyButton, 100);
+                  })();
+                `
+              }} />
             </div>
 
             {/* Contact Information */}
