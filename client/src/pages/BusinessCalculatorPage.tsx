@@ -46,8 +46,7 @@ import {
   CardTitle 
 } from "@/components/ui/card";
 
-// Import the pound symbol background image
-import poundSymbolBg from "@assets/calculator-pound-bg.png";
+// Use a CSS-based pound symbol background instead of importing image
 
 // Type definitions
 type BusinessFormValues = {
@@ -421,7 +420,7 @@ const FinancialsStep = ({ onNext, onBack, defaultValues }: StepProps) => {
             </Button>
             <Button 
               type="submit" 
-              className="bg-orange-500 hover:bg-orange-600 text-white"
+              className="bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] hover:shadow-lg hover:shadow-purple-500/25 hover:-translate-y-1 transition-all duration-300 text-white"
             >
               Continue
               <ArrowRight className="ml-2 h-4 w-4" />
@@ -577,7 +576,7 @@ const GrowthStep = ({ onNext, onBack, defaultValues }: StepProps) => {
             </Button>
             <Button 
               type="submit" 
-              className="bg-orange-500 hover:bg-orange-600 text-white"
+              className="bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] hover:shadow-lg hover:shadow-purple-500/25 hover:-translate-y-1 transition-all duration-300 text-white"
             >
               Continue
               <ArrowRight className="ml-2 h-4 w-4" />
