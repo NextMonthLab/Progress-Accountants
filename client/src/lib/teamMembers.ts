@@ -88,6 +88,7 @@ export const teamMembers: TeamMember[] = [
     role: "Assistant Accountant",
     biography: "Becky is an Assistant Accountant at Progress Accountants, supporting a wide variety of clients with care, professionalism, and precision. With a background in finance and a keen eye for detail, Becky plays a key role in ensuring clients stay on track with their bookkeeping, tax, and compliance needs. Her friendly, proactive approach makes her a valued part of the Progress team—someone clients know they can count on for clear communication and dependable support.",
     interests: "",
+    photoUrl: "https://res.cloudinary.com/drl0fxrkq/image/upload/v1749198734/Screenshot_2025-06-06_at_08.59.35_cbvhhe.png",
     socialLinks: {
       email: "becky@progressaccountants.com"
     }
