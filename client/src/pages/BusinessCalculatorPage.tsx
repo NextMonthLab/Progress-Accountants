@@ -1465,7 +1465,7 @@ const BusinessCalculatorPage = () => {
                     <Button
                       onClick={() => {
                         const element = document.createElement('a');
-                        const reportContent = `BUSINESS ANALYSIS REPORT\n\nGenerated: ${new Date().toLocaleDateString()}\n\nYour personalized business analysis based on the calculator inputs has been prepared.\n\nFor detailed financial projections and strategic recommendations, contact Progress Accountants.\n\nThank you for using our Business Calculator.`;
+                        const reportContent = `BUSINESS ANALYSIS REPORT\n\nGenerated: ${new Date().toLocaleDateString()}\n\nYour personalized business analysis has been prepared.\n\nFor detailed financial projections and strategic recommendations, contact Progress Accountants.\n\nThank you for using our Business Calculator.`;
                         const file = new Blob([reportContent], { type: 'text/plain' });
                         element.href = URL.createObjectURL(file);
                         element.download = 'business-analysis-report.txt';
