@@ -6,6 +6,7 @@ import { useBusinessIdentity } from "@/hooks/use-business-identity";
 import { OptimizedImage } from "@/components/ui/OptimizedImage";
 import { withMemo } from "@/lib/withMemo";
 import { ArrowRight, ChevronDown } from "lucide-react";
+import { openCalendlyPopup } from "@/utils/calendly";
 
 // Business Identity type
 interface BusinessIdentity {
@@ -110,18 +111,17 @@ const HeroSection = () => {
             </div>
             
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-              <a href="#book-call" className="w-full sm:w-auto">
-                <Button 
-                  size="lg" 
-                  className="w-full sm:w-auto px-4 sm:px-6 py-3 rounded-full gradient-bg hover:shadow-lg text-white progress-button text-sm sm:text-base"
-                >
-                  <span className="font-medium flex items-center justify-center">
-                    <span className="hidden sm:inline">Book Your Free Strategy Consultation</span>
-                    <span className="sm:hidden">Book Free Consultation</span>
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                  </span>
-                </Button>
-              </a>
+              <Button 
+                size="lg" 
+                className="w-full sm:w-auto px-4 sm:px-6 py-3 rounded-full gradient-bg hover:shadow-lg text-white progress-button text-sm sm:text-base"
+                onClick={openCalendlyPopup}
+              >
+                <span className="font-medium flex items-center justify-center">
+                  <span className="hidden sm:inline">Book Your Free Strategy Consultation</span>
+                  <span className="sm:hidden">Book Free Consultation</span>
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </span>
+              </Button>
               
               <Button 
                 variant="ghost" 
