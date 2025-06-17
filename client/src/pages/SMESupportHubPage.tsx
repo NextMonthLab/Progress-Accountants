@@ -7,20 +7,10 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter }
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
   Building2, Phone, Mail, Clock, Calendar, ExternalLink, 
-  Filter, Search, Info, ArrowRight, CheckCircle, Calendar as CalendarIcon,
+  Search, Info, ArrowRight, CheckCircle, Calendar as CalendarIcon,
   Download, FileText, X
 } from "lucide-react";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
 import { motion } from "framer-motion";
 import { EMBED_FORMS, hasValidEmbedCode, FORM_CONFIG } from "@/utils/embedForms";
@@ -46,7 +36,7 @@ const itemVariants = {
   }
 };
 
-// HeroSection component
+// Hero Section
 const HeroSection = () => (
   <section className="relative py-20 bg-black overflow-hidden">
     <div className="absolute inset-0 bg-gradient-to-r from-[#1a0b2e] via-black to-[#16213e] opacity-90" />
@@ -82,7 +72,7 @@ const HeroSection = () => (
   </section>
 );
 
-// IntroSection component
+// Intro Section
 const IntroSection = () => (
   <section className="py-16 bg-black">
     <div className="container mx-auto px-6 md:px-8">
@@ -105,17 +95,15 @@ const IntroSection = () => (
   </section>
 );
 
-// DirectorySection component
+// Directory Section
 const DirectorySection = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedFilter, setSelectedFilter] = useState("all");
 
   const filteredOrganizations = organizations.filter(org => {
     const matchesSearch = org.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          org.description.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesFilter = selectedFilter === "all" || org.category === selectedFilter;
     
-    return matchesSearch && matchesFilter;
+    return matchesSearch;
   });
 
   return (
@@ -139,34 +127,20 @@ const DirectorySection = () => {
                   className="pl-10 bg-gray-800 border-gray-600 text-white placeholder-gray-400"
                 />
               </div>
-              <div className="flex gap-2 flex-wrap">
-                {filters.map((filter) => (
-                  <Button
-                    key={filter.value}
-                    variant={selectedFilter === filter.value ? "default" : "outline"}
-                    size="sm"
-                    onClick={() => setSelectedFilter(filter.value)}
-                    className={selectedFilter === filter.value ? 
-                      "bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] text-white" : 
-                      "border-gray-600 text-gray-300 hover:bg-gray-700"
-                    }
-                  >
-                    <Filter className="h-4 w-4 mr-1" />
-                    {filter.label}
-                  </Button>
-                ))}
+              <div className="text-gray-400 text-sm">
+                Showing all UK business support organizations
               </div>
             </div>
           </motion.div>
 
           <motion.div variants={itemVariants} className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {filteredOrganizations.map((org) => (
-              <Card key={org.id} className="bg-gray-800/50 border-gray-700 hover:bg-gray-700/50 transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/10">
+            {filteredOrganizations.map((org, index) => (
+              <Card key={index} className="bg-gray-800/50 border-gray-700 hover:bg-gray-700/50 transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/10">
                 <CardHeader className="pb-3">
                   <div className="flex justify-between items-start">
                     <CardTitle className="text-lg text-white">{org.name}</CardTitle>
                     <Badge variant="secondary" className="text-xs bg-purple-900/30 text-purple-300 border-purple-600/30">
-                      {filters.find(f => f.value === org.category)?.label}
+                      Business Support
                     </Badge>
                   </div>
                   <CardDescription className="text-gray-300">
@@ -175,11 +149,19 @@ const DirectorySection = () => {
                 </CardHeader>
                 <CardContent className="pt-0">
                   <div className="space-y-2 text-sm">
-                    {org.phone && (
+                    {org.generalPhone && (
                       <div className="flex items-center text-gray-300">
                         <Phone className="h-4 w-4 mr-2 text-purple-400" />
-                        <a href={`tel:${org.phone}`} className="hover:text-purple-300 transition-colors">
-                          {org.phone}
+                        <a href={`tel:${org.generalPhone}`} className="hover:text-purple-300 transition-colors">
+                          {org.generalPhone}
+                        </a>
+                      </div>
+                    )}
+                    {org.specialistPhones && org.specialistPhones.length > 0 && (
+                      <div className="flex items-center text-gray-300">
+                        <Phone className="h-4 w-4 mr-2 text-purple-400" />
+                        <a href={`tel:${org.specialistPhones[0].number}`} className="hover:text-purple-300 transition-colors">
+                          {org.specialistPhones[0].number} ({org.specialistPhones[0].label})
                         </a>
                       </div>
                     )}
@@ -212,7 +194,7 @@ const DirectorySection = () => {
                 </CardFooter>
               </Card>
             ))}
-          </div>
+          </motion.div>
 
           {filteredOrganizations.length === 0 && (
             <motion.div variants={itemVariants} className="text-center py-12">
@@ -225,7 +207,7 @@ const DirectorySection = () => {
   );
 };
 
-// DeadlineRow component
+// Deadline Row Component
 const DeadlineRow = ({ deadline }: { deadline: any }) => {
   const isUpcoming = deadline.status === 'upcoming';
   
@@ -246,7 +228,7 @@ const DeadlineRow = ({ deadline }: { deadline: any }) => {
   );
 };
 
-// DeadlinesSection component
+// Deadlines Section
 const DeadlinesSection = () => {
   const sortedDeadlines = deadlines.sort((a, b) => {
     const dateA = new Date(a.date + ' 2025');
@@ -301,19 +283,7 @@ const DeadlinesSection = () => {
   );
 };
 
-// Form schema for download resources
-const downloadFormSchema = z.object({
-  name: z.string().min(2, { message: "Name must be at least 2 characters" }),
-  email: z.string().email({ message: "Please enter a valid email address" }),
-  businessName: z.string().optional(),
-  consent: z.boolean().refine(value => value === true, {
-    message: "You must agree to receive updates to download resources",
-  }),
-});
-
-type DownloadFormValues = z.infer<typeof downloadFormSchema>;
-
-// Downloadable resources section
+// Download Resources Section
 const DownloadResourcesSection = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [showLeadCaptureForm, setShowLeadCaptureForm] = useState(false);
@@ -480,15 +450,10 @@ const DownloadResourcesSection = () => {
   );
 };
 
-// CTA section
+// CTA Section
 const CTASection = () => (
   <section className="py-16 relative overflow-hidden">
-    <div className="absolute inset-0" style={{
-      backgroundImage: "linear-gradient(rgba(3, 28, 64, 0.7), rgba(3, 28, 64, 0.7)), url('/images/sme-support-cta.png')",
-      backgroundSize: "cover",
-      backgroundPosition: "center",
-      backgroundColor: "#031c40" // Navy fallback
-    }} />
+    <div className="absolute inset-0 bg-gradient-to-r from-[#031c40] to-[#16213e] opacity-90" />
     <div className="container mx-auto px-6 md:px-8 relative z-10">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -510,13 +475,10 @@ const CTASection = () => (
   </section>
 );
 
-// Main SME Support Hub page component
+// Main SME Support Hub Page Component
 const SMESupportHubPage = () => {
   useEffect(() => {
-    // Scroll to top on page load
     window.scrollTo(0, 0);
-    
-    // Set page metadata
     document.title = "SME Support Hub | Essential Contacts & Tax Deadlines for UK Businesses";
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
