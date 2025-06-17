@@ -30,6 +30,7 @@ export const teamMembers: TeamMember[] = [
     role: "Founder & CEO",
     biography: "Having built an award-winning pension audit and assurance practice, Gareth launched Progress Accountants in 2017. With over 25 years of experience as an accountant and over a decade as a business owner, Gareth understands the pain business owners experience when setting up and growing their businesses. From this experience, Gareth is keen to help clients avoid the pain points he faced by supporting them with an efficient and dynamic, tech-led firm that provides clients with detailed record-keeping, daily bookkeeping and forward-looking financial information and insight.",
     interests: "Gareth enjoys watching football, travelling, spending time with family and friends, and walking his dog around the Oxfordshire countryside.",
+    photoUrl: "https://res.cloudinary.com/drl0fxrkq/image/upload/v1750188121/Screenshot_2025-06-17_at_20.21.40_x1yx0h.png",
     socialLinks: {
       email: "gareth@progressaccountants.com"
     }
