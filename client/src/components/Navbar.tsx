@@ -185,40 +185,22 @@ export default function Navbar() {
 
         {/* Right side buttons */}
         <div className="hidden md:flex items-center space-x-4 lg:space-x-6">
-          {/* Show login button and potentially client registration for non-authenticated users */}
-          {!user && (
-            <>
-              {clientRegistrationEnabled && tenant?.id && (
-                <Button 
-                  variant="outline"
-                  className="border-purple-400/30 text-purple-300 hover:bg-[#7B3FE4] hover:text-white hover:border-[#7B3FE4]"
-                  asChild
-                >
-                  <Link 
-                    href={`/client-register/${tenant.id}`} 
-                    className="no-underline flex items-center"
-                  >
-                    <UserPlus className="h-4 w-4 mr-2" />
-                    Create Account
-                  </Link>
-                </Button>
-              )}
-              <Button 
-                variant="default"
-                className="gradient-bg text-white hover:shadow-md transition-all progress-button h-10 px-4"
-                asChild
+          {/* Show admin dashboard link with high visibility for staff */}
+          {isStaff && (
+            <Button 
+              variant="default"
+              className="shadow-sm hover:shadow-md transition-all font-medium"
+              asChild
+            >
+              <Link 
+                href="/admin/dashboard" 
+                className="no-underline flex items-center"
               >
-                <Link 
-                  href="/auth" 
-                  className="no-underline flex items-center"
-                >
-                  Login / Register
-                </Link>
-              </Button>
-            </>
+                <LayoutDashboard className="h-4 w-4 mr-2" />
+                Admin Dashboard
+              </Link>
+            </Button>
           )}
-
-
 
           {/* Decoupled "Book a Call" button using Progress brand colors */}
           <button 
@@ -273,39 +255,22 @@ export default function Navbar() {
         <div className="container mx-auto px-4 sm:px-6 py-4 flex flex-col divide-y divide-zinc-700">
           {publicMenuGroups.map(renderMobileMenuGroup)}
 
-          {/* Login section for non-authenticated users */}
-          {!user && (
+          {/* Admin section for staff users */}
+          {isStaff && (
             <div className="py-2">
-              <h4 className="text-sm uppercase tracking-wider text-gray-400 mb-2 px-2">Access</h4>
-
-              {clientRegistrationEnabled && tenant?.id && (
-                <Button 
-                  variant="outline"
-                  className="w-full mb-2 border-purple-400/30 text-purple-300 hover:bg-[#7B3FE4] hover:text-white hover:border-[#7B3FE4]"
-                  onClick={closeMenu}
-                  asChild
-                >
-                  <Link 
-                    href={`/client-register/${tenant.id}`} 
-                    className="flex items-center justify-center py-2 no-underline"
-                  >
-                    <UserPlus className="h-4 w-4 mr-2" />
-                    Create Account
-                  </Link>
-                </Button>
-              )}
-
+              <h4 className="text-sm uppercase tracking-wider text-gray-400 mb-2 px-2">Admin</h4>
               <Button 
                 variant="default"
-                className="w-full gradient-bg text-white hover:shadow-md progress-button"
+                className="w-full shadow-sm hover:shadow-md transition-all font-medium"
                 onClick={closeMenu}
                 asChild
               >
                 <Link 
-                  href="/auth" 
+                  href="/admin/dashboard" 
                   className="flex items-center justify-center py-2 no-underline"
                 >
-                  Login / Register
+                  <LayoutDashboard className="h-4 w-4 mr-2" />
+                  Admin Dashboard
                 </Link>
               </Button>
             </div>
