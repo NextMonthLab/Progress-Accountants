@@ -367,7 +367,7 @@ function Router() {
 }
 
 function App() {
-  const mode = import.meta.env.VITE_MODE || 'client';
+  const mode = 'client'; // Fixed to always use client mode
 
   return (
     <ErrorBoundary contentType="application">
@@ -376,19 +376,13 @@ function App() {
           <PermissionsProvider>
             <ThemeProvider>
               <TenantProvider>
-                <CompanionContextProvider>
-                  <HelpProvider>
-                    <DocumentHead route="/" />
-                    <FirstTimeUserDetector>
-                      <MainLayout>
-                        <ErrorBoundary contentType="page">
-                          <Router />
-                        </ErrorBoundary>
-                      </MainLayout>
-                    </FirstTimeUserDetector>
-                    <Toaster />
-                  </HelpProvider>
-                </CompanionContextProvider>
+                <DocumentHead route="/" />
+                <MainLayout>
+                  <ErrorBoundary contentType="page">
+                    <Router />
+                  </ErrorBoundary>
+                </MainLayout>
+                <Toaster />
               </TenantProvider>
             </ThemeProvider>
           </PermissionsProvider>

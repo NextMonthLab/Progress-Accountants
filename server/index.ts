@@ -24,6 +24,7 @@ app.get('/api/seo-config', (req: Request, res: Response) => {
 
 app.post('/api/support/sessions', (req: Request, res: Response) => {
   res.json({
+    sessionId: "progress-session-" + Date.now(),
     id: "session-123",
     status: "active"
   });

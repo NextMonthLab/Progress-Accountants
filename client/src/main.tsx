@@ -1,5 +1,5 @@
 import { createRoot } from "react-dom/client";
-import App from "./App.simple";
+import App from "./App";
 import "./index.css";
 
 // Set custom CSS variables for the Progress Accountants brand colors
