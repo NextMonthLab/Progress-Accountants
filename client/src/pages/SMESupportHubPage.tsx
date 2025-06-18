@@ -673,7 +673,12 @@ For professional advice tailored to your business, contact Progress Accountants
 // CTA Section
 const CTASection = () => (
   <section className="py-16 relative overflow-hidden">
-    <div className="absolute inset-0 bg-gradient-to-r from-[#031c40] to-[#16213e] opacity-90" />
+    <div className="absolute inset-0" style={{
+      backgroundImage: "linear-gradient(rgba(3, 28, 64, 0.7), rgba(3, 28, 64, 0.7)), url('/images/sme-support-cta.png')",
+      backgroundSize: "cover",
+      backgroundPosition: "center",
+      backgroundColor: "#031c40"
+    }} />
     <div className="container mx-auto px-6 md:px-8 relative z-10">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
