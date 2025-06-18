@@ -8,7 +8,6 @@ export const logStaticAction = (action: string, data?: any) => {
 };
 
 export const simulateApiDelay = (ms: number = 1500) => {
-  return new Promise(resolve => setTimeout(resolve, ms));
 };
 
 // Placeholder for future backend integration

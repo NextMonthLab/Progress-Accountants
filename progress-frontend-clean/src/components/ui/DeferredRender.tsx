@@ -33,14 +33,11 @@ export function DeferredRender({
       return;
     }
     
-    // Use requestIdleCallback if available, otherwise setTimeout
-    const handler = window.requestIdleCallback || setTimeout;
     const cancelHandler = window.cancelIdleCallback || clearTimeout;
     
-    const id = handler(() => {
-      setShouldRender(true);
-      onRender?.();
-    }, { timeout: delay });
+    // Instant render for static deployment
+    setShouldRender(true);
+    onRender?.();
     
     return () => cancelHandler(id);
   }, [delay, priority, onRender]);
