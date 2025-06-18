@@ -1,0 +1,67 @@
+
+🧠 RAPLET PROMPT: Frontend-Only Deployment Prep — Replit Production Build
+
+You are now preparing the progress-frontend-clean build for live deployment inside Replit Deployments. This instance contains only frontend code with no backend dependencies.
+
+Follow this exact deployment protocol:
+
+⸻
+
+✅ CLEAN PRODUCTION BUILD INSTRUCTIONS
+
+Step 1 — Environment Check
+	•	Verify this workspace contains:
+	•	/src/pages/
+	•	/src/components/ (no admin subfolders)
+	•	/src/assets/
+	•	Correct package.json, vite.config.ts, and tailwind.config.ts
+	•	Confirm no remaining admin, auth, tenant, or backend code.
+
+Step 2 — Update .replit File
+	•	Modify the .replit file to instruct Replit Deployments to run a proper static build:
+
+[deployment]
+run = ["npm", "run", "build"]
+
+	•	Since this is a pure frontend app, no server is required. The deployment will serve the built dist/ directory as static files.
+
+Step 3 — Clean Environment Variables
+	•	Remove any unneeded environment variables related to:
+	•	Authentication providers
+	•	Backend APIs
+	•	Database credentials
+	•	Retain only frontend-relevant keys such as:
+	•	Chatbot embed
+	•	Calendly embed
+	•	Public API URLs
+
+Step 4 — Execute Production Build
+	•	Run:
+
+npm install
+npm run build
+
+	•	Validate that the build succeeds and dist/ contains the complete production build output.
+
+Step 5 — Verify Deployment Readiness
+	•	Confirm:
+	•	All public routes render correctly.
+	•	All embeds (chatbot, Calendly) function.
+	•	Studio address is correctly updated to:
+1st Floor Beaumont House, Beaumont Road, OX16 1RH
+	•	No broken imports or 404s.
+
+Step 6 — Trigger Replit Deployment
+	•	Initiate Replit Deployment based on this configuration.
+	•	Ensure the deployed version is fully live, secure, and publicly accessible.
+
+⸻
+
+🔐 SAFETY REMINDERS
+	•	DO NOT attempt to redeploy fullstack admin code inside this frontend build.
+	•	DO NOT attempt to reintroduce backend providers.
+	•	If any errors are detected, pause immediately and request human intervention.
+
+⸻
+
+✅ Proceed with confidence. This deployment path is isolated, safe, and fully production-ready.
