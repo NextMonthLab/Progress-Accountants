@@ -20,7 +20,6 @@ interface DeferredRenderProps {
  */
 export function DeferredRender({
   children,
-  delay = 100,
   placeholder,
   priority = false,
   onRender

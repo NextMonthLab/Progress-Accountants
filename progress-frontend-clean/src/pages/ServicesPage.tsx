@@ -88,7 +88,7 @@ const services: Service[] = [
 ];
 
 export default function ServicesPage() {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   
   useEffect(() => {
     // Simulate content loading

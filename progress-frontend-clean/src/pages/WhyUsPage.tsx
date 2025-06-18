@@ -20,7 +20,7 @@ import { useBusinessIdentity } from '@/hooks/use-business-identity';
 import { openCalendlyPopup } from '@/utils/calendly';
 
 export default function WhyUsPage() {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const { businessIdentity, isLoading: isLoadingIdentity } = useBusinessIdentity();
 
   useEffect(() => {

@@ -14,7 +14,7 @@ import {
 // NavbarLogo component for displaying site branding
 function NavbarLogo() {
   return (
-    <Link href="/" className="no-underline flex items-center">
+    <Link href="/" className="no-underline flex items-center hover:opacity-80 transition-opacity">
       <div className="h-[50px] flex items-center">
         <span className="text-2xl font-bold text-primary">Progress Accountants</span>
       </div>

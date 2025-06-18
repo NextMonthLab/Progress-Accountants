@@ -9,7 +9,7 @@ import { ArrowRight } from 'lucide-react';
 import { PageHeaderSkeleton, TeamMemberSkeleton, CtaSkeleton } from '@/components/ui/skeletons';
 
 export default function TeamPage() {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   
   useEffect(() => {
     // Simulate content loading

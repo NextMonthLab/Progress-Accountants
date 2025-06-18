@@ -14,17 +14,13 @@ type Industry = {
 };
 
 export default function IndustriesPage() {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const { data: businessIdentity, isLoading: isLoadingIdentity } = useBusinessIdentity();
 
   useEffect(() => {
-    // Combine real data loading with synthetic loading for a smooth experience
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, isLoadingIdentity ? 2000 : 1500);
-    
-    return () => clearTimeout(timer);
-  }, [isLoadingIdentity]);
+    // Instant loading for static deployment
+    setIsLoading(false);
+  }, []);
 
   const industries: Industry[] = [
     {

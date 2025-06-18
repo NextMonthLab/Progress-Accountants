@@ -53,7 +53,6 @@ export default function ContactForm({ compact = false, className = "" }: Contact
       
       // TODO: Replace with backend Pallet API when deployed
       // Simulating form submission for static deployment
-      await new Promise(resolve => setTimeout(resolve, 1500));
       
       console.log('Form submission (static mode):', data);
       
