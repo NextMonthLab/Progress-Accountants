@@ -54,10 +54,7 @@ function App() {
             </div>
           </Route>
 
-          {/* Legal Pages */}
-          <Route path="/privacy-policy" component={PrivacyPolicyPage} />
-          <Route path="/terms-of-service" component={TermsOfServicePage} />
-          <Route path="/cookie-policy" component={CookiePolicyPage} />
+          {/* Legal Pages removed for static deployment */}
 
           {/* 404 Fallback */}
           <Route>
