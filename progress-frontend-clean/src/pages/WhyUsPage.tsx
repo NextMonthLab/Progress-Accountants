@@ -23,14 +23,7 @@ export default function WhyUsPage() {
   const [isLoading, setIsLoading] = useState(false);
   const { businessIdentity, isLoading: isLoadingIdentity } = useBusinessIdentity();
 
-  useEffect(() => {
-    // Combine real data loading with synthetic loading for a smooth experience
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, isLoadingIdentity ? 2000 : 1500);
-    
-    return () => clearTimeout(timer);
-  }, [isLoadingIdentity]);
+  // No loading delays for instant rendering
 
   const testimonials = [
     {

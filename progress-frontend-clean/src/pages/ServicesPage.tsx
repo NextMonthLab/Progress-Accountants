@@ -90,14 +90,7 @@ const services: Service[] = [
 export default function ServicesPage() {
   const [isLoading, setIsLoading] = useState(false);
   
-  useEffect(() => {
-    // Simulate content loading
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 1500);
-    
-    return () => clearTimeout(timer);
-  }, []);
+  // No loading delays for instant rendering
   
   // Return skeleton during loading state
   if (isLoading) {

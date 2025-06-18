@@ -11,14 +11,7 @@ import { PageHeaderSkeleton, TeamMemberSkeleton, CtaSkeleton } from '@/component
 export default function TeamPage() {
   const [isLoading, setIsLoading] = useState(false);
   
-  useEffect(() => {
-    // Simulate content loading
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 1500);
-    
-    return () => clearTimeout(timer);
-  }, []);
+  // No loading delays for instant rendering
   // Show skeleton during loading state
   if (isLoading) {
     return (
