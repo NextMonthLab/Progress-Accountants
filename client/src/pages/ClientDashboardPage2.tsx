@@ -749,36 +749,23 @@ export default function ClientDashboardPage() {
         <h1 className="text-2xl font-bold mb-6 text-navy">Client Dashboard</h1>
         
         {/* Smart Site Embed Code Display */}
-        <div className="space-y-6">
-          <div className="bg-gray-50 p-4 rounded-lg border">
-            <h2 className="text-lg font-semibold mb-3 text-navy">Smart Site Embed Code</h2>
-            <p className="text-gray-600 mb-4">Copy and paste this code into your website to embed the client dashboard:</p>
-            
-            <div className="bg-gray-900 text-green-400 p-4 rounded border font-mono text-sm overflow-x-auto">
-              <pre className="whitespace-pre-wrap text-xs leading-relaxed">{EMBED_FORMS.CLIENT_DASHBOARD}</pre>
-            </div>
-            
-            <div className="mt-4 flex gap-3">
-              <button
-                onClick={() => navigator.clipboard.writeText(EMBED_FORMS.CLIENT_DASHBOARD)}
-                className="px-4 py-2 bg-navy text-white rounded hover:bg-navy/90 transition-colors"
-              >
-                Copy Embed Code
-              </button>
-              <div className="text-sm text-gray-600 flex items-center">
-                Ready to paste into any website or CMS
-              </div>
-            </div>
+        <div className="bg-gray-50 p-6 rounded-lg border">
+          <h2 className="text-lg font-semibold mb-3 text-navy">Smart Site Embed Code</h2>
+          <p className="text-gray-600 mb-4">Copy and paste this code into your website to embed the client dashboard:</p>
+          
+          <div className="bg-gray-900 text-green-400 p-4 rounded border font-mono text-sm overflow-x-auto">
+            <pre className="whitespace-pre-wrap text-xs leading-relaxed">{EMBED_FORMS.CLIENT_DASHBOARD}</pre>
           </div>
-
-          {/* Live Preview */}
-          <div className="bg-white border rounded-lg">
-            <div className="p-4 border-b bg-gray-50">
-              <h3 className="font-semibold text-navy">Live Preview</h3>
-              <p className="text-sm text-gray-600">This is how the embed will appear on your website:</p>
-            </div>
-            <div className="p-1">
-              <div dangerouslySetInnerHTML={{ __html: EMBED_FORMS.CLIENT_DASHBOARD }} />
+          
+          <div className="mt-4 flex gap-3">
+            <button
+              onClick={() => navigator.clipboard.writeText(EMBED_FORMS.CLIENT_DASHBOARD)}
+              className="px-4 py-2 bg-navy text-white rounded hover:bg-navy/90 transition-colors"
+            >
+              Copy Embed Code
+            </button>
+            <div className="text-sm text-gray-600 flex items-center">
+              Ready to paste into any website or CMS
             </div>
           </div>
         </div>
