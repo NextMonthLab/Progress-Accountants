@@ -1,7 +1,7 @@
 import { Route, Switch } from "wouter";
 import { Toaster } from "@/components/ui/toaster";
 import { ThemeProvider } from "@/components/ThemeProvider";
-import { ErrorBoundary } from "@/components/error/ErrorBoundary";
+import EmbeddedChatbot from "@/components/EmbeddedChatbot";
 
 // Public Pages
 import HomePage from "@/pages/HomePage";
@@ -27,9 +27,9 @@ import ServiceDetailPage from "@/pages/ServiceDetailPage";
 
 function App() {
   return (
-    <ErrorBoundary>
-      <ThemeProvider>
-        <div className="min-h-screen bg-background">
+    <ThemeProvider>
+      <div className="min-h-screen bg-background">
+        <EmbeddedChatbot />
           <Switch>
             {/* Main Pages */}
             <Route path="/" component={HomePage} />
@@ -72,8 +72,8 @@ function App() {
           </Switch>
         </div>
         <Toaster />
-      </ThemeProvider>
-    </ErrorBoundary>
+      </div>
+    </ThemeProvider>
   );
 }
 
