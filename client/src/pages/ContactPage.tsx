@@ -103,7 +103,7 @@ export default function ContactPage() {
                       <div>
                         <h3 className="text-sm font-semibold text-slate-400 mb-2">Phone</h3>
                         <div className="space-y-1">
-                          <div className="text-slate-300">01234 567 890</div>
+                          <div className="text-slate-300">01295 477 250</div>
                         </div>
                       </div>
                     </div>

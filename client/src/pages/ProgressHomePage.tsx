@@ -324,7 +324,7 @@ export default function ProgressHomePage() {
               <div className="space-y-2 text-gray-400 text-sm">
                 <p>Oxford, Banbury & London</p>
                 <p>United Kingdom</p>
-                <p>Phone: 01234 567 890</p>
+                <p>Phone: 01295 477 250</p>
                 <p>Email: info@progressaccountants.com</p>
               </div>
             </div>

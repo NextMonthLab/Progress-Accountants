@@ -151,7 +151,7 @@ export default function TermsOfServicePage() {
                 If you have any questions about these Terms of Service, please contact us:
               </p>
               <div className="text-gray-300">
-                <p>Phone: <a href="tel:01234567890" className="text-blue-400 hover:text-blue-300">01234 567 890</a></p>
+                <p>Phone: <a href="tel:01295477250" className="text-blue-400 hover:text-blue-300">01295 477 250</a></p>
                 <p>Email: <a href="mailto:info@progressaccountants.co.uk" className="text-blue-400 hover:text-blue-300">info@progressaccountants.co.uk</a></p>
                 <p>Address: John Eccles House, Robert Robinson Avenue, Oxford Science Park, Oxford, Oxfordshire, OX4 4GP</p>
               </div>
