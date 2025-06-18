@@ -1,7 +1,4 @@
-/* Import dedicated stylesheets for public and admin sections to avoid style leakage */
-@import './styles/public.css';
-@import './styles/admin.css';
-@import './styles/navigation-dark-mode.css';
+/* Frontend-only production build - no separate stylesheets needed */
 
 @tailwind base;
 @tailwind components;
