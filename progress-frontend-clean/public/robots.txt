@@ -1,0 +1,25 @@
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://progressaccountants.com/sitemap.xml
+
+# Disallow admin and internal pages
+Disallow: /admin/
+Disallow: /api/
+Disallow: /auth/
+Disallow: /_next/
+Disallow: /node_modules/
+
+# Allow important pages
+Allow: /
+Allow: /about
+Allow: /services
+Allow: /team
+Allow: /contact
+Allow: /why-us
+Allow: /industries/
+Allow: /studio-banbury
+Allow: /business-calculator
+Allow: /sme-support-hub
+Allow: /news
