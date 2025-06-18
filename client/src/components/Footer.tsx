@@ -111,16 +111,18 @@ export default function Footer() {
             <h3 className="font-semibold text-lg mb-4">Contact Us</h3>
             <address className="not-italic text-gray-300 mb-4">
               Progress Accountants<br />
-              Banbury, Oxfordshire<br />
+              1st Floor Beaumont House<br />
+              Beaumont Road<br />
+              Banbury, OX16 1RH<br />
               United Kingdom
             </address>
             <div className="space-y-2">
               <div>
                 <a 
-                  href="tel:+441234567890" 
+                  href="tel:+441295477250" 
                   className="text-gray-300 hover:text-purple-400 transition"
                 >
-                  01234 567 890
+                  01295 477 250
                 </a>
               </div>
               <div>

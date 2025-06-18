@@ -311,16 +311,16 @@ export default function StudioPage() {
                 Perfectly located in Banbury
               </h3>
               <p className="text-lg mb-8 text-slate-300 leading-relaxed">
-                We're based just off Banbury town centre in Oxfordshire — ideal for businesses from Oxford, Bicester, Leamington Spa, Brackley, and beyond. Free parking available.
+                We're based in central Banbury — ideal for businesses from Oxford, Bicester, Leamington Spa, Brackley, and beyond. Free parking available.
               </p>
               <div className="bg-gradient-to-br from-slate-800/90 to-slate-900/90 border border-slate-600/50 p-6 rounded-xl shadow-lg backdrop-blur-sm">
                 <h4 className="font-semibold mb-3 text-[#7B3FE4]">Address:</h4>
                 <p className="text-slate-300 leading-relaxed">
                   Progress Studio<br />
-                  123 Business Way<br />
+                  1st Floor Beaumont House<br />
+                  Beaumont Road<br />
                   Banbury<br />
-                  Oxfordshire<br />
-                  OX16 1AB
+                  OX16 1RH
                 </p>
               </div>
             </div>

@@ -127,6 +127,8 @@ Progress Accountants is a sophisticated SmartSite platform built with React/Type
 
 ```
 Changelog:
+- June 18, 2025: Updated entire website address to 1st Floor Beaumont House, Beaumont Road, Banbury, OX16 1RH
+- June 18, 2025: Updated footer, SEOFooterSection, StudioPage, and StudioBanburyPage with new Beaumont House address
 - June 18, 2025: Updated all telephone numbers throughout website to 01295 477 250 as requested
 - June 18, 2025: Fixed environment variable issue and restored full Progress Accountants React frontend with all dynamic designs and components
 - June 18, 2025: Restored original React frontend with Progress Accountants design while maintaining streamlined backend - preserves all visual styling and components

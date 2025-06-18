@@ -32,7 +32,7 @@ export default function SEOFooterSection() {
 
   // Extract business contact information
   const businessName = businessIdentity?.core?.businessName || "Progress Accountants";
-  const address = businessIdentity?.contact?.address || "10 Accounting Avenue, London, UK";
+  const address = businessIdentity?.contact?.address || "1st Floor Beaumont House, Beaumont Road, Banbury, OX16 1RH";
   const phone = businessIdentity?.contact?.phone || "+44 20 1234 5678";
   const email = businessIdentity?.contact?.email || "info@progressaccountants.com";
   const website = businessIdentity?.contact?.website || "www.progressaccountants.com";

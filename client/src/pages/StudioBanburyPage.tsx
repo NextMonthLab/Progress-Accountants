@@ -241,7 +241,7 @@ export default function StudioBanburyPage() {
                   Perfectly located in Banbury
                 </h2>
                 <p className="text-slate-300 text-lg leading-relaxed mb-8">
-                  Just off Banbury town centre in Oxfordshire, ideal for businesses in Oxford, Leamington Spa, Bicester, Brackley, and beyond. Free parking included.
+                  Located in central Banbury, ideal for businesses in Oxford, Leamington Spa, Bicester, Brackley, and beyond. Free parking included.
                 </p>
                 
                 <div className="space-y-4">
@@ -253,10 +253,10 @@ export default function StudioBanburyPage() {
                       <h3 className="text-sm font-semibold text-slate-400 mb-2">Address</h3>
                       <div className="text-slate-300">
                         <div className="font-semibold">Progress Studio</div>
-                        <div>123 Business Way</div>
+                        <div>1st Floor Beaumont House</div>
+                        <div>Beaumont Road</div>
                         <div>Banbury</div>
-                        <div>Oxfordshire</div>
-                        <div>OX16 1AB</div>
+                        <div>OX16 1RH</div>
                       </div>
                     </div>
                   </div>
