@@ -1,5 +1,5 @@
 // Frontend-only server - eliminates all backend admin functionality
-import express from 'express';
+const express = require('express');
 
 const app = express();
 const port = process.env.PORT || 5000;
