@@ -38,9 +38,7 @@ export function DeferredRender({
     // Instant render for static deployment
     setShouldRender(true);
     onRender?.();
-    
-    return () => cancelHandler(id);
-  }, [delay, priority, onRender]);
+  }, [priority, onRender]);
   
   if (!shouldRender) {
     return placeholder || (
