@@ -488,7 +488,7 @@ export default function DashboardPage() {
                     <span className="text-2xl">📞</span>
                   </div>
                   <h4 className="font-medium mb-2">Call Us</h4>
-                  <p className="text-gray-600">01295 123456</p>
+                  <p className="text-gray-600">01234 567 890</p>
                 </CardContent>
               </Card>
               <Card className="hover-scale transition duration-300">

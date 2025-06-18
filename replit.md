@@ -127,6 +127,7 @@ Progress Accountants is a sophisticated SmartSite platform built with React/Type
 
 ```
 Changelog:
+- June 18, 2025: Updated all telephone numbers throughout website to 01234 567 890 as requested
 - June 18, 2025: Fixed environment variable issue and restored full Progress Accountants React frontend with all dynamic designs and components
 - June 18, 2025: Restored original React frontend with Progress Accountants design while maintaining streamlined backend - preserves all visual styling and components
 - June 18, 2025: Completely replaced server/index.ts with frontend-only ES module version - eliminates all backend admin functionality and deployment issues

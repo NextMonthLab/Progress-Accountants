@@ -54,7 +54,7 @@ export default function PrivacyPolicyPage() {
                 <p>Gareth Burton, Data Protection Officer</p>
                 <p>Email: <a href="mailto:Gareth.Burton@progressaccountants.com" className="text-blue-400 hover:text-blue-300">Gareth.Burton@progressaccountants.com</a></p>
                 <p>Address: 107 Cheapside, London. EC2V 6DN</p>
-                <p>Phone: <a href="tel:02030057870" className="text-blue-400 hover:text-blue-300">020 3005 7870</a></p>
+                <p>Phone: <a href="tel:01234567890" className="text-blue-400 hover:text-blue-300">01234 567 890</a></p>
               </div>
               <p className="text-gray-300 mb-4">
                 You have the right to make a complaint at any time to the Information Commissioner's Office (ICO), the UK supervisory authority for data protection issues (<a href="https://www.ico.org.uk" className="text-blue-400 hover:text-blue-300" target="_blank" rel="noopener noreferrer">www.ico.org.uk</a>). We would, however, appreciate the chance to deal with your concerns before you approach the ICO so please contact us in the first instance.
@@ -187,7 +187,7 @@ export default function PrivacyPolicyPage() {
               </p>
               <div className="text-gray-300">
                 <p>Email: <a href="mailto:Gareth.Burton@progressaccountants.com" className="text-blue-400 hover:text-blue-300">Gareth.Burton@progressaccountants.com</a></p>
-                <p>Phone: <a href="tel:02030057870" className="text-blue-400 hover:text-blue-300">020 3005 7870</a></p>
+                <p>Phone: <a href="tel:01234567890" className="text-blue-400 hover:text-blue-300">01234 567 890</a></p>
                 <p>Address: 107 Cheapside, London. EC2V 6DN</p>
               </div>
             </section>
