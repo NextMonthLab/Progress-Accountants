@@ -502,7 +502,7 @@ For professional advice tailored to your business, contact Progress Accountants
                   
                   <a 
                     href="/downloads/Progress_Accountants_Key_Dates_2025.pdf" 
-                    target="_blank"
+                    download="Progress_Accountants_Key_Dates_2025.pdf"
                     className="flex items-center justify-center p-4 bg-gray-800 rounded-lg border border-gray-700 hover:bg-gray-700 transition-colors"
                   >
                     <Download className="h-5 w-5 mr-2 text-purple-500" />
