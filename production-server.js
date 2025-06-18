@@ -15,8 +15,8 @@ process.env.HOST = '0.0.0.0';
 console.log('🚀 Starting Progress Accountants in production mode...');
 console.log(`📍 Server will bind to ${process.env.HOST}:${process.env.PORT}`);
 
-// Start the minimal server for production deployment
-const server = spawn('node', ['minimal-server.cjs'], {
+// Start the frontend-only server for production deployment
+const server = spawn('node', ['frontend-only.cjs'], {
   cwd: __dirname,
   stdio: 'inherit',
   env: {
