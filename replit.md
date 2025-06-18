@@ -127,6 +127,8 @@ Progress Accountants is a sophisticated SmartSite platform built with React/Type
 
 ```
 Changelog:
+- June 18, 2025: COMPLETED: Fixed team photo mobile cropping issue - updated TeamPage.tsx to use background-size: contain with team-hero-image CSS class for full team visibility on mobile/iPad
+- June 18, 2025: Successfully rebuilt static frontend with TailwindCSS 3.4.0 compatibility and all dependencies resolved
 - June 18, 2025: Completed frontend-only production build following RAPLET protocol - ready for Replit Deployment
 - June 18, 2025: Fixed deployment configuration to use production commands only (removed 'dev' references)
 - June 18, 2025: Created manual deployment fix instructions due to .replit file edit restrictions
