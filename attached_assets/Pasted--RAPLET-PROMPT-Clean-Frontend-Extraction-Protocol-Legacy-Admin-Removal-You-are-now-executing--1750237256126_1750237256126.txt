@@ -1,0 +1,84 @@
+
+🧠 RAPLET PROMPT: Clean Frontend Extraction Protocol — Legacy Admin Removal
+
+You are now executing a controlled extraction to create a clean frontend-only version of the Progress SmartSite.
+
+The objective is:
+
+✅ Remove all admin, authentication, and backend dependencies.
+✅ Retain ONLY the public-facing, standalone frontend pages and assets.
+✅ Prepare a fully clean, lightweight, production-ready frontend build suitable for isolated deployment.
+
+⸻
+
+🔧 EXTRACTION PROTOCOL
+
+PHASE 1 — Create Clean Workspace
+	•	Create a fresh clean branch or workspace: progress-frontend-clean.
+	•	Work exclusively in this isolated environment.
+
+PHASE 2 — Copy Frontend Assets
+	•	Retain only the following:
+	•	/src/pages/
+	•	/src/components/ (excluding /components/admin/ or any subfolders containing admin-specific files)
+	•	/src/assets/
+	•	/src/lib/ — but only retain frontend-necessary utilities.
+	•	Copy:
+	•	package.json
+	•	vite.config.ts
+	•	tailwind.config.ts
+	•	Any public assets or favicon files.
+
+PHASE 3 — Remove Admin Logic
+	•	Delete all code referencing:
+	•	/admin/* routes
+	•	useAuth, AuthProvider
+	•	useTenant, TenantProvider, PermissionsProvider
+	•	ProtectedRoute or role-based route protection
+	•	Delete /components/admin/ and any related CRM or Dashboard files.
+
+PHASE 4 — Clean Dependencies
+	•	Remove any backend/admin-only libraries from package.json, including:
+	•	Auth libraries (e.g. Firebase Auth, Passport)
+	•	Database libraries
+	•	CRM or multi-tenant packages
+
+PHASE 5 — Static API Configuration
+	•	Preserve only environment variables related to:
+	•	External chatbot
+	•	Calendly embed
+	•	Any public third-party API integrations
+	•	Remove all backend API keys and secret server keys.
+
+PHASE 6 — Sanity Checks
+	•	Perform code-wide search-and-remove safety audits:
+
+grep -rni 'admin' ./src
+grep -rni 'useAuth' ./src
+grep -rni 'useTenant' ./src
+grep -rni 'usePermissions' ./src
+
+	•	Confirm zero remaining admin or backend logic.
+
+PHASE 7 — Build Validation
+	•	Run a full Vite build.
+	•	Confirm successful build with zero missing imports, undefined providers, or broken routes.
+
+PHASE 8 — Prepare for Deployment
+	•	Output should be a pure static frontend build suitable for:
+	•	Vercel
+	•	Netlify
+	•	Hetzner (via containerized static deployment)
+
+⸻
+
+🔬 SAFETY REMINDER:
+	•	DO NOT alter the original fullstack source repository.
+	•	DO NOT remove original admin files from main repository.
+	•	This extraction is surgical and non-destructive.
+
+If any dependency issues are detected during build, pause and request human intervention before attempting automatic fixes.
+
+⸻
+
+✅ Proceed with caution. The integrity of this clean build is paramount.
