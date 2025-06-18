@@ -71,6 +71,7 @@ export default function SEOFooterSection() {
                 onClick={() => {
                   window.open('https://calendly.com/progress-accountants/free-consultation-progress-accountants', '_blank', 'width=700,height=800,resizable=yes,scrollbars=yes');
                 }}
+                className="bg-gradient-to-r from-[#F15A29] to-[#F15A29] hover:from-[#E04A1A] hover:to-[#E04A1A] text-white px-8 py-6 text-lg rounded-lg font-medium transition-all duration-300 hover:transform hover:-translate-y-1 shadow-lg border-none cursor-pointer"
               >
                 👉 Let's build your growth engine — book your free discovery call
               </button>
@@ -120,13 +121,13 @@ export default function SEOFooterSection() {
             </div>
           </div>
           <div className="flex flex-col space-y-6">
-            <div className="rounded-lg overflow-hidden shadow-md hover-scale transition duration-0">
+            <div className="rounded-lg overflow-hidden shadow-md hover-scale transition duration-300">
               {footerBanburyTown()}
               <div className="p-3 bg-white text-center text-sm font-medium" style={{ color: 'var(--navy)' }}>
                 {address.split(",")[0]} Town Centre
               </div>
             </div>
-            <div className="rounded-lg overflow-hidden shadow-md hover-scale transition duration-0">
+            <div className="rounded-lg overflow-hidden shadow-md hover-scale transition duration-300">
               {footerOfficeFront()}
               <div className="p-3 bg-white text-center text-sm font-medium" style={{ color: 'var(--navy)' }}>
                 Our {address.split(",")[0]} Office

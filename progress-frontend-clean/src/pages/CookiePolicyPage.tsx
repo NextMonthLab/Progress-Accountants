@@ -171,7 +171,7 @@ export default function CookiePolicyPage() {
               </p>
               <div className="text-gray-300">
                 <p>Email: <a href="mailto:info@progressaccountants.co.uk" className="text-blue-400 hover:text-blue-300">info@progressaccountants.co.uk</a></p>
-                <p>Phone: <a href="tel:01865921150" className="text-blue-400 hover:text-blue-300">01865 921150</a></p>
+                <p>Phone: <a href="tel:01295477250" className="text-blue-400 hover:text-blue-300">01295 477 250</a></p>
               </div>
             </section>
 

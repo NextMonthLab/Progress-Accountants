@@ -20,10 +20,17 @@ import { useBusinessIdentity } from '@/hooks/use-business-identity';
 import { openCalendlyPopup } from '@/utils/calendly';
 
 export default function WhyUsPage() {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const { businessIdentity, isLoading: isLoadingIdentity } = useBusinessIdentity();
 
-  // No loading delays for instant rendering
+  useEffect(() => {
+    // Combine real data loading with synthetic loading for a smooth experience
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, isLoadingIdentity ? 2000 : 1500);
+    
+    return () => clearTimeout(timer);
+  }, [isLoadingIdentity]);
 
   const testimonials = [
     {
@@ -538,7 +545,7 @@ export default function WhyUsPage() {
               <Button 
                 onClick={openCalendlyPopup}
                 size="lg"
-                className="w-full sm:w-auto bg-white text-gray-900 hover:bg-gray-100 hover:shadow-lg hover:-translate-y-[2px] transition duration-0 flex items-center gap-2"
+                className="w-full sm:w-auto bg-white text-gray-900 hover:bg-gray-100 hover:shadow-lg hover:-translate-y-[2px] transition duration-300 flex items-center gap-2"
               >
                 <span>Book a Free Consultation</span>
                 <ArrowRight size={16} />

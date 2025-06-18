@@ -1,14 +1,14 @@
 import { useEffect, useRef } from "react";
-
+import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { OptimizedImage } from "@/components/ui/OptimizedImage";
 import { Helmet } from 'react-helmet';
 import { ArrowRight, CheckCircle, ArrowDown, Hammer, HardHat, Building2, Coins, Wrench, User, FileSpreadsheet, Home, Clock, Receipt, BarChart3 } from "lucide-react";
 
 // Import construction industry images
-import constructionBackgroundImg from "#";
-import constructionFooterImg from "#";
-import constructionSiteImg from "#";
+import constructionBackgroundImg from "../assets/images/construction_blueprint.png";
+import constructionFooterImg from "../assets/images/construction_industry.png";
+import constructionSiteImg from "../assets/images/construction_site_night.png";
 
 // Animation variants
 const containerVariants = {
@@ -17,6 +17,7 @@ const containerVariants = {
     opacity: 1,
     transition: {
       staggerChildren: 0.15,
+      delayChildren: 0.2
     }
   }
 };
@@ -26,11 +27,13 @@ const itemVariants = {
   visible: { 
     y: 0, 
     opacity: 1,
+    transition: { duration: 0.5, ease: "easeOut" }
   }
 };
 
 const fadeIn = {
   hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { duration: 0.8 } }
 };
 
 // Feature card component
@@ -301,6 +304,7 @@ const ConstructionIndustryPage = () => {
             <motion.div 
               initial={{ opacity: 0, x: 50 }}
               animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
               className="lg:w-1/2"
             >
               <div className="bg-gradient-to-br from-[#7B3FE4] to-[#3FA4E4] p-3 rounded-2xl shadow-2xl relative">
@@ -318,6 +322,7 @@ const ConstructionIndustryPage = () => {
                 <motion.div 
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.8, duration: 0.5 }}
                   className="absolute -bottom-4 -right-4 bg-white rounded-xl shadow-lg p-3 flex items-center"
                 >
                   <div className="bg-orange-100 p-2 rounded-lg mr-3">
@@ -335,6 +340,7 @@ const ConstructionIndustryPage = () => {
           <motion.div 
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1, duration: 0.5 }}
             className="absolute bottom-5 left-1/2 transform -translate-x-1/2 flex flex-col items-center"
           >
             <p className="text-white mb-2 text-sm font-medium">Scroll to learn more</p>

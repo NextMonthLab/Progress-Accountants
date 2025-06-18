@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
-
-
+import { motion, useAnimation, Variants, HTMLMotionProps } from "framer-motion";
+import { useInView } from "react-intersection-observer";
 import { useEffect } from "react";
 import { scrollAnimationConfig } from "@/lib/animations";
 
@@ -8,6 +8,7 @@ interface ScrollAnimationWrapperProps extends HTMLMotionProps<"div"> {
   children: ReactNode;
   variants?: Variants;
   className?: string;
+  delay?: number;
   threshold?: number;
   rootMargin?: string;
   viewportOnce?: boolean;
@@ -42,6 +43,7 @@ export function ScrollAnimationWrapper({
       opacity: 1,
       y: 0,
       transition: {
+        duration: 0.6,
         ease: "easeOut",
         delay
       }
@@ -66,13 +68,16 @@ export function ScrollAnimationWrapper({
 interface AnimationProps extends Omit<ScrollAnimationWrapperProps, 'variants'> {
   children: ReactNode;
   className?: string;
+  delay?: number;
 }
 
+export function FadeInOnScroll({ children, className = "", delay = 0, ...props }: AnimationProps) {
   const variants: Variants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
+        duration: 0.8,
         ease: "easeOut",
         delay
       }
@@ -83,7 +88,7 @@ interface AnimationProps extends Omit<ScrollAnimationWrapperProps, 'variants'> {
     <ScrollAnimationWrapper
       variants={variants}
       className={className}
-      delay={0}
+      delay={delay}
       {...props}
     >
       {children}
@@ -91,6 +96,7 @@ interface AnimationProps extends Omit<ScrollAnimationWrapperProps, 'variants'> {
   );
 }
 
+export function SlideUpOnScroll({ children, className = "", delay = 0, ...props }: AnimationProps) {
   const variants: Variants = {
     hidden: { opacity: 0, y: 50 },
     visible: {
@@ -109,7 +115,7 @@ interface AnimationProps extends Omit<ScrollAnimationWrapperProps, 'variants'> {
     <ScrollAnimationWrapper
       variants={variants}
       className={className}
-      delay={0}
+      delay={delay}
       {...props}
     >
       {children}
@@ -117,12 +123,14 @@ interface AnimationProps extends Omit<ScrollAnimationWrapperProps, 'variants'> {
   );
 }
 
+export function SlideInFromLeftOnScroll({ children, className = "", delay = 0, ...props }: AnimationProps) {
   const variants: Variants = {
     hidden: { opacity: 0, x: -50 },
     visible: {
       opacity: 1,
       x: 0,
       transition: {
+        duration: 0.5,
         ease: "easeOut",
         delay
       }
@@ -133,7 +141,7 @@ interface AnimationProps extends Omit<ScrollAnimationWrapperProps, 'variants'> {
     <ScrollAnimationWrapper
       variants={variants}
       className={className}
-      delay={0}
+      delay={delay}
       {...props}
     >
       {children}
@@ -141,12 +149,14 @@ interface AnimationProps extends Omit<ScrollAnimationWrapperProps, 'variants'> {
   );
 }
 
+export function SlideInFromRightOnScroll({ children, className = "", delay = 0, ...props }: AnimationProps) {
   const variants: Variants = {
     hidden: { opacity: 0, x: 50 },
     visible: {
       opacity: 1,
       x: 0,
       transition: {
+        duration: 0.5,
         ease: "easeOut",
         delay
       }
@@ -157,7 +167,7 @@ interface AnimationProps extends Omit<ScrollAnimationWrapperProps, 'variants'> {
     <ScrollAnimationWrapper
       variants={variants}
       className={className}
-      delay={0}
+      delay={delay}
       {...props}
     >
       {children}
@@ -165,12 +175,14 @@ interface AnimationProps extends Omit<ScrollAnimationWrapperProps, 'variants'> {
   );
 }
 
+export function ScaleUpOnScroll({ children, className = "", delay = 0, ...props }: AnimationProps) {
   const variants: Variants = {
     hidden: { opacity: 0, scale: 0.9 },
     visible: {
       opacity: 1,
       scale: 1,
       transition: {
+        duration: 0.5,
         ease: "easeOut",
         delay
       }
@@ -181,7 +193,7 @@ interface AnimationProps extends Omit<ScrollAnimationWrapperProps, 'variants'> {
     <ScrollAnimationWrapper
       variants={variants}
       className={className}
-      delay={0}
+      delay={delay}
       {...props}
     >
       {children}

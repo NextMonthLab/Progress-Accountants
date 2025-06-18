@@ -77,7 +77,7 @@ export function OptimizedImage({
           setLoaded(true);
         }}
         className={cn(
-          "transition-opacity duration-0",
+          "transition-opacity duration-300",
           loaded ? "opacity-100" : "opacity-0",
           className
         )}

@@ -1,14 +1,14 @@
-// Pure static form - no complex validation for minimal bundle
-// import { useForm } from 'react-hook-form';
-// import { z } from 'zod';
-// import { zodResolver } from '@hookform/resolvers/zod';
+import React from 'react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { Loader2 } from 'lucide-react';
-import { useState } from 'react';
+import { smartFetch } from '@/utils/smartFetch';
 
 // Form validation schema
 const formSchema = z.object({
@@ -29,21 +29,19 @@ interface ContactFormProps {
 
 export default function ContactForm({ compact = false, className = "" }: ContactFormProps) {
   const { toast } = useToast();
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
 
-  // Simplified form state for static deployment
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    business: '',
-    industry: '',
-    message: '',
+  const form = useForm<FormValues>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: '',
+      email: '',
+      phone: '',
+      business: '',
+      industry: '',
+      message: '',
+    },
   });
-
-  const handleInputChange = (field: string, value: string) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
-  };
 
   async function onSubmit(data: FormValues) {
     setIsSubmitting(true);
@@ -51,13 +49,23 @@ export default function ContactForm({ compact = false, className = "" }: Contact
     try {
       console.log('Form submission data:', data);
       
-      // TODO: Replace with backend Pallet API when deployed
-      // Simulating form submission for static deployment
+      // Direct fetch to local API endpoint
+      const response = await fetch('/api/forms/progress-accountants-uk/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
+      });
       
-      console.log('Form submission (static mode):', data);
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
       
-      // Static deployment: form data logged locally until backend reconnection
+      const result = await response.json();
+      console.log('Form submission response:', result);
       
+      // Reset the form on successful submission
       form.reset();
       
       toast({
@@ -78,6 +86,7 @@ export default function ContactForm({ compact = false, className = "" }: Contact
     }
   }
 
+  // Use a different layout for the compact version
   if (compact) {
     return (
       <div className={`rounded-lg border border-gray-200 shadow-sm bg-white ${className}`}>
@@ -93,7 +102,7 @@ export default function ContactForm({ compact = false, className = "" }: Contact
                     <FormItem>
                       <FormLabel className="text-sm text-purple-600">Name*</FormLabel>
                       <FormControl>
-                        <Input placeholder="Your name" {...field} className="h-9" />
+                        <Input size={3} placeholder="Your name" {...field} className="h-9" />
                       </FormControl>
                       <FormMessage className="text-xs" />
                     </FormItem>
@@ -108,6 +117,36 @@ export default function ContactForm({ compact = false, className = "" }: Contact
                       <FormLabel className="text-sm text-purple-600">Email*</FormLabel>
                       <FormControl>
                         <Input placeholder="Your email" {...field} className="h-9" />
+                      </FormControl>
+                      <FormMessage className="text-xs" />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <FormField
+                  control={form.control}
+                  name="phone"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-sm text-purple-600">Phone</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Your phone" {...field} className="h-9" />
+                      </FormControl>
+                      <FormMessage className="text-xs" />
+                    </FormItem>
+                  )}
+                />
+                
+                <FormField
+                  control={form.control}
+                  name="business"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-sm text-purple-600">Business</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Your business" {...field} className="h-9" />
                       </FormControl>
                       <FormMessage className="text-xs" />
                     </FormItem>
@@ -159,6 +198,7 @@ export default function ContactForm({ compact = false, className = "" }: Contact
     );
   }
 
+  // Original full-size version
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -200,6 +240,62 @@ export default function ContactForm({ compact = false, className = "" }: Contact
           />
         </div>
         
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <FormField
+            control={form.control}
+            name="phone"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-[#7B3FE4] font-medium">Phone Number</FormLabel>
+                <FormControl>
+                  <Input 
+                    placeholder="Your phone number" 
+                    {...field} 
+                    className="bg-slate-700/50 border-slate-600 text-white placeholder:text-slate-400 focus:border-purple-500 focus:ring-purple-500/20"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          
+          <FormField
+            control={form.control}
+            name="business"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-[#7B3FE4] font-medium">Business Name</FormLabel>
+                <FormControl>
+                  <Input 
+                    placeholder="Your business name" 
+                    {...field} 
+                    className="bg-slate-700/50 border-slate-600 text-white placeholder:text-slate-400 focus:border-purple-500 focus:ring-purple-500/20"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+        
+        <FormField
+          control={form.control}
+          name="industry"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="text-[#7B3FE4] font-medium">Industry</FormLabel>
+              <FormControl>
+                <Input 
+                  placeholder="Your industry" 
+                  {...field} 
+                  className="bg-slate-700/50 border-slate-600 text-white placeholder:text-slate-400 focus:border-purple-500 focus:ring-purple-500/20"
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        
         <FormField
           control={form.control}
           name="message"
@@ -220,7 +316,7 @@ export default function ContactForm({ compact = false, className = "" }: Contact
         
         <Button 
           type="submit" 
-          className="w-full bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] text-white rounded-lg hover:shadow-lg hover:shadow-purple-500/25 hover:-translate-y-1 transition-all duration-0 font-medium py-3"
+          className="w-full bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] text-white rounded-lg hover:shadow-lg hover:shadow-purple-500/25 hover:-translate-y-1 transition-all duration-300 font-medium py-3"
           disabled={isSubmitting}
         >
           {isSubmitting ? (

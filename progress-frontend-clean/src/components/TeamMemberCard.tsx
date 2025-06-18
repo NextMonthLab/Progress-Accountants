@@ -30,6 +30,7 @@ export function TeamMemberCard({ member }: TeamMemberCardProps) {
               <img 
                 src={member.photoUrl} 
                 alt={`${member.name} - ${member.role}`}
+                className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-110"
               />
             </div>
           ) : member.placeholderComponent ? (

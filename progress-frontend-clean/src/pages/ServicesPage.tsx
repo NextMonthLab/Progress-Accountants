@@ -88,9 +88,16 @@ const services: Service[] = [
 ];
 
 export default function ServicesPage() {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   
-  // No loading delays for instant rendering
+  useEffect(() => {
+    // Simulate content loading
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1500);
+    
+    return () => clearTimeout(timer);
+  }, []);
   
   // Return skeleton during loading state
   if (isLoading) {
@@ -194,17 +201,19 @@ export default function ServicesPage() {
           {/* Services Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {services.map((service) => (
-              <div key={service.slug} className="bg-gray-800 rounded-lg p-6 hover:bg-gray-700 transition-colors">
-                <div className="text-gradient-to-r from-blue-400 to-pink-400 mb-4">
-                  {service.icon}
+              <div key={service.id} className="bg-gray-800 rounded-lg shadow-lg p-6 flex flex-col h-full transform transition-all duration-300 hover:-translate-y-2 hover:shadow-xl border border-gray-700">
+                <div className="flex-grow">
+                  <div className="text-gradient-to-r from-blue-400 to-pink-400">
+                    {service.icon}
+                  </div>
+                  <h3 className="text-xl font-bold mb-3 text-white">
+                    {service.name}
+                  </h3>
+                  <p className="text-gray-300 mb-4">
+                    {service.description}
+                  </p>
                 </div>
-                <h3 className="text-xl font-bold mb-3 text-white">
-                  {service.name}
-                </h3>
-                <p className="text-gray-300 mb-4">
-                  {service.description}
-                </p>
-                <Link href={`/services/${service.slug}`} className="text-blue-400 font-medium inline-flex items-center hover:text-pink-400 transition-colors no-underline">
+                <Link href={`/services/${service.slug}`} className="text-blue-400 font-medium inline-flex items-center hover:text-pink-400 transition-colors duration-300 no-underline">
                   Learn more <ArrowRight className="h-4 w-4 ml-1" />
                 </Link>
               </div>
@@ -373,7 +382,7 @@ export default function ServicesPage() {
                   onClick={() => {
                     window.open('https://calendly.com/progress-accountants/free-consultation-progress-accountants', '_blank', 'width=700,height=800,resizable=yes,scrollbars=yes');
                   }}
-                  className="bg-gradient-to-br from-blue-600 to-pink-500 text-white hover:shadow-lg hover:-translate-y-[2px] transition duration-0 cursor-pointer"
+                  className="bg-gradient-to-br from-blue-600 to-pink-500 text-white hover:shadow-lg hover:-translate-y-[2px] transition duration-300 cursor-pointer"
                 >
                   Book a Consultation
                 </Button>
@@ -407,7 +416,7 @@ export default function ServicesPage() {
                 window.open('https://calendly.com/progress-accountants/free-consultation-progress-accountants', '_blank', 'width=700,height=800,resizable=yes,scrollbars=yes');
               }}
               size="lg"
-              className="bg-white text-gray-900 hover:bg-gray-100 hover:shadow-lg hover:-translate-y-[2px] transition duration-0 cursor-pointer"
+              className="bg-white text-gray-900 hover:bg-gray-100 hover:shadow-lg hover:-translate-y-[2px] transition duration-300 cursor-pointer"
             >
               Book a Consultation
             </Button>
@@ -415,7 +424,7 @@ export default function ServicesPage() {
               <Button 
                 size="lg"
                 variant="outline"
-                className="text-white border-white hover:bg-white hover:text-gray-900 transition duration-0"
+                className="text-white border-white hover:bg-white hover:text-gray-900 transition duration-300"
               >
                 Explore Our Sectors
               </Button>
