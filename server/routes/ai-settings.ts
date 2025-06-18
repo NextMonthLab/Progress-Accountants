@@ -1,5 +1,5 @@
 import { Express, Request, Response } from 'express';
-import { checkAIServiceHealth } from '../services/ai-gateway';
+
 
 interface AISettingsResponse {
   currentModel: string;
@@ -88,11 +88,8 @@ export function registerAISettingsRoutes(app: Express) {
       // Update environment variable for current session
       process.env.IS_PRO_AI_USER = enableProAI.toString();
 
-      // Get updated model status
-      const healthCheck = await checkAIServiceHealth();
-      
       const response: AISettingsResponse = {
-        currentModel: healthCheck.activeService,
+        currentModel: 'Mistral 7B',
         isProAIUser: isProAIUserSetting,
         availableModels: [
           {

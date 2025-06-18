@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { processAIRequest, checkAIServiceHealth, AIGatewayRequest, processAIRequestWithFallback } from '../services/ai-gateway';
+import { processAIRequest, AIGatewayRequest, processAIRequestWithFallback } from '../services/ai-gateway';
 import { storage } from '../storage';
 
 const router = Router();
@@ -151,23 +151,7 @@ router.post('/usage/fallback', async (req, res) => {
   }
 });
 
-// GET /api/ai/health - Check AI service health
-router.get('/health', async (req, res) => {
-  try {
-    const healthStatus = await checkAIServiceHealth();
-    return res.json({
-      status: 'success',
-      services: healthStatus,
-      timestamp: new Date().toISOString()
-    });
-  } catch (error) {
-    console.error('[AI Gateway] Health check error:', error);
-    return res.status(500).json({
-      status: 'error',
-      error: 'Failed to check AI service health'
-    });
-  }
-});
+
 
 // GET /api/ai/tasks - List available task types
 router.get('/tasks', (req, res) => {

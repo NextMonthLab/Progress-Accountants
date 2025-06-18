@@ -460,17 +460,4 @@ export async function processAIRequestWithFallback(request: AIGatewayRequest, te
   }
 }
 
-export async function checkAIServiceHealth(): Promise<{
-  proAI: boolean;
-  mistral: boolean;
-  anthropic: boolean;
-  activeService: string;
-}> {
-  return {
-    proAI: IS_PRO_AI_USER && !!OPENAI_API_KEY,
-    mistral: !!MISTRAL_API_URL,
-    anthropic: !!ANTHROPIC_API_KEY,
-    activeService: IS_PRO_AI_USER && OPENAI_API_KEY ? 'OpenAI GPT-4o' : 
-                   ANTHROPIC_API_KEY ? 'Anthropic Claude' : 'Mistral 7B'
-  };
-}
+export 
