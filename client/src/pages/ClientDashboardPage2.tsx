@@ -765,9 +765,9 @@ const LegacyDashboardContent = () => {
       <div className="mb-8 bg-gradient-to-br from-navy to-blue-900 rounded-2xl p-8 text-white">
         <div className="flex flex-col md:flex-row justify-between gap-6">
           <div className="md:max-w-lg">
-            <h1 className="text-3xl font-bold mb-2">Welcome back, {user?.name || 'Admin'}</h1>
+            <h1 className="text-3xl font-bold mb-2">Welcome back, Admin</h1>
             <p className="text-white mb-6">
-              Here's what's happening with {tenant?.name || 'your website'} today.
+              Here's what's happening with your website today.
             </p>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
