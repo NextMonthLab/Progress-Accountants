@@ -19,7 +19,7 @@ import { migrateSiteVariantsTables } from './db-migrate-site-variants';
 import { migrateOnboardingTables } from './db-migrate-onboarding';
 import { migrateSupportTables } from './db-migrate-support';
 import { migrateSupportSystemTables } from './db-migrate-support-system';
-import { migrateHealthMonitoringTables } from './db-migrate-health-monitoring';
+
 import { runAiUsageMigrations } from './db-migrate-ai-usage';
 import { migrateAiEventLog } from './db-migrate-ai-event-log';
 import { migrateInnovationFeed } from './db-migrate-innovation-feed';
@@ -40,7 +40,7 @@ import { registerInsightsRoutes } from './controllers/registerInsightsRoutes';
 import { registerBlueprintRoutes } from './controllers/blueprintController';
 import { registerCrmRoutes } from './controllers/crmController';
 import { registerOnboardingRoutes } from './controllers/onboardingController';
-import { registerHealthRoutes } from './health-routes';
+
 import { initScheduler } from './scheduler';
 import { registerAiEventRoutes } from './routes/ai-event-routes';
 import { registerInnovationFeedRoutes } from './routes/innovation-feed-routes';
@@ -114,8 +114,7 @@ app.use((req, res, next) => {
     await migrateSupportTables();
     console.log('Running Support System v2 migrations...');
     await migrateSupportSystemTables();
-    console.log('Running Health Monitoring System migrations...');
-    await migrateHealthMonitoringTables();
+
     console.log('Running AI Usage Tracking migrations...');
     await runAiUsageMigrations();
     console.log('Running AI Event Logger migrations...');
@@ -181,8 +180,7 @@ app.use((req, res, next) => {
   // Register Onboarding routes
   registerOnboardingRoutes(app);
 
-  // Register Health Monitoring routes
-  await registerHealthRoutes(app);
+
 
   // Register AI Event Logger routes
   registerAiEventRoutes(app);
