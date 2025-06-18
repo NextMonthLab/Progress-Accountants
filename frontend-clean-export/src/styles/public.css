@@ -1,0 +1,125 @@
+/* public.css - Styles specific to public-facing components */
+
+:root {
+  /* Public site colors - Updated to Progress brand */
+  --public-navy: #000000;
+  --public-navy-dark: #000000;
+  --public-orange: #E935C1;
+  --public-white: #ffffff;
+  --public-gray: #f0f0f0;
+}
+
+/* Public button styles */
+.public-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 0.375rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
+}
+
+.public-btn-primary {
+  background-color: var(--public-navy);
+  color: var(--public-white);
+}
+
+.public-btn-primary:hover {
+  background-color: var(--public-navy-dark);
+}
+
+.public-btn-secondary {
+  background: linear-gradient(135deg, #4F46E5 0%, #4F46E5 60%, #E935C1 100%);
+  color: var(--public-white);
+  transition: all 0.3s ease;
+}
+
+.public-btn-secondary:hover {
+  background: linear-gradient(135deg, #3730A3 0%, #3730A3 60%, #D946EF 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);
+}
+
+.public-btn-outline {
+  background-color: transparent;
+  border: 1px solid var(--public-navy);
+  color: var(--public-navy);
+}
+
+.public-btn-outline:hover {
+  background: linear-gradient(135deg, #4F46E5 0%, #4F46E5 60%, #E935C1 100%);
+  border-color: var(--public-orange);
+  color: var(--public-white);
+}
+
+/* Progress button override with absolute specificity */
+.progress-button-override {
+  background: linear-gradient(135deg, #4F46E5 0%, #4F46E5 60%, #E935C1 100%) !important;
+  background-color: #4F46E5 !important;
+  color: white !important;
+  transition: all 0.2s ease !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) !important;
+}
+
+.progress-button-override:hover {
+  background: linear-gradient(135deg, #3730A3 0%, #3730A3 60%, #D946EF 100%) !important;
+  background-color: #3730A3 !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+  color: white !important;
+}
+
+/* Book a Call button specific style - Progress brand colors with maximum specificity */
+a.book-call-btn,
+.book-call-btn {
+  background: linear-gradient(135deg, #8B5CF6 0%, #A855F7 100%) !important;
+  background-color: #8B5CF6 !important;
+  color: white !important;
+  padding: 0.5rem 1rem !important;
+  border-radius: 0.5rem !important;
+  font-size: 0.875rem !important;
+  font-weight: 500 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.5rem !important;
+  transition: all 0.2s ease !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) !important;
+  text-decoration: none !important;
+  height: 40px !important;
+  line-height: 1 !important;
+  white-space: nowrap !important;
+  border: none !important;
+}
+
+a.book-call-btn:hover,
+.book-call-btn:hover {
+  background: linear-gradient(135deg, #7C3AED 0%, #9333EA 100%) !important;
+  background-color: #7C3AED !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+  color: white !important;
+}
+
+/* Mobile book call button - different style */
+.book-call-btn-mobile {
+  background-color: var(--public-orange);
+  color: var(--public-white);
+  width: 100%;
+  padding: 0.625rem 1rem;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.book-call-btn-mobile:hover {
+  background-color: rgba(241, 90, 41, 0.9);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
