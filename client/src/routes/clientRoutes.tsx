@@ -2,7 +2,7 @@ import { lazy } from 'react';
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 
 // Lazy load client-specific components
-const ClientDashboardPage = lazy(() => import("@/pages/ClientDashboardPage"));
+const ClientDashboardPage = lazy(() => import("@/pages/ClientDashboardPage2"));
 const AccountPage = lazy(() => import("@/pages/AccountPage"));
 const OnboardingWelcomePage = lazy(() => import("@/pages/OnboardingWelcomePage"));
 const NewClientOnboarding = lazy(() => import("@/pages/NewClientOnboarding"));

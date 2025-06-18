@@ -25,6 +25,7 @@ import { ThemeProvider } from "@/components/ThemeProvider";
 import ErrorBoundary from "@/components/error/ErrorBoundary";
 import ContentLoader from "@/components/error/ContentLoader";
 import CookieNotification from "@/components/CookieNotification";
+import { ClientRoutes } from "@/routes/clientRoutes";
 
 // Eagerly loaded components for critical paths
 import HomePage from "@/pages/HomePage";
@@ -343,6 +344,7 @@ function Router() {
       {/* Removed missing admin routes */}
 
       {/* Client routes */}
+      <ClientRoutes />
       <Route path="/studio" component={StudioPage} />
       <Route path="/client-registration" component={ClientRegistrationPage} />
       <Route path="/dashboard" component={ClientDashboardPage2} />
