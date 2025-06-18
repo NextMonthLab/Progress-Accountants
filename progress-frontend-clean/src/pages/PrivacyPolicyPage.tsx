@@ -187,7 +187,7 @@ export default function PrivacyPolicyPage() {
               </p>
               <div className="text-gray-300">
                 <p>Email: <a href="mailto:Gareth.Burton@progressaccountants.com" className="text-blue-400 hover:text-blue-300">Gareth.Burton@progressaccountants.com</a></p>
-                <p>Phone: <a href="tel:02030057870" className="text-blue-400 hover:text-blue-300">020 3005 7870</a></p>
+                <p>Phone: <a href="tel:01295477250" className="text-blue-400 hover:text-blue-300">01295 477 250</a></p>
                 <p>Address: 107 Cheapside, London. EC2V 6DN</p>
               </div>
             </section>

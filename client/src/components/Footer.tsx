@@ -120,7 +120,7 @@ export default function Footer() {
                   href="tel:01295477250" 
                   className="text-gray-300 hover:text-purple-400 transition"
                 >
-                  01234 567 890
+                  01295 477 250
                 </a>
               </div>
               <div>

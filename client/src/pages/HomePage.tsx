@@ -146,7 +146,7 @@ const HomePage = () => {
                               <div>
                                 <span className="font-medium text-xs block mb-1">General Enquiries:</span>
                                 <a href="tel:01295477250" className="text-[#3FA4E4] hover:text-[#7B3FE4] transition-colors text-sm">
-                                  01865 921 150
+                                  01295 477 250
                                 </a>
                               </div>
                             </div>
