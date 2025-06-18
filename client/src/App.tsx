@@ -9,10 +9,7 @@ import NotFound from "@/pages/not-found";
 import { useAuth, AuthProvider } from "@/hooks/use-auth";
 import { TenantProvider } from "@/hooks/use-tenant";
 import { PermissionsProvider } from "@/hooks/use-permissions";
-import { CompanionContextProvider } from "@/hooks/use-companion-context";
-
 import { ProtectedRoute } from "@/components/ProtectedRoute";
-import { HelpProvider } from "@/contexts/HelpContext";
 import { NotificationsProvider } from "@/contexts/NotificationsContext";
 import ConversionDemo from "@/components/ConversionDemo";
 import AdminLayout from "@/layouts/AdminLayout";
