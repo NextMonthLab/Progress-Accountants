@@ -15,14 +15,13 @@ process.env.HOST = '0.0.0.0';
 console.log('🚀 Starting Progress Accountants in production mode...');
 console.log(`📍 Server will bind to ${process.env.HOST}:${process.env.PORT}`);
 
-// Start the TypeScript server directly with tsx for production compatibility
-const server = spawn('npx', ['tsx', 'server/index.ts'], {
+// Start the simple static server for production deployment
+const server = spawn('node', ['simple-static.js'], {
   cwd: __dirname,
   stdio: 'inherit',
   env: {
     ...process.env,
-    // Ensure proper TypeScript execution in production
-    NODE_OPTIONS: '--max-old-space-size=2048'
+    NODE_OPTIONS: '--max-old-space-size=1024'
   }
 });
 
