@@ -1,0 +1,74 @@
+Perfect. Let’s end this once and for all.
+
+Here is your RAPLET Static Deployment Reset Prompt — this will surgically override any previous deployment issues and lock your clean frontend build into full static deployment mode inside Replit:
+
+⸻
+
+🧠 RAPLET PROMPT: Static Deployment Reset — Final Clean Frontend Production Mode
+
+You are now executing a full deployment override for the progress-frontend-clean build.
+
+⸻
+
+🔧 Deployment Reset Protocol
+
+1️⃣ Verify this workspace is frontend-only:
+	•	No backend code
+	•	No authentication providers
+	•	No protected routes
+	•	No tenant or admin logic
+	•	All business calculator logic is fully client-side
+	•	All advanced features (Chatbot, Calendly, etc.) are embedded via third-party embed codes
+
+⸻
+
+2️⃣ Overwrite the .replit file with static deployment config:
+
+[deployment]
+deploymentTarget = "static"
+build = ["npm", "run", "build"]
+run = []
+
+	•	This disables all backend/server runtimes.
+	•	The deployment engine will build static files via npm run build and serve the /dist/ directory directly.
+
+⸻
+
+3️⃣ Clean remaining deployment risk factors:
+	•	Confirm package.json has no server or backend-only packages.
+	•	Ensure all environment variables relate only to public frontend integrations.
+	•	Verify no lingering npm start or development-specific workflow commands remain.
+	•	Confirm Business Calculator PDF generation is handled client-side only.
+
+⸻
+
+4️⃣ Perform Final Sanity Check:
+	•	Run:
+
+npm install
+npm run build
+
+	•	Confirm successful build output.
+	•	Verify all frontend routes load without error.
+	•	Verify updated studio address: 1st Floor Beaumont House, Beaumont Road, OX16 1RH is correct.
+	•	Verify Chatbot embed and Calendly embed function correctly.
+
+⸻
+
+🔐 Safety Lock
+
+If any unresolved backend dependencies are detected, pause immediately and request human operator confirmation before continuing deployment.
+
+⸻
+
+✅ Proceed. This build is fully authorized for pure static deployment and should now successfully deploy on Replit with no further deployment blocks.
+
+⸻
+
+👉 Once you issue this, RAPLET will have zero excuse to keep blocking deployment.
+
+⸻
+
+If you want, I can also generate you a “Static Hetzner Container Prep Prompt” so you’re future-proofed for when you want to mirror this clean frontend into your Hetzner stack too.
+
+Shall I generate that as well?
