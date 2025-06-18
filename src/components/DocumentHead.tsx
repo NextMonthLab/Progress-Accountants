@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { useLocation } from 'wouter';
-import { fetchSeoConfigByPath, getSiteBranding } from '@/lib/api';
-import { defaultSiteBranding, SiteBranding } from '@shared/site_branding';
+// Static frontend - no API calls needed
 
 type SEOConfig = {
   title: string;
@@ -35,8 +34,10 @@ export function DocumentHead({
   const [location] = useLocation();
   const currentRoute = route || location;
   const [seoConfig, setSeoConfig] = useState<SEOConfig | null>(null);
-  const [siteBranding, setSiteBranding] = useState<SiteBranding>(defaultSiteBranding);
-  const [isLoading, setIsLoading] = useState(false);
+  const siteBranding = {
+    name: "Progress Accountants",
+    description: "Forward-thinking Accountants for UK Businesses"
+  };
 
   // Fetch site branding settings
   useEffect(() => {

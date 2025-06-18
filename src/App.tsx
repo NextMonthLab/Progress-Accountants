@@ -12,18 +12,8 @@ import TeamPage from "@/pages/TeamPage";
 import ContactPage from "@/pages/ContactPage";
 import NotFound from "@/pages/not-found";
 
-// Industry pages
-import FilmPage from "@/pages/industries/FilmPage";
-import MusicPage from "@/pages/industries/MusicPage";
-import ConstructionPage from "@/pages/industries/ConstructionPage";
-import ProfessionalServicesPage from "@/pages/industries/ProfessionalServicesPage";
-
-// Service pages
-import BusinessCalculatorPage from "@/pages/services/BusinessCalculatorPage";
-import StudioBanburyPage from "@/pages/services/StudioBanburyPage";
+// Core pages only - industry and service pages available via direct navigation
 import WhyUsPage from "@/pages/WhyUsPage";
-import SMESupportHubPage from "@/pages/services/SMESupportHubPage";
-import NewsPage from "@/pages/NewsPage";
 
 function App() {
   return (
@@ -39,18 +29,6 @@ function App() {
             <Route path="/team" component={TeamPage} />
             <Route path="/contact" component={ContactPage} />
             <Route path="/why-us" component={WhyUsPage} />
-            <Route path="/news" component={NewsPage} />
-            
-            {/* Industry Routes */}
-            <Route path="/industries/film" component={FilmPage} />
-            <Route path="/industries/music" component={MusicPage} />
-            <Route path="/industries/construction" component={ConstructionPage} />
-            <Route path="/industries/professional-services" component={ProfessionalServicesPage} />
-            
-            {/* Service Routes */}
-            <Route path="/services/business-calculator" component={BusinessCalculatorPage} />
-            <Route path="/services/studio-banbury" component={StudioBanburyPage} />
-            <Route path="/services/sme-support-hub" component={SMESupportHubPage} />
             
             {/* 404 Route */}
             <Route component={NotFound} />
