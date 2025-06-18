@@ -16,6 +16,7 @@ import { motion } from "framer-motion";
 import { EMBED_FORMS, hasValidEmbedCode, FORM_CONFIG } from "@/utils/embedForms";
 import { generateSMEHubPDF } from "@/utils/pdfGenerator";
 import { openCalendlyPopup } from "@/utils/calendly";
+import smeHeroImage from "@/assets/sme-support-hub-hero.png";
 
 // Animation variants
 const containerVariants = {
@@ -41,7 +42,12 @@ const itemVariants = {
 // Hero Section
 const HeroSection = () => (
   <section className="relative py-20 bg-black overflow-hidden">
-    <div className="absolute inset-0 bg-gradient-to-r from-[#1a0b2e] via-black to-[#16213e] opacity-90" />
+    <div className="absolute inset-0" style={{
+      backgroundImage: `linear-gradient(rgba(26, 11, 46, 0.8), rgba(0, 0, 0, 0.8)), url(${smeHeroImage})`,
+      backgroundSize: "cover",
+      backgroundPosition: "center",
+      backgroundColor: "#000000"
+    }} />
     <div className="container mx-auto px-6 md:px-8 relative z-10">
       <motion.div
         initial={{ opacity: 0, y: 30 }}
