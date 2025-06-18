@@ -135,6 +135,14 @@ html, body {
     min-height: 400px;
   }
   
+  /* Homepage team image mobile optimization */
+  .homepage-team-image {
+    background-size: contain !important;
+    background-position: center center !important;
+    background-repeat: no-repeat !important;
+    min-height: 400px;
+  }
+  
   /* Ensure full team image visibility on mobile */
   @media (max-width: 767px) {
     .team-hero-image {

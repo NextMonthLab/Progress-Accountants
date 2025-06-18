@@ -1,0 +1,118 @@
+/* Enhanced Dark Mode Styling for Navigation Menus */
+
+/* Navigation container */
+.nav-sidebar {
+  --nav-sidebar-bg: rgba(15, 23, 42, 0.8);
+  --nav-item-hover: rgba(51, 65, 85, 0.5);
+  --nav-text-primary: rgba(255, 255, 255, 0.9);
+  --nav-text-secondary: rgba(203, 213, 225, 0.8);
+  --nav-text-muted: rgba(148, 163, 184, 0.7);
+  --nav-border: rgba(51, 65, 85, 0.6);
+  --nav-icon: rgba(203, 213, 225, 0.8);
+  --nav-active-bg: rgba(59, 130, 246, 0.15);
+  --nav-badge-bg: rgba(30, 41, 59, 0.8);
+  --nav-badge-border: rgba(71, 85, 105, 0.6);
+}
+
+/* Main container background */
+.dark .nav-sidebar {
+  background-color: var(--nav-sidebar-bg);
+  border-color: var(--nav-border);
+}
+
+/* Navigation group headers */
+.dark .nav-group-header {
+  color: var(--nav-text-secondary);
+}
+
+/* Navigation items */
+.dark .nav-item {
+  color: var(--nav-text-primary);
+  border-color: transparent;
+}
+
+.dark .nav-item:hover {
+  background-color: var(--nav-item-hover);
+}
+
+.dark .nav-item.active {
+  background-color: var(--nav-active-bg);
+  border-color: var(--nav-border);
+}
+
+/* Icons in dark mode */
+.dark .nav-icon {
+  color: var(--nav-icon);
+}
+
+/* Badges in dark mode */
+.dark .nav-badge {
+  background-color: var(--nav-badge-bg);
+  border: 1px solid var(--nav-badge-border);
+  color: var(--nav-text-secondary);
+}
+
+/* Submenu styles */
+.dark .nav-submenu {
+  border-color: var(--nav-border);
+  background-color: rgba(15, 23, 42, 0.4);
+}
+
+.dark .nav-submenu-item {
+  color: var(--nav-text-secondary);
+}
+
+.dark .nav-submenu-item:hover {
+  background-color: var(--nav-item-hover);
+}
+
+/* Dividers */
+.dark .nav-divider {
+  border-color: var(--nav-border);
+}
+
+/* Menu management page specific styles */
+.dark .menu-management-container {
+  background-color: var(--nav-sidebar-bg);
+  border-color: var(--nav-border);
+}
+
+.dark .menu-item {
+  background-color: rgba(30, 41, 59, 0.6);
+  border-color: var(--nav-border);
+  color: var(--nav-text-primary);
+}
+
+.dark .menu-item:hover {
+  background-color: rgba(30, 41, 59, 0.8);
+}
+
+.dark .menu-card {
+  background-color: rgba(30, 41, 59, 0.7);
+  border-color: rgba(51, 65, 85, 0.8);
+}
+
+.dark .menu-card-header {
+  color: var(--nav-text-primary);
+  border-bottom-color: var(--nav-border);
+}
+
+.dark .menu-settings-button {
+  background-color: rgba(30, 41, 59, 0.5);
+  color: var(--nav-text-secondary);
+  border-color: var(--nav-border);
+}
+
+.dark .menu-settings-button:hover {
+  background-color: rgba(51, 65, 85, 0.7);
+  color: var(--nav-text-primary);
+}
+
+.dark .menu-create-button {
+  background-color: rgba(37, 99, 235, 0.8);
+  color: white;
+}
+
+.dark .menu-create-button:hover {
+  background-color: rgba(37, 99, 235, 0.9);
+}
