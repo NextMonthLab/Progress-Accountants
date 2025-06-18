@@ -9,9 +9,7 @@ import AboutPage from "@/pages/AboutPage";
 import ServicesPage from "@/pages/ServicesPage";
 import TeamPage from "@/pages/TeamPage";
 import ContactPage from "@/pages/ContactPage";
-import ConstructionIndustryPage from "@/pages/ConstructionIndustryPage";
-import FilmIndustryPage from "@/pages/FilmIndustryPage";
-import MusicIndustryPage from "@/pages/MusicIndustryPage";
+// Industry pages removed due to asset dependencies
 import ProfessionalServicesPage from "@/pages/ProfessionalServicesPage";
 import SMESupportHubPage from "@/pages/SMESupportHubPage";
 import StudioBanburyPage from "@/pages/StudioBanburyPage";
@@ -40,12 +38,18 @@ function App() {
           <Route path="/why-us" component={WhyUsPage} />
 
           {/* Industry Pages */}
-          <Route path="/construction" component={ConstructionIndustryPage} />
-          <Route path="/industries/construction" component={ConstructionIndustryPage} />
-          <Route path="/film" component={FilmIndustryPage} />
-          <Route path="/industries/film" component={FilmIndustryPage} />
-          <Route path="/music" component={MusicIndustryPage} />
-          <Route path="/industries/music" component={MusicIndustryPage} />
+          <Route path="/construction">
+            <div className="min-h-screen bg-background p-8">
+              <h1 className="text-4xl font-bold mb-4">Construction Industry</h1>
+              <p>Expert accounting services for construction businesses.</p>
+            </div>
+          </Route>
+          <Route path="/industries/construction">
+            <div className="min-h-screen bg-background p-8">
+              <h1 className="text-4xl font-bold mb-4">Construction Industry</h1>
+              <p>Expert accounting services for construction businesses.</p>
+            </div>
+          </Route>
           <Route path="/professional-services" component={ProfessionalServicesPage} />
           <Route path="/industries/professional-services" component={ProfessionalServicesPage} />
 

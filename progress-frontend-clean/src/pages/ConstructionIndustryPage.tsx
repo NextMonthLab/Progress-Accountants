@@ -6,9 +6,9 @@ import { Helmet } from 'react-helmet';
 import { ArrowRight, CheckCircle, ArrowDown, Hammer, HardHat, Building2, Coins, Wrench, User, FileSpreadsheet, Home, Clock, Receipt, BarChart3 } from "lucide-react";
 
 // Import construction industry images
-import constructionBackgroundImg from "../assets/images/construction_blueprint.png";
-import constructionFooterImg from "../assets/images/construction_industry.png";
-import constructionSiteImg from "../assets/images/construction_site_night.png";
+import constructionBackgroundImg from "#";
+import constructionFooterImg from "#";
+import constructionSiteImg from "#";
 
 // Animation variants
 const containerVariants = {
