@@ -181,6 +181,11 @@ function Router() {
           <SMESupportHubPage />
         </Suspense>
       </Route>
+      <Route path="/sme-support-hub">
+        <Suspense fallback={<LoadingFallback />}>
+          <SMESupportHubPage />
+        </Suspense>
+      </Route>
       <Route path="/news">
         <Suspense fallback={<LoadingFallback />}>
           <NewsPage />

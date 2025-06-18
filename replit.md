@@ -127,6 +127,7 @@ Progress Accountants is a sophisticated SmartSite platform built with React/Type
 
 ```
 Changelog:
+- June 18, 2025: Fixed 404 error for /sme-support-hub route by adding proper routing configuration
 - June 17, 2025: Removed login button from header menu navigation (desktop and mobile)
 - June 17, 2025: Updated chatbot embed code with correct script ID (1750188617452)
 - June 17, 2025: Added Becky Rogers as Assistant Accountant to team page with complete professional biography
