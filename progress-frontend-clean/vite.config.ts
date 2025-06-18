@@ -1,31 +1,45 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
+import { resolve } from "path";
+import { readdirSync } from "fs";
 import themePlugin from "@replit/vite-plugin-shadcn-theme-json";
-import path from "path";
-import runtimeErrorOverlay from "@replit/vite-plugin-runtime-error-modal";
+
+// Read theme.json
+let themeConfig = { primary: "#0f172a", variant: "professional", appearance: "light", radius: 8 };
+try {
+  const themeContent = readdirSync(".").includes("theme.json") 
+    ? JSON.parse(require("fs").readFileSync("theme.json", "utf8"))
+    : {};
+  themeConfig = { ...themeConfig, ...themeContent };
+} catch (e) {
+  console.warn("Could not read theme.json, using defaults");
+}
 
 export default defineConfig({
   plugins: [
     react(),
-    runtimeErrorOverlay(),
-    themePlugin(),
-    ...(process.env.NODE_ENV !== "production" &&
-    process.env.REPL_ID !== undefined
-      ? [
-          // Cartographer disabled in production to avoid build issues
-        ]
-      : []),
+    themePlugin(themeConfig)
   ],
   resolve: {
     alias: {
-      "@": path.resolve(import.meta.dirname, "client", "src"),
-      "@shared": path.resolve(import.meta.dirname, "shared"),
-      "@assets": path.resolve(import.meta.dirname, "attached_assets"),
+      "@": resolve(__dirname, "./src"),
+      "@assets": resolve(__dirname, "./src/assets"),
     },
   },
-  root: path.resolve(import.meta.dirname, "client"),
   build: {
-    outDir: path.resolve(import.meta.dirname, "dist/public"),
-    emptyOutDir: true,
+    outDir: "dist",
+    sourcemap: false,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom'],
+          ui: ['@radix-ui/react-accordion', '@radix-ui/react-dialog', '@radix-ui/react-dropdown-menu']
+        }
+      }
+    }
   },
+  server: {
+    port: 3000,
+    host: "0.0.0.0"
+  }
 });
