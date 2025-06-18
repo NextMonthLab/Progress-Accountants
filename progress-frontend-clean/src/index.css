@@ -1,4 +1,7 @@
-/* Frontend-only production build - no separate stylesheets needed */
+/* Import dedicated stylesheets for public and admin sections to avoid style leakage */
+@import './styles/public.css';
+@import './styles/admin.css';
+@import './styles/navigation-dark-mode.css';
 
 @tailwind base;
 @tailwind components;
@@ -174,6 +177,22 @@ html, body {
   .team-hero-image {
     background-size: contain !important;
     min-height: 500px;
+  }
+  
+  /* Homepage team image iPad optimization */
+  .homepage-team-image {
+    background-size: contain !important;
+    min-height: 450px;
+  }
+}
+
+/* Homepage team image mobile optimization */
+@media (max-width: 767px) {
+  .homepage-team-image {
+    background-size: contain !important;
+    background-position: center center !important;
+    min-height: 300px;
+    height: 350px !important;
   }
 }
 .rounded,

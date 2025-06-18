@@ -149,6 +149,7 @@ Changelog:
 - June 18, 2025: Fixed TailwindCSS styling breakdown by downgrading to TailwindCSS 3.4.0 and reverting PostCSS configuration
 - June 18, 2025: Fixed mobile horizontal scrolling drift and team image display issues with responsive CSS fixes
 - June 18, 2025: Updated team hero image to use background-size: contain to ensure full team photo visibility on mobile and iPad devices
+- June 18, 2025: Fixed homepage team photo cropping on mobile and iPad - changed from hidden md:block to always visible with background-size: contain
 - June 18, 2025: Updated all phone numbers across the website to the correct number: 01295 477 250
 - June 18, 2025: RAPLET pre-hardening compliance completed - fixed CSS dependencies, regenerated package-lock.json, validated production build ready for Hetzner Docker deployment
 - June 18, 2025: Created production deployment guide due to dev command blocking deployment
