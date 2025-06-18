@@ -81,65 +81,20 @@ app.use((req, res, next) => {
 });
 
 (async () => {
-  // Run database migrations
-  try {
-    console.log('Running Page Builder migrations...');
-    await migratePageBuilderTables();
-    console.log('Running Page Builder fixes...');
-    await fixPageBuilderTables();
-    await addMissingColumns();
-    console.log('Running Version Control migrations...');
-    await migrateVersionControlTables();
-    console.log('Running Navigation Menu migrations...');
-    await migrateNavigationTables();
-    console.log('Running Domain Mappings migrations...');
-    await migrateDomainMappingsTables();
-    console.log('Running SOT migrations...');
-    await migrateSotTables();
-    console.log('Running Progress Agent migrations...');
-    await migrateAgentTables();
-    console.log('Running AI Design System migrations...');
-    await migrateAiDesignSystemTables();
-    console.log('Running Insights Dashboard migrations...');
-    await migrateInsightsDashboard();
-    console.log('Running Blueprint migrations...');
-    await migrateBlueprintTables();
-    console.log('Running Starter CRM migrations...');
-    await migrateCrmTables();
-    console.log('Running Site Variants migrations...');
-    await migrateSiteVariantsTables();
-    console.log('Running Onboarding migrations...');
-    await migrateOnboardingTables();
-    console.log('Running Support System migrations...');
-    await migrateSupportTables();
-    console.log('Running Support System v2 migrations...');
-    await migrateSupportSystemTables();
+  // Add health check endpoints before any other routes
+  app.get('/health', (req: Request, res: Response) => {
+    res.status(200).json({ 
+      status: 'healthy', 
+      timestamp: new Date().toISOString(),
+      uptime: process.uptime(),
+      environment: process.env.NODE_ENV || 'development'
+    });
+  });
 
-    console.log('Running AI Usage Tracking migrations...');
-    await runAiUsageMigrations();
-    console.log('Running AI Event Logger migrations...');
-    await migrateAiEventLog();
-    console.log('Running Innovation Feed migrations...');
-    await migrateInnovationFeed();
-    
-    // Run Embed Analytics migrations
-    console.log('Running Embed Analytics migrations...');
-    await runEmbedAnalyticsMigrations();
-    
-    // Run Business Identity migrations for Master Unified Architecture
-    console.log('Running Business Identity migrations...');
-    await runBusinessIdentityMigrations();
-    
-    // Run Messages table migrations for SmartSite Contact Intelligence
-    console.log('Running Messages table migrations...');
-    await migrateMessagesTable();
-    
-    // Run AI Response fields migrations for Universal Mistral Response UX
-    console.log('Running AI Response fields migration...');
-    await migrateAiResponseFields();
-  } catch (error) {
-    console.error('Error running migrations:', error);
-  }
+  // Add root health check for deployment
+  app.get('/api/health', (req: Request, res: Response) => {
+    res.status(200).json({ status: 'ok', message: 'Progress Accountants Server Running' });
+  });
 
   // Register API routes
   await registerRoutes(app);
@@ -180,8 +135,6 @@ app.use((req, res, next) => {
   // Register Onboarding routes
   registerOnboardingRoutes(app);
 
-
-
   // Register AI Event Logger routes
   registerAiEventRoutes(app);
 
@@ -205,10 +158,7 @@ app.use((req, res, next) => {
   const host = "0.0.0.0";
   
   const server = createServer(app);
-  server.listen(port, host, () => {
-    log(`serving on port ${port}`);
-  });
-
+  
   // importantly only setup vite in development and after
   // setting up all the other routes so the catch-all route
   // doesn't interfere with the other routes
@@ -217,16 +167,95 @@ app.use((req, res, next) => {
   } else {
     const publicPath = path.join(__dirname, '../public');
     app.use(express.static(publicPath));
+    
+    // Add fallback root route for production health checks
+    app.get('/', (req: Request, res: Response) => {
+      res.status(200).json({ 
+        status: 'ok', 
+        message: 'Progress Accountants Production Server',
+        timestamp: new Date().toISOString()
+      });
+    });
   }
 
-  // Schedule daily backup at 6pm UTC (18:00)
-  cron.schedule('0 18 * * *', async () => {
-    log('Running scheduled backup...');
-    await triggerBackup();
+  // Start server BEFORE running migrations to avoid deployment timeouts
+  server.listen(port, host, () => {
+    log(`serving on port ${port}`);
+    
+    // Schedule daily backup at 6pm UTC (18:00)
+    cron.schedule('0 18 * * *', async () => {
+      log('Running scheduled backup...');
+      await triggerBackup();
+    });
+
+    log('Backup scheduler initialized');
+
+    // Initialize insights summary scheduler
+    initScheduler();
   });
 
-  log('Backup scheduler initialized');
+  // Run database migrations AFTER server startup to prevent deployment blocking
+  setImmediate(async () => {
+    try {
+      console.log('Starting database migrations in background...');
+      console.log('Running Page Builder migrations...');
+      await migratePageBuilderTables();
+      console.log('Running Page Builder fixes...');
+      await fixPageBuilderTables();
+      await addMissingColumns();
+      console.log('Running Version Control migrations...');
+      await migrateVersionControlTables();
+      console.log('Running Navigation Menu migrations...');
+      await migrateNavigationTables();
+      console.log('Running Domain Mappings migrations...');
+      await migrateDomainMappingsTables();
+      console.log('Running SOT migrations...');
+      await migrateSotTables();
+      console.log('Running Progress Agent migrations...');
+      await migrateAgentTables();
+      console.log('Running AI Design System migrations...');
+      await migrateAiDesignSystemTables();
+      console.log('Running Insights Dashboard migrations...');
+      await migrateInsightsDashboard();
+      console.log('Running Blueprint migrations...');
+      await migrateBlueprintTables();
+      console.log('Running Starter CRM migrations...');
+      await migrateCrmTables();
+      console.log('Running Site Variants migrations...');
+      await migrateSiteVariantsTables();
+      console.log('Running Onboarding migrations...');
+      await migrateOnboardingTables();
+      console.log('Running Support System migrations...');
+      await migrateSupportTables();
+      console.log('Running Support System v2 migrations...');
+      await migrateSupportSystemTables();
 
-  // Initialize insights summary scheduler
-  initScheduler();
+      console.log('Running AI Usage Tracking migrations...');
+      await runAiUsageMigrations();
+      console.log('Running AI Event Logger migrations...');
+      await migrateAiEventLog();
+      console.log('Running Innovation Feed migrations...');
+      await migrateInnovationFeed();
+      
+      // Run Embed Analytics migrations
+      console.log('Running Embed Analytics migrations...');
+      await runEmbedAnalyticsMigrations();
+      
+      // Run Business Identity migrations for Master Unified Architecture
+      console.log('Running Business Identity migrations...');
+      await runBusinessIdentityMigrations();
+      
+      // Run Messages table migrations for SmartSite Contact Intelligence
+      console.log('Running Messages table migrations...');
+      await migrateMessagesTable();
+      
+      // Run AI Response fields migrations for Universal Mistral Response UX
+      console.log('Running AI Response fields migration...');
+      await migrateAiResponseFields();
+      
+      console.log('✅ All database migrations completed successfully');
+    } catch (error) {
+      console.error('Error running migrations:', error);
+    }
+  });
 })();
