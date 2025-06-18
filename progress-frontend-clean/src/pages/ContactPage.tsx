@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
-import ContactForm from '@/components/ContactForm';
+import ContactForm from '@/components/ContactForm.tsx';
 import { MapPin, Phone, Mail, Clock } from 'lucide-react';
 import { EMBED_FORMS, hasValidEmbedCode, FORM_CONFIG } from '@/utils/embedForms';
 

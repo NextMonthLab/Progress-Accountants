@@ -155,9 +155,7 @@ export default function IndustriesPage() {
   }
 
   // Extract business information
-  const businessName = businessIdentity?.core?.businessName || "Progress Accountants";
-  const targetAudience = businessIdentity?.market?.targetAudience || "Small to medium-sized businesses";
-  const primaryIndustry = businessIdentity?.market?.primaryIndustry || "Accounting";
+  const businessName = businessIdentity?.businessName || "Progress Accountants";
 
   return (
     <div className="bg-gray-50 min-h-screen">
