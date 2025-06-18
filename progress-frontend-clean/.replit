@@ -1,22 +1,23 @@
 modules = ["nodejs-20", "web"]
-run = "npm run preview"
-hidden = [".config", ".git", "node_modules", "dist"]
+run = "npx serve dist -s"
+hidden = [".config", ".git", "node_modules"]
 
 [nix]
 channel = "stable-24_05"
 
 [deployment]
-run = ["npm", "run", "build"]
+build = ["npm", "run", "build"]
+run = ["npx", "serve", "dist", "-s", "-p", "80"]
 
 [[ports]]
 localPort = 3000
 externalPort = 80
 
 [workflows]
-runButton = "Start Dev Server"
+runButton = "Build and Serve"
 
 [[workflows.workflow]]
-name = "Build Production"
+name = "Build and Serve"
 author = "agent"
 
 [[workflows.workflow.tasks]]
@@ -26,11 +27,7 @@ task = "packager.installForAll"
 task = "shell.exec"
 args = "npm run build"
 
-[[workflows.workflow]]
-name = "Start Dev Server"
-author = "agent"
-
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "npm run dev"
+args = "npx serve dist -s -p 3000"
 waitForPort = 3000

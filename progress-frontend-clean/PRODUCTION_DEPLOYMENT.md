@@ -40,4 +40,8 @@ The clean frontend build has been completed successfully following the RAPLET de
 ### Next Action:
 Execute Replit Deployment using the configured .replit file. The system will automatically build and serve the static files.
 
-**Deployment Command Ready**: `["npm", "run", "build"]`
+**Deployment Configuration**:
+- Build: `["npm", "run", "build"]`
+- Run: `["npx", "serve", "dist", "-s", "-p", "80"]`
+- No development commands included
+- Production-ready static file serving
