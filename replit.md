@@ -145,6 +145,7 @@ Changelog:
 - June 18, 2025: Regenerated package-lock.json with full cross-platform metadata for Docker CI reproducibility - includes all transitive dependencies and platform hashes
 - June 18, 2025: Fixed Vite module resolution error by regenerating node_modules and restoring working dependency state
 - June 18, 2025: Fixed TailwindCSS PostCSS plugin error by installing @tailwindcss/postcss and updating configuration
+- June 18, 2025: Reverted PostCSS configuration to standard TailwindCSS setup after styling broke completely
 - June 18, 2025: Created production deployment guide due to dev command blocking deployment
 - June 18, 2025: Updated podcast studio address to correct location: 1st Floor Beaumont House, Beaumont Road, OX16 1RH
 - June 18, 2025: Successfully completed clean frontend extraction protocol - removed all admin functionality, authentication, and backend dependencies while preserving public website features
