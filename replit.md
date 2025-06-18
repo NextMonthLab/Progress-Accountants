@@ -142,6 +142,7 @@ Changelog:
 - June 18, 2025: Package lock resolution complete - generated package-lock.json for strict Docker builds, container reproducibility stabilized
 - June 18, 2025: Fixed Docker peer dependency mismatch - locked all versions without floating dependencies, ensured tailwindcss-animate compatibility
 - June 18, 2025: Upgraded Dockerfile to node:20-alpine for npm compatibility with package-lock.json generated under npm 11.x.x
+- June 18, 2025: Regenerated package-lock.json with full cross-platform metadata for Docker CI reproducibility - includes all transitive dependencies and platform hashes
 - June 18, 2025: Created production deployment guide due to dev command blocking deployment
 - June 18, 2025: Updated podcast studio address to correct location: 1st Floor Beaumont House, Beaumont Road, OX16 1RH
 - June 18, 2025: Successfully completed clean frontend extraction protocol - removed all admin functionality, authentication, and backend dependencies while preserving public website features
