@@ -49,7 +49,7 @@ const HomePage = () => {
     };
   }, []);
 
-  // Removed loading state that was preventing homepage from displaying
+  // Removed problematic useBusinessIdentity hook and loading state
 
   return (
     <div className="min-h-screen bg-black">
