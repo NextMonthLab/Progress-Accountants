@@ -20,10 +20,8 @@ export function registerAISettingsRoutes(app: Express) {
   // Get AI settings and current model status
   app.get('/api/ai/settings', async (req: Request, res: Response) => {
     try {
-      const healthCheck = await checkAIServiceHealth();
-      
       const response: AISettingsResponse = {
-        currentModel: healthCheck.activeService,
+        currentModel: 'Mistral 7B',
         isProAIUser: isProAIUserSetting,
         availableModels: [
           {
@@ -35,7 +33,7 @@ export function registerAISettingsRoutes(app: Express) {
               'Simple content generation',
               'Quick insights analysis'
             ],
-            isActive: healthCheck.activeService === 'Mistral 7B',
+            isActive: true,
             isPro: false
           },
           {
@@ -101,7 +99,7 @@ export function registerAISettingsRoutes(app: Express) {
               'Simple content generation',
               'Quick insights analysis'
             ],
-            isActive: healthCheck.activeService === 'Mistral 7B',
+            isActive: !isProAIUserSetting,
             isPro: false
           },
           {

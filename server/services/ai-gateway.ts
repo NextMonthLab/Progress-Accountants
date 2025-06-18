@@ -459,5 +459,3 @@ export async function processAIRequestWithFallback(request: AIGatewayRequest, te
     };
   }
 }
-
-export 
