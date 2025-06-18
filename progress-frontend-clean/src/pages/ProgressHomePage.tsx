@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Calendar, Clock, MapPin, Users, Play, ArrowRight, Menu, X } from "lucide-react";
 import { Link } from "wouter";
-import { motion } from "framer-motion";
+
 import { useState } from "react";
 
 export default function ProgressHomePage() {
@@ -142,7 +142,7 @@ export default function ProgressHomePage() {
             <motion.div
               whileHover={{ y: -5 }}
             >
-              <Card className="bg-zinc-800 border-zinc-700 overflow-hidden group hover:border-purple-500/50 transition-all duration-300">
+              <Card className="bg-zinc-800 border-zinc-700 overflow-hidden group hover:border-purple-500/50 transition-all duration-0">
                 <div className="aspect-video bg-gradient-to-br from-purple-600/20 to-blue-600/20 relative">
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="text-center text-white">
@@ -169,7 +169,7 @@ export default function ProgressHomePage() {
             <motion.div
               whileHover={{ y: -5 }}
             >
-              <Card className="bg-zinc-800 border-zinc-700 overflow-hidden group hover:border-blue-500/50 transition-all duration-300">
+              <Card className="bg-zinc-800 border-zinc-700 overflow-hidden group hover:border-blue-500/50 transition-all duration-0">
                 <div className="aspect-video bg-gradient-to-br from-blue-600/20 to-purple-600/20 relative">
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="text-center text-white">

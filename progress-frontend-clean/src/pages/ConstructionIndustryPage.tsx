@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { motion } from "framer-motion";
+
 import { Button } from "@/components/ui/button";
 import { OptimizedImage } from "@/components/ui/OptimizedImage";
 import { Helmet } from 'react-helmet';

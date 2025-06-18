@@ -118,7 +118,7 @@ export default function TeamPage() {
               We're always on the lookout for passionate professionals to join our growing firm. If you care about small business success and want to be part of a forward-thinking team, we'd love to hear from you.
             </p>
             <Link href="/contact">
-              <button className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] text-white rounded-lg hover:shadow-lg hover:shadow-purple-500/25 hover:-translate-y-1 transition-all duration-300 font-medium">
+              <button className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] text-white rounded-lg hover:shadow-lg hover:shadow-purple-500/25 hover:-translate-y-1 transition-all duration-0 font-medium">
                 <span>Contact Us</span>
                 <ArrowRight size={18} />
               </button>

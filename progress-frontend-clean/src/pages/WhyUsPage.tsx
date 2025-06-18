@@ -538,7 +538,7 @@ export default function WhyUsPage() {
               <Button 
                 onClick={openCalendlyPopup}
                 size="lg"
-                className="w-full sm:w-auto bg-white text-gray-900 hover:bg-gray-100 hover:shadow-lg hover:-translate-y-[2px] transition duration-300 flex items-center gap-2"
+                className="w-full sm:w-auto bg-white text-gray-900 hover:bg-gray-100 hover:shadow-lg hover:-translate-y-[2px] transition duration-0 flex items-center gap-2"
               >
                 <span>Book a Free Consultation</span>
                 <ArrowRight size={16} />

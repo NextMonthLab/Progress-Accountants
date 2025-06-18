@@ -120,13 +120,13 @@ export default function SEOFooterSection() {
             </div>
           </div>
           <div className="flex flex-col space-y-6">
-            <div className="rounded-lg overflow-hidden shadow-md hover-scale transition duration-300">
+            <div className="rounded-lg overflow-hidden shadow-md hover-scale transition duration-0">
               {footerBanburyTown()}
               <div className="p-3 bg-white text-center text-sm font-medium" style={{ color: 'var(--navy)' }}>
                 {address.split(",")[0]} Town Centre
               </div>
             </div>
-            <div className="rounded-lg overflow-hidden shadow-md hover-scale transition duration-300">
+            <div className="rounded-lg overflow-hidden shadow-md hover-scale transition duration-0">
               {footerOfficeFront()}
               <div className="p-3 bg-white text-center text-sm font-medium" style={{ color: 'var(--navy)' }}>
                 Our {address.split(",")[0]} Office

@@ -61,7 +61,7 @@ export default function WhyUsSection() {
           </div>
           
           {/* Right column: dashboard mockup and testimonial */}
-          <Card className="bg-zinc-800 text-white overflow-hidden shadow-xl border-zinc-700 hover-scale transition duration-500">
+          <Card className="bg-zinc-800 text-white overflow-hidden shadow-xl border-zinc-700 hover-scale transition duration-0">
             <CardContent className="p-8">
               <div 
                 className="rounded-lg p-6 mb-6 shadow-md bg-gradient-to-br from-purple-900/20 to-blue-900/20 border border-purple-500/20"

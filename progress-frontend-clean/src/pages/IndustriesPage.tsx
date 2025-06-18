@@ -194,7 +194,7 @@ export default function IndustriesPage() {
             {industries.map((industry, index) => (
               <div 
                 key={index}
-                className="bg-white rounded-lg shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden"
+                className="bg-white rounded-lg shadow-md hover:shadow-lg transition-all duration-0 overflow-hidden"
               >
                 <div className="p-8">
                   <div className="mb-6 p-4 rounded-full inline-flex bg-blue-50" style={{ color: 'var(--orange)' }}>
@@ -251,7 +251,7 @@ export default function IndustriesPage() {
               </Link>
               <Link href="/contact">
                 <Button 
-                  className="w-full sm:w-auto hover:shadow-md hover:-translate-y-[2px] transition duration-300 flex items-center gap-2"
+                  className="w-full sm:w-auto hover:shadow-md hover:-translate-y-[2px] transition duration-0 flex items-center gap-2"
                   style={{ 
                     backgroundColor: 'var(--orange)',
                     color: 'white' 

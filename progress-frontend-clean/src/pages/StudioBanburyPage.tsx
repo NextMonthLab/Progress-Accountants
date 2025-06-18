@@ -67,7 +67,7 @@ export default function StudioBanburyPage() {
             <div className="mb-12">
               <a 
                 href="#booking-form" 
-                className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] text-white rounded-lg hover:shadow-lg hover:shadow-purple-500/25 hover:-translate-y-1 transition-all duration-300 font-medium"
+                className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] text-white rounded-lg hover:shadow-lg hover:shadow-purple-500/25 hover:-translate-y-1 transition-all duration-0 font-medium"
               >
                 <span>Book Studio Time</span>
                 <ArrowRight size={18} />
@@ -95,7 +95,7 @@ export default function StudioBanburyPage() {
                   src="https://res.cloudinary.com/drl0fxrkq/image/upload/v1747742830/P1012292-Enhanced-NR_fkrsv2.jpg"
                   alt="Professional podcast recording setup with microphones and acoustic treatment"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-0"></div>
               </div>
               
               <div className="relative overflow-hidden rounded-xl shadow-lg group">
@@ -103,7 +103,7 @@ export default function StudioBanburyPage() {
                   src="https://res.cloudinary.com/drl0fxrkq/image/upload/v1747742830/P1012291-Enhanced-NR_z1qebv.jpg"
                   alt="Video recording equipment and camera setup in professional studio"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-0"></div>
               </div>
               
               <div className="relative overflow-hidden rounded-xl shadow-lg group">
@@ -111,7 +111,7 @@ export default function StudioBanburyPage() {
                   src="https://res.cloudinary.com/drl0fxrkq/image/upload/v1747742831/P1012286-Enhanced-NR_h6v6jx.jpg"
                   alt="Acoustic treatment and professional lighting in recording studio"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-0"></div>
               </div>
               
               <div className="relative overflow-hidden rounded-xl shadow-lg group md:col-span-2">
@@ -119,7 +119,7 @@ export default function StudioBanburyPage() {
                   src="https://res.cloudinary.com/drl0fxrkq/image/upload/v1747742833/P1012283-Enhanced-NR-1_j1bb3j.jpg"
                   alt="Full studio overview showing recording area and professional equipment"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-0"></div>
               </div>
               
               <div className="relative overflow-hidden rounded-xl shadow-lg group">
@@ -127,7 +127,7 @@ export default function StudioBanburyPage() {
                   src="https://res.cloudinary.com/drl0fxrkq/image/upload/v1747742834/P1012275-Enhanced-NR_cgvg2v.jpg"
                   alt="Detail shot of professional recording equipment and controls"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-0"></div>
               </div>
             </div>
           </div>
@@ -408,7 +408,7 @@ export default function StudioBanburyPage() {
             <div className="mb-12">
               <a 
                 href="/services" 
-                className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] text-white rounded-lg hover:shadow-lg hover:shadow-purple-500/25 hover:-translate-y-1 transition-all duration-300 font-medium"
+                className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] text-white rounded-lg hover:shadow-lg hover:shadow-purple-500/25 hover:-translate-y-1 transition-all duration-0 font-medium"
               >
                 <span>👉 Explore our Client Plans</span>
                 <ArrowRight size={18} />
@@ -535,7 +535,7 @@ export default function StudioBanburyPage() {
                 <div className="text-center">
                   <button
                     type="submit"
-                    className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] text-white rounded-lg hover:shadow-lg hover:shadow-purple-500/25 hover:-translate-y-1 transition-all duration-300 font-medium"
+                    className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] text-white rounded-lg hover:shadow-lg hover:shadow-purple-500/25 hover:-translate-y-1 transition-all duration-0 font-medium"
                   >
                     <span>Submit Booking Request</span>
                     <ArrowRight size={18} />

@@ -220,7 +220,7 @@ export default function ContactForm({ compact = false, className = "" }: Contact
         
         <Button 
           type="submit" 
-          className="w-full bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] text-white rounded-lg hover:shadow-lg hover:shadow-purple-500/25 hover:-translate-y-1 transition-all duration-300 font-medium py-3"
+          className="w-full bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] text-white rounded-lg hover:shadow-lg hover:shadow-purple-500/25 hover:-translate-y-1 transition-all duration-0 font-medium py-3"
           disabled={isSubmitting}
         >
           {isSubmitting ? (
