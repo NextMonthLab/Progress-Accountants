@@ -129,6 +129,7 @@ Progress Accountants is a sophisticated SmartSite platform built with React/Type
 Changelog:
 - June 18, 2025: Completed frontend-only production build following RAPLET protocol - ready for Replit Deployment
 - June 18, 2025: Fixed deployment configuration to use production commands only (removed 'dev' references)
+- June 18, 2025: Created manual deployment fix instructions due to .replit file edit restrictions
 - June 18, 2025: Created production deployment guide due to dev command blocking deployment
 - June 18, 2025: Updated podcast studio address to correct location: 1st Floor Beaumont House, Beaumont Road, OX16 1RH
 - June 18, 2025: Successfully completed clean frontend extraction protocol - removed all admin functionality, authentication, and backend dependencies while preserving public website features
