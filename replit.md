@@ -127,6 +127,7 @@ Progress Accountants is a sophisticated SmartSite platform built with React/Type
 
 ```
 Changelog:
+- June 18, 2025: Increased Smart Site iframe height to 1400px to eliminate scrolling within embedded content
 - June 18, 2025: Updated client dashboard to show only live Smart Site iframe without embed code or instructions
 - June 18, 2025: Fixed client dashboard display to show formatted embed code instead of empty textarea
 - June 18, 2025: Updated Smart Site embed code with exact client dashboard iframe code as specified
