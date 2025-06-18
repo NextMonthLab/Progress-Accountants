@@ -447,76 +447,7 @@ const NewsCard: React.FC<NewsCardProps> = ({
   );
 };
 
-// Health Status Component
-interface HealthStatusProps {
-  title: string;
-  status: 'good' | 'warning' | 'critical' | 'unknown';
-  details?: string;
-  lastChecked?: string;
-  isLoading?: boolean;
-}
-
-const HealthStatus: React.FC<HealthStatusProps> = ({ 
-  title, 
-  status, 
-  details,
-  lastChecked,
-  isLoading = false 
-}) => {
-  const statusConfig = {
-    good: {
-      color: "text-emerald-500",
-      bgColor: "bg-emerald-50",
-      icon: <CheckCircle2 className="h-5 w-5" />,
-      label: "Good"
-    },
-    warning: {
-      color: "text-amber-500",
-      bgColor: "bg-amber-50",
-      icon: <AlertTriangle className="h-5 w-5" />,
-      label: "Warning"
-    },
-    critical: {
-      color: "text-red-500",
-      bgColor: "bg-red-50",
-      icon: <XCircle className="h-5 w-5" />,
-      label: "Critical"
-    },
-    unknown: {
-      color: "text-gray-400",
-      bgColor: "bg-gray-50",
-      icon: <AlertTriangle className="h-5 w-5" />,
-      label: "Unknown"
-    }
-  };
-
-  const config = statusConfig[status];
-
-  return (
-    <div className="flex items-center justify-between p-3 border-b last:border-0">
-      {isLoading ? (
-        <div className="w-full flex justify-between">
-          <div className="h-4 bg-gray-200 rounded w-1/3 animate-pulse"></div>
-          <div className="h-4 bg-gray-200 rounded w-1/4 animate-pulse"></div>
-        </div>
-      ) : (
-        <>
-          <div className="flex items-center gap-2">
-            <span className="font-medium text-navy">{title}</span>
-            {details && <span className="text-xs text-gray-500">{details}</span>}
-          </div>
-          <div className="flex items-center gap-2">
-            {lastChecked && <span className="text-xs text-gray-400">{lastChecked}</span>}
-            <div className={`flex items-center gap-1 ${config.color} ${config.bgColor} px-2 py-1 rounded text-xs`}>
-              {config.icon}
-              <span>{config.label}</span>
-            </div>
-          </div>
-        </>
-      )}
-    </div>
-  );
-};
+// Health monitoring components removed
 
 export default function ClientDashboardPage() {
   const { user } = useAuth();
@@ -674,25 +605,7 @@ export default function ClientDashboardPage() {
     },
   });
 
-  // System Health
-  const { data: systemHealth, isLoading: isHealthLoading } = useQuery({
-    queryKey: ['/api/system/health'],
-    queryFn: async () => {
-      return {
-        components: [
-          { name: 'Database', status: 'good', lastChecked: '5m ago' },
-          { name: 'API Services', status: 'good', lastChecked: '5m ago' },
-          { name: 'Storage', status: 'warning', details: '78% used', lastChecked: '5m ago' },
-          { name: 'Backup System', status: 'good', lastChecked: '5m ago' },
-          { name: 'Blueprint System', status: 'good', lastChecked: '5m ago' },
-        ],
-        blueprintVersion: 'v1.1.1',
-        storageUsed: '128MB / 1GB',
-        lastBackup: '2025-04-22T02:00:00',
-        uptime: '99.8%',
-      };
-    },
-  });
+  // Health monitoring removed - system status is now static
 
   // Format date helper
   const formatDate = (dateString: string): string => {
@@ -879,8 +792,8 @@ const LegacyDashboardContent = () => {
                             key={activity.id}
                             title={activity.title}
                             description={activity.description}
-                            timestamp={formatTimeAgo(activity.timestamp)}
-                            icon={getActivityIcon(activity.type)}
+                            timestamp={activity.timestamp}
+                            icon={<Activity className="h-4 w-4" />}
                             status={activity.status as any}
                           />
                         ))}
@@ -1434,30 +1347,29 @@ const LegacyDashboardContent = () => {
                     </div>
                   </CardHeader>
                   <CardContent className="pt-6">
-                    {isHealthLoading ? (
-                      <div className="space-y-3">
-                        {[1, 2, 3, 4, 5].map(i => (
-                          <HealthStatus 
-                            key={i}
-                            title=""
-                            status="unknown"
-                            isLoading={true}
-                          />
-                        ))}
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between p-3 bg-emerald-50 rounded-lg">
+                        <div className="flex items-center space-x-3">
+                          <div className="w-3 h-3 bg-emerald-500 rounded-full"></div>
+                          <span className="font-medium">Application Server</span>
+                        </div>
+                        <span className="text-sm text-emerald-600">Running</span>
                       </div>
-                    ) : (
-                      <div>
-                        {systemHealth?.components.map((component, index) => (
-                          <HealthStatus 
-                            key={index}
-                            title={component.name}
-                            status={component.status as any}
-                            details={component.details}
-                            lastChecked={component.lastChecked}
-                          />
-                        ))}
+                      <div className="flex items-center justify-between p-3 bg-emerald-50 rounded-lg">
+                        <div className="flex items-center space-x-3">
+                          <div className="w-3 h-3 bg-emerald-500 rounded-full"></div>
+                          <span className="font-medium">Database</span>
+                        </div>
+                        <span className="text-sm text-emerald-600">Connected</span>
                       </div>
-                    )}
+                      <div className="flex items-center justify-between p-3 bg-emerald-50 rounded-lg">
+                        <div className="flex items-center space-x-3">
+                          <div className="w-3 h-3 bg-emerald-500 rounded-full"></div>
+                          <span className="font-medium">AI Services</span>
+                        </div>
+                        <span className="text-sm text-emerald-600">Available</span>
+                      </div>
+                    </div>
                   </CardContent>
                 </Card>
               </Section>
@@ -1466,35 +1378,31 @@ const LegacyDashboardContent = () => {
               <Section title="System Metrics">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <StatCard 
-                    label="System Uptime" 
-                    value={isHealthLoading ? '--' : systemHealth?.uptime}
+                    label="System Status" 
+                    value="Operational"
                     icon={<Activity className="h-5 w-5" />}
                     color="success"
-                    isLoading={isHealthLoading}
                   />
                   
                   <StatCard 
-                    label="Storage Usage" 
-                    value={isHealthLoading ? '--' : systemHealth?.storageUsed}
+                    label="Platform" 
+                    value="Replit"
                     icon={<HardDrive className="h-5 w-5" />}
-                    color="warning"
-                    isLoading={isHealthLoading}
+                    color="info"
                   />
                   
                   <StatCard 
-                    label="Blueprint Version" 
-                    value={isHealthLoading ? '--' : systemHealth?.blueprintVersion}
+                    label="Version" 
+                    value="v2.1.0"
                     icon={<Database className="h-5 w-5" />}
                     color="info"
-                    isLoading={isHealthLoading}
                   />
                   
                   <StatCard 
-                    label="Last Backup" 
-                    value={isHealthLoading ? '--' : formatTimeAgo(systemHealth?.lastBackup || '')}
+                    label="Environment" 
+                    value="Production"
                     icon={<ShieldCheck className="h-5 w-5" />}
-                    color="info"
-                    isLoading={isHealthLoading}
+                    color="success"
                   />
                 </div>
               </Section>
