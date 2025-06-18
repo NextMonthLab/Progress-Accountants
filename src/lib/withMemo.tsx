@@ -1,5 +1,6 @@
 import React from 'react';
-import { isEqual } from 'lodash';
+// Simple comparison without lodash dependency
+const isEqual = (a: any, b: any) => JSON.stringify(a) === JSON.stringify(b);
 
 type EqualityFn<P> = (prevProps: Readonly<P>, nextProps: Readonly<P>) => boolean;
 
