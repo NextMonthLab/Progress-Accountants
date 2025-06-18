@@ -127,6 +127,7 @@ Progress Accountants is a sophisticated SmartSite platform built with React/Type
 
 ```
 Changelog:
+- June 18, 2025: Fixed client dashboard display to show formatted embed code instead of empty textarea
 - June 18, 2025: Updated Smart Site embed code with exact client dashboard iframe code as specified
 - June 18, 2025: Updated /client-dashboard to display Smart Site embed code iframe instead of legacy dashboard content
 - June 18, 2025: Fixed /client-dashboard authentication redirect by converting from ProtectedRoute to public Route
