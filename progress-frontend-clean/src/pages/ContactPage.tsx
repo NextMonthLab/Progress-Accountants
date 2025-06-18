@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
-import ContactForm from '@/components/ContactForm.tsx';
+import ContactForm from '@/components/ContactForm';
 import { MapPin, Phone, Mail, Clock } from 'lucide-react';
 import { EMBED_FORMS, hasValidEmbedCode, FORM_CONFIG } from '@/utils/embedForms';
 
@@ -8,8 +8,8 @@ export default function ContactPage() {
   const [contactFormEmbedCode, setContactFormEmbedCode] = useState<string>('');
 
   useEffect(() => {
-    if (hasValidEmbedCode(EMBED_FORMS.CONTACT_FORM)) {
-      setContactFormEmbedCode(EMBED_FORMS.CONTACT_FORM);
+    if (hasValidEmbedCode(EMBED_FORMS.CONTACT)) {
+      setContactFormEmbedCode(EMBED_FORMS.CONTACT);
     }
   }, []);
 

@@ -174,7 +174,7 @@ export default function IndustriesPage() {
             </p>
             <p className="text-lg text-gray-300">
               {businessName} provides specialized accounting solutions tailored to the specific needs of various industries,
-              with particular expertise in serving {targetAudience}.
+              with particular expertise in serving small to medium-sized businesses.
             </p>
           </div>
         </div>
