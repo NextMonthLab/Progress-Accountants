@@ -127,6 +127,7 @@ Progress Accountants is a sophisticated SmartSite platform built with React/Type
 
 ```
 Changelog:
+- June 18, 2025: Fixed all missing background images across site pages including CTA sections and hero backgrounds
 - June 18, 2025: Fixed missing hero background image on SME Support Hub page
 - June 18, 2025: Fixed 404 error for /sme-support-hub route by adding proper routing configuration
 - June 17, 2025: Removed login button from header menu navigation (desktop and mobile)
