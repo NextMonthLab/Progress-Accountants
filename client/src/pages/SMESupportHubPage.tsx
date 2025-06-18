@@ -601,6 +601,9 @@ For professional advice tailored to your business, contact Progress Accountants
                     <p className="text-slate-300 mb-6">
                       The lead form is currently unavailable. You can still download your resources:
                     </p>
+                    <p className="text-slate-300 mb-4">
+                      Close this box once you've completed the download
+                    </p>
                     <Button
                       onClick={async () => {
                         try {
