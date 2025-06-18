@@ -49,6 +49,7 @@ import { useAuth } from '@/hooks/use-auth';
 import { useTenant } from '@/hooks/use-tenant';
 import { useQuery } from '@tanstack/react-query';
 import { Link } from 'wouter';
+import { EMBED_FORMS } from '@/utils/embedForms';
 
 // Modern Stat Card Component with gradient background
 interface StatCardProps {
@@ -742,6 +743,49 @@ export default function ClientDashboardPage() {
     }
   };
 
+  return (
+    <div className="w-full min-h-screen p-4">
+      <div className="max-w-6xl mx-auto">
+        <h1 className="text-2xl font-bold mb-6 text-navy">Client Dashboard</h1>
+        
+        {/* Smart Site Embed Code Display */}
+        <div className="space-y-6">
+          <div className="bg-gray-50 p-4 rounded-lg border">
+            <h2 className="text-lg font-semibold mb-3 text-navy">Smart Site Embed Code</h2>
+            <p className="text-gray-600 mb-4">Copy and paste this code into your website to embed the client dashboard:</p>
+            
+            <div className="bg-white p-4 rounded border font-mono text-sm overflow-x-auto">
+              <pre className="whitespace-pre-wrap">{EMBED_FORMS.CLIENT_DASHBOARD}</pre>
+            </div>
+            
+            <div className="mt-4">
+              <button
+                onClick={() => navigator.clipboard.writeText(EMBED_FORMS.CLIENT_DASHBOARD)}
+                className="px-4 py-2 bg-navy text-white rounded hover:bg-navy/90 transition-colors"
+              >
+                Copy Embed Code
+              </button>
+            </div>
+          </div>
+
+          {/* Live Preview */}
+          <div className="bg-white border rounded-lg">
+            <div className="p-4 border-b bg-gray-50">
+              <h3 className="font-semibold text-navy">Live Preview</h3>
+              <p className="text-sm text-gray-600">This is how the embed will appear on your website:</p>
+            </div>
+            <div className="p-4">
+              <div dangerouslySetInnerHTML={{ __html: EMBED_FORMS.CLIENT_DASHBOARD }} />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Legacy dashboard content (keeping for reference but not rendering)
+const LegacyDashboardContent = () => {
   return (
     <div className="px-1 py-6 md:px-4 lg:px-6">
       {/* Hero Section with Welcome and Overview Stats */}
