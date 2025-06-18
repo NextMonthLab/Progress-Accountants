@@ -8,10 +8,10 @@ import musicIndustryImage from '../../assets/images/music_industry.png';
 import constructionIndustryImage from '../../assets/images/construction_industry.png';
 import financialDashboardImage from '../../assets/images/new_financial_dashboard.png';
 
-// Import available assets
-import podcastStudioImg from "@assets/Podcast Studio.jpg";
-import strategySessionImg from "@assets/Strategy Session.jpg";
-import teamPhotoImg from "@assets/Team Photo.jpg";
+// Use external URLs for assets
+const podcastStudioImg = "https://res.cloudinary.com/drl0fxrkq/image/upload/v1747742829/P1013106-Enhanced-NR_adzlje.jpg";
+const strategySessionImg = "https://res.cloudinary.com/drl0fxrkq/image/upload/v1747742829/P1013106-Enhanced-NR_adzlje.jpg";
+const teamPhotoImg = "https://res.cloudinary.com/drl0fxrkq/image/upload/v1747742829/P1013106-Enhanced-NR_adzlje.jpg";
 
 // Optimized version of image placeholders
 export const OptimizedPodcastStudio = () => (
