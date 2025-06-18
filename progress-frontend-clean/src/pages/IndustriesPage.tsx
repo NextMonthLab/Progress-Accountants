@@ -15,7 +15,7 @@ type Industry = {
 
 export default function IndustriesPage() {
   const [isLoading, setIsLoading] = useState(true);
-  const { businessIdentity, isLoading: isLoadingIdentity } = useBusinessIdentity();
+  const { data: businessIdentity, isLoading: isLoadingIdentity } = useBusinessIdentity();
 
   useEffect(() => {
     // Combine real data loading with synthetic loading for a smooth experience
