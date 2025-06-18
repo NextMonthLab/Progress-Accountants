@@ -70,9 +70,9 @@ function App() {
               </div>
             </Route>
           </Switch>
-        </div>
-        <Toaster />
+        </Switch>
       </div>
+      <Toaster />
     </ThemeProvider>
   );
 }
