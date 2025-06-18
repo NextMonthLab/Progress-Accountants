@@ -185,7 +185,7 @@ export default function TaxPlanningPage() {
               <Link href="/contact">
                 <Button size="lg" className="bg-white text-blue-600 hover:bg-gray-100">
                   <Phone className="h-4 w-4 mr-2" />
-                  Call 01234 567 890
+                  Call 01295 477 250
                 </Button>
               </Link>
               <Link href="/contact">
