@@ -13,10 +13,8 @@ import { CompanionContextProvider } from "@/hooks/use-companion-context";
 
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { HelpProvider } from "@/contexts/HelpContext";
-import { HealthProvider } from "@/contexts/HealthContext";
 import { NotificationsProvider } from "@/contexts/NotificationsContext";
 import ConversionDemo from "@/components/ConversionDemo";
-import HealthTracker from "@/components/health/HealthTracker";
 import AdminLayout from "@/layouts/AdminLayout";
 import { testLogin } from "@/lib/test-login";
 import { DocumentHead } from "@/components/DocumentHead";
@@ -380,18 +378,15 @@ function App() {
               <TenantProvider>
                 <CompanionContextProvider>
                   <HelpProvider>
-                    <HealthProvider>
-                      <DocumentHead route="/" />
-                      <FirstTimeUserDetector>
-                        <MainLayout>
-                          <ErrorBoundary contentType="page">
-                            <Router />
-                          </ErrorBoundary>
-                        </MainLayout>
-                      </FirstTimeUserDetector>
-                      <HealthTracker />
-                      <Toaster />
-                    </HealthProvider>
+                    <DocumentHead route="/" />
+                    <FirstTimeUserDetector>
+                      <MainLayout>
+                        <ErrorBoundary contentType="page">
+                          <Router />
+                        </ErrorBoundary>
+                      </MainLayout>
+                    </FirstTimeUserDetector>
+                    <Toaster />
                   </HelpProvider>
                 </CompanionContextProvider>
               </TenantProvider>
