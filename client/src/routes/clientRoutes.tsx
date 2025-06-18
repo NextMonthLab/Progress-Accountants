@@ -1,4 +1,5 @@
 import { lazy } from 'react';
+import { Route } from 'wouter';
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 
 // Lazy load client-specific components
@@ -22,11 +23,7 @@ export function ClientRoutes() {
   return (
     <>
       {/* Client dashboard routes - financial dashboard for Progress clients */}
-      <ProtectedRoute 
-        path="/client-dashboard" 
-        component={ClientDashboardPage} 
-        allowedRoles={['client', 'admin', 'super_admin']} 
-      />
+      <Route path="/client-dashboard" component={ClientDashboardPage} />
       <ProtectedRoute 
         path="/client-portal" 
         component={ClientDashboardPage} 
