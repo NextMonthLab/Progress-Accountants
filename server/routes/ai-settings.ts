@@ -1,6 +1,5 @@
 import { Express, Request, Response } from 'express';
 
-
 interface AISettingsResponse {
   currentModel: string;
   isProAIUser: boolean;
@@ -13,81 +12,15 @@ interface AISettingsResponse {
   }[];
 }
 
-// Store Pro AI setting in memory (in production, this would be in database)
-let isProAIUserSetting = process.env.IS_PRO_AI_USER === 'true';
+// Configuration
+const isProAIUserSetting = process.env.IS_PRO_AI_USER === 'true' || false;
 
 export function registerAISettingsRoutes(app: Express) {
   // Get AI settings and current model status
   app.get('/api/ai/settings', async (req: Request, res: Response) => {
     try {
       const response: AISettingsResponse = {
-        currentModel: 'Mistral 7B',
-        isProAIUser: isProAIUserSetting,
-        availableModels: [
-          {
-            name: 'Mistral 7B',
-            description: 'Fast and efficient AI model included with your Smart Site',
-            features: [
-              'Smart assistant responses',
-              'Basic content summarization', 
-              'Simple content generation',
-              'Quick insights analysis'
-            ],
-            isActive: true,
-            isPro: false
-          },
-          {
-            name: 'OpenAI GPT-4o',
-            description: 'Advanced AI model with superior reasoning and creativity',
-            features: [
-              'Deep trend analysis and insights',
-              'SEO-optimized blog generation',
-              'Advanced social media content',
-              'Strategic meeting summaries',
-              'Complex problem solving'
-            ],
-            isActive: healthCheck.activeService === 'OpenAI GPT-4o',
-            isPro: true
-          },
-          {
-            name: 'Anthropic Claude',
-            description: 'Thoughtful AI with excellent analytical capabilities',
-            features: [
-              'Detailed content analysis',
-              'Professional writing assistance',
-              'Comprehensive research summaries',
-              'Contextual understanding'
-            ],
-            isActive: healthCheck.activeService === 'Anthropic Claude',
-            isPro: true
-          }
-        ]
-      };
-
-      res.json(response);
-    } catch (error) {
-      console.error('Error fetching AI settings:', error);
-      res.status(500).json({ error: 'Failed to fetch AI settings' });
-    }
-  });
-
-  // Update Pro AI setting
-  app.post('/api/ai/settings', async (req: Request, res: Response) => {
-    try {
-      const { enableProAI } = req.body;
-      
-      if (typeof enableProAI !== 'boolean') {
-        return res.status(400).json({ error: 'enableProAI must be a boolean' });
-      }
-
-      // Update the setting
-      isProAIUserSetting = enableProAI;
-      
-      // Update environment variable for current session
-      process.env.IS_PRO_AI_USER = enableProAI.toString();
-
-      const response: AISettingsResponse = {
-        currentModel: 'Mistral 7B',
+        currentModel: isProAIUserSetting ? 'OpenAI GPT-4o' : 'Mistral 7B',
         isProAIUser: isProAIUserSetting,
         availableModels: [
           {
@@ -112,7 +45,7 @@ export function registerAISettingsRoutes(app: Express) {
               'Strategic meeting summaries',
               'Complex problem solving'
             ],
-            isActive: healthCheck.activeService === 'OpenAI GPT-4o',
+            isActive: isProAIUserSetting,
             isPro: true
           },
           {
@@ -124,7 +57,70 @@ export function registerAISettingsRoutes(app: Express) {
               'Comprehensive research summaries',
               'Contextual understanding'
             ],
-            isActive: healthCheck.activeService === 'Anthropic Claude',
+            isActive: false,
+            isPro: true
+          }
+        ]
+      };
+
+      res.json(response);
+    } catch (error) {
+      console.error('Error fetching AI settings:', error);
+      res.status(500).json({ error: 'Failed to fetch AI settings' });
+    }
+  });
+
+  // Update AI settings
+  app.post('/api/ai/settings', async (req: Request, res: Response) => {
+    try {
+      const { enableProAI } = req.body;
+      
+      if (typeof enableProAI !== 'boolean') {
+        return res.status(400).json({ error: 'enableProAI must be a boolean' });
+      }
+      
+      // Update environment variable for current session
+      process.env.IS_PRO_AI_USER = enableProAI.toString();
+
+      const response: AISettingsResponse = {
+        currentModel: enableProAI ? 'OpenAI GPT-4o' : 'Mistral 7B',
+        isProAIUser: enableProAI,
+        availableModels: [
+          {
+            name: 'Mistral 7B',
+            description: 'Fast and efficient AI model included with your Smart Site',
+            features: [
+              'Smart assistant responses',
+              'Basic content summarization', 
+              'Simple content generation',
+              'Quick insights analysis'
+            ],
+            isActive: !enableProAI,
+            isPro: false
+          },
+          {
+            name: 'OpenAI GPT-4o',
+            description: 'Advanced AI model with superior reasoning and creativity',
+            features: [
+              'Deep trend analysis and insights',
+              'SEO-optimized blog generation',
+              'Advanced social media content',
+              'Strategic meeting summaries',
+              'Complex problem solving'
+            ],
+            isActive: enableProAI,
+            isPro: true
+          },
+          {
+            name: 'Anthropic Claude',
+            description: 'Thoughtful AI with excellent analytical capabilities',
+            features: [
+              'Detailed content analysis',
+              'Professional writing assistance',
+              'Comprehensive research summaries',
+              'Contextual understanding'
+            ],
+            isActive: false,
             isPro: true
           }
         ]
@@ -136,6 +132,4 @@ export function registerAISettingsRoutes(app: Express) {
       res.status(500).json({ error: 'Failed to update AI settings' });
     }
   });
-
-  console.log('✅ AI Settings routes registered');
 }
