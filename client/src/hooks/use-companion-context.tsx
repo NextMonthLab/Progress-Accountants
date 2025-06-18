@@ -97,16 +97,17 @@ export function CompanionContextProvider({ children }: { children: ReactNode }) 
   const [forcedMode, setForcedMode] = useState<CompanionMode | null>(null);
   
   // Get public pages from API
-  const { data: publicPages = [], isLoading: pagesLoading } = useQuery<string[]>({
+  const { data: publicPages, isLoading: pagesLoading } = useQuery<string[]>({
     queryKey: ['/api/pages/public'],
     queryFn: async () => {
       const response = await apiRequest('GET', '/api/pages/public');
       if (!response.ok) {
-        throw new Error('Failed to fetch public pages');
+        return []; // Return empty array on error
       }
       return response.json();
     },
     staleTime: 1000 * 60 * 5, // 5 minutes
+    initialData: [], // Start with empty array
   });
   
   // Fetch business identity from API
@@ -131,8 +132,11 @@ export function CompanionContextProvider({ children }: { children: ReactNode }) 
     // If we have a forced mode from debug, use it
     if (forcedMode) return forcedMode;
     
+    // Ensure publicPages is always an array
+    const pages = Array.isArray(publicPages) ? publicPages : [];
+    
     // Check if the current path is in public pages list
-    const isPublicPage = publicPages.some(page => location === page || location.startsWith(page + '/'));
+    const isPublicPage = pages.some(page => location === page || location.startsWith(page + '/'));
     
     // Admin-specific pages
     const adminPaths = [
