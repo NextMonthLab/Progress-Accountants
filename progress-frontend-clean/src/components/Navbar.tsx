@@ -1,16 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { 
-  Menu, X, LayoutDashboard, ChevronDown, Users, Briefcase, 
-  Phone, Layout, BookOpen, FastForward, Sparkles, UserPlus,
-  ArrowLeftCircle, Newspaper, Film, Music, Building2, Building,
-  Calculator, Calendar, PhoneCall, Award
+  Menu, X, ChevronDown, Users, Briefcase, 
+  Phone, BookOpen, Film, Music, Building2, Building,
+  Calculator, Calendar, PhoneCall
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useAuth } from "@/hooks/use-auth";
-import { useTenant } from "@/hooks/use-tenant";
-import { getSiteBranding } from "@/lib/api";
-import { defaultSiteBranding, SiteBranding } from "@shared/site_branding";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -19,17 +14,16 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import progressLogoPath from "@assets/Light Logo.png";
+// Import logo - you'll need to place Light Logo.png in src/assets/
+// import progressLogoPath from "@assets/Light Logo.png";
 
 // NavbarLogo component for displaying site branding
 function NavbarLogo() {
   return (
     <Link href="/" className="no-underline flex items-center">
-      <img 
-        src={progressLogoPath} 
-        alt="Progress Accountants | Advisors | Growth Partners" 
-        className="h-[50px] object-contain"
-      />
+      <div className="h-[50px] flex items-center">
+        <span className="text-2xl font-bold text-primary">Progress Accountants</span>
+      </div>
     </Link>
   );
 }
@@ -46,16 +40,10 @@ type MenuGroup = {
   items: MenuItem[];
 };
 
-// This navbar is ONLY for public-facing pages
+// This navbar is for public-facing pages only
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { user } = useAuth();
-  const { tenant } = useTenant();
-  const isStaff = user?.userType === 'admin' || user?.userType === 'super_admin' || user?.userType === 'editor' || user?.isSuperAdmin;
   const [location] = useLocation();
-
-  // Check if client registration is enabled
-  const clientRegistrationEnabled = tenant?.customization?.featureFlags?.enableClientLogin;
 
   // Define public-facing menu items
   const publicMenuGroups: MenuGroup[] = [
