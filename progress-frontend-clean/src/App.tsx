@@ -9,10 +9,7 @@ import AboutPage from "@/pages/AboutPage";
 import ServicesPage from "@/pages/ServicesPage";
 import TeamPage from "@/pages/TeamPage";
 import ContactPage from "@/pages/ContactPage";
-// Industry pages removed due to asset dependencies
 import ProfessionalServicesPage from "@/pages/ProfessionalServicesPage";
-import SMESupportHubPage from "@/pages/SMESupportHubPage";
-import StudioBanburyPage from "@/pages/StudioBanburyPage";
 
 // Legal Pages
 import PrivacyPolicyPage from "@/pages/PrivacyPolicyPage";
@@ -21,7 +18,6 @@ import CookiePolicyPage from "@/pages/CookiePolicyPage";
 
 // Other Pages
 import WhyUsPage from "@/pages/WhyUsPage";
-import ServiceDetailPage from "@/pages/ServiceDetailPage";
 
 function App() {
   return (
@@ -53,10 +49,13 @@ function App() {
           <Route path="/professional-services" component={ProfessionalServicesPage} />
           <Route path="/industries/professional-services" component={ProfessionalServicesPage} />
 
-          {/* Specialized Pages */}
-          <Route path="/sme-support-hub" component={SMESupportHubPage} />
-          <Route path="/studio-banbury" component={StudioBanburyPage} />
-          <Route path="/services/:slug" component={ServiceDetailPage} />
+          {/* Service Detail Placeholder */}
+          <Route path="/services/:slug">
+            <div className="min-h-screen bg-background p-8">
+              <h1 className="text-4xl font-bold mb-4">Service Details</h1>
+              <p>Detailed service information would be loaded here.</p>
+            </div>
+          </Route>
 
           {/* Legal Pages */}
           <Route path="/privacy-policy" component={PrivacyPolicyPage} />
