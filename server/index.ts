@@ -81,20 +81,7 @@ app.use((req, res, next) => {
 });
 
 (async () => {
-  // Add health check endpoints before any other routes
-  app.get('/health', (req: Request, res: Response) => {
-    res.status(200).json({ 
-      status: 'healthy', 
-      timestamp: new Date().toISOString(),
-      uptime: process.uptime(),
-      environment: process.env.NODE_ENV || 'development'
-    });
-  });
 
-  // Add root health check for deployment
-  app.get('/api/health', (req: Request, res: Response) => {
-    res.status(200).json({ status: 'ok', message: 'Progress Accountants Server Running' });
-  });
 
   // Register API routes
   await registerRoutes(app);
@@ -167,15 +154,6 @@ app.use((req, res, next) => {
   } else {
     const publicPath = path.join(__dirname, '../public');
     app.use(express.static(publicPath));
-    
-    // Add fallback root route for production health checks
-    app.get('/', (req: Request, res: Response) => {
-      res.status(200).json({ 
-        status: 'ok', 
-        message: 'Progress Accountants Production Server',
-        timestamp: new Date().toISOString()
-      });
-    });
   }
 
   // Start server BEFORE running migrations to avoid deployment timeouts
