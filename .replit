@@ -1,29 +1,54 @@
-modules = ["nodejs-20", "web"]
-run = "npx serve dist -s"
-hidden = [".config", ".git", "node_modules"]
+modules = ["nodejs-20", "web", "nix", "postgresql-16"]
+run = "npm run dev"
+hidden = [".config", ".git", "generated-icon.png", "node_modules", "dist"]
 
 [nix]
 channel = "stable-24_05"
 
 [deployment]
-deploymentTarget = "static"
-build = ["npm", "run", "build"]
-run = []
+deploymentTarget = "autoscale"
+run = ["sh", "-c", "npm run dev"]
 
 [[ports]]
-localPort = 3000
+localPort = 5000
 externalPort = 80
 
+[[ports]]
+localPort = 5001
+externalPort = 3000
+
 [workflows]
-runButton = "Build Static"
+runButton = "Start Dev Server"
 
 [[workflows.workflow]]
-name = "Build Static"
+name = "Project"
+mode = "parallel"
 author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Start application"
+
+[[workflows.workflow]]
+name = "Start application"
+author = "agent"
+
+[workflows.workflow.metadata]
+agentRequireRestartOnSave = false
 
 [[workflows.workflow.tasks]]
 task = "packager.installForAll"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "npm run build"
+args = "npm run dev"
+waitForPort = 5000
+
+[[workflows.workflow]]
+name = "Start Dev Server"
+author = 39613469
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "npm run dev"

@@ -1,34 +1,31 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
-import { resolve } from "path";
-import { readdirSync } from "fs";
+import themePlugin from "@replit/vite-plugin-shadcn-theme-json";
+import path from "path";
+import runtimeErrorOverlay from "@replit/vite-plugin-runtime-error-modal";
+
 export default defineConfig({
   plugins: [
-    react()
+    react(),
+    runtimeErrorOverlay(),
+    themePlugin(),
+    ...(process.env.NODE_ENV !== "production" &&
+    process.env.REPL_ID !== undefined
+      ? [
+          // Cartographer disabled in production to avoid build issues
+        ]
+      : []),
   ],
   resolve: {
     alias: {
-      "@": resolve(__dirname, "./src"),
-      "@assets": resolve(__dirname, "./src/assets"),
+      "@": path.resolve(import.meta.dirname, "client", "src"),
+      "@shared": path.resolve(import.meta.dirname, "shared"),
+      "@assets": path.resolve(import.meta.dirname, "attached_assets"),
     },
   },
+  root: path.resolve(import.meta.dirname, "client"),
   build: {
-    outDir: "dist",
-    sourcemap: false,
-    minify: 'esbuild',
-    rollupOptions: {
-      output: {
-        manualChunks: {
-          vendor: ['react', 'react-dom'],
-          ui: ['@radix-ui/react-accordion', '@radix-ui/react-dialog', '@radix-ui/react-dropdown-menu'],
-          icons: ['lucide-react'],
-          animations: ['framer-motion']
-        }
-      }
-    }
+    outDir: path.resolve(import.meta.dirname, "dist/public"),
+    emptyOutDir: true,
   },
-  server: {
-    port: 3000,
-    host: "0.0.0.0"
-  }
 });

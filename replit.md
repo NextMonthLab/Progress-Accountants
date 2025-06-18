@@ -127,36 +127,6 @@ Progress Accountants is a sophisticated SmartSite platform built with React/Type
 
 ```
 Changelog:
-- June 18, 2025: COMPLETED: Fixed team photo mobile cropping issue and deployed application - updated TeamPage.tsx to use background-size: contain with team-hero-image CSS class for full team visibility on mobile/iPad, application now running at http://localhost:3000
-- June 18, 2025: Successfully rebuilt static frontend with TailwindCSS 3.4.0 compatibility and all dependencies resolved
-- June 18, 2025: Completed frontend-only production build following RAPLET protocol - ready for Replit Deployment
-- June 18, 2025: Fixed deployment configuration to use production commands only (removed 'dev' references)
-- June 18, 2025: Created manual deployment fix instructions due to .replit file edit restrictions
-- June 18, 2025: Confirmed .replit file edit restrictions - deployment solution provided via progress-frontend-clean/ directory
-- June 18, 2025: Created Hetzner deployment package with Docker configuration for static hosting
-- June 18, 2025: Completed production hardening - removed all backend dependencies, fixed mobile responsiveness, optimized for static deployment
-- June 18, 2025: Executed RAPLET Final Hardening Protocol - bulletproof static deployment with asset optimization, pure embed model, and mobile layout hardening
-- June 18, 2025: Eliminated 22-second loading delays and help system warnings - instant page loading achieved
-- June 18, 2025: Removed all animation delays and framer-motion transitions causing 9+ second load times - replaced with instant render components
-- June 18, 2025: FINAL SOLUTION: Preserved visual scroll animations while eliminating backend health monitoring delays - frontend now loads instantly with smooth aesthetics
-- June 18, 2025: RAPLET SURGICAL REPAIR COMPLETE: Purged all health systems, optimized assets, hardened mobile responsiveness, created production Docker configuration for Hetzner deployment
-- June 18, 2025: Committed Docker deployment files to GitHub - docker-compose.hetzner.yml, Dockerfile.optimized, nginx.conf now available for Hetzner pull
-- June 18, 2025: Package lock resolution complete - generated package-lock.json for strict Docker builds, container reproducibility stabilized
-- June 18, 2025: Fixed Docker peer dependency mismatch - locked all versions without floating dependencies, ensured tailwindcss-animate compatibility
-- June 18, 2025: Upgraded Dockerfile to node:20-alpine for npm compatibility with package-lock.json generated under npm 11.x.x
-- June 18, 2025: Regenerated package-lock.json with full cross-platform metadata for Docker CI reproducibility - includes all transitive dependencies and platform hashes
-- June 18, 2025: Fixed Vite module resolution error by regenerating node_modules and restoring working dependency state
-- June 18, 2025: Fixed TailwindCSS PostCSS plugin error by installing @tailwindcss/postcss and updating configuration
-- June 18, 2025: Reverted PostCSS configuration to standard TailwindCSS setup after styling broke completely
-- June 18, 2025: Fixed TailwindCSS styling breakdown by downgrading to TailwindCSS 3.4.0 and reverting PostCSS configuration
-- June 18, 2025: Fixed mobile horizontal scrolling drift and team image display issues with responsive CSS fixes
-- June 18, 2025: Updated team hero image to use background-size: contain to ensure full team photo visibility on mobile and iPad devices
-- June 18, 2025: Fixed homepage team photo cropping on mobile and iPad - changed from hidden md:block to always visible with background-size: contain
-- June 18, 2025: Updated all phone numbers across the website to the correct number: 01295 477 250
-- June 18, 2025: RAPLET pre-hardening compliance completed - fixed CSS dependencies, regenerated package-lock.json, validated production build ready for Hetzner Docker deployment
-- June 18, 2025: Created production deployment guide due to dev command blocking deployment
-- June 18, 2025: Updated podcast studio address to correct location: 1st Floor Beaumont House, Beaumont Road, OX16 1RH
-- June 18, 2025: Successfully completed clean frontend extraction protocol - removed all admin functionality, authentication, and backend dependencies while preserving public website features
 - June 17, 2025: Removed login button from header menu navigation (desktop and mobile)
 - June 17, 2025: Updated chatbot embed code with correct script ID (1750188617452)
 - June 17, 2025: Added Becky Rogers as Assistant Accountant to team page with complete professional biography
