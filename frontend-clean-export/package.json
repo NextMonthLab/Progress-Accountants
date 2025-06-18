@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview",
-    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
+    "dev": "vite --config vite.config.static.ts --host 0.0.0.0 --port 5000",
+    "build": "vite build --config vite.config.static.ts",
+    "preview": "vite preview --config vite.config.static.ts --host 0.0.0.0 --port 5000",
+    "start": "vite preview --config vite.config.static.ts --host 0.0.0.0 --port 5000"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",
