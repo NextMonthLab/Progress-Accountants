@@ -42,7 +42,7 @@ export default function TermsOfServicePage() {
                 <div className="bg-gray-800 p-6 rounded-lg border border-gray-700">
                   <h3 className="text-xl font-semibold mb-3 text-pink-400">Telephone</h3>
                   <p className="text-gray-300">
-                    <a href="tel:01234567890" className="text-blue-400 hover:text-blue-300">01234 567 890</a>
+                    <a href="tel:01295477250" className="text-blue-400 hover:text-blue-300">01295 477 250</a>
                   </p>
                 </div>
 
