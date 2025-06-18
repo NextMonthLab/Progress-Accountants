@@ -15,7 +15,7 @@ export const EMBED_FORMS = {
   CLIENT_DASHBOARD: `<!-- Client Dashboard Widget -->
 <iframe
   src="https://e40479db-edfd-4265-9a8b-1e462b5725d1-00-290zw6wfwpbn.picard.replit.dev/embed/client-dashboard?tenant=progress-accountants-uk"
-  style="width: 100%; height: 1400px; min-height: 1400px; border: none; border-radius: 8px;"
+  style="width: 100%; height: 2100px; min-height: 2100px; border: none; border-radius: 8px;"
   frameborder="0"
   scrolling="auto"
   sandbox="allow-scripts allow-same-origin"
