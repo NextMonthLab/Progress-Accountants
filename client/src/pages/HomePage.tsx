@@ -4,11 +4,10 @@ import IndustriesSection from "@/components/IndustriesSection";
 import WhyUsSection from "@/components/WhyUsSection";
 import ContactForm from "@/components/ContactForm";
 import { Card } from "@/components/ui/card";
-import { useBusinessIdentity } from "@/hooks/use-business-identity";
 import { useEffect } from "react";
 
 const HomePage = () => {
-  const { businessIdentity, isLoading } = useBusinessIdentity();
+  // Removed problematic useBusinessIdentity hook that was causing loading issues
 
   // Add smart anchor handling that allows external links but handles internal ones
   useEffect(() => {
@@ -50,13 +49,7 @@ const HomePage = () => {
     };
   }, []);
 
-  if (isLoading) {
-    return (
-      <div className="min-h-screen bg-black flex items-center justify-center">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-[#7B3FE4]"></div>
-      </div>
-    );
-  }
+  // Removed loading state that was preventing homepage from displaying
 
   return (
     <div className="min-h-screen bg-black">

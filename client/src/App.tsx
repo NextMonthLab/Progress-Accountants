@@ -3,23 +3,18 @@ import { Toaster } from "@/components/ui/toaster";
 import { useEffect, lazy, Suspense } from "react";
 import { Loader2 } from "lucide-react";
 import { useQuery, QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { NavigationProvider } from "@/contexts/NavigationContext";
-import DynamicSidebar from "@/components/navigation/DynamicSidebar";
+// Removed problematic NavigationProvider and DynamicSidebar imports
 import NotFound from "@/pages/not-found";
 import { useAuth, AuthProvider } from "@/hooks/use-auth";
 import { TenantProvider } from "@/hooks/use-tenant";
 import { PermissionsProvider } from "@/hooks/use-permissions";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
-import { NotificationsProvider } from "@/contexts/NotificationsContext";
-import ConversionDemo from "@/components/ConversionDemo";
-import AdminLayout from "@/layouts/AdminLayout";
-import { testLogin } from "@/lib/test-login";
+// Removed problematic backend-dependent imports
 import { DocumentHead } from "@/components/DocumentHead";
 import MainLayout from "@/layouts/MainLayout";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import ErrorBoundary from "@/components/error/ErrorBoundary";
-import ContentLoader from "@/components/error/ContentLoader";
-import CookieNotification from "@/components/CookieNotification";
+// Removed ContentLoader and CookieNotification imports
 import { ClientRoutes } from "@/routes/clientRoutes";
 
 // Eagerly loaded components for critical paths
