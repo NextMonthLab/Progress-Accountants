@@ -1,0 +1,75 @@
+🧠 REPLIT PROMPT — PROGRESS FRONTEND CLEANUP + PREPARE FOR HETZNER PULL
+
+⸻
+
+You are working inside the Progress-Frontend Clean Deployment Project.
+
+The project has already been successfully deployed into Hetzner VPS as a standalone frontend-only container using Docker and nginx.
+
+✅ The following context applies:
+	•	All admin, backend, and API services have been fully removed.
+	•	This project now serves only public-facing static pages.
+	•	Backend services (Admin Panel, Embeds, AI Features, Forms, API Calls) will be deployed separately as independent Pallet containers.
+	•	Docker container expects the production build output inside:
+./dist/public/index.html → /usr/share/nginx/html/index.html
+
+⸻
+
+🩺 CURRENT ISSUES IDENTIFIED DURING LIVE HETZNER DEPLOYMENT TEST:
+
+1️⃣ Embed Codes:
+	•	Many embed codes (chatbot, client dashboard, insights forms, calculators, etc) are currently calling routes or endpoints that no longer exist.
+	•	These embed codes should be temporarily suppressed or replaced with non-functional placeholders.
+	•	Leave clear TODO comments in code where future embed integrations will reconnect once backend Pallets are live.
+
+2️⃣ Frontend Asset Optimization:
+	•	Large images and hero sections are loading slowly due to unoptimized assets.
+	•	Compress images, optimize formats (WebP where appropriate), and ensure all static assets are production-ready.
+
+3️⃣ Responsive Layout Bug:
+	•	On mobile, horizontal scrolling drift occurs.
+	•	Fully audit all container widths, flex/grid configs, and ensure strict viewport boundaries for mobile breakpoints.
+	•	Zero horizontal scrolling allowed on mobile.
+
+4️⃣ Help System Initialization Warning:
+	•	Residual frontend modules are still trying to initialize backend help systems.
+	•	These should be fully removed or disabled to prevent runtime warnings.
+
+5️⃣ General Dependency Cleanup:
+	•	Fully remove any remaining frontend libraries, hooks, or providers referencing now-defunct backend services.
+	•	Ensure package.json contains only essential frontend packages.
+	•	Ensure vite.config.ts fully supports pure static deployment.
+
+⸻
+
+🧹 THE GOAL:
+
+Prepare a fully hardened, production-ready static frontend build, suitable for pull-back into Hetzner.
+Once complete, push all changes directly to the GitHub repo:
+
+git@github.com:NextMonthLab/Progress-Accountants.git
+
+The Hetzner deployment system will then:
+	•	Pull updates directly
+	•	Rebuild Docker container
+	•	Serve the optimized frontend fully independent of any backend services.
+
+⸻
+
+🚀 This is part of Agora OS strict Pallet governance:
+	•	Frontend = completely independent, CDN-safe, Dockerized static container.
+	•	Backend + Embeds = separate Pallet deployments.
+	•	Pallet Manager orchestrates connections later.
+
+⸻
+
+✅ When this task is complete:
+	•	Notify that frontend is production-ready for Hetzner redeploy.
+	•	System operator will execute full Hetzner Pull & Rebuild sequence.
+
+⸻
+
+🔒 Important:
+
+Do not introduce any new dependencies requiring backend calls.
+This Pallet is governed as a pure static frontend build.

@@ -8,7 +8,8 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { Loader2 } from 'lucide-react';
-import { smartFetch } from '@/utils/smartFetch';
+// TODO: Re-enable when backend Pallet is deployed
+// import { smartFetch } from '@/utils/smartFetch';
 
 // Form validation schema
 const formSchema = z.object({
@@ -49,21 +50,13 @@ export default function ContactForm({ compact = false, className = "" }: Contact
     try {
       console.log('Form submission data:', data);
       
-      // Direct fetch to local API endpoint
-      const response = await fetch('/api/forms/progress-accountants-uk/contact', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data)
-      });
+      // TODO: Replace with backend Pallet API when deployed
+      // Simulating form submission for static deployment
+      await new Promise(resolve => setTimeout(resolve, 1500));
       
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-      }
+      console.log('Form submission (static mode):', data);
       
-      const result = await response.json();
-      console.log('Form submission response:', result);
+      // Static deployment: form data logged locally until backend reconnection
       
       // Reset the form on successful submission
       form.reset();
