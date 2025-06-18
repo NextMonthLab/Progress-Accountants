@@ -11,10 +11,7 @@ import TeamPage from "@/pages/TeamPage";
 import ContactPage from "@/pages/ContactPage";
 import ProfessionalServicesPage from "@/pages/ProfessionalServicesPage";
 
-// Legal Pages
-import PrivacyPolicyPage from "@/pages/PrivacyPolicyPage";
-import TermsOfServicePage from "@/pages/TermsOfServicePage";
-import CookiePolicyPage from "@/pages/CookiePolicyPage";
+// Legal Pages - removed for static deployment
 
 // Other Pages
 import WhyUsPage from "@/pages/WhyUsPage";

@@ -2,23 +2,9 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import { resolve } from "path";
 import { readdirSync } from "fs";
-import themePlugin from "@replit/vite-plugin-shadcn-theme-json";
-
-// Read theme.json
-let themeConfig = { primary: "#0f172a", variant: "professional", appearance: "light", radius: 8 };
-try {
-  const themeContent = readdirSync(".").includes("theme.json") 
-    ? JSON.parse(require("fs").readFileSync("theme.json", "utf8"))
-    : {};
-  themeConfig = { ...themeConfig, ...themeContent };
-} catch (e) {
-  console.warn("Could not read theme.json, using defaults");
-}
-
 export default defineConfig({
   plugins: [
-    react(),
-    themePlugin(themeConfig)
+    react()
   ],
   resolve: {
     alias: {
@@ -29,7 +15,7 @@ export default defineConfig({
   build: {
     outDir: "dist",
     sourcemap: false,
-    minify: 'terser',
+    minify: 'esbuild',
     rollupOptions: {
       output: {
         manualChunks: {
@@ -38,12 +24,6 @@ export default defineConfig({
           icons: ['lucide-react'],
           animations: ['framer-motion']
         }
-      }
-    },
-    terserOptions: {
-      compress: {
-        drop_console: true,
-        drop_debugger: true
       }
     }
   },
