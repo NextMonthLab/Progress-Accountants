@@ -30,46 +30,45 @@ function App() {
     <ThemeProvider>
       <div className="min-h-screen bg-background">
         <EmbeddedChatbot />
-          <Switch>
-            {/* Main Pages */}
-            <Route path="/" component={HomePage} />
-            <Route path="/about" component={AboutPage} />
-            <Route path="/services" component={ServicesPage} />
-            <Route path="/team" component={TeamPage} />
-            <Route path="/contact" component={ContactPage} />
-            <Route path="/why-us" component={WhyUsPage} />
+        <Switch>
+          {/* Main Pages */}
+          <Route path="/" component={HomePage} />
+          <Route path="/about" component={AboutPage} />
+          <Route path="/services" component={ServicesPage} />
+          <Route path="/team" component={TeamPage} />
+          <Route path="/contact" component={ContactPage} />
+          <Route path="/why-us" component={WhyUsPage} />
 
-            {/* Industry Pages */}
-            <Route path="/construction" component={ConstructionIndustryPage} />
-            <Route path="/industries/construction" component={ConstructionIndustryPage} />
-            <Route path="/film" component={FilmIndustryPage} />
-            <Route path="/industries/film" component={FilmIndustryPage} />
-            <Route path="/music" component={MusicIndustryPage} />
-            <Route path="/industries/music" component={MusicIndustryPage} />
-            <Route path="/professional-services" component={ProfessionalServicesPage} />
-            <Route path="/industries/professional-services" component={ProfessionalServicesPage} />
+          {/* Industry Pages */}
+          <Route path="/construction" component={ConstructionIndustryPage} />
+          <Route path="/industries/construction" component={ConstructionIndustryPage} />
+          <Route path="/film" component={FilmIndustryPage} />
+          <Route path="/industries/film" component={FilmIndustryPage} />
+          <Route path="/music" component={MusicIndustryPage} />
+          <Route path="/industries/music" component={MusicIndustryPage} />
+          <Route path="/professional-services" component={ProfessionalServicesPage} />
+          <Route path="/industries/professional-services" component={ProfessionalServicesPage} />
 
-            {/* Specialized Pages */}
-            <Route path="/sme-support-hub" component={SMESupportHubPage} />
-            <Route path="/studio-banbury" component={StudioBanburyPage} />
-            <Route path="/services/:slug" component={ServiceDetailPage} />
+          {/* Specialized Pages */}
+          <Route path="/sme-support-hub" component={SMESupportHubPage} />
+          <Route path="/studio-banbury" component={StudioBanburyPage} />
+          <Route path="/services/:slug" component={ServiceDetailPage} />
 
-            {/* Legal Pages */}
-            <Route path="/privacy-policy" component={PrivacyPolicyPage} />
-            <Route path="/terms-of-service" component={TermsOfServicePage} />
-            <Route path="/cookie-policy" component={CookiePolicyPage} />
+          {/* Legal Pages */}
+          <Route path="/privacy-policy" component={PrivacyPolicyPage} />
+          <Route path="/terms-of-service" component={TermsOfServicePage} />
+          <Route path="/cookie-policy" component={CookiePolicyPage} />
 
-            {/* 404 Fallback */}
-            <Route>
-              <div className="min-h-screen flex items-center justify-center">
-                <div className="text-center">
-                  <h1 className="text-4xl font-bold mb-4">Page Not Found</h1>
-                  <p className="text-muted-foreground mb-8">The page you're looking for doesn't exist.</p>
-                  <a href="/" className="btn btn-primary">Return Home</a>
-                </div>
+          {/* 404 Fallback */}
+          <Route>
+            <div className="min-h-screen flex items-center justify-center">
+              <div className="text-center">
+                <h1 className="text-4xl font-bold mb-4">Page Not Found</h1>
+                <p className="text-muted-foreground mb-8">The page you're looking for doesn't exist.</p>
+                <a href="/" className="btn btn-primary">Return Home</a>
               </div>
-            </Route>
-          </Switch>
+            </div>
+          </Route>
         </Switch>
       </div>
       <Toaster />
