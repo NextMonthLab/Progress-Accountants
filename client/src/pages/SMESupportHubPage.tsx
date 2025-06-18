@@ -16,7 +16,7 @@ import { motion } from "framer-motion";
 import { EMBED_FORMS, hasValidEmbedCode, FORM_CONFIG } from "@/utils/embedForms";
 import { generateSMEHubPDF } from "@/utils/pdfGenerator";
 import { openCalendlyPopup } from "@/utils/calendly";
-import smeHeroImage from "@/assets/sme-support-hub-hero.png";
+import smeHeroImage from "/images/sme-support-hub-hero.png";
 
 // Animation variants
 const containerVariants = {
