@@ -1,0 +1,89 @@
+🧬 RAPLET FRONTEND FINAL HARDENING PROMPT — PROGRESS SMARTSITE (UPDATED)
+
+⚠ This version supersedes the prior one — it includes the new critical mobile and containerized deployment specifications.
+
+⸻
+
+🧹 CORE OBJECTIVE:
+
+You are finalizing the production-grade frontend-only deployment package for the Progress SmartSite, targeting Hetzner VPS container infrastructure.
+The build must operate as a fully independent static frontend without backend or admin dependencies.
+
+⸻
+
+🔧 TASKS TO EXECUTE:
+
+1️⃣ Legacy System Removal:
+	•	Fully delete any health system initialization logic.
+	•	Remove Help System Initialization Failed logic entirely.
+	•	Delete any startup backend discovery or readiness checks.
+	•	Eliminate any asynchronous hydration delays tied to backend services.
+
+⸻
+
+2️⃣ Pure Embed Model:
+	•	All interactive features (forms, calculators, CRM dashboards, AI chat, Insight Hub, etc) must be rendered purely as iframe embed codes.
+	•	The main frontend build must never attempt to load these directly via API calls — the embed container handles this independently.
+	•	If any iframe embed fails to load, the page must still render instantly and fully.
+
+⸻
+
+3️⃣ Mobile Layout Optimization:
+	•	Fix horizontal drift: Apply permanent overflow-x: hidden to entire layout.
+	•	Fix hero image scaling: Ensure hero section fully resizes on all viewport widths:
+	•	No cropping of heads/feet on smaller screens.
+	•	Full vertical scaling on mobile.
+	•	Ensure all sections remain fully bound to safe viewport width.
+
+⸻
+
+4️⃣ Asset Optimization:
+	•	Compress any remaining large media assets, specifically:
+	•	studio.jpg → target under 500KB if visually acceptable.
+	•	Apply lazy loading where applicable for optimal performance.
+
+⸻
+
+5️⃣ Dependency Audit:
+	•	Remove any legacy packages in package.json that supported removed backend logic.
+	•	Resulting package.json should be pure static frontend only.
+
+⸻
+
+6️⃣ Container Deployment Path:
+	•	Output should be deployed to GitHub repo:
+
+git@github.com:NextMonthLab/Progress-Accountants.git
+
+	•	Ensure final build lives directly inside this target folder inside the repo:
+
+/progress-frontend
+
+	•	Do not alter or create nested folders (e.g. avoid structures like /client/dist/public).
+	•	Output build must be directly consumable for nginx:alpine Docker container static serving.
+
+⸻
+
+7️⃣ Rendering Verification:
+	•	Test fully local static build.
+	•	Verify:
+	•	Full page renders in under 1 second.
+	•	No horizontal drift.
+	•	No backend-related console warnings.
+	•	No help system errors.
+	•	All embeds fail gracefully if remote service is unavailable.
+	•	Mobile viewport fully contained and properly scaled.
+
+⸻
+
+⚠ STRICT RULE:
+This is your final frontend-only hardened Pallet for Hetzner.
+No new backend functionality should exist inside this repo.
+
+⸻
+
+✅ Once complete: PUSH to GitHub. We will immediately pull down into Hetzner for final container rebuild.
+
+⸻
+
+This is now fully bulletproof. 🔒

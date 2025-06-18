@@ -25,7 +25,6 @@ export const teamMembers: TeamMember[] = [
     id: "becky-rogers",
     name: "Becky Rogers",
     position: "Assistant Accountant",
-    bio: "Becky brings a fresh perspective and exceptional attention to detail to the Progress Accountants team. Currently studying towards her AAT qualification while gaining practical experience, she specializes in bookkeeping, VAT returns, and client support services. Becky's background in customer service excellence ensures our clients receive outstanding support throughout their financial journey. She is particularly skilled at helping new businesses set up their accounting systems and provides ongoing support for day-to-day financial operations. Her approachable manner and thorough understanding of modern accounting software makes her an invaluable resource for our SME clients.",
     image: "/team/becky-rogers.jpg",
     qualifications: ["AAT Level 3 (in progress)", "Customer Service Excellence Certification"],
     email: "becky@progressaccountants.co.uk",
