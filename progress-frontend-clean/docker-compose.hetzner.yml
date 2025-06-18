@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  progress-frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.optimized
+    container_name: progress-accountants-frontend
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    environment:
+      - NODE_ENV=production
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.progress.rule=Host(`progress-accountants.com`)"
+      - "traefik.http.routers.progress.tls.certresolver=letsencrypt"

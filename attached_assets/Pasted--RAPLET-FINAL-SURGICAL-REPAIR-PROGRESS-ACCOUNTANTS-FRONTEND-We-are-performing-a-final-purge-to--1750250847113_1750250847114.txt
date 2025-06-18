@@ -1,0 +1,66 @@
+🧠 RAPLET FINAL SURGICAL REPAIR — PROGRESS ACCOUNTANTS FRONTEND
+
+We are performing a final purge to prepare this repo for fully stable Hetzner deployment.
+
+🔧 PROJECT CONTEXT
+	•	Repo: Progress-Accountants
+	•	Deployment: Hetzner VPS via Docker (static NGINX container)
+	•	Frontend fully decoupled from backend
+	•	No health system, no analytics monitoring, no live API dependencies at this stage
+
+🔬 TASKS:
+
+1️⃣ GLOBAL HEALTH SYSTEM PURGE
+	•	Completely remove all logic referencing:
+	•	Health System Initialization
+	•	Help System Initialization
+	•	Session Monitoring
+	•	Any health-status or monitoring endpoints.
+	•	Fully eliminate these from:
+	•	/client/
+	•	/pallets/progress-smart-site/client/
+	•	/listener/
+	•	Any utility/helper files.
+
+2️⃣ REMOVE EMBEDDED DEPENDENCY CALLS
+	•	Search for any API calls or WebSocket attempts still embedded in frontend files.
+	•	Ensure all embed components fail gracefully if backends are absent (static placeholder if needed).
+	•	The frontend must behave as fully static.
+
+3️⃣ MOBILE RESPONSIVENESS HARDENING
+	•	Apply global overflow-x: hidden to body, html, and all scrollable containers to prevent horizontal drift.
+	•	Ensure hero sections scale correctly on small screens. Images must fit entirely inside viewport.
+
+4️⃣ ASSET OPTIMIZATION
+	•	Convert all remaining large images to optimized formats (preferably .webp or pre-compressed JPEG).
+	•	Apply lazy loading to non-critical images.
+	•	Ensure all public-facing assets are pre-bundled for instant page rendering.
+
+5️⃣ VITE BUNDLE CLEANUP
+	•	Confirm that vite.config.ts is correctly optimized:
+	•	Chunk splitting where necessary.
+	•	Tree-shaking of unused dependencies.
+	•	Eliminate any unnecessary large imports.
+
+6️⃣ FINAL OUTPUT REQUIREMENT
+
+✅ Output must fully build inside Docker using:
+
+docker compose build --no-cache
+docker compose up -d
+
+✅ Frontend must load instantly without initialization delays or warnings.
+
+✅ No console warnings or failed requests in browser dev tools.
+
+✅ Fully compatible with Hetzner static deployment pipeline.
+
+⸻
+
+⚠ DO NOT preserve legacy files for rollback — this is a full production purge to create a stable final Hetzner frontend image.
+
+⸻
+
+Once this is complete, confirm:
+
+“✅ RAPLET HARDENING COMPLETE — CLEAN FOR HETZNER DEPLOYMENT”
