@@ -1,52 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { Loader2 } from 'lucide-react';
+import React from 'react';
 
 interface DeferredRenderProps {
   children: React.ReactNode;
   placeholder?: React.ReactNode;
-  priority?: boolean;
-  onRender?: () => void;
 }
 
-/**
- * DeferredRender - Delays rendering of heavy components to improve perceived loading time
- * 
- * Features:
- * - Improves UI responsiveness by deferring heavy content rendering
- * - Reduces initial load jank when many components load at once
- * - Allows prioritizing critical components
- * - Can be controlled with a custom delay
- */
-export function DeferredRender({
-  children,
-  placeholder,
-  priority = false,
-  onRender
-}: DeferredRenderProps) {
-  const [shouldRender, setShouldRender] = useState(priority);
-  
-  useEffect(() => {
-    if (priority) {
-      setShouldRender(true);
-      onRender?.();
-      return;
-    }
-    
-    const cancelHandler = window.cancelIdleCallback || clearTimeout;
-    
-    // Instant render for static deployment
-    setShouldRender(true);
-    onRender?.();
-  }, [priority, onRender]);
-  
-  if (!shouldRender) {
-    return placeholder || (
-      <div className="flex items-center justify-center min-h-[100px] animate-pulse">
-        <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
-      </div>
-    );
-  }
-  
+// Instant render for static deployment - preserves visual aesthetics without backend delays
+export function DeferredRender({ children }: DeferredRenderProps) {
   return <>{children}</>;
 }
 
