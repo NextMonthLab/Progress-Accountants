@@ -68,14 +68,17 @@ export default function TeamPage() {
       {/* Hero Section */}
       <section className="py-20 relative overflow-hidden">
         <div 
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat team-hero-image"
           style={{
-            backgroundImage: 'url(https://res.cloudinary.com/drl0fxrkq/image/upload/v1747742829/P1013106-Enhanced-NR_adzlje.jpg)'
+            backgroundImage: 'url(https://res.cloudinary.com/drl0fxrkq/image/upload/v1747742829/P1013106-Enhanced-NR_adzlje.jpg)',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center center',
+            backgroundAttachment: 'scroll'
           }}
         ></div>
         <div className="absolute inset-0 bg-black/60"></div>
         <div className="absolute inset-0 bg-gradient-to-br from-purple-900/30 via-transparent to-slate-900/40"></div>
-        <div className="container mx-auto px-12 md:px-16 relative z-10">
+        <div className="container mx-auto px-4 md:px-12 lg:px-16 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-4xl md:text-6xl font-bold mb-6 text-white leading-tight">
               Meet Our{" "}
@@ -92,7 +95,7 @@ export default function TeamPage() {
       <section className="py-20 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-purple-900/40"></div>
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-900/20 via-transparent to-transparent"></div>
-        <div className="container mx-auto px-12 md:px-16 relative z-10">
+        <div className="container mx-auto px-4 md:px-12 lg:px-16 relative z-10">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-16">
               <h2 className="text-3xl md:text-4xl font-bold mb-4 text-white">
@@ -116,7 +119,7 @@ export default function TeamPage() {
       <section className="py-20 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-purple-900/40"></div>
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-900/20 via-transparent to-transparent"></div>
-        <div className="container mx-auto px-12 md:px-16 relative z-10">
+        <div className="container mx-auto px-4 md:px-12 lg:px-16 relative z-10">
           <div className="max-w-3xl mx-auto text-center">
             <h2 className="text-3xl md:text-4xl font-bold mb-6 text-white">
               Interested in Joining Our Team?

@@ -1,56 +1,11 @@
-/* Progress Accountants - Hetzner Static Deployment Styles */
+/* Import dedicated stylesheets for public and admin sections to avoid style leakage */
+@import './styles/public.css';
+@import './styles/admin.css';
+@import './styles/navigation-dark-mode.css';
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-/* RAPLET Mobile Layout Hardening */
-html, body {
-  overflow-x: hidden !important;
-  max-width: 100vw !important;
-}
-
-* {
-  box-sizing: border-box;
-}
-
-/* Mobile responsiveness hardening */
-html, body {
-  overflow-x: hidden;
-  width: 100%;
-  max-width: 100vw;
-}
-
-.container {
-  overflow-x: hidden;
-  max-width: 100%;
-}
-
-/* Prevent horizontal scroll on all elements */
-* {
-  max-width: 100%;
-}
-
-/* Prevent horizontal drift on all elements */
-*, *:before, *:after {
-  max-width: 100vw;
-  overflow-x: hidden;
-}
-
-/* Hero section mobile optimization */
-.hero-section {
-  min-height: 100vh;
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
-}
-
-@media (max-width: 768px) {
-  .hero-section {
-    background-attachment: scroll;
-    min-height: 60vh;
-  }
-}
 
 @layer utilities {
   /* Progress Design System Utilities */
@@ -143,6 +98,74 @@ html, body {
 
 /* GLOBAL: Control all rounded corners site-wide */
 /* Override all Tailwind rounded classes */
+
+/* MOBILE FIXES: Prevent horizontal scrolling and ensure proper image display */
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  overflow-x: hidden;
+  width: 100%;
+  position: relative;
+}
+
+.container {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* Mobile-specific fixes for team page background image */
+@media (max-width: 768px) {
+  /* Prevent horizontal drift on mobile */
+  body {
+    overflow-x: hidden !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+  
+  /* Team page hero image mobile optimization */
+  .team-hero-image {
+    background-size: cover !important;
+    background-position: center center !important;
+    background-attachment: scroll !important;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover;
+    object-position: center;
+    min-height: 400px;
+  }
+  
+  /* Container padding adjustments for mobile */
+  .container.mx-auto {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 100%;
+  }
+  
+  /* Prevent text from causing horizontal overflow */
+  .max-w-4xl, .max-w-3xl, .max-w-7xl {
+    max-width: 100%;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+}
+
+/* iPad specific fixes */
+@media (min-width: 768px) and (max-width: 1024px) {
+  html, body {
+    overflow-x: hidden;
+    width: 100%;
+  }
+  
+  .container {
+    max-width: 100%;
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
 .rounded,
 .rounded-sm,
 .rounded-md,
