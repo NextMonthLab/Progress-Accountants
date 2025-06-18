@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  progress-frontend:
+    build: .
+    container_name: progress-accountants-frontend
+    ports:
+      - "80:80"
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
