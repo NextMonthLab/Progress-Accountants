@@ -68,10 +68,10 @@ export default function TeamPage() {
       {/* Hero Section */}
       <section className="py-20 relative overflow-hidden">
         <div 
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat team-hero-image"
+          className="absolute inset-0 bg-contain bg-center bg-no-repeat team-hero-image md:bg-cover"
           style={{
             backgroundImage: 'url(https://res.cloudinary.com/drl0fxrkq/image/upload/v1747742829/P1013106-Enhanced-NR_adzlje.jpg)',
-            backgroundSize: 'cover',
+            backgroundSize: 'contain',
             backgroundPosition: 'center center',
             backgroundAttachment: 'scroll'
           }}

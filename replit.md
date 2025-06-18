@@ -148,6 +148,7 @@ Changelog:
 - June 18, 2025: Reverted PostCSS configuration to standard TailwindCSS setup after styling broke completely
 - June 18, 2025: Fixed TailwindCSS styling breakdown by downgrading to TailwindCSS 3.4.0 and reverting PostCSS configuration
 - June 18, 2025: Fixed mobile horizontal scrolling drift and team image display issues with responsive CSS fixes
+- June 18, 2025: Updated team hero image to use background-size: contain to ensure full team photo visibility on mobile and iPad devices
 - June 18, 2025: Created production deployment guide due to dev command blocking deployment
 - June 18, 2025: Updated podcast studio address to correct location: 1st Floor Beaumont House, Beaumont Road, OX16 1RH
 - June 18, 2025: Successfully completed clean frontend extraction protocol - removed all admin functionality, authentication, and backend dependencies while preserving public website features

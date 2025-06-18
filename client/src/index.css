@@ -126,14 +126,21 @@ html, body {
   
   /* Team page hero image mobile optimization */
   .team-hero-image {
-    background-size: cover !important;
+    background-size: contain !important;
     background-position: center center !important;
     background-attachment: scroll !important;
+    background-repeat: no-repeat !important;
     width: 100% !important;
     height: 100% !important;
-    object-fit: cover;
-    object-position: center;
     min-height: 400px;
+  }
+  
+  /* Ensure full team image visibility on mobile */
+  @media (max-width: 767px) {
+    .team-hero-image {
+      background-size: contain !important;
+      min-height: 300px;
+    }
   }
   
   /* Container padding adjustments for mobile */
@@ -164,6 +171,12 @@ html, body {
     max-width: 100%;
     padding-left: 2rem;
     padding-right: 2rem;
+  }
+  
+  /* iPad team image optimization */
+  .team-hero-image {
+    background-size: contain !important;
+    min-height: 500px;
   }
 }
 .rounded,

@@ -9,9 +9,16 @@ import { ArrowRight } from 'lucide-react';
 import { PageHeaderSkeleton, TeamMemberSkeleton, CtaSkeleton } from '@/components/ui/skeletons';
 
 export default function TeamPage() {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   
-  // No loading delays for instant rendering
+  useEffect(() => {
+    // Simulate content loading
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1500);
+    
+    return () => clearTimeout(timer);
+  }, []);
   // Show skeleton during loading state
   if (isLoading) {
     return (
@@ -61,14 +68,17 @@ export default function TeamPage() {
       {/* Hero Section */}
       <section className="py-20 relative overflow-hidden">
         <div 
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          className="absolute inset-0 bg-contain bg-center bg-no-repeat team-hero-image md:bg-cover"
           style={{
-            backgroundImage: 'url(https://res.cloudinary.com/drl0fxrkq/image/upload/v1747742829/P1013106-Enhanced-NR_adzlje.jpg)'
+            backgroundImage: 'url(https://res.cloudinary.com/drl0fxrkq/image/upload/v1747742829/P1013106-Enhanced-NR_adzlje.jpg)',
+            backgroundSize: 'contain',
+            backgroundPosition: 'center center',
+            backgroundAttachment: 'scroll'
           }}
         ></div>
         <div className="absolute inset-0 bg-black/60"></div>
         <div className="absolute inset-0 bg-gradient-to-br from-purple-900/30 via-transparent to-slate-900/40"></div>
-        <div className="container mx-auto px-12 md:px-16 relative z-10">
+        <div className="container mx-auto px-4 md:px-12 lg:px-16 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-4xl md:text-6xl font-bold mb-6 text-white leading-tight">
               Meet Our{" "}
@@ -85,7 +95,7 @@ export default function TeamPage() {
       <section className="py-20 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-purple-900/40"></div>
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-900/20 via-transparent to-transparent"></div>
-        <div className="container mx-auto px-12 md:px-16 relative z-10">
+        <div className="container mx-auto px-4 md:px-12 lg:px-16 relative z-10">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-16">
               <h2 className="text-3xl md:text-4xl font-bold mb-4 text-white">
@@ -109,7 +119,7 @@ export default function TeamPage() {
       <section className="py-20 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-purple-900/40"></div>
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-900/20 via-transparent to-transparent"></div>
-        <div className="container mx-auto px-12 md:px-16 relative z-10">
+        <div className="container mx-auto px-4 md:px-12 lg:px-16 relative z-10">
           <div className="max-w-3xl mx-auto text-center">
             <h2 className="text-3xl md:text-4xl font-bold mb-6 text-white">
               Interested in Joining Our Team?
@@ -118,7 +128,7 @@ export default function TeamPage() {
               We're always on the lookout for passionate professionals to join our growing firm. If you care about small business success and want to be part of a forward-thinking team, we'd love to hear from you.
             </p>
             <Link href="/contact">
-              <button className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] text-white rounded-lg hover:shadow-lg hover:shadow-purple-500/25 hover:-translate-y-1 transition-all duration-0 font-medium">
+              <button className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] text-white rounded-lg hover:shadow-lg hover:shadow-purple-500/25 hover:-translate-y-1 transition-all duration-300 font-medium">
                 <span>Contact Us</span>
                 <ArrowRight size={18} />
               </button>
