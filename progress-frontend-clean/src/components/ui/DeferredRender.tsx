@@ -3,7 +3,6 @@ import { Loader2 } from 'lucide-react';
 
 interface DeferredRenderProps {
   children: React.ReactNode;
-  delay?: number;
   placeholder?: React.ReactNode;
   priority?: boolean;
   onRender?: () => void;
@@ -53,7 +52,6 @@ export function DeferredRender({
 
 // Add missing type definitions for requestIdleCallback
 interface RequestIdleCallbackOptions {
-  timeout?: number;
 }
 
 interface IdleRequestCallback {

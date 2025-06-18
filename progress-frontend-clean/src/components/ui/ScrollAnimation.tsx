@@ -6,8 +6,6 @@ import { useEffect } from 'react';
 interface ScrollAnimationProps {
   children: ReactNode;
   className?: string;
-  delay?: number;
-  duration?: number;
   direction?: 'up' | 'down' | 'left' | 'right' | 'none';
   threshold?: number;
   rootMargin?: string;
@@ -20,28 +18,19 @@ interface ScrollAnimationProps {
 export function ScrollAnimation({
   children,
   className = '',
-  delay = 0,
-  duration = 0.6,
-  direction = 'up',
-  threshold = 0.2,
-  rootMargin = '-50px 0px',
-  triggerOnce = true,
-  type = 'fade-slide',
   id,
   style
 }: ScrollAnimationProps) {
-  const controls = useAnimation();
-  const [ref, inView] = useInView({
-    triggerOnce,
-    threshold,
-    rootMargin
-  });
-
-  useEffect(() => {
-    if (inView) {
-      controls.start('visible');
-    }
-  }, [controls, inView]);
+  // Instant render for static deployment - no animations
+  return (
+    <div
+      className={className}
+      id={id}
+      style={style}
+    >
+      {children}
+    </div>
+  );
 
   // Set initial states based on direction and type
   let initialX = 0;
@@ -65,47 +54,12 @@ export function ScrollAnimation({
     initialOpacity = 0;
   }
 
-  const variants = {
-    hidden: {
-      opacity: initialOpacity,
-      y: initialY,
-      x: initialX,
-      scale: initialScale
-    },
-    visible: {
-      opacity: 1,
-      y: 0,
-      x: 0,
-      scale: 1,
-      transition: {
-        duration,
-        ease: 'easeOut',
-        delay
-      }
-    }
-  };
-
-  return (
-    <motion.div
-      ref={ref}
-      animate={controls}
-      initial="hidden"
-      variants={variants}
-      className={className}
-      id={id}
-      style={style}
-    >
-      {children}
-    </motion.div>
-  );
 }
 
 // Define a type for the pre-configured components
 interface AnimationComponentProps {
   children: ReactNode;
   className?: string;
-  delay?: number;
-  duration?: number;
   threshold?: number;
   rootMargin?: string;
   triggerOnce?: boolean;
@@ -114,11 +68,10 @@ interface AnimationComponentProps {
 }
 
 // Pre-configured components for common animations
-export function FadeIn({ className = '', delay = 0, children, ...props }: AnimationComponentProps) {
   return (
     <ScrollAnimation 
       className={className} 
-      delay={delay} 
+      delay={0} 
       type="fade" 
       direction="none"
       {...props}
@@ -128,11 +81,10 @@ export function FadeIn({ className = '', delay = 0, children, ...props }: Animat
   );
 }
 
-export function SlideUp({ className = '', delay = 0, children, ...props }: AnimationComponentProps) {
   return (
     <ScrollAnimation 
       className={className} 
-      delay={delay} 
+      delay={0} 
       type="fade-slide" 
       direction="up"
       {...props}
@@ -142,11 +94,10 @@ export function SlideUp({ className = '', delay = 0, children, ...props }: Anima
   );
 }
 
-export function SlideDown({ className = '', delay = 0, children, ...props }: AnimationComponentProps) {
   return (
     <ScrollAnimation 
       className={className} 
-      delay={delay} 
+      delay={0} 
       type="fade-slide" 
       direction="down"
       {...props}
@@ -156,11 +107,10 @@ export function SlideDown({ className = '', delay = 0, children, ...props }: Ani
   );
 }
 
-export function SlideInLeft({ className = '', delay = 0, children, ...props }: AnimationComponentProps) {
   return (
     <ScrollAnimation 
       className={className} 
-      delay={delay} 
+      delay={0} 
       type="fade-slide" 
       direction="right"
       {...props}
@@ -170,11 +120,10 @@ export function SlideInLeft({ className = '', delay = 0, children, ...props }: A
   );
 }
 
-export function SlideInRight({ className = '', delay = 0, children, ...props }: AnimationComponentProps) {
   return (
     <ScrollAnimation 
       className={className} 
-      delay={delay} 
+      delay={0} 
       type="fade-slide" 
       direction="left"
       {...props}
@@ -184,11 +133,10 @@ export function SlideInRight({ className = '', delay = 0, children, ...props }: 
   );
 }
 
-export function ScaleIn({ className = '', delay = 0, children, ...props }: AnimationComponentProps) {
   return (
     <ScrollAnimation 
       className={className} 
-      delay={delay} 
+      delay={0} 
       type="scale" 
       direction="none"
       {...props}

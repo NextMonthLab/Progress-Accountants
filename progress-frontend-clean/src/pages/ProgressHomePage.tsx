@@ -77,7 +77,6 @@ export default function ProgressHomePage() {
               className="space-y-8"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
             >
               <Card className="bg-gradient-to-br from-[#7B3FE4] to-[#3FA4E4] border-0 text-white overflow-hidden">
                 <CardContent className="p-8">
@@ -119,7 +118,6 @@ export default function ProgressHomePage() {
               className="relative"
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
             >
               <div className="aspect-square bg-zinc-800 rounded-2xl border border-zinc-700 flex items-center justify-center">
                 <div className="text-center text-white">
@@ -143,7 +141,6 @@ export default function ProgressHomePage() {
             {/* Growth Room VR */}
             <motion.div
               whileHover={{ y: -5 }}
-              transition={{ duration: 0.3 }}
             >
               <Card className="bg-zinc-800 border-zinc-700 overflow-hidden group hover:border-purple-500/50 transition-all duration-300">
                 <div className="aspect-video bg-gradient-to-br from-purple-600/20 to-blue-600/20 relative">
@@ -171,7 +168,6 @@ export default function ProgressHomePage() {
             {/* Strategy Workshop */}
             <motion.div
               whileHover={{ y: -5 }}
-              transition={{ duration: 0.3 }}
             >
               <Card className="bg-zinc-800 border-zinc-700 overflow-hidden group hover:border-blue-500/50 transition-all duration-300">
                 <div className="aspect-video bg-gradient-to-br from-blue-600/20 to-purple-600/20 relative">

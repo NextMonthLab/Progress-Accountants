@@ -8,7 +8,6 @@ interface ScrollAnimationWrapperProps extends HTMLMotionProps<"div"> {
   children: ReactNode;
   variants?: Variants;
   className?: string;
-  delay?: number;
   threshold?: number;
   rootMargin?: string;
   viewportOnce?: boolean;
@@ -43,7 +42,6 @@ export function ScrollAnimationWrapper({
       opacity: 1,
       y: 0,
       transition: {
-        duration: 0.6,
         ease: "easeOut",
         delay
       }
@@ -68,16 +66,13 @@ export function ScrollAnimationWrapper({
 interface AnimationProps extends Omit<ScrollAnimationWrapperProps, 'variants'> {
   children: ReactNode;
   className?: string;
-  delay?: number;
 }
 
-export function FadeInOnScroll({ children, className = "", delay = 0, ...props }: AnimationProps) {
   const variants: Variants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        duration: 0.8,
         ease: "easeOut",
         delay
       }
@@ -88,7 +83,7 @@ export function FadeInOnScroll({ children, className = "", delay = 0, ...props }
     <ScrollAnimationWrapper
       variants={variants}
       className={className}
-      delay={delay}
+      delay={0}
       {...props}
     >
       {children}
@@ -96,7 +91,6 @@ export function FadeInOnScroll({ children, className = "", delay = 0, ...props }
   );
 }
 
-export function SlideUpOnScroll({ children, className = "", delay = 0, ...props }: AnimationProps) {
   const variants: Variants = {
     hidden: { opacity: 0, y: 50 },
     visible: {
@@ -115,7 +109,7 @@ export function SlideUpOnScroll({ children, className = "", delay = 0, ...props 
     <ScrollAnimationWrapper
       variants={variants}
       className={className}
-      delay={delay}
+      delay={0}
       {...props}
     >
       {children}
@@ -123,14 +117,12 @@ export function SlideUpOnScroll({ children, className = "", delay = 0, ...props 
   );
 }
 
-export function SlideInFromLeftOnScroll({ children, className = "", delay = 0, ...props }: AnimationProps) {
   const variants: Variants = {
     hidden: { opacity: 0, x: -50 },
     visible: {
       opacity: 1,
       x: 0,
       transition: {
-        duration: 0.5,
         ease: "easeOut",
         delay
       }
@@ -141,7 +133,7 @@ export function SlideInFromLeftOnScroll({ children, className = "", delay = 0, .
     <ScrollAnimationWrapper
       variants={variants}
       className={className}
-      delay={delay}
+      delay={0}
       {...props}
     >
       {children}
@@ -149,14 +141,12 @@ export function SlideInFromLeftOnScroll({ children, className = "", delay = 0, .
   );
 }
 
-export function SlideInFromRightOnScroll({ children, className = "", delay = 0, ...props }: AnimationProps) {
   const variants: Variants = {
     hidden: { opacity: 0, x: 50 },
     visible: {
       opacity: 1,
       x: 0,
       transition: {
-        duration: 0.5,
         ease: "easeOut",
         delay
       }
@@ -167,7 +157,7 @@ export function SlideInFromRightOnScroll({ children, className = "", delay = 0, 
     <ScrollAnimationWrapper
       variants={variants}
       className={className}
-      delay={delay}
+      delay={0}
       {...props}
     >
       {children}
@@ -175,14 +165,12 @@ export function SlideInFromRightOnScroll({ children, className = "", delay = 0, 
   );
 }
 
-export function ScaleUpOnScroll({ children, className = "", delay = 0, ...props }: AnimationProps) {
   const variants: Variants = {
     hidden: { opacity: 0, scale: 0.9 },
     visible: {
       opacity: 1,
       scale: 1,
       transition: {
-        duration: 0.5,
         ease: "easeOut",
         delay
       }
@@ -193,7 +181,7 @@ export function ScaleUpOnScroll({ children, className = "", delay = 0, ...props 
     <ScrollAnimationWrapper
       variants={variants}
       className={className}
-      delay={delay}
+      delay={0}
       {...props}
     >
       {children}

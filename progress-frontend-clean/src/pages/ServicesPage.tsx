@@ -194,7 +194,6 @@ export default function ServicesPage() {
           {/* Services Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {services.map((service) => (
-              <div key={service.id} className="bg-gray-800 rounded-lg shadow-lg p-6 flex flex-col h-full transform transition-all duration-300 hover:-translate-y-2 hover:shadow-xl border border-gray-700">
                 <div className="flex-grow">
                   <div className="text-gradient-to-r from-blue-400 to-pink-400">
                     {service.icon}
