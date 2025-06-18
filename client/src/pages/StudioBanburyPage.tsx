@@ -253,10 +253,10 @@ export default function StudioBanburyPage() {
                       <h3 className="text-sm font-semibold text-slate-400 mb-2">Address</h3>
                       <div className="text-slate-300">
                         <div className="font-semibold">Progress Studio</div>
-                        <div>123 Business Way</div>
-                        <div>Banbury</div>
-                        <div>Oxfordshire</div>
-                        <div>OX16 1AB</div>
+                        <div>1st Floor Beaumont House</div>
+                        <div>Beaumont Road</div>
+                        <div>Banbury, Oxfordshire</div>
+                        <div>OX16 1RH</div>
                       </div>
                     </div>
                   </div>
