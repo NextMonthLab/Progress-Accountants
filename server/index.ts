@@ -89,8 +89,63 @@ app.get('/embed.js', (req: Request, res: Response) => {
     
     chatContainer.addEventListener('click', function() {
       console.log('NextMonth SmartSite chat opened for tenant:', TENANT_ID);
-      // Open chat interface (placeholder)
-      alert('Chat assistant coming soon! Contact us directly for immediate support.');
+      // Create built-in chat interface
+      var modal = document.createElement('div');
+      modal.style.cssText = 
+        'position: fixed; top: 0; left: 0; width: 100%; height: 100%; ' +
+        'background: rgba(0, 0, 0, 0.5); z-index: 10000; ' +
+        'display: flex; align-items: center; justify-content: center;';
+      
+      var chatContainer = document.createElement('div');
+      chatContainer.style.cssText = 
+        'width: 400px; height: 600px; background: white; border-radius: 12px; ' +
+        'box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3); display: flex; flex-direction: column;';
+      
+      var header = document.createElement('div');
+      header.style.cssText = 
+        'background: linear-gradient(135deg, #7B3FE4 0%, #3FA4E4 100%); ' +
+        'color: white; padding: 20px; border-radius: 12px 12px 0 0; text-align: center;';
+      header.innerHTML = '<h3 style="margin: 0; font-family: Arial, sans-serif;">Progress Accountants</h3><p style="margin: 5px 0 0 0; opacity: 0.9; font-size: 14px;">How can we help you today?</p>';
+      
+      var content = document.createElement('div');
+      content.style.cssText = 
+        'flex: 1; padding: 30px; display: flex; flex-direction: column; justify-content: center; text-align: center; font-family: Arial, sans-serif;';
+      content.innerHTML = 
+        '<div style="margin-bottom: 30px;">' +
+          '<div style="width: 60px; height: 60px; background: linear-gradient(135deg, #7B3FE4 0%, #3FA4E4 100%); border-radius: 50%; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center;">' +
+            '<svg width="30" height="30" fill="white" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h4l4 4 4-4h4c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>' +
+          '</div>' +
+          '<h4 style="color: #333; margin-bottom: 15px;">Ready to chat?</h4>' +
+          '<p style="color: #666; margin-bottom: 25px; line-height: 1.5;">Our AI assistant is currently being enhanced. For immediate support, please contact us directly.</p>' +
+        '</div>' +
+        '<div style="display: flex; gap: 10px; justify-content: center;">' +
+          '<a href="tel:01295477250" style="background: linear-gradient(135deg, #7B3FE4 0%, #3FA4E4 100%); color: white; padding: 12px 20px; border-radius: 8px; text-decoration: none; font-weight: 500;">Call Us</a>' +
+          '<a href="mailto:info@progressaccountants.co.uk" style="background: #f8f9fa; color: #333; border: 1px solid #e9ecef; padding: 12px 20px; border-radius: 8px; text-decoration: none; font-weight: 500;">Email</a>' +
+        '</div>';
+      
+      var closeBtn = document.createElement('button');
+      closeBtn.innerHTML = '×';
+      closeBtn.style.cssText = 
+        'position: absolute; top: 15px; right: 15px; ' +
+        'width: 30px; height: 30px; border: none; border-radius: 50%; ' +
+        'background: rgba(255, 255, 255, 0.2); cursor: pointer; ' +
+        'font-size: 20px; color: white; z-index: 1;';
+      
+      closeBtn.addEventListener('click', function() {
+        document.body.removeChild(modal);
+      });
+      
+      modal.addEventListener('click', function(e) {
+        if (e.target === modal) {
+          document.body.removeChild(modal);
+        }
+      });
+      
+      chatContainer.appendChild(header);
+      chatContainer.appendChild(content);
+      modal.appendChild(chatContainer);
+      modal.appendChild(closeBtn);
+      document.body.appendChild(modal);
     });
     
     chatContainer.addEventListener('mouseenter', function() {
