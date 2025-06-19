@@ -127,6 +127,7 @@ Progress Accountants is a sophisticated SmartSite platform built with React/Type
 
 ```
 Changelog:
+- June 19, 2025: NextMonth Smart Sites embed URL returning 404 error - chatbot script not accessible from nextmonth-smart-sites-admin.replit.app
 - June 19, 2025: Removed fallback chatbot to only display NextMonth Smart Sites admin embed code chatbot
 - June 19, 2025: Updated NextMonth SmartSite chatbot with new embed code from admin panel (id: progress-accountants-uk-chatbot-1750317409747)
 - June 19, 2025: Fixed NextMonth SmartSite chatbot by replacing inaccessible smart.nextmonth.io with local contact interface - widget shows direct contact options
