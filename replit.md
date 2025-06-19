@@ -127,6 +127,7 @@ Progress Accountants is a sophisticated SmartSite platform built with React/Type
 
 ```
 Changelog:
+- June 19, 2025: Fixed team page hero image being cut off by changing from bg-cover to bg-contain to keep full image within screen boundary
 - June 18, 2025: Added instruction message to SME hub download flow: "Close this box once you've completed the form to download your report"
 - June 18, 2025: Fixed "Download SME Contacts" PDF button to properly download files instead of opening in new tab
 - June 18, 2025: Updated entire website address to 1st Floor Beaumont House, Beaumont Road, Banbury, OX16 1RH
