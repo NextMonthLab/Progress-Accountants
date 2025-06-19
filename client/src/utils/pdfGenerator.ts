@@ -146,16 +146,18 @@ export const generateBusinessCalculatorPDF = async (
   
   let yPos = await addHeaderWithLogo(doc, 'BUSINESS ANALYSIS REPORT');
   
-  // Business Profile Section
-  const businessType = data.businessType.businessType.replace(/_/g, ' ').toUpperCase();
-  const industry = data.businessType.industry.replace(/_/g, ' ').toUpperCase();
+  // Business Profile Section with safe data handling
+  const businessType = (data.businessType?.businessType || '').replace(/_/g, ' ').toUpperCase();
+  const industry = (data.businessType?.industry || '').replace(/_/g, ' ').toUpperCase();
+  const annualRevenue = Math.max(0, data.financials?.annualRevenue || 0);
+  const monthlyExpenses = Math.max(0, data.financials?.monthlyExpenses || 0);
   
   const businessProfile = [
-    `Business Name: ${data.businessType.businessName || 'Your Business'}`,
-    `Business Type: ${businessType}`,
-    `Industry: ${industry}`,
-    `Annual Revenue: £${data.financials.annualRevenue.toLocaleString()}`,
-    `Monthly Expenses: £${data.financials.monthlyExpenses.toLocaleString()}`
+    `Business Name: ${data.businessType?.businessName || 'Your Business'}`,
+    `Business Type: ${businessType || 'Not specified'}`,
+    `Industry: ${industry || 'Not specified'}`,
+    `Annual Revenue: £${annualRevenue.toLocaleString()}`,
+    `Monthly Expenses: £${monthlyExpenses.toLocaleString()}`
   ];
   
   yPos = addSection(doc, 'BUSINESS PROFILE', businessProfile, yPos);
@@ -171,11 +173,11 @@ export const generateBusinessCalculatorPDF = async (
   
   yPos = addSection(doc, 'FINANCIAL ANALYSIS', financialAnalysis, yPos);
   
-  // Growth Planning Section
+  // Growth Planning Section with safe data handling
   const growthPlanning = [
-    `Revenue Growth Target: ${data.growth.revenueGrowthTarget.replace(/_/g, ' ')}`,
-    `Planned Investment: ${data.growth.plannedInvestment.replace(/_/g, ' ')}`,
-    `Planned Hires: ${data.growth.plannedHires}`,
+    `Revenue Growth Target: ${(data.growth?.revenueGrowthTarget || '').replace(/_/g, ' ') || 'Not specified'}`,
+    `Planned Investment: ${(data.growth?.plannedInvestment || '').replace(/_/g, ' ') || 'Not specified'}`,
+    `Planned Hires: ${data.growth?.plannedHires || '0'}`,
     `Hiring Impact: ${results.hiringImpact}`
   ];
   

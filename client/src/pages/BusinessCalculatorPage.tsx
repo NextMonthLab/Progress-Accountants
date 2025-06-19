@@ -1448,8 +1448,26 @@ const BusinessCalculatorPage = () => {
                 className="text-slate-400 hover:text-white"
                 onClick={async () => {
                   try {
-                    // Generate branded PDF with actual calculator data
-                    const pdfBlob = await generateBusinessCalculatorPDF(calculatorData, results);
+                    // Transform calculator data to match PDF generator interface
+                    const transformedData = {
+                      businessType: {
+                        businessName: calculatorData.businessType?.businessName || 'Your Business',
+                        businessType: calculatorData.businessType?.businessType || '',
+                        industry: calculatorData.businessType?.industry || ''
+                      },
+                      financials: {
+                        annualRevenue: parseFloat(calculatorData.financials?.annualRevenue?.replace(/[£,]/g, '')) || 0,
+                        monthlyExpenses: parseFloat(calculatorData.financials?.monthlyExpenses?.replace(/[£,]/g, '')) || 0
+                      },
+                      growth: {
+                        revenueGrowthTarget: calculatorData.growth?.growthTarget || '',
+                        plannedInvestment: calculatorData.growth?.plannedInvestment || '',
+                        plannedHires: calculatorData.growth?.plannedHires || '0'
+                      }
+                    };
+                    
+                    // Generate branded PDF with transformed data
+                    const pdfBlob = await generateBusinessCalculatorPDF(transformedData, results);
                     
                     const element = document.createElement('a');
                     element.href = URL.createObjectURL(pdfBlob);
