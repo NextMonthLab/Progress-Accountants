@@ -48,8 +48,98 @@
     <!-- Calendly widget styles and scripts -->
     <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
     
-    <!-- Progress Accountants Chatbot -->
-    <script src="https://e40479db-edfd-4265-9a8b-1e462b5725d1-00-290zw6wfwpbn.picard.replit.dev/embed/chatbot.js?id=progress-accountants-uk-chatbot-1750188617452" data-tenant="progress-accountants-uk"></script>
+    <!-- NextMonth SmartSite Embed -->
+    <script>
+      // NextMonth SmartSite Chatbot Embed
+      (function() {
+        'use strict';
+        
+        var TENANT_ID = 'progress-accountants-uk';
+        var SESSION_ID = 'sess_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now();
+        
+        function createChatWidget() {
+          var chatContainer = document.createElement('div');
+          chatContainer.id = 'nextmonth-chat-widget';
+          chatContainer.style.cssText = 
+            'position: fixed; bottom: 20px; right: 20px; width: 60px; height: 60px; ' +
+            'background: linear-gradient(135deg, #7B3FE4 0%, #3FA4E4 100%); ' +
+            'border-radius: 50%; cursor: pointer; z-index: 9999; ' +
+            'display: flex; align-items: center; justify-content: center; ' +
+            'box-shadow: 0 4px 12px rgba(123, 63, 228, 0.3); ' +
+            'transition: all 0.3s ease; opacity: 0.9;';
+          
+          chatContainer.innerHTML = 
+            '<svg width="24" height="24" fill="white" viewBox="0 0 24 24">' +
+            '<path d="M20 2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h4l4 4 4-4h4c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/>' +
+            '</svg>';
+          
+          chatContainer.addEventListener('click', function() {
+            openChatInterface();
+          });
+          
+          chatContainer.addEventListener('mouseenter', function() {
+            this.style.transform = 'scale(1.1)';
+            this.style.opacity = '1';
+          });
+          
+          chatContainer.addEventListener('mouseleave', function() {
+            this.style.transform = 'scale(1)';
+            this.style.opacity = '0.9';
+          });
+          
+          document.body.appendChild(chatContainer);
+        }
+        
+        function openChatInterface() {
+          // Create chat modal
+          var modal = document.createElement('div');
+          modal.id = 'nextmonth-chat-modal';
+          modal.style.cssText = 
+            'position: fixed; top: 0; left: 0; width: 100%; height: 100%; ' +
+            'background: rgba(0, 0, 0, 0.5); z-index: 10000; ' +
+            'display: flex; align-items: center; justify-content: center;';
+          
+          var chatFrame = document.createElement('iframe');
+          chatFrame.src = 'https://smart.nextmonth.io/chat/progress-accountants-uk';
+          chatFrame.style.cssText = 
+            'width: 400px; height: 600px; border: none; border-radius: 12px; ' +
+            'background: white; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);';
+          
+          var closeBtn = document.createElement('button');
+          closeBtn.innerHTML = '×';
+          closeBtn.style.cssText = 
+            'position: absolute; top: 10px; right: 10px; ' +
+            'width: 30px; height: 30px; border: none; border-radius: 50%; ' +
+            'background: rgba(255, 255, 255, 0.9); cursor: pointer; ' +
+            'font-size: 20px; color: #333;';
+          
+          closeBtn.addEventListener('click', function() {
+            document.body.removeChild(modal);
+          });
+          
+          modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+              document.body.removeChild(modal);
+            }
+          });
+          
+          modal.appendChild(chatFrame);
+          modal.appendChild(closeBtn);
+          document.body.appendChild(modal);
+        }
+        
+        function init() {
+          createChatWidget();
+          console.log('NextMonth SmartSite chatbot initialized for:', TENANT_ID);
+        }
+        
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', init);
+        } else {
+          init();
+        }
+      })();
+    </script>
   </head>
   <body style="background-color: black; margin: 0; padding: 0;">
     <div id="root" style="background-color: black;"></div>
