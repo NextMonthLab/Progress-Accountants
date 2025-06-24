@@ -31,8 +31,8 @@ export default function BusinessAdvisoryPage() {
   return (
     <div className="bg-gray-900 min-h-screen">
       <Helmet>
-        <title>Business Advisory & Growth Support | Progress Accountants</title>
-        <meta name="description" content="Business Advisory & Growth Support in Banbury & Oxford. Partner with forward-thinking businesses providing real insight, actionable advice, and strategic leadership." />
+        <title>Business Advisory | Progress Accountants</title>
+        <meta name="description" content="Strategic Business Advisory for Growing Companies. Real insight, actionable advice, and strategic leadership." />
       </Helmet>
 
       {/* Hero Section */}
@@ -62,7 +62,7 @@ export default function BusinessAdvisoryPage() {
             </div>
             
             <h2 className="text-2xl text-gray-100 mb-4 font-semibold">
-              Business Advisory & Growth Support in Banbury & Oxford
+              Strategic Business Advisory for Growing Companies
             </h2>
             
             <p className="text-lg text-gray-200 mb-6">
@@ -70,14 +70,14 @@ export default function BusinessAdvisoryPage() {
             </p>
             
             <p className="text-lg text-gray-200 mb-8">
-              Progress Accountants partners with forward-thinking businesses across Banbury, Oxford, and the wider region—providing real insight, actionable advice, and strategic leadership.
+              Progress partners with forward-thinking businesses—providing real insight, actionable advice, and strategic leadership.
             </p>
             
             <div className="flex flex-wrap gap-4">
               <Link href="/contact">
                 <Button size="lg" className="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600">
                   <Phone className="h-4 w-4 mr-2" />
-                  Get Started Today
+                  Get Started
                 </Button>
               </Link>
               <Button 
@@ -102,7 +102,7 @@ export default function BusinessAdvisoryPage() {
           <div className="max-w-4xl mx-auto">
             <div className="grid md:grid-cols-2 gap-8 mb-12">
               <div className="bg-gray-800 rounded-lg p-8 border border-gray-700">
-                <h3 className="text-2xl font-bold text-white mb-6">What We Provide</h3>
+                <h3 className="text-2xl font-bold text-white mb-6">What's Included</h3>
                 <ul className="space-y-3">
                   <li className="flex items-start">
                     <CheckCircle className="h-5 w-5 text-blue-400 mr-3 mt-1 flex-shrink-0" />
@@ -114,7 +114,7 @@ export default function BusinessAdvisoryPage() {
                   </li>
                   <li className="flex items-start">
                     <CheckCircle className="h-5 w-5 text-blue-400 mr-3 mt-1 flex-shrink-0" />
-                    <span className="text-gray-300">Cash flow optimisation & funding support</span>
+                    <span className="text-gray-300">Cash flow optimization & funding support</span>
                   </li>
                   <li className="flex items-start">
                     <CheckCircle className="h-5 w-5 text-blue-400 mr-3 mt-1 flex-shrink-0" />
@@ -171,10 +171,9 @@ export default function BusinessAdvisoryPage() {
       <section className="py-16 bg-gradient-to-br from-blue-600 to-purple-500">
         <div className="container mx-auto px-6 md:px-8">
           <div className="max-w-4xl mx-auto text-center text-white">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready to Accelerate Your Growth?</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready to Grow?</h2>
             <p className="text-xl mb-8 opacity-90">
               Partner with advisors who understand your business goals and help you achieve them.
-              Contact us today for a strategic consultation.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <Link href="/contact">
