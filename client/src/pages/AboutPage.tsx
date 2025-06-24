@@ -112,8 +112,8 @@ export default function AboutPage() {
           <div className="max-w-4xl mx-auto text-center">
             <FadeIn delay={0.1}>
               <h1 className="text-4xl md:text-6xl font-bold mb-6">
-                <span className="text-white">Forward-thinking Accounting for </span>
-                <span className="bg-gradient-to-r from-purple-400 via-blue-400 to-purple-300 bg-clip-text text-transparent">Modern Businesses</span>
+                <span className="text-white">Accounting That </span>
+                <span className="bg-gradient-to-r from-purple-400 via-blue-400 to-purple-300 bg-clip-text text-transparent">Drives Growth</span>
               </h1>
             </FadeIn>
             <FadeIn delay={0.2}>
@@ -123,18 +123,18 @@ export default function AboutPage() {
             </FadeIn>
             <FadeIn delay={0.3}>
               <p className="text-xl md:text-2xl text-gray-300 mb-8">
-                We're not just accountants—we're your growth partners.
+                Strategic financial guidance for ambitious UK businesses.
               </p>
             </FadeIn>
             <FadeIn delay={0.4}>
               <p className="text-lg text-gray-400 max-w-3xl mx-auto">
-                Progress Accountants helps ambitious SMEs across the UK unlock their financial potential through smart systems, strategic thinking, and a refreshingly human approach.
+                We turn financial data into competitive advantage. Smart systems, strategic insights, human connection.
               </p>
             </FadeIn>
             
             <FadeIn delay={0.5}>
               <div className="mt-10 p-6 bg-gradient-to-r from-purple-500/10 to-blue-500/10 backdrop-blur-sm border border-purple-500/20 rounded-xl">
-                <p className="italic text-gray-300">"To empower businesses with financial clarity and strategic insight—for growth that lasts."</p>
+                <p className="italic text-gray-300">"Financial clarity that drives smart decisions and sustainable growth."</p>
               </div>
             </FadeIn>
           </div>
@@ -149,37 +149,37 @@ export default function AboutPage() {
               <SlideInLeft delay={0.1}>
                 <div>
                   <h2 className="text-3xl md:text-4xl font-bold mb-6 bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
-                    What Makes Progress Accountants Different
+                    Why Progress Works
                   </h2>
                   <p className="text-xl text-gray-300 mb-6">
-                    Most firms handle the basics. We deliver real insight.
+                    Most accountants report numbers. We deliver strategy.
                   </p>
                   <p className="text-gray-400 mb-6">
-                    We combine leading accounting tech with proactive, hands-on support—helping clients make smarter decisions, gain back time, and spot new opportunities.
+                    Advanced technology meets proactive support. Make smarter decisions, save time, spot opportunities.
                   </p>
                   <p className="text-gray-400 mb-8">
-                    At Progress, financial clarity is built-in—not bolted on.
+                    Financial clarity built-in, not bolted on.
                   </p>
                   
                   {/* Key Advantages */}
                   <div className="space-y-3 mt-8">
-                    <h3 className="text-lg font-semibold text-purple-300">Our Key Advantages:</h3>
+                    <h3 className="text-lg font-semibold text-purple-300">What Sets Us Apart:</h3>
                     <ul className="space-y-3">
                       <li className="flex items-start">
                         <span className="text-purple-400 mr-3 mt-1">✓</span>
-                        <span className="text-gray-300">Specialists in digital business transformation</span>
+                        <span className="text-gray-300">Digital transformation specialists</span>
                       </li>
                       <li className="flex items-start">
                         <span className="text-purple-400 mr-3 mt-1">✓</span>
-                        <span className="text-gray-300">Tech-forward, cloud-based accounting solutions</span>
+                        <span className="text-gray-300">Cloud-first accounting technology</span>
                       </li>
                       <li className="flex items-start">
                         <span className="text-purple-400 mr-3 mt-1">✓</span>
-                        <span className="text-gray-300">Dedicated accountant relationships, not generic service</span>
+                        <span className="text-gray-300">Dedicated relationships, not ticket systems</span>
                       </li>
                       <li className="flex items-start">
                         <span className="text-purple-400 mr-3 mt-1">✓</span>
-                        <span className="text-gray-300">Deep expertise in Film, Music, Construction & Property</span>
+                        <span className="text-gray-300">Industry expertise: Film, Music, Construction</span>
                       </li>
                     </ul>
                   </div>
@@ -207,13 +207,13 @@ export default function AboutPage() {
           <div className="max-w-7xl mx-auto">
             <FadeIn delay={0.1}>
               <h2 className="text-3xl md:text-4xl font-bold mb-6 text-center bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
-                How We Work
+                Our Approach
               </h2>
             </FadeIn>
             
             <FadeIn delay={0.2}>
               <p className="text-xl text-gray-300 mb-12 text-center max-w-3xl mx-auto">
-                Professional. Approachable. Strategic.
+                Technology-driven. Proactive. Human.
               </p>
             </FadeIn>
             
@@ -225,10 +225,10 @@ export default function AboutPage() {
                     <Zap size={48} />
                   </div>
                   <h3 className="text-xl font-bold mb-4 text-purple-300">
-                    🔹 Technology That Works for You
+                    Technology That Actually Works
                   </h3>
                   <p className="text-gray-400">
-                    From real-time dashboards to secure document portals, our tools give you instant visibility—and peace of mind.
+                    Real-time dashboards. Secure portals. Instant visibility. Peace of mind included.
                   </p>
                 </div>
               </SlideUp>
@@ -240,10 +240,10 @@ export default function AboutPage() {
                     <Clock size={48} />
                   </div>
                   <h3 className="text-xl font-bold mb-4 text-purple-300">
-                    🔹 Proactive, Not Reactive
+                    Proactive, Never Reactive
                   </h3>
                   <p className="text-gray-400">
-                    No more deadline panic. We flag what's needed early, guide you through it, and get things done on time—every time.
+                    No deadline panic. Early alerts, clear guidance, on-time delivery. Every time.
                   </p>
                 </div>
               </SlideUp>
@@ -255,10 +255,10 @@ export default function AboutPage() {
                     <Users size={48} />
                   </div>
                   <h3 className="text-xl font-bold mb-4 text-purple-300">
-                    🔹 Human, Always
+                    Human Connection Always
                   </h3>
                   <p className="text-gray-400">
-                    We might be tech-savvy, but we're people first. You'll always have someone you trust to talk to, explain things clearly, and genuinely care.
+                    Tech-savvy, people-first. Someone you trust, clear explanations, genuine care.
                   </p>
                 </div>
               </SlideUp>
@@ -273,13 +273,13 @@ export default function AboutPage() {
           <div className="max-w-3xl mx-auto">
             <FadeIn delay={0.1}>
               <h2 className="text-3xl md:text-4xl font-bold mb-8 text-center bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
-                Who We Help
+                Who We Serve
               </h2>
             </FadeIn>
             
             <FadeIn delay={0.2}>
               <p className="text-xl text-gray-300 mb-8 text-center">
-                We specialise in small to medium-sized businesses across the UK who want to:
+                Ambitious UK businesses ready to:
               </p>
             </FadeIn>
             
@@ -288,7 +288,7 @@ export default function AboutPage() {
                 <div className="flex items-start">
                   <span className="text-purple-400 mr-4 mt-1">-</span>
                   <p className="text-gray-300">
-                    Take control of their finances without the overwhelm
+                    Control finances without overwhelm
                   </p>
                 </div>
               </SlideUp>
@@ -297,7 +297,7 @@ export default function AboutPage() {
                 <div className="flex items-start">
                   <span className="text-purple-400 mr-4 mt-1">-</span>
                   <p className="text-gray-300">
-                    Automate admin and focus on what matters
+                    Automate admin, focus on growth
                   </p>
                 </div>
               </SlideUp>
@@ -306,7 +306,7 @@ export default function AboutPage() {
                 <div className="flex items-start">
                   <span className="text-purple-400 mr-4 mt-1">-</span>
                   <p className="text-gray-300">
-                    Understand their numbers—and use them to grow
+                    Turn numbers into growth strategy
                   </p>
                 </div>
               </SlideUp>
@@ -315,7 +315,7 @@ export default function AboutPage() {
                 <div className="flex items-start">
                   <span className="text-purple-400 mr-4 mt-1">-</span>
                   <p className="text-gray-300">
-                    Work with people who actually care, not just tick boxes
+                    Partner with people who care, not box-tickers
                   </p>
                 </div>
               </SlideUp>
@@ -323,7 +323,7 @@ export default function AboutPage() {
             
             <FadeIn delay={0.5}>
               <p className="text-xl text-center font-medium text-purple-300">
-                If that sounds like you, we'd love to chat.
+                Sound like you? Let's talk.
               </p>
             </FadeIn>
           </div>
@@ -337,7 +337,7 @@ export default function AboutPage() {
             <div className="max-w-7xl mx-auto">
               <FadeIn delay={0.1}>
                 <h2 className="text-3xl md:text-4xl font-bold mb-8 text-center bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
-                  Our Core Services
+                  What We Do
                 </h2>
               </FadeIn>
               
