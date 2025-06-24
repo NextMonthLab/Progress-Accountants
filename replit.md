@@ -127,7 +127,7 @@ Progress Accountants is a sophisticated SmartSite platform built with React/Type
 
 ```
 Changelog:
-- June 24, 2025: Applied Gold Standard hero template to About page with new background image and updated brand colors - purple CTA buttons replacing old orange palette, maintaining certified design structure
+- June 24, 2025: Applied Gold Standard hero template to About page with new background image, purple/pink gradient CTA, proper dark overlay (20-50% opacity), and text shadows for optimal visibility - complete certified design implementation
 - June 24, 2025: Certified current hero section as Gold Standard template for all future pages - established official design benchmark with specific rules for headline structure (4-8 words per line), background image framing (faces fully visible), subheadline formatting (18-24 words max), CTA positioning, and responsive behavior
 - June 24, 2025: Fixed hero background image positioning to prevent header from cutting off team members' faces - adjusted to center 15% (desktop) and center 20% (mobile) for optimal visibility below navigation
 - June 24, 2025: Applied Rob Hutt production copy rewrite to Virtual Finance Director service page - sharp headlines (3 words), streamlined descriptions, eliminated redundant words, focused on strategic finance leadership value and consultation conversion

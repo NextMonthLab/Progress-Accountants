@@ -126,7 +126,7 @@ export default function AboutPage() {
           />
           
           {/* Dark Overlay for Text Legibility - Gold Standard: 15% Opacity */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-black/15 to-black/30"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/30 to-black/50"></div>
         </div>
 
         {/* Content Container - Centered Layout */}
@@ -135,7 +135,11 @@ export default function AboutPage() {
             
             {/* Gold Standard Headline - 4-8 words per line, max 16 total */}
             <FadeIn delay={0.1}>
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight"
+                  style={{
+                    textShadow: '0 6px 12px rgba(0,0,0,0.7), 0 3px 6px rgba(0,0,0,0.5)',
+                    letterSpacing: '-0.02em'
+                  }}>
                 <span className="block">Strategic Partners.</span>
                 <span className="block">Growth Focused.</span>
               </h1>
@@ -143,7 +147,11 @@ export default function AboutPage() {
 
             {/* Gold Standard Subheadline - 18-24 words max, single sentence */}
             <FadeIn delay={0.2}>
-              <p className="text-lg sm:text-xl md:text-2xl text-gray-200 mb-8 max-w-2xl mx-auto">
+              <p className="text-lg sm:text-xl md:text-2xl text-gray-200 mb-8 max-w-2xl mx-auto"
+                 style={{
+                   textShadow: '0 4px 8px rgba(0,0,0,0.8), 0 2px 4px rgba(0,0,0,0.6)',
+                   letterSpacing: '0.01em'
+                 }}>
                 We transform financial complexity into competitive advantage for ambitious UK businesses.
               </p>
             </FadeIn>
