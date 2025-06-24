@@ -108,7 +108,7 @@ const HeroSection = () => {
                 textShadow: '0 6px 12px rgba(0,0,0,0.5), 0 3px 6px rgba(0,0,0,0.3)',
                 letterSpacing: '-0.02em'
               }}>
-            {businessName}
+            Modern Accounting. Real Strategy. Future-Ready.
           </h1>
           
           {/* Subheadline with Perfect Spacing */}
@@ -120,10 +120,10 @@ const HeroSection = () => {
                 lineHeight: 'clamp(1.3, 1.4, 1.5)',
                 textShadow: '0 4px 8px rgba(0,0,0,0.6)',
                 letterSpacing: '0.01em',
-                maxWidth: '42ch',
+                maxWidth: '48ch',
                 margin: '0 auto clamp(3rem, 8vw, 4rem) auto'
               }}>
-            Strategic Accounting for UK Businesses
+            Expertise that goes beyond numbers — helping UK businesses thrive with clarity, confidence, and control.
           </h2>
 
           {/* Premium CTA Button with Perfect Touch Target */}
