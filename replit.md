@@ -127,6 +127,7 @@ Progress Accountants is a sophisticated SmartSite platform built with React/Type
 
 ```
 Changelog:
+- June 24, 2025: Applied Rob Hutt production copy rewrite to Film page - sharp headlines (2-4 words), streamlined service descriptions, eliminated unnecessary words, focused on production expertise and consultation conversion
 - June 24, 2025: Applied Rob Hutt production copy rewrite to SME Support Hub page - sharp headlines (2-4 words), streamlined resource descriptions, expert consultation conversion focus, eliminated corporate language for direct business value messaging
 - June 24, 2025: Applied Rob Hutt production copy rewrite to Business Calculator page - sharp headlines (2-4 words), streamlined descriptions, professional valuation messaging focused on clarity and expert consultation conversion
 - June 24, 2025: Applied Rob Hutt production copy rewrite to Studio Banbury page - sharp headlines (2-4 words), punchy studio descriptions, professional messaging focused on quality outcomes and booking conversion
