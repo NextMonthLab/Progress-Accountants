@@ -33,11 +33,11 @@ export default function ContactPage() {
         <div className="container mx-auto px-12 md:px-16 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-4xl md:text-6xl font-bold mb-6 text-white leading-tight">
-              Get in{" "}
-              <span className="bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">Touch</span>
+              Ready To{" "}
+              <span className="bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">Grow?</span>
             </h1>
             <p className="text-lg md:text-xl text-slate-300 mb-8 max-w-3xl mx-auto leading-relaxed">
-              Let's take your business finances to the next level—our team is here to help you succeed.
+              Strategic accounting that drives real results for ambitious UK businesses.
             </p>
           </div>
         </div>
@@ -52,14 +52,14 @@ export default function ContactPage() {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
               <div className="col-span-2">
                 <h2 className="text-3xl md:text-4xl font-bold mb-8 text-white">
-                  Looking for proactive accountants in Banbury, Oxford, or London?
+                  Strategic Accountants That Deliver Results
                 </h2>
                 <div className="space-y-6 mb-10">
                   <p className="text-slate-300 text-lg leading-relaxed">
-                    Progress Accountants supports ambitious SMEs across the UK—whether you need bookkeeping, tax planning, or a strategic finance partner who truly understands your goals.
+                    Advanced technology meets strategic insight. We turn financial data into competitive advantage for UK businesses.
                   </p>
                   <p className="text-slate-300 text-lg leading-relaxed">
-                    We specialise in small business accounting and are certified Xero accountants. But most importantly, we help you grow—with practical, forward-thinking advice and tools that make a real difference.
+                    Banbury, Oxford, London specialists. Real results, not just compliance.
                   </p>
                 </div>
                 
@@ -70,7 +70,7 @@ export default function ContactPage() {
                     }}
                     className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] text-white rounded-lg hover:shadow-lg hover:shadow-purple-500/25 hover:-translate-y-1 transition-all duration-300 font-medium border-none cursor-pointer"
                   >
-                    <span className="mr-2">🚀</span> Let's build your growth engine — book your free discovery call
+                    <span className="mr-2">🚀</span> Book Discovery Call
                   </button>
                 </div>
                 
