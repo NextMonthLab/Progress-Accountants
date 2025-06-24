@@ -116,7 +116,7 @@ const CTASection = () => (
           size="lg" 
           className="bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] hover:from-[#6B2FD4] hover:to-[#2F94D4] text-white border-none font-medium cursor-pointer"
         >
-          Book a Consultation
+          Book Consultation
         </Button>
         <Button size="lg" className="bg-gray-800 text-white hover:bg-gray-700 font-medium">
           View Our Services
@@ -274,7 +274,7 @@ const ConstructionIndustryPage = () => {
                 className="mb-6"
               >
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
-                  Specialist Accounting for the Construction Industry
+                  Construction Accounting
                 </h1>
               </motion.div>
               <motion.div
@@ -282,7 +282,7 @@ const ConstructionIndustryPage = () => {
                 className="mb-8"
               >
                 <p className="text-lg md:text-xl text-white">
-                  Helping you navigate CIS, VAT, and cash flow—so you can focus on building.
+                  Navigate CIS, VAT, and cash flow—so you focus on building.
                 </p>
               </motion.div>
               <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-4">
@@ -359,15 +359,15 @@ const ConstructionIndustryPage = () => {
           className="max-w-4xl mx-auto"
         >
           <motion.div variants={itemVariants} className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">Why Construction Professionals Choose Progress</h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">Construction Expertise</h2>
             <p className="text-lg text-gray-300">
-              From one-man bands and subcontractors to growing firms and developers, Progress helps you gain control of your construction finances.
+              From one-man bands to growing firms—Progress helps you control construction finances.
             </p>
           </motion.div>
           
           <motion.div variants={itemVariants} className="bg-gray-900 rounded-xl shadow-md p-6 md:p-8 mb-12 border border-gray-800">
             <p className="text-lg text-gray-300 mb-4">
-              We specialise in proactive, tech-led accounting for the construction industry—tailored to your deadlines, subcontractor payments, and project-based income.
+              Proactive, tech-led accounting for construction—tailored to deadlines, subcontractor payments, and project-based income.
             </p>
             <div className="flex items-center">
               <div className="p-2 bg-purple-900/20 rounded-full mr-3">
@@ -391,32 +391,32 @@ const ConstructionIndustryPage = () => {
             <span className="inline-block px-3 py-1 rounded-full bg-purple-900/20 text-purple-400 font-medium text-sm mb-3">
               Our Specialist Services
             </span>
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">Why Construction Businesses Choose Progress</h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">Construction Services</h2>
           </motion.div>
           
           <div className="grid md:grid-cols-2 gap-8 mb-16">
             <FeatureCard 
               icon={Receipt}
-              title="🔧 CIS Compliance Without the Headache"
-              description="We handle CIS deductions, monthly returns, and HMRC filings—so you're always compliant and always paid on time."
+              title="🔧 CIS Compliance"
+              description="Handle CIS deductions, monthly returns, and HMRC filings—stay compliant and paid on time."
               accentColor="bg-orange-500"
             />
             <FeatureCard 
               icon={BarChart3}
-              title="📄 VAT & Reverse Charge Simplified"
-              description="The Construction Reverse Charge can be confusing. We'll ensure it's handled correctly so you're not overpaying or getting caught out."
+              title="📄 VAT & Reverse Charge"
+              description="Construction Reverse Charge handled correctly—no overpaying or compliance issues."
               accentColor="bg-blue-500"
             />
             <FeatureCard 
               icon={Coins}
-              title="💸 Stay On Top of Project Cash Flow"
-              description="Track cash in and out on a per-project basis, forecast lean months, and budget smartly for labour, materials, and expansion."
+              title="💸 Project Cash Flow"
+              description="Track cash per project, forecast lean months, budget for labour, materials, and expansion."
               accentColor="bg-green-500"
             />
             <FeatureCard 
               icon={Building2}
-              title="🚀 Grow Without Losing Control"
-              description="From setting up SPVs to managing payroll for expanding teams—we're more than accountants. We're your financial growth partners."
+              title="🚀 Growth Without Chaos"
+              description="From SPV setup to payroll for expanding teams—financial growth partners, not just accountants."
               accentColor="bg-purple-500"
             />
           </div>
