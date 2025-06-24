@@ -152,7 +152,7 @@ export default function AboutPage() {
             <FadeIn delay={0.3}>
               <Button 
                 size="lg" 
-                className="bg-[#003865] hover:bg-[#002749] text-white px-8 py-4 text-lg font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg border border-white/20"
+                className="bg-purple-600 hover:bg-purple-700 text-white px-8 py-4 text-lg font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg"
                 onClick={() => window.open('https://calendly.com/progressaccountants/discovery-call', '_blank')}
               >
                 Book My Strategy Call
