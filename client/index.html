@@ -77,13 +77,17 @@
       /* Button responsiveness with text containment */
       button, a[role="button"], .btn {
         min-height: 44px;
-        min-width: 44px;
-        padding-inline: clamp(0.75rem, 2vw, 1.5rem);
-        font-size: clamp(0.875rem, 2vw, 1rem);
+        min-width: clamp(100px, 25vw, 160px);
+        padding-inline: clamp(0.75rem, 3vw, 1.5rem);
+        font-size: clamp(0.875rem, 2.5vw, 1rem);
         text-overflow: ellipsis;
         white-space: nowrap;
         overflow: hidden;
         transition: all 0.3s ease;
+        box-sizing: border-box;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
       }
       
       /* Touch-friendly interactions */

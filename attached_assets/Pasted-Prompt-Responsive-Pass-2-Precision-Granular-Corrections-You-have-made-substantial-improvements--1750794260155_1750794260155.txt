@@ -1,0 +1,26 @@
+Prompt: Responsive Pass 2 — Precision Granular Corrections
+
+You have made substantial improvements. We are now running a granular audit using real iPhone SE simulation. The following issues remain outstanding:
+
+1️⃣ Image Cropping on Hero Cards:
+	•	The hero image inside the “Podcast & Video Studio” card is severely cropped on small screens. The image should fully contain inside its card container without clipping. Use object-fit: cover or adaptive cropping strategies to retain visual balance on all breakpoints.
+
+2️⃣ Button Text Overflow:
+	•	The “Book Free Consultation” button on small screens is overflowing its pill container. Ensure text stays perfectly centered and fully visible inside its background at all breakpoints, including iPhone SE (width ~320px).
+	•	Similar issue seen on “Find Out More” buttons inside feature cards — ensure text remains inside the pill with proper horizontal padding at all breakpoints.
+
+3️⃣ Scroll to Explore Positioning:
+	•	The “Scroll to explore” label with down-arrow overlaps legs on hero image at smaller breakpoints. Adjust its vertical positioning responsively so it sits clearly above the lower third of the image area without interfering with subject content.
+
+4️⃣ Excessive Vertical Gaps:
+	•	In multiple sections, vertical gaps (e.g. between card bottom and next content block) are oversized on small breakpoints. Apply more fluid vertical spacing using CSS clamp functions or media queries to tighten vertical rhythm.
+
+5️⃣ Consistent Padding System:
+	•	Ensure all card containers maintain consistent inner padding on all sides at all breakpoints. No content should feel squashed against edges or overly distant from borders.
+
+💡 Instruction Summary:
+	•	This is still strictly responsive design improvement, not full redesign.
+	•	Do not modify color, font sizes, or visual style unless necessary for responsiveness.
+	•	Maintain accessibility targets (minimum touch target 44px).
+
+NOTE: These issues have been verified with screenshots already uploaded into the Replit project for reference.

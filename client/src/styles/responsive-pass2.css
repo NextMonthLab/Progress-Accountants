@@ -45,12 +45,27 @@
 
 /* 4. Vertical Rhythm Consistency */
 .section-spacing {
-  padding-block: clamp(2rem, 5vw, 4rem);
+  padding-block: clamp(1.5rem, 4vw, 3rem);
 }
 
 .section-spacing:last-child {
   margin-bottom: 0;
-  padding-bottom: clamp(2rem, 5vw, 4rem);
+  padding-bottom: clamp(1.5rem, 4vw, 3rem);
+}
+
+/* Tighter mobile spacing */
+@media (max-width: 480px) {
+  .section-spacing {
+    padding-block: clamp(1rem, 3vw, 2rem);
+  }
+  
+  .card-spacing {
+    margin-bottom: clamp(1rem, 3vw, 1.5rem);
+  }
+  
+  .content-gap {
+    gap: clamp(0.75rem, 2vw, 1.25rem);
+  }
 }
 
 /* Remove excess gaps */
@@ -58,6 +73,13 @@
   margin-bottom: 0 !important;
   padding-bottom: 0 !important;
 }
+
+/* Fluid vertical spacing system */
+.spacing-xs { margin-block: clamp(0.5rem, 1vw, 0.75rem); }
+.spacing-sm { margin-block: clamp(0.75rem, 2vw, 1rem); }
+.spacing-md { margin-block: clamp(1rem, 3vw, 1.5rem); }
+.spacing-lg { margin-block: clamp(1.5rem, 4vw, 2.5rem); }
+.spacing-xl { margin-block: clamp(2rem, 5vw, 3.5rem); }
 
 /* 5. Z-Index Stack Management */
 .z-header { z-index: 50; }
