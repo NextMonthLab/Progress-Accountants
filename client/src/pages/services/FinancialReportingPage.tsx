@@ -32,7 +32,7 @@ export default function FinancialReportingPage() {
     <div className="bg-gray-900 min-h-screen">
       <Helmet>
         <title>Financial Reporting | Progress Accountants</title>
-        <meta name="description" content="Financial Reporting for Banbury & Oxford Businesses. Turn financial data into clarity with timely, plain-English reports that support better decision-making." />
+        <meta name="description" content="Clear Financial Reporting for Growing Businesses. Turn financial data into clarity with timely, plain-English reports that support better decision-making." />
       </Helmet>
 
       {/* Hero Section */}
@@ -62,7 +62,7 @@ export default function FinancialReportingPage() {
             </div>
             
             <h2 className="text-2xl text-gray-100 mb-4 font-semibold">
-              Financial Reporting for Banbury & Oxford Businesses
+              Clear Financial Reporting for Growing Businesses
             </h2>
             
             <p className="text-lg text-gray-200 mb-6">
@@ -70,14 +70,14 @@ export default function FinancialReportingPage() {
             </p>
             
             <p className="text-lg text-gray-200 mb-8">
-              We help businesses in Banbury and Oxford turn financial data into clarity—with timely, plain-English reports that support better decision-making.
+              Turn financial data into clarity—with timely, plain-English reports that support better decision-making.
             </p>
             
             <div className="flex flex-wrap gap-4">
               <Link href="/contact">
                 <Button size="lg" className="bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600">
                   <Phone className="h-4 w-4 mr-2" />
-                  Get Started Today
+                  Get Started
                 </Button>
               </Link>
               <Button 
@@ -102,7 +102,7 @@ export default function FinancialReportingPage() {
           <div className="max-w-4xl mx-auto">
             <div className="grid md:grid-cols-2 gap-8 mb-12">
               <div className="bg-gray-800 rounded-lg p-8 border border-gray-700">
-                <h3 className="text-2xl font-bold text-white mb-6">What We Provide</h3>
+                <h3 className="text-2xl font-bold text-white mb-6">What's Included</h3>
                 <ul className="space-y-3">
                   <li className="flex items-start">
                     <CheckCircle className="h-5 w-5 text-pink-400 mr-3 mt-1 flex-shrink-0" />
@@ -171,10 +171,9 @@ export default function FinancialReportingPage() {
       <section className="py-16 bg-gradient-to-br from-pink-600 to-purple-500">
         <div className="container mx-auto px-6 md:px-8">
           <div className="max-w-4xl mx-auto text-center text-white">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready for Clear Financial Insights?</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready for Clear Insights?</h2>
             <p className="text-xl mb-8 opacity-90">
               Transform your financial data into actionable insights that drive better business decisions.
-              Contact us today for a consultation.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <Link href="/contact">
