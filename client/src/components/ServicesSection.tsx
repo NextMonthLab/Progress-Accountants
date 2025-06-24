@@ -136,48 +136,48 @@ const ServicesSection = () => {
   const serviceIcons: Record<string, ServiceInfo> = {
     "Tax Planning & Preparation": { 
       icon: Calculator, 
-      description: "Strategic tax planning and preparation services to optimise your tax position and ensure compliance.",
-      features: ["Tax-saving strategies", "Personal & business tax returns", "VAT registration & returns"]
+      description: "Keep more profit. Legal tax strategies that reduce what you owe.",
+      features: ["Aggressive tax planning", "Zero-stress filing", "VAT optimization"]
     },
     "Bookkeeping": { 
       icon: FileText, 
-      description: "Comprehensive bookkeeping services to maintain accurate financial records and provide clear insights into your business finances.",
-      features: ["Monthly reconciliations", "Payroll processing", "Bills & expense management"]
+      description: "Books that tell you what matters. Real-time insights, not just compliance.",
+      features: ["Instant profit visibility", "Flawless payroll", "Expense tracking simplified"]
     },
     "Business Advisory": { 
       icon: BarChart3, 
-      description: "Expert business advice to help you make informed decisions, improve profitability, and achieve sustainable growth.",
-      features: ["Growth strategy planning", "Cash flow forecasting", "Performance reviews"]
+      description: "Strategic guidance that drives growth. Turn data into competitive advantage.",
+      features: ["Growth roadmaps", "Cash flow mastery", "Performance optimization"]
     },
     "Financial Reporting": { 
       icon: FileText, 
-      description: "Detailed financial reports that give you clear visibility into your business performance and financial health.",
-      features: ["Custom KPI dashboards", "Management reports", "Statutory accounts"]
+      description: "Reports you'll actually read. Clear insights that drive decisions.",
+      features: ["Industry-specific KPIs", "Plain English reports", "Growth-focused accounts"]
     },
     "Audit Services": { 
       icon: Landmark, 
-      description: "Thorough audit services to ensure compliance, identify risks, and provide confidence in your financial statements.",
-      features: ["Statutory audits", "Internal audits", "Due diligence reviews"]
+      description: "Audits without anxiety. Professional compliance that strengthens your business.",
+      features: ["Stress-free compliance", "Value-adding reviews", "Deal protection"]
     },
     "Cloud Accounting": { 
       icon: Cloud, 
-      description: "Modern cloud-based accounting solutions for real-time financial insights and streamlined accounting processes.",
-      features: ["Software setup & training", "System integrations", "Automated workflows"]
+      description: "Technology that works. Modern systems that give you control.",
+      features: ["Smart setup", "Time-saving integrations", "Automated workflows"]
     },
     "Podcast & Video Studio": { 
       imageComponent: OptimizedPodcastStudio,
-      description: "Record professional-grade content in our Banbury studio—perfect for business podcasts, YouTube series, or social media clips.",
-      features: ["DSLR cameras & broadcast mics", "Acoustically treated space", "On-site tech support & editing"]
+      description: "Professional content creation without the headaches. Focus on your message.",
+      features: ["Broadcast-quality setup", "Perfect acoustics", "Full tech support"]
     },
     "Custom Financial Dashboard": { 
       imageComponent: OptimizedDashboardMockup,
-      description: "Access a live dashboard with your revenue, tax, cash flow, and growth metrics—so you're never guessing.",
-      features: ["Real-time updates", "Bespoke KPIs", "Strategic decision-making made simple"]
+      description: "Know where you stand instantly. Live insights that drive smart decisions.",
+      features: ["Real-time updates", "Custom metrics", "Decision confidence"]
     },
     "Virtual Finance Director": { 
       imageComponent: OptimizedStrategySession,
-      description: "On-demand expertise to guide your business growth—from forecasting and cash flow to expansion and tax relief.",
-      features: ["Quarterly planning sessions", "Expert insight on demand", "Built-in accountability"]
+      description: "FD expertise without the FD salary. Strategic guidance when you need it.",
+      features: ["Quarterly strategy sessions", "On-demand expertise", "Growth accountability"]
     }
   };
 
