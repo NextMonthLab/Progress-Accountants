@@ -19,6 +19,7 @@ import {
   CardSkeleton,
   CtaSkeleton
 } from '@/components/ui/skeletons';
+import { FadeIn } from '@/components/ui/ScrollAnimation';
 
 interface Service {
   id: number;
@@ -159,29 +160,68 @@ export default function ServicesPage() {
         <meta name="description" content="Explore the comprehensive accounting and financial services offered by Progress Accountants to help your business thrive." />
       </Helmet>
 
-      {/* Hero Section with Background Image */}
-      <section className="relative text-white py-16 md:py-24 overflow-hidden">
-        {/* Background Image */}
-        <div className="absolute inset-0 z-0">
-          <img 
-            src="https://res.cloudinary.com/drl0fxrkq/image/upload/v1749050579/Screenshot_2025-06-04_at_16.22.23_sisfjv.png"
-            alt="Progress Accountants services background"
-            className="w-full h-full object-cover"
+      {/* Gold Standard Hero Section */}
+      <section className="relative w-full min-h-screen flex items-center justify-center overflow-hidden bg-slate-900">
+        {/* Cinematic Full-Width Background with Smart Focal Points */}
+        <div className="absolute inset-0 w-full h-full">
+          {/* Desktop/Tablet Background - Adjusted for Head Visibility */}
+          <div 
+            className="absolute inset-0 w-full h-full hidden sm:block"
+            style={{
+              backgroundImage: `url('https://res.cloudinary.com/drl0fxrkq/image/upload/v1749050579/Screenshot_2025-06-04_at_16.22.23_sisfjv.png')`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center 15%',
+              backgroundRepeat: 'no-repeat',
+              backgroundAttachment: 'fixed'
+            }}
           />
-          {/* Dark Overlay */}
-          <div className="absolute inset-0 bg-black/70"></div>
+          
+          {/* Mobile Background - Optimal Head Framing */}
+          <div 
+            className="absolute inset-0 w-full h-full block sm:hidden"
+            style={{
+              backgroundImage: `url('https://res.cloudinary.com/drl0fxrkq/image/upload/v1749050579/Screenshot_2025-06-04_at_16.22.23_sisfjv.png')`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center 20%',
+              backgroundRepeat: 'no-repeat'
+            }}
+          />
+          
+          {/* Dark Overlay for Text Legibility - Gold Standard: 20-50% Opacity */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/30 to-black/50"></div>
         </div>
-        
-        {/* Content */}
-        <div className="relative z-10 container mx-auto px-6 md:px-8">
-          <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-3xl md:text-5xl font-bold mb-6">
-              <span className="text-white">Our </span>
-              <span className="bg-gradient-to-r from-purple-400 via-blue-400 to-blue-500 bg-clip-text text-transparent">Expert Services</span>
+
+        {/* Content Container - Centered Layout */}
+        <div className="relative z-10 w-full px-6 md:px-8">
+          <div className="max-w-4xl mx-auto text-center text-white">
+            
+            {/* Gold Standard Headline - 4-8 words per line, max 16 total */}
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight"
+                style={{
+                  textShadow: '0 6px 12px rgba(0,0,0,0.7), 0 3px 6px rgba(0,0,0,0.5)',
+                  letterSpacing: '-0.02em'
+                }}>
+              <span className="block">Expert Services.</span>
+              <span className="block">Strategic Growth.</span>
             </h1>
-            <p className="text-xl text-gray-100">
-              Accounting, Tax, and Strategic Support for Growing Businesses
+
+            {/* Gold Standard Subheadline - 18-24 words max, single sentence */}
+            <p className="text-lg sm:text-xl md:text-2xl text-gray-200 mb-8 max-w-2xl mx-auto"
+               style={{
+                 textShadow: '0 4px 8px rgba(0,0,0,0.8), 0 2px 4px rgba(0,0,0,0.6)',
+                 letterSpacing: '0.01em'
+               }}>
+              Accounting, tax, and advisory services designed to accelerate your business growth.
             </p>
+
+            {/* Gold Standard CTA - Large, centered, outcome-driven */}
+            <Button 
+              size="lg" 
+              className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-8 py-4 text-lg font-semibold transition-all duration-300 transform hover:scale-105 shadow-2xl hover:shadow-purple-500/30"
+              onClick={() => window.open('https://calendly.com/progressaccountants/discovery-call', '_blank')}
+            >
+              Book My Strategy Call
+            </Button>
           </div>
         </div>
       </section>
