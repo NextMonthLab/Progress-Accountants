@@ -1,0 +1,60 @@
+REPLIT CERTIFICATION PROMPT: HERO GOLD STANDARD LOCK
+
+⸻
+
+✅ Page Certification: Hero Section Gold Standard
+
+You are certifying this current hero section design as the official Gold Standard for replication across other pages.
+From this point forward, any new service page, sector page, or landing page should match this structure and quality standard unless instructed otherwise.
+
+⸻
+
+Core Design Rules:
+
+1️⃣ Headline Structure:
+	•	Stacked or single headline allowed.
+	•	Use emotionally strong, strategic messaging.
+	•	Recommended length: 4–8 words per line.
+	•	Max combined headline: ~12–16 words total.
+	•	Font scaling: fluid between 3rem (mobile) and 5rem (desktop).
+
+2️⃣ Background Image Framing:
+	•	Faces fully visible across breakpoints.
+	•	Headroom maintained: eyeline stays above headline block.
+	•	Image focal point adjusts on mobile to preserve human centering.
+
+3️⃣ Subheadline Block:
+	•	Single short paragraph (max 18–24 words).
+	•	Tone: Direct, strategic, creative, human.
+	•	Example style:
+
+We turn your financial data into strategic advantage — helping ambitious UK businesses move faster with confidence.
+
+4️⃣ Call-To-Action Button:
+	•	Large, centered primary CTA.
+	•	Wording must reflect value proposition, e.g.:
+	•	“Get My Growth Strategy”
+	•	“Book a Free Consultation”
+	•	“Start My Finance Roadmap”
+	•	“Unlock My Growth Plan”
+
+5️⃣ Contrast & Overlay Layer:
+	•	Apply very subtle dark gradient overlay behind text to ensure readability while preserving image vibrancy.
+	•	Gradient strength: ~15% opacity dark overlay (adjust per image).
+
+6️⃣ Responsive Padding Rules:
+	•	Equal vertical spacing above and below headline block.
+	•	Always maintain padding buffer between nav bar and headline top.
+
+⸻
+
+Replicability Instruction:
+
+When instructed to replicate this design on a new URL or page, automatically apply:
+	•	This hero layout
+	•	This text scaling logic
+	•	This framing behavior
+	•	This subheadline structure
+	•	This CTA positioning
+
+If any content block is missing on a new page, request new copy in the same voice/persona using “Rob Copy Persona: Direct, creative, clarity-driven, emotionally sharp.”
