@@ -32,8 +32,8 @@ export default function CloudAccountingPage() {
   return (
     <div className="bg-gray-900 min-h-screen">
       <Helmet>
-        <title>Cloud Accounting Services | Progress Accountants</title>
-        <meta name="description" content="Cloud Accounting Services in Banbury & Oxford. Real-time visibility, automated workflows, and remote access with Xero and QuickBooks from Progress Accountants." />
+        <title>Cloud Accounting | Progress Accountants</title>
+        <meta name="description" content="Modern Cloud Accounting for Growing Businesses. Real-time visibility, automated workflows, and remote access with Xero and QuickBooks." />
       </Helmet>
 
       {/* Hero Section */}
@@ -63,7 +63,7 @@ export default function CloudAccountingPage() {
             </div>
             
             <h2 className="text-2xl text-gray-100 mb-4 font-semibold">
-              Cloud Accounting Services in Banbury & Oxford
+              Modern Cloud Accounting for Growing Businesses
             </h2>
             
             <p className="text-lg text-gray-200 mb-6">
@@ -71,7 +71,7 @@ export default function CloudAccountingPage() {
             </p>
             
             <p className="text-lg text-gray-200 mb-8">
-              We help Banbury & Oxford businesses harness the full power of cloud accounting with platforms like Xero and QuickBooks.
+              Harness the full power of cloud accounting with platforms like Xero and QuickBooks.
             </p>
             
             <div className="flex flex-wrap gap-4">
@@ -80,7 +80,7 @@ export default function CloudAccountingPage() {
                 className="bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600"
               >
                 <Phone className="h-4 w-4 mr-2" />
-                Get Started Today
+                Get Started
               </Button>
               <Button 
                 onClick={openCalendlyPopup}
@@ -101,7 +101,7 @@ export default function CloudAccountingPage() {
           <div className="max-w-4xl mx-auto">
             <div className="grid md:grid-cols-2 gap-8 mb-12">
               <div className="bg-gray-800 rounded-lg p-8 border border-gray-700">
-                <h3 className="text-2xl font-bold text-white mb-6">What We Provide</h3>
+                <h3 className="text-2xl font-bold text-white mb-6">What's Included</h3>
                 <ul className="space-y-3">
                   <li className="flex items-start">
                     <CheckCircle className="h-5 w-5 text-pink-400 mr-3 mt-1 flex-shrink-0" />
@@ -170,10 +170,9 @@ export default function CloudAccountingPage() {
       <section className="py-16 bg-gradient-to-br from-pink-600 to-purple-500">
         <div className="container mx-auto px-6 md:px-8">
           <div className="max-w-4xl mx-auto text-center text-white">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready to Move to the Cloud?</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready for the Cloud?</h2>
             <p className="text-xl mb-8 opacity-90">
               Transform your accounting with real-time access, automated workflows, and seamless integrations.
-              Contact us today to get started.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <Link href="/contact">
