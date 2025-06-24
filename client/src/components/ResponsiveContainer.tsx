@@ -33,9 +33,10 @@ export const ResponsiveContainer = ({
 }: ResponsiveContainerProps) => {
   return (
     <div className={cn(
-      "container mx-auto w-full",
+      "container mx-auto w-full overflow-x-hidden",
       maxWidthClasses[maxWidth],
       paddingClasses[padding],
+      "max-w-full", // Additional overflow protection
       className
     )}>
       {children}

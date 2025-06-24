@@ -78,15 +78,17 @@ export const ResponsiveImage = ({
         src={src}
         alt={alt}
         className={cn(
-          "w-full h-full transition-opacity duration-300",
+          "w-full h-full transition-opacity duration-300 max-w-full",
           objectFitClasses[objectFit],
           !isLoaded && "opacity-0",
-          isLoaded && "opacity-100"
+          isLoaded && "opacity-100",
+          "object-center" // Ensure proper centering
         )}
         loading={priority ? "eager" : "lazy"}
         onLoad={handleLoad}
         onError={handleError}
         sizes={sizes}
+        style={{ maxWidth: "100%", height: "auto" }}
       />
     </div>
   );

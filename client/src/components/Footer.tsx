@@ -6,40 +6,41 @@ import ResponsiveGrid from "./ResponsiveGrid";
 
 export default function Footer() {
   return (
-    <footer className="bg-black text-white py-8 sm:py-12 lg:py-16">
+    <footer className="bg-black text-white py-8 sm:py-12 lg:py-16 overflow-x-hidden">
       <ResponsiveContainer maxWidth="2xl" padding="lg">
-        <ResponsiveGrid cols={{ xs: 1, sm: 2, lg: 4 }} gap="lg">
-          <div className="sm:col-span-2 lg:col-span-1">
+        <ResponsiveGrid cols={{ xs: 1, sm: 2, lg: 4 }} gap="lg" className="w-full max-w-full">
+          <div className="sm:col-span-2 lg:col-span-1 max-w-full">
             <div className="mb-4 sm:mb-6">
               <Link href="/" className="no-underline flex items-center">
                 <img 
                   src={progressLogoPath} 
                   alt="Progress Accountants | Advisors | Growth Partners" 
-                  className="h-10 sm:h-12 lg:h-16 w-auto" 
+                  className="h-10 sm:h-12 lg:h-16 w-auto max-w-full object-contain" 
+                  style={{ maxHeight: '64px', maxWidth: '100%' }}
                 />
               </Link>
             </div>
-            <p className="mb-4 sm:mb-6 text-gray-300 text-sm sm:text-base leading-relaxed">
+            <p className="mb-4 sm:mb-6 text-gray-300 text-sm sm:text-base leading-relaxed max-w-full overflow-wrap-anywhere">
               We don't just talk about growth. We build the tools that drive it.
             </p>
             <div className="flex space-x-3 sm:space-x-4">
               <a 
                 href="#" 
-                className="text-white hover:text-purple-400 transition-colors duration-200"
+                className="text-white hover:text-purple-400 interactive z-badge flex-shrink-0"
                 aria-label="Facebook"
               >
                 <Facebook className="h-5 w-5 sm:h-6 sm:w-6" />
               </a>
               <a 
                 href="#" 
-                className="text-white hover:text-purple-400 transition-colors duration-200"
+                className="text-white hover:text-purple-400 interactive z-badge flex-shrink-0"
                 aria-label="LinkedIn"
               >
                 <Linkedin className="h-5 w-5 sm:h-6 sm:w-6" />
               </a>
               <a 
                 href="#" 
-                className="text-white hover:text-purple-400 transition-colors duration-200"
+                className="text-white hover:text-purple-400 interactive z-badge flex-shrink-0"
                 aria-label="Twitter"
               >
                 <Twitter className="h-5 w-5 sm:h-6 sm:w-6" />

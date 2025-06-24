@@ -1,0 +1,62 @@
+🔧 Replit Prompt: Responsive Pass 2 Full Refinement for Progress Accountants
+
+You are improving the fully built Progress Accountants front-end website to reach industry-leading responsiveness across all devices. This is Pass 2 of responsiveness optimization. Focus only on responsiveness. Do not modify SEO, design content, or non-layout elements yet.
+
+✅ Goals for this pass:
+
+1️⃣ Button & Typography Containment
+	•	Ensure all text fits inside buttons at all breakpoints (esp. iPhone SE and other small viewports).
+	•	Apply padding-inline, min-width, and text-overflow: ellipsis guards as needed.
+	•	Use clamp() for font scaling inside buttons.
+
+2️⃣ Hero Image & Container Stability
+	•	Prevent image cropping inside hero blocks.
+	•	Use object-fit: cover carefully combined with aspect-ratio and min-height logic.
+	•	Ensure hero section maintains full visual integrity at all widths.
+
+3️⃣ Scroll Indicator Alignment
+	•	Prevent overlaps between scroll indicators and images or callouts.
+	•	Dynamically position scroll prompts relative to visible content with flex or absolute positioning adjustments.
+
+4️⃣ Vertical Rhythm Consistency
+	•	Remove excess bottom gaps at the end of full-screen sections.
+	•	Use gap, margin-bottom, and padding-block to create consistent vertical flow.
+
+5️⃣ Z-Index Stack Management
+	•	Assign explicit z-index layers to:
+	•	sticky headers
+	•	CTA buttons
+	•	badge overlays (e.g. “UK Certified”)
+	•	Prevent unintentional stacking overlap on narrow devices.
+
+6️⃣ Viewport Meta Optimization
+	•	Confirm inclusion of:
+
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+	•	Test across Safari iOS and Chrome Android to validate.
+
+7️⃣ Horizontal Overflow Guardrails
+	•	Apply universal overflow-x: hidden guards where safe.
+	•	Ensure containers use max-width: 100% and images never escape containers.
+
+8️⃣ Shadow & Gradient Stabilization
+	•	Normalize drop shadows and gradients across browsers using filter: drop-shadow() and background: linear-gradient() with consistent CSS variables.
+
+9️⃣ Smoother Transitions
+	•	Apply smoother transition: all 0.3s ease on interactive components such as sticky headers, mobile menus, and scroll reveals.
+
+10️⃣ Maintain Live Audit Page
+	•	Keep /audit functional to visually verify viewport scaling across devices after these changes.
+
+📝 Rules:
+	•	Do not alter content or wording.
+	•	Do not introduce new color schemes.
+	•	Do not introduce SEO changes (yet).
+	•	All changes must be fully compatible with Hetzner deployment model.
+	•	Maintain fully responsive design from 320px → 1920px breakpoints.
+
+⸻
+
+👉 Claude (or Replit agent), apply this pass fully across all components, layouts, and containers. Once complete, output a full summary of changes made.
+
