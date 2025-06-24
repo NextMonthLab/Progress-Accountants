@@ -127,6 +127,7 @@ Progress Accountants is a sophisticated SmartSite platform built with React/Type
 
 ```
 Changelog:
+- June 24, 2025: Applied Rob Hutt production copy rewrite to Team page - sharp headlines (2-3 words), punchy descriptions, preserved individual bios as requested, focused on expertise and results
 - June 24, 2025: Applied Rob Hutt production copy rewrite to Why Us page - sharp headlines (2-4 words), punchy descriptions under 15 words, eliminated weak corporate language, focused on strategic outcomes and client results
 - June 24, 2025: Applied Rob Hutt production copy rewrite to About page - transformed all headlines to 3-6 words, shortened paragraphs to 2-4 sentences, eliminated corporate speak, focused on outcomes over features
 - June 24, 2025: Applied production-standard Rob Hutt copy rewrite - sharp H1/H2 headlines (3-8 words), punchy service descriptions, action-oriented CTAs, and commercially confident tone throughout

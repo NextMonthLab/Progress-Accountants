@@ -79,11 +79,11 @@ export default function TeamPage() {
         <div className="container mx-auto px-12 md:px-16 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-4xl md:text-6xl font-bold mb-6 text-white leading-tight">
-              Meet Our{" "}
-              <span className="bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">Expert Team</span>
+              The{" "}
+              <span className="bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">Progress Team</span>
             </h1>
             <p className="text-lg md:text-xl text-slate-300 mb-8 max-w-3xl mx-auto leading-relaxed">
-              Our experienced professionals bring decades of combined expertise in accounting, tax strategy, and business advisory—helping UK businesses grow with confidence.
+              Strategic accountants who deliver results for ambitious UK businesses.
             </p>
           </div>
         </div>
@@ -97,7 +97,7 @@ export default function TeamPage() {
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-16">
               <h2 className="text-3xl md:text-4xl font-bold mb-4 text-white">
-                The People Behind Progress
+                Expert Team
               </h2>
               <p className="text-slate-300 text-lg max-w-2xl mx-auto">
                 A passionate, people-first team—driven to deliver exceptional service and strategic insight.
