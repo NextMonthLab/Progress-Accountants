@@ -4,6 +4,7 @@ import { Link } from 'wouter';
 import { BookOpen, ArrowLeft, Phone, Mail, Calendar, CheckCircle, Clock, Shield, Users, BarChart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { openCalendlyPopup } from '@/utils/calendly';
+import { FadeIn } from '@/components/ui/ScrollAnimation';
 
 export default function BookkeepingPage() {
   const [isLoading, setIsLoading] = useState(true);
@@ -36,19 +37,83 @@ export default function BookkeepingPage() {
         <meta name="description" content="Stay organised and up to date with clear, reliable bookkeeping that keeps your business running smoothly." />
       </Helmet>
 
-      {/* Hero Section */}
-      <section className="relative text-white py-16 md:py-24 overflow-hidden">
-        <div className="absolute inset-0 z-0">
-          <img 
-            src="https://res.cloudinary.com/drl0fxrkq/image/upload/v1749050579/Screenshot_2025-06-04_at_16.22.23_sisfjv.png"
-            alt="Bookkeeping services background"
-            className="w-full h-full object-cover"
+      {/* Gold Standard Hero Section */}
+      <section className="relative w-full min-h-screen flex items-center justify-center overflow-hidden bg-slate-900">
+        {/* Cinematic Full-Width Background with Smart Focal Points */}
+        <div className="absolute inset-0 w-full h-full">
+          {/* Desktop/Tablet Background - Adjusted for Head Visibility */}
+          <div 
+            className="absolute inset-0 w-full h-full hidden sm:block"
+            style={{
+              backgroundImage: `url(https://res.cloudinary.com/drl0fxrkq/image/upload/v1749050579/Screenshot_2025-06-04_at_16.22.23_sisfjv.png)`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center 15%',
+              backgroundRepeat: 'no-repeat',
+              backgroundAttachment: 'fixed'
+            }}
           />
-          <div className="absolute inset-0 bg-black/70"></div>
+          
+          {/* Mobile Background - Optimal Head Framing */}
+          <div 
+            className="absolute inset-0 w-full h-full block sm:hidden"
+            style={{
+              backgroundImage: `url(https://res.cloudinary.com/drl0fxrkq/image/upload/v1749050579/Screenshot_2025-06-04_at_16.22.23_sisfjv.png)`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center 20%',
+              backgroundRepeat: 'no-repeat'
+            }}
+          />
+          
+          {/* Dark Overlay for Text Legibility - Gold Standard: 20-50% Opacity */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/30 to-black/50"></div>
         </div>
-        
+
+        {/* Content Container - Centered Layout */}
+        <div className="relative z-10 w-full px-6 md:px-8">
+          <div className="max-w-4xl mx-auto text-center text-white">
+            
+            {/* Gold Standard Headline - 4-8 words per line, max 16 total */}
+            <FadeIn delay={0.1}>
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight"
+                  style={{
+                    textShadow: '0 6px 12px rgba(0,0,0,0.7), 0 3px 6px rgba(0,0,0,0.5)',
+                    letterSpacing: '-0.02em'
+                  }}>
+                <span className="block">Bookkeeping.</span>
+                <span className="block">Business Ready.</span>
+              </h1>
+            </FadeIn>
+
+            {/* Gold Standard Subheadline - 18-24 words max, single sentence */}
+            <FadeIn delay={0.2}>
+              <p className="text-lg sm:text-xl md:text-2xl text-gray-200 mb-8 max-w-2xl mx-auto"
+                 style={{
+                   textShadow: '0 4px 8px rgba(0,0,0,0.8), 0 2px 4px rgba(0,0,0,0.6)',
+                   letterSpacing: '0.01em'
+                 }}>
+                Clear, reliable bookkeeping that keeps your business running smoothly and organized.
+              </p>
+            </FadeIn>
+
+            {/* Gold Standard CTA - Large, centered, outcome-driven */}
+            <FadeIn delay={0.3}>
+              <Button 
+                size="lg" 
+                className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-8 py-4 text-lg font-semibold transition-all duration-300 transform hover:scale-105 shadow-2xl hover:shadow-purple-500/30"
+                onClick={() => openCalendlyPopup()}
+              >
+                Book My Strategy Call
+              </Button>
+            </FadeIn>
+          </div>
+        </div>
+      </section>
+
+      {/* Original content continues below */}
+      <section className="relative text-white py-16 md:py-24 overflow-hidden">
         <div className="relative z-10 container mx-auto px-6 md:px-8">
           <div className="max-w-4xl mx-auto">
+            {/* Back Link */}
             <Link href="/services" className="inline-flex items-center text-blue-400 hover:text-pink-400 transition-colors duration-300 mb-6 no-underline">
               <ArrowLeft className="h-4 w-4 mr-2" />
               Back to Services
@@ -56,35 +121,14 @@ export default function BookkeepingPage() {
             
             <div className="flex items-center mb-6">
               <BookOpen className="h-12 w-12 text-pink-400 mr-4" />
-              <h1 className="text-3xl md:text-5xl font-bold">
-                <span className="text-white">📚 </span>
-                <span className="bg-gradient-to-r from-purple-400 via-pink-400 to-pink-500 bg-clip-text text-transparent">Bookkeeping</span>
-              </h1>
+              <h2 className="text-2xl md:text-3xl font-bold">
+                <span className="text-white">Professional Bookkeeping</span>
+              </h2>
             </div>
             
-            <p className="text-xl text-gray-100 mb-8">
-              Clear, reliable bookkeeping that keeps your business running smoothly.
+            <p className="text-lg text-gray-200 mb-8">
+              Stay organized and up to date with clear, reliable bookkeeping that keeps your business running smoothly.
             </p>
-            
-            <div className="flex flex-wrap gap-4">
-              <Button 
-                onClick={openCalendlyPopup}
-                size="lg" 
-                className="bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600"
-              >
-                <Phone className="h-4 w-4 mr-2" />
-                Get Started
-              </Button>
-              <Button 
-                onClick={openCalendlyPopup}
-                variant="outline" 
-                size="lg" 
-                className="border-white text-white hover:bg-white hover:text-gray-900"
-              >
-                <Calendar className="h-4 w-4 mr-2" />
-                Book Consultation
-              </Button>
-            </div>
           </div>
         </div>
       </section>
