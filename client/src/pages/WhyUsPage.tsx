@@ -391,10 +391,10 @@ export default function WhyUsPage() {
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center mb-16">
             <h2 className="text-2xl md:text-3xl font-bold mb-6 bg-gradient-to-r from-pink-400 to-blue-400 bg-clip-text text-transparent">
-              Our Client Process
+              How We Start
             </h2>
             <p className="text-lg text-gray-300">
-              A transparent, effective approach designed to maximize your financial success.
+              Simple process. Maximum results. Your financial success delivered.
             </p>
           </div>
           
@@ -407,10 +407,10 @@ export default function WhyUsPage() {
               <div className="relative md:flex items-center mb-16">
                 <div className="hidden md:block w-1/2 pr-8 text-right">
                   <h3 className="text-xl font-bold mb-2 text-white">
-                    Initial Consultation
+                    Discovery Call
                   </h3>
                   <p className="text-gray-300">
-                    We start by understanding your business goals, challenges, and current financial situation.
+                    Understand your goals. Identify challenges. Map your current position.
                   </p>
                 </div>
                 
@@ -420,10 +420,10 @@ export default function WhyUsPage() {
                 
                 <div className="md:w-1/2 md:pl-8 md:text-left">
                   <h3 className="md:hidden text-xl font-bold mb-2 text-white">
-                    Initial Consultation
+                    Discovery Call
                   </h3>
                   <p className="md:hidden text-gray-300 mb-4">
-                    We start by understanding your business goals, challenges, and current financial situation.
+                    Understand your goals. Identify challenges. Map your current position.
                   </p>
                   <div className="bg-gray-900 p-4 rounded-lg border border-gray-700">
                     <div className="flex items-center mb-2">
