@@ -104,11 +104,11 @@ export default function WhyUsPage() {
         <div className="relative z-10 container mx-auto px-6 md:px-8">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-3xl md:text-5xl font-bold mb-6">
-              <span className="text-white">Why Choose </span>
-              <span className="bg-gradient-to-r from-purple-400 via-blue-400 to-blue-500 bg-clip-text text-transparent">Progress?</span>
+              <span className="text-white">Strategic Accounting That </span>
+              <span className="bg-gradient-to-r from-purple-400 via-blue-400 to-blue-500 bg-clip-text text-transparent">Delivers Results</span>
             </h1>
             <p className="text-xl text-gray-100">
-              We're not just your accountants—we're your growth partners.
+              Real strategy. Clear insights. Measurable growth.
             </p>
           </div>
         </div>
@@ -120,10 +120,10 @@ export default function WhyUsPage() {
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center mb-16">
             <h2 className="text-2xl md:text-3xl font-bold mb-6 bg-gradient-to-r from-blue-400 to-pink-400 bg-clip-text text-transparent">
-              What Makes Us Different
+              Why Progress Works
             </h2>
             <p className="text-lg text-gray-300">
-              We go beyond compliance to help you plan, forecast, and scale—whatever growth means to you.
+              Beyond compliance. Beyond basics. Strategic guidance that drives growth.
             </p>
           </div>
           
@@ -134,10 +134,10 @@ export default function WhyUsPage() {
                 <span className="text-3xl">🚀</span>
               </div>
               <h3 className="text-xl font-bold mb-3 text-white">
-                Growth-Focused
+                Growth Strategy
               </h3>
               <p className="text-gray-300">
-                We go beyond compliance to help you plan, forecast, and scale—whatever growth means to you.
+                Plan smart. Forecast accurate. Scale confidently. Growth that lasts.
               </p>
             </div>
             
@@ -147,10 +147,10 @@ export default function WhyUsPage() {
                 <span className="text-3xl">🧑‍💻</span>
               </div>
               <h3 className="text-xl font-bold mb-3 text-white">
-                Tech-Savvy
+                Smart Technology
               </h3>
               <p className="text-gray-300">
-                From cloud dashboards to automation, we bring the tools and know-how to make your finances run smoother.
+                Cloud dashboards. Automated workflows. Real-time insights. Efficiency that works.
               </p>
             </div>
             
@@ -160,10 +160,10 @@ export default function WhyUsPage() {
                 <span className="text-3xl">📞</span>
               </div>
               <h3 className="text-xl font-bold mb-3 text-white">
-                Always Human
+                Human Connection
               </h3>
               <p className="text-gray-300">
-                Real people. Straight answers. You'll always have someone on your side who speaks your language.
+                Real people. Straight answers. Someone on your side who gets it.
               </p>
             </div>
             
@@ -173,10 +173,10 @@ export default function WhyUsPage() {
                 <span className="text-3xl">📊</span>
               </div>
               <h3 className="text-xl font-bold mb-3 text-white">
-                Clarity Over Complexity
+                Clear Insights
               </h3>
               <p className="text-gray-300">
-                No jargon. No surprises. Just clear, actionable insight into what's working, what's changing, and what to do next.
+                No jargon. No surprises. Clear insights. Actionable next steps.
               </p>
             </div>
             
@@ -186,10 +186,10 @@ export default function WhyUsPage() {
                 <span className="text-3xl">🎯</span>
               </div>
               <h3 className="text-xl font-bold mb-3 text-white">
-                Sector-Specific Knowledge
+                Industry Expertise
               </h3>
               <p className="text-gray-300">
-                We don't try to be everything to everyone—we specialise in Construction, Film, Music, Property, and Professional Services.
+                Construction, Film, Music, Property specialists. Deep knowledge that delivers results.
               </p>
             </div>
           </div>
@@ -215,10 +215,10 @@ export default function WhyUsPage() {
               {/* Right: Content */}
               <div className="p-8">
                 <h2 className="text-2xl md:text-3xl font-bold mb-6 bg-gradient-to-r from-pink-400 to-blue-400 bg-clip-text text-transparent">
-                  Our Values
+                  How We Work
                 </h2>
                 <p className="text-lg text-gray-300 mb-8">
-                  These core principles guide every interaction and decision we make.
+                  Principles that drive results in everything we do.
                 </p>
                 
                 <div className="grid grid-cols-1 gap-6">
@@ -231,7 +231,7 @@ export default function WhyUsPage() {
                         Simplicity
                       </h3>
                       <p className="text-gray-300 text-sm">
-                        We keep things clear, clean, and straightforward—because confidence starts with understanding.
+                        Clear, clean, straightforward. Confidence starts with understanding.
                       </p>
                     </div>
                   </div>
@@ -245,7 +245,7 @@ export default function WhyUsPage() {
                         Partnership
                       </h3>
                       <p className="text-gray-300 text-sm">
-                        We're in it with you. Whether you're launching, scaling, or stuck—we're right there alongside you.
+                        In it with you. Launching, scaling, stuck—we're alongside you.
                       </p>
                     </div>
                   </div>
@@ -259,7 +259,7 @@ export default function WhyUsPage() {
                         Curiosity
                       </h3>
                       <p className="text-gray-300 text-sm">
-                        We don't just tick boxes. We ask questions, spot patterns, and look ahead.
+                        Beyond box-ticking. Questions, patterns, forward thinking.
                       </p>
                     </div>
                   </div>
@@ -273,7 +273,7 @@ export default function WhyUsPage() {
                         Proactivity
                       </h3>
                       <p className="text-gray-300 text-sm">
-                        We don't wait for year-end—we flag opportunities and issues early, so you stay in control.
+                        Never wait for year-end. Early flags, early action, total control.
                       </p>
                     </div>
                   </div>
@@ -293,10 +293,10 @@ export default function WhyUsPage() {
                 Our Unique Advantages
               </span>
               <h2 className="text-2xl md:text-3xl font-bold mb-6 bg-gradient-to-r from-blue-400 to-pink-400 bg-clip-text text-transparent">
-                Why Clients Choose Us
+                Client Results
               </h2>
               <p className="text-lg text-gray-300">
-                Here's what makes our accounting services truly stand out from the competition.
+                What sets us apart: measurable outcomes for ambitious businesses.
               </p>
             </div>
             
@@ -348,10 +348,10 @@ export default function WhyUsPage() {
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center mb-12">
             <h2 className="text-2xl md:text-3xl font-bold mb-6 bg-gradient-to-r from-blue-400 to-pink-400 bg-clip-text text-transparent">
-              What Our Clients Say
+              Client Stories
             </h2>
             <p className="text-lg text-gray-300">
-              Don't just take our word for it—here's what our clients have to say about working with us.
+              Real results from real businesses who chose Progress.
             </p>
           </div>
           
