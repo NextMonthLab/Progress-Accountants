@@ -127,6 +127,7 @@ Progress Accountants is a sophisticated SmartSite platform built with React/Type
 
 ```
 Changelog:
+- June 24, 2025: Fixed critical hero section display issue - restored proper hero layout with centered content, background image, and responsive CTA buttons 
 - June 24, 2025: Completed Responsive Pass 2 Full Refinement - Advanced responsiveness with button text containment, hero image stability, z-index management, smooth transitions, and viewport optimization
 - June 24, 2025: Implemented production-ready responsive design with comprehensive breakpoint system, ResponsiveContainer/Grid components, live audit page at /audit, and mobile-first optimization
 - June 19, 2025: Fixed business calculator PDF download error by correcting data structure mismatch and adding safe data handling

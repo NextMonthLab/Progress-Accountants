@@ -1,12 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
-import teamPhotoImage from "../assets/images/team_photo.jpg";
-import { HeroSkeleton } from "@/components/ui/skeletons";
+import { ArrowRight, ChevronDown, CheckCircle2, BarChart3 } from "lucide-react";
 import { useBusinessIdentity } from "@/hooks/use-business-identity";
-import { OptimizedImage } from "@/components/ui/OptimizedImage";
-import { withMemo } from "@/lib/withMemo";
-import { ArrowRight, ChevronDown } from "lucide-react";
-import { openCalendlyPopup } from "@/utils/calendly";
+import { HeroSkeleton } from "@/components/ui/skeletons";
 
 // Business Identity type
 interface BusinessIdentity {
@@ -46,13 +42,11 @@ const HeroSection = () => {
   // Extract business information from business identity
   const typedIdentity = businessIdentity as BusinessIdentity || {};
   const businessName = typedIdentity.core?.businessName || "Progress Accountants";
-  const tagline = "Forward-thinking Accountants for UK Businesses";
   const usps = [
     "Specialists in digital, construction, film & music industries",
     "Tech-driven accounting powered by Xero, QuickBooks & real-time dashboards", 
     "Friendly, expert team who truly understand your business"
   ];
-  const geographicFocus = typedIdentity.market?.geographicFocus || "United Kingdom";
 
   const scrollToContent = () => {
     const servicesSection = document.getElementById('services');
@@ -62,118 +56,98 @@ const HeroSection = () => {
   };
 
   return (
-    <section 
-      className="bg-black text-white min-h-[90vh] relative flex items-center py-16 overflow-hidden"
-    >
-      {/* Enhanced sophisticated dark textured background */}
-      <div className="absolute inset-0 z-0">
-        <div className="absolute inset-0 bg-gradient-to-br from-slate-950/90 via-zinc-900/70 to-gray-900/50"></div>
-        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-slate-800/30 to-transparent"></div>
-        <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent"></div>
-        <div className="absolute inset-0 opacity-40 bg-[radial-gradient(circle_at_30%_70%,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[length:50px_50px]"></div>
-        <div className="absolute inset-0 opacity-20 bg-[linear-gradient(45deg,transparent_49%,rgba(255,255,255,0.01)_50%,transparent_51%)] bg-[length:100px_100px]"></div>
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-gradient-radial from-slate-800/10 to-transparent rounded-full blur-3xl"></div>
-        <div className="absolute bottom-0 right-1/3 w-80 h-80 bg-gradient-radial from-zinc-700/8 to-transparent rounded-full blur-3xl"></div>
-      </div>
+    <section className="relative min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center overflow-hidden">
+      {/* Background with proper aspect ratio and no cropping */}
+      <div className="absolute inset-0 bg-black/40 z-content"></div>
+      <div 
+        className="absolute inset-0 opacity-30 z-content"
+        style={{
+          backgroundImage: `url('https://res.cloudinary.com/drl0fxrkq/image/upload/v1750109769/Untitled_design_3_lz4ihg.png')`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          minHeight: '100vh',
+          width: '100%'
+        }}
+      ></div>
       
-      <div className="container mx-auto px-4 sm:px-6 md:px-12 lg:px-16 z-10 relative">
-        <div className="flex flex-col md:flex-row items-center gap-6 md:gap-8 lg:gap-12">
-          {/* Left content - Text content */}
-          <div className="w-full md:w-2/5 md:pr-6 text-center md:text-left">
-            <span className="text-purple-300 text-xs sm:text-sm font-medium tracking-wide inline-block mb-3 sm:mb-4">
-              Premium Financial Advisory
+      <div className="relative z-overlay max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center text-white w-full overflow-x-hidden">
+        <div className="max-w-4xl mx-auto">
+          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight overflow-wrap-anywhere">
+            {businessName}
+            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-400">
+              Forward-thinking Accountants for UK Businesses
             </span>
-            
-            <h1 className="font-bold text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl mb-4 sm:mb-6 leading-tight">
-              <span className="text-white">{businessName}</span>
-              <span className="block mt-2 sm:mt-3 gradient-text text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl">
-                Forward-thinking Accountants for UK Businesses
-              </span>
-            </h1>
-            
-            <p className="text-base sm:text-lg md:text-xl mb-6 sm:mb-8 text-gray-200 max-w-xl leading-relaxed px-2 sm:px-0">
-              Empowering your business with strategic financial planning, expert tax optimisation, and tailored insights—delivered with tech-savvy clarity.
-            </p>
-            
-            <div className="mb-6 sm:mb-8">
-              {usps.length > 0 && (
-                <ul className="list-none space-y-2 sm:space-y-3 max-w-lg">
-                  {usps.slice(0, 3).map((usp, index) => (
-                    <li key={index} className="flex items-start">
-                      <span className="flex items-center justify-center bg-gradient-to-r from-[#8B5CF6] to-[#A855F7] w-5 h-5 sm:w-6 sm:h-6 rounded-full mr-2 sm:mr-3 shrink-0 mt-0.5">
-                        <span className="text-white text-xs">✓</span>
-                      </span> 
-                      <span className="text-gray-200 text-sm sm:text-base leading-relaxed">{usp}</span>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
-            
-            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-              <Button 
-                className="w-full sm:w-auto px-4 sm:px-6 py-3 rounded-full text-white gradient-bg hover:shadow-lg text-sm sm:text-base"
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  console.log('Button clicked - opening Calendly');
-                  window.open('https://calendly.com/progress-accountants/free-consultation-progress-accountants', '_blank', 'width=700,height=800,resizable=yes,scrollbars=yes');
-                }}
-                style={{ 
-                  pointerEvents: 'auto',
-                  position: 'relative',
-                  zIndex: 1000
-                }}
-              >
-                <span className="hidden sm:inline">Book Your Free Strategy Consultation</span>
-                <span className="sm:hidden">Book Free Consultation</span>
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
-              
-              <Button 
-                variant="ghost" 
-                className="w-full sm:w-auto px-4 sm:px-6 py-3 rounded-full text-white border border-purple-400/30 hover:bg-purple-500/20 text-sm sm:text-base"
-                onClick={scrollToContent}
-              >
-                <span>Explore Our Services</span>
-                <span className="ml-2 text-purple-300">→</span>
-              </Button>
-            </div>
-          </div>
+          </h1>
           
-          {/* Right content - Prominent team image */}
-          <div className="w-full md:w-3/5 mt-8 md:mt-0">
-            <div className="relative">
-              {/* Enlarged, simplified image frame */}
-              <div className="relative rounded-xl shadow-xl transform hover:scale-[1.02] transition-transform duration-500 bg-slate-800/50 p-2 sm:p-4">
-                <OptimizedImage 
-                  src="https://res.cloudinary.com/drl0fxrkq/image/upload/v1747742806/P1023674_di2j3g.jpg" 
-                  alt={`${businessName} Team`}
-                  className="w-full h-auto rounded-lg brightness-105"
-                  width={1000}
-                  height={600}
-                  priority={true}
-                />
-                
-                {/* Simple badge - positioned more discreetly */}
-                <div className="absolute top-4 right-4 gradient-bg px-3 py-1 rounded-full shadow-md">
-                  <p className="text-xs font-semibold text-white">
-                    UK Certified
-                  </p>
+          <p className="text-xl md:text-2xl mb-8 text-slate-300 max-w-3xl mx-auto leading-relaxed px-4">
+            Forward-thinking accountants delivering strategic financial solutions for UK businesses. From compliance to growth acceleration.
+          </p>
+
+          {/* USPs with proper spacing */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mb-8 px-4">
+            {usps.map((usp, index) => (
+              <div key={index} className="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/20 shadow-custom">
+                <div className="flex items-center justify-center mb-2">
+                  <CheckCircle2 className="h-6 w-6 text-purple-400 mr-2 flex-shrink-0" />
+                  <span className="font-semibold text-white text-sm md:text-base text-center">{usp}</span>
                 </div>
               </div>
-            </div>
+            ))}
+          </div>
+
+          {/* CTA Buttons with proper text containment */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16 px-4">
+            <Button
+              size="lg"
+              className="w-full sm:w-auto bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-semibold interactive z-cta"
+              style={{ 
+                fontSize: 'clamp(0.875rem, 2.5vw, 1rem)',
+                paddingInline: 'clamp(1rem, 4vw, 2rem)',
+                paddingBlock: 'clamp(0.75rem, 2vw, 1rem)',
+                minWidth: '140px',
+                maxWidth: '280px'
+              }}
+              onClick={() => {
+                if (window.Calendly) {
+                  window.Calendly.initPopupWidget({
+                    url: 'https://calendly.com/progressaccountants'
+                  });
+                } else {
+                  window.open('https://calendly.com/progressaccountants', '_blank');
+                }
+              }}
+            >
+              <span className="truncate">Book Free Consultation</span>
+              <ArrowRight className="ml-2 h-4 w-4 flex-shrink-0" />
+            </Button>
+            
+            <Button
+              size="lg"
+              variant="outline"
+              className="w-full sm:w-auto border-white/30 text-white hover:bg-white/10 backdrop-blur-sm font-semibold interactive"
+              style={{ 
+                fontSize: 'clamp(0.875rem, 2.5vw, 1rem)',
+                paddingInline: 'clamp(1rem, 4vw, 2rem)',
+                paddingBlock: 'clamp(0.75rem, 2vw, 1rem)',
+                minWidth: '120px',
+                maxWidth: '220px'
+              }}
+              onClick={scrollToContent}
+            >
+              <BarChart3 className="mr-2 h-4 w-4 flex-shrink-0" />
+              <span className="truncate">View Services</span>
+            </Button>
           </div>
         </div>
         
-        {/* Simple scroll indicator */}
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex flex-col items-center">
-          <p className="text-sm text-white/70 mb-2">Scroll to explore</p>
-          <ChevronDown className="w-6 h-6 text-white/70 animate-bounce" />
+        {/* Scroll Indicator with proper positioning */}
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce z-badge">
+          <ChevronDown className="h-6 w-6 sm:h-8 sm:w-8 text-white/70" />
         </div>
       </div>
     </section>
   );
 };
 
-export default withMemo(HeroSection);
+export default HeroSection;
