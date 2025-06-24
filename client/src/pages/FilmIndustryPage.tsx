@@ -121,7 +121,7 @@ const CTASection = () => (
           size="lg" 
           className="bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] hover:shadow-lg hover:shadow-purple-500/25 text-white border-none font-medium cursor-pointer"
         >
-          Book a Consultation
+          Book Consultation
         </Button>
         <Button size="lg" className="bg-white text-gray-900 hover:bg-gray-100 font-medium">
           View Our Services
