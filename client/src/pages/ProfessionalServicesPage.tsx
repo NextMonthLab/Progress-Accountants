@@ -28,8 +28,8 @@ interface BusinessIdentity {
 const professionalServices = [
   {
     icon: Calculator,
-    title: "📊 Cash Flow You Can Count On",
-    description: "We help you forecast confidently, set aside for tax, and get paid on time—without chasing your tail.",
+    title: "📊 Cash Flow Management",
+    description: "Forecast confidently, set aside for tax, get paid on time—without chasing your tail.",
     features: [
       "Reliable cash flow forecasting",
       "Tax reserve planning",
@@ -40,8 +40,8 @@ const professionalServices = [
   },
   {
     icon: FileText,
-    title: "💼 Project Profitability Tracking",
-    description: "Whether you charge hourly or by project, we'll help you break down earnings, expenses, and margins so you know what's working.",
+    title: "💼 Project Profitability",
+    description: "Whether hourly or project-based—break down earnings, expenses, margins so you know what's working.",
     features: [
       "Time-based billing analysis",
       "Project cost breakdown",
@@ -52,8 +52,8 @@ const professionalServices = [
   },
   {
     icon: TrendingUp,
-    title: "🧾 Tax Planning for Service Models",
-    description: "We help service businesses stay efficient—whether you're a sole trader, LLP, or limited company with staff and contractors.",
+    title: "🧾 Tax Planning",
+    description: "Service businesses stay efficient—whether sole trader, LLP, or limited company with staff and contractors.",
     features: [
       "Business structure optimisation",
       "Contractor vs employee guidance",
@@ -64,8 +64,8 @@ const professionalServices = [
   },
   {
     icon: Shield,
-    title: "🔐 Secure Client Data Handling",
-    description: "We set up smart systems for managing sensitive documents and payments—especially if you deal with confidential client data.",
+    title: "🔐 Secure Data Systems",
+    description: "Smart systems for managing sensitive documents and payments—especially for confidential client data.",
     features: [
       "Secure document management",
       "Payment processing setup",
@@ -204,7 +204,7 @@ export default function ProfessionalServicesPage() {
         <div className="container mx-auto px-6 md:px-8">
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">What Our Clients Say</h2>
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">Client Results</h2>
             </div>
             
             <div className="grid md:grid-cols-2 gap-8">
@@ -241,9 +241,9 @@ export default function ProfessionalServicesPage() {
         <div className="container mx-auto px-6 md:px-8">
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-bold mb-6">Trusted by Agencies, Advisors, and Consultants</h2>
+              <h2 className="text-3xl md:text-4xl font-bold mb-6">Trusted by Service Professionals</h2>
               <p className="text-xl text-gray-300 max-w-3xl mx-auto mb-8">
-                We work with a wide range of professional service businesses, including:
+                Working with a wide range of professional service businesses:
               </p>
             </div>
             
@@ -308,9 +308,9 @@ export default function ProfessionalServicesPage() {
             <div className="grid lg:grid-cols-2 gap-0">
               {/* Content side */}
               <div className="p-8 md:p-10 flex flex-col justify-center">
-                <h2 className="text-2xl md:text-3xl font-bold text-white mb-6">Our Tech-Forward Support</h2>
+                <h2 className="text-2xl md:text-3xl font-bold text-white mb-6">Tech-Forward Support</h2>
                 <p className="text-gray-300 mb-6">
-                  We use cloud platforms like Xero to automate your invoicing, payments, and reporting—freeing you up to focus on client work.
+                  Cloud platforms like Xero automate invoicing, payments, reporting—freeing you to focus on client work.
                 </p>
                 
                 <div className="space-y-4 mb-6">
@@ -353,10 +353,10 @@ export default function ProfessionalServicesPage() {
           <div className="max-w-4xl mx-auto text-center">
             <div className="bg-gradient-to-r from-[#4F46E5]/10 to-[#E935C1]/10 rounded-2xl p-12 border border-gray-700">
               <h2 className="text-3xl md:text-4xl font-bold mb-6">
-                📞 Book a Free Finance Strategy Call
+                Ready to Start?
               </h2>
               <p className="text-xl text-gray-300 mb-8">
-                Let's explore how Progress can help you run a more profitable, less stressful service business.
+                Explore how Progress helps you run a more profitable, less stressful service business.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button 
@@ -364,7 +364,7 @@ export default function ProfessionalServicesPage() {
                   size="lg" 
                   className="progress-button-override px-8 py-6 text-lg font-semibold"
                 >
-                  Book a Consultation
+                  Book Consultation
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
                 <Button 
