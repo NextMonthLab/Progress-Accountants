@@ -5,6 +5,7 @@ import WhyUsSection from "@/components/WhyUsSection";
 import ContactForm from "@/components/ContactForm";
 import { Card } from "@/components/ui/card";
 import { useEffect } from "react";
+import ResponsiveSection from "@/components/ResponsiveSection";
 
 const HomePage = () => {
   // Removed problematic useBusinessIdentity hook that was causing loading issues

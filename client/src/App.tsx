@@ -58,6 +58,7 @@ const ConstructionIndustryPage = lazy(() => import("@/pages/ConstructionIndustry
 const ProfessionalServicesPage = lazy(() => import("@/pages/ProfessionalServicesPage"));
 const WhyUsPage = lazy(() => import("@/pages/WhyUsPage"));
 const StudioBanburyPage = lazy(() => import("@/pages/StudioBanburyPage"));
+const AuditPage = lazy(() => import("@/pages/AuditPage"));
 // Removed missing admin components
 const AdminSettingsPage = lazy(() => import("@/pages/AdminSettingsPage"));
 const AIAssistantSettingsPage = lazy(() => import("@/pages/admin/AIAssistantSettingsPage"));
@@ -231,6 +232,11 @@ function Router() {
       <Route path="/studio-banbury">
         <Suspense fallback={<LoadingFallback />}>
           <StudioBanburyPage />
+        </Suspense>
+      </Route>
+      <Route path="/audit">
+        <Suspense fallback={<LoadingFallback />}>
+          <AuditPage />
         </Suspense>
       </Route>
       <Route path="/resources" component={ResourcesPage} />

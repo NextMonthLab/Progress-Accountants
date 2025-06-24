@@ -47,6 +47,30 @@
         /* Color palette */
         --navy: #003865;
         --orange: #F27030;
+      }
+      
+      /* Additional responsive styles */
+      * {
+        box-sizing: border-box;
+      }
+      
+      body {
+        overflow-x: hidden;
+        scroll-behavior: smooth;
+      }
+      
+      /* Prevent layout shift */
+      img, video {
+        max-width: 100%;
+        height: auto;
+      }
+      
+      /* Touch-friendly interactions */
+      @media (max-width: 768px) {
+        button, a, [role="button"] {
+          min-height: 44px;
+          min-width: 44px;
+        }
         --accent: 0 0% 0% !important;
         --secondary: 0 0% 0% !important;
       }

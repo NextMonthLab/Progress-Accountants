@@ -1,53 +1,55 @@
 import { Link } from "wouter";
 import { Facebook, Linkedin, Twitter } from "lucide-react";
 import progressLogoPath from "@assets/Light Logo.png";
+import ResponsiveContainer from "./ResponsiveContainer";
+import ResponsiveGrid from "./ResponsiveGrid";
 
 export default function Footer() {
   return (
-    <footer className="bg-black text-white py-8 sm:py-12">
-      <div className="container mx-auto px-4 sm:px-6 md:px-8">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8">
-          <div>
-            <div className="mb-4">
+    <footer className="bg-black text-white py-8 sm:py-12 lg:py-16">
+      <ResponsiveContainer maxWidth="2xl" padding="lg">
+        <ResponsiveGrid cols={{ xs: 1, sm: 2, lg: 4 }} gap="lg">
+          <div className="sm:col-span-2 lg:col-span-1">
+            <div className="mb-4 sm:mb-6">
               <Link href="/" className="no-underline flex items-center">
                 <img 
                   src={progressLogoPath} 
                   alt="Progress Accountants | Advisors | Growth Partners" 
-                  className="h-12 sm:h-16 w-auto" 
+                  className="h-10 sm:h-12 lg:h-16 w-auto" 
                 />
               </Link>
             </div>
-            <p className="mb-4 text-gray-300">
+            <p className="mb-4 sm:mb-6 text-gray-300 text-sm sm:text-base leading-relaxed">
               We don't just talk about growth. We build the tools that drive it.
             </p>
-            <div className="flex space-x-4">
+            <div className="flex space-x-3 sm:space-x-4">
               <a 
                 href="#" 
-                className="text-white hover:text-purple-400 transition"
+                className="text-white hover:text-purple-400 transition-colors duration-200"
                 aria-label="Facebook"
               >
-                <Facebook className="h-6 w-6" />
+                <Facebook className="h-5 w-5 sm:h-6 sm:w-6" />
               </a>
               <a 
                 href="#" 
-                className="text-white hover:text-purple-400 transition"
+                className="text-white hover:text-purple-400 transition-colors duration-200"
                 aria-label="LinkedIn"
               >
-                <Linkedin className="h-6 w-6" />
+                <Linkedin className="h-5 w-5 sm:h-6 sm:w-6" />
               </a>
               <a 
                 href="#" 
-                className="text-white hover:text-purple-400 transition"
+                className="text-white hover:text-purple-400 transition-colors duration-200"
                 aria-label="Twitter"
               >
-                <Twitter className="h-6 w-6" />
+                <Twitter className="h-5 w-5 sm:h-6 sm:w-6" />
               </a>
             </div>
           </div>
           
           <div>
-            <h3 className="font-semibold text-lg mb-4">Services</h3>
-            <ul className="space-y-2">
+            <h3 className="font-semibold text-base sm:text-lg mb-3 sm:mb-4">Services</h3>
+            <ul className="space-y-1.5 sm:space-y-2">
               <li>
                 <Link href="/services" className="text-gray-300 hover:text-purple-400 transition">
                   All Services
