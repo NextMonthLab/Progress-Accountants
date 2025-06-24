@@ -35,8 +35,8 @@ export default function TaxPlanningPage() {
   return (
     <div className="bg-gray-900 min-h-screen">
       <Helmet>
-        <title>Tax Planning & Preparation | Progress Accountants</title>
-        <meta name="description" content="Tax Planning & Preparation for Businesses in Banbury & Oxford. Minimise tax liabilities and plan ahead with strategic tax support tailored to your business." />
+        <title>Tax Planning | Progress Accountants</title>
+        <meta name="description" content="Strategic Tax Planning for Growing Businesses. Minimize tax liabilities and plan ahead with strategic tax support tailored to your business." />
       </Helmet>
 
       {/* Hero Section */}
@@ -61,28 +61,28 @@ export default function TaxPlanningPage() {
             <div className="flex items-center mb-6">
               <Calculator className="h-12 w-12 text-blue-400 mr-4" />
               <h1 className="text-3xl md:text-5xl font-bold">
-                <span className="text-white">📊 Tax Planning & </span>
-                <span className="bg-gradient-to-r from-purple-400 via-blue-400 to-blue-500 bg-clip-text text-transparent">Preparation</span>
+                <span className="text-white">📊 Tax </span>
+                <span className="bg-gradient-to-r from-purple-400 via-blue-400 to-blue-500 bg-clip-text text-transparent">Planning</span>
               </h1>
             </div>
             
             <h2 className="text-2xl text-gray-100 mb-4 font-semibold">
-              Tax Planning & Preparation for Businesses in Banbury & Oxford
+              Strategic Tax Planning for Growing Businesses
             </h2>
             
             <p className="text-lg text-gray-200 mb-6">
-              Running a business is challenging enough—you shouldn't have to worry about surprise tax bills.
+              Running a business is challenging enough—no surprise tax bills.
             </p>
             
             <p className="text-lg text-gray-200 mb-8">
-              We help businesses in Banbury, Oxford, and beyond minimise tax liabilities and plan ahead with proactive, strategic advice. Whether you're a growing construction firm, a creative agency, a property investor or a local SME, we'll tailor your tax strategy to your unique income streams and future goals.
+              Minimize tax liabilities and plan ahead with strategic advice. Whether construction firm, creative agency, property investor or SME—tax strategy tailored to your income streams and goals.
             </p>
             
             <div className="flex flex-wrap gap-4">
               <Link href="/contact">
                 <Button size="lg" className="bg-gradient-to-r from-blue-500 to-pink-500 hover:from-blue-600 hover:to-pink-600">
                   <Phone className="h-4 w-4 mr-2" />
-                  Get Started Today
+                  Get Started
                 </Button>
               </Link>
               <Button 
