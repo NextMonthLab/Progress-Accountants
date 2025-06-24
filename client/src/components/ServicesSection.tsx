@@ -232,10 +232,10 @@ const ServicesSection = () => {
             </div>
             <h2 className="font-bold text-2xl sm:text-3xl md:text-4xl mb-4 text-white"
             >
-              What Sets Us Apart
+Built for Business Growth
             </h2>
             <p className="text-base sm:text-lg leading-relaxed text-gray-300 px-4 sm:px-0">
-              Most accountants tell you what happened. We tell you what to do next. These aren't just services—they're growth levers for ambitious businesses.
+Most accountants report numbers. We deliver strategy.
             </p>
           </div>
           
@@ -265,10 +265,10 @@ const ServicesSection = () => {
             <>
               <div className="text-center max-w-3xl mx-auto mb-8 sm:mb-10 mt-12 sm:mt-16">
                 <h2 className="font-bold text-xl sm:text-2xl md:text-3xl mb-4 gradient-text">
-                  The Essentials, Done Right
+Foundation Services
                 </h2>
                 <p className="text-sm sm:text-base max-w-xl mx-auto text-gray-300 px-4 sm:px-0">
-                  Your foundation services. No corners cut, no confusion, no surprises. Just solid accounting that works.
+Essential accounting done properly. Fixed pricing, clear communication, results you can trust.
                 </p>
               </div>
               

@@ -65,10 +65,10 @@ const HomePage = () => {
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-8 sm:mb-10">
               <h2 className="text-2xl sm:text-3xl font-bold mb-3 text-white px-4">
-                Ready to Stop Settling for Average Financial Advice?
+Ready for Accounting That Drives Growth?
               </h2>
               <p className="text-base sm:text-lg text-slate-300 mb-6 max-w-2xl mx-auto leading-relaxed px-4">
-                Book a strategy call. We'll show you exactly how to turn your finances into competitive advantage and unlock growth you didn't know was possible.
+Book your strategy call. See how smart financial planning accelerates business growth.
               </p>
             </div>
 

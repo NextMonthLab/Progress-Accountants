@@ -27,11 +27,11 @@ export default function WhyUsSection() {
   }, []);
 
   const benefits = [
-    "Fixed pricing that makes sense from day one",
-    "Get started without the bureaucratic nightmare",
-    "We speak business, not accounting jargon",
-    "Real humans answer within hours, not days",
-    "See exactly where your money goes and why it matters"
+    "Fixed pricing, no billing surprises",
+    "Fast onboarding, no bureaucracy",
+    "Plain English advice, no jargon",
+    "Real people respond within hours",
+    "Live financial insights you can act on"
   ];
 
   return (
@@ -43,7 +43,7 @@ export default function WhyUsSection() {
       <div className="container mx-auto px-6 md:px-8">
         <div className="text-center max-w-3xl mx-auto mb-16">
           <h2 className="font-poppins font-bold text-2xl md:text-4xl mb-4 gradient-text">
-            Stop Guessing. Start Growing.
+Clarity. Control. Results.
           </h2>
         </div>
         
