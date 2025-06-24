@@ -31,57 +31,57 @@ interface Service {
 const services: Service[] = [
   {
     id: 1,
-    name: "📊 Tax Planning & Preparation",
-    description: "Minimise liabilities and plan ahead with strategic tax support tailored to your business type and income streams.",
+    name: "📊 Tax Planning",
+    description: "Minimize liabilities and plan ahead with strategic tax support tailored to your business type and income streams.",
     icon: <Calculator className="h-10 w-10 mb-4 text-blue-400" />,
     slug: "tax-planning"
   },
   {
     id: 2,
     name: "📚 Bookkeeping",
-    description: "Stay organised and up to date with clear, reliable bookkeeping that keeps your business running smoothly.",
+    description: "Stay organized and up to date with clear, reliable bookkeeping that keeps your business running smoothly.",
     icon: <BookOpen className="h-10 w-10 mb-4 text-pink-400" />,
     slug: "bookkeeping"
   },
   {
     id: 3,
     name: "📈 Business Advisory",
-    description: "Get real insight into your business performance with tailored advice, forecasts, and strategy sessions.",
+    description: "Real insight into business performance with tailored advice, forecasts, and strategy sessions.",
     icon: <BarChart4 className="h-10 w-10 mb-4 text-blue-400" />,
     slug: "business-advisory"
   },
   {
     id: 4,
     name: "📄 Financial Reporting",
-    description: "Understand your numbers in plain English with detailed, timely reports that support better decisions.",
+    description: "Understand numbers in plain English with detailed, timely reports that support better decisions.",
     icon: <FileSpreadsheet className="h-10 w-10 mb-4 text-pink-400" />,
     slug: "financial-reporting"
   },
   {
     id: 5,
     name: "🔍 Audit Support",
-    description: "Whether required or voluntary, we help you prepare for audits and reviews with clarity and confidence.",
+    description: "Whether required or voluntary, prepare for audits and reviews with clarity and confidence.",
     icon: <ClipboardCheck className="h-10 w-10 mb-4 text-blue-400" />,
     slug: "audit-support"
   },
   {
     id: 6,
     name: "☁️ Cloud Accounting",
-    description: "We use tools like Xero and QuickBooks to give you real-time visibility, automated workflows, and remote access.",
+    description: "Tools like Xero and QuickBooks give you real-time visibility, automated workflows, and remote access.",
     icon: <Cloud className="h-10 w-10 mb-4 text-pink-400" />,
     slug: "cloud-accounting"
   },
   {
     id: 7,
-    name: "🎬 Industry-Specific Accounting",
-    description: "Tailored support for Construction, Film, Music, and Property—aligned to your sector's compliance, tax, and financial structure needs.",
+    name: "🎬 Industry-Specific",
+    description: "Tailored support for Construction, Film, Music, and Property—aligned to your sector's compliance, tax, and financial needs.",
     icon: <Briefcase className="h-10 w-10 mb-4 text-blue-400" />,
     slug: "industry-specific"
   },
   {
     id: 8,
-    name: "📅 Virtual Finance Director (VFD)",
-    description: "On-demand financial leadership without the overhead. Strategic planning, forecasting, and accountability for your growth journey.",
+    name: "📅 Virtual Finance Director",
+    description: "On-demand financial leadership without overhead. Strategic planning, forecasting, and accountability for your growth journey.",
     icon: <DollarSign className="h-10 w-10 mb-4 text-pink-400" />,
     slug: "virtual-finance-director"
   }
@@ -191,10 +191,10 @@ export default function ServicesPage() {
         <div className="container mx-auto px-6 md:px-8">
           <div className="max-w-3xl mx-auto text-center mb-16">
             <p className="text-gray-300 mb-4">
-              At Progress, we do more than keep you compliant—we help you grow. From day-to-day bookkeeping to long-term planning, our services are built around your goals, not just your deadlines.
+              Progress does more than compliance—we help you grow. From bookkeeping to long-term planning, services built around your goals, not deadlines.
             </p>
             <p className="text-gray-300">
-              We specialise in small business support, construction, film, music, property, and professional services. Explore how we can help you stay in control and one step ahead.
+              Specialist support for construction, film, music, property, and professional services. Stay in control and one step ahead.
             </p>
           </div>
 
@@ -227,9 +227,9 @@ export default function ServicesPage() {
         <div className="container mx-auto px-6 md:px-8">
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-bold mb-6 text-white">Specialist Services</h2>
+              <h2 className="text-3xl md:text-4xl font-bold mb-6 text-white">Specialist Support</h2>
               <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-                Additional services designed for businesses with specific needs and growth ambitions.
+                Additional services for businesses with specific needs and growth ambitions.
               </p>
             </div>
             
@@ -239,7 +239,7 @@ export default function ServicesPage() {
                   <span className="text-2xl">📉</span>
                 </div>
                 <h3 className="text-white font-bold mb-3">Business Forecasting</h3>
-                <p className="text-gray-300 text-sm">Plan for the future with cash flow projections, growth targets, and scenario modelling tailored to your goals.</p>
+                <p className="text-gray-300 text-sm">Plan for the future with cash flow projections, growth targets, scenario modeling tailored to your goals.</p>
               </div>
               
               <div className="bg-gray-900 rounded-xl p-6 border border-gray-700 text-center">
@@ -247,7 +247,7 @@ export default function ServicesPage() {
                   <span className="text-2xl">🧰</span>
                 </div>
                 <h3 className="text-white font-bold mb-3">SME Resource Hub</h3>
-                <p className="text-gray-300 text-sm">Access our downloadable PDFs, tax calendars, and business contact directory—free for UK business owners.</p>
+                <p className="text-gray-300 text-sm">Access downloadable PDFs, tax calendars, business contact directory—free for UK business owners.</p>
               </div>
               
               <div className="bg-gray-900 rounded-xl p-6 border border-gray-700 text-center">
@@ -255,7 +255,7 @@ export default function ServicesPage() {
                   <span className="text-2xl">🏗️</span>
                 </div>
                 <h3 className="text-white font-bold mb-3">Construction Accounting</h3>
-                <p className="text-gray-300 text-sm">Specialist CIS schemes, subcontractor management, and project cost tracking for construction businesses.</p>
+                <p className="text-gray-300 text-sm">Specialist CIS schemes, subcontractor management, project cost tracking for construction businesses.</p>
               </div>
               
               <div className="bg-gray-900 rounded-xl p-6 border border-gray-700 text-center">
@@ -263,7 +263,7 @@ export default function ServicesPage() {
                   <span className="text-2xl">🎬</span>
                 </div>
                 <h3 className="text-white font-bold mb-3">Creative Industries</h3>
-                <p className="text-gray-300 text-sm">Film tax relief, music royalty accounting, and creative sector compliance for artists and production companies.</p>
+                <p className="text-gray-300 text-sm">Film tax relief, music royalty accounting, creative sector compliance for artists and production companies.</p>
               </div>
             </div>
           </div>
@@ -384,7 +384,7 @@ export default function ServicesPage() {
                   }}
                   className="bg-gradient-to-br from-blue-600 to-pink-500 text-white hover:shadow-lg hover:-translate-y-[2px] transition duration-300 cursor-pointer"
                 >
-                  Book a Consultation
+                  Book Consultation
                 </Button>
               </div>
               
@@ -406,7 +406,7 @@ export default function ServicesPage() {
       {/* CTA Section */}
       <section className="py-16 bg-gray-800 text-white">
         <div className="container mx-auto px-6 md:px-8 text-center">
-          <h2 className="text-3xl font-bold mb-6 bg-gradient-to-r from-blue-400 to-pink-400 bg-clip-text text-transparent">Not sure where to start?</h2>
+          <h2 className="text-3xl font-bold mb-6 bg-gradient-to-r from-blue-400 to-pink-400 bg-clip-text text-transparent">Ready to Start?</h2>
           <p className="text-xl text-gray-300 mb-8 max-w-3xl mx-auto">
             Book a free discovery call and we'll help map the right support for your business.
           </p>
