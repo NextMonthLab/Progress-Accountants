@@ -62,22 +62,22 @@ export default function AuditSupportPage() {
             </div>
             
             <h2 className="text-2xl text-gray-100 mb-4 font-semibold">
-              Audit Support for Businesses in Banbury & Oxford
+              Professional Audit Support for Growing Businesses
             </h2>
             
             <p className="text-lg text-gray-200 mb-6">
-              Whether you need to comply with audit requirements or simply want peace of mind, we'll help you prepare with clarity and confidence.
+              Whether compliance requirement or peace of mind, prepare with clarity and confidence.
             </p>
             
             <p className="text-lg text-gray-200 mb-8">
-              Progress Accountants supports businesses across Banbury, Oxford, and surrounding areas with full-service audit readiness.
+              Progress supports businesses with full-service audit readiness.
             </p>
             
             <div className="flex flex-wrap gap-4">
               <Link href="/contact">
                 <Button size="lg" className="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600">
                   <Phone className="h-4 w-4 mr-2" />
-                  Get Started Today
+                  Get Started
                 </Button>
               </Link>
               <Button 
@@ -102,7 +102,7 @@ export default function AuditSupportPage() {
           <div className="max-w-4xl mx-auto">
             <div className="grid md:grid-cols-2 gap-8 mb-12">
               <div className="bg-gray-800 rounded-lg p-8 border border-gray-700">
-                <h3 className="text-2xl font-bold text-white mb-6">What We Provide</h3>
+                <h3 className="text-2xl font-bold text-white mb-6">What's Included</h3>
                 <ul className="space-y-3">
                   <li className="flex items-start">
                     <CheckCircle className="h-5 w-5 text-blue-400 mr-3 mt-1 flex-shrink-0" />
