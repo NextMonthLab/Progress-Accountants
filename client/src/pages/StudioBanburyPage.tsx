@@ -17,11 +17,11 @@ export default function StudioBanburyPage() {
         <div className="container mx-auto px-12 md:px-16 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-4xl md:text-6xl font-bold mb-6 text-white leading-tight">
-              🎙️ Podcast & Video{" "}
-              <span className="bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">Studio Hire in Banbury</span>
+              🎙️ Professional{" "}
+              <span className="bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">Studio Hire</span>
             </h1>
             <p className="text-lg md:text-xl text-slate-300 mb-8 max-w-3xl mx-auto leading-relaxed">
-              Broadcast-quality. Acoustically treated. Fully supported.
+              Broadcast-quality recording studio in Banbury. Professional results, every time.
             </p>
             
             {/* Hero Image */}
@@ -46,20 +46,20 @@ export default function StudioBanburyPage() {
         <div className="container mx-auto px-12 md:px-16 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-3xl md:text-4xl font-bold mb-8 text-white">
-              Looking for a professional podcast or video studio near Banbury?
+              Professional Content Creation Studio
             </h2>
             <div className="space-y-6 mb-10">
               <p className="text-slate-300 text-lg leading-relaxed">
-                The Progress Studio is a fully equipped, acoustically treated recording space—designed for small business owners, creatives, and content-first brands who want polished, credible results without heading to London.
+                Fully equipped, acoustically treated recording space. Professional results without the London trip.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
                 <div className="flex items-center gap-2 text-slate-300">
                   <span>📣</span>
-                  <span>Progress clients get 1 hour of free studio use every month.</span>
+                  <span>Progress clients: 1 hour free monthly studio time.</span>
                 </div>
                 <div className="flex items-center gap-2 text-slate-300">
                   <span>📍</span>
-                  <span>Non-clients? You're welcome to book too—let's create something amazing.</span>
+                  <span>Non-clients welcome. Book your session today.</span>
                 </div>
               </div>
             </div>
@@ -84,9 +84,9 @@ export default function StudioBanburyPage() {
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-16">
               <h2 className="text-3xl md:text-4xl font-bold mb-6 text-white">
-                See Our Professional Studio Space
+                Studio Gallery
               </h2>
-              <p className="text-slate-300 text-lg">Acoustically treated, broadcast-quality environment</p>
+              <p className="text-slate-300 text-lg">Professional equipment. Broadcast-quality results.</p>
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
