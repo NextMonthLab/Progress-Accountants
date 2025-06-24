@@ -137,7 +137,7 @@ export default function Footer() {
               </div>
             </div>
           </div>
-        </div>
+        </ResponsiveGrid>
         
         <div className="mt-12 pt-6 border-t border-gray-700 text-center text-gray-400 text-sm">
           <p>&copy; {new Date().getFullYear()} Progress Accountants. All rights reserved.</p>
@@ -168,7 +168,7 @@ export default function Footer() {
             </a>
           </div>
         </div>
-      </div>
+      </ResponsiveContainer>
     </footer>
   );
 }
