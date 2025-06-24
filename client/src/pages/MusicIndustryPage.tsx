@@ -4,6 +4,7 @@ import { withMemo } from "@/lib/withMemo";
 import { Button } from "@/components/ui/button";
 import { OptimizedImage } from "@/components/ui/OptimizedImage";
 import { ArrowRight, CheckCircle, Music, PlayCircle, ArrowDown, Clock, Banknote, Award, Users, Headphones, Radio } from "lucide-react";
+import { FadeIn } from "@/components/ui/ScrollAnimation";
 
 // Import music industry images
 import musicStudioBackgroundImg from "../assets/images/music/hero_background_new.png";
@@ -148,117 +149,83 @@ const MusicIndustryPage = () => {
 
   return (
     <div className="bg-black pb-20">
-      {/* Hero section */}
-      <div 
+      {/* Gold Standard Hero Section */}
+      <section 
         ref={headerRef}
-        className="relative overflow-hidden"
+        className="relative w-full min-h-screen flex items-center justify-center overflow-hidden bg-slate-900"
       >
-        {/* Full-width background image with dark overlay */}
-        <div className="absolute inset-0 z-0">
-          <OptimizedImage
-            src={musicStudioBackgroundImg}
-            alt="Recording studio mixing console with musician silhouette"
-            width={1920}
-            height={1080}
-            className="w-full h-full object-cover"
+        {/* Cinematic Full-Width Background with Smart Focal Points */}
+        <div className="absolute inset-0 w-full h-full">
+          {/* Desktop/Tablet Background - Adjusted for Head Visibility */}
+          <div 
+            className="absolute inset-0 w-full h-full hidden sm:block"
+            style={{
+              backgroundImage: `url(${musicStudioBackgroundImg})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center 15%',
+              backgroundRepeat: 'no-repeat',
+              backgroundAttachment: 'fixed'
+            }}
           />
-          {/* Dark overlay for better text contrast */}
-          <div className="absolute inset-0 bg-navy opacity-75"></div>
-        </div>
-        
-        <div className="relative z-10 container mx-auto px-6 md:px-8 py-20 md:py-32">
-          <div className="flex flex-col lg:flex-row items-center gap-12">
-            <motion.div 
-              initial="hidden"
-              animate="visible"
-              variants={containerVariants}
-              className="lg:w-1/2"
-            >
-              <motion.div variants={itemVariants}>
-                <span className="inline-block px-4 py-1 rounded-full bg-purple-900/20 text-purple-400 font-medium text-sm mb-4">
-                  🎵 Industry Specialists
-                </span>
-              </motion.div>
-              <motion.div
-                variants={itemVariants}
-                className="mb-6"
-              >
-                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
-                  Specialist Accounting for the Music Industry
-                </h1>
-              </motion.div>
-              <motion.div
-                variants={itemVariants}
-                className="mb-8"
-              >
-                <p className="text-lg md:text-xl text-white">
-                  Helping you stay on top of royalties, tax, and touring finances—without missing a beat.
-                </p>
-              </motion.div>
-              <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-4">
-                <Button 
-                  onClick={() => {
-                    window.open('https://calendly.com/progress-accountants/free-consultation-progress-accountants', '_blank', 'width=700,height=800,resizable=yes,scrollbars=yes');
-                  }}
-                  size="lg" 
-                  className="bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] hover:shadow-lg hover:shadow-purple-500/25 text-white font-medium cursor-pointer"
-                >
-                  Book a Free Consultation
-                </Button>
-                <Button size="lg" className="bg-white text-gray-900 hover:bg-gray-100 font-medium">
-                  Explore Our Services <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-              </motion.div>
-            </motion.div>
-            
-            <motion.div 
-              initial={{ opacity: 0, x: 50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
-              className="lg:w-1/2"
-            >
-              <div className="bg-gradient-to-br from-[#7B3FE4] to-[#3FA4E4] p-3 rounded-2xl shadow-2xl relative">
-                <OptimizedImage
-                  src={musicCardImg}
-                  alt="Musicians recording in studio"
-                  width={600}
-                  height={400}
-                  className="rounded-xl shadow-lg w-full"
-                />
-                
-                {/* Animated badge */}
-                <motion.div 
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.8, duration: 0.5 }}
-                  className="absolute -bottom-4 -right-4 bg-gray-900 rounded-xl shadow-lg p-3 flex items-center border border-gray-800"
-                >
-                  <div className="bg-purple-900/20 p-2 rounded-lg mr-3">
-                    <Headphones className="h-6 w-6 text-purple-400" />
-                  </div>
-                  <div>
-                    <p className="text-white font-semibold text-sm">Royalty Management</p>
-                    <p className="text-xs text-gray-300">Keep more of what you earn</p>
-                  </div>
-                </motion.div>
-              </div>
-            </motion.div>
-          </div>
           
-          <motion.div 
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1, duration: 0.5 }}
-            className="absolute bottom-5 left-1/2 transform -translate-x-1/2 flex flex-col items-center"
-          >
-            <p className="text-white mb-2 text-sm font-medium">Scroll to learn more</p>
-            <ArrowDown className="w-5 h-5 text-white animate-bounce" />
-          </motion.div>
+          {/* Mobile Background - Optimal Head Framing */}
+          <div 
+            className="absolute inset-0 w-full h-full block sm:hidden"
+            style={{
+              backgroundImage: `url(${musicStudioBackgroundImg})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center 20%',
+              backgroundRepeat: 'no-repeat'
+            }}
+          />
+          
+          {/* Dark Overlay for Text Legibility - Gold Standard: 20-50% Opacity */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/30 to-black/50"></div>
         </div>
-      </div>
-      
-      {/* Intro section */}
-      <div className="container mx-auto px-6 md:px-8 py-16">
+
+        {/* Content Container - Centered Layout */}
+        <div className="relative z-10 w-full px-6 md:px-8">
+          <div className="max-w-4xl mx-auto text-center text-white">
+            
+            {/* Gold Standard Headline - 4-8 words per line, max 16 total */}
+            <FadeIn delay={0.1}>
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight"
+                  style={{
+                    textShadow: '0 6px 12px rgba(0,0,0,0.7), 0 3px 6px rgba(0,0,0,0.5)',
+                    letterSpacing: '-0.02em'
+                  }}>
+                <span className="block">Music Accounting.</span>
+                <span className="block">Industry Ready.</span>
+              </h1>
+            </FadeIn>
+
+            {/* Gold Standard Subheadline - 18-24 words max, single sentence */}
+            <FadeIn delay={0.2}>
+              <p className="text-lg sm:text-xl md:text-2xl text-gray-200 mb-8 max-w-2xl mx-auto"
+                 style={{
+                   textShadow: '0 4px 8px rgba(0,0,0,0.8), 0 2px 4px rgba(0,0,0,0.6)',
+                   letterSpacing: '0.01em'
+                 }}>
+                Master royalties, tax, and touring finances without missing a beat.
+              </p>
+            </FadeIn>
+
+            {/* Gold Standard CTA - Large, centered, outcome-driven */}
+            <FadeIn delay={0.3}>
+              <Button 
+                size="lg" 
+                className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-8 py-4 text-lg font-semibold transition-all duration-300 transform hover:scale-105 shadow-2xl hover:shadow-purple-500/30"
+                onClick={() => window.open('https://calendly.com/progressaccountants/discovery-call', '_blank')}
+              >
+                Book My Strategy Call
+              </Button>
+            </FadeIn>
+          </div>
+        </div>
+      </section>
+
+      {/* Original content continues below */}
+      <div className="container mx-auto px-6 md:px-8 py-20">
         <motion.div 
           initial="hidden"
           whileInView="visible"
@@ -267,21 +234,21 @@ const MusicIndustryPage = () => {
           className="max-w-4xl mx-auto"
         >
           <motion.div variants={itemVariants} className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">Why Musicians and Music Businesses Choose Progress</h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">Why Choose Progress for Music Accounting?</h2>
             <p className="text-lg text-gray-300">
-              From solo artists and touring musicians to producers, labels, and studios—Progress brings structure and clarity to your creative career.
+              Whether you're a solo artist, band, label, or music business, Progress brings clarity and control to your creative finances.
             </p>
           </motion.div>
           
           <motion.div variants={itemVariants} className="bg-gray-900 rounded-xl shadow-md p-6 md:p-8 mb-12 border border-gray-800">
             <p className="text-lg text-gray-300 mb-4">
-              We specialise in proactive, tech-forward accounting built for the music industry—tailored to the unpredictable rhythm of royalty income, touring schedules, and studio investments.
+              We specialize in the music industry—offering proactive, tech-led accounting tailored to the creative economy.
             </p>
             <div className="flex items-center">
               <div className="p-2 bg-purple-900/20 rounded-full mr-3">
                 <Music className="h-5 w-5 text-purple-400" />
               </div>
-              <p className="font-medium text-white">📍 Based in Banbury. Trusted by musicians and music businesses across the UK.</p>
+              <p className="font-medium text-white">Based in Banbury, supporting music professionals across the UK.</p>
             </div>
           </motion.div>
         </motion.div>
