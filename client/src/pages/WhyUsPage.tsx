@@ -18,6 +18,7 @@ import {
 import { PageHeaderSkeleton, FeaturesSkeleton } from '@/components/ui/skeletons';
 import { useBusinessIdentity } from '@/hooks/use-business-identity';
 import { openCalendlyPopup } from '@/utils/calendly';
+import { FadeIn } from '@/components/ui/ScrollAnimation';
 
 export default function WhyUsPage() {
   const [isLoading, setIsLoading] = useState(true);
@@ -87,32 +88,76 @@ export default function WhyUsPage() {
         <meta name="description" content={`Discover what makes ${businessName} different and why businesses choose us for their accounting needs. Expertise, technology, and a client-first approach.`} />
       </Helmet>
 
-      {/* Hero Section with Background Image */}
-      <section className="relative text-white py-16 md:py-24 overflow-hidden">
-        {/* Background Image */}
-        <div className="absolute inset-0 z-0">
-          <img 
-            src="https://res.cloudinary.com/drl0fxrkq/image/upload/v1749050356/Contemporary_Business_Owner..._original_546357_k7pinx.jpg"
-            alt="Contemporary business owner background"
-            className="w-full h-full object-cover"
+      {/* Gold Standard Hero Section */}
+      <section className="relative w-full min-h-screen flex items-center justify-center overflow-hidden bg-slate-900">
+        {/* Cinematic Full-Width Background with Smart Focal Points */}
+        <div className="absolute inset-0 w-full h-full">
+          {/* Desktop/Tablet Background - Adjusted for Head Visibility */}
+          <div 
+            className="absolute inset-0 w-full h-full hidden sm:block"
+            style={{
+              backgroundImage: `url('https://res.cloudinary.com/drl0fxrkq/image/upload/v1749050356/Contemporary_Business_Owner..._original_546357_k7pinx.jpg')`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center 15%',
+              backgroundRepeat: 'no-repeat',
+              backgroundAttachment: 'fixed'
+            }}
           />
-          {/* Dark Overlay */}
-          <div className="absolute inset-0 bg-black/80"></div>
+          
+          {/* Mobile Background - Optimal Head Framing */}
+          <div 
+            className="absolute inset-0 w-full h-full block sm:hidden"
+            style={{
+              backgroundImage: `url('https://res.cloudinary.com/drl0fxrkq/image/upload/v1749050356/Contemporary_Business_Owner..._original_546357_k7pinx.jpg')`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center 20%',
+              backgroundRepeat: 'no-repeat'
+            }}
+          />
+          
+          {/* Dark Overlay for Text Legibility - Gold Standard: 20-50% Opacity */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/30 to-black/50"></div>
         </div>
-        
-        {/* Content */}
-        <div className="relative z-10 container mx-auto px-6 md:px-8">
-          <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-3xl md:text-5xl font-bold mb-6">
-              <span className="text-white">Strategic Accounting That </span>
-              <span className="bg-gradient-to-r from-purple-400 via-blue-400 to-blue-500 bg-clip-text text-transparent">Delivers Results</span>
-            </h1>
-            <p className="text-xl text-gray-100">
-              Real strategy. Clear insights. Measurable growth.
-            </p>
+
+        {/* Content Container - Centered Layout */}
+        <div className="relative z-10 w-full px-6 md:px-8">
+          <div className="max-w-4xl mx-auto text-center text-white">
+            
+            {/* Gold Standard Headline - 4-8 words per line, max 16 total */}
+            <FadeIn delay={0.1}>
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight"
+                  style={{
+                    textShadow: '0 6px 12px rgba(0,0,0,0.7), 0 3px 6px rgba(0,0,0,0.5)',
+                    letterSpacing: '-0.02em'
+                  }}>
+                <span className="block">Strategic Accounting.</span>
+                <span className="block">Proven Results.</span>
+              </h1>
+            </FadeIn>
+
+            {/* Gold Standard Subheadline - 18-24 words max, single sentence */}
+            <FadeIn delay={0.2}>
+              <p className="text-lg sm:text-xl md:text-2xl text-gray-200 mb-8 max-w-2xl mx-auto"
+                 style={{
+                   textShadow: '0 4px 8px rgba(0,0,0,0.8), 0 2px 4px rgba(0,0,0,0.6)',
+                   letterSpacing: '0.01em'
+                 }}>
+                Clear insights and strategic guidance that deliver measurable growth for ambitious businesses.
+              </p>
+            </FadeIn>
+
+            {/* Gold Standard CTA - Large, centered, outcome-driven */}
+            <FadeIn delay={0.3}>
+              <Button 
+                size="lg" 
+                className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-8 py-4 text-lg font-semibold transition-all duration-300 transform hover:scale-105 shadow-2xl hover:shadow-purple-500/30"
+                onClick={() => window.open('https://calendly.com/progressaccountants/discovery-call', '_blank')}
+              >
+                Book My Strategy Call
+              </Button>
+            </FadeIn>
           </div>
         </div>
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-900/20 to-blue-900/10 pointer-events-none"></div>
       </section>
 
       {/* Key Differentiators */}
