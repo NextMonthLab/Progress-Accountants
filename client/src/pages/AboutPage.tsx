@@ -106,7 +106,7 @@ export default function AboutPage() {
           <div 
             className="absolute inset-0 w-full h-full hidden sm:block"
             style={{
-              backgroundImage: `url('https://res.cloudinary.com/drl0fxrkq/image/upload/v1747742808/P1013138_cgw7dc.jpg')`,
+              backgroundImage: `url('https://res.cloudinary.com/drl0fxrkq/image/upload/v1747742829/P1012439_ixwou6.jpg')`,
               backgroundSize: 'cover',
               backgroundPosition: 'center 15%',
               backgroundRepeat: 'no-repeat',
@@ -118,7 +118,7 @@ export default function AboutPage() {
           <div 
             className="absolute inset-0 w-full h-full block sm:hidden"
             style={{
-              backgroundImage: `url('https://res.cloudinary.com/drl0fxrkq/image/upload/v1747742808/P1013138_cgw7dc.jpg')`,
+              backgroundImage: `url('https://res.cloudinary.com/drl0fxrkq/image/upload/v1747742829/P1012439_ixwou6.jpg')`,
               backgroundSize: 'cover',
               backgroundPosition: 'center 20%',
               backgroundRepeat: 'no-repeat'
