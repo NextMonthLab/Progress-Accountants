@@ -90,24 +90,40 @@
         justify-content: center;
       }
 
-      /* Hero section full-viewport optimization */
-      .hero-full-screen {
+      /* Cinematic Hero Full-Viewport Optimization */
+      .hero-cinematic-full {
         min-height: 100vh;
         min-height: 100dvh;
+        width: 100vw;
+        position: relative;
         background-attachment: fixed;
       }
       
-      /* Mobile-specific hero optimizations */
+      /* Mobile Performance Optimization */
       @media (max-width: 768px) {
-        .hero-full-screen {
+        .hero-cinematic-full {
           background-attachment: scroll;
         }
       }
       
-      /* High-resolution display optimizations */
-      @media (min-width: 1920px) {
-        .hero-content-ultra {
-          max-width: 1600px;
+      /* Prevent image clipping on any device */
+      @media (orientation: portrait) {
+        .hero-portrait-focus {
+          background-position: center 25% !important;
+        }
+      }
+      
+      @media (orientation: landscape) and (max-height: 600px) {
+        .hero-landscape-compact {
+          background-position: center 35% !important;
+        }
+      }
+      
+      /* Ultra-wide display handling */
+      @media (min-width: 2560px) {
+        .hero-ultra-wide {
+          background-size: contain !important;
+          background-color: #1e293b;
         }
       }
       
