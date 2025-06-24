@@ -32,8 +32,8 @@ export default function IndustrySpecificPage() {
   return (
     <div className="bg-gray-900 min-h-screen">
       <Helmet>
-        <title>Industry-Specific Accounting | Progress Accountants</title>
-        <meta name="description" content="Specialist Accounting for Construction, Film, Music & Property in Banbury & Oxford. Tailored accounting and tax support from Progress Accountants." />
+        <title>Industry Accounting | Progress Accountants</title>
+        <meta name="description" content="Specialist Industry Accounting for Construction, Film, Music & Property. Tailored accounting and tax support for sector-specific challenges." />
       </Helmet>
 
       {/* Hero Section */}
@@ -57,13 +57,13 @@ export default function IndustrySpecificPage() {
             <div className="flex items-center mb-6">
               <Briefcase className="h-12 w-12 text-blue-400 mr-4" />
               <h1 className="text-3xl md:text-5xl font-bold">
-                <span className="text-white">🎬 Industry-Specific </span>
+                <span className="text-white">🎬 Industry </span>
                 <span className="bg-gradient-to-r from-purple-400 via-blue-400 to-blue-500 bg-clip-text text-transparent">Accounting</span>
               </h1>
             </div>
             
             <h2 className="text-2xl text-gray-100 mb-4 font-semibold">
-              Specialist Accounting for Construction, Film, Music & Property — Banbury & Oxford
+              Specialist Accounting for Construction, Film, Music & Property
             </h2>
             
             <p className="text-lg text-gray-200 mb-6">
@@ -71,7 +71,7 @@ export default function IndustrySpecificPage() {
             </p>
             
             <p className="text-lg text-gray-200 mb-8">
-              Progress Accountants provides tailored accounting and tax support for construction firms, film & TV companies, musicians, and property professionals across Banbury, Oxford, and beyond.
+              Tailored accounting and tax support for construction firms, film & TV companies, musicians, and property professionals.
             </p>
             
             <div className="flex flex-wrap gap-4">
@@ -80,7 +80,7 @@ export default function IndustrySpecificPage() {
                 className="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600"
               >
                 <Phone className="h-4 w-4 mr-2" />
-                Get Started Today
+                Get Started
               </Button>
               <Button 
                 onClick={openCalendlyPopup}
@@ -99,7 +99,7 @@ export default function IndustrySpecificPage() {
       <section className="py-16 bg-gray-900">
         <div className="container mx-auto px-6 md:px-8">
           <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl font-bold text-white text-center mb-12">Our Industry Specializations</h2>
+            <h2 className="text-3xl font-bold text-white text-center mb-12">Industry Specializations</h2>
             <div className="grid md:grid-cols-2 gap-8">
               <div className="bg-gray-800 rounded-lg p-8 border border-gray-700">
                 <div className="flex items-center mb-4">
@@ -167,10 +167,9 @@ export default function IndustrySpecificPage() {
       <section className="py-16 bg-gradient-to-br from-blue-600 to-purple-500">
         <div className="container mx-auto px-6 md:px-8">
           <div className="max-w-4xl mx-auto text-center text-white">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready for Industry-Specific Expertise?</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready for Industry Expertise?</h2>
             <p className="text-xl mb-8 opacity-90">
               Work with accountants who understand the unique challenges of your industry.
-              Contact us today for specialized support.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <Link href="/contact">
