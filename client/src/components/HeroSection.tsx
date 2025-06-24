@@ -61,25 +61,25 @@ const HeroSection = () => {
     <section className="relative w-full min-h-screen flex items-center justify-center overflow-hidden bg-slate-900">
       {/* Cinematic Full-Width Background with Smart Focal Points */}
       <div className="absolute inset-0 w-full h-full">
-        {/* Desktop/Tablet Background - Center Focus */}
+        {/* Desktop/Tablet Background - Adjusted for Head Visibility */}
         <div 
           className="absolute inset-0 w-full h-full hidden sm:block"
           style={{
             backgroundImage: `url('https://res.cloudinary.com/drl0fxrkq/image/upload/v1747742808/P1013138_cgw7dc.jpg')`,
             backgroundSize: 'cover',
-            backgroundPosition: 'center 30%',
+            backgroundPosition: 'center 40%',
             backgroundRepeat: 'no-repeat',
             backgroundAttachment: 'fixed'
           }}
         />
         
-        {/* Mobile Background - Upper Center Focus for Faces */}
+        {/* Mobile Background - Optimal Head Framing */}
         <div 
           className="absolute inset-0 w-full h-full block sm:hidden"
           style={{
             backgroundImage: `url('https://res.cloudinary.com/drl0fxrkq/image/upload/v1747742808/P1013138_cgw7dc.jpg')`,
             backgroundSize: 'cover',
-            backgroundPosition: 'center 20%',
+            backgroundPosition: 'center 35%',
             backgroundRepeat: 'no-repeat'
           }}
         />
@@ -98,30 +98,32 @@ const HeroSection = () => {
              paddingBlock: 'clamp(2rem, 8vh, 4rem)'
            }}>
         <div className="text-center text-white max-w-5xl mx-auto">
-          {/* Main Headline with Enhanced Typography */}
-          <h1 className={`font-bold text-white mb-6 transition-all duration-1000 ease-out delay-300 ${
+          {/* Main Headline with Refined Typography */}
+          <h1 className={`font-bold text-white mb-8 transition-all duration-1000 ease-out delay-300 ${
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
           }`}
               style={{
-                fontSize: 'clamp(2.5rem, 8vw, 6rem)',
-                lineHeight: 'clamp(1.1, 1.15, 1.2)',
+                fontSize: 'clamp(2rem, 6.5vw, 4.8rem)',
+                lineHeight: 'clamp(1.2, 1.25, 1.3)',
                 textShadow: '0 6px 12px rgba(0,0,0,0.5), 0 3px 6px rgba(0,0,0,0.3)',
-                letterSpacing: '-0.02em'
+                letterSpacing: '-0.02em',
+                maxWidth: '52rem',
+                margin: '0 auto'
               }}>
             Modern Accounting. Real Strategy. Future-Ready.
           </h1>
           
-          {/* Subheadline with Perfect Spacing */}
-          <h2 className={`font-semibold text-slate-100 mb-12 transition-all duration-1000 ease-out delay-500 ${
+          {/* Subheadline with Enhanced Spacing */}
+          <h2 className={`font-semibold text-slate-100 transition-all duration-1000 ease-out delay-500 ${
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
           }`}
               style={{
-                fontSize: 'clamp(1.125rem, 4vw, 2rem)',
-                lineHeight: 'clamp(1.3, 1.4, 1.5)',
+                fontSize: 'clamp(1.125rem, 3.5vw, 1.875rem)',
+                lineHeight: 'clamp(1.4, 1.5, 1.6)',
                 textShadow: '0 4px 8px rgba(0,0,0,0.6)',
                 letterSpacing: '0.01em',
                 maxWidth: '48ch',
-                margin: '0 auto clamp(3rem, 8vw, 4rem) auto'
+                margin: '0 auto clamp(3.5rem, 10vw, 5rem) auto'
               }}>
             Expertise that goes beyond numbers — helping UK businesses thrive with clarity, confidence, and control.
           </h2>
