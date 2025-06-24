@@ -16,6 +16,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { openCalendlyPopup } from "@/utils/calendly";
+import { FadeIn } from "@/components/ui/ScrollAnimation";
 
 interface BusinessIdentity {
   core?: {
@@ -85,15 +86,80 @@ export default function ProfessionalServicesPage() {
 
   return (
     <div className="min-h-screen bg-black text-white">
-      <section className="py-20 md:py-32 relative overflow-hidden">
-        <div className="absolute inset-0">
-          <img 
-            src="https://res.cloudinary.com/drl0fxrkq/image/upload/v1749050351/Business_Owner_Presenting_Annual_Sales_Accounting_Reports_With_Investors_original_2609109_zt1n1z.jpg"
-            alt="Business presentation background"
-            className="w-full h-full object-cover opacity-20"
+      {/* Gold Standard Hero Section */}
+      <section className="relative w-full min-h-screen flex items-center justify-center overflow-hidden bg-slate-900">
+        {/* Cinematic Full-Width Background with Smart Focal Points */}
+        <div className="absolute inset-0 w-full h-full">
+          {/* Desktop/Tablet Background - Adjusted for Head Visibility */}
+          <div 
+            className="absolute inset-0 w-full h-full hidden sm:block"
+            style={{
+              backgroundImage: `url(https://res.cloudinary.com/drl0fxrkq/image/upload/v1749050351/Business_Owner_Presenting_Annual_Sales_Accounting_Reports_With_Investors_original_2609109_zt1n1z.jpg)`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center 15%',
+              backgroundRepeat: 'no-repeat',
+              backgroundAttachment: 'fixed'
+            }}
           />
+          
+          {/* Mobile Background - Optimal Head Framing */}
+          <div 
+            className="absolute inset-0 w-full h-full block sm:hidden"
+            style={{
+              backgroundImage: `url(https://res.cloudinary.com/drl0fxrkq/image/upload/v1749050351/Business_Owner_Presenting_Annual_Sales_Accounting_Reports_With_Investors_original_2609109_zt1n1z.jpg)`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center 20%',
+              backgroundRepeat: 'no-repeat'
+            }}
+          />
+          
+          {/* Dark Overlay for Text Legibility - Gold Standard: 20-50% Opacity */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/30 to-black/50"></div>
         </div>
-        <div className="absolute inset-0 bg-black/60" />
+
+        {/* Content Container - Centered Layout */}
+        <div className="relative z-10 w-full px-6 md:px-8">
+          <div className="max-w-4xl mx-auto text-center text-white">
+            
+            {/* Gold Standard Headline - 4-8 words per line, max 16 total */}
+            <FadeIn delay={0.1}>
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight"
+                  style={{
+                    textShadow: '0 6px 12px rgba(0,0,0,0.7), 0 3px 6px rgba(0,0,0,0.5)',
+                    letterSpacing: '-0.02em'
+                  }}>
+                <span className="block">Professional Services.</span>
+                <span className="block">Growth Ready.</span>
+              </h1>
+            </FadeIn>
+
+            {/* Gold Standard Subheadline - 18-24 words max, single sentence */}
+            <FadeIn delay={0.2}>
+              <p className="text-lg sm:text-xl md:text-2xl text-gray-200 mb-8 max-w-2xl mx-auto"
+                 style={{
+                   textShadow: '0 4px 8px rgba(0,0,0,0.8), 0 2px 4px rgba(0,0,0,0.6)',
+                   letterSpacing: '0.01em'
+                 }}>
+                Strategic accounting for consultants, advisors, and professional service firms.
+              </p>
+            </FadeIn>
+
+            {/* Gold Standard CTA - Large, centered, outcome-driven */}
+            <FadeIn delay={0.3}>
+              <Button 
+                size="lg" 
+                className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-8 py-4 text-lg font-semibold transition-all duration-300 transform hover:scale-105 shadow-2xl hover:shadow-purple-500/30"
+                onClick={() => openCalendlyPopup()}
+              >
+                Book My Strategy Call
+              </Button>
+            </FadeIn>
+          </div>
+        </div>
+      </section>
+
+      {/* Original content continues below */}
+      <section className="py-20 md:py-32 relative overflow-hidden">
         <div className="container mx-auto px-6 md:px-8 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
             <Badge variant="secondary" className="mb-6 bg-gray-800 text-white border-gray-700">
