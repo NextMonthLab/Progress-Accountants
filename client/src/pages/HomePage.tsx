@@ -65,10 +65,10 @@ const HomePage = () => {
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-8 sm:mb-10">
               <h2 className="text-2xl sm:text-3xl font-bold mb-3 text-white px-4">
-                Looking for a proactive accountant in United Kingdom?
+                Ready to Stop Settling for Average Financial Advice?
               </h2>
               <p className="text-base sm:text-lg text-slate-300 mb-6 max-w-2xl mx-auto leading-relaxed px-4">
-                Start your conversation with us today. Let's discuss your business goals and see how we can support your growth.
+                Book a strategy call. We'll show you exactly how to turn your finances into competitive advantage and unlock growth you didn't know was possible.
               </p>
             </div>
 

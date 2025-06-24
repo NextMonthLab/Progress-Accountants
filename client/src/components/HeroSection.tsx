@@ -110,7 +110,7 @@ const HeroSection = () => {
                 maxWidth: '52rem',
                 margin: '0 auto'
               }}>
-            Modern Accounting. Real Strategy. Future-Ready.
+Your Business Deserves Better Than Basic Bookkeeping
           </h1>
           
           {/* Subheadline with Enhanced Spacing */}
@@ -125,7 +125,7 @@ const HeroSection = () => {
                 maxWidth: '48ch',
                 margin: '0 auto clamp(3.5rem, 10vw, 5rem) auto'
               }}>
-            Expertise that goes beyond numbers — helping UK businesses thrive with clarity, confidence, and control.
+We turn your finances into a growth engine. Strategic insights that drive decisions. Tax strategies that keep more money in your pocket. The kind of accounting partnership that actually moves your business forward.
           </h2>
 
           {/* Premium CTA Button with Perfect Touch Target */}
@@ -156,7 +156,7 @@ const HeroSection = () => {
               }}
               aria-label="Book a free consultation with Progress Accountants"
             >
-              Book a Free Consultation
+Get Your Growth Strategy Call
               <ArrowRight className="ml-3 h-5 w-5 flex-shrink-0" />
             </Button>
           </div>

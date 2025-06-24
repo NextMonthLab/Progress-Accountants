@@ -232,10 +232,10 @@ const ServicesSection = () => {
             </div>
             <h2 className="font-bold text-2xl sm:text-3xl md:text-4xl mb-4 text-white"
             >
-              Our Premium Services
+              What Sets Us Apart
             </h2>
             <p className="text-base sm:text-lg leading-relaxed text-gray-300 px-4 sm:px-0">
-              At Progress Accountants, we're more than just number-crunchers—we're strategic partners helping SMEs grow, adapt, and thrive.
+              Most accountants tell you what happened. We tell you what to do next. These aren't just services—they're growth levers for ambitious businesses.
             </p>
           </div>
           
@@ -265,10 +265,10 @@ const ServicesSection = () => {
             <>
               <div className="text-center max-w-3xl mx-auto mb-8 sm:mb-10 mt-12 sm:mt-16">
                 <h2 className="font-bold text-xl sm:text-2xl md:text-3xl mb-4 gradient-text">
-                  Standard Services
+                  The Essentials, Done Right
                 </h2>
                 <p className="text-sm sm:text-base max-w-xl mx-auto text-gray-300 px-4 sm:px-0">
-                  All your accounting needs in one place—delivered with clarity, reliability, and results.
+                  Your foundation services. No corners cut, no confusion, no surprises. Just solid accounting that works.
                 </p>
               </div>
               
