@@ -67,7 +67,7 @@ const HeroSection = () => {
           style={{
             backgroundImage: `url('https://res.cloudinary.com/drl0fxrkq/image/upload/v1747742808/P1013138_cgw7dc.jpg')`,
             backgroundSize: 'cover',
-            backgroundPosition: 'center 20%',
+            backgroundPosition: 'center 10%',
             backgroundRepeat: 'no-repeat',
             backgroundAttachment: 'fixed'
           }}
@@ -79,7 +79,7 @@ const HeroSection = () => {
           style={{
             backgroundImage: `url('https://res.cloudinary.com/drl0fxrkq/image/upload/v1747742808/P1013138_cgw7dc.jpg')`,
             backgroundSize: 'cover',
-            backgroundPosition: 'center 25%',
+            backgroundPosition: 'center 15%',
             backgroundRepeat: 'no-repeat'
           }}
         />
