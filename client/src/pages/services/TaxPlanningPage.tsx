@@ -3,6 +3,7 @@ import { Helmet } from 'react-helmet';
 import { Link } from 'wouter';
 import { Calculator, ArrowLeft, Phone, Mail, Calendar, CheckCircle, Target, Users, TrendingUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { FadeIn } from '@/components/ui/ScrollAnimation';
 
 export default function TaxPlanningPage() {
   const [isLoading, setIsLoading] = useState(true);
@@ -39,17 +40,80 @@ export default function TaxPlanningPage() {
         <meta name="description" content="Strategic Tax Planning for Growing Businesses. Minimize tax liabilities and plan ahead with strategic tax support tailored to your business." />
       </Helmet>
 
-      {/* Hero Section */}
-      <section className="relative text-white py-16 md:py-24 overflow-hidden">
-        <div className="absolute inset-0 z-0">
-          <img 
-            src="https://res.cloudinary.com/drl0fxrkq/image/upload/v1749050579/Screenshot_2025-06-04_at_16.22.23_sisfjv.png"
-            alt="Tax planning services background"
-            className="w-full h-full object-cover"
+      {/* Gold Standard Hero Section */}
+      <section className="relative w-full min-h-screen flex items-center justify-center overflow-hidden bg-slate-900">
+        {/* Cinematic Full-Width Background with Smart Focal Points */}
+        <div className="absolute inset-0 w-full h-full">
+          {/* Desktop/Tablet Background - Adjusted for Head Visibility */}
+          <div 
+            className="absolute inset-0 w-full h-full hidden sm:block"
+            style={{
+              backgroundImage: `url(https://res.cloudinary.com/drl0fxrkq/image/upload/v1749050579/Screenshot_2025-06-04_at_16.22.23_sisfjv.png)`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center 15%',
+              backgroundRepeat: 'no-repeat',
+              backgroundAttachment: 'fixed'
+            }}
           />
-          <div className="absolute inset-0 bg-black/70"></div>
+          
+          {/* Mobile Background - Optimal Head Framing */}
+          <div 
+            className="absolute inset-0 w-full h-full block sm:hidden"
+            style={{
+              backgroundImage: `url(https://res.cloudinary.com/drl0fxrkq/image/upload/v1749050579/Screenshot_2025-06-04_at_16.22.23_sisfjv.png)`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center 20%',
+              backgroundRepeat: 'no-repeat'
+            }}
+          />
+          
+          {/* Dark Overlay for Text Legibility - Gold Standard: 20-50% Opacity */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/30 to-black/50"></div>
         </div>
-        
+
+        {/* Content Container - Centered Layout */}
+        <div className="relative z-10 w-full px-6 md:px-8">
+          <div className="max-w-4xl mx-auto text-center text-white">
+            
+            {/* Gold Standard Headline - 4-8 words per line, max 16 total */}
+            <FadeIn delay={0.1}>
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight"
+                  style={{
+                    textShadow: '0 6px 12px rgba(0,0,0,0.7), 0 3px 6px rgba(0,0,0,0.5)',
+                    letterSpacing: '-0.02em'
+                  }}>
+                <span className="block">Tax Planning.</span>
+                <span className="block">Strategy Ready.</span>
+              </h1>
+            </FadeIn>
+
+            {/* Gold Standard Subheadline - 18-24 words max, single sentence */}
+            <FadeIn delay={0.2}>
+              <p className="text-lg sm:text-xl md:text-2xl text-gray-200 mb-8 max-w-2xl mx-auto"
+                 style={{
+                   textShadow: '0 4px 8px rgba(0,0,0,0.8), 0 2px 4px rgba(0,0,0,0.6)',
+                   letterSpacing: '0.01em'
+                 }}>
+                Minimize tax liabilities and maximize growth with strategic planning tailored to your business.
+              </p>
+            </FadeIn>
+
+            {/* Gold Standard CTA - Large, centered, outcome-driven */}
+            <FadeIn delay={0.3}>
+              <Button 
+                size="lg" 
+                className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-8 py-4 text-lg font-semibold transition-all duration-300 transform hover:scale-105 shadow-2xl hover:shadow-purple-500/30"
+                onClick={() => window.open('https://calendly.com/progressaccountants/discovery-call', '_blank')}
+              >
+                Book My Strategy Call
+              </Button>
+            </FadeIn>
+          </div>
+        </div>
+      </section>
+
+      {/* Original content continues below */}
+      <section className="relative text-white py-16 md:py-24 overflow-hidden">
         <div className="relative z-10 container mx-auto px-6 md:px-8">
           <div className="max-w-4xl mx-auto">
             {/* Back Link */}
@@ -60,43 +124,18 @@ export default function TaxPlanningPage() {
             
             <div className="flex items-center mb-6">
               <Calculator className="h-12 w-12 text-blue-400 mr-4" />
-              <h1 className="text-3xl md:text-5xl font-bold">
-                <span className="text-white">📊 Tax </span>
-                <span className="bg-gradient-to-r from-purple-400 via-blue-400 to-blue-500 bg-clip-text text-transparent">Planning</span>
-              </h1>
+              <h2 className="text-2xl md:text-3xl font-bold">
+                <span className="text-white">Strategic Tax Planning</span>
+              </h2>
             </div>
-            
-            <h2 className="text-2xl text-gray-100 mb-4 font-semibold">
-              Strategic Tax Planning for Growing Businesses
-            </h2>
             
             <p className="text-lg text-gray-200 mb-6">
               Running a business is challenging enough—no surprise tax bills.
             </p>
             
             <p className="text-lg text-gray-200 mb-8">
-              Minimize tax liabilities and plan ahead with strategic advice. Whether construction firm, creative agency, property investor or SME—tax strategy tailored to your income streams and goals.
+              Whether construction firm, creative agency, property investor or SME—tax strategy tailored to your income streams and goals.
             </p>
-            
-            <div className="flex flex-wrap gap-4">
-              <Link href="/contact">
-                <Button size="lg" className="bg-gradient-to-r from-blue-500 to-pink-500 hover:from-blue-600 hover:to-pink-600">
-                  <Phone className="h-4 w-4 mr-2" />
-                  Get Started
-                </Button>
-              </Link>
-              <Button 
-                onClick={() => {
-                  window.open('https://calendly.com/progress-accountants/free-consultation-progress-accountants', '_blank', 'width=700,height=800,resizable=yes,scrollbars=yes');
-                }}
-                variant="outline" 
-                size="lg" 
-                className="border-white text-white hover:bg-white hover:text-gray-900 cursor-pointer"
-              >
-                <Calendar className="h-4 w-4 mr-2" />
-                Book Consultation
-              </Button>
-            </div>
           </div>
         </div>
       </section>
