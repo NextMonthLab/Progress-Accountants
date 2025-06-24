@@ -32,8 +32,8 @@ export default function BookkeepingPage() {
   return (
     <div className="bg-gray-900 min-h-screen">
       <Helmet>
-        <title>Bookkeeping Services | Progress Accountants</title>
-        <meta name="description" content="Stay organised and up to date with clear, reliable bookkeeping that keeps your business running smoothly in Banbury and Oxford." />
+        <title>Bookkeeping | Progress Accountants</title>
+        <meta name="description" content="Stay organised and up to date with clear, reliable bookkeeping that keeps your business running smoothly." />
       </Helmet>
 
       {/* Hero Section */}
@@ -63,7 +63,7 @@ export default function BookkeepingPage() {
             </div>
             
             <p className="text-xl text-gray-100 mb-8">
-              Stay organised and up to date with clear, reliable bookkeeping that keeps your business running smoothly.
+              Clear, reliable bookkeeping that keeps your business running smoothly.
             </p>
             
             <div className="flex flex-wrap gap-4">
@@ -73,7 +73,7 @@ export default function BookkeepingPage() {
                 className="bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600"
               >
                 <Phone className="h-4 w-4 mr-2" />
-                Get Started Today
+                Get Started
               </Button>
               <Button 
                 onClick={openCalendlyPopup}
@@ -95,7 +95,7 @@ export default function BookkeepingPage() {
           <div className="max-w-4xl mx-auto">
             <div className="grid md:grid-cols-2 gap-8 mb-12">
               <div className="bg-gray-800 rounded-lg p-8 border border-gray-700">
-                <h3 className="text-2xl font-bold text-white mb-6">What We Provide</h3>
+                <h3 className="text-2xl font-bold text-white mb-6">What's Included</h3>
                 <ul className="space-y-3">
                   <li className="flex items-start">
                     <CheckCircle className="h-5 w-5 text-pink-400 mr-3 mt-1 flex-shrink-0" />
@@ -111,7 +111,7 @@ export default function BookkeepingPage() {
                   </li>
                   <li className="flex items-start">
                     <CheckCircle className="h-5 w-5 text-pink-400 mr-3 mt-1 flex-shrink-0" />
-                    <span className="text-gray-300">Expense tracking and categorisation</span>
+                    <span className="text-gray-300">Expense tracking and categorization</span>
                   </li>
                 </ul>
               </div>
@@ -166,7 +166,7 @@ export default function BookkeepingPage() {
                   <li>• Sales invoice creation and tracking</li>
                   <li>• Purchase invoice processing</li>
                   <li>• Bank reconciliations</li>
-                  <li>• Expense categorisation</li>
+                  <li>• Expense categorization</li>
                   <li>• Cash flow monitoring</li>
                 </ul>
               </div>
@@ -212,10 +212,9 @@ export default function BookkeepingPage() {
       <section className="py-16 bg-gradient-to-br from-pink-600 to-purple-500">
         <div className="container mx-auto px-6 md:px-8">
           <div className="max-w-4xl mx-auto text-center text-white">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready to Get Organised?</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready to Get Organized?</h2>
             <p className="text-xl mb-8 opacity-90">
-              Let us handle your bookkeeping so you can focus on growing your business. 
-              Contact us today for a consultation.
+              Let us handle your bookkeeping so you can focus on growing your business.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <Link href="/contact">
