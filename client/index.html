@@ -89,6 +89,27 @@
         align-items: center;
         justify-content: center;
       }
+
+      /* Hero section full-viewport optimization */
+      .hero-full-screen {
+        min-height: 100vh;
+        min-height: 100dvh;
+        background-attachment: fixed;
+      }
+      
+      /* Mobile-specific hero optimizations */
+      @media (max-width: 768px) {
+        .hero-full-screen {
+          background-attachment: scroll;
+        }
+      }
+      
+      /* High-resolution display optimizations */
+      @media (min-width: 1920px) {
+        .hero-content-ultra {
+          max-width: 1600px;
+        }
+      }
       
       /* Touch-friendly interactions */
       @media (max-width: 768px) {
