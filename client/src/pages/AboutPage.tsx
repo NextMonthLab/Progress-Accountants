@@ -98,44 +98,65 @@ export default function AboutPage() {
         <meta name="description" content={`${tagline}. We're not just your accountants—we're your growth partners.`} />
       </Helmet>
 
-      {/* 1. Hero Section */}
-      <section className="relative overflow-hidden py-16 md:py-24 min-h-[100vh] flex items-end">
-        <div className="absolute inset-0">
-          <img 
-            src="https://res.cloudinary.com/drl0fxrkq/image/upload/v1747743047/P1023677_dp5dyw.jpg"
-            alt="Progress Accountants office background"
-            className="w-full h-full object-cover object-top"
+      {/* Gold Standard Hero Section */}
+      <section className="relative w-full min-h-screen flex items-center justify-center overflow-hidden bg-slate-900">
+        {/* Cinematic Full-Width Background with Smart Focal Points */}
+        <div className="absolute inset-0 w-full h-full">
+          {/* Desktop/Tablet Background - Adjusted for Head Visibility */}
+          <div 
+            className="absolute inset-0 w-full h-full hidden sm:block"
+            style={{
+              backgroundImage: `url('https://res.cloudinary.com/drl0fxrkq/image/upload/v1747742808/P1013138_cgw7dc.jpg')`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center 15%',
+              backgroundRepeat: 'no-repeat',
+              backgroundAttachment: 'fixed'
+            }}
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/70 to-black/50"></div>
+          
+          {/* Mobile Background - Optimal Head Framing */}
+          <div 
+            className="absolute inset-0 w-full h-full block sm:hidden"
+            style={{
+              backgroundImage: `url('https://res.cloudinary.com/drl0fxrkq/image/upload/v1747742808/P1013138_cgw7dc.jpg')`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center 20%',
+              backgroundRepeat: 'no-repeat'
+            }}
+          />
+          
+          {/* Dark Overlay for Text Legibility - Gold Standard: 15% Opacity */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-black/15 to-black/30"></div>
         </div>
-        <div className="container relative z-10 mx-auto px-6 md:px-8 pb-32 pt-32">
-          <div className="max-w-4xl mx-auto text-center">
+
+        {/* Content Container - Centered Layout */}
+        <div className="relative z-10 w-full px-6 md:px-8">
+          <div className="max-w-4xl mx-auto text-center text-white">
+            
+            {/* Gold Standard Headline - 4-8 words per line, max 16 total */}
             <FadeIn delay={0.1}>
-              <h1 className="text-4xl md:text-6xl font-bold mb-6">
-                <span className="text-white">Accounting That </span>
-                <span className="bg-gradient-to-r from-purple-400 via-blue-400 to-purple-300 bg-clip-text text-transparent">Drives Growth</span>
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
+                <span className="block">Strategic Partners.</span>
+                <span className="block">Growth Focused.</span>
               </h1>
             </FadeIn>
+
+            {/* Gold Standard Subheadline - 18-24 words max, single sentence */}
             <FadeIn delay={0.2}>
-              <span className="inline-block px-6 py-3 rounded-full bg-gradient-to-r from-purple-500/20 to-blue-500/20 backdrop-blur-sm border border-purple-500/30 text-purple-200 text-sm font-medium mb-6">
-                Established {yearFounded} • {numberOfEmployees} Team Members
-              </span>
+              <p className="text-lg sm:text-xl md:text-2xl text-gray-200 mb-8 max-w-2xl mx-auto">
+                We transform financial complexity into competitive advantage for ambitious UK businesses.
+              </p>
             </FadeIn>
+
+            {/* Gold Standard CTA - Large, centered, outcome-driven */}
             <FadeIn delay={0.3}>
-              <p className="text-xl md:text-2xl text-gray-300 mb-8">
-                Strategic financial guidance for ambitious UK businesses.
-              </p>
-            </FadeIn>
-            <FadeIn delay={0.4}>
-              <p className="text-lg text-gray-400 max-w-3xl mx-auto">
-                We turn financial data into competitive advantage. Smart systems, strategic insights, human connection.
-              </p>
-            </FadeIn>
-            
-            <FadeIn delay={0.5}>
-              <div className="mt-10 p-6 bg-gradient-to-r from-purple-500/10 to-blue-500/10 backdrop-blur-sm border border-purple-500/20 rounded-xl">
-                <p className="italic text-gray-300">"Financial clarity that drives smart decisions and sustainable growth."</p>
-              </div>
+              <Button 
+                size="lg" 
+                className="bg-[#F27030] hover:bg-[#E55A1A] text-white px-8 py-4 text-lg font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg"
+                onClick={() => window.open('https://calendly.com/progressaccountants/discovery-call', '_blank')}
+              >
+                Book My Strategy Call
+              </Button>
             </FadeIn>
           </div>
         </div>

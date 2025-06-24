@@ -1,0 +1,132 @@
+REPLIT MASTER PAGE REPLICATION PROMPT: PROGRESS GOLD STANDARD
+
+✅ Replication Objective: Apply Certified Hero Design
+You are instructed to replicate the fully certified hero section design as used on:
+Reference Example:
+→ https://progress.riker.replit.dev/ (Home Page Hero Section)
+This reference section represents the official Progress Hero Design: GOLD CERTIFIED v1 standard.
+
+Design Specification Summary:
+1️⃣ Layout Structure:
+Full-screen hero section.
+
+
+Centered stacked headline + subheadline + CTA.
+
+
+Dark overlay applied behind text (approx. 15–20% gradient for legibility).
+
+
+Background image fully fills viewport with intelligent cropping across breakpoints.
+
+
+2️⃣ Headline (H1):
+Maximum visual impact.
+
+
+Line length: ~4–8 words per line.
+
+
+Total headline word count: max 16 words.
+
+
+Font scaling:
+
+
+Desktop: ~5rem
+
+
+Tablet: ~4rem
+
+
+Mobile: ~3rem
+
+
+Text style: bold, direct, emotionally sharp.
+
+
+Written in Rob Hutt Persona Voice:
+
+
+Direct, creative, persuasive, clarity-driven, commercially sharp.
+
+
+Balanced between emotive and business practical.
+
+
+Thought-provoking without fluff.
+
+
+3️⃣ Subheadline (H2 or paragraph):
+Short strategic statement supporting headline.
+
+
+18–24 words maximum.
+
+
+Single sentence.
+
+
+Clarity > complexity.
+
+
+4️⃣ Call-To-Action Button:
+Centered large button.
+
+
+CTA copy is outcome-driven (examples):
+
+
+“Book My Strategy Call”
+
+
+“Get My Growth Roadmap”
+
+
+“Start My Plan”
+
+
+“Unlock My Advantage”
+
+
+5️⃣ Image Handling:
+Background image must maintain full visibility of key subjects (faces, people).
+
+
+Automatic repositioning for smaller screens to avoid cropping heads or faces.
+
+
+6️⃣ Responsive Behavior:
+Zero horizontal scrolling.
+
+
+Fully fluid scaling across:
+
+
+320px (mobile portrait)
+
+
+480px (mobile landscape)
+
+
+768px (tablet)
+
+
+1024px (small desktop)
+
+
+1366px (laptop widescreen)
+
+
+1920px+ (desktop ultrawide)
+
+
+
+🟢 Important:
+If content for the new page does not yet exist, generate fresh copy using Rob Hutt Persona guidelines matching the tone and style of the certified homepage hero section.
+
+
+
+✅ Replication Action Instruction:
+Please apply this full design system to the following page:
+
