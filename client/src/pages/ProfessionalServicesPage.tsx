@@ -144,15 +144,34 @@ export default function ProfessionalServicesPage() {
               </p>
             </FadeIn>
 
-            {/* Gold Standard CTA - Large, centered, outcome-driven */}
+            {/* Gold Standard Universal Button - Rob Hutt Design System */}
             <FadeIn delay={0.3}>
-              <Button 
-                size="lg" 
-                className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-8 py-4 text-lg font-semibold transition-all duration-300 transform hover:scale-105 shadow-2xl hover:shadow-purple-500/30"
+              <button
+                className="relative inline-flex items-center justify-center font-bold text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.03] active:scale-[0.98] focus:outline-none focus:ring-4 focus:ring-purple-500/50 border-0"
+                style={{ 
+                  fontSize: 'clamp(16px, 2.5vw, 20px)',
+                  padding: 'clamp(16px, 2.5vw, 20px) clamp(32px, 6vw, 48px)',
+                  minHeight: '56px',
+                  borderRadius: '9999px',
+                  background: 'linear-gradient(90deg, #7C3AED, #EC4899)',
+                  boxShadow: '0 4px 14px rgba(124, 58, 237, 0.4), 0 2px 8px rgba(236, 72, 153, 0.3)',
+                  color: '#FFFFFF',
+                  textAlign: 'center',
+                  whiteSpace: 'nowrap'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = 'linear-gradient(90deg, #6D28D9, #DB2777)';
+                  e.currentTarget.style.boxShadow = '0 6px 20px rgba(124, 58, 237, 0.6), 0 3px 12px rgba(236, 72, 153, 0.4)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = 'linear-gradient(90deg, #7C3AED, #EC4899)';
+                  e.currentTarget.style.boxShadow = '0 4px 14px rgba(124, 58, 237, 0.4), 0 2px 8px rgba(236, 72, 153, 0.3)';
+                }}
                 onClick={() => openCalendlyPopup()}
+                aria-label="Book a strategy consultation for professional services"
               >
                 Book My Strategy Call
-              </Button>
+              </button>
             </FadeIn>
           </div>
         </div>
@@ -175,27 +194,61 @@ export default function ProfessionalServicesPage() {
               Helping you plan, price, and grow—without losing track of your finances.
             </p>
             
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button 
+            <div className="flex flex-col sm:flex-row gap-6 justify-center">
+              <button
+                className="relative inline-flex items-center justify-center font-bold text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.03] active:scale-[0.98] focus:outline-none focus:ring-4 focus:ring-purple-500/50 border-0"
+                style={{ 
+                  fontSize: 'clamp(16px, 2.5vw, 20px)',
+                  padding: 'clamp(16px, 2.5vw, 20px) clamp(32px, 6vw, 48px)',
+                  minHeight: '56px',
+                  borderRadius: '9999px',
+                  background: 'linear-gradient(90deg, #7C3AED, #EC4899)',
+                  boxShadow: '0 4px 14px rgba(124, 58, 237, 0.4), 0 2px 8px rgba(236, 72, 153, 0.3)',
+                  color: '#FFFFFF',
+                  textAlign: 'center',
+                  whiteSpace: 'nowrap'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = 'linear-gradient(90deg, #6D28D9, #DB2777)';
+                  e.currentTarget.style.boxShadow = '0 6px 20px rgba(124, 58, 237, 0.6), 0 3px 12px rgba(236, 72, 153, 0.4)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = 'linear-gradient(90deg, #7C3AED, #EC4899)';
+                  e.currentTarget.style.boxShadow = '0 4px 14px rgba(124, 58, 237, 0.4), 0 2px 8px rgba(236, 72, 153, 0.3)';
+                }}
                 onClick={() => {
                   window.open('https://calendly.com/progress-accountants/free-consultation-progress-accountants', '_blank', 'width=700,height=800,resizable=yes,scrollbars=yes');
                 }}
-                size="lg" 
-                className="progress-button-override px-8 py-6 text-lg font-semibold cursor-pointer"
+                aria-label="Book a free consultation for professional services"
               >
                 Book a Free Consultation
                 <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
-              <Button 
-                size="lg" 
-                variant="outline" 
-                className="px-8 py-6 text-lg border-gray-600 text-white hover:bg-gray-800"
-                asChild
-              >
-                <Link href="/services">
+              </button>
+              <Link href="/services" className="inline-block">
+                <button
+                  className="relative inline-flex items-center justify-center font-bold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.03] active:scale-[0.98] focus:outline-none focus:ring-4 focus:ring-white/20"
+                  style={{ 
+                    fontSize: 'clamp(16px, 2.5vw, 20px)',
+                    padding: 'clamp(16px, 2.5vw, 20px) clamp(32px, 6vw, 48px)',
+                    minHeight: '56px',
+                    borderRadius: '9999px',
+                    background: 'transparent',
+                    border: '2px solid #6B7280',
+                    color: '#FFFFFF',
+                    textAlign: 'center',
+                    whiteSpace: 'nowrap'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = '#374151';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = 'transparent';
+                  }}
+                  aria-label="Explore our services"
+                >
                   Explore Our Services
-                </Link>
-              </Button>
+                </button>
+              </Link>
             </div>
           </div>
         </div>
