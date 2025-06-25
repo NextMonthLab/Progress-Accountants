@@ -106,7 +106,7 @@ const ServiceCard = withMemo(({
               }}
               tabIndex={0}
             >
-              <span>{title === "Podcast & Video Studio" ? "Book Studio Time" : "Learn More"}</span>
+              <span>{title === "Podcast & Video Studio" ? "Book Studio" : "Learn More"}</span>
               <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
           </Link>
