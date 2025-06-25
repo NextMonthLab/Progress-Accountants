@@ -214,14 +214,33 @@ export default function ServicesPage() {
               Accounting, tax, and advisory services designed to accelerate your business growth.
             </p>
 
-            {/* Gold Standard CTA - Large, centered, outcome-driven */}
-            <Button 
-              size="lg" 
-              className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-8 py-4 text-lg font-semibold transition-all duration-300 transform hover:scale-105 shadow-2xl hover:shadow-purple-500/30"
+            {/* Gold Standard Universal Button - Rob Hutt Design System */}
+            <button
+              className="relative inline-flex items-center justify-center font-bold text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.03] active:scale-[0.98] focus:outline-none focus:ring-4 focus:ring-purple-500/50 border-0"
+              style={{ 
+                fontSize: 'clamp(16px, 2.5vw, 20px)',
+                padding: 'clamp(16px, 2.5vw, 20px) clamp(32px, 6vw, 48px)',
+                minHeight: '56px',
+                borderRadius: '9999px',
+                background: 'linear-gradient(90deg, #7C3AED, #EC4899)',
+                boxShadow: '0 4px 14px rgba(124, 58, 237, 0.4), 0 2px 8px rgba(236, 72, 153, 0.3)',
+                color: '#FFFFFF',
+                textAlign: 'center',
+                whiteSpace: 'nowrap'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = 'linear-gradient(90deg, #6D28D9, #DB2777)';
+                e.currentTarget.style.boxShadow = '0 6px 20px rgba(124, 58, 237, 0.6), 0 3px 12px rgba(236, 72, 153, 0.4)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'linear-gradient(90deg, #7C3AED, #EC4899)';
+                e.currentTarget.style.boxShadow = '0 4px 14px rgba(124, 58, 237, 0.4), 0 2px 8px rgba(236, 72, 153, 0.3)';
+              }}
               onClick={() => window.open('https://calendly.com/progressaccountants/discovery-call', '_blank')}
+              aria-label="Book a free strategy consultation with Progress Accountants"
             >
               Book My Strategy Call
-            </Button>
+            </button>
           </div>
         </div>
       </section>
@@ -418,14 +437,34 @@ export default function ServicesPage() {
                   </li>
                 </ul>
                 
-                <Button 
+                <button
                   onClick={() => {
                     window.open('https://calendly.com/progress-accountants/free-consultation-progress-accountants', '_blank', 'width=700,height=800,resizable=yes,scrollbars=yes');
                   }}
-                  className="bg-gradient-to-br from-blue-600 to-pink-500 text-white hover:shadow-lg hover:-translate-y-[2px] transition duration-300 cursor-pointer"
+                  className="relative inline-flex items-center justify-center font-bold text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.03] active:scale-[0.98] focus:outline-none focus:ring-4 focus:ring-purple-500/50 border-0"
+                  style={{ 
+                    fontSize: 'clamp(14px, 2vw, 18px)',
+                    padding: 'clamp(12px, 2vw, 16px) clamp(24px, 4vw, 32px)',
+                    minHeight: '48px',
+                    borderRadius: '9999px',
+                    background: 'linear-gradient(90deg, #7C3AED, #EC4899)',
+                    boxShadow: '0 4px 14px rgba(124, 58, 237, 0.4), 0 2px 8px rgba(236, 72, 153, 0.3)',
+                    color: '#FFFFFF',
+                    textAlign: 'center',
+                    whiteSpace: 'nowrap'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = 'linear-gradient(90deg, #6D28D9, #DB2777)';
+                    e.currentTarget.style.boxShadow = '0 6px 20px rgba(124, 58, 237, 0.6), 0 3px 12px rgba(236, 72, 153, 0.4)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = 'linear-gradient(90deg, #7C3AED, #EC4899)';
+                    e.currentTarget.style.boxShadow = '0 4px 14px rgba(124, 58, 237, 0.4), 0 2px 8px rgba(236, 72, 153, 0.3)';
+                  }}
+                  aria-label="Book a consultation with Progress Accountants"
                 >
                   Book Consultation
-                </Button>
+                </button>
               </div>
               
               {/* Right: Image */}
@@ -450,24 +489,61 @@ export default function ServicesPage() {
           <p className="text-xl text-gray-300 mb-8 max-w-3xl mx-auto">
             Book a free discovery call and we'll help map the right support for your business.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button 
+          <div className="flex flex-col sm:flex-row gap-6 justify-center">
+            <button
               onClick={() => {
                 window.open('https://calendly.com/progress-accountants/free-consultation-progress-accountants', '_blank', 'width=700,height=800,resizable=yes,scrollbars=yes');
               }}
-              size="lg"
-              className="bg-white text-gray-900 hover:bg-gray-100 hover:shadow-lg hover:-translate-y-[2px] transition duration-300 cursor-pointer"
+              className="relative inline-flex items-center justify-center font-bold text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.03] active:scale-[0.98] focus:outline-none focus:ring-4 focus:ring-purple-500/50 border-0"
+              style={{ 
+                fontSize: 'clamp(16px, 2.5vw, 20px)',
+                padding: 'clamp(16px, 2.5vw, 20px) clamp(32px, 6vw, 48px)',
+                minHeight: '56px',
+                borderRadius: '9999px',
+                background: 'linear-gradient(90deg, #7C3AED, #EC4899)',
+                boxShadow: '0 4px 14px rgba(124, 58, 237, 0.4), 0 2px 8px rgba(236, 72, 153, 0.3)',
+                color: '#FFFFFF',
+                textAlign: 'center',
+                whiteSpace: 'nowrap'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = 'linear-gradient(90deg, #6D28D9, #DB2777)';
+                e.currentTarget.style.boxShadow = '0 6px 20px rgba(124, 58, 237, 0.6), 0 3px 12px rgba(236, 72, 153, 0.4)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'linear-gradient(90deg, #7C3AED, #EC4899)';
+                e.currentTarget.style.boxShadow = '0 4px 14px rgba(124, 58, 237, 0.4), 0 2px 8px rgba(236, 72, 153, 0.3)';
+              }}
+              aria-label="Book a consultation with Progress Accountants"
             >
-              Book a Consultation
-            </Button>
-            <Link href="/industries">
-              <Button 
-                size="lg"
-                variant="outline"
-                className="text-white border-white hover:bg-white hover:text-gray-900 transition duration-300"
+              Book Consultation
+            </button>
+            <Link href="/industries" className="inline-block">
+              <button
+                className="relative inline-flex items-center justify-center font-bold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.03] active:scale-[0.98] focus:outline-none focus:ring-4 focus:ring-white/20"
+                style={{ 
+                  fontSize: 'clamp(16px, 2.5vw, 20px)',
+                  padding: 'clamp(16px, 2.5vw, 20px) clamp(32px, 6vw, 48px)',
+                  minHeight: '56px',
+                  borderRadius: '9999px',
+                  background: 'transparent',
+                  border: '2px solid #FFFFFF',
+                  color: '#FFFFFF',
+                  textAlign: 'center',
+                  whiteSpace: 'nowrap'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = '#FFFFFF';
+                  e.currentTarget.style.color = '#1F2937';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = 'transparent';
+                  e.currentTarget.style.color = '#FFFFFF';
+                }}
+                aria-label="Explore our industry-specific services"
               >
                 Explore Our Sectors
-              </Button>
+              </button>
             </Link>
           </div>
         </div>
