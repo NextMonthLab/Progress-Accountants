@@ -474,14 +474,33 @@ For professional advice tailored to your business, contact Progress Accountants
                 <div className="flex flex-col justify-center">
                   <h3 className="text-xl font-semibold mb-4 text-white">Ready to Download?</h3>
                   <p className="text-gray-300 mb-6">Get instant access to your free SME resources pack.</p>
-                  <Button 
+                  <button 
                     onClick={() => setShowLeadCaptureForm(true)}
-                    className="w-full bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] hover:shadow-lg hover:shadow-purple-500/25 hover:-translate-y-1 transition-all duration-300 text-white"
-                    size="lg"
+                    className="relative inline-flex items-center justify-center font-bold text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.03] active:scale-[0.98] focus:outline-none focus:ring-4 focus:ring-purple-500/50 border-0 w-full"
+                    style={{ 
+                      fontSize: 'clamp(16px, 2.5vw, 20px)',
+                      padding: 'clamp(16px, 2.5vw, 20px) clamp(32px, 6vw, 48px)',
+                      minHeight: '56px',
+                      borderRadius: '9999px',
+                      background: 'linear-gradient(90deg, #7C3AED, #EC4899)',
+                      boxShadow: '0 4px 14px rgba(124, 58, 237, 0.4), 0 2px 8px rgba(236, 72, 153, 0.3)',
+                      color: '#FFFFFF',
+                      textAlign: 'center',
+                      whiteSpace: 'nowrap'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.background = 'linear-gradient(90deg, #6D28D9, #DB2777)';
+                      e.currentTarget.style.boxShadow = '0 6px 20px rgba(124, 58, 237, 0.6), 0 3px 12px rgba(236, 72, 153, 0.4)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.background = 'linear-gradient(90deg, #7C3AED, #EC4899)';
+                      e.currentTarget.style.boxShadow = '0 4px 14px rgba(124, 58, 237, 0.4), 0 2px 8px rgba(236, 72, 153, 0.3)';
+                    }}
+                    aria-label="Download resources pack"
                   >
                     <Download className="mr-2 h-5 w-5" />
                     Download Resources Pack
-                  </Button>
+                  </button>
                 </div>
               </div>
             ) : (
@@ -604,7 +623,7 @@ For professional advice tailored to your business, contact Progress Accountants
                     <p className="text-slate-300 mb-4">
                       Close this box once you've completed the download
                     </p>
-                    <Button
+                    <button
                       onClick={async () => {
                         try {
                           // Generate branded PDF with SME support resources
@@ -654,11 +673,30 @@ For professional advice tailored to your business, contact Progress Accountants
                           toast({ title: "Download error", description: "There was an issue generating your report. Please try again.", variant: "destructive" });
                         }
                       }}
-                      className="bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] hover:shadow-lg hover:shadow-purple-500/25 text-white"
-                      size="lg"
+                      className="relative inline-flex items-center justify-center font-bold text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.03] active:scale-[0.98] focus:outline-none focus:ring-4 focus:ring-purple-500/50 border-0"
+                      style={{ 
+                        fontSize: 'clamp(16px, 2.5vw, 20px)',
+                        padding: 'clamp(16px, 2.5vw, 20px) clamp(32px, 6vw, 48px)',
+                        minHeight: '56px',
+                        borderRadius: '9999px',
+                        background: 'linear-gradient(90deg, #7C3AED, #EC4899)',
+                        boxShadow: '0 4px 14px rgba(124, 58, 237, 0.4), 0 2px 8px rgba(236, 72, 153, 0.3)',
+                        color: '#FFFFFF',
+                        textAlign: 'center',
+                        whiteSpace: 'nowrap'
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.background = 'linear-gradient(90deg, #6D28D9, #DB2777)';
+                        e.currentTarget.style.boxShadow = '0 6px 20px rgba(124, 58, 237, 0.6), 0 3px 12px rgba(236, 72, 153, 0.4)';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.background = 'linear-gradient(90deg, #7C3AED, #EC4899)';
+                        e.currentTarget.style.boxShadow = '0 4px 14px rgba(124, 58, 237, 0.4), 0 2px 8px rgba(236, 72, 153, 0.3)';
+                      }}
+                      aria-label="Download SME Resources Pack"
                     >
                       Download SME Resources Pack
-                    </Button>
+                    </button>
                     <p className="text-slate-400 text-sm mt-4">
                       Includes UK business contacts directory and key deadlines calendar
                     </p>
@@ -694,14 +732,33 @@ const CTASection = () => (
         <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
           Book a chat with our team and let us help you navigate UK business requirements with confidence.
         </p>
-        <Button 
+        <button 
           onClick={openCalendlyPopup}
-          size="lg" 
-          className="bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] hover:shadow-lg hover:shadow-purple-500/25 hover:-translate-y-1 transition-all duration-300 text-white"
+          className="relative inline-flex items-center justify-center font-bold text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.03] active:scale-[0.98] focus:outline-none focus:ring-4 focus:ring-purple-500/50 border-0"
+          style={{ 
+            fontSize: 'clamp(16px, 2.5vw, 20px)',
+            padding: 'clamp(16px, 2.5vw, 20px) clamp(32px, 6vw, 48px)',
+            minHeight: '56px',
+            borderRadius: '9999px',
+            background: 'linear-gradient(90deg, #7C3AED, #EC4899)',
+            boxShadow: '0 4px 14px rgba(124, 58, 237, 0.4), 0 2px 8px rgba(236, 72, 153, 0.3)',
+            color: '#FFFFFF',
+            textAlign: 'center',
+            whiteSpace: 'nowrap'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background = 'linear-gradient(90deg, #6D28D9, #DB2777)';
+            e.currentTarget.style.boxShadow = '0 6px 20px rgba(124, 58, 237, 0.6), 0 3px 12px rgba(236, 72, 153, 0.4)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background = 'linear-gradient(90deg, #7C3AED, #EC4899)';
+            e.currentTarget.style.boxShadow = '0 4px 14px rgba(124, 58, 237, 0.4), 0 2px 8px rgba(236, 72, 153, 0.3)';
+          }}
+          aria-label="Schedule a call"
         >
-          Schedule a Call
+          Book My Strategy Call
           <ArrowRight className="ml-2 h-5 w-5" />
-        </Button>
+        </button>
       </motion.div>
     </div>
   </section>
