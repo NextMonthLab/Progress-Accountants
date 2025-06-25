@@ -72,13 +72,32 @@ export default function StudioBanburyPage() {
 
             {/* Gold Standard CTA - Large, centered, outcome-driven */}
             <FadeIn delay={0.3}>
-              <Button 
-                size="lg" 
-                className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-8 py-4 text-lg font-semibold transition-all duration-300 transform hover:scale-105 shadow-2xl hover:shadow-purple-500/30"
+              <button
                 onClick={() => window.open('https://calendly.com/progressaccountants/discovery-call', '_blank')}
+                className="relative inline-flex items-center justify-center font-bold text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.03] active:scale-[0.98] focus:outline-none focus:ring-4 focus:ring-purple-500/50 border-0"
+                style={{ 
+                  fontSize: 'clamp(16px, 2.5vw, 20px)',
+                  padding: 'clamp(16px, 2.5vw, 20px) clamp(32px, 6vw, 48px)',
+                  minHeight: '56px',
+                  borderRadius: '9999px',
+                  background: 'linear-gradient(90deg, #7C3AED, #EC4899)',
+                  boxShadow: '0 4px 14px rgba(124, 58, 237, 0.4), 0 2px 8px rgba(236, 72, 153, 0.3)',
+                  color: '#FFFFFF',
+                  textAlign: 'center',
+                  whiteSpace: 'nowrap'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = 'linear-gradient(90deg, #6D28D9, #DB2777)';
+                  e.currentTarget.style.boxShadow = '0 6px 20px rgba(124, 58, 237, 0.6), 0 3px 12px rgba(236, 72, 153, 0.4)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = 'linear-gradient(90deg, #7C3AED, #EC4899)';
+                  e.currentTarget.style.boxShadow = '0 4px 14px rgba(124, 58, 237, 0.4), 0 2px 8px rgba(236, 72, 153, 0.3)';
+                }}
+                aria-label="Book studio time"
               >
                 Book Studio Time
-              </Button>
+              </button>
             </FadeIn>
           </div>
         </div>
@@ -110,13 +129,33 @@ export default function StudioBanburyPage() {
             </div>
             
             <div className="mb-12">
-              <a 
-                href="#booking-form" 
-                className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] text-white rounded-lg hover:shadow-lg hover:shadow-purple-500/25 hover:-translate-y-1 transition-all duration-300 font-medium"
+              <button 
+                onClick={() => document.getElementById('booking-form')?.scrollIntoView({ behavior: 'smooth' })}
+                className="relative inline-flex items-center justify-center font-bold text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.03] active:scale-[0.98] focus:outline-none focus:ring-4 focus:ring-purple-500/50 border-0"
+                style={{ 
+                  fontSize: 'clamp(16px, 2.5vw, 20px)',
+                  padding: 'clamp(16px, 2.5vw, 20px) clamp(32px, 6vw, 48px)',
+                  minHeight: '56px',
+                  borderRadius: '9999px',
+                  background: 'linear-gradient(90deg, #7C3AED, #EC4899)',
+                  boxShadow: '0 4px 14px rgba(124, 58, 237, 0.4), 0 2px 8px rgba(236, 72, 153, 0.3)',
+                  color: '#FFFFFF',
+                  textAlign: 'center',
+                  whiteSpace: 'nowrap'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = 'linear-gradient(90deg, #6D28D9, #DB2777)';
+                  e.currentTarget.style.boxShadow = '0 6px 20px rgba(124, 58, 237, 0.6), 0 3px 12px rgba(236, 72, 153, 0.4)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = 'linear-gradient(90deg, #7C3AED, #EC4899)';
+                  e.currentTarget.style.boxShadow = '0 4px 14px rgba(124, 58, 237, 0.4), 0 2px 8px rgba(236, 72, 153, 0.3)';
+                }}
+                aria-label="Book studio time"
               >
                 <span>Book Studio Time</span>
-                <ArrowRight size={18} />
-              </a>
+                <ArrowRight size={18} className="ml-2" />
+              </button>
             </div>
           </div>
         </div>
@@ -456,13 +495,33 @@ export default function StudioBanburyPage() {
             </div>
             
             <div className="mb-12">
-              <a 
-                href="/services" 
-                className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] text-white rounded-lg hover:shadow-lg hover:shadow-purple-500/25 hover:-translate-y-1 transition-all duration-300 font-medium"
+              <button 
+                onClick={() => window.location.href = '/services'}
+                className="relative inline-flex items-center justify-center font-bold text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.03] active:scale-[0.98] focus:outline-none focus:ring-4 focus:ring-purple-500/50 border-0"
+                style={{ 
+                  fontSize: 'clamp(16px, 2.5vw, 20px)',
+                  padding: 'clamp(16px, 2.5vw, 20px) clamp(32px, 6vw, 48px)',
+                  minHeight: '56px',
+                  borderRadius: '9999px',
+                  background: 'linear-gradient(90deg, #7C3AED, #EC4899)',
+                  boxShadow: '0 4px 14px rgba(124, 58, 237, 0.4), 0 2px 8px rgba(236, 72, 153, 0.3)',
+                  color: '#FFFFFF',
+                  textAlign: 'center',
+                  whiteSpace: 'nowrap'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = 'linear-gradient(90deg, #6D28D9, #DB2777)';
+                  e.currentTarget.style.boxShadow = '0 6px 20px rgba(124, 58, 237, 0.6), 0 3px 12px rgba(236, 72, 153, 0.4)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = 'linear-gradient(90deg, #7C3AED, #EC4899)';
+                  e.currentTarget.style.boxShadow = '0 4px 14px rgba(124, 58, 237, 0.4), 0 2px 8px rgba(236, 72, 153, 0.3)';
+                }}
+                aria-label="Explore our client plans"
               >
                 <span>👉 Explore our Client Plans</span>
-                <ArrowRight size={18} />
-              </a>
+                <ArrowRight size={18} className="ml-2" />
+              </button>
             </div>
           </div>
         </div>
@@ -585,10 +644,30 @@ export default function StudioBanburyPage() {
                 <div className="text-center">
                   <button
                     type="submit"
-                    className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] text-white rounded-lg hover:shadow-lg hover:shadow-purple-500/25 hover:-translate-y-1 transition-all duration-300 font-medium"
+                    className="relative inline-flex items-center justify-center font-bold text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.03] active:scale-[0.98] focus:outline-none focus:ring-4 focus:ring-purple-500/50 border-0"
+                    style={{ 
+                      fontSize: 'clamp(16px, 2.5vw, 20px)',
+                      padding: 'clamp(16px, 2.5vw, 20px) clamp(32px, 6vw, 48px)',
+                      minHeight: '56px',
+                      borderRadius: '9999px',
+                      background: 'linear-gradient(90deg, #7C3AED, #EC4899)',
+                      boxShadow: '0 4px 14px rgba(124, 58, 237, 0.4), 0 2px 8px rgba(236, 72, 153, 0.3)',
+                      color: '#FFFFFF',
+                      textAlign: 'center',
+                      whiteSpace: 'nowrap'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.background = 'linear-gradient(90deg, #6D28D9, #DB2777)';
+                      e.currentTarget.style.boxShadow = '0 6px 20px rgba(124, 58, 237, 0.6), 0 3px 12px rgba(236, 72, 153, 0.4)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.background = 'linear-gradient(90deg, #7C3AED, #EC4899)';
+                      e.currentTarget.style.boxShadow = '0 4px 14px rgba(124, 58, 237, 0.4), 0 2px 8px rgba(236, 72, 153, 0.3)';
+                    }}
+                    aria-label="Submit booking request"
                   >
                     <span>Submit Booking Request</span>
-                    <ArrowRight size={18} />
+                    <ArrowRight size={18} className="ml-2" />
                   </button>
                 </div>
               </form>
