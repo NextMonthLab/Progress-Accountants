@@ -1,0 +1,67 @@
+UNIVERSAL GOLD STANDARD BUTTON PROMPT — STANDALONE & GLOBAL BUTTON SYSTEM v1
+
+⸻
+
+You are optimizing standalone buttons across the entire web project following the Rob Hutt Gold Standard Button Design System.
+
+Overall Button Style
+	•	Shape: Fully rounded pill shape (max border-radius)
+	•	Padding: Generous horizontal and vertical padding to ensure spacious clickable area across devices
+	•	Minimum touch target: 48px height recommended
+	•	Shadow: Subtle soft shadow to give gentle lift
+	•	Borders: None
+
+Typography
+	•	Font weight: Bold
+	•	Font size:
+	•	Desktop: 20px
+	•	Tablet: 18px
+	•	Mobile: 16px
+	•	Text always fully centered vertically and horizontally
+
+Color & Gradient
+	•	Base color: Branded gradient as currently used (purple-pink)
+	•	Gradient should always render full-width across the entire button shape
+	•	Gradient orientation: left to right
+	•	No visible cutoff or awkward gradient breaks when button width varies
+	•	Text color: Pure white (#FFFFFF)
+
+Hover & Focus States
+	•	On hover:
+	•	Slight scale-up (1.03x)
+	•	Shadow intensifies slightly for depth
+	•	Gradient shifts subtly to a brighter gradient version (slightly more contrast)
+	•	On focus:
+	•	Outline or glow (accessible focus ring)
+	•	On click:
+	•	Soft push-down scale effect
+
+Responsiveness
+	•	Buttons automatically resize padding and font size proportionally across breakpoints
+	•	Text must never wrap mid-word — if text gets too long for mobile, buttons should either:
+	•	Expand container width (if safe)
+	•	Or introduce an admin-configurable short version of button text per screen size
+
+Accessibility
+	•	Full keyboard navigation supported
+	•	Accessible aria-labels where applicable
+	•	Use semantic <button> tags (not <div>)
+
+Usage Contexts
+	•	Standalone buttons outside of cards
+	•	Call-to-action rows
+	•	Page hero sections
+	•	Footers
+	•	Contact sections
+	•	Reusable site-wide system button component for consistent branding
+
+Design Persona Reminder
+	•	Align with the Rob Hutt visual persona:
+	•	Cinematic feel
+	•	Conversion-led
+	•	Bold but elegant
+	•	No generic SaaS flat design
+
+⸻
+
+At the end of this prompt I will supply the exact page/section where this prompt should be applied.
