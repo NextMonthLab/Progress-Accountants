@@ -1,0 +1,51 @@
+UNIVERSAL IMAGE CARD SECTION GOLD STANDARD PROMPT v2
+
+⸻
+
+You are optimizing a feature card section that includes image-based cards for a professional services website. Apply the Rob Hutt Gold Standard Image Card Design System across the selected section.
+
+Layout Rules:
+	•	Mobile: 1 column full-width layout
+	•	Tablet: 2 columns
+	•	Desktop: 3 columns centered horizontally
+	•	Apply global container max-width for clean centering on large screens
+
+Visual Consistency:
+	•	All card headers (h3) horizontally aligned across cards
+	•	Paragraph text perfectly aligned and vertically balanced across cards
+	•	Bullet point lists aligned and vertically matched
+	•	Call-to-action button present on every card, visually identical and horizontally level
+	•	Cards have consistent internal padding, border radius, and drop shadow
+
+Image Handling:
+	•	Apply object-fit: cover on all images to fully fill containers
+	•	Eliminate empty space, letterboxing or black/white borders
+	•	Maintain consistent image aspect ratio across all cards
+	•	If needed, adjust image crop positioning to maintain visual balance (avoid heads being cut off)
+
+Responsive Typography:
+	•	Desktop: Titles 24px, body text 18px, buttons consistent
+	•	Tablet: Scale proportionally downward
+	•	Mobile: Titles 20px, body text 16px
+
+Hover & Interaction:
+	•	Entire card softly scales on hover (not just button)
+	•	Smooth and professional hover animations
+	•	Buttons maintain gradient and branded hover effects
+
+Accessibility & Technical Best Practice:
+	•	Alt text present on all images
+	•	Full keyboard navigation supported
+	•	Semantic structure preserved (section, article, h3, p, ul/li, button)
+	•	Code clean, maintainable, reusable for future sections
+
+Design Persona Alignment:
+	•	This follows Rob Hutt’s copywriting and design persona:
+	•	Direct but creative phrasing
+	•	Confident but approachable tone
+	•	Conversational clarity
+	•	Avoid dry technical filler copy
+
+⸻
+
+At the end of this prompt I will supply the exact page/section where this prompt should be applied.

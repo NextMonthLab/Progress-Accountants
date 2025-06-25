@@ -127,7 +127,7 @@ Progress Accountants is a sophisticated SmartSite platform built with React/Type
 
 ```
 Changelog:
-- June 25, 2025: Applied Rob Hutt Gold Standard Image Card Section production redesign to homepage - implemented consistent container heights, object-fit cover with no letterboxing, responsive grid (1/2/3/4 columns), typography scaling (24px->18px), balanced spacing hierarchy, smooth hover transforms, and accessibility-focused descriptive alt text matching hero section design disciplines
+- June 25, 2025: Applied Universal Image Card Section Gold Standard v2 to homepage - implemented perfect horizontal alignment of headers/text/bullets/CTAs across cards, consistent 3:2 aspect ratio images with object-fit cover eliminating letterboxing, responsive typography (24px desktop, 20px mobile), semantic HTML structure with article tags, full keyboard navigation, and Rob Hutt conversion-focused design with professional hover animations
 - June 24, 2025: Applied Gold Standard hero template to Virtual Finance Director service page retaining existing background image - implemented sharp Rob Hutt headlines "Finance Director. Leadership Ready." with proper overlay, text shadows, and purple/pink gradient CTA
 - June 24, 2025: Applied Gold Standard hero template to Industry-Specific service page retaining existing background image - implemented sharp Rob Hutt headlines "Industry Specialists. Sector Ready." with proper overlay, text shadows, and purple/pink gradient CTA
 - June 24, 2025: Applied Gold Standard hero template to Cloud Accounting service page retaining existing background image - implemented sharp Rob Hutt headlines "Cloud Accounting. Future Ready." with proper overlay, text shadows, and purple/pink gradient CTA

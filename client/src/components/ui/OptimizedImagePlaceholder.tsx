@@ -13,22 +13,22 @@ import podcastStudioImg from "@assets/Podcast Studio.jpg";
 import strategySessionImg from "@assets/Strategy Session.jpg";
 import teamPhotoImg from "@assets/Team Photo.jpg";
 
-// Rob Hutt Production-Grade Image Components - Consistent aspect ratios, no letterboxing
+// Gold Standard v2 Image Components - Perfect aspect ratios, zero letterboxing
 export const OptimizedPodcastStudio = () => (
   <div className="w-full h-full relative overflow-hidden bg-slate-900">
     <OptimizedImage 
       src={podcastStudioImg} 
-      alt="Professional Podcast and Video Studio with broadcast-quality equipment and acoustic treatment"
+      alt="Professional broadcast-quality podcast and video studio featuring acoustic treatment and professional equipment"
       width={600}
       height={400}
-      className="absolute inset-0 w-full h-full object-cover object-center transform transition-transform duration-700 ease-out"
+      className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 ease-out"
       style={{
         aspectRatio: '3/2',
-        filter: 'contrast(1.05) saturate(1.1)'
+        objectPosition: 'center 40%',
+        filter: 'contrast(1.08) saturate(1.15) brightness(1.02)'
       }}
     />
-    {/* Subtle gradient overlay for text legibility */}
-    <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-black/10"></div>
+    <div className="absolute inset-0 bg-gradient-to-t from-black/15 via-transparent to-black/5"></div>
   </div>
 );
 
@@ -36,17 +36,17 @@ export const OptimizedDashboardMockup = () => (
   <div className="w-full h-full relative overflow-hidden bg-slate-900">
     <OptimizedImage 
       src={teamPhotoImg} 
-      alt="Custom Financial Dashboard displaying real-time business analytics and key performance indicators"
+      alt="Real-time financial dashboard showing business analytics, KPIs, and performance metrics for data-driven decisions"
       width={600}
       height={400}
-      className="absolute inset-0 w-full h-full object-cover object-center transform transition-transform duration-700 ease-out"
+      className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 ease-out"
       style={{
         aspectRatio: '3/2',
-        filter: 'contrast(1.05) saturate(1.1)'
+        objectPosition: 'center 35%',
+        filter: 'contrast(1.08) saturate(1.15) brightness(1.02)'
       }}
     />
-    {/* Professional overlay matching hero section */}
-    <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-black/10"></div>
+    <div className="absolute inset-0 bg-gradient-to-t from-black/15 via-transparent to-black/5"></div>
   </div>
 );
 
@@ -54,17 +54,17 @@ export const OptimizedStrategySession = () => (
   <div className="w-full h-full relative overflow-hidden bg-slate-900">
     <OptimizedImage 
       src={strategySessionImg} 
-      alt="Strategic Financial Planning Session with Virtual Finance Director providing expert business guidance"
+      alt="Strategic business planning session with Virtual Finance Director providing expert financial guidance and growth strategies"
       width={600}
       height={400}
-      className="absolute inset-0 w-full h-full object-cover object-center transform transition-transform duration-700 ease-out"
+      className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 ease-out"
       style={{
         aspectRatio: '3/2',
-        filter: 'contrast(1.05) saturate(1.1)'
+        objectPosition: 'center 30%',
+        filter: 'contrast(1.08) saturate(1.15) brightness(1.02)'
       }}
     />
-    {/* Gold Standard overlay treatment */}
-    <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-black/10"></div>
+    <div className="absolute inset-0 bg-gradient-to-t from-black/15 via-transparent to-black/5"></div>
   </div>
 );
 
