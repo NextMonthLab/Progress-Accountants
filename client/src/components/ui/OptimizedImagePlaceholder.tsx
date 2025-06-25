@@ -13,35 +13,41 @@ import podcastStudioImg from "@assets/Podcast Studio.jpg";
 import strategySessionImg from "@assets/Strategy Session.jpg";
 import teamPhotoImg from "@assets/Team Photo.jpg";
 
-// Optimized version of image placeholders
+// Gold Standard Optimized Image Components - Full container fill, no gaps
 export const OptimizedPodcastStudio = () => (
-  <OptimizedImage 
-    src={podcastStudioImg} 
-    alt="Podcast and Video Studio"
-    width={400}
-    height={240}
-    className="w-full h-full object-cover object-center"
-  />
+  <div className="w-full h-full relative overflow-hidden">
+    <OptimizedImage 
+      src={podcastStudioImg} 
+      alt="Podcast and Video Studio"
+      width={400}
+      height={240}
+      className="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-300 group-hover:scale-105"
+    />
+  </div>
 );
 
 export const OptimizedDashboardMockup = () => (
-  <OptimizedImage 
-    src={teamPhotoImg} 
-    alt="Financial Dashboard with Revenue Analytics"
-    width={400}
-    height={240}
-    className="w-full h-full object-cover object-center"
-  />
+  <div className="w-full h-full relative overflow-hidden">
+    <OptimizedImage 
+      src={teamPhotoImg} 
+      alt="Financial Dashboard with Revenue Analytics"
+      width={400}
+      height={240}
+      className="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-300 group-hover:scale-105"
+    />
+  </div>
 );
 
 export const OptimizedStrategySession = () => (
-  <OptimizedImage 
-    src={strategySessionImg} 
-    alt="Strategy Session with Financial Advisors"
-    width={400}
-    height={240}
-    className="w-full h-full object-cover object-center"
-  />
+  <div className="w-full h-full relative overflow-hidden">
+    <OptimizedImage 
+      src={strategySessionImg} 
+      alt="Strategy Session with Financial Advisors"
+      width={400}
+      height={240}
+      className="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-300 group-hover:scale-105"
+    />
+  </div>
 );
 
 export const OptimizedTeamPhoto = () => (

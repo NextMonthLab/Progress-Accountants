@@ -1,0 +1,41 @@
+UNIVERSAL PROMPT: Image Card Section Optimization (Gold Standard v1.0)
+
+I would like you to improve and optimize all image-based cards on this page following a gold standard design reference.
+
+Design Goals:
+	•	The cards should be fully responsive across all screen sizes (desktop, tablet, mobile portrait, mobile landscape).
+	•	Images must fully fill the top container area of each card without awkward gaps above the title.
+	•	Maintain a consistent image aspect ratio that works across breakpoints.
+	•	Header text should appear immediately beneath the image with consistent padding.
+	•	Body text (description) should have clear visual hierarchy and breathing space beneath header text.
+	•	Icon bullets (if present) should maintain spacing consistency with body text.
+	•	Call-to-action buttons (if present) should have equal consistent margin below content.
+	•	Card height should remain visually balanced across different card variants, even when content lengths vary.
+	•	Rounded corners, shadows, gradients, and brand colors should remain consistent with existing gold standard design system.
+	•	Avoid vertical dead space between image and text on any screen size.
+
+Responsive Behavior:
+	•	On mobile: single-column stacking of cards with images displayed full-width.
+	•	On tablet: two-column stacking where possible.
+	•	On desktop: standard three-column layout.
+	•	Smooth adaptive behavior as viewport resizes.
+
+Text Scaling Guidance:
+	•	H3 title: ~24px desktop, scale down responsively to ~18px mobile.
+	•	Body text: ~16px desktop, scaling to ~14px mobile.
+	•	Bullet text: ~14px across all breakpoints.
+	•	CTA Button: maintain legible sizing and consistent height across devices.
+
+Image Handling:
+	•	Use object-fit: cover to prevent letterboxing or white gaps.
+	•	Ensure important parts of image remain visible across crop.
+	•	Maintain uniform image container height across cards.
+
+Important:
+	•	Do NOT apply these changes to text-only cards, pricing cards, or testimonial cards. This prompt only applies to image-based feature cards like the Podcast, Dashboard, and Virtual FD cards shown on the homepage.
+	•	You are allowed to generate new container divs, class names, or small refactors as needed to achieve proper behavior.
+	•	Use modern responsive CSS (Flex, Grid, media queries).
+
+PAGE TARGET:
+
+Please apply this optimization to:
