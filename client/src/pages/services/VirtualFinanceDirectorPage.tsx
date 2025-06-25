@@ -95,15 +95,34 @@ export default function VirtualFinanceDirectorPage() {
               </p>
             </FadeIn>
 
-            {/* Gold Standard CTA - Large, centered, outcome-driven */}
+            {/* Gold Standard Universal Button - Rob Hutt Design System */}
             <FadeIn delay={0.3}>
-              <Button 
-                size="lg" 
-                className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-8 py-4 text-lg font-semibold transition-all duration-300 transform hover:scale-105 shadow-2xl hover:shadow-purple-500/30"
+              <button
+                className="relative inline-flex items-center justify-center font-bold text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.03] active:scale-[0.98] focus:outline-none focus:ring-4 focus:ring-purple-500/50 border-0"
+                style={{ 
+                  fontSize: 'clamp(16px, 2.5vw, 20px)',
+                  padding: 'clamp(16px, 2.5vw, 20px) clamp(32px, 6vw, 48px)',
+                  minHeight: '56px',
+                  borderRadius: '9999px',
+                  background: 'linear-gradient(90deg, #7C3AED, #EC4899)',
+                  boxShadow: '0 4px 14px rgba(124, 58, 237, 0.4), 0 2px 8px rgba(236, 72, 153, 0.3)',
+                  color: '#FFFFFF',
+                  textAlign: 'center',
+                  whiteSpace: 'nowrap'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = 'linear-gradient(90deg, #6D28D9, #DB2777)';
+                  e.currentTarget.style.boxShadow = '0 6px 20px rgba(124, 58, 237, 0.6), 0 3px 12px rgba(236, 72, 153, 0.4)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = 'linear-gradient(90deg, #7C3AED, #EC4899)';
+                  e.currentTarget.style.boxShadow = '0 4px 14px rgba(124, 58, 237, 0.4), 0 2px 8px rgba(236, 72, 153, 0.3)';
+                }}
                 onClick={() => window.open('https://calendly.com/progressaccountants/discovery-call', '_blank')}
+                aria-label="Book a strategy consultation for virtual finance director services"
               >
                 Book My Strategy Call
-              </Button>
+              </button>
             </FadeIn>
           </div>
         </div>
