@@ -128,22 +128,30 @@ Strategic Accounting That Drives Growth
 We turn financial data into competitive advantage for ambitious UK businesses.
           </h2>
 
-          {/* Premium CTA Button with Perfect Touch Target */}
+          {/* Gold Standard Universal Button - Rob Hutt Design System */}
           <div className={`transition-all duration-1000 ease-out delay-700 ${
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
           }`}>
-            <Button
-              size="lg"
-              className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-bold shadow-2xl hover:shadow-purple-500/30 transition-all duration-300 hover:scale-105 transform active:scale-95"
+            <button
+              className="relative inline-flex items-center justify-center font-bold text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.03] active:scale-[0.98] focus:outline-none focus:ring-4 focus:ring-purple-500/50 border-0"
               style={{ 
-                fontSize: 'clamp(1rem, 3vw, 1.25rem)',
-                paddingInline: 'clamp(2rem, 6vw, 3.5rem)',
-                paddingBlock: 'clamp(1rem, 3vw, 1.375rem)',
-                minHeight: '48px',
-                minWidth: 'clamp(200px, 50vw, 320px)',
-                borderRadius: '50px',
-                marginBottom: 'clamp(1rem, 4vw, 2rem)',
-                boxShadow: '0 8px 32px rgba(147, 51, 234, 0.3), 0 4px 16px rgba(59, 130, 246, 0.2)'
+                fontSize: 'clamp(16px, 2.5vw, 20px)',
+                padding: 'clamp(14px, 2.5vw, 20px) clamp(32px, 6vw, 48px)',
+                minHeight: '56px',
+                borderRadius: '9999px',
+                background: 'linear-gradient(90deg, #7C3AED, #EC4899)',
+                boxShadow: '0 4px 14px rgba(124, 58, 237, 0.4), 0 2px 8px rgba(236, 72, 153, 0.3)',
+                color: '#FFFFFF',
+                textAlign: 'center',
+                whiteSpace: 'nowrap'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = 'linear-gradient(90deg, #6D28D9, #DB2777)';
+                e.currentTarget.style.boxShadow = '0 6px 20px rgba(124, 58, 237, 0.6), 0 3px 12px rgba(236, 72, 153, 0.4)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'linear-gradient(90deg, #7C3AED, #EC4899)';
+                e.currentTarget.style.boxShadow = '0 4px 14px rgba(124, 58, 237, 0.4), 0 2px 8px rgba(236, 72, 153, 0.3)';
               }}
               onClick={() => {
                 if (window.Calendly) {
@@ -156,9 +164,9 @@ We turn financial data into competitive advantage for ambitious UK businesses.
               }}
               aria-label="Book a free consultation with Progress Accountants"
             >
-Book My Strategy Call
+              Book My Strategy Call
               <ArrowRight className="ml-3 h-5 w-5 flex-shrink-0" />
-            </Button>
+            </button>
           </div>
         </div>
       </div>

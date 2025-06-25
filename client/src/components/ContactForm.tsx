@@ -172,13 +172,31 @@ export default function ContactForm({ compact = false, className = "" }: Contact
                 )}
               />
               
-              <Button 
-                type="submit" 
-                className="w-full progress-button"
+              <button 
+                type="submit"
+                className="relative w-full inline-flex items-center justify-center font-bold text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.03] active:scale-[0.98] focus:outline-none focus:ring-4 focus:ring-purple-500/50 border-0 disabled:opacity-50 disabled:cursor-not-allowed"
                 style={{ 
-                  background: 'linear-gradient(135deg, #7B3FE4 0%, #3FA4E4 100%)',
-                  color: 'white',
-                  border: 'none'
+                  fontSize: 'clamp(14px, 2vw, 16px)',
+                  padding: 'clamp(12px, 2vw, 16px) clamp(24px, 4vw, 32px)',
+                  minHeight: '48px',
+                  borderRadius: '9999px',
+                  background: 'linear-gradient(90deg, #7C3AED, #EC4899)',
+                  boxShadow: '0 4px 14px rgba(124, 58, 237, 0.4), 0 2px 8px rgba(236, 72, 153, 0.3)',
+                  color: '#FFFFFF',
+                  textAlign: 'center',
+                  whiteSpace: 'nowrap'
+                }}
+                onMouseEnter={(e) => {
+                  if (!isSubmitting) {
+                    e.currentTarget.style.background = 'linear-gradient(90deg, #6D28D9, #DB2777)';
+                    e.currentTarget.style.boxShadow = '0 6px 20px rgba(124, 58, 237, 0.6), 0 3px 12px rgba(236, 72, 153, 0.4)';
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (!isSubmitting) {
+                    e.currentTarget.style.background = 'linear-gradient(90deg, #7C3AED, #EC4899)';
+                    e.currentTarget.style.boxShadow = '0 4px 14px rgba(124, 58, 237, 0.4), 0 2px 8px rgba(236, 72, 153, 0.3)';
+                  }
                 }}
                 disabled={isSubmitting}
               >
@@ -190,7 +208,7 @@ export default function ContactForm({ compact = false, className = "" }: Contact
                 ) : (
                   'Send Message'
                 )}
-              </Button>
+              </button>
             </form>
           </Form>
         </div>
@@ -314,9 +332,32 @@ export default function ContactForm({ compact = false, className = "" }: Contact
           )}
         />
         
-        <Button 
-          type="submit" 
-          className="w-full bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] text-white rounded-lg hover:shadow-lg hover:shadow-purple-500/25 hover:-translate-y-1 transition-all duration-300 font-medium py-3"
+        <button 
+          type="submit"
+          className="relative w-full inline-flex items-center justify-center font-bold text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.03] active:scale-[0.98] focus:outline-none focus:ring-4 focus:ring-purple-500/50 border-0 disabled:opacity-50 disabled:cursor-not-allowed"
+          style={{ 
+            fontSize: 'clamp(16px, 2.5vw, 20px)',
+            padding: 'clamp(16px, 2.5vw, 20px) clamp(32px, 6vw, 48px)',
+            minHeight: '56px',
+            borderRadius: '9999px',
+            background: 'linear-gradient(90deg, #7C3AED, #EC4899)',
+            boxShadow: '0 4px 14px rgba(124, 58, 237, 0.4), 0 2px 8px rgba(236, 72, 153, 0.3)',
+            color: '#FFFFFF',
+            textAlign: 'center',
+            whiteSpace: 'nowrap'
+          }}
+          onMouseEnter={(e) => {
+            if (!isSubmitting) {
+              e.currentTarget.style.background = 'linear-gradient(90deg, #6D28D9, #DB2777)';
+              e.currentTarget.style.boxShadow = '0 6px 20px rgba(124, 58, 237, 0.6), 0 3px 12px rgba(236, 72, 153, 0.4)';
+            }
+          }}
+          onMouseLeave={(e) => {
+            if (!isSubmitting) {
+              e.currentTarget.style.background = 'linear-gradient(90deg, #7C3AED, #EC4899)';
+              e.currentTarget.style.boxShadow = '0 4px 14px rgba(124, 58, 237, 0.4), 0 2px 8px rgba(236, 72, 153, 0.3)';
+            }
+          }}
           disabled={isSubmitting}
         >
           {isSubmitting ? (
@@ -327,7 +368,7 @@ export default function ContactForm({ compact = false, className = "" }: Contact
           ) : (
             'Send Message'
           )}
-        </Button>
+        </button>
       </form>
     </Form>
   );

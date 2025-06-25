@@ -92,23 +92,35 @@ const ServiceCard = withMemo(({
           </ul>
         )}
         
-        {/* Universal CTA Button - Visually identical and horizontally level */}
+        {/* Gold Standard Universal CTA Button */}
         <div className="mt-auto">
           <Link href={title === "Podcast & Video Studio" ? "/studio-banbury" : "/services"} className="block">
-            <Button 
-              className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-semibold transition-all duration-300 hover:scale-[1.02] shadow-lg hover:shadow-purple-500/25 focus:ring-2 focus:ring-purple-500/50"
+            <button
+              className="relative w-full inline-flex items-center justify-center font-bold text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.03] active:scale-[0.98] focus:outline-none focus:ring-4 focus:ring-purple-500/50 border-0"
               style={{
                 fontSize: 'clamp(14px, 1.8vw, 16px)',
                 padding: 'clamp(12px, 1.5vw, 16px) clamp(20px, 3vw, 24px)',
-                borderRadius: '8px',
-                textShadow: '0 1px 2px rgba(0,0,0,0.2)',
-                height: '48px'
+                minHeight: '48px',
+                borderRadius: '9999px',
+                background: 'linear-gradient(90deg, #7C3AED, #EC4899)',
+                boxShadow: '0 4px 14px rgba(124, 58, 237, 0.4), 0 2px 8px rgba(236, 72, 153, 0.3)',
+                color: '#FFFFFF',
+                textAlign: 'center',
+                whiteSpace: 'nowrap'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = 'linear-gradient(90deg, #6D28D9, #DB2777)';
+                e.currentTarget.style.boxShadow = '0 6px 20px rgba(124, 58, 237, 0.6), 0 3px 12px rgba(236, 72, 153, 0.4)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'linear-gradient(90deg, #7C3AED, #EC4899)';
+                e.currentTarget.style.boxShadow = '0 4px 14px rgba(124, 58, 237, 0.4), 0 2px 8px rgba(236, 72, 153, 0.3)';
               }}
               tabIndex={0}
             >
               <span>{title === "Podcast & Video Studio" ? "Book Studio" : "Learn More"}</span>
               <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
+            </button>
           </Link>
         </div>
       </CardContent>
