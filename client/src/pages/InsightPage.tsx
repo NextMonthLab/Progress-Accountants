@@ -1,16 +1,21 @@
-import React, { useEffect, useState } from 'react';
-import { Helmet } from 'react-helmet';
-import { Lightbulb, Calendar, User, RefreshCw } from 'lucide-react';
-import { FadeIn } from '@/components/ui/ScrollAnimation';
+import { useState, useEffect } from 'react';
+import { DocumentHead } from '@/components/DocumentHead';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
+import { Lightbulb, Clock, Calendar } from 'lucide-react';
+import { formatDistanceToNow } from 'date-fns';
 
 interface DailyInsight {
   id: number;
   title: string;
   content: string;
-  category?: string;
-  author?: string;
+  category: string | null;
+  author: string | null;
+  featured: boolean;
   insightDate: string;
-  tags?: string[];
+  status: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 interface InsightResponse {
@@ -37,215 +42,154 @@ export default function InsightPage() {
       if (data.success) {
         setInsight(data.insight);
       } else {
-        setError(data.message || 'Failed to load insight');
+        setError(data.message || 'Failed to fetch insight');
       }
     } catch (err) {
-      setError('Failed to connect to insights service');
+      setError('Unable to load today\'s insight');
     } finally {
       setLoading(false);
     }
   };
 
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-GB', {
-      weekday: 'long',
-      day: 'numeric',
-      month: 'long',
-      year: 'numeric'
-    });
-  };
-
   return (
-    <div className="min-h-screen bg-black text-white">
-      <Helmet>
-        <title>Daily Insight | Progress Accountants - Today's Business Insight</title>
-        <meta name="description" content="Get today's business insight from Progress Accountants. Daily tips, advice, and expertise for UK businesses." />
-      </Helmet>
-
-      {/* Hero Section */}
-      <section className="relative w-full min-h-[60vh] flex items-center justify-center overflow-hidden bg-slate-900">
-        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/60 to-black/80"></div>
-        
-        <div className="relative z-10 w-full px-6 md:px-8">
-          <div className="max-w-4xl mx-auto text-center text-white">
-            <FadeIn delay={0.1}>
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight"
-                  style={{
-                    textShadow: '0 6px 12px rgba(0,0,0,0.7), 0 3px 6px rgba(0,0,0,0.5)',
-                    letterSpacing: '-0.02em'
-                  }}>
-                <span className="block">Daily Insight.</span>
-                <span className="block">Expert Knowledge.</span>
-              </h1>
-            </FadeIn>
-
-            <FadeIn delay={0.2}>
-              <p className="text-lg sm:text-xl md:text-2xl text-gray-200 mb-8 max-w-2xl mx-auto"
-                 style={{
-                   textShadow: '0 4px 8px rgba(0,0,0,0.8), 0 2px 4px rgba(0,0,0,0.6)',
-                   letterSpacing: '0.01em'
-                 }}>
-                Your daily dose of business wisdom and practical advice.
-              </p>
-            </FadeIn>
-          </div>
-        </div>
-      </section>
-
-      {/* Insight Content */}
-      <section className="py-20 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-purple-900/40"></div>
-        <div className="container mx-auto px-6 md:px-8 relative z-10">
-          
-          {loading && (
-            <div className="max-w-4xl mx-auto">
-              <div className="animate-pulse">
-                <div className="bg-gray-800 rounded-xl p-8">
-                  <div className="h-6 bg-gray-700 rounded w-1/4 mb-4"></div>
-                  <div className="h-8 bg-gray-700 rounded w-3/4 mb-6"></div>
-                  <div className="space-y-3">
-                    {[1, 2, 3, 4, 5].map(i => (
-                      <div key={i} className="h-4 bg-gray-700 rounded"></div>
-                    ))}
-                  </div>
+    <>
+      <DocumentHead 
+        title="Insight of the Day | Progress Accountants"
+        description="Daily financial insights and business wisdom from our expert team. Strategic advice to help you make informed decisions for your business growth."
+      />
+      <Header />
+      
+      <main className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-pink-50">
+        {/* Hero Section */}
+        <section className="relative py-20 md:py-32">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div className="flex justify-center mb-6">
+              <div className="relative">
+                <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full blur-xl opacity-30 animate-pulse"></div>
+                <div className="relative bg-gradient-to-r from-purple-600 to-pink-600 rounded-full p-4">
+                  <Lightbulb className="h-12 w-12 text-white" />
                 </div>
               </div>
             </div>
-          )}
+            
+            <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
+              Insight of the{' '}
+              <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+                Day
+              </span>
+            </h1>
+            
+            <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
+              Fresh business wisdom delivered daily. Strategic insights to power your financial decisions.
+            </p>
+          </div>
+        </section>
 
-          {error && (
-            <div className="max-w-4xl mx-auto">
-              <div className="bg-yellow-900/20 border border-yellow-500/30 rounded-lg p-8 text-center">
-                <Lightbulb className="h-16 w-16 mx-auto text-yellow-500 mb-6" />
-                <h2 className="text-2xl font-semibold text-white mb-4">Daily Insights Coming Soon</h2>
-                <p className="text-gray-300 mb-6">
-                  Our daily business insights feature is being prepared. Check back soon for expert tips and advice.
-                </p>
-                <button
-                  onClick={fetchLatestInsight}
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-yellow-600 hover:bg-yellow-700 text-white rounded-lg transition-colors"
-                >
-                  <RefreshCw className="h-4 w-4" />
-                  Check Again
-                </button>
+        {/* Insight Content */}
+        <section className="pb-20">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            {loading ? (
+              <div className="text-center py-12">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto mb-4"></div>
+                <p className="text-gray-600">Loading today's insight...</p>
               </div>
-            </div>
-          )}
-
-          {insight && (
-            <div className="max-w-4xl mx-auto">
-              <FadeIn delay={0.1}>
-                <div className="bg-gradient-to-br from-slate-800/90 to-slate-900/90 border border-slate-600/50 rounded-2xl overflow-hidden shadow-lg backdrop-blur-sm">
-                  <div className="p-8 md:p-12">
-                    
-                    {/* Insight Header */}
-                    <div className="flex items-center gap-4 text-purple-400 mb-6">
-                      <Lightbulb className="h-6 w-6" />
-                      <span className="text-sm font-medium uppercase tracking-wider">
-                        {insight.category || 'Business Insight'}
+            ) : error ? (
+              <div className="bg-white rounded-2xl shadow-xl p-8 md:p-12 text-center">
+                <div className="mb-6">
+                  <Clock className="h-16 w-16 text-gray-300 mx-auto" />
+                </div>
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                  Today's insight is being prepared
+                </h2>
+                <p className="text-gray-600 text-lg">
+                  Check back soon for fresh business wisdom from our expert team.
+                </p>
+              </div>
+            ) : insight ? (
+              <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
+                <div className="bg-gradient-to-r from-purple-600 to-pink-600 px-8 py-6 text-white">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-3">
+                      <Calendar className="h-5 w-5" />
+                      <span className="font-medium">
+                        {new Date(insight.insightDate).toLocaleDateString('en-GB', {
+                          weekday: 'long',
+                          year: 'numeric',
+                          month: 'long',
+                          day: 'numeric'
+                        })}
                       </span>
                     </div>
-
-                    {/* Date and Author */}
-                    <div className="flex flex-wrap items-center gap-6 text-gray-400 mb-8">
-                      <div className="flex items-center gap-2">
-                        <Calendar className="h-4 w-4" />
-                        {formatDate(insight.insightDate)}
-                      </div>
-                      
-                      {insight.author && (
-                        <div className="flex items-center gap-2">
-                          <User className="h-4 w-4" />
-                          {insight.author}
-                        </div>
-                      )}
-                    </div>
-
-                    {/* Insight Title */}
-                    <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-8 leading-tight">
-                      {insight.title}
-                    </h2>
-
-                    {/* Insight Content */}
-                    <div className="prose prose-lg prose-invert max-w-none">
-                      <div 
-                        className="text-gray-300 leading-relaxed"
-                        dangerouslySetInnerHTML={{ __html: insight.content }}
-                      />
-                    </div>
-
-                    {/* Tags */}
-                    {insight.tags && insight.tags.length > 0 && (
-                      <div className="flex flex-wrap gap-2 mt-8 pt-8 border-t border-slate-600">
-                        {insight.tags.map(tag => (
-                          <span key={tag} className="inline-flex items-center px-3 py-1 bg-purple-600/20 border border-purple-500/30 rounded-full text-sm text-purple-300">
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
+                    {insight.category && (
+                      <span className="bg-white/20 px-3 py-1 rounded-full text-sm font-medium">
+                        {insight.category}
+                      </span>
                     )}
                   </div>
                 </div>
-              </FadeIn>
-
-              {/* Refresh Button */}
-              <FadeIn delay={0.2}>
-                <div className="text-center mt-12">
-                  <button
-                    onClick={fetchLatestInsight}
-                    className="inline-flex items-center gap-2 px-6 py-3 bg-slate-700 hover:bg-slate-600 text-white rounded-lg transition-colors"
-                  >
-                    <RefreshCw className="h-4 w-4" />
-                    Refresh Insight
-                  </button>
+                
+                <div className="p-8 md:p-12">
+                  <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6 leading-tight">
+                    {insight.title}
+                  </h2>
+                  
+                  <div className="prose prose-lg max-w-none">
+                    <div className="text-gray-700 leading-relaxed whitespace-pre-wrap">
+                      {insight.content}
+                    </div>
+                  </div>
+                  
+                  <div className="mt-8 pt-6 border-t border-gray-200">
+                    <div className="flex items-center justify-between text-sm text-gray-500">
+                      <div className="flex items-center space-x-2">
+                        <Lightbulb className="h-4 w-4" />
+                        <span>
+                          Published {formatDistanceToNow(new Date(insight.createdAt), { addSuffix: true })}
+                        </span>
+                      </div>
+                      {insight.author && (
+                        <span>by {insight.author}</span>
+                      )}
+                    </div>
+                  </div>
                 </div>
-              </FadeIn>
-            </div>
-          )}
-
-          {!insight && !loading && !error && (
-            <div className="max-w-4xl mx-auto text-center">
-              <Lightbulb className="h-16 w-16 mx-auto text-gray-500 mb-6" />
-              <h2 className="text-2xl font-semibold text-white mb-4">No Insight Available</h2>
-              <p className="text-gray-400 mb-6">Check back later for today's business insight.</p>
-              <button
-                onClick={fetchLatestInsight}
-                className="inline-flex items-center gap-2 px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors"
-              >
-                <RefreshCw className="h-4 w-4" />
-                Check for Insights
-              </button>
-            </div>
-          )}
-        </div>
-      </section>
-
-      {/* Subscribe CTA */}
-      <section className="py-20 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-slate-800 to-slate-900"></div>
-        <div className="container mx-auto px-6 md:px-8 relative z-10">
-          <div className="max-w-4xl mx-auto text-center">
-            <FadeIn delay={0.1}>
-              <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
-                Never Miss an Insight
-              </h2>
-              <p className="text-lg text-gray-300 mb-8">
-                Get daily business insights delivered straight to your inbox.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
-                <input
-                  type="email"
-                  placeholder="Enter your email"
-                  className="flex-1 px-4 py-3 bg-slate-800 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
-                />
-                <button className="px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg hover:from-purple-700 hover:to-pink-700 transition-colors font-medium">
-                  Subscribe
-                </button>
               </div>
-            </FadeIn>
+            ) : (
+              <div className="bg-white rounded-2xl shadow-xl p-8 md:p-12 text-center">
+                <div className="mb-6">
+                  <Clock className="h-16 w-16 text-gray-300 mx-auto" />
+                </div>
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                  Today's insight is being prepared
+                </h2>
+                <p className="text-gray-600 text-lg">
+                  Check back soon for fresh business wisdom from our expert team.
+                </p>
+              </div>
+            )}
           </div>
-        </div>
-      </section>
-    </div>
+        </section>
+
+        {/* CTA Section */}
+        <section className="bg-gradient-to-r from-purple-600 to-pink-600 py-16">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h3 className="text-3xl font-bold text-white mb-6">
+              Ready for Strategic Growth?
+            </h3>
+            <p className="text-xl text-purple-100 mb-8 max-w-2xl mx-auto">
+              Get personalized insights for your business. Book a consultation with our expert team.
+            </p>
+            <button 
+              onClick={() => window.Calendly?.initPopupWidget({url: 'https://calendly.com/progressaccountants'})}
+              className="inline-flex items-center px-8 py-4 bg-white text-purple-600 font-semibold rounded-full hover:bg-gray-50 transition-colors duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
+            >
+              Book Your Strategy Session
+            </button>
+          </div>
+        </section>
+      </main>
+      
+      <Footer />
+    </>
   );
 }
