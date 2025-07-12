@@ -127,6 +127,9 @@ Progress Accountants is a sophisticated SmartSite platform built with React/Type
 
 ```
 Changelog:
+- July 12, 2025: NAVIGATION MENU COMPLETELY RESTORED with comprehensive dropdown structure - added Services (8 pages), Industries (4 pages), and Resources (6 pages) dropdowns with proper z-index layering to appear above hero content
+- July 12, 2025: Fixed dropdown menu z-index issue - navigation submenus now display properly above hero images and page content with z-[9999] positioning and enhanced styling
+- July 12, 2025: Integrated Calendly functionality into header "Book a Call" buttons for both desktop and mobile navigation menus
 - July 12, 2025: RESOLVED Render deployment issue by implementing database-free mode - application now deploys successfully without DATABASE_URL and runs with form submissions logged to console until database is configured
 - July 12, 2025: Enhanced SmartSite API endpoints with fallback handling - contact forms and newsletter subscriptions work in database-free mode with console logging for immediate deployment success
 - July 12, 2025: Updated RENDER_DEPLOYMENT_GUIDE.md to reflect deployment success - website now deploys immediately while database setup remains optional for enhanced functionality

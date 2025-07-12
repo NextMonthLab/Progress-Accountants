@@ -62,7 +62,7 @@ export default function Header() {
   ];
 
   return (
-    <header className="sticky top-0 z-header bg-black/95 backdrop-blur-sm border-b border-gray-800 shadow-custom interactive">
+    <header className="sticky top-0 z-[9998] bg-black/95 backdrop-blur-sm border-b border-gray-800 shadow-custom interactive">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 overflow-x-hidden">
         <div className="flex justify-between items-center h-14 md:h-16">
           {/* Logo */}
@@ -98,7 +98,16 @@ export default function Header() {
                 
                 {/* Dropdown Menu */}
                 {item.submenu && dropdownOpen === item.name && (
-                  <div className="absolute top-full left-0 mt-1 w-64 bg-gray-900 border border-gray-700 rounded-md shadow-lg z-50">
+                  <div 
+                    className="absolute top-full left-0 mt-1 w-64 bg-gray-900 border border-gray-700 rounded-md shadow-2xl z-[9999]"
+                    style={{ 
+                      position: 'absolute',
+                      zIndex: 9999,
+                      backgroundColor: 'rgb(17 24 39)',
+                      border: '1px solid rgb(55 65 81)',
+                      boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)'
+                    }}
+                  >
                     <div className="py-2">
                       {item.submenu.map((subItem) => (
                         <Link
