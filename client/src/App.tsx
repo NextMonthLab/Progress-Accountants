@@ -73,6 +73,10 @@ const MessagesPage = lazy(() => import("@/pages/admin/MessagesPage"));
 const ResourcesPage = lazy(() => import("@/pages/ResourcesPage"));
 const AssistantPage = lazy(() => import("@/pages/support/AssistantPage"));
 const TicketPage = lazy(() => import("@/pages/support/TicketPage"));
+const BlogPage = lazy(() => import("@/pages/BlogPage"));
+const BlogPostPage = lazy(() => import("@/pages/BlogPostPage"));
+const CaseStudiesPage = lazy(() => import("@/pages/CaseStudiesPage"));
+const InsightPage = lazy(() => import("@/pages/InsightPage"));
 const DigestPage = lazy(() => import("@/pages/support/DigestPage"));
 
 const queryClient = new QueryClient({
@@ -240,6 +244,28 @@ function Router() {
         </Suspense>
       </Route>
       <Route path="/resources" component={ResourcesPage} />
+
+      {/* SmartSite Content Routes */}
+      <Route path="/blog">
+        <Suspense fallback={<LoadingFallback />}>
+          <BlogPage />
+        </Suspense>
+      </Route>
+      <Route path="/blog/:slug">
+        <Suspense fallback={<LoadingFallback />}>
+          <BlogPostPage />
+        </Suspense>
+      </Route>
+      <Route path="/case-studies">
+        <Suspense fallback={<LoadingFallback />}>
+          <CaseStudiesPage />
+        </Suspense>
+      </Route>
+      <Route path="/insight">
+        <Suspense fallback={<LoadingFallback />}>
+          <InsightPage />
+        </Suspense>
+      </Route>
 
       {/* Support System routes */}
       <Route path="/support/assistant" component={AssistantPage} />

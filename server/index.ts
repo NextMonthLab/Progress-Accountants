@@ -1,8 +1,10 @@
 import express, { type Request, Response } from "express";
 import { createServer } from "http";
 import { setupVite, serveStatic } from "./vite";
+import { registerSmartSiteRoutes } from "./routes/smartsite-api";
 
 const app = express();
+app.use(express.json()); // Add JSON body parser for form submissions
 const server = createServer(app);
 
 // Essential API endpoints for frontend functionality
@@ -52,6 +54,9 @@ app.get('/api/pages/public', (req: Request, res: Response) => {
     '/sme-support-hub',
     '/studio-banbury',
     '/business-calculator',
+    '/blog',
+    '/case-studies',
+    '/insight',
     '/news',
     '/why-us',
     '/cookies',
@@ -59,6 +64,9 @@ app.get('/api/pages/public', (req: Request, res: Response) => {
     '/terms'
   ]);
 });
+
+// Register SmartSite integration routes
+registerSmartSiteRoutes(app);
 
 
 // Catch-all for missing API endpoints

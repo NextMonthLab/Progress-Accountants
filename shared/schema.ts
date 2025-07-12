@@ -1592,3 +1592,129 @@ export const insightAppUserCapacityRelations = relations(insightAppUserCapacity,
 
 export type InsertInsightAppUserCapacity = z.infer<typeof insertInsightAppUserCapacitySchema>;
 export type InsightAppUserCapacity = typeof insightAppUserCapacity.$inferSelect;
+
+// ========================================
+// SmartSite Integration Tables
+// ========================================
+
+// Contact form submissions table
+export const contactFormSubmissions = pgTable("contact_form_submissions", {
+  id: serial("id").primaryKey(),
+  tenantId: uuid("tenant_id").references(() => tenants.id),
+  name: varchar("name", { length: 255 }).notNull(),
+  email: varchar("email", { length: 255 }).notNull(),
+  phone: varchar("phone", { length: 50 }),
+  business: varchar("business", { length: 255 }),
+  industry: varchar("industry", { length: 100 }),
+  message: text("message"),
+  source: varchar("source", { length: 100 }).default("website"),
+  status: varchar("status", { length: 20 }).default("new").notNull(),
+  smartSiteSynced: boolean("smartsite_synced").default(false),
+  smartSiteId: varchar("smartsite_id", { length: 255 }),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export const insertContactFormSubmissionSchema = createInsertSchema(contactFormSubmissions).omit({
+  id: true,
+  smartSiteSynced: true,
+  smartSiteId: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+// Newsletter subscriptions table
+export const newsletterSubscriptions = pgTable("newsletter_subscriptions", {
+  id: serial("id").primaryKey(),
+  tenantId: uuid("tenant_id").references(() => tenants.id),
+  email: varchar("email", { length: 255 }).notNull(),
+  name: varchar("name", { length: 255 }),
+  source: varchar("source", { length: 100 }).default("website"),
+  status: varchar("status", { length: 20 }).default("active").notNull(),
+  preferences: jsonb("preferences"),
+  smartSiteSynced: boolean("smartsite_synced").default(false),
+  smartSiteId: varchar("smartsite_id", { length: 255 }),
+  subscribedAt: timestamp("subscribed_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export const insertNewsletterSubscriptionSchema = createInsertSchema(newsletterSubscriptions).omit({
+  id: true,
+  smartSiteSynced: true,
+  smartSiteId: true,
+  subscribedAt: true,
+  updatedAt: true,
+});
+
+// Case studies table (separate from existing blog posts)
+export const caseStudies = pgTable("case_studies", {
+  id: serial("id").primaryKey(),
+  tenantId: uuid("tenant_id").references(() => tenants.id),
+  slug: varchar("slug", { length: 255 }).notNull(),
+  title: varchar("title", { length: 255 }).notNull(),
+  clientName: varchar("client_name", { length: 255 }),
+  industry: varchar("industry", { length: 100 }),
+  challenge: text("challenge"),
+  solution: text("solution"),
+  results: text("results"),
+  metrics: jsonb("metrics"),
+  testimonial: text("testimonial"),
+  testimonialAuthor: varchar("testimonial_author", { length: 255 }),
+  testimonialRole: varchar("testimonial_role", { length: 255 }),
+  featuredImage: varchar("featured_image", { length: 500 }),
+  gallery: jsonb("gallery"),
+  tags: jsonb("tags"),
+  status: varchar("status", { length: 20 }).default("draft").notNull(),
+  publishedAt: timestamp("published_at"),
+  smartSiteId: varchar("smartsite_id", { length: 255 }),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+}, (table) => {
+  return {
+    slugIdx: unique("case_studies_slug_tenant_unique").on(table.slug, table.tenantId),
+  };
+});
+
+export const insertCaseStudySchema = createInsertSchema(caseStudies).omit({
+  id: true,
+  smartSiteId: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+// Daily insights table
+export const dailyInsights = pgTable("daily_insights", {
+  id: serial("id").primaryKey(),
+  tenantId: uuid("tenant_id").references(() => tenants.id),
+  title: varchar("title", { length: 255 }).notNull(),
+  content: text("content").notNull(),
+  category: varchar("category", { length: 100 }),
+  tags: jsonb("tags"),
+  author: varchar("author", { length: 255 }),
+  featured: boolean("featured").default(false),
+  insightDate: timestamp("insight_date").defaultNow().notNull(),
+  status: varchar("status", { length: 20 }).default("active").notNull(),
+  smartSiteId: varchar("smartsite_id", { length: 255 }),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export const insertDailyInsightSchema = createInsertSchema(dailyInsights).omit({
+  id: true,
+  smartSiteId: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+// Export types for SmartSite integration
+export type InsertContactFormSubmission = z.infer<typeof insertContactFormSubmissionSchema>;
+export type ContactFormSubmission = typeof contactFormSubmissions.$inferSelect;
+
+export type InsertNewsletterSubscription = z.infer<typeof insertNewsletterSubscriptionSchema>;
+export type NewsletterSubscription = typeof newsletterSubscriptions.$inferSelect;
+
+export type InsertCaseStudy = z.infer<typeof insertCaseStudySchema>;
+export type CaseStudy = typeof caseStudies.$inferSelect;
+
+export type InsertDailyInsight = z.infer<typeof insertDailyInsightSchema>;
+export type DailyInsight = typeof dailyInsights.$inferSelect;

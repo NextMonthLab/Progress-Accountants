@@ -1,0 +1,73 @@
+Here’s Prompt 0 for the Progress Accountants Replit instance — this sets the foundational context for all upcoming changes while protecting the current site infrastructure.
+
+⸻
+
+🟦 Prompt 0: Context Reset – SmartSite Integration for Progress Accountants
+
+You are managing the Progress Accountants public website.
+
+This project is now being upgraded to connect with NextMonth’s SmartSite Admin Panel — an external system that will supply content and store form submissions. You must prepare the site to handle this connection without disrupting existing logic.
+
+⸻
+
+✅ Do Not Touch:
+	•	❌ Do not modify the existing analytics tracker or chatbot embed
+	•	❌ Do not remove or reformat any scripts that are already functioning
+
+⸻
+
+✅ What Needs to Change:
+
+1. Convert Embedded Forms → Native Forms with API Endpoints
+	•	Replace all embedded forms (e.g. contact, newsletter) with native HTML forms
+	•	Each form must POST to a custom API endpoint hosted inside this project
+	•	These endpoints will later forward data to the SmartSite Admin Panel
+	•	Required endpoints:
+	•	POST /api/forms/contact
+	•	POST /api/forms/newsletter
+
+⸻
+
+2. Add SmartSite-Compatible Blog System
+	•	Create a blog index page (/blog)
+	•	Add individual blog post pages (/blog/:slug)
+	•	Set up a public read endpoint: GET /api/public/blog/:slug
+	•	Set up a write-ready API endpoint: POST /api/content/blog
+
+⸻
+
+3. Add Insight of the Day Section
+	•	Display a single daily insight at /insight
+	•	Pulls from GET /api/public/daily/latest (future SmartSite)
+	•	Expose a write endpoint: POST /api/content/daily
+
+⸻
+
+4. Add Case Studies Section
+	•	Add a section /case-studies and detail pages /case-studies/:slug
+	•	Expose an API to receive case study content:
+	•	POST /api/content/case-study
+	•	GET /api/public/case-studies/:slug
+
+⸻
+
+✅ Recap of Required Endpoints
+
+Route	Type	Purpose
+/api/forms/contact	POST	Receive native contact form
+/api/forms/newsletter	POST	Receive newsletter form
+/api/content/blog	POST	Accept blog post content
+/api/public/blog/:slug	GET	Serve blog content to frontend
+/api/content/case-study	POST	Accept case study from SmartSite
+/api/public/case-studies/:slug	GET	Serve case study to frontend
+/api/content/daily	POST	Accept Insight of the Day
+/api/public/daily/latest	GET	Serve most recent insight
+
+
+⸻
+
+✅ When complete, print:
+
+✅ Context understood: SmartSite-ready Progress Accountants site prepared.
+
+Would you like Prompt 1 next to begin the form conversion and form API scaffolding?
