@@ -1,5 +1,10 @@
 import type { Express, Request, Response } from "express";
-import { db } from "../db";
+import { db, pool } from "../db";
+
+// Helper function to check if database is available
+function isDatabaseAvailable(): boolean {
+  return pool !== null && db !== null;
+}
 import { 
   contactFormSubmissions, 
   newsletterSubscriptions, 
@@ -32,6 +37,20 @@ export function registerSmartSiteRoutes(app: Express) {
   app.post('/api/forms/contact', async (req: Request, res: Response) => {
     try {
       const tenantId = getTenantId(req);
+      
+      if (!isDatabaseAvailable()) {
+        console.log(`[SmartSite] Contact form submission received (database-free mode) for tenant: ${tenantId}:`, req.body);
+        
+        res.json({
+          success: true,
+          message: "Contact form submitted successfully (stored in logs)",
+          submissionId: `temp-${Date.now()}`,
+          submittedAt: new Date().toISOString(),
+          note: "Database not configured - submission logged to console"
+        });
+        return;
+      }
+      
       const validatedData = insertContactFormSubmissionSchema.parse({
         ...req.body,
         tenantId
@@ -63,6 +82,20 @@ export function registerSmartSiteRoutes(app: Express) {
   app.post('/api/forms/newsletter', async (req: Request, res: Response) => {
     try {
       const tenantId = getTenantId(req);
+      
+      if (!isDatabaseAvailable()) {
+        console.log(`[SmartSite] Newsletter subscription received (database-free mode) for tenant: ${tenantId}:`, req.body);
+        
+        res.json({
+          success: true,
+          message: "Newsletter subscription received successfully (stored in logs)",
+          subscriptionId: `temp-${Date.now()}`,
+          subscribedAt: new Date().toISOString(),
+          note: "Database not configured - subscription logged to console"
+        });
+        return;
+      }
+      
       const validatedData = insertNewsletterSubscriptionSchema.parse({
         ...req.body,
         tenantId
