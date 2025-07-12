@@ -15,6 +15,7 @@ export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState<string | null>(null);
   const [mobileSubmenuOpen, setMobileSubmenuOpen] = useState<string | null>(null);
+  const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0 });
 
   const navigation = [
     { name: 'Home', href: '/' },
@@ -83,7 +84,16 @@ export default function Header() {
               <div 
                 key={item.name} 
                 className="relative"
-                onMouseEnter={() => item.submenu && setDropdownOpen(item.name)}
+                onMouseEnter={(e) => {
+                  if (item.submenu) {
+                    const rect = e.currentTarget.getBoundingClientRect();
+                    setDropdownPosition({
+                      top: rect.bottom + window.scrollY,
+                      left: rect.left + window.scrollX
+                    });
+                    setDropdownOpen(item.name);
+                  }
+                }}
                 onMouseLeave={() => setDropdownOpen(null)}
               >
                 <Link
@@ -96,31 +106,7 @@ export default function Header() {
                   )}
                 </Link>
                 
-                {/* Dropdown Menu */}
-                {item.submenu && dropdownOpen === item.name && (
-                  <div 
-                    className="absolute top-full left-0 mt-1 w-64 bg-gray-900 border border-gray-700 rounded-md shadow-2xl z-[9999]"
-                    style={{ 
-                      position: 'absolute',
-                      zIndex: 9999,
-                      backgroundColor: 'rgb(17 24 39)',
-                      border: '1px solid rgb(55 65 81)',
-                      boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)'
-                    }}
-                  >
-                    <div className="py-2">
-                      {item.submenu.map((subItem) => (
-                        <Link
-                          key={subItem.name}
-                          href={subItem.href}
-                          className="block px-4 py-2 text-sm text-white hover:text-purple-400 hover:bg-gray-800 transition-colors"
-                        >
-                          {subItem.name}
-                        </Link>
-                      ))}
-                    </div>
-                  </div>
-                )}
+
               </div>
             ))}
           </nav>
@@ -232,6 +218,37 @@ export default function Header() {
           </div>
         )}
       </div>
+      
+      {/* Global Dropdown Portal - Renders above everything */}
+      {dropdownOpen && (
+        <div 
+          className="fixed w-64 bg-gray-900 border border-gray-700 rounded-md shadow-2xl"
+          style={{ 
+            position: 'fixed',
+            top: dropdownPosition.top + 'px',
+            left: dropdownPosition.left + 'px',
+            zIndex: 999999,
+            backgroundColor: 'rgb(17 24 39)',
+            border: '1px solid rgb(55 65 81)',
+            boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)'
+          }}
+          onMouseEnter={() => {/* Keep dropdown open when hovering over it */}}
+          onMouseLeave={() => setDropdownOpen(null)}
+        >
+          <div className="py-2">
+            {navigation.find(item => item.name === dropdownOpen)?.submenu?.map((subItem) => (
+              <Link
+                key={subItem.name}
+                href={subItem.href}
+                className="block px-4 py-2 text-sm text-white hover:text-purple-400 hover:bg-gray-800 transition-colors"
+                onClick={() => setDropdownOpen(null)}
+              >
+                {subItem.name}
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
     </header>
   );
 }
