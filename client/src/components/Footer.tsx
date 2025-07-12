@@ -3,6 +3,7 @@ import { Facebook, Linkedin, Twitter } from "lucide-react";
 import progressLogoPath from "@assets/Light Logo.png";
 import ResponsiveContainer from "./ResponsiveContainer";
 import ResponsiveGrid from "./ResponsiveGrid";
+import NativeNewsletterForm from '@/components/forms/NativeNewsletterForm';
 
 export default function Footer() {
   return (
@@ -111,15 +112,16 @@ export default function Footer() {
           </div>
           
           <div>
-            <h3 className="font-semibold text-lg mb-4">Contact Us</h3>
-            <address className="not-italic text-gray-300 mb-4">
-              Progress Accountants<br />
-              1st Floor Beaumont House<br />
-              Beaumont Road<br />
-              Banbury, OX16 1RH<br />
-              United Kingdom
-            </address>
-            <div className="space-y-2">
+            <h3 className="font-semibold text-lg mb-4">Stay Updated</h3>
+            <p className="text-gray-300 text-sm mb-4">
+              Get the latest accounting insights and business growth tips delivered to your inbox.
+            </p>
+            <NativeNewsletterForm 
+              placeholder="Your email address"
+              buttonText="Subscribe"
+              className="max-w-full"
+            />
+            <div className="mt-6 space-y-2 text-sm">
               <div>
                 <a 
                   href="tel:+441295477250" 
@@ -131,7 +133,7 @@ export default function Footer() {
               <div>
                 <a 
                   href="mailto:info@progressaccountants.co.uk" 
-                  className="text-gray-300 hover:text-purple-400 transition"
+                  className="text-gray-300 hover:text-purple-400 transition break-all"
                 >
                   info@progressaccountants.co.uk
                 </a>

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
+import { useLocation } from 'wouter';
 import { Send, CheckCircle, AlertCircle, User, Mail, Phone, Building, MessageSquare } from 'lucide-react';
 import { FadeIn } from '@/components/ui/ScrollAnimation';
 
@@ -29,6 +30,7 @@ interface NativeContactFormProps {
 }
 
 export default function NativeContactForm({ onSuccess, className = "" }: NativeContactFormProps) {
+  const [, setLocation] = useLocation();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [submitMessage, setSubmitMessage] = useState('');
@@ -65,6 +67,10 @@ export default function NativeContactForm({ onSuccess, className = "" }: NativeC
         setSubmitMessage(result.message);
         reset();
         onSuccess?.(result);
+        // Redirect to thank you page after a brief delay
+        setTimeout(() => {
+          setLocation('/thank-you');
+        }, 1500);
       } else {
         setSubmitStatus('error');
         setSubmitMessage(result.message || 'Failed to submit form');

@@ -1,0 +1,69 @@
+Here’s Prompt 1 for the Progress Accountants Replit instance — focused on converting existing embedded forms into native HTML forms that POST to local API endpoints, ready for SmartSite integration.
+
+⸻
+
+🟦 Prompt 1: Convert Embedded Forms to Native + Scaffold API Endpoints
+
+You are now upgrading the contact and newsletter forms on the Progress Accountants website.
+
+These forms were previously embedded from third-party providers. They must now be replaced with native HTML forms that POST to internal API routes. These will later connect to the SmartSite Admin Panel.
+
+⸻
+
+✅ Step 1: Contact Form (Native)
+
+Replace any existing embed with:
+
+<form action="/api/forms/contact" method="POST">
+  <input name="name" type="text" placeholder="Your Name" required />
+  <input name="email" type="email" placeholder="Your Email" required />
+  <textarea name="message" placeholder="Your Message" required></textarea>
+  <button type="submit">Send</button>
+</form>
+
+
+⸻
+
+✅ Step 2: Newsletter Form (Native)
+
+Replace any newsletter signup embed with:
+
+<form action="/api/forms/newsletter" method="POST">
+  <input name="email" type="email" placeholder="Your Email" required />
+  <button type="submit">Subscribe</button>
+</form>
+
+
+⸻
+
+✅ Step 3: Create API Handlers
+
+Set up the following backend endpoints:
+
+// POST /api/forms/contact
+// Save contact submission with: { name, email, message }
+
+// POST /api/forms/newsletter
+// Save newsletter signup with: { email }
+
+Each handler must:
+	•	Accept application/x-www-form-urlencoded or application/json
+	•	Log the payload
+	•	Store it under /data/submissions/{type}/{timestamp}.json or send to SmartSite API when available
+	•	Return a success response
+
+⸻
+
+✅ Step 4: Confirmation Feedback
+
+On successful submission:
+	•	Redirect to a /thank-you page
+	•	Or show a success message below the form ("Thanks! We’ll be in touch soon.")
+
+⸻
+
+✅ When complete, print:
+
+✅ Native forms added and connected to /api/forms endpoints.
+
+Would you like Prompt 2 next to scaffold the blog system (index, post pages, and API)?

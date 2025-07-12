@@ -1,19 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Helmet } from 'react-helmet';
-import ContactForm from '@/components/ContactForm';
 import { MapPin, Phone, Mail, Clock } from 'lucide-react';
-import { EMBED_FORMS, hasValidEmbedCode, FORM_CONFIG } from '@/utils/embedForms';
 import { Button } from '@/components/ui/button';
 import { FadeIn } from '@/components/ui/ScrollAnimation';
+import NativeContactForm from '@/components/forms/NativeContactForm';
 
 export default function ContactPage() {
-  const [contactFormEmbedCode, setContactFormEmbedCode] = useState<string>('');
-
-  useEffect(() => {
-    if (hasValidEmbedCode(EMBED_FORMS.CONTACT_FORM)) {
-      setContactFormEmbedCode(EMBED_FORMS.CONTACT_FORM);
-    }
-  }, []);
 
   return (
     <div className="min-h-screen bg-black text-white">
@@ -260,22 +252,7 @@ export default function ContactPage() {
             </div>
             
             <div className="bg-gradient-to-br from-slate-800/90 to-slate-900/90 border border-slate-600/50 p-8 rounded-xl shadow-lg backdrop-blur-sm">
-              {contactFormEmbedCode ? (
-                <div 
-                  className="w-full"
-                  style={{ minHeight: FORM_CONFIG.defaultHeight }}
-                  dangerouslySetInnerHTML={{ __html: contactFormEmbedCode }}
-                />
-              ) : (
-                <div>
-                  <ContactForm />
-                  <div className="mt-4 p-4 bg-blue-900/20 border border-blue-500/30 rounded-lg">
-                    <p className="text-sm text-blue-300">
-                      <strong>Ready for external form integration:</strong> Add your iframe embed code to the CONTACT_FORM configuration in /utils/embedForms.ts
-                    </p>
-                  </div>
-                </div>
-              )}
+              <NativeContactForm />
             </div>
           </div>
         </div>

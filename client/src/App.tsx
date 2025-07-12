@@ -77,6 +77,7 @@ const BlogPage = lazy(() => import("@/pages/BlogPage"));
 const BlogPostPage = lazy(() => import("@/pages/BlogPostPage"));
 const CaseStudiesPage = lazy(() => import("@/pages/CaseStudiesPage"));
 const InsightPage = lazy(() => import("@/pages/InsightPage"));
+const ThankYouPage = lazy(() => import("@/pages/ThankYouPage"));
 const DigestPage = lazy(() => import("@/pages/support/DigestPage"));
 
 const queryClient = new QueryClient({
@@ -264,6 +265,11 @@ function Router() {
       <Route path="/insight">
         <Suspense fallback={<LoadingFallback />}>
           <InsightPage />
+        </Suspense>
+      </Route>
+      <Route path="/thank-you">
+        <Suspense fallback={<LoadingFallback />}>
+          <ThankYouPage />
         </Suspense>
       </Route>
 
