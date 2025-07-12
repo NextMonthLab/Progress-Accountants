@@ -6,10 +6,24 @@ import * as schema from '@shared/schema';
 // Configure Neon to use WebSockets
 neonConfig.webSocketConstructor = ws;
 
+// Validate DATABASE_URL with detailed error message for deployment
 if (!process.env.DATABASE_URL) {
-  throw new Error(
-    "DATABASE_URL must be set. Did you forget to provision a database?",
-  );
+  const errorMessage = `
+DATABASE_URL environment variable is missing.
+
+For Render deployment:
+1. Create a PostgreSQL service on Render
+2. Copy the "External Database URL" 
+3. Add it as DATABASE_URL environment variable in your web service settings
+
+For local development:
+1. Ensure your .env file contains DATABASE_URL
+2. Make sure the database is running and accessible
+
+Current environment: ${process.env.NODE_ENV || 'development'}
+  `.trim();
+  
+  throw new Error(errorMessage);
 }
 
 export const pool = new Pool({ connectionString: process.env.DATABASE_URL });
