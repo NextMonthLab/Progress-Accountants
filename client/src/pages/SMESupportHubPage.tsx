@@ -13,9 +13,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { motion } from "framer-motion";
-import { EMBED_FORMS, hasValidEmbedCode, FORM_CONFIG } from "@/utils/embedForms";
 import { generateSMEHubPDF } from "@/utils/pdfGenerator";
 import { openCalendlyPopup } from "@/utils/calendly";
+import NativeSMELeadForm from "@/components/forms/NativeSMELeadForm";
 import smeHeroImage from "/images/sme-support-hub-hero.png";
 
 // Animation variants
@@ -295,14 +295,7 @@ const DeadlinesSection = () => {
 const DownloadResourcesSection = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [showLeadCaptureForm, setShowLeadCaptureForm] = useState(false);
-  const [leadCaptureEmbedCode, setLeadCaptureEmbedCode] = useState<string>('');
   const { toast } = useToast();
-
-  useEffect(() => {
-    if (hasValidEmbedCode(EMBED_FORMS.SME_SUPPORT_LEAD_FORM)) {
-      setLeadCaptureEmbedCode(EMBED_FORMS.SME_SUPPORT_LEAD_FORM);
-    }
-  }, []);
 
   const generateSMEResourcesContent = () => {
     return `
@@ -601,32 +594,47 @@ For professional advice tailored to your business, contact Progress Accountants
                 </Button>
               </div>
               <div className="p-6">
-                {leadCaptureEmbedCode ? (
-                  <div className="space-y-4">
-                    <div 
-                      className="w-full"
-                      style={{ minHeight: FORM_CONFIG.defaultHeight }}
-                      dangerouslySetInnerHTML={{ __html: leadCaptureEmbedCode }}
-                    />
-                    <div className="text-center pt-4 border-t border-slate-600/30">
-                      <p className="text-slate-300 mb-4">
-                        Close this box once you've completed the form to download your resources
-                      </p>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="text-center py-12">
-                    <h4 className="text-xl font-semibold text-white mb-4">Form Not Available</h4>
-                    <p className="text-slate-300 mb-6">
-                      The lead form is currently unavailable. You can still download your resources:
-                    </p>
-                    <p className="text-slate-300 mb-4">
-                      Close this box once you've completed the download
-                    </p>
+                <NativeSMELeadForm 
+                  onSuccess={() => {
+                    setIsSubmitted(true);
+                    setShowLeadCaptureForm(false);
+                    toast({ 
+                      title: "Form submitted successfully!", 
+                      description: "Thank you for your interest. Your resources are now ready for download." 
+                    });
+                  }}
+                  className="w-full"
+                />
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Success Modal - show after form submission */}
+        {isSubmitted && (
+          <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+            <div className="bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-600/50 rounded-2xl shadow-2xl max-w-2xl w-full">
+              <div className="flex items-center justify-between p-6 border-b border-slate-600/30">
+                <h3 className="text-2xl font-bold text-white">Resources Ready!</h3>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="text-slate-400 hover:text-white"
+                  onClick={() => setIsSubmitted(false)}
+                >
+                  <X className="h-6 w-6" />
+                </Button>
+              </div>
+              <div className="p-6">
+                <div className="text-center py-4">
+                  <CheckCircle className="h-16 w-16 mx-auto text-green-500 mb-4" />
+                  <h3 className="text-xl font-semibold mb-2 text-white">Thank you for your submission!</h3>
+                  <p className="text-gray-300 mb-8">Your SME resources are now available for download.</p>
+                  
+                  <div className="grid md:grid-cols-2 gap-6 max-w-2xl mx-auto">
                     <button
                       onClick={async () => {
                         try {
-                          // Generate branded PDF with SME support resources
                           const smeData = {
                             businessName: 'Your Business',
                             industry: 'Small Business',
@@ -657,51 +665,38 @@ For professional advice tailored to your business, contact Progress Accountants
                           };
                           
                           const pdfBlob = await generateSMEHubPDF(smeData);
-                          
                           const element = document.createElement('a');
                           element.href = URL.createObjectURL(pdfBlob);
-                          element.download = 'progress-sme-support-assessment.pdf';
+                          element.download = 'Progress_Accountants_SME_Resources_2025.pdf';
                           document.body.appendChild(element);
                           element.click();
                           document.body.removeChild(element);
                           
-                          setIsSubmitted(true);
-                          setShowLeadCaptureForm(false);
-                          toast({ title: "Download complete", description: "Your branded SME support assessment has been downloaded." });
+                          toast({ title: "Download complete", description: "Your SME resources pack has been downloaded." });
                         } catch (error) {
                           console.error('PDF generation failed:', error);
                           toast({ title: "Download error", description: "There was an issue generating your report. Please try again.", variant: "destructive" });
                         }
                       }}
-                      className="relative inline-flex items-center justify-center font-bold text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.03] active:scale-[0.98] focus:outline-none focus:ring-4 focus:ring-purple-500/50 border-0"
-                      style={{ 
-                        fontSize: 'clamp(16px, 2.5vw, 20px)',
-                        padding: 'clamp(16px, 2.5vw, 20px) clamp(32px, 6vw, 48px)',
-                        minHeight: '56px',
-                        borderRadius: '9999px',
-                        background: 'linear-gradient(90deg, #7C3AED, #EC4899)',
-                        boxShadow: '0 4px 14px rgba(124, 58, 237, 0.4), 0 2px 8px rgba(236, 72, 153, 0.3)',
-                        color: '#FFFFFF',
-                        textAlign: 'center',
-                        whiteSpace: 'nowrap'
-                      }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.background = 'linear-gradient(90deg, #6D28D9, #DB2777)';
-                        e.currentTarget.style.boxShadow = '0 6px 20px rgba(124, 58, 237, 0.6), 0 3px 12px rgba(236, 72, 153, 0.4)';
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.background = 'linear-gradient(90deg, #7C3AED, #EC4899)';
-                        e.currentTarget.style.boxShadow = '0 4px 14px rgba(124, 58, 237, 0.4), 0 2px 8px rgba(236, 72, 153, 0.3)';
-                      }}
-                      aria-label="Download SME Resources Pack"
+                      className="flex items-center justify-center p-4 bg-gray-800 rounded-lg border border-gray-700 hover:bg-gray-700 transition-colors"
                     >
-                      Download SME Resources Pack
+                      <Download className="h-5 w-5 mr-2 text-purple-500" />
+                      <span className="font-medium text-white">Download SME Resources Pack</span>
                     </button>
-                    <p className="text-slate-400 text-sm mt-4">
-                      Includes UK business contacts directory and key deadlines calendar
-                    </p>
+                    
+                    <button
+                      onClick={() => openCalendlyPopup()}
+                      className="flex items-center justify-center p-4 bg-purple-600 rounded-lg border border-purple-500 hover:bg-purple-700 transition-colors"
+                    >
+                      <Calendar className="h-5 w-5 mr-2 text-white" />
+                      <span className="font-medium text-white">Book Consultation</span>
+                    </button>
                   </div>
-                )}
+                  
+                  <p className="mt-8 text-sm text-gray-400">
+                    Resources are now available. We'll be in touch within 24 hours.
+                  </p>
+                </div>
               </div>
             </div>
           </div>

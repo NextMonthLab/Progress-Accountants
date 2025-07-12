@@ -316,25 +316,27 @@ export function registerSmartSiteRoutes(app: Express) {
   // Get all published case studies
   app.get('/api/public/case-studies', async (req: Request, res: Response) => {
     try {
-      const tenantId = getTenantId(req);
+      console.log('[SmartSite] Attempting to fetch case studies...');
       
       const result = await db.select()
         .from(caseStudies)
-        .where(and(
-          eq(caseStudies.tenantId, tenantId),
-          eq(caseStudies.status, 'published')
-        ))
+        .where(eq(caseStudies.status, 'published'))
         .orderBy(desc(caseStudies.publishedAt));
+      
+      console.log(`[SmartSite] Case studies retrieved: ${result.length} items`);
+      console.log('[SmartSite] First result:', result[0] || 'No results');
       
       res.json({
         success: true,
-        caseStudies: result
+        data: result
       });
-    } catch (error) {
-      console.error('[SmartSite] Case studies fetch error:', error);
-      res.status(500).json({
-        success: false,
-        message: "Failed to fetch case studies"
+    } catch (error: any) {
+      console.error('[SmartSite] Failed to fetch case studies:', error.message);
+      console.error('[SmartSite] Full error:', error);
+      res.status(500).json({ 
+        success: false, 
+        message: 'Failed to fetch case studies',
+        error: error.message
       });
     }
   });

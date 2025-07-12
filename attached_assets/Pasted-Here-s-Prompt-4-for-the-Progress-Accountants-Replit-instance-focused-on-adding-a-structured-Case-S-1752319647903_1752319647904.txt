@@ -1,0 +1,81 @@
+Here’s Prompt 4 for the Progress Accountants Replit instance — focused on adding a structured Case Studies section with public-facing pages and SmartSite-compatible APIs.
+
+⸻
+
+🟦 Prompt 4: Add Case Studies Section with Pages + SmartSite API
+
+You’re now implementing the Case Studies feature on the Progress Accountants website. This allows detailed writeups of client success stories, business transformations, or service outcomes — managed via SmartSite.
+
+⸻
+
+✅ 1. Create Public Pages
+
+Case Study Index (/case-studies)
+	•	Lists all case studies
+	•	Show:
+	•	✅ title
+	•	✅ clientName (if provided)
+	•	✅ Short summary
+	•	✅ Link to full case study at /case-studies/:slug
+
+Individual Case Study (/case-studies/:slug)
+	•	Loads content dynamically via slug
+	•	Displays:
+	•	Title
+	•	Hero image (if provided)
+	•	Full content
+	•	Client or project name
+	•	Outcome/results
+
+⸻
+
+✅ 2. Public GET API Endpoint
+
+Create:
+
+GET /api/public/case-studies/:slug
+
+Returns:
+
+{
+  "title": "How Progress Helped CloudCore Cut Costs by 30%",
+  "slug": "cloudcore-costs",
+  "client": "CloudCore Ltd.",
+  "summary": "A full overhaul of their bookkeeping process revealed £40k in annual waste.",
+  "content": "In January 2025, CloudCore approached us...",
+  "heroImage": "https://cdn.example.com/cloudcore-cover.jpg",
+  "results": "30% cost savings, clearer monthly forecasts"
+}
+
+
+⸻
+
+✅ 3. SmartSite Submission API
+
+Create:
+
+POST /api/content/case-study
+
+Accepts:
+
+{
+  "title": "How We Helped TraceCo Scale Their Accounts",
+  "slug": "traceco-scaling",
+  "client": "TraceCo",
+  "summary": "From reactive accounting to forward planning.",
+  "content": "...",
+  "results": "Doubled reporting speed and improved clarity.",
+  "heroImage": "https://cdn.smartsite.io/traceco.jpg"
+}
+
+Store in:
+	•	/data/case-studies/{slug}.json
+	•	Or database record per slug
+
+⸻
+
+✅ When complete, print:
+
+✅ Case Studies section complete with pages and SmartSite-compatible APIs.
+
+Would you like a final Prompt 5 to validate all integration points and prep for Render deployment or SmartSite test push?

@@ -1,44 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { useBusinessIdentity } from "@/hooks/use-business-identity";
+import { NativeFinanceDashboardForm } from '@/components/forms/NativeFinanceDashboardForm';
 
 export default function FinanceDashboardPage() {
   const { businessIdentity, isLoading } = useBusinessIdentity();
-  
-  // Finance Dashboard embed code
-  const IFRAME_EMBED_CODE = `<!-- Client Dashboard Widget -->
-<iframe
-  src="https://e40479db-edfd-4265-9a8b-1e462b5725d1-00-290zw6wfwpbn.picard.replit.dev/embed/client-dashboard?tenant=progress-accountants-uk"
-  style="width: 100%; min-height: 700px; border: none; border-radius: 8px;"
-  frameborder="0"
-  scrolling="auto"
-  sandbox="allow-scripts allow-same-origin"
-  title="Client Dashboard"
-></iframe>
-
-<script>
-  // Auto-resize iframe height
-  window.addEventListener('message', function(event) {
-    if (event.data.type === 'client-dashboard-resize' && event.data.height) {
-      var iframe = document.querySelector('iframe[src*="/embed/client-dashboard"]');
-      if (iframe) {
-        iframe.style.height = event.data.height + 'px';
-      }
-    }
-  });
-</script>`;
-
-  const [iframeEmbedCode, setIframeEmbedCode] = useState<string>('');
-
-  useEffect(() => {
-    // Check if we have actual iframe code
-    const hasIframeContent = IFRAME_EMBED_CODE.includes('<iframe') && 
-                            IFRAME_EMBED_CODE.includes('src=');
-    
-    if (hasIframeContent) {
-      setIframeEmbedCode(IFRAME_EMBED_CODE);
-    }
-  }, []);
+  const [showForm, setShowForm] = useState(true);
 
   if (isLoading) {
     return (
@@ -49,59 +16,91 @@ export default function FinanceDashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-black overflow-hidden">
+    <div className="min-h-screen bg-black">
       <Helmet>
-        <title>Client Dashboard - {(businessIdentity as any)?.core?.businessName || 'Progress Accountants'}</title>
-        <meta name="description" content="Your personal financial dashboard with account summaries, documents, and deadlines." />
+        <title>Finance Dashboard - {(businessIdentity as any)?.core?.businessName || 'Progress Accountants'}</title>
+        <meta name="description" content="Access your personalized financial dashboard with real-time insights, reports, and analytics." />
       </Helmet>
       
-      {/* Full page iframe container with proper styling */}
-      <div className="w-full h-screen relative">
-        {iframeEmbedCode ? (
-          <div 
-            className="w-full h-full absolute inset-0"
-            style={{
-              // Ensure iframe fills entire viewport
-              minHeight: '100vh',
-              minWidth: '100vw'
-            }}
-            dangerouslySetInnerHTML={{ __html: iframeEmbedCode }}
-          />
-        ) : (
-          <div className="flex items-center justify-center h-full">
-            <div className="text-center max-w-2xl px-6">
-              <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">
-                Your Financial Dashboard
-              </h1>
-              <p className="text-xl text-gray-300 mb-8 leading-relaxed">
-                This page is ready to display your embedded dashboard content.
-              </p>
-              <div className="bg-gray-900/50 border border-gray-700 rounded-lg p-6 text-left">
-                <h3 className="text-lg font-semibold text-white mb-3">
-                  To add your iframe:
-                </h3>
-                <ol className="text-gray-300 space-y-2 text-sm">
-                  <li>1. Replace the IFRAME_EMBED_CODE constant with your iframe code</li>
-                  <li>2. Ensure your iframe includes width="100%" and height="100%"</li>
-                  <li>3. The iframe will automatically fill the entire page</li>
-                </ol>
+      {/* Hero section with cinematic background */}
+      <section className="relative min-h-screen flex items-center justify-center px-4 py-20">
+        {/* Gradient background */}
+        <div className="absolute inset-0 bg-gradient-to-br from-black via-slate-900 to-purple-900/20" />
+        
+        {/* Animated background elements */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute -top-40 -right-40 w-80 h-80 bg-purple-500/10 rounded-full blur-3xl animate-pulse" />
+          <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }} />
+        </div>
+
+        <div className="relative z-10 w-full max-w-4xl mx-auto">
+          {showForm ? (
+            <NativeFinanceDashboardForm 
+              onSuccess={() => setShowForm(false)}
+              onCancel={() => setShowForm(false)}
+            />
+          ) : (
+            <div className="text-center py-12">
+              <div className="max-w-2xl mx-auto">
+                <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">
+                  Dashboard Access Requested
+                </h1>
+                <p className="text-xl text-slate-300 mb-8 leading-relaxed">
+                  Your request has been submitted successfully. Our team will contact you shortly to set up your personalized finance dashboard.
+                </p>
+                <div className="bg-slate-800/50 border border-slate-700 rounded-lg p-8 text-left mb-8">
+                  <h3 className="text-lg font-semibold text-white mb-4">
+                    What happens next:
+                  </h3>
+                  <ul className="text-slate-300 space-y-3">
+                    <li className="flex items-start">
+                      <span className="text-[#7C3AED] font-bold mr-3">1.</span>
+                      <span>Our team will review your requirements and contact you within 24 hours</span>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="text-[#7C3AED] font-bold mr-3">2.</span>
+                      <span>We'll set up your personalized dashboard with your specific metrics</span>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="text-[#7C3AED] font-bold mr-3">3.</span>
+                      <span>You'll receive secure login credentials and a guided walkthrough</span>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="text-[#7C3AED] font-bold mr-3">4.</span>
+                      <span>Start accessing real-time financial insights and reports</span>
+                    </li>
+                  </ul>
+                </div>
+                <button
+                  onClick={() => setShowForm(true)}
+                  className="relative inline-flex items-center justify-center font-bold text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.03] active:scale-[0.98] focus:outline-none focus:ring-4 focus:ring-purple-500/50 border-0"
+                  style={{ 
+                    fontSize: 'clamp(16px, 2.5vw, 18px)',
+                    padding: 'clamp(14px, 2.5vw, 16px) clamp(28px, 5vw, 40px)',
+                    minHeight: '48px',
+                    borderRadius: '9999px',
+                    background: 'linear-gradient(90deg, #7C3AED, #EC4899)',
+                    boxShadow: '0 4px 14px rgba(124, 58, 237, 0.4), 0 2px 8px rgba(236, 72, 153, 0.3)',
+                    color: '#FFFFFF',
+                    textAlign: 'center',
+                    whiteSpace: 'nowrap'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = 'linear-gradient(90deg, #6D28D9, #DB2777)';
+                    e.currentTarget.style.boxShadow = '0 6px 20px rgba(124, 58, 237, 0.6), 0 3px 12px rgba(236, 72, 153, 0.4)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = 'linear-gradient(90deg, #7C3AED, #EC4899)';
+                    e.currentTarget.style.boxShadow = '0 4px 14px rgba(124, 58, 237, 0.4), 0 2px 8px rgba(236, 72, 153, 0.3)';
+                  }}
+                >
+                  Submit Another Request
+                </button>
               </div>
             </div>
-          </div>
-        )}
-      </div>
-
-      {/* CSS to ensure iframe responsiveness */}
-      <style dangerouslySetInnerHTML={{
-        __html: `
-          iframe {
-            width: 100% !important;
-            height: 100vh !important;
-            border: none !important;
-            display: block !important;
-          }
-        `
-      }} />
+          )}
+        </div>
+      </section>
     </div>
   );
 }
