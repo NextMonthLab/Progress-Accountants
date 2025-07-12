@@ -17,17 +17,17 @@ export default function Header() {
   ];
 
   return (
-    <header className="sticky top-0 z-header bg-white/95 backdrop-blur-sm border-b border-gray-200 shadow-custom interactive">
+    <header className="sticky top-0 z-header bg-black/95 backdrop-blur-sm border-b border-gray-800 shadow-custom interactive">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 overflow-x-hidden">
-        <div className="flex justify-between items-center h-16 md:h-20">
+        <div className="flex justify-between items-center h-14 md:h-16">
           {/* Logo */}
           <div className="flex-shrink-0">
             <Link href="/" className="flex items-center">
               <img
                 src={progressLogoPath}
                 alt="Progress Accountants"
-                className="h-8 sm:h-10 md:h-12 w-auto max-w-full object-contain"
-                style={{ maxHeight: '48px' }}
+                className="h-6 sm:h-8 md:h-10 w-auto max-w-full object-contain"
+                style={{ maxHeight: '40px' }}
               />
             </Link>
           </div>
@@ -38,7 +38,7 @@ export default function Header() {
               <Link
                 key={item.name}
                 href={item.href}
-                className="px-3 xl:px-4 py-2 text-sm xl:text-base font-medium text-gray-700 hover:text-purple-600 rounded-md hover:bg-gray-50 interactive truncate"
+                className="px-3 xl:px-4 py-2 text-sm xl:text-base font-medium text-white hover:text-purple-400 rounded-md hover:bg-gray-800 interactive truncate"
               >
                 {item.name}
               </Link>
@@ -47,7 +47,7 @@ export default function Header() {
 
           {/* Contact Info & CTA */}
           <div className="hidden md:flex items-center space-x-2 lg:space-x-4">
-            <div className="hidden lg:flex items-center space-x-3 text-sm text-gray-600">
+            <div className="hidden lg:flex items-center space-x-3 text-sm text-gray-300">
               <div className="flex items-center">
                 <Phone className="h-4 w-4 mr-1 flex-shrink-0" />
                 <span className="truncate">01295 477 250</span>
@@ -59,10 +59,9 @@ export default function Header() {
             </div>
             <Button
               size="sm"
-              className="bg-purple-600 hover:bg-purple-700 text-white interactive z-cta"
-              style={{ fontSize: 'clamp(0.75rem, 1.5vw, 0.875rem)' }}
+              className="rounded-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white border-0 shadow-lg hover:shadow-xl transform hover:scale-103 transition-all duration-200 px-6 h-12 text-base font-semibold interactive z-cta"
             >
-              <span className="truncate">Book Consultation</span>
+              <span className="truncate">Book a Call</span>
             </Button>
           </div>
 
@@ -72,7 +71,7 @@ export default function Header() {
               variant="ghost"
               size="icon"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="interactive"
+              className="text-white hover:bg-gray-800 interactive"
               aria-label="Toggle mobile menu"
             >
               {isMobileMenuOpen ? (
@@ -86,20 +85,20 @@ export default function Header() {
 
         {/* Mobile Navigation */}
         {isMobileMenuOpen && (
-          <div className="lg:hidden py-4 border-t border-gray-200 bg-white/95 backdrop-blur-sm z-overlay">
+          <div className="lg:hidden py-4 border-t border-gray-800 bg-black/95 backdrop-blur-sm z-overlay">
             <div className="space-y-2">
               {navigation.map((item) => (
                 <Link
                   key={item.name}
                   href={item.href}
-                  className="block px-4 py-2 text-base font-medium text-gray-700 hover:text-purple-600 hover:bg-gray-50 rounded-md interactive"
+                  className="block px-4 py-2 text-base font-medium text-white hover:text-purple-400 hover:bg-gray-800 rounded-md interactive"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   {item.name}
                 </Link>
               ))}
-              <div className="pt-4 border-t border-gray-200 mt-4">
-                <div className="px-4 space-y-2 text-sm text-gray-600">
+              <div className="pt-4 border-t border-gray-800 mt-4">
+                <div className="px-4 space-y-2 text-sm text-gray-300">
                   <div className="flex items-center">
                     <Phone className="h-4 w-4 mr-2 flex-shrink-0" />
                     <span>01295 477 250</span>
@@ -111,10 +110,10 @@ export default function Header() {
                 </div>
                 <div className="px-4 mt-4">
                   <Button
-                    className="w-full bg-purple-600 hover:bg-purple-700 text-white interactive"
+                    className="w-full rounded-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white border-0 shadow-lg hover:shadow-xl transform hover:scale-103 transition-all duration-200 h-12 text-base font-semibold interactive"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
-                    Book Consultation
+                    Book a Call
                   </Button>
                 </div>
               </div>

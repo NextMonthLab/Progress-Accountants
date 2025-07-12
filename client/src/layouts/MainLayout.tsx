@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import { useLocation } from "wouter";
-import Navbar from "@/components/Navbar";
+import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { ProgressBanner } from "@/components/ProgressBanner";
 import AdminLayout from "@/layouts/AdminLayout";
@@ -57,7 +57,7 @@ export default function MainLayout({ children }: MainLayoutProps) {
   // Use standard layout for public-facing pages
   return (
     <div className="flex flex-col min-h-screen">
-      <Navbar />
+      <Header />
       <main className="flex-grow">
         {children}
       </main>
