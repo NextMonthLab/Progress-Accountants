@@ -1,17 +1,62 @@
 import { useState } from 'react';
 import { Link } from 'wouter';
 import { Button } from '@/components/ui/button';
-import { Menu, X, Phone, Mail } from 'lucide-react';
+import { Menu, X, Phone, Mail, ChevronDown, ChevronRight } from 'lucide-react';
 import progressLogoPath from '@assets/Light Logo.png';
+import { openCalendlyPopup } from '@/utils/calendly';
+
+interface NavigationItem {
+  name: string;
+  href: string;
+  submenu?: { name: string; href: string; }[];
+}
 
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState<string | null>(null);
+  const [mobileSubmenuOpen, setMobileSubmenuOpen] = useState<string | null>(null);
 
   const navigation = [
     { name: 'Home', href: '/' },
     { name: 'About', href: '/about' },
-    { name: 'Services', href: '/services' },
-    { name: 'Industries', href: '/industries' },
+    { 
+      name: 'Services', 
+      href: '/services',
+      submenu: [
+        { name: 'All Services', href: '/services' },
+        { name: 'Tax Planning', href: '/services/tax-planning' },
+        { name: 'Bookkeeping', href: '/services/bookkeeping' },
+        { name: 'Business Advisory', href: '/services/business-advisory' },
+        { name: 'Financial Reporting', href: '/services/financial-reporting' },
+        { name: 'Audit Support', href: '/services/audit-support' },
+        { name: 'Cloud Accounting', href: '/services/cloud-accounting' },
+        { name: 'Industry Specific', href: '/services/industry-specific' },
+        { name: 'Virtual Finance Director', href: '/services/virtual-finance-director' }
+      ]
+    },
+    { 
+      name: 'Industries', 
+      href: '/industries',
+      submenu: [
+        { name: 'Film Industry', href: '/film' },
+        { name: 'Music Industry', href: '/music' },
+        { name: 'Construction', href: '/construction' },
+        { name: 'Professional Services', href: '/professional-services' }
+      ]
+    },
+    { 
+      name: 'Resources', 
+      href: '/resources',
+      submenu: [
+        { name: 'Business Calculator', href: '/business-calculator' },
+        { name: 'SME Support Hub', href: '/sme-support-hub' },
+        { name: 'Studio Banbury', href: '/studio-banbury' },
+        { name: 'Blog', href: '/blog' },
+        { name: 'Case Studies', href: '/case-studies' },
+        { name: 'News', href: '/news' }
+      ]
+    },
+    { name: 'Why Us', href: '/why-us' },
     { name: 'Team', href: '/team' },
     { name: 'Contact', href: '/contact' }
   ];
@@ -35,13 +80,39 @@ export default function Header() {
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center space-x-1 xl:space-x-2">
             {navigation.map((item) => (
-              <Link
-                key={item.name}
-                href={item.href}
-                className="px-3 xl:px-4 py-2 text-sm xl:text-base font-medium text-white hover:text-purple-400 rounded-md hover:bg-gray-800 interactive truncate"
+              <div 
+                key={item.name} 
+                className="relative"
+                onMouseEnter={() => item.submenu && setDropdownOpen(item.name)}
+                onMouseLeave={() => setDropdownOpen(null)}
               >
-                {item.name}
-              </Link>
+                <Link
+                  href={item.href}
+                  className="px-3 xl:px-4 py-2 text-sm xl:text-base font-medium text-white hover:text-purple-400 rounded-md hover:bg-gray-800 interactive truncate flex items-center"
+                >
+                  {item.name}
+                  {item.submenu && (
+                    <ChevronDown className="ml-1 h-4 w-4" />
+                  )}
+                </Link>
+                
+                {/* Dropdown Menu */}
+                {item.submenu && dropdownOpen === item.name && (
+                  <div className="absolute top-full left-0 mt-1 w-64 bg-gray-900 border border-gray-700 rounded-md shadow-lg z-50">
+                    <div className="py-2">
+                      {item.submenu.map((subItem) => (
+                        <Link
+                          key={subItem.name}
+                          href={subItem.href}
+                          className="block px-4 py-2 text-sm text-white hover:text-purple-400 hover:bg-gray-800 transition-colors"
+                        >
+                          {subItem.name}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
             ))}
           </nav>
 
@@ -59,6 +130,7 @@ export default function Header() {
             </div>
             <Button
               size="sm"
+              onClick={openCalendlyPopup}
               className="rounded-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white border-0 shadow-lg hover:shadow-xl transform hover:scale-103 transition-all duration-200 px-6 h-12 text-base font-semibold interactive z-cta"
             >
               <span className="truncate">Book a Call</span>
@@ -88,14 +160,41 @@ export default function Header() {
           <div className="lg:hidden py-4 border-t border-gray-800 bg-black/95 backdrop-blur-sm z-overlay">
             <div className="space-y-2">
               {navigation.map((item) => (
-                <Link
-                  key={item.name}
-                  href={item.href}
-                  className="block px-4 py-2 text-base font-medium text-white hover:text-purple-400 hover:bg-gray-800 rounded-md interactive"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  {item.name}
-                </Link>
+                <div key={item.name}>
+                  {item.submenu ? (
+                    <div>
+                      <button
+                        onClick={() => setMobileSubmenuOpen(mobileSubmenuOpen === item.name ? null : item.name)}
+                        className="flex items-center justify-between w-full px-4 py-2 text-base font-medium text-white hover:text-purple-400 hover:bg-gray-800 rounded-md interactive"
+                      >
+                        {item.name}
+                        <ChevronRight className={`h-4 w-4 transition-transform ${mobileSubmenuOpen === item.name ? 'rotate-90' : ''}`} />
+                      </button>
+                      {mobileSubmenuOpen === item.name && (
+                        <div className="ml-4 mt-2 space-y-1">
+                          {item.submenu.map((subItem) => (
+                            <Link
+                              key={subItem.name}
+                              href={subItem.href}
+                              className="block px-4 py-2 text-sm text-gray-300 hover:text-purple-400 hover:bg-gray-800 rounded-md interactive"
+                              onClick={() => setIsMobileMenuOpen(false)}
+                            >
+                              {subItem.name}
+                            </Link>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    <Link
+                      href={item.href}
+                      className="block px-4 py-2 text-base font-medium text-white hover:text-purple-400 hover:bg-gray-800 rounded-md interactive"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      {item.name}
+                    </Link>
+                  )}
+                </div>
               ))}
               <div className="pt-4 border-t border-gray-800 mt-4">
                 <div className="px-4 space-y-2 text-sm text-gray-300">
@@ -111,7 +210,10 @@ export default function Header() {
                 <div className="px-4 mt-4">
                   <Button
                     className="w-full rounded-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white border-0 shadow-lg hover:shadow-xl transform hover:scale-103 transition-all duration-200 h-12 text-base font-semibold interactive"
-                    onClick={() => setIsMobileMenuOpen(false)}
+                    onClick={() => {
+                      setIsMobileMenuOpen(false);
+                      openCalendlyPopup();
+                    }}
                   >
                     Book a Call
                   </Button>
