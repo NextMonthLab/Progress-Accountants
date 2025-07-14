@@ -18,7 +18,6 @@ export default function Header() {
   const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0 });
 
   const navigation = [
-    { name: 'Home', href: '/' },
     { name: 'About', href: '/about' },
     { 
       name: 'Services', 
