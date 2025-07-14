@@ -79,7 +79,7 @@ export default function Header() {
           </div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center space-x-1 xl:space-x-2">
+          <nav className="hidden lg:flex items-center space-x-0.5 xl:space-x-1">
             {navigation.map((item) => (
               <div 
                 key={item.name} 
@@ -98,11 +98,11 @@ export default function Header() {
               >
                 <Link
                   href={item.href}
-                  className="px-3 xl:px-4 py-2 text-sm xl:text-base font-medium text-white hover:text-purple-400 rounded-md hover:bg-gray-800 interactive truncate flex items-center"
+                  className="px-1.5 xl:px-2 py-2 text-xs xl:text-sm font-medium text-white hover:text-purple-400 rounded-md hover:bg-gray-800 interactive truncate flex items-center"
                 >
                   {item.name}
                   {item.submenu && (
-                    <ChevronDown className="ml-1 h-4 w-4" />
+                    <ChevronDown className="ml-0.5 h-3 w-3" />
                   )}
                 </Link>
                 
@@ -112,21 +112,21 @@ export default function Header() {
           </nav>
 
           {/* Contact Info & CTA */}
-          <div className="hidden md:flex items-center space-x-2 lg:space-x-4">
-            <div className="hidden lg:flex items-center space-x-3 text-sm text-gray-300">
+          <div className="hidden md:flex items-center space-x-1 lg:space-x-2">
+            <div className="hidden lg:flex items-center space-x-2 text-xs xl:text-sm text-gray-300">
               <div className="flex items-center">
-                <Phone className="h-4 w-4 mr-1 flex-shrink-0" />
+                <Phone className="h-3 w-3 mr-1 flex-shrink-0" />
                 <span className="truncate">01295 477 250</span>
               </div>
               <div className="flex items-center">
-                <Mail className="h-4 w-4 mr-1 flex-shrink-0" />
-                <span className="truncate">info@progressaccountants.co.uk</span>
+                <Mail className="h-3 w-3 mr-1 flex-shrink-0" />
+                <span className="truncate max-w-[180px] xl:max-w-none">info@progressaccountants.co.uk</span>
               </div>
             </div>
             <Button
               size="sm"
               onClick={openCalendlyPopup}
-              className="rounded-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white border-0 shadow-lg hover:shadow-xl transform hover:scale-103 transition-all duration-200 px-6 h-12 text-base font-semibold interactive z-cta"
+              className="rounded-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white border-0 shadow-lg hover:shadow-xl transform hover:scale-103 transition-all duration-200 px-3 xl:px-4 h-10 xl:h-12 text-xs xl:text-sm font-semibold interactive z-cta"
             >
               <span className="truncate">Book a Call</span>
             </Button>
