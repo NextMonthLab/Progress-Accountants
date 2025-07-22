@@ -133,14 +133,14 @@ export default function Navbar() {
     const handleMouseLeave = () => {
       const timeout = setTimeout(() => {
         setIsOpen(false);
-      }, 300); // 300ms delay before closing
+      }, 500); // Increased to 500ms delay before closing
       setHoverTimeout(timeout);
     };
     
     return (
       <div 
         key={group.label} 
-        className="relative"
+        className="relative group"
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
@@ -152,7 +152,14 @@ export default function Navbar() {
         </button>
         
         {isOpen && (
-          <div className="absolute left-0 top-full mt-1 min-w-[300px] bg-zinc-900 border border-zinc-700 rounded-md shadow-lg z-50">
+          <div 
+            className="absolute left-0 top-full mt-0 min-w-[300px] bg-zinc-900 border border-zinc-700 rounded-md shadow-lg z-50"
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+          >
+            {/* Add invisible bridge to prevent gap issues */}
+            <div className="absolute -top-1 left-0 right-0 h-1 bg-transparent" />
+            
             <div className="p-4">
               <div className="text-white font-semibold text-sm mb-2 px-2">{group.label}</div>
               <div className="grid gap-1">
@@ -164,6 +171,12 @@ export default function Navbar() {
                       "flex items-center rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-zinc-800 hover:text-[#7B3FE4] focus:bg-zinc-800 focus:text-[#7B3FE4]",
                       isActive(item.href) ? 'text-[#7B3FE4] bg-zinc-800' : 'text-gray-300'
                     )}
+                    onClick={() => {
+                      setIsOpen(false);
+                      if (hoverTimeout) {
+                        clearTimeout(hoverTimeout);
+                      }
+                    }}
                   >
                     <div className="mr-2">{item.icon}</div>
                     <div className="text-sm font-medium">{item.label}</div>

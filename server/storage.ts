@@ -48,6 +48,12 @@ import {
   type InsertTool,
   toolRequests,
   type ToolRequest,
+  submissionSourceConfigs,
+  type SubmissionSourceConfig,
+  type InsertSubmissionSourceConfig,
+  submissions,
+  type Submission,
+  type InsertSubmission,
   messages,
   type Message,
   type InsertMessage,
@@ -2432,6 +2438,250 @@ export class DatabaseStorage implements IStorage {
         mistralCalls: 0,
         successRate: 100
       };
+    }
+  }
+
+  // Submission Source Configuration methods
+  async getSubmissionSourceConfigs(tenantId: string): Promise<SubmissionSourceConfig[]> {
+    try {
+      return await db
+        .select()
+        .from(submissionSourceConfigs)
+        .where(eq(submissionSourceConfigs.tenantId, tenantId))
+        .orderBy(submissionSourceConfigs.createdAt);
+    } catch (error) {
+      console.error("Error fetching submission source configs:", error);
+      return [];
+    }
+  }
+
+  async getSubmissionSourceConfig(configId: number, tenantId: string): Promise<SubmissionSourceConfig | undefined> {
+    try {
+      const result = await db
+        .select()
+        .from(submissionSourceConfigs)
+        .where(and(
+          eq(submissionSourceConfigs.id, configId),
+          eq(submissionSourceConfigs.tenantId, tenantId)
+        ))
+        .limit(1);
+      
+      return result[0];
+    } catch (error) {
+      console.error("Error fetching submission source config:", error);
+      return undefined;
+    }
+  }
+
+  async createSubmissionSourceConfig(data: InsertSubmissionSourceConfig): Promise<SubmissionSourceConfig> {
+    try {
+      const [created] = await db
+        .insert(submissionSourceConfigs)
+        .values(data)
+        .returning();
+      
+      return created;
+    } catch (error) {
+      console.error("Error creating submission source config:", error);
+      throw error;
+    }
+  }
+
+  async updateSubmissionSourceConfig(
+    configId: number,
+    data: Partial<InsertSubmissionSourceConfig>,
+    tenantId: string
+  ): Promise<SubmissionSourceConfig> {
+    try {
+      const [updated] = await db
+        .update(submissionSourceConfigs)
+        .set({
+          ...data,
+          updatedAt: new Date()
+        })
+        .where(and(
+          eq(submissionSourceConfigs.id, configId),
+          eq(submissionSourceConfigs.tenantId, tenantId)
+        ))
+        .returning();
+      
+      return updated;
+    } catch (error) {
+      console.error("Error updating submission source config:", error);
+      throw error;
+    }
+  }
+
+  async deleteSubmissionSourceConfig(configId: number, tenantId: string): Promise<void> {
+    try {
+      await db
+        .delete(submissionSourceConfigs)
+        .where(and(
+          eq(submissionSourceConfigs.id, configId),
+          eq(submissionSourceConfigs.tenantId, tenantId)
+        ));
+    } catch (error) {
+      console.error("Error deleting submission source config:", error);
+      throw error;
+    }
+  }
+
+  async updateSubmissionSourceSyncStatus(
+    configId: number,
+    statusUpdate: {
+      lastSyncAt?: Date;
+      lastSyncStatus?: string;
+      lastSyncError?: string | null;
+      lastSyncCount?: number;
+      totalSyncedSubmissions?: number;
+    }
+  ): Promise<void> {
+    try {
+      await db
+        .update(submissionSourceConfigs)
+        .set({
+          ...statusUpdate,
+          updatedAt: new Date()
+        })
+        .where(eq(submissionSourceConfigs.id, configId));
+    } catch (error) {
+      console.error("Error updating submission source sync status:", error);
+      throw error;
+    }
+  }
+
+  // Submission methods
+  async getSubmissions(tenantId: string, limit = 50, offset = 0): Promise<Submission[]> {
+    try {
+      return await db
+        .select()
+        .from(submissions)
+        .where(eq(submissions.tenantId, tenantId))
+        .orderBy(desc(submissions.createdAt))
+        .limit(limit)
+        .offset(offset);
+    } catch (error) {
+      console.error("Error fetching submissions:", error);
+      return [];
+    }
+  }
+
+  async createSubmission(data: InsertSubmission): Promise<Submission> {
+    try {
+      const [created] = await db
+        .insert(submissions)
+        .values(data)
+        .returning();
+      
+      return created;
+    } catch (error) {
+      console.error("Error creating submission:", error);
+      throw error;
+    }
+  }
+
+  async processExternalSubmissions(
+    tenantId: string,
+    configId: number,
+    externalData: any,
+    fieldMapping: Record<string, string>
+  ): Promise<Submission[]> {
+    try {
+      // Ensure externalData is an array
+      const dataArray = Array.isArray(externalData) ? externalData : [externalData];
+      const processedSubmissions: Submission[] = [];
+
+      for (const item of dataArray) {
+        try {
+          // Map external fields to internal fields
+          const mappedData: any = {
+            tenantId,
+            sourceConfigId: configId,
+            source: 'external-api',
+            additionalData: item, // Store original data
+          };
+
+          // Apply field mapping
+          for (const [internalField, externalField] of Object.entries(fieldMapping)) {
+            const value = this.getNestedValue(item, externalField);
+            if (value !== undefined) {
+              mappedData[internalField] = value;
+            }
+          }
+
+          // Set external ID if available
+          if (item.id || item._id || item.uuid) {
+            mappedData.externalId = String(item.id || item._id || item.uuid);
+          }
+
+          // Validate required fields
+          if (!mappedData.name && !mappedData.email) {
+            console.warn('Skipping submission without name or email:', item);
+            continue;
+          }
+
+          // Check if submission already exists (based on external ID)
+          if (mappedData.externalId) {
+            const existing = await db
+              .select()
+              .from(submissions)
+              .where(and(
+                eq(submissions.tenantId, tenantId),
+                eq(submissions.sourceConfigId, configId),
+                eq(submissions.externalId, mappedData.externalId)
+              ))
+              .limit(1);
+
+            if (existing.length > 0) {
+              console.log('Submission already exists, skipping:', mappedData.externalId);
+              continue;
+            }
+          }
+
+          const submission = await this.createSubmission(mappedData);
+          processedSubmissions.push(submission);
+        } catch (itemError) {
+          console.error('Error processing individual submission:', itemError, item);
+        }
+      }
+
+      return processedSubmissions;
+    } catch (error) {
+      console.error("Error processing external submissions:", error);
+      throw error;
+    }
+  }
+
+  private getNestedValue(obj: any, path: string): any {
+    if (!path) return undefined;
+    
+    const keys = path.split('.');
+    let value = obj;
+    
+    for (const key of keys) {
+      if (value === null || value === undefined) return undefined;
+      value = value[key];
+    }
+    
+    return value;
+  }
+
+  // Get configurations that need automatic sync
+  async getConfigsForAutoSync(): Promise<SubmissionSourceConfig[]> {
+    try {
+      const now = new Date();
+      
+      return await db
+        .select()
+        .from(submissionSourceConfigs)
+        .where(and(
+          eq(submissionSourceConfigs.enabled, true),
+          eq(submissionSourceConfigs.autoSync, true),
+          ne(submissionSourceConfigs.syncFrequency, 'manual')
+        ));
+    } catch (error) {
+      console.error("Error fetching configs for auto sync:", error);
+      return [];
     }
   }
 }

@@ -274,6 +274,7 @@ export async function registerRoutes(app: Express): Promise<Express> {
   // Register AI response routes for Mistral integration
   app.use('/api/ai', aiResponseRoutes);
   
+  
   // Register page origin protection endpoints
   app.get("/api/page-origin/:id", checkPageOrigin);
   app.get("/api/page-override-permission", checkOverridePermission);
