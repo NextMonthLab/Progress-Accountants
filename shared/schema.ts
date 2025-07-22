@@ -1721,3 +1721,5 @@ export type CaseStudy = typeof caseStudies.$inferSelect;
 
 export type InsertDailyInsight = z.infer<typeof insertDailyInsightSchema>;
 export type DailyInsight = typeof dailyInsights.$inferSelect;
+
+

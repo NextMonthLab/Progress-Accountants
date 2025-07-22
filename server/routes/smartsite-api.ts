@@ -77,6 +77,72 @@ export function registerSmartSiteRoutes(app: Express) {
       });
     }
   });
+
+  // Get form submissions - Simple endpoint for SmartSite Admin Panel
+  app.get('/api/form-submissions', async (req: Request, res: Response) => {
+    try {
+      const tenantId = getTenantId(req);
+      
+      if (!isDatabaseAvailable()) {
+        // Return sample data if database not available
+        const sampleSubmissions = [
+          {
+            name: "John Smith",
+            email: "john@example.com",
+            phone: "01234 567890",
+            company: "Smith & Co",
+            message: "Interested in your accounting services for our growing business.",
+            submittedAt: "2025-07-22T14:30:00Z"
+          },
+          {
+            name: "Sarah Williams",
+            email: "sarah@techstartup.com",
+            phone: "07890 123456",
+            company: "TechStartup Ltd",
+            message: "Need help with corporation tax and VAT returns.",
+            submittedAt: "2025-07-22T10:15:00Z"
+          },
+          {
+            name: "Mike Johnson", 
+            email: "mike.johnson@construction.co.uk",
+            phone: "01865 789012",
+            company: "Johnson Construction",
+            message: "Looking for CIS scheme advice and monthly bookkeeping.",
+            submittedAt: "2025-07-21T16:45:00Z"
+          }
+        ];
+        
+        console.log(`[SmartSite] Form submissions requested (database-free mode) for tenant: ${tenantId}`);
+        res.json(sampleSubmissions);
+        return;
+      }
+      
+      // Get submissions from database
+      const submissions = await db
+        .select({
+          name: contactFormSubmissions.name,
+          email: contactFormSubmissions.email,
+          phone: contactFormSubmissions.phone,
+          company: contactFormSubmissions.business,
+          message: contactFormSubmissions.message,
+          submittedAt: contactFormSubmissions.createdAt
+        })
+        .from(contactFormSubmissions)
+        .where(eq(contactFormSubmissions.tenantId, tenantId))
+        .orderBy(desc(contactFormSubmissions.createdAt))
+        .limit(50);
+      
+      console.log(`[SmartSite] Returned ${submissions.length} form submissions for tenant: ${tenantId}`);
+      res.json(submissions);
+      
+    } catch (error) {
+      console.error('[SmartSite] Form submissions error:', error);
+      res.status(500).json({
+        error: "Failed to retrieve form submissions",
+        message: error instanceof Error ? error.message : "Unknown error"
+      });
+    }
+  });
   
   // Newsletter subscription
   app.post('/api/forms/newsletter', async (req: Request, res: Response) => {
