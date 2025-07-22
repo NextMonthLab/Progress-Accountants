@@ -52,7 +52,7 @@ export default function Navbar() {
   const { user } = useAuth();
   const { tenant } = useTenant();
   const isStaff = user?.userType === 'admin' || user?.userType === 'super_admin' || user?.userType === 'editor' || user?.isSuperAdmin;
-  const [location] = useLocation();
+  const [location, navigate] = useLocation();
 
   // Check if client registration is enabled
   const clientRegistrationEnabled = tenant?.customization?.featureFlags?.enableClientLogin;
@@ -127,14 +127,20 @@ export default function Navbar() {
           <DropdownMenuLabel className="text-white">{group.label}</DropdownMenuLabel>
           <DropdownMenuSeparator className="bg-zinc-700" />
           {group.items.map((item) => (
-            <DropdownMenuItem key={item.label} asChild>
-              <Link
-                href={item.href}
-                className={`flex items-center py-2 px-2 ${isActive(item.href) ? 'text-[#7B3FE4]' : 'text-gray-300 hover:text-[#7B3FE4]'} transition duration-300 no-underline w-full`}
+            <DropdownMenuItem 
+              key={item.label} 
+              className="p-0"
+              onSelect={(e) => {
+                e.preventDefault();
+                navigate(item.href);
+              }}
+            >
+              <div
+                className={`flex items-center py-2 px-2 ${isActive(item.href) ? 'text-[#7B3FE4]' : 'text-gray-300 hover:text-[#7B3FE4]'} transition duration-300 no-underline w-full cursor-pointer`}
               >
                 {item.icon}
                 {item.label}
-              </Link>
+              </div>
             </DropdownMenuItem>
           ))}
         </DropdownMenuContent>
