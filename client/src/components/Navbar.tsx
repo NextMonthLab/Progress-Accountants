@@ -118,29 +118,33 @@ export default function Navbar() {
 
   // Function to render nav links with dropdown
   const renderDesktopDropdown = (group: MenuGroup) => {
+    const [open, setOpen] = useState(false);
+    
     return (
-      <DropdownMenu key={group.label}>
+      <DropdownMenu key={group.label} open={open} onOpenChange={setOpen}>
         <DropdownMenuTrigger className="font-medium text-white hover:text-[#7B3FE4] transition duration-300 outline-none flex items-center">
           {group.label} <ChevronDown className="h-4 w-4 ml-1 opacity-70" />
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="min-w-[200px] bg-zinc-900 border-zinc-700">
+        <DropdownMenuContent 
+          className="min-w-[200px] bg-zinc-900 border-zinc-700"
+          align="start"
+          sideOffset={5}
+        >
           <DropdownMenuLabel className="text-white">{group.label}</DropdownMenuLabel>
           <DropdownMenuSeparator className="bg-zinc-700" />
           {group.items.map((item) => (
             <DropdownMenuItem 
               key={item.label} 
-              className="p-0"
-              onSelect={(e) => {
-                e.preventDefault();
-                navigate(item.href);
+              className={`cursor-pointer ${isActive(item.href) ? 'text-[#7B3FE4]' : 'text-gray-300 hover:text-[#7B3FE4]'} transition duration-300`}
+              onSelect={() => {
+                setOpen(false);
+                setTimeout(() => {
+                  navigate(item.href);
+                }, 0);
               }}
             >
-              <div
-                className={`flex items-center py-2 px-2 ${isActive(item.href) ? 'text-[#7B3FE4]' : 'text-gray-300 hover:text-[#7B3FE4]'} transition duration-300 no-underline w-full cursor-pointer`}
-              >
-                {item.icon}
-                {item.label}
-              </div>
+              {item.icon}
+              {item.label}
             </DropdownMenuItem>
           ))}
         </DropdownMenuContent>
@@ -178,7 +182,7 @@ export default function Navbar() {
   };
 
   return (
-    <header className="bg-black/95 backdrop-blur-sm border-b border-gray-800 sticky top-0 z-50">
+    <header className="bg-black/95 backdrop-blur-sm border-b border-gray-800 sticky top-0 z-40">
       <nav className="container mx-auto px-4 sm:px-6 md:px-12 lg:px-16 py-4 flex items-center justify-between">
         <div className="flex items-center flex-shrink-0">
           <NavbarLogo />
