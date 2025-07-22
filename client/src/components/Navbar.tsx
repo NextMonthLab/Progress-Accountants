@@ -12,13 +12,15 @@ import { useTenant } from "@/hooks/use-tenant";
 import { getSiteBranding } from "@/lib/api";
 import { defaultSiteBranding, SiteBranding } from "@shared/site_branding";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+  navigationMenuTriggerStyle,
+} from "@/components/ui/navigation-menu";
+import { cn } from "@/lib/utils";
 import progressLogoPath from "@assets/Light Logo.png";
 
 // NavbarLogo component for displaying site branding
@@ -116,39 +118,40 @@ export default function Navbar() {
     return location === href;
   };
 
-  // Function to render nav links with dropdown
+  // Function to render nav links with hover dropdown
   const renderDesktopDropdown = (group: MenuGroup) => {
-    const [open, setOpen] = useState(false);
-    
     return (
-      <DropdownMenu key={group.label} open={open} onOpenChange={setOpen}>
-        <DropdownMenuTrigger className="font-medium text-white hover:text-[#7B3FE4] transition duration-300 outline-none flex items-center">
-          {group.label} <ChevronDown className="h-4 w-4 ml-1 opacity-70" />
-        </DropdownMenuTrigger>
-        <DropdownMenuContent 
-          className="min-w-[200px] bg-zinc-900 border-zinc-700"
-          align="start"
-          sideOffset={5}
+      <NavigationMenuItem key={group.label}>
+        <NavigationMenuTrigger 
+          className={cn(
+            "font-medium text-white hover:text-[#7B3FE4] transition duration-300 outline-none flex items-center bg-transparent hover:bg-transparent focus:bg-transparent data-[active]:bg-transparent data-[state=open]:bg-transparent",
+            "group inline-flex h-auto w-max items-center justify-center px-4 py-2 text-sm"
+          )}
         >
-          <DropdownMenuLabel className="text-white">{group.label}</DropdownMenuLabel>
-          <DropdownMenuSeparator className="bg-zinc-700" />
-          {group.items.map((item) => (
-            <DropdownMenuItem 
-              key={item.label} 
-              className={`cursor-pointer ${isActive(item.href) ? 'text-[#7B3FE4]' : 'text-gray-300 hover:text-[#7B3FE4]'} transition duration-300`}
-              onSelect={() => {
-                setOpen(false);
-                setTimeout(() => {
-                  navigate(item.href);
-                }, 0);
-              }}
-            >
-              {item.icon}
-              {item.label}
-            </DropdownMenuItem>
-          ))}
-        </DropdownMenuContent>
-      </DropdownMenu>
+          {group.label}
+        </NavigationMenuTrigger>
+        <NavigationMenuContent className="min-w-[300px] bg-zinc-900 border-zinc-700 p-4">
+          <div className="grid gap-3">
+            <div className="text-white font-semibold text-sm mb-2 px-2">{group.label}</div>
+            <div className="grid gap-1">
+              {group.items.map((item) => (
+                <NavigationMenuLink key={item.label} asChild>
+                  <Link
+                    href={item.href}
+                    className={cn(
+                      "flex items-center select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-zinc-800 hover:text-[#7B3FE4] focus:bg-zinc-800 focus:text-[#7B3FE4]",
+                      isActive(item.href) ? 'text-[#7B3FE4] bg-zinc-800' : 'text-gray-300'
+                    )}
+                  >
+                    <div className="mr-2">{item.icon}</div>
+                    <div className="text-sm font-medium">{item.label}</div>
+                  </Link>
+                </NavigationMenuLink>
+              ))}
+            </div>
+          </div>
+        </NavigationMenuContent>
+      </NavigationMenuItem>
     );
   };
 
@@ -189,8 +192,12 @@ export default function Navbar() {
         </div>
 
         {/* Desktop Menu - Public-facing menu only */}
-        <div className="hidden lg:flex items-center space-x-6 xl:space-x-8">
-          {publicMenuGroups.map(renderDesktopDropdown)}
+        <div className="hidden lg:flex items-center">
+          <NavigationMenu delayDuration={200}>
+            <NavigationMenuList className="space-x-2">
+              {publicMenuGroups.map(renderDesktopDropdown)}
+            </NavigationMenuList>
+          </NavigationMenu>
         </div>
 
         {/* Right side buttons */}
