@@ -16,6 +16,7 @@ export default function Header() {
   const [dropdownOpen, setDropdownOpen] = useState<string | null>(null);
   const [mobileSubmenuOpen, setMobileSubmenuOpen] = useState<string | null>(null);
   const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0 });
+  const [dropdownTimeout, setDropdownTimeout] = useState<NodeJS.Timeout | null>(null);
 
   const navigation = [
     { name: 'About', href: '/about' },
@@ -85,6 +86,12 @@ export default function Header() {
                 className="relative"
                 onMouseEnter={(e) => {
                   if (item.submenu) {
+                    // Clear any existing timeout
+                    if (dropdownTimeout) {
+                      clearTimeout(dropdownTimeout);
+                      setDropdownTimeout(null);
+                    }
+                    
                     const rect = e.currentTarget.getBoundingClientRect();
                     setDropdownPosition({
                       top: rect.bottom + window.scrollY,
@@ -93,7 +100,13 @@ export default function Header() {
                     setDropdownOpen(item.name);
                   }
                 }}
-                onMouseLeave={() => setDropdownOpen(null)}
+                onMouseLeave={() => {
+                  // Add delay before closing dropdown
+                  const timeout = setTimeout(() => {
+                    setDropdownOpen(null);
+                  }, 150);
+                  setDropdownTimeout(timeout);
+                }}
               >
                 <Link
                   href={item.href}
@@ -221,8 +234,20 @@ export default function Header() {
             border: '1px solid rgb(55 65 81)',
             boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)'
           }}
-          onMouseEnter={() => {/* Keep dropdown open when hovering over it */}}
-          onMouseLeave={() => setDropdownOpen(null)}
+          onMouseEnter={() => {
+            // Clear timeout when hovering over dropdown
+            if (dropdownTimeout) {
+              clearTimeout(dropdownTimeout);
+              setDropdownTimeout(null);
+            }
+          }}
+          onMouseLeave={() => {
+            // Add delay before closing dropdown
+            const timeout = setTimeout(() => {
+              setDropdownOpen(null);
+            }, 150);
+            setDropdownTimeout(timeout);
+          }}
         >
           <div className="py-2">
             {navigation.find(item => item.name === dropdownOpen)?.submenu?.map((subItem) => (
