@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'wouter';
 import { Button } from '@/components/ui/button';
 import { Menu, X, Phone, Mail, ChevronDown, ChevronRight } from 'lucide-react';
@@ -17,6 +17,20 @@ export default function Header() {
   const [mobileSubmenuOpen, setMobileSubmenuOpen] = useState<string | null>(null);
   const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0 });
   const [dropdownTimeout, setDropdownTimeout] = useState<NodeJS.Timeout | null>(null);
+  const [dropdownClicked, setDropdownClicked] = useState(false);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = () => {
+      setDropdownOpen(null);
+      setDropdownClicked(false);
+    };
+
+    if (dropdownOpen) {
+      document.addEventListener('click', handleClickOutside);
+      return () => document.removeEventListener('click', handleClickOutside);
+    }
+  }, [dropdownOpen]);
 
   const navigation = [
     { name: 'About', href: '/about' },
@@ -101,11 +115,20 @@ export default function Header() {
                   }
                 }}
                 onMouseLeave={() => {
-                  // Add delay before closing dropdown
-                  const timeout = setTimeout(() => {
-                    setDropdownOpen(null);
-                  }, 150);
-                  setDropdownTimeout(timeout);
+                  // Only close if not clicked to stay open
+                  if (!dropdownClicked) {
+                    const timeout = setTimeout(() => {
+                      setDropdownOpen(null);
+                    }, 300);
+                    setDropdownTimeout(timeout);
+                  }
+                }}
+                onClick={(e) => {
+                  if (item.submenu) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    setDropdownClicked(true);
+                  }
                 }}
               >
                 <Link
@@ -234,6 +257,7 @@ export default function Header() {
             border: '1px solid rgb(55 65 81)',
             boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)'
           }}
+          onClick={(e) => e.stopPropagation()}
           onMouseEnter={() => {
             // Clear timeout when hovering over dropdown
             if (dropdownTimeout) {
@@ -242,11 +266,13 @@ export default function Header() {
             }
           }}
           onMouseLeave={() => {
-            // Add delay before closing dropdown
-            const timeout = setTimeout(() => {
-              setDropdownOpen(null);
-            }, 150);
-            setDropdownTimeout(timeout);
+            // Only close if not clicked to stay open
+            if (!dropdownClicked) {
+              const timeout = setTimeout(() => {
+                setDropdownOpen(null);
+              }, 500);
+              setDropdownTimeout(timeout);
+            }
           }}
         >
           <div className="py-2">
@@ -255,7 +281,10 @@ export default function Header() {
                 key={subItem.name}
                 href={subItem.href}
                 className="block px-4 py-2 text-sm text-white hover:text-purple-400 hover:bg-gray-800 transition-colors"
-                onClick={() => setDropdownOpen(null)}
+                onClick={() => {
+                  setDropdownOpen(null);
+                  setDropdownClicked(false);
+                }}
               >
                 {subItem.name}
               </Link>
