@@ -21,9 +21,12 @@ export default function Header() {
 
   // Close dropdown when clicking outside
   useEffect(() => {
-    const handleClickOutside = () => {
-      setDropdownOpen(null);
-      setDropdownClicked(false);
+    const handleClickOutside = (e: MouseEvent) => {
+      const target = e.target as Element;
+      if (!target.closest('[data-dropdown-area]')) {
+        setDropdownOpen(null);
+        setDropdownClicked(false);
+      }
     };
 
     if (dropdownOpen) {
@@ -98,6 +101,7 @@ export default function Header() {
               <div 
                 key={item.name} 
                 className="relative"
+                data-dropdown-area
                 onMouseEnter={(e) => {
                   if (item.submenu) {
                     // Clear any existing timeout
@@ -115,19 +119,12 @@ export default function Header() {
                   }
                 }}
                 onMouseLeave={() => {
-                  // Only close if not clicked to stay open
-                  if (!dropdownClicked) {
-                    const timeout = setTimeout(() => {
-                      setDropdownOpen(null);
-                    }, 300);
-                    setDropdownTimeout(timeout);
-                  }
+                  // Don't close on mouse leave - only close when leaving dropdown area
                 }}
                 onClick={(e) => {
                   if (item.submenu) {
                     e.preventDefault();
                     e.stopPropagation();
-                    setDropdownClicked(true);
                   }
                 }}
               >
@@ -257,6 +254,7 @@ export default function Header() {
             border: '1px solid rgb(55 65 81)',
             boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)'
           }}
+          data-dropdown-area
           onClick={(e) => e.stopPropagation()}
           onMouseEnter={() => {
             // Clear timeout when hovering over dropdown
@@ -266,13 +264,12 @@ export default function Header() {
             }
           }}
           onMouseLeave={() => {
-            // Only close if not clicked to stay open
-            if (!dropdownClicked) {
-              const timeout = setTimeout(() => {
-                setDropdownOpen(null);
-              }, 500);
-              setDropdownTimeout(timeout);
-            }
+            // Close when leaving the dropdown area
+            const timeout = setTimeout(() => {
+              setDropdownOpen(null);
+              setDropdownClicked(false);
+            }, 100);
+            setDropdownTimeout(timeout);
           }}
         >
           <div className="py-2">
