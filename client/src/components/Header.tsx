@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'wouter';
 import { Button } from '@/components/ui/button';
 import { Menu, X, Phone, Mail, ChevronDown, ChevronRight } from 'lucide-react';
@@ -16,6 +16,24 @@ export default function Header() {
   const [dropdownOpen, setDropdownOpen] = useState<string | null>(null);
   const [mobileSubmenuOpen, setMobileSubmenuOpen] = useState<string | null>(null);
   const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0 });
+  const [dropdownTimeout, setDropdownTimeout] = useState<NodeJS.Timeout | null>(null);
+  const [dropdownClicked, setDropdownClicked] = useState(false);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      const target = e.target as Element;
+      if (!target.closest('[data-dropdown-area]')) {
+        setDropdownOpen(null);
+        setDropdownClicked(false);
+      }
+    };
+
+    if (dropdownOpen) {
+      document.addEventListener('click', handleClickOutside);
+      return () => document.removeEventListener('click', handleClickOutside);
+    }
+  }, [dropdownOpen]);
 
   const navigation = [
     { name: 'About', href: '/about' },
@@ -83,8 +101,15 @@ export default function Header() {
               <div 
                 key={item.name} 
                 className="relative"
+                data-dropdown-area
                 onMouseEnter={(e) => {
                   if (item.submenu) {
+                    // Clear any existing timeout
+                    if (dropdownTimeout) {
+                      clearTimeout(dropdownTimeout);
+                      setDropdownTimeout(null);
+                    }
+                    
                     const rect = e.currentTarget.getBoundingClientRect();
                     setDropdownPosition({
                       top: rect.bottom + window.scrollY,
@@ -93,7 +118,15 @@ export default function Header() {
                     setDropdownOpen(item.name);
                   }
                 }}
-                onMouseLeave={() => setDropdownOpen(null)}
+                onMouseLeave={() => {
+                  // Don't close on mouse leave - only close when leaving dropdown area
+                }}
+                onClick={(e) => {
+                  if (item.submenu) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                  }
+                }}
               >
                 <Link
                   href={item.href}
@@ -221,8 +254,23 @@ export default function Header() {
             border: '1px solid rgb(55 65 81)',
             boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)'
           }}
-          onMouseEnter={() => {/* Keep dropdown open when hovering over it */}}
-          onMouseLeave={() => setDropdownOpen(null)}
+          data-dropdown-area
+          onClick={(e) => e.stopPropagation()}
+          onMouseEnter={() => {
+            // Clear timeout when hovering over dropdown
+            if (dropdownTimeout) {
+              clearTimeout(dropdownTimeout);
+              setDropdownTimeout(null);
+            }
+          }}
+          onMouseLeave={() => {
+            // Close when leaving the dropdown area
+            const timeout = setTimeout(() => {
+              setDropdownOpen(null);
+              setDropdownClicked(false);
+            }, 100);
+            setDropdownTimeout(timeout);
+          }}
         >
           <div className="py-2">
             {navigation.find(item => item.name === dropdownOpen)?.submenu?.map((subItem) => (
@@ -230,7 +278,10 @@ export default function Header() {
                 key={subItem.name}
                 href={subItem.href}
                 className="block px-4 py-2 text-sm text-white hover:text-purple-400 hover:bg-gray-800 transition-colors"
-                onClick={() => setDropdownOpen(null)}
+                onClick={() => {
+                  setDropdownOpen(null);
+                  setDropdownClicked(false);
+                }}
               >
                 {subItem.name}
               </Link>
