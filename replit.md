@@ -1,264 +1,63 @@
 # Progress Accountants - SmartSite Platform
 
 ## Overview
+Progress Accountants' SmartSite platform is a comprehensive website management solution, built with a React/TypeScript frontend and Node.js/Express backend. It provides professional service firms with AI-powered features, business intelligence tools, and a multi-tenant architecture. The platform aims to offer a sophisticated system for website management, enhancing business capabilities and market presence.
 
-Progress Accountants is a sophisticated SmartSite platform built with React/TypeScript frontend and Node.js/Express backend. The system provides a comprehensive website management solution with AI-powered features, business intelligence tools, and a multi-tenant architecture designed for professional service firms.
+## User Preferences
+Preferred communication style: Simple, everyday language.
+
+## Developer Handoff Status
+- January 27, 2025: Comprehensive developer handoff documentation created in DEVELOPER_HANDOFF.md
+- Project ready for external developer management with full technical documentation
+- All systems operational and deployment-ready
 
 ## System Architecture
 
 ### Frontend Architecture
-- **Framework**: React 18 with TypeScript
-- **Build Tool**: Vite for fast development and optimized builds
-- **UI Library**: Radix UI components with Tailwind CSS for styling
-- **State Management**: TanStack Query for server state management
-- **Routing**: React Router for client-side navigation
-- **Styling**: Tailwind CSS with dark mode support and professional theme
+- **Framework**: React 18 with TypeScript and Vite
+- **UI/UX**: Radix UI components with Tailwind CSS for styling, supporting dark mode and a professional theme.
+- **State Management**: TanStack Query for server state.
+- **Routing**: React Router for navigation.
 
 ### Backend Architecture
-- **Runtime**: Node.js with Express.js framework
-- **Language**: TypeScript for type safety
-- **Authentication**: Passport.js with local strategy and JWT support
-- **Session Management**: Express sessions with custom storage
-- **API Design**: RESTful APIs with proper error handling
+- **Runtime**: Node.js with Express.js and TypeScript.
+- **Authentication**: Passport.js with local strategy and JWT.
+- **API Design**: RESTful APIs with error handling.
 
 ### Database Architecture
-- **Primary Database**: PostgreSQL with Drizzle ORM
-- **Schema Management**: Drizzle Kit for migrations
-- **Multi-tenancy**: UUID-based tenant isolation
-- **Performance**: Indexed queries and optimized data structures
+- **Primary Database**: PostgreSQL with Drizzle ORM.
+- **Schema Management**: Drizzle Kit for migrations.
+- **Multi-tenancy**: UUID-based tenant isolation.
 
-## Key Components
+### Core Features
+- **Multi-Tenant System**: UUID-based tenant identification, role-based access control (Super Admin, Admin, Editor, User), configurable branding, and clonable business templates.
+- **AI Gateway**: Supports OpenAI GPT-4o, Anthropic Claude Sonnet 4, and Ollama (Mistral 7B) with intelligent routing, graceful fallbacks, and usage tracking.
+- **Content Management**: Advanced drag-and-drop page builder, version control for content, built-in SEO tools, and media management.
+- **Business Intelligence**: Analytics for innovation, AI-powered conversation insights, system health monitoring, and basic CRM integration.
+- **Communication Tools**: Customizable contact forms, SendGrid email integration, built-in support system, and industry newsfeed.
 
-### Multi-Tenant Architecture
-- **Tenant Management**: UUID-based tenant identification with complete data isolation
-- **User Scoping**: Role-based access control (Super Admin, Admin, Editor, User)
-- **Business Identity**: Configurable branding and customization per tenant
-- **Template System**: Clone-able business templates for rapid deployment
-
-### AI Gateway System
-- **Model Support**: OpenAI GPT-4o (Pro users), Anthropic Claude Sonnet 4, Mistral 7B (Ollama)
-- **Intelligent Routing**: Automatic model selection based on user tier and availability
-- **Graceful Fallbacks**: System degrades gracefully when AI services are unavailable
-- **Usage Tracking**: Comprehensive logging of AI interactions and token usage
-
-### Content Management
-- **Page Builder**: Advanced drag-and-drop interface with component library
-- **Version Control**: Complete versioning system for pages and content
-- **SEO Optimization**: Built-in SEO tools with metadata management
-- **Media Management**: Asset upload and organization system
-
-### Business Intelligence
-- **Innovation Analytics**: Track business insights, themes, and product ideas
-- **Conversation Insights**: AI-powered analysis of customer interactions
-- **Health Monitoring**: System performance and uptime tracking
-- **CRM Integration**: Basic customer relationship management tools
-
-### Communication Features
-- **Contact Forms**: Customizable contact form builder
-- **Email Integration**: SendGrid integration for transactional emails
-- **Support System**: Built-in help desk and ticket management
-- **Newsfeed**: Industry-specific news and updates
-
-## Data Flow
-
-### Request Flow
-1. Client requests hit Vite dev server (development) or static files (production)
-2. API requests routed through Express.js middleware stack
-3. Authentication middleware validates sessions/JWTs
-4. Role-based access control checks permissions
-5. Business logic processes requests with database interactions
-6. Responses formatted and returned to client
-
-### AI Processing Flow
-1. AI requests enter through unified gateway endpoint
-2. System evaluates user tier and available models
-3. Request routed to appropriate AI service (OpenAI/Anthropic/Ollama)
-4. Response processed and logged for analytics
-5. Formatted response returned to client with usage tracking
-
-### Data Persistence
-- **Tenant Data**: Isolated per tenant with UUID scoping
-- **User Sessions**: Stored in custom session store
-- **File Uploads**: Local filesystem with configurable paths
-- **Analytics**: Time-series data for performance monitoring
+### Data Flow
+- **Request Flow**: Client requests processed through Express.js, authenticated, authorized by RBAC, then business logic interacts with the database.
+- **AI Processing Flow**: Requests are routed to appropriate AI services based on user tier, processed, logged, and returned with usage tracking.
+- **Data Persistence**: Tenant data is isolated, user sessions are custom-stored, file uploads are local, and analytics use time-series data.
 
 ## External Dependencies
 
 ### AI Services
-- **OpenAI API**: GPT-4o for premium users
-- **Anthropic API**: Claude Sonnet 4 as fallback option
-- **Ollama**: Local Mistral 7B for free tier users
+- **OpenAI API**: For premium AI features.
+- **Anthropic API**: As a fallback AI option.
+- **Ollama**: For local AI model integration (Mistral 7B).
 
 ### Email Services
-- **SendGrid**: Transactional email delivery
-- **Contact Forms**: Email notifications for lead capture
+- **SendGrid**: For transactional email delivery.
 
-### Development Tools
-- **Drizzle ORM**: Type-safe database operations
-- **Replit**: Development environment and hosting
-- **PostgreSQL**: Primary data storage
+### Development & Database
+- **Drizzle ORM**: For database interactions.
+- **Replit**: For development environment and hosting.
+- **PostgreSQL**: Primary database storage.
 
 ### Frontend Libraries
-- **Radix UI**: Accessible component primitives
-- **Framer Motion**: Animation library
-- **Date-fns**: Date manipulation utilities
-- **React Query**: Server state management
-
-## Deployment Strategy
-
-### Development Environment
-- **Platform**: Replit with Node.js 20 runtime
-- **Database**: PostgreSQL 16 module
-- **Hot Reload**: Vite dev server with HMR
-- **Port Configuration**: Frontend (5000), API (5001)
-
-### Production Considerations
-- **Build Process**: Vite production build with code splitting
-- **Static Assets**: Optimized and fingerprinted
-- **Database**: Connection pooling and migration management
-- **Environment Variables**: Secure configuration management
-
-### Frontend Extraction
-- **Standalone Deployment**: Ready for static hosting (Netlify, Vercel, Hetzner)
-- **API Integration**: Configurable backend URL via environment variables
-- **Asset Management**: Self-contained with all required dependencies
-
-## Changelog
-
-```
-Changelog:
-- July 12, 2025: NAVIGATION MENU COMPLETELY RESTORED with comprehensive dropdown structure - added Services (8 pages), Industries (4 pages), and Resources (6 pages) dropdowns with proper z-index layering to appear above hero content
-- July 12, 2025: Fixed dropdown menu z-index issue - navigation submenus now display properly above hero images and page content with z-[9999] positioning and enhanced styling
-- July 12, 2025: Integrated Calendly functionality into header "Book a Call" buttons for both desktop and mobile navigation menus
-- July 12, 2025: RESOLVED Render deployment issue by implementing database-free mode - application now deploys successfully without DATABASE_URL and runs with form submissions logged to console until database is configured
-- July 12, 2025: Enhanced SmartSite API endpoints with fallback handling - contact forms and newsletter subscriptions work in database-free mode with console logging for immediate deployment success
-- July 12, 2025: Updated RENDER_DEPLOYMENT_GUIDE.md to reflect deployment success - website now deploys immediately while database setup remains optional for enhanced functionality
-- July 12, 2025: Completed final form conversion - Finance Dashboard page now uses native NativeFinanceDashboardForm.tsx component instead of embedded iframe, eliminating all legacy iframe dependencies across the entire website
-- July 12, 2025: Created NativeFinanceDashboardForm.tsx with comprehensive validation, source tracking (finance_dashboard), SmartSite integration, and Universal Gold Standard Button System styling
-- July 12, 2025: ALL EMBEDDED IFRAME FORMS SUCCESSFULLY CONVERTED - Contact Form, Business Calculator, SME Support Hub, and Finance Dashboard now use native React implementations with proper API endpoints
-- June 25, 2025: Applied Universal Gold Standard Button System v1 to Studio Banbury page - optimized hero CTA (Book Studio Time), navigation buttons (Book Studio Time, Explore Client Plans) and form submit button (Submit Booking Request) with fully rounded pill shape, purple-pink gradient, responsive typography scaling, 56px minimum touch targets, hover scale effects (1.03x), accessible focus rings, and Rob Hutt cinematic conversion design
-- June 25, 2025: Applied Universal Gold Standard Button System v1 to SME Support Hub page - optimized download buttons (Download Resources Pack, Download SME Resources Pack) and CTA button (Book My Strategy Call) with fully rounded pill shape, purple-pink gradient, responsive typography scaling, 56px minimum touch targets, hover scale effects (1.03x), accessible focus rings, and Rob Hutt cinematic conversion design
-- June 25, 2025: Applied Universal Gold Standard Button System v1 to Business Calculator page - optimized navigation buttons (Back/Continue), action buttons (Download Report, Schedule Call) with fully rounded pill shape, purple-pink gradient (primary) and outline styles (secondary), responsive typography scaling, 48-56px minimum touch targets, hover scale effects (1.03x), accessible focus rings, and Rob Hutt cinematic conversion design
-- June 25, 2025: Applied Universal Gold Standard Button System v1 to Professional Services page - optimized hero CTA and final CTA section buttons with fully rounded pill shape, purple-pink gradient (primary) and white/outline styles (secondary), responsive typography scaling, 56px minimum touch targets, hover scale effects (1.03x), accessible focus rings, and Rob Hutt cinematic conversion design
-- June 25, 2025: Applied Universal Gold Standard Button System v1 to Construction Industry page - optimized hero CTA and final CTA section buttons with fully rounded pill shape, purple-pink gradient (primary) and white/outline styles (secondary), responsive typography scaling, 56px minimum touch targets, hover scale effects (1.03x), accessible focus rings, and Rob Hutt cinematic conversion design
-- June 25, 2025: Applied Universal Gold Standard Button System v1 to Music Industry page - optimized hero CTA and final CTA section buttons with fully rounded pill shape, purple-pink gradient (primary) and white/outline styles (secondary), responsive typography scaling, 56px minimum touch targets, hover scale effects (1.03x), accessible focus rings, and Rob Hutt cinematic conversion design
-- June 25, 2025: Applied Universal Gold Standard Button System v1 to Film Industry page - optimized hero CTA and final CTA section buttons with fully rounded pill shape, purple-pink gradient (primary) and white/outline styles (secondary), responsive typography scaling, 56px minimum touch targets, hover scale effects (1.03x), accessible focus rings, and Rob Hutt cinematic conversion design
-- June 25, 2025: Applied Universal Gold Standard Button System v1 to Virtual Finance Director service page - optimized hero CTA and final CTA section buttons with fully rounded pill shape, purple-pink gradient (primary) and white/outline styles (secondary), responsive typography scaling, 56px minimum touch targets, hover scale effects (1.03x), accessible focus rings, and Rob Hutt cinematic conversion design
-- June 25, 2025: Applied Universal Gold Standard Button System v1 to Industry-Specific service page - optimized hero CTA and final CTA section buttons with fully rounded pill shape, purple-pink gradient (primary) and white/outline styles (secondary), responsive typography scaling, 56px minimum touch targets, hover scale effects (1.03x), accessible focus rings, and Rob Hutt cinematic conversion design
-- June 25, 2025: Applied Universal Gold Standard Button System v1 to Cloud Accounting service page - optimized hero CTA and final CTA section buttons with fully rounded pill shape, purple-pink gradient (primary) and white/outline styles (secondary), responsive typography scaling, 56px minimum touch targets, hover scale effects (1.03x), accessible focus rings, and Rob Hutt cinematic conversion design
-- June 25, 2025: Applied Universal Gold Standard Button System v1 to Audit Support service page - optimized hero CTA and final CTA section buttons with fully rounded pill shape, purple-pink gradient (primary) and white/outline styles (secondary), responsive typography scaling, 56px minimum touch targets, hover scale effects (1.03x), accessible focus rings, and Rob Hutt cinematic conversion design
-- June 25, 2025: Applied Universal Gold Standard Button System v1 to Financial Reporting service page - optimized hero CTA and final CTA section buttons with fully rounded pill shape, purple-pink gradient (primary) and white/outline styles (secondary), responsive typography scaling, 56px minimum touch targets, hover scale effects (1.03x), accessible focus rings, and Rob Hutt cinematic conversion design
-- June 25, 2025: Applied Universal Gold Standard Button System v1 to Business Advisory service page - optimized hero CTA and final CTA section buttons with fully rounded pill shape, purple-pink gradient (primary) and white/outline styles (secondary), responsive typography scaling, 56px minimum touch targets, hover scale effects (1.03x), accessible focus rings, and Rob Hutt cinematic conversion design
-- June 25, 2025: Applied Universal Gold Standard Button System v1 to Bookkeeping service page - optimized hero CTA and final CTA section buttons with fully rounded pill shape, purple-pink gradient (primary) and white/outline styles (secondary), responsive typography scaling, 56px minimum touch targets, hover scale effects (1.03x), accessible focus rings, and Rob Hutt cinematic conversion design
-- June 25, 2025: Applied Universal Gold Standard Button System v1 to Tax Planning service page - optimized hero CTA and final CTA section buttons with fully rounded pill shape, purple-pink gradient (primary) and white/outline styles (secondary), responsive typography scaling, 56px minimum touch targets, hover scale effects (1.03x), accessible focus rings, and Rob Hutt cinematic conversion design
-- June 25, 2025: Applied Universal Gold Standard Button System v1 to Services page - optimized hero CTA, dashboard consultation button, and final CTA section buttons with fully rounded pill shape, purple-pink gradient, responsive typography scaling, 56px minimum touch targets, hover scale effects (1.03x), accessible focus rings, and Rob Hutt cinematic conversion design
-- June 25, 2025: Applied Universal Gold Standard Button System v1 to homepage - implemented fully rounded pill shape buttons with purple-pink gradient, responsive typography (20px desktop to 16px mobile), 56px minimum touch target, soft shadows with hover intensification, scale hover effects (1.03x), accessible focus rings, semantic button tags, and Rob Hutt cinematic conversion-focused design across hero CTA, contact forms, and card buttons
-- June 25, 2025: Applied Universal Image Card Section Gold Standard v2 to homepage - implemented perfect horizontal alignment of headers/text/bullets/CTAs across cards, consistent 3:2 aspect ratio images with object-fit cover eliminating letterboxing, responsive typography (24px desktop, 20px mobile), semantic HTML structure with article tags, full keyboard navigation, and Rob Hutt conversion-focused design with professional hover animations
-- June 24, 2025: Applied Gold Standard hero template to Virtual Finance Director service page retaining existing background image - implemented sharp Rob Hutt headlines "Finance Director. Leadership Ready." with proper overlay, text shadows, and purple/pink gradient CTA
-- June 24, 2025: Applied Gold Standard hero template to Industry-Specific service page retaining existing background image - implemented sharp Rob Hutt headlines "Industry Specialists. Sector Ready." with proper overlay, text shadows, and purple/pink gradient CTA
-- June 24, 2025: Applied Gold Standard hero template to Cloud Accounting service page retaining existing background image - implemented sharp Rob Hutt headlines "Cloud Accounting. Future Ready." with proper overlay, text shadows, and purple/pink gradient CTA
-- June 24, 2025: Applied Gold Standard hero template to Audit Support service page retaining existing background image - implemented sharp Rob Hutt headlines "Audit Support. Compliance Ready." with proper overlay, text shadows, and purple/pink gradient CTA
-- June 24, 2025: Applied Gold Standard hero template to Financial Reporting service page retaining existing background image - implemented sharp Rob Hutt headlines "Financial Reporting. Decision Ready." with proper overlay, text shadows, and purple/pink gradient CTA
-- June 24, 2025: Applied Gold Standard hero template to Business Advisory service page retaining existing background image - implemented sharp Rob Hutt headlines "Business Advisory. Growth Ready." with proper overlay, text shadows, and purple/pink gradient CTA
-- June 24, 2025: Applied Gold Standard hero template to Bookkeeping service page retaining existing background image - implemented sharp Rob Hutt headlines "Bookkeeping. Business Ready." with proper overlay, text shadows, and purple/pink gradient CTA
-- June 24, 2025: Applied Gold Standard hero template to Tax Planning service page retaining existing background image - implemented sharp Rob Hutt headlines "Tax Planning. Strategy Ready." with proper overlay, text shadows, and purple/pink gradient CTA
-- June 24, 2025: Applied Gold Standard hero template to Professional Services page retaining existing background image - implemented sharp Rob Hutt headlines "Professional Services. Growth Ready." with proper overlay, text shadows, and purple/pink gradient CTA
-- June 24, 2025: Applied Gold Standard hero template to Construction Industry page retaining existing background image - implemented sharp Rob Hutt headlines "Construction Accounting. Build Ready." with proper overlay, text shadows, and purple/pink gradient CTA
-- June 24, 2025: Applied Gold Standard hero template to Music Industry page retaining existing background image - implemented sharp Rob Hutt headlines "Music Accounting. Industry Ready." with proper overlay, text shadows, and purple/pink gradient CTA
-- June 24, 2025: Applied Gold Standard hero template to Film Industry page retaining existing background image - implemented sharp Rob Hutt headlines "Film Accounting. Production Ready." with proper overlay, text shadows, and purple/pink gradient CTA
-- June 24, 2025: Applied Gold Standard hero template to Studio Banbury page retaining existing background image - implemented sharp Rob Hutt headlines "Professional Studio. Broadcast Quality." with proper overlay, text shadows, and purple/pink gradient CTA
-- June 24, 2025: Applied Gold Standard hero template to Contact page retaining existing background image - implemented sharp Rob Hutt headlines "Ready To Grow? Let's Talk." with proper overlay, text shadows, and purple/pink gradient CTA
-- June 24, 2025: Applied Gold Standard hero template to Team page retaining existing background image - implemented sharp Rob Hutt headlines "Expert Team. Proven Results." with proper overlay, text shadows, and purple/pink gradient CTA
-- June 24, 2025: Applied Gold Standard hero template to Why Us page retaining existing background image - implemented sharp Rob Hutt headlines "Strategic Accounting. Proven Results." with proper overlay, text shadows, and purple/pink gradient CTA
-- June 24, 2025: Applied Gold Standard hero template to About page with new background image, purple/pink gradient CTA, proper dark overlay (20-50% opacity), and text shadows for optimal visibility - complete certified design implementation
-- June 24, 2025: Certified current hero section as Gold Standard template for all future pages - established official design benchmark with specific rules for headline structure (4-8 words per line), background image framing (faces fully visible), subheadline formatting (18-24 words max), CTA positioning, and responsive behavior
-- June 24, 2025: Fixed hero background image positioning to prevent header from cutting off team members' faces - adjusted to center 15% (desktop) and center 20% (mobile) for optimal visibility below navigation
-- June 24, 2025: Applied Rob Hutt production copy rewrite to Virtual Finance Director service page - sharp headlines (3 words), streamlined descriptions, eliminated redundant words, focused on strategic finance leadership value and consultation conversion
-- June 24, 2025: Applied Rob Hutt production copy rewrite to Industry-Specific service page - sharp headlines (2 words), streamlined descriptions, eliminated redundant words, focused on specialist sector expertise and consultation conversion
-- June 24, 2025: Applied Rob Hutt production copy rewrite to Cloud Accounting service page - sharp headlines (2 words), streamlined descriptions, eliminated redundant words, focused on modern cloud technology value and consultation conversion
-- June 24, 2025: Applied Rob Hutt production copy rewrite to Film page - sharp headlines (2-4 words), streamlined service descriptions, eliminated unnecessary words, focused on production expertise and consultation conversion  
-- June 24, 2025: Applied Rob Hutt production copy rewrite to Music page - sharp headlines (2-4 words), streamlined service descriptions, eliminated redundant words, focused on creative industry expertise and consultation conversion
-- June 24, 2025: Applied Rob Hutt production copy rewrite to Film page - sharp headlines (2-4 words), streamlined service descriptions, eliminated unnecessary words, focused on production expertise and consultation conversion
-- June 24, 2025: Applied Rob Hutt production copy rewrite to SME Support Hub page - sharp headlines (2-4 words), streamlined resource descriptions, expert consultation conversion focus, eliminated corporate language for direct business value messaging
-- June 24, 2025: Applied Rob Hutt production copy rewrite to Business Calculator page - sharp headlines (2-4 words), streamlined descriptions, professional valuation messaging focused on clarity and expert consultation conversion
-- June 24, 2025: Applied Rob Hutt production copy rewrite to Studio Banbury page - sharp headlines (2-4 words), punchy studio descriptions, professional messaging focused on quality outcomes and booking conversion
-- June 24, 2025: Applied Rob Hutt production copy rewrite to Contact page - sharp headlines (2-5 words), strategic messaging focused on growth outcomes, direct CTAs for maximum commercial impact
-- June 24, 2025: Applied Rob Hutt production copy rewrite to Team page - sharp headlines (2-3 words), punchy descriptions, preserved individual bios as requested, focused on expertise and results
-- June 24, 2025: Applied Rob Hutt production copy rewrite to Why Us page - sharp headlines (2-4 words), punchy descriptions under 15 words, eliminated weak corporate language, focused on strategic outcomes and client results
-- June 24, 2025: Applied Rob Hutt production copy rewrite to About page - transformed all headlines to 3-6 words, shortened paragraphs to 2-4 sentences, eliminated corporate speak, focused on outcomes over features
-- June 24, 2025: Applied production-standard Rob Hutt copy rewrite - sharp H1/H2 headlines (3-8 words), punchy service descriptions, action-oriented CTAs, and commercially confident tone throughout
-- June 24, 2025: Completed Rob Hutt-style copy rewrite with direct, commercially confident messaging - transformed hero, services, and benefits copy to focus on growth outcomes rather than compliance features
-- June 24, 2025: Finalized gold-standard hero design with refined typography (15-20% smaller headline), improved image framing (40% vertical position), enhanced spacing, and comprehensive responsive audit ensuring perfect accessibility and readability across all devices
-- June 24, 2025: Updated hero copy to premium, emotionally compelling messaging - "Modern Accounting. Real Strategy. Future-Ready." with growth-focused subheadline positioning Progress Accountants as distinctive and forward-thinking
-- June 24, 2025: Cinematic hero refinement with industry-leading responsive design - smart focal point adjustments, enhanced gradient overlays, premium typography scaling, and flawless cross-device optimization
-- June 24, 2025: Simplified hero section redesign for clean, elegant presentation - removed complex elements for focused headline, subheadline, and single CTA with full-viewport background
-- June 24, 2025: Complete hero section redesign with industry-leading full-viewport team photo background, centered content layout, smooth animations, and comprehensive responsive design across all breakpoints
-- June 24, 2025: Restored responsive hero image with proper two-column layout - team photo now displays responsively alongside content with proper aspect ratio and positioning
-- June 24, 2025: Fixed critical hero section display issue - restored proper hero layout with centered content, background image, and responsive CTA buttons 
-- June 24, 2025: Completed Responsive Pass 2 Full Refinement - Advanced responsiveness with button text containment, hero image stability, z-index management, smooth transitions, and viewport optimization
-- June 24, 2025: Implemented production-ready responsive design with comprehensive breakpoint system, ResponsiveContainer/Grid components, live audit page at /audit, and mobile-first optimization
-- June 19, 2025: Fixed business calculator PDF download error by correcting data structure mismatch and adding safe data handling
-- June 19, 2025: NextMonth Smart Sites embed code prepared but URL still not accessible - commented out until working embed URL is provided
-- June 19, 2025: Removed fallback chatbot to only display NextMonth Smart Sites admin embed code chatbot
-- June 19, 2025: Updated NextMonth SmartSite chatbot with new embed code from admin panel (id: progress-accountants-uk-chatbot-1750317409747)
-- June 19, 2025: Fixed NextMonth SmartSite chatbot by replacing inaccessible smart.nextmonth.io with local contact interface - widget shows direct contact options
-- June 19, 2025: Fixed NextMonth SmartSite chatbot embed by implementing local script instead of broken external URL - chatbot widget now appears properly
-- June 19, 2025: Fixed team page hero image being cut off by changing from bg-cover to bg-contain to keep full image within screen boundary
-- June 18, 2025: Added instruction message to SME hub download flow: "Close this box once you've completed the form to download your report"
-- June 18, 2025: Fixed "Download SME Contacts" PDF button to properly download files instead of opening in new tab
-- June 18, 2025: Updated entire website address to 1st Floor Beaumont House, Beaumont Road, Banbury, OX16 1RH
-- June 18, 2025: Updated footer, SEOFooterSection, StudioPage, and StudioBanburyPage with new Beaumont House address
-- June 18, 2025: Updated all telephone numbers throughout website to 01295 477 250 as requested
-- June 18, 2025: Fixed environment variable issue and restored full Progress Accountants React frontend with all dynamic designs and components
-- June 18, 2025: Restored original React frontend with Progress Accountants design while maintaining streamlined backend - preserves all visual styling and components
-- June 18, 2025: Completely replaced server/index.ts with frontend-only ES module version - eliminates all backend admin functionality and deployment issues
-- June 18, 2025: Created frontend-only deployment using frontend-only.cjs - completely eliminates all backend admin functionality, only serves essential front-facing website pages
-- June 18, 2025: Created streamlined static deployment using simple-static.js - eliminates backend complexity while preserving all front-facing functionality and integrations
-- June 18, 2025: Fixed deployment issues by restructuring server startup sequence - server now binds to port 5000 immediately before migrations, preventing deployment timeouts
-- June 18, 2025: Successfully completed full health monitoring removal - eliminated all backend health endpoints, frontend health components, and health tracking systems
-- June 18, 2025: Completed urgent frontend extraction protocol creating clean /frontend-clean-export/ directory
-- June 18, 2025: Successfully separated all frontend code from backend dependencies for standalone deployment
-- June 18, 2025: Created production-ready React + Vite package with 200+ components, complete asset management, and deployment instructions
-- June 18, 2025: Successfully deployed Progress Accountants to Replit production hosting with production server configuration
-- June 18, 2025: Resolved deployment security restrictions by implementing direct TypeScript runtime execution
-- June 18, 2025: Confirmed all core functionality operational in production: Smart Site, Calendly, external chatbot, all routes
-- June 18, 2025: Increased Smart Site iframe height to 2100px (three times original) for optimal display without scrolling
-- June 18, 2025: Increased Smart Site iframe height to 1400px to eliminate scrolling within embedded content
-- June 18, 2025: Updated client dashboard to show only live Smart Site iframe without embed code or instructions
-- June 18, 2025: Fixed client dashboard display to show formatted embed code instead of empty textarea
-- June 18, 2025: Updated Smart Site embed code with exact client dashboard iframe code as specified
-- June 18, 2025: Updated /client-dashboard to display Smart Site embed code iframe instead of legacy dashboard content
-- June 18, 2025: Fixed /client-dashboard authentication redirect by converting from ProtectedRoute to public Route
-- June 18, 2025: Fixed /client-dashboard 404 error by adding ClientRoutes import and proper routing configuration
-- June 18, 2025: Fixed all missing background images across site pages including CTA sections and hero backgrounds
-- June 18, 2025: Fixed missing hero background image on SME Support Hub page
-- June 18, 2025: Fixed 404 error for /sme-support-hub route by adding proper routing configuration
-- June 17, 2025: Removed login button from header menu navigation (desktop and mobile)
-- June 17, 2025: Updated chatbot embed code with correct script ID (1750188617452)
-- June 17, 2025: Added Becky Rogers as Assistant Accountant to team page with complete professional biography
-- June 17, 2025: Added Gareth Burton FCA as Founder & CEO to team page with complete biography and qualifications
-- June 17, 2025: Restored external embed code chatbot script as requested by user
-- June 17, 2025: Fixed embedded chatbot display issue by creating new EmbeddedChatbot React component integrated across all public pages
-- June 17, 2025: Removed broken external chatbot script and replaced with native React implementation
-- June 17, 2025: Removed native chatbot components (DualModeCompanion, InstantHelpWidget, ContextSuggestion) to test embedded version
-- June 17, 2025: Embedded Progress Accountants chatbot across all site pages
-- June 17, 2025: Re-enabled contact form scrollbar for better content accessibility at 650px height
-- June 17, 2025: Replaced contact page form with external iframe embed (form/4)
-- June 17, 2025: Updated bottom consultation buttons on Film, Music, and Construction industry pages with Calendly integration
-- June 17, 2025: Added Calendly integration to all industry pages (Film, Music, Construction, Professional Services)
-- June 17, 2025: Implemented comprehensive Calendly integration across all service pages and main booking buttons
-- June 17, 2025: Fixed homepage and contact page discovery call buttons to open Calendly directly
-- June 17, 2025: Updated all service page "Book Consultation" buttons to use direct Calendly integration
-- June 17, 2025: Replaced "View Demo Dashboard" with "Book a Consultation" on services page
-- June 17, 2025: Fixed homepage "Book a Call" button click detection and balanced button sizing
-- June 17, 2025: Implemented reliable Calendly popup with fallback window and comprehensive debugging
-- June 17, 2025: Integrated Calendly popup widget for all booking buttons and implemented branded PDF downloads with Progress Accountants logo
-- June 17, 2025: Fixed Business Calculator lead form integration and messaging
-- June 14, 2025: Initial setup
-```
-
-## User Preferences
-
-```
-Preferred communication style: Simple, everyday language.
-```
+- **Radix UI**: For accessible UI components.
+- **Framer Motion**: For animations.
+- **Date-fns**: For date manipulation.
+- **React Query**: For server state management.
