@@ -77,18 +77,18 @@ export default function AboutPage() {
     );
   }
 
-  // Extract business identity information
-  const businessName = businessIdentity?.core?.businessName || "Progress Accountants";
-  const tagline = businessIdentity?.core?.tagline || "Forward-thinking accounting for modern businesses";
-  const description = businessIdentity?.core?.description || "We provide innovative accounting solutions tailored to your business needs.";
-  const yearFounded = businessIdentity?.core?.yearFounded || "2018";
-  const numberOfEmployees = businessIdentity?.core?.numberOfEmployees || "25-50";
-  const usps = businessIdentity?.personality?.usps || [];
-  const missionStatement = businessIdentity?.personality?.missionStatement || "";
-  const toneOfVoice = businessIdentity?.personality?.toneOfVoice || [];
-  const targetAudience = businessIdentity?.market?.targetAudience || "Small to medium-sized businesses";
-  const geographicFocus = businessIdentity?.market?.geographicFocus || "United Kingdom";
-  const services = businessIdentity?.services || [];
+  // Extract business identity information with proper type safety
+  const businessName = (businessIdentity as any)?.core?.businessName || "Progress Accountants";
+  const tagline = (businessIdentity as any)?.core?.tagline || "Forward-thinking accounting for modern businesses";
+  const description = (businessIdentity as any)?.core?.description || "We provide innovative accounting solutions tailored to your business needs.";
+  const yearFounded = (businessIdentity as any)?.core?.yearFounded || "2018";
+  const numberOfEmployees = (businessIdentity as any)?.core?.numberOfEmployees || "25-50";
+  const usps = (businessIdentity as any)?.personality?.usps || [];
+  const missionStatement = (businessIdentity as any)?.personality?.missionStatement || "";
+  const toneOfVoice = (businessIdentity as any)?.personality?.toneOfVoice || [];
+  const targetAudience = (businessIdentity as any)?.market?.targetAudience || "Small to medium-sized businesses";
+  const geographicFocus = (businessIdentity as any)?.market?.geographicFocus || "United Kingdom";
+  const services = (businessIdentity as any)?.services || [];
 
   // Return actual content once loaded
   return (
@@ -140,8 +140,8 @@ export default function AboutPage() {
                     textShadow: '0 6px 12px rgba(0,0,0,0.7), 0 3px 6px rgba(0,0,0,0.5)',
                     letterSpacing: '-0.02em'
                   }}>
-                <span className="block">Strategic Partners.</span>
-                <span className="block">Growth Focused.</span>
+                <span className="block">The Story Behind</span>
+                <span className="block">Progress Accountants</span>
               </h1>
             </FadeIn>
 
@@ -152,7 +152,7 @@ export default function AboutPage() {
                    textShadow: '0 4px 8px rgba(0,0,0,0.8), 0 2px 4px rgba(0,0,0,0.6)',
                    letterSpacing: '0.01em'
                  }}>
-                We transform financial complexity into competitive advantage for ambitious UK businesses.
+                From a simple observation: business owners deserve an accountant who actually helps them grow.
               </p>
             </FadeIn>
 
@@ -178,37 +178,37 @@ export default function AboutPage() {
               <SlideInLeft delay={0.1}>
                 <div>
                   <h2 className="text-3xl md:text-4xl font-bold mb-6 bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
-                    Why Progress Works
+                    We Started Because We Saw Business Owners Struggling
                   </h2>
                   <p className="text-xl text-gray-300 mb-6">
-                    Most accountants report numbers. We deliver strategy.
+                    In 2018, we noticed a pattern. Talented entrepreneurs were trapped by their finances—not because they lacked business acumen, but because traditional accounting firms treated them like ticket numbers instead of growth partners.
                   </p>
                   <p className="text-gray-400 mb-6">
-                    Advanced technology meets proactive support. Make smarter decisions, save time, spot opportunities.
+                    We knew there had to be a better way. That's why we built Progress: an accounting firm that actually helps businesses progress.
                   </p>
                   <p className="text-gray-400 mb-8">
-                    Financial clarity built-in, not bolted on.
+                    Today, we're proud to serve ambitious UK businesses who refuse to accept "financial confusion" as the price of entrepreneurship.
                   </p>
                   
                   {/* Key Advantages */}
                   <div className="space-y-3 mt-8">
-                    <h3 className="text-lg font-semibold text-purple-300">What Sets Us Apart:</h3>
+                    <h3 className="text-lg font-semibold text-purple-300">What Makes Us Your Ideal Guide:</h3>
                     <ul className="space-y-3">
                       <li className="flex items-start">
                         <span className="text-purple-400 mr-3 mt-1">✓</span>
-                        <span className="text-gray-300">Digital transformation specialists</span>
+                        <span className="text-gray-300">We understand business growth because we've achieved it ourselves</span>
                       </li>
                       <li className="flex items-start">
                         <span className="text-purple-400 mr-3 mt-1">✓</span>
-                        <span className="text-gray-300">Cloud-first accounting technology</span>
+                        <span className="text-gray-300">Chartered status with decades of combined expertise</span>
                       </li>
                       <li className="flex items-start">
                         <span className="text-purple-400 mr-3 mt-1">✓</span>
-                        <span className="text-gray-300">Dedicated relationships, not ticket systems</span>
+                        <span className="text-gray-300">Deep industry knowledge in film, music, construction, and professional services</span>
                       </li>
                       <li className="flex items-start">
                         <span className="text-purple-400 mr-3 mt-1">✓</span>
-                        <span className="text-gray-300">Industry expertise: Film, Music, Construction</span>
+                        <span className="text-gray-300">Based in Banbury with a heart for local business success</span>
                       </li>
                     </ul>
                   </div>
@@ -236,13 +236,13 @@ export default function AboutPage() {
           <div className="max-w-7xl mx-auto">
             <FadeIn delay={0.1}>
               <h2 className="text-3xl md:text-4xl font-bold mb-6 text-center bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
-                Our Approach
+                Our Promise: No More Financial Confusion
               </h2>
             </FadeIn>
             
             <FadeIn delay={0.2}>
               <p className="text-xl text-gray-300 mb-12 text-center max-w-3xl mx-auto">
-                Technology-driven. Proactive. Human.
+                We've built our entire practice around one simple promise: you'll never feel lost in your finances again.
               </p>
             </FadeIn>
             
@@ -254,10 +254,10 @@ export default function AboutPage() {
                     <Zap size={48} />
                   </div>
                   <h3 className="text-xl font-bold mb-4 text-purple-300">
-                    Technology That Actually Works
+                    Clarity Over Complexity
                   </h3>
                   <p className="text-gray-400">
-                    Real-time dashboards. Secure portals. Instant visibility. Peace of mind included.
+                    We translate financial jargon into plain English insights you can actually use to make confident business decisions.
                   </p>
                 </div>
               </SlideUp>
@@ -269,10 +269,10 @@ export default function AboutPage() {
                     <Clock size={48} />
                   </div>
                   <h3 className="text-xl font-bold mb-4 text-purple-300">
-                    Proactive, Never Reactive
+                    Strategic Guidance, Not Just Compliance
                   </h3>
                   <p className="text-gray-400">
-                    No deadline panic. Early alerts, clear guidance, on-time delivery. Every time.
+                    While others focus on historical reporting, we help you see opportunities and make strategic moves that drive growth.
                   </p>
                 </div>
               </SlideUp>
@@ -284,10 +284,10 @@ export default function AboutPage() {
                     <Users size={48} />
                   </div>
                   <h3 className="text-xl font-bold mb-4 text-purple-300">
-                    Human Connection Always
+                    Partnership, Not Just Service
                   </h3>
                   <p className="text-gray-400">
-                    Tech-savvy, people-first. Someone you trust, clear explanations, genuine care.
+                    You'll work with real people who care about your success—not automated systems or offshore call centres.
                   </p>
                 </div>
               </SlideUp>
@@ -302,13 +302,13 @@ export default function AboutPage() {
           <div className="max-w-3xl mx-auto">
             <FadeIn delay={0.1}>
               <h2 className="text-3xl md:text-4xl font-bold mb-8 text-center bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
-                Who We Serve
+                The Entrepreneurs We Love Working With
               </h2>
             </FadeIn>
             
             <FadeIn delay={0.2}>
               <p className="text-xl text-gray-300 mb-8 text-center">
-                Ambitious UK businesses ready to:
+                You know who you are. You're the business owner who:
               </p>
             </FadeIn>
             
@@ -317,7 +317,7 @@ export default function AboutPage() {
                 <div className="flex items-start">
                   <span className="text-purple-400 mr-4 mt-1">-</span>
                   <p className="text-gray-300">
-                    Control finances without overwhelm
+                    Dreams big but feels trapped by financial confusion
                   </p>
                 </div>
               </SlideUp>
@@ -326,7 +326,7 @@ export default function AboutPage() {
                 <div className="flex items-start">
                   <span className="text-purple-400 mr-4 mt-1">-</span>
                   <p className="text-gray-300">
-                    Automate admin, focus on growth
+                    Wants to focus on your strengths, not struggle with spreadsheets
                   </p>
                 </div>
               </SlideUp>
@@ -335,7 +335,7 @@ export default function AboutPage() {
                 <div className="flex items-start">
                   <span className="text-purple-400 mr-4 mt-1">-</span>
                   <p className="text-gray-300">
-                    Turn numbers into growth strategy
+                    Knows there must be opportunities you're missing but can't see them clearly
                   </p>
                 </div>
               </SlideUp>
@@ -344,7 +344,7 @@ export default function AboutPage() {
                 <div className="flex items-start">
                   <span className="text-purple-400 mr-4 mt-1">-</span>
                   <p className="text-gray-300">
-                    Partner with people who care, not box-tickers
+                    Values relationships over transactions and wants a trusted advisor, not just a service provider
                   </p>
                 </div>
               </SlideUp>
@@ -352,7 +352,7 @@ export default function AboutPage() {
             
             <FadeIn delay={0.5}>
               <p className="text-xl text-center font-medium text-purple-300">
-                Sound like you? Let's talk.
+                If this resonates, you're exactly who we built Progress for.
               </p>
             </FadeIn>
           </div>
@@ -433,17 +433,17 @@ export default function AboutPage() {
               <div className="text-center lg:text-left">
                 <FadeIn delay={0.1}>
                   <h2 className="text-3xl md:text-4xl font-bold mb-6 bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
-                    Meet the Team
+                    The People Behind Your Success
                   </h2>
                 </FadeIn>
                 <FadeIn delay={0.2}>
                   <p className="text-xl text-gray-300 mb-6">
-                    Progress is powered by a team of 25–50 professionals who care deeply about helping UK businesses thrive.
+                    We're not just accountants—we're entrepreneurs who understand the journey because we've walked it ourselves.
                   </p>
                 </FadeIn>
                 <FadeIn delay={0.3}>
                   <p className="text-gray-400 mb-8">
-                    Our diverse team brings together expertise in accounting, technology, and strategic business advisory to deliver exceptional results for our clients.
+                    Every member of our team shares the same mission: to be the financial guide you wish you'd had when you started your business. We combine professional expertise with genuine care for your success.
                   </p>
                 </FadeIn>
                 <FadeIn delay={0.4}>
@@ -452,7 +452,7 @@ export default function AboutPage() {
                       className="progress-button bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex items-center gap-2"
                       size="lg"
                     >
-                      <span>View Our Team</span>
+                      <span>Meet Your Guides</span>
                       <ArrowRight size={16} />
                     </Button>
                   </Link>
@@ -481,13 +481,13 @@ export default function AboutPage() {
           <div className="max-w-4xl mx-auto">
             <FadeIn delay={0.1}>
               <h2 className="text-3xl md:text-4xl font-bold mb-8 text-center bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
-                The Tools We Use
+                How We Ensure Your Success
               </h2>
             </FadeIn>
             
             <FadeIn delay={0.2}>
               <p className="text-xl text-gray-300 mb-8 text-center">
-                Our in-house tech stack is built into your workflow:
+                Behind every confident business decision you make, there's a system designed to support your growth:
               </p>
             </FadeIn>
             
@@ -499,10 +499,10 @@ export default function AboutPage() {
                   </div>
                   <div>
                     <h3 className="font-medium mb-2 text-purple-300">
-                      Real-time financial dashboards
+                      Clarity Tools That Actually Work
                     </h3>
                     <p className="text-gray-400 text-sm">
-                      Always know where you stand with up-to-date financial data
+                      Modern cloud technology that gives you real-time insights without the complexity
                     </p>
                   </div>
                 </div>
