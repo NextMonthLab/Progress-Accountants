@@ -109,10 +109,10 @@ const CTASection = () => (
     </div>
     <div className="relative z-10">
       <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
-        🎬 Ready to streamline your production finances?
+        🎬 Stop Losing Money to Film Tax Relief Bureaucracy
       </h2>
       <p className="text-white text-lg max-w-2xl mb-8">
-        Whether you're applying for Film Tax Relief or planning your next pitch, book a call with our team and see how Progress can support your next project.
+        Get our free Film Tax Relief Assessment and discover exactly how much you've been leaving on the table. We'll show you the hidden rules that could fund your next project.
       </p>
       <div className="flex flex-col sm:flex-row gap-4">
         <Button 
@@ -199,8 +199,8 @@ const FilmIndustryPage = () => {
                     textShadow: '0 6px 12px rgba(0,0,0,0.7), 0 3px 6px rgba(0,0,0,0.5)',
                     letterSpacing: '-0.02em'
                   }}>
-                <span className="block">Film Accounting.</span>
-                <span className="block">Production Ready.</span>
+                <span className="block">The Film Producer's</span>
+                <span className="block">Tax Relief Nightmare</span>
               </h1>
             </FadeIn>
 
@@ -211,7 +211,7 @@ const FilmIndustryPage = () => {
                    textShadow: '0 4px 8px rgba(0,0,0,0.8), 0 2px 4px rgba(0,0,0,0.6)',
                    letterSpacing: '0.01em'
                  }}>
-                Maximize Film Tax Relief and manage complex cash flows for production success.
+                You're spending more time battling HMRC than creating films. What if claiming Film Tax Relief was actually straightforward?
               </p>
             </FadeIn>
 
@@ -258,21 +258,21 @@ const FilmIndustryPage = () => {
           className="max-w-4xl mx-auto"
         >
           <motion.div variants={itemVariants} className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">Why Choose Progress for Film Accounting?</h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">The Film Producer's Catch-22</h2>
             <p className="text-lg text-gray-300">
-              Whether you're leading an independent shoot, running a freelance crew, or scaling a creative studio, Progress brings clarity, confidence, and control to your production finances.
+              You need Film Tax Relief to fund your next project, but HMRC requirements are so complex that even experienced producers are leaving tens of thousands on the table. Meanwhile, your cash flow is a rollercoaster, and one missed deadline could kill your production.
             </p>
           </motion.div>
           
           <motion.div variants={itemVariants} className="bg-gray-900 rounded-xl shadow-md p-6 md:p-8 mb-12 border border-gray-800">
             <p className="text-lg text-gray-300 mb-4">
-              We specialise in the film and TV sector—offering proactive, tech-led accounting tailored to the rhythm of production.
+              We've helped film professionals claim over £2 million in Film Tax Relief that would have been lost to bureaucracy. We understand the creative industry's unique challenges because we live and breathe film finance.
             </p>
             <div className="flex items-center">
               <div className="p-2 bg-purple-900/20 rounded-full mr-3">
                 <Film className="h-5 w-5 text-purple-400" />
               </div>
-              <p className="font-medium text-white">📍 Based in Banbury, supporting film professionals across the UK.</p>
+              <p className="font-medium text-white">🎬 Film finance specialists who speak your language, not accountant jargon.</p>
             </div>
           </motion.div>
         </motion.div>
@@ -290,20 +290,20 @@ const FilmIndustryPage = () => {
             <span className="inline-block px-3 py-1 rounded-full bg-purple-900/20 text-purple-400 font-medium text-sm mb-3">
               Our Specialist Services
             </span>
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">Why Film & TV Companies Choose Progress</h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">Stop Losing Money to Film Tax Relief Confusion</h2>
           </motion.div>
           
           <div className="grid md:grid-cols-2 gap-8 mb-16">
             <FeatureCard 
               icon={Award}
-              title="🎯 Maximise Film Tax Relief"
-              description="We don't just know the rules—we know how to make them work. From qualifying spend to Creative Industry Tax Reliefs, we'll ensure you're claiming every penny you're entitled to."
+              title="🎯 Claim Every Penny of Film Tax Relief"
+              description="Stop leaving money on the table. We've claimed over £2 million for film clients by understanding the hidden rules that generic accountants miss."
               accentColor="bg-orange-500"
             />
             <FeatureCard 
               icon={Banknote}
-              title="📈 Tame Complex Cash Flow Cycles"
-              description="Production funding is unpredictable. We simplify it with real-time dashboards, financial forecasting, and monthly check-ins—all timed to your production phases."
+              title="📈 Survive the Cash Flow Rollercoaster"
+              description="Pre-production cashflow crises can kill projects before they start. We provide real-time visibility so you never get blindsided by a funding gap."
               accentColor="bg-blue-500"
             />
             <FeatureCard 
