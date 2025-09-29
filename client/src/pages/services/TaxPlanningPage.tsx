@@ -82,8 +82,8 @@ export default function TaxPlanningPage() {
                     textShadow: '0 6px 12px rgba(0,0,0,0.7), 0 3px 6px rgba(0,0,0,0.5)',
                     letterSpacing: '-0.02em'
                   }}>
-                <span className="block">Tax Planning.</span>
-                <span className="block">Strategy Ready.</span>
+                <span className="block">Turn Tax from</span>
+                <span className="block">a Burden into a Strategy</span>
               </h1>
             </FadeIn>
 
@@ -94,7 +94,7 @@ export default function TaxPlanningPage() {
                    textShadow: '0 4px 8px rgba(0,0,0,0.8), 0 2px 4px rgba(0,0,0,0.6)',
                    letterSpacing: '0.01em'
                  }}>
-                Minimize tax liabilities and maximize growth with strategic planning tailored to your business.
+                Stop losing sleep over tax deadlines and start keeping more of what you earn—legally and strategically.
               </p>
             </FadeIn>
 
@@ -144,16 +144,16 @@ export default function TaxPlanningPage() {
             <div className="flex items-center mb-6">
               <Calculator className="h-12 w-12 text-blue-400 mr-4" />
               <h2 className="text-2xl md:text-3xl font-bold">
-                <span className="text-white">Strategic Tax Planning</span>
+                <span className="text-white">The Tax Problem That's Costing You Money</span>
               </h2>
             </div>
             
             <p className="text-lg text-gray-200 mb-6">
-              Running a business is challenging enough—no surprise tax bills.
+              Here's what we see too often: successful business owners paying more tax than they legally need to, simply because they don't have a strategic approach to tax planning.
             </p>
             
             <p className="text-lg text-gray-200 mb-8">
-              Whether construction firm, creative agency, property investor or SME—tax strategy tailored to your income streams and goals.
+              You're either scrambling at year-end, missing valuable reliefs, or overpaying because "that's just what tax costs." But it doesn't have to be this way.
             </p>
           </div>
         </div>
@@ -165,29 +165,29 @@ export default function TaxPlanningPage() {
           <div className="max-w-4xl mx-auto">
             <div className="grid md:grid-cols-2 gap-8 mb-12">
               <div className="bg-gray-800 rounded-lg p-8 border border-gray-700">
-                <h3 className="text-2xl font-bold text-white mb-6">What We Cover</h3>
+                <h3 className="text-2xl font-bold text-white mb-6">How We Transform Tax from Burden to Strategy</h3>
                 <ul className="space-y-3">
                   <li className="flex items-start">
                     <CheckCircle className="h-5 w-5 text-blue-400 mr-3 mt-1 flex-shrink-0" />
-                    <span className="text-gray-300">Income tax, corporation tax & VAT planning</span>
+                    <span className="text-gray-300"><strong>Stop overpaying:</strong> Strategic planning that minimizes liability legally</span>
                   </li>
                   <li className="flex items-start">
                     <CheckCircle className="h-5 w-5 text-blue-400 mr-3 mt-1 flex-shrink-0" />
-                    <span className="text-gray-300">Capital gains & inheritance tax advice</span>
+                    <span className="text-gray-300"><strong>Maximize your reliefs:</strong> We find every allowance and relief you qualify for</span>
                   </li>
                   <li className="flex items-start">
                     <CheckCircle className="h-5 w-5 text-blue-400 mr-3 mt-1 flex-shrink-0" />
-                    <span className="text-gray-300">Tax relief & incentive optimisation (R&D, Film Tax Relief, CIS, and more)</span>
+                    <span className="text-gray-300"><strong>Stay ahead of HMRC:</strong> Proactive compliance that prevents nasty surprises</span>
                   </li>
                   <li className="flex items-start">
                     <CheckCircle className="h-5 w-5 text-blue-400 mr-3 mt-1 flex-shrink-0" />
-                    <span className="text-gray-300">Year-round planning—not just year-end fire-fighting</span>
+                    <span className="text-gray-300"><strong>Year-round peace of mind:</strong> No more scrambling at deadlines</span>
                   </li>
                 </ul>
               </div>
               
               <div className="bg-gray-800 rounded-lg p-8 border border-gray-700">
-                <h3 className="text-2xl font-bold text-white mb-6">Our Approach</h3>
+                <h3 className="text-2xl font-bold text-white mb-6">Why Choose Progress for Tax Planning</h3>
                 <div className="grid grid-cols-2 gap-4">
                   <div className="text-center">
                     <div className="w-12 h-12 bg-gradient-to-r from-blue-400 to-pink-400 rounded-lg flex items-center justify-center mx-auto mb-3">
@@ -223,7 +223,7 @@ export default function TaxPlanningPage() {
             
             <div className="bg-gradient-to-r from-blue-600 to-pink-600 rounded-lg p-8 text-center">
               <p className="text-white text-xl font-semibold">
-                👉 With Progress, tax isn't an afterthought—it's part of your growth strategy.
+                🎆 Imagine knowing exactly how much tax you'll pay—and that it's the minimum legal amount. That's the Progress difference.
               </p>
             </div>
           </div>
@@ -234,10 +234,10 @@ export default function TaxPlanningPage() {
       <section className="py-16 bg-gradient-to-br from-blue-600 to-pink-500">
         <div className="container mx-auto px-6 md:px-8">
           <div className="max-w-4xl mx-auto text-center text-white">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready to Optimize Your Tax Strategy?</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-6">Stop Paying More Tax Than You Should</h2>
             <p className="text-xl mb-8 opacity-90">
-              Let our experienced team help you minimize tax liabilities and plan for the future. 
-              Contact us today for a consultation.
+              Get our free Tax Strategy Review and discover exactly how much you could be saving. 
+              No obligation, no pressure—just honest advice from tax specialists who care.
             </p>
             <div className="flex flex-wrap justify-center gap-6">
               <Link href="/contact" className="inline-block">
