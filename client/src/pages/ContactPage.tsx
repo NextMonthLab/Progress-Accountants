@@ -56,8 +56,8 @@ export default function ContactPage() {
                     textShadow: '0 6px 12px rgba(0,0,0,0.7), 0 3px 6px rgba(0,0,0,0.5)',
                     letterSpacing: '-0.02em'
                   }}>
-                <span className="block">Ready To Grow?</span>
-                <span className="block">Let's Talk.</span>
+                <span className="block">We Get It. Running a Business</span>
+                <span className="block">Shouldn't Feel This Hard.</span>
               </h1>
             </FadeIn>
 
@@ -68,7 +68,7 @@ export default function ContactPage() {
                    textShadow: '0 4px 8px rgba(0,0,0,0.8), 0 2px 4px rgba(0,0,0,0.6)',
                    letterSpacing: '0.01em'
                  }}>
-                Strategic accounting that drives real results for ambitious UK businesses.
+                If you're tired of financial confusion and ready for clarity, we're here to help.
               </p>
             </FadeIn>
 
@@ -95,14 +95,14 @@ export default function ContactPage() {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
               <div className="col-span-2">
                 <h2 className="text-3xl md:text-4xl font-bold mb-8 text-white">
-                  Strategic Accountants That Deliver Results
+                  You Don't Have to Navigate This Alone
                 </h2>
                 <div className="space-y-6 mb-10">
                   <p className="text-slate-300 text-lg leading-relaxed">
-                    Advanced technology meets strategic insight. We turn financial data into competitive advantage for UK businesses.
+                    Maybe you're here because you're overwhelmed by tax deadlines, unsure if you're truly profitable, or frustrated that your current accountant only appears once a year with a bill.
                   </p>
                   <p className="text-slate-300 text-lg leading-relaxed">
-                    Banbury, Oxford, London specialists. Real results, not just compliance.
+                    Whatever brought you here, know this: financial confusion doesn't have to be the price of entrepreneurship. We're based in Banbury, with offices in Oxford and London, and we genuinely care about helping local businesses thrive.
                   </p>
                 </div>
                 
@@ -113,7 +113,7 @@ export default function ContactPage() {
                     }}
                     className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-[#7B3FE4] to-[#3FA4E4] text-white rounded-lg hover:shadow-lg hover:shadow-purple-500/25 hover:-translate-y-1 transition-all duration-300 font-medium border-none cursor-pointer"
                   >
-                    <span className="mr-2">🚀</span> Book Discovery Call
+                    <span className="mr-2">💬</span> Start the Conversation
                   </button>
                 </div>
                 
@@ -124,16 +124,16 @@ export default function ContactPage() {
                         <MapPin className="h-5 w-5 text-[#7B3FE4]" />
                       </div>
                       <div>
-                        <h3 className="text-sm font-semibold text-slate-400 mb-2">Office Addresses</h3>
+                        <h3 className="text-sm font-semibold text-slate-400 mb-2">Come Say Hello</h3>
                         <div className="text-slate-300 space-y-2">
                           <div>
-                            <strong className="text-white">Oxford:</strong> John Eccles House, Oxford Science Park, OX4 4GP
+                            <strong className="text-white">Our home base in Banbury:</strong> 1st Floor Beaumont House, Beaumont Road, OX16 1RH
                           </div>
                           <div>
-                            <strong className="text-white">Banbury:</strong> 1st Floor Beaumont House, Beaumont Road, OX16 1RH
+                            <strong className="text-white">Oxford hub:</strong> John Eccles House, Oxford Science Park, OX4 4GP
                           </div>
                           <div>
-                            <strong className="text-white">London:</strong> 107 Cheapside, London, EC2V 6DN
+                            <strong className="text-white">London presence:</strong> 107 Cheapside, London, EC2V 6DN
                           </div>
                         </div>
                       </div>
@@ -168,10 +168,10 @@ export default function ContactPage() {
                         <Clock className="h-5 w-5 text-[#7B3FE4]" />
                       </div>
                       <div>
-                        <h3 className="text-sm font-semibold text-slate-400 mb-2">Business Hours</h3>
+                        <h3 className="text-sm font-semibold text-slate-400 mb-2">When We're Here</h3>
                         <p className="text-slate-300">
                           Monday – Friday: 9:00am – 5:30pm<br />
-                          Saturday – Sunday: Closed
+                          Weekends: Spending time with our families (but we'll get back to urgent emails)
                         </p>
                       </div>
                     </div>
@@ -245,9 +245,9 @@ export default function ContactPage() {
         <div className="container mx-auto px-12 md:px-16 relative z-10">
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-bold mb-6 text-white">Send Us a Message</h2>
+              <h2 className="text-3xl md:text-4xl font-bold mb-6 text-white">Tell Us What's On Your Mind</h2>
               <p className="text-slate-300 text-lg max-w-2xl mx-auto leading-relaxed">
-                Have a question or need more information? Fill out the form below and one of our accounting specialists will get back to you promptly.
+                Whether you have a specific question about your finances or just want to explore how we might help, we're here to listen. No pressure, no sales pitch—just honest advice from people who care about your success.
               </p>
             </div>
             
