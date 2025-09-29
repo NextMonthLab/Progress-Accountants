@@ -79,8 +79,8 @@ export default function BookkeepingPage() {
                     textShadow: '0 6px 12px rgba(0,0,0,0.7), 0 3px 6px rgba(0,0,0,0.5)',
                     letterSpacing: '-0.02em'
                   }}>
-                <span className="block">Bookkeeping.</span>
-                <span className="block">Business Ready.</span>
+                <span className="block">See Your True</span>
+                <span className="block">Financial Picture</span>
               </h1>
             </FadeIn>
 
@@ -91,7 +91,7 @@ export default function BookkeepingPage() {
                    textShadow: '0 4px 8px rgba(0,0,0,0.8), 0 2px 4px rgba(0,0,0,0.6)',
                    letterSpacing: '0.01em'
                  }}>
-                Clear, reliable bookkeeping that keeps your business running smoothly and organized.
+                Discover the opportunities you're missing with real-time insights that reveal where your money really goes.
               </p>
             </FadeIn>
 
@@ -141,12 +141,12 @@ export default function BookkeepingPage() {
             <div className="flex items-center mb-6">
               <BookOpen className="h-12 w-12 text-pink-400 mr-4" />
               <h2 className="text-2xl md:text-3xl font-bold">
-                <span className="text-white">Professional Bookkeeping</span>
+                <span className="text-white">The Hidden Dangers of Messy Books</span>
               </h2>
             </div>
             
             <p className="text-lg text-gray-200 mb-8">
-              Stay organized and up to date with clear, reliable bookkeeping that keeps your business running smoothly.
+              Bad bookkeeping doesn't just create paperwork headaches—it blinds you to cash flow problems, hides profit opportunities, and puts you at risk of costly HMRC penalties. When you can't see your true financial position, you can't make the strategic decisions that drive growth.
             </p>
           </div>
         </div>
@@ -158,29 +158,29 @@ export default function BookkeepingPage() {
           <div className="max-w-4xl mx-auto">
             <div className="grid md:grid-cols-2 gap-8 mb-12">
               <div className="bg-gray-800 rounded-lg p-8 border border-gray-700">
-                <h3 className="text-2xl font-bold text-white mb-6">What's Included</h3>
+                <h3 className="text-2xl font-bold text-white mb-6">How We Transform Your Financial Chaos into Clarity</h3>
                 <ul className="space-y-3">
                   <li className="flex items-start">
                     <CheckCircle className="h-5 w-5 text-pink-400 mr-3 mt-1 flex-shrink-0" />
-                    <span className="text-gray-300">Monthly management accounts and reconciliations</span>
+                    <span className="text-gray-300"><strong>Stop guessing your profit:</strong> Real-time dashboards show exactly where you stand</span>
                   </li>
                   <li className="flex items-start">
                     <CheckCircle className="h-5 w-5 text-pink-400 mr-3 mt-1 flex-shrink-0" />
-                    <span className="text-gray-300">Invoice processing and supplier payments</span>
+                    <span className="text-gray-300"><strong>Eliminate cash flow surprises:</strong> Automated tracking prevents costly oversights</span>
                   </li>
                   <li className="flex items-start">
                     <CheckCircle className="h-5 w-5 text-pink-400 mr-3 mt-1 flex-shrink-0" />
-                    <span className="text-gray-300">Cloud-based systems for real-time access</span>
+                    <span className="text-gray-300"><strong>End HMRC worry:</strong> Compliant records that keep you audit-ready</span>
                   </li>
                   <li className="flex items-start">
                     <CheckCircle className="h-5 w-5 text-pink-400 mr-3 mt-1 flex-shrink-0" />
-                    <span className="text-gray-300">Expense tracking and categorization</span>
+                    <span className="text-gray-300"><strong>Make confident decisions:</strong> Clear insights that guide growth strategy</span>
                   </li>
                 </ul>
               </div>
               
               <div className="bg-gray-800 rounded-lg p-8 border border-gray-700">
-                <h3 className="text-2xl font-bold text-white mb-6">Our Approach</h3>
+                <h3 className="text-2xl font-bold text-white mb-6">Why Progress Bookkeeping Works</h3>
                 <div className="grid grid-cols-2 gap-4">
                   <div className="text-center">
                     <div className="w-12 h-12 bg-gradient-to-r from-pink-400 to-purple-400 rounded-lg flex items-center justify-center mx-auto mb-3">
@@ -275,9 +275,10 @@ export default function BookkeepingPage() {
       <section className="py-16 bg-gradient-to-br from-pink-600 to-purple-500">
         <div className="container mx-auto px-6 md:px-8">
           <div className="max-w-4xl mx-auto text-center text-white">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready to Get Organized?</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-6">Stop Flying Blind with Your Finances</h2>
             <p className="text-xl mb-8 opacity-90">
-              Let us handle your bookkeeping so you can focus on growing your business.
+              Get our free Financial Health Check and discover exactly what your books are hiding. 
+              No spreadsheet nightmares, no surprise bills—just clarity, confidence, and control.
             </p>
             <div className="flex flex-wrap justify-center gap-6">
               <Link href="/contact" className="inline-block">
