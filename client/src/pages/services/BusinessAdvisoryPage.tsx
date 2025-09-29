@@ -78,8 +78,8 @@ export default function BusinessAdvisoryPage() {
                     textShadow: '0 6px 12px rgba(0,0,0,0.7), 0 3px 6px rgba(0,0,0,0.5)',
                     letterSpacing: '-0.02em'
                   }}>
-                <span className="block">Business Advisory.</span>
-                <span className="block">Growth Ready.</span>
+                <span className="block">Get Strategic Guidance</span>
+                <span className="block">Without the Corporate Price Tag</span>
               </h1>
             </FadeIn>
 
@@ -90,7 +90,7 @@ export default function BusinessAdvisoryPage() {
                    textShadow: '0 4px 8px rgba(0,0,0,0.8), 0 2px 4px rgba(0,0,0,0.6)',
                    letterSpacing: '0.01em'
                  }}>
-                Strategic leadership and actionable advice for forward-thinking businesses seeking real growth.
+                Access Virtual Finance Director expertise that guides your growth decisions—without the £150k+ salary.
               </p>
             </FadeIn>
 
@@ -140,16 +140,16 @@ export default function BusinessAdvisoryPage() {
             <div className="flex items-center mb-6">
               <BarChart4 className="h-12 w-12 text-blue-400 mr-4" />
               <h2 className="text-2xl md:text-3xl font-bold">
-                <span className="text-white">Strategic Business Advisory</span>
+                <span className="text-white">The Growth Problem Every Ambitious Business Faces</span>
               </h2>
             </div>
             
             <p className="text-lg text-gray-200 mb-6">
-              Looking for more than compliance? So are we.
+              You know your business inside out, but when it comes to strategic financial decisions—expansion, investment, pricing strategy—you're making crucial choices without the strategic insight that larger companies take for granted.
             </p>
             
             <p className="text-lg text-gray-200 mb-8">
-              Progress partners with forward-thinking businesses—providing real insight, actionable advice, and strategic leadership.
+              The result? Missed opportunities, cash flow surprises, and the nagging feeling that you could be growing faster if you just knew what the numbers were really telling you.
             </p>
           </div>
         </div>
@@ -161,29 +161,29 @@ export default function BusinessAdvisoryPage() {
           <div className="max-w-4xl mx-auto">
             <div className="grid md:grid-cols-2 gap-8 mb-12">
               <div className="bg-gray-800 rounded-lg p-8 border border-gray-700">
-                <h3 className="text-2xl font-bold text-white mb-6">What's Included</h3>
+                <h3 className="text-2xl font-bold text-white mb-6">How We Give You Strategic Confidence</h3>
                 <ul className="space-y-3">
                   <li className="flex items-start">
                     <CheckCircle className="h-5 w-5 text-blue-400 mr-3 mt-1 flex-shrink-0" />
-                    <span className="text-gray-300">Financial forecasting & scenario planning</span>
+                    <span className="text-gray-300"><strong>See opportunities clearly:</strong> Strategic planning sessions that reveal growth potential</span>
                   </li>
                   <li className="flex items-start">
                     <CheckCircle className="h-5 w-5 text-blue-400 mr-3 mt-1 flex-shrink-0" />
-                    <span className="text-gray-300">Growth strategy & profit improvement</span>
+                    <span className="text-gray-300"><strong>Make confident decisions:</strong> On-demand financial leadership when you need it</strong></span>
                   </li>
                   <li className="flex items-start">
                     <CheckCircle className="h-5 w-5 text-blue-400 mr-3 mt-1 flex-shrink-0" />
-                    <span className="text-gray-300">Cash flow optimization & funding support</span>
+                    <span className="text-gray-300"><strong>Avoid costly mistakes:</strong> Expert guidance that prevents expensive missteps</span>
                   </li>
                   <li className="flex items-start">
                     <CheckCircle className="h-5 w-5 text-blue-400 mr-3 mt-1 flex-shrink-0" />
-                    <span className="text-gray-300">Board-level advisory for SMEs & scale-ups</span>
+                    <span className="text-gray-300"><strong>Access senior expertise:</strong> Board-level insight without the executive salary</span>
                   </li>
                 </ul>
               </div>
               
               <div className="bg-gray-800 rounded-lg p-8 border border-gray-700">
-                <h3 className="text-2xl font-bold text-white mb-6">Our Approach</h3>
+                <h3 className="text-2xl font-bold text-white mb-6">Why Choose Progress for Advisory</h3>
                 <div className="grid grid-cols-2 gap-4">
                   <div className="text-center">
                     <div className="w-12 h-12 bg-gradient-to-r from-blue-400 to-purple-400 rounded-lg flex items-center justify-center mx-auto mb-3">
@@ -219,7 +219,7 @@ export default function BusinessAdvisoryPage() {
             
             <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg p-8 text-center">
               <p className="text-white text-xl font-semibold">
-                👉 We're not just your accountants—we're your business growth partners.
+                🏆 Finally—strategic financial leadership that doesn't require hiring a £150k+ Finance Director.
               </p>
             </div>
           </div>
@@ -230,9 +230,10 @@ export default function BusinessAdvisoryPage() {
       <section className="py-16 bg-gradient-to-br from-blue-600 to-purple-500">
         <div className="container mx-auto px-6 md:px-8">
           <div className="max-w-4xl mx-auto text-center text-white">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready to Grow?</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-6">Stop Making Critical Decisions in the Dark</h2>
             <p className="text-xl mb-8 opacity-90">
-              Partner with advisors who understand your business goals and help you achieve them.
+              Get our free Growth Strategy Session and discover the opportunities hiding in your business. 
+              Strategic insight that drives results—without the corporate overheads.
             </p>
             <div className="flex flex-wrap justify-center gap-6">
               <Link href="/contact" className="inline-block">
