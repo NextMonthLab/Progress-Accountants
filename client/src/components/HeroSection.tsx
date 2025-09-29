@@ -110,7 +110,7 @@ const HeroSection = () => {
                 maxWidth: '52rem',
                 margin: '0 auto'
               }}>
-Strategic Accounting That Drives Growth
+Accounting. Simplified.
           </h1>
           
           {/* Subheadline with Enhanced Spacing */}
@@ -125,7 +125,7 @@ Strategic Accounting That Drives Growth
                 maxWidth: '48ch',
                 margin: '0 auto clamp(3.5rem, 10vw, 5rem) auto'
               }}>
-We turn financial data into competitive advantage for ambitious UK businesses.
+Progress cuts through accounting complexity—giving you clarity, confidence, and control over your business finances. Because you deserve an accountant who actually helps you grow.
           </h2>
 
           {/* Gold Standard Universal Button - Rob Hutt Design System */}

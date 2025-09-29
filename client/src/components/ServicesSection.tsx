@@ -173,6 +173,26 @@ const ServicesSection = () => {
 
   // Map service names to icons, descriptions, and features with type safety
   const serviceIcons: Record<string, ServiceInfo> = {
+    "Turn Tax from a Burden into a Strategy": { 
+      icon: Calculator, 
+      description: "Strategic tax planning that keeps more money in your business while staying fully compliant",
+      features: ["Minimize tax liability legally", "Maximize allowances and reliefs", "Proactive HMRC compliance"]
+    },
+    "See Your True Financial Picture": { 
+      icon: FileText, 
+      description: "Real-time bookkeeping and reporting that reveals the opportunities you're missing",
+      features: ["Live profit insights", "Real-time dashboards", "Automated transaction categorization"]
+    },
+    "Get Strategic Guidance Without the Corporate Price Tag": { 
+      icon: BarChart3, 
+      description: "Virtual Finance Director services that help you make confident growth decisions",
+      features: ["Strategic planning sessions", "Growth opportunity identification", "On-demand financial leadership"]
+    },
+    "Modernise Your Financial Systems": { 
+      icon: Cloud, 
+      description: "Cloud accounting with Xero and QuickBooks that gives you control from anywhere",
+      features: ["Real-time access", "Automated workflows", "Integrated business apps"]
+    },
     "Tax Planning & Preparation": { 
       icon: Calculator, 
       description: "Keep more profit. Legal tax strategies that reduce what you owe.",
@@ -222,12 +242,10 @@ const ServicesSection = () => {
 
   // Add a fallback list of services if the business identity returns empty services
   const defaultServices = [
-    "Tax Planning & Preparation",
-    "Bookkeeping",
-    "Business Advisory",
-    "Financial Reporting",
-    "Audit Services",
-    "Cloud Accounting"
+    "Turn Tax from a Burden into a Strategy",
+    "See Your True Financial Picture", 
+    "Get Strategic Guidance Without the Corporate Price Tag",
+    "Modernise Your Financial Systems"
   ];
 
   // Show skeleton during loading
@@ -266,15 +284,11 @@ const ServicesSection = () => {
       <div className="container mx-auto px-4 sm:px-6 md:px-12 lg:px-16 relative z-10">
         <div className="mx-auto">
           <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
-            <div className="inline-block mb-4 px-3 sm:px-4 py-1 rounded-full bg-gradient-to-r from-[#7B3FE4]/20 to-[#3FA4E4]/20 text-purple-300 text-xs sm:text-sm font-medium border border-purple-400/30">
-              <span className="mr-1">✦</span> Designed for Modern Businesses <span className="ml-1">✦</span>
-            </div>
-            <h2 className="font-bold text-2xl sm:text-3xl md:text-4xl mb-4 text-white"
-            >
-Built for Business Growth
+            <h2 className="font-bold text-2xl sm:text-3xl md:text-4xl mb-4 text-white">
+Everything You Need to Transform Financial Stress into Strategic Growth
             </h2>
             <p className="text-base sm:text-lg leading-relaxed text-gray-300 px-4 sm:px-0">
-Most accountants report numbers. We deliver strategy.
+Instead of listing services, we present solutions to your problems:
             </p>
           </div>
           

@@ -1,5 +1,9 @@
 import HeroSection from "@/components/HeroSection";
+import ProblemSection from "@/components/ProblemSection";
+import GuideSection from "@/components/GuideSection";
+import PlanSection from "@/components/PlanSection";
 import ServicesSection from "@/components/ServicesSection";
+import StakesSection from "@/components/StakesSection";
 import IndustriesSection from "@/components/IndustriesSection";
 import WhyUsSection from "@/components/WhyUsSection";
 import ContactForm from "@/components/ContactForm";
@@ -55,9 +59,12 @@ const HomePage = () => {
   return (
     <div className="min-h-screen bg-black">
       <HeroSection />
+      <ProblemSection />
+      <GuideSection />
+      <PlanSection />
       <ServicesSection />
+      <StakesSection />
       <IndustriesSection />
-      <WhyUsSection />
 
       {/* Enhanced Contact Section with Dark Theme */}
       <section className="py-12 sm:py-16 bg-black" id="contact">
