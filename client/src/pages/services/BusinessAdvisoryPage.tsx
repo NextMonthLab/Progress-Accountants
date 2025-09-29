@@ -169,7 +169,7 @@ export default function BusinessAdvisoryPage() {
                   </li>
                   <li className="flex items-start">
                     <CheckCircle className="h-5 w-5 text-blue-400 mr-3 mt-1 flex-shrink-0" />
-                    <span className="text-gray-300"><strong>Make confident decisions:</strong> On-demand financial leadership when you need it</strong></span>
+                    <span className="text-gray-300"><strong>Make confident decisions:</strong> On-demand financial leadership when you need it</span>
                   </li>
                   <li className="flex items-start">
                     <CheckCircle className="h-5 w-5 text-blue-400 mr-3 mt-1 flex-shrink-0" />

@@ -79,8 +79,8 @@ export default function VirtualFinanceDirectorPage() {
                     textShadow: '0 6px 12px rgba(0,0,0,0.7), 0 3px 6px rgba(0,0,0,0.5)',
                     letterSpacing: '-0.02em'
                   }}>
-                <span className="block">Finance Director.</span>
-                <span className="block">Leadership Ready.</span>
+                <span className="block">The Leadership Gap</span>
+                <span className="block">That's Costing You Growth</span>
               </h1>
             </FadeIn>
 
@@ -91,7 +91,7 @@ export default function VirtualFinanceDirectorPage() {
                    textShadow: '0 4px 8px rgba(0,0,0,0.8), 0 2px 4px rgba(0,0,0,0.6)',
                    letterSpacing: '0.01em'
                  }}>
-                On-demand senior financial leadership to plan, grow and stay accountable without full-time costs.
+                You know you need strategic financial leadership, but a £150k+ Finance Director feels impossible. What if there was another way?
               </p>
             </FadeIn>
 
@@ -141,16 +141,16 @@ export default function VirtualFinanceDirectorPage() {
             <div className="flex items-center mb-6">
               <DollarSign className="h-12 w-12 text-pink-400 mr-4" />
               <h2 className="text-2xl md:text-3xl font-bold">
-                <span className="text-white">Strategic Finance Leadership</span>
+                <span className="text-white">The £150k Problem Every Growing Business Faces</span>
               </h2>
             </div>
             
             <p className="text-lg text-gray-200 mb-6">
-              Not every business can afford a full-time Finance Director—but every growing business needs one.
+              Here's the catch-22: You need strategic financial leadership to scale your business, but hiring a Finance Director means £150k+ salary, benefits, bonuses, and office space—before they've added a penny to your bottom line.
             </p>
             
             <p className="text-lg text-gray-200 mb-8">
-              On-demand access to senior financial leadership—helping you plan, grow, and stay accountable.
+              Meanwhile, without that strategic insight, you're making million-pound decisions based on guesswork. Cash flow crises blindside you. Growth opportunities slip away. Investment readiness feels impossibly complex.
             </p>
           </div>
         </div>
@@ -162,29 +162,29 @@ export default function VirtualFinanceDirectorPage() {
           <div className="max-w-4xl mx-auto">
             <div className="grid md:grid-cols-2 gap-8 mb-12">
               <div className="bg-gray-800 rounded-lg p-8 border border-gray-700">
-                <h3 className="text-2xl font-bold text-white mb-6">What's Included</h3>
+                <h3 className="text-2xl font-bold text-white mb-6">How We Bridge the Leadership Gap</h3>
                 <ul className="space-y-3">
                   <li className="flex items-start">
                     <CheckCircle className="h-5 w-5 text-pink-400 mr-3 mt-1 flex-shrink-0" />
-                    <span className="text-gray-300">Strategic financial planning & forecasting</span>
+                    <span className="text-gray-300"><strong>Strategic clarity:</strong> Get the senior financial insight you need, when you need it</span>
                   </li>
                   <li className="flex items-start">
                     <CheckCircle className="h-5 w-5 text-pink-400 mr-3 mt-1 flex-shrink-0" />
-                    <span className="text-gray-300">Cash flow & working capital management</span>
+                    <span className="text-gray-300"><strong>Investment readiness:</strong> Position your business for funding without the full-time overhead</span>
                   </li>
                   <li className="flex items-start">
                     <CheckCircle className="h-5 w-5 text-pink-400 mr-3 mt-1 flex-shrink-0" />
-                    <span className="text-gray-300">Board reporting & stakeholder communications</span>
+                    <span className="text-gray-300"><strong>Board-level credibility:</strong> Professional reporting that impresses stakeholders and investors</span>
                   </li>
                   <li className="flex items-start">
                     <CheckCircle className="h-5 w-5 text-pink-400 mr-3 mt-1 flex-shrink-0" />
-                    <span className="text-gray-300">Funding support & investment readiness</span>
+                    <span className="text-gray-300"><strong>Strategic decision support:</strong> Confident choices backed by senior financial expertise</span>
                   </li>
                 </ul>
               </div>
               
               <div className="bg-gray-800 rounded-lg p-8 border border-gray-700">
-                <h3 className="text-2xl font-bold text-white mb-6">Our Approach</h3>
+                <h3 className="text-2xl font-bold text-white mb-6">Why Progress Virtual FD Works</h3>
                 <div className="grid grid-cols-2 gap-4">
                   <div className="text-center">
                     <div className="w-12 h-12 bg-gradient-to-r from-pink-400 to-purple-400 rounded-lg flex items-center justify-center mx-auto mb-3">
@@ -220,7 +220,7 @@ export default function VirtualFinanceDirectorPage() {
             
             <div className="bg-gradient-to-r from-pink-600 to-purple-600 rounded-lg p-8 text-center">
               <p className="text-white text-xl font-semibold">
-                👉 Get the expertise—without the overhead.
+                🎯 Finally—Finance Director expertise without the £150k+ salary. Strategic insight when you need it most.
               </p>
             </div>
           </div>
@@ -231,9 +231,10 @@ export default function VirtualFinanceDirectorPage() {
       <section className="py-16 bg-gradient-to-br from-pink-600 to-purple-500">
         <div className="container mx-auto px-6 md:px-8">
           <div className="max-w-4xl mx-auto text-center text-white">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready for Strategic Leadership?</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-6">Bridge the Leadership Gap Without Breaking the Bank</h2>
             <p className="text-xl mb-8 opacity-90">
-              Access executive-level financial expertise when you need it, without the full-time commitment.
+              Get our free Strategic Leadership Assessment and discover exactly where your business needs Finance Director insight. 
+              Executive expertise when you need it most—without the £150k+ salary.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <Link href="/contact">
