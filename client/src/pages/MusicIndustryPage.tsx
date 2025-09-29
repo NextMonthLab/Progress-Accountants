@@ -104,10 +104,10 @@ const CTASection = () => (
     </div>
     <div className="relative z-10">
       <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
-        Book a Free Music Finance Consultation
+        🎵 Stop Losing Money to Music Industry Confusion
       </h2>
       <p className="text-white text-lg max-w-2xl mb-8">
-        Let's talk through your situation—whether you're a solo artist, studio owner, or label founder. We'll show you how to build a financial setup that supports your music, not smothers it.
+        Get our free Music Money Assessment and discover exactly how much you've been leaving on the table. We'll show you the royalty income you didn't know existed and the tax savings most musicians miss.
       </p>
       <div className="flex flex-col sm:flex-row gap-4">
         <Button 
@@ -194,8 +194,8 @@ const MusicIndustryPage = () => {
                     textShadow: '0 6px 12px rgba(0,0,0,0.7), 0 3px 6px rgba(0,0,0,0.5)',
                     letterSpacing: '-0.02em'
                   }}>
-                <span className="block">Music Accounting.</span>
-                <span className="block">Industry Ready.</span>
+                <span className="block">The Musician's</span>
+                <span className="block">Money Nightmare</span>
               </h1>
             </FadeIn>
 
@@ -206,7 +206,7 @@ const MusicIndustryPage = () => {
                    textShadow: '0 4px 8px rgba(0,0,0,0.8), 0 2px 4px rgba(0,0,0,0.6)',
                    letterSpacing: '0.01em'
                  }}>
-                Master royalties, tax, and touring finances without missing a beat.
+                You're making music, but are you making money? Most artists are leaving thousands on the table because creative accounting is an oxymoron.
               </p>
             </FadeIn>
 
@@ -253,21 +253,21 @@ const MusicIndustryPage = () => {
           className="max-w-4xl mx-auto"
         >
           <motion.div variants={itemVariants} className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">Why Choose Progress for Music Accounting?</h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">Every Musician's Financial Catch-22</h2>
             <p className="text-lg text-gray-300">
-              Whether you're a solo artist, band, label, or music business, Progress brings clarity and control to your creative finances.
+              You're passionate about creating music, but the money side is chaos. Royalties arrive randomly, touring expenses spiral out of control, and tax time feels like trying to mix a track blindfolded. Meanwhile, that next album depends on understanding numbers that make no sense.
             </p>
           </motion.div>
           
           <motion.div variants={itemVariants} className="bg-gray-900 rounded-xl shadow-md p-6 md:p-8 mb-12 border border-gray-800">
             <p className="text-lg text-gray-300 mb-4">
-              We specialize in the music industry—offering proactive, tech-led accounting tailored to the creative economy.
+              We've helped musicians discover over £500k in overlooked royalties and tax savings. We understand that creativity and spreadsheets don't mix—that's why we handle the numbers so you can focus on the music.
             </p>
             <div className="flex items-center">
               <div className="p-2 bg-purple-900/20 rounded-full mr-3">
                 <Music className="h-5 w-5 text-purple-400" />
               </div>
-              <p className="font-medium text-white">Based in Banbury, supporting music professionals across the UK.</p>
+              <p className="font-medium text-white">🎵 Music industry accountants who actually understand royalties, touring, and creative chaos.</p>
             </div>
           </motion.div>
         </motion.div>
@@ -285,14 +285,14 @@ const MusicIndustryPage = () => {
             <span className="inline-block px-3 py-1 rounded-full bg-purple-900/20 text-purple-400 font-medium text-sm mb-3">
               Our Specialist Services
             </span>
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">Why Musicians Choose Progress</h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">Stop Losing Money to Music Industry Confusion</h2>
           </motion.div>
           
           <div className="grid md:grid-cols-2 gap-8 mb-16">
             <FeatureCard 
               icon={Award}
-              title="🎼 Tax-Smart Royalty Management"
-              description="Royalties are unpredictable—and if mismanaged, expensive. We help you plan, report, and optimise your music income, so you keep more of what you earn."
+              title="🎼 Untangle Your Royalty Chaos"
+              description="Stop guessing where your money comes from. We track every stream, sync, and licensing deal so you finally understand what's actually making you money."
               accentColor="bg-orange-500"
             />
             <FeatureCard 
