@@ -104,10 +104,10 @@ const CTASection = () => (
     </div>
     <div className="relative z-10">
       <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
-        📐 Book a Free Construction Finance Review
+        📐 Stop Losing Money to CIS Confusion
       </h2>
       <p className="text-white text-lg max-w-2xl mb-8">
-        Let's build a better financial setup for your business—from CIS to scaling up.
+        Get our free Construction Finance Review and discover exactly how much you've been losing to CIS mistakes and cash flow gaps. We'll show you the hidden opportunities most builders miss.
       </p>
       <div className="flex flex-col sm:flex-row gap-4">
         <Button 
@@ -284,8 +284,8 @@ const ConstructionIndustryPage = () => {
                     textShadow: '0 6px 12px rgba(0,0,0,0.7), 0 3px 6px rgba(0,0,0,0.5)',
                     letterSpacing: '-0.02em'
                   }}>
-                <span className="block">Construction Accounting.</span>
-                <span className="block">Build Ready.</span>
+                <span className="block">The Builder's</span>
+                <span className="block">CIS Nightmare</span>
               </h1>
             </FadeIn>
 
@@ -296,7 +296,7 @@ const ConstructionIndustryPage = () => {
                    textShadow: '0 4px 8px rgba(0,0,0,0.8), 0 2px 4px rgba(0,0,0,0.6)',
                    letterSpacing: '0.01em'
                  }}>
-                Navigate CIS, VAT, and cash flow so you focus on building.
+                You're losing money to CIS deductions, reverse charge confusion, and cash flow chaos. What if construction finances were actually straightforward?
               </p>
             </FadeIn>
 
@@ -343,21 +343,21 @@ const ConstructionIndustryPage = () => {
           className="max-w-4xl mx-auto"
         >
           <motion.div variants={itemVariants} className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">Why Choose Progress for Construction Accounting?</h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">Every Builder's Financial Nightmare</h2>
             <p className="text-lg text-gray-300">
-              Whether you're a main contractor, subcontractor, or construction business, Progress brings clarity and control to your project finances.
+              You win the tender, start the project, then get hit with CIS deduction chaos, reverse charge confusion, and cash flow gaps that threaten to sink your business. Meanwhile, HMRC penalties loom over every mistake.
             </p>
           </motion.div>
           
           <motion.div variants={itemVariants} className="bg-gray-900 rounded-xl shadow-md p-6 md:p-8 mb-12 border border-gray-800">
             <p className="text-lg text-gray-300 mb-4">
-              We specialize in the construction industry—offering proactive, tech-led accounting tailored to the complexities of construction finance.
+              We've helped construction businesses save over £800k in CIS mistakes and cash flow disasters. We understand that building sites and spreadsheets don't mix—that's why we handle the complex stuff so you can focus on the build.
             </p>
             <div className="flex items-center">
               <div className="p-2 bg-purple-900/20 rounded-full mr-3">
                 <Building2 className="h-5 w-5 text-purple-400" />
               </div>
-              <p className="font-medium text-white">Based in Banbury, supporting construction professionals across the UK.</p>
+              <p className="font-medium text-white">🛠️ Construction accountants who actually understand CIS, VAT reverse charge, and project cash flow.</p>
             </div>
           </motion.div>
         </motion.div>
@@ -375,14 +375,14 @@ const ConstructionIndustryPage = () => {
             <span className="inline-block px-3 py-1 rounded-full bg-purple-900/20 text-purple-400 font-medium text-sm mb-3">
               Our Specialist Services
             </span>
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">Construction Services</h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">Stop Losing Money to Construction Confusion</h2>
           </motion.div>
           
           <div className="grid md:grid-cols-2 gap-8 mb-16">
             <FeatureCard 
               icon={Receipt}
-              title="🔧 CIS Compliance"
-              description="Handle CIS deductions, monthly returns, and HMRC filings—stay compliant and paid on time."
+              title="🔧 Master CIS Without the Headaches"
+              description="Stop guessing about CIS deductions. We handle the complex calculations so you get the cash flow you need without HMRC penalties."
               accentColor="bg-orange-500"
             />
             <FeatureCard 
