@@ -29,8 +29,8 @@ interface BusinessIdentity {
 const professionalServices = [
   {
     icon: Calculator,
-    title: "📊 Cash Flow Management",
-    description: "Forecast confidently, set aside for tax, get paid on time—without chasing your tail.",
+    title: "📊 Stop the Cash Flow Rollercoaster",
+    description: "End the feast-or-famine cycle. Get predictable cash flow so you can plan beyond next month's bills.",
     features: [
       "Reliable cash flow forecasting",
       "Tax reserve planning",
@@ -41,8 +41,8 @@ const professionalServices = [
   },
   {
     icon: FileText,
-    title: "💼 Project Profitability",
-    description: "Whether hourly or project-based—break down earnings, expenses, margins so you know what's working.",
+    title: "💼 Discover Your True Profit Per Client",
+    description: "Stop working for clients who are actually costing you money. See which projects are profitable and which ones are draining your resources.",
     features: [
       "Time-based billing analysis",
       "Project cost breakdown",
@@ -53,8 +53,8 @@ const professionalServices = [
   },
   {
     icon: TrendingUp,
-    title: "🧾 Tax Planning",
-    description: "Service businesses stay efficient—whether sole trader, LLP, or limited company with staff and contractors.",
+    title: "🧾 Pay Less Tax Legally",
+    description: "Stop overpaying HMRC because you don't know what you can claim. Optimize your structure and keep more of what you earn."
     features: [
       "Business structure optimisation",
       "Contractor vs employee guidance",
@@ -128,8 +128,8 @@ export default function ProfessionalServicesPage() {
                     textShadow: '0 6px 12px rgba(0,0,0,0.7), 0 3px 6px rgba(0,0,0,0.5)',
                     letterSpacing: '-0.02em'
                   }}>
-                <span className="block">Professional Services.</span>
-                <span className="block">Growth Ready.</span>
+                <span className="block">The Consultant's</span>
+                <span className="block">Pricing Dilemma</span>
               </h1>
             </FadeIn>
 
@@ -140,7 +140,7 @@ export default function ProfessionalServicesPage() {
                    textShadow: '0 4px 8px rgba(0,0,0,0.8), 0 2px 4px rgba(0,0,0,0.6)',
                    letterSpacing: '0.01em'
                  }}>
-                Strategic accounting for consultants, advisors, and professional service firms.
+                You're great at what you do, but terrible at pricing it. What if you could finally charge what you're worth without losing clients?
               </p>
             </FadeIn>
 
@@ -187,11 +187,11 @@ export default function ProfessionalServicesPage() {
             </Badge>
             
             <h1 className="text-4xl md:text-6xl font-bold mb-6 gradient-text">
-              Specialist Accounting for Professional Services
+              Every Professional's Pricing Nightmare
             </h1>
             
             <p className="text-xl md:text-2xl text-gray-300 mb-8 leading-relaxed">
-              Helping you plan, price, and grow—without losing track of your finances.
+              You're undercharging because you don't know your true costs. Your cash flow is a rollercoaster. And you're working harder while earning less because the numbers don't add up.
             </p>
             
             <div className="flex flex-col sm:flex-row gap-6 justify-center">
@@ -276,10 +276,10 @@ export default function ProfessionalServicesPage() {
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-16">
               <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                Why Professional Service Firms Choose Progress
+                Stop Guessing What You Should Charge
               </h2>
               <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-                From cash flow management to project profitability tracking, we provide the clarity you need to grow confidently.
+                We've helped professional services discover over £2 million in hidden profit by fixing their pricing, cash flow, and cost tracking. Finally understand what you're really making—and what you should be charging.
               </p>
             </div>
 
